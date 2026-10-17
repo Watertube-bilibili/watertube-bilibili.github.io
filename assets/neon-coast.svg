@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <title>NEON COAST</title>
+  <rect width="64" height="64" rx="14" fill="#142b38"/>
+  <path d="M14 44V16h8l20 18V16h8v28h-8L22 26v18Z" fill="#f5f0e6"/>
+  <path d="M14 50c9-5 15 5 24 0 5-3 8-3 12-1" fill="none" stroke="#f08a68" stroke-width="4" stroke-linecap="round"/>
+</svg>
