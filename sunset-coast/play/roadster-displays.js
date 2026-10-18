@@ -1,3 +1,4 @@
+import {vehicleGear} from './touch-transmission.js';
 import * as THREE from './vendor/three.module.js';
 import {roadsterAeroMode} from './roadster-aero.js';
 import {roadsterTrim} from './roadster-controls.js';
@@ -22,7 +23,7 @@ export function roadsterDisplayState(car,{autopilot=false}={}){
  const forwardX=-2*(x*z+w*y),forwardY=2*(w*x-y*z),forwardZ=-(1-2*(x*x+y*y)),rightY=2*(x*y+w*z),upY=1-2*(x*x+z*z);
  const speed=finite(car?.speed),battery=Math.round(clamp(car?.battery??100,0,100)),condition=Math.round(clamp(car?.condition??100,0,100));
  const air=['air','landing','recover','unpowered'].includes(mode);
- return{trim,mode,air,aeroMode:roadsterAeroMode(car),speed:Math.round(Math.min(999,Math.abs(speed)*3.6)),gear:air?'AIR':Math.abs(speed)<.15?'P':speed<0?'R':'D',battery,range:Math.round(Math.max(0,finite(car?.model?.range,480))*battery/100),autopilot:!!autopilot,
+ return{trim,mode,air,aeroMode:roadsterAeroMode(car),speed:Math.round(Math.min(999,Math.abs(speed)*3.6)),gear:air?'AIR':vehicleGear(car),battery,range:Math.round(Math.max(0,finite(car?.model?.range,480))*battery/100),autopilot:!!autopilot,
   condition,wing:Math.round(clamp(car?.roadsterAeroVisual?.lift!==undefined?car.roadsterAeroVisual.lift/.34:state.wing??car?.roadsterWingVisual??0,0,1)*100),wingMode:LABELS[car?.roadsterRequest?.wingMode]?car.roadsterRequest.wingMode:'auto',airBrake:finite(state.wingPitch)>.45,
   altitude:round(clamp(state.altitude??0,0,9999)),verticalSpeed:round(clamp(state.verticalSpeed??0,-999,999)),pitch:round(Math.asin(clamp(forwardY,-1,1))*180/Math.PI),roll:round(Math.atan2(-rightY,upY)*180/Math.PI),heading:Math.round((Math.atan2(forwardX,-forwardZ)*180/Math.PI+360)%360)%360,
   warning:condition<=0||battery<=0?'POWER OFF':mode==='unpowered'?'LIFT UNAVAILABLE':mode==='landing'?'CONTROLLED DESCENT':''};

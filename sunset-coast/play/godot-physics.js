@@ -1,3 +1,4 @@
+import {parkingBrakeControls} from './touch-transmission.js';
 import {cargoGodotControls} from './cargo-career.js';
 import {createGodotAssetCache} from './godot-asset-cache.js';
 import {createStartupDiagnostics} from './godot-startup-diagnostics.js';
@@ -23,6 +24,7 @@ export const GODOT_VERSION='4.6.3';
 // This module adapts controls and snapshots. It never integrates position,
 // resolves rigid-body collisions or imposes a second clock on Godot.
 export function godotCarControls(v,input,dt){
+ input=parkingBrakeControls(v,input);
  stepAxleFault(v,input,dt);const axle=axleFaultEffects(v);
  let throttle=clamp(input.throttle,-1,1);
  const request=typeof input.brake==='number'?clamp(input.brake,0,1):input.brake?1:0;
@@ -180,7 +182,7 @@ export class GodotPhysicsSystem{
    if(!this.game.paused)this.game.physicsTick(snapshot.dt||1/60);
    this.game.world.update(this.game.aircraft?.pendingBoard?this.game.aircraft.aircraft.pos:this.game.position);this.syncWorld();this.syncVehicles();
    const controls=[];
-   for(const [v,entry]of this.vehicles)controls.push({id:entry.id,...(this.controlMap.get(v)??{throttle:0,steer:0,manualBrake:0,electronicBrake:1,handbrake:false,condition:v.condition,battery:v.battery,axleBroken:axleFaultEffects(v).broken,axleSide:axleFaultEffects(v).side})});
+   for(const [v,entry]of this.vehicles)controls.push({id:entry.id,...(this.controlMap.get(v)??{throttle:0,steer:0,manualBrake:0,electronicBrake:1,handbrake:!!v.parkingBrakeEngaged,condition:v.condition,battery:v.battery,axleBroken:axleFaultEffects(v).broken,axleSide:axleFaultEffects(v).side})});
    controls.push(...this.externalControls.values());this.externalControls.clear();
    const commands=this.commands.splice(0);return{paused:!!this.game.paused,commands,controls};
   }catch(error){this.fail(error);return{paused:true,commands:[],controls:[]};}

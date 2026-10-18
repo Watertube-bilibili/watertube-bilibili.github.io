@@ -8,6 +8,12 @@ const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const wrap=n=>Math.atan2(Math.sin(n),Math.cos(n));
 const finite=(n,f=0)=>Number.isFinite(n)?n:f;
 
+// Use both forward and native sideways motion; a sliding truck is not parked.
+export function semiTrailerStationary(car){
+ const speed=car?.speed??0,lateral=car?.lateralSpeed??0,sx=car?.slipVelocityX??0,sz=car?.slipVelocityZ??0,yaw=car?.yaw??0;
+ return [speed,lateral,sx,sz,yaw].every(Number.isFinite)&&Math.max(Math.hypot(speed,lateral),Math.hypot(sx-Math.sin(yaw)*speed,sz-Math.cos(yaw)*speed))<.3;
+}
+
 /** Displacement-based no-side-slip visual follower. Substeps and a bounded
  * articulation angle prevent reverse direction flips/jackknifing into the cab.
  * It is not a physical joint or a collision solver. */
@@ -23,9 +29,10 @@ export function followSemiTrailer(previous,hitch,tractorYaw){
 export function semiTrailerLoadState(car,game={}){
  const job=game.vehicle===car&&isCargoJob(game.job)?game.job:null,loaded=!!job&&job.stage===1;
  const payloadKg=loaded?Math.max(0,finite(job.massKg)):0;
- return{loaded,payloadKg,active:!!job,cargoLabel:loaded?job.cargoLabel:'空载',overloaded:payloadKg>18000,
+ const attached=loaded||car.semiTrailerAttached===true;
+ return{attached,loaded,payloadKg,active:!!job,cargoLabel:loaded?job.cargoLabel:'空载',overloaded:payloadKg>18000,
   crateCount:loaded?(payloadKg<=8000?4:payloadKg<=18000?10:14):0,
-  doorsOpen:Math.abs(finite(car.speed))<.3&&(!job||finite(job.hold)>0),phase:job?(loaded?'运输中':'待装货'):'空载'};
+  doorsOpen:attached&&car.semiTrailerDoorsOpen===true,phase:job?(loaded?'运输中':'待装货'):'空载'};
 }
 
 export function createSemiTrailer({makeCanvas=()=>globalThis.document?.createElement?.('canvas')}={}){
@@ -128,16 +135,35 @@ export function installSemiCargoTrailers(game){
  const trailers=new Map(),hitch=new THREE.Vector3(),hitchPosition=new THREE.Vector3();
  const ground=(x,z)=>game.groundContact?.heightAt?.(x,z)??game.world?.groundHeight?.(x,z)??0;
  const dispose=car=>{const trailer=trailers.get(car);if(!trailer)return;trailer.dispose();trailers.delete(car);if(car.trailer===trailer)delete car.trailer;};
+ let refreshUI=()=>{};
+ function setAttached(attached,car=game.vehicle){
+  if(car?.model?.id!=='semi')return{ok:false,reason:'请先选择 Semi'};
+  if(!attached&&semiTrailerLoadState(car,game).loaded)return{ok:false,reason:'货箱内仍有当前订单货物，请先完成交付或取消货运，不能直接卸下货箱'};
+  if(!semiTrailerStationary(car))return{ok:false,reason:'请先完全停稳，再装上或卸下货箱'};
+  car.semiTrailerAttached=!!attached;car.semiTrailerDoorsOpen=false;update(0);
+  return{ok:true,reason:attached?'已装上空货箱':'已卸下货箱 · 仅牵引车'};
+ }
+ function toggleDoors(car=game.vehicle){
+  if(car?.model?.id!=='semi'||!semiTrailerLoadState(car,game).attached)return{ok:false,reason:'请先装上货箱'};
+  if(!semiTrailerStationary(car))return{ok:false,reason:'请先完全停稳，再手动开关货箱门'};
+  car.semiTrailerDoorsOpen=car.semiTrailerDoorsOpen!==true;update(0);
+  return{ok:true,reason:car.semiTrailerDoorsOpen?'货箱门已手动打开':'货箱门已手动关闭'};
+ }
  function update(dt=0){
   const cars=new Set([game.vehicle,...(game.traffic??[]),...(game.police??[]),game.personalVehicle]);
   for(const [car]of trailers)if(!cars.has(car)||!car.root?.parent)dispose(car);
   for(const car of cars){
    if(car?.model?.id!=='semi'||!car.root?.parent)continue;
+   // Moving clears the request rather than merely hiding an open door. Braking
+   // back to zero, selecting P, or a pickup hold can never reopen it.
+   if(!semiTrailerStationary(car))car.semiTrailerDoorsOpen=false;
+   const state=semiTrailerLoadState(car,game);
+   if(!state.attached){car.semiTrailerDoorsOpen=false;dispose(car);continue;}
    let trailer=trailers.get(car);if(!trailer){trailer=createSemiTrailer();trailers.set(car,trailer);car.trailer=trailer;game.scene.add(trailer.root);}
    trailer.root.visible=car.root.visible&&!car.populationDormant;if(!trailer.root.visible)continue;
    car.root.updateWorldMatrix(true,true);const rig=car.semiRig?.hitch;
    if(rig)rig.getWorldPosition(hitch);else{hitchPosition.set(0,1.2,2.05);hitch.copy(car.root.localToWorld(hitchPosition));}
-   const e=car.root.matrixWorld.elements,yaw=Math.atan2(e[8],e[10]),state=semiTrailerLoadState(car,game);
+   const e=car.root.matrixWorld.elements,yaw=Math.atan2(e[8],e[10]);
    trailer.state=followSemiTrailer(trailer.state,hitch,yaw);alignSemiTrailer(trailer,hitch,trailer.state.yaw,ground);
    trailer.loaded=state.loaded;trailer.payloadKg=state.payloadKg;trailer.updateLoad(state);trailer.updateLights(car);
    const target=state.doorsOpen?1:0;trailer.doorAmount=THREE.MathUtils.damp(trailer.doorAmount,target,5,Math.max(0,finite(dt)));
@@ -146,6 +172,7 @@ export function installSemiCargoTrailers(game){
    const rotation=new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0),trailer.wheelRotation),matrix=new THREE.Matrix4();let i=0;
    for(const z of SEMI_TRAILER_SPEC.axles)for(const side of [-1,1]){matrix.compose(new THREE.Vector3(side*1.293,SEMI_TRAILER_SPEC.wheelY,z),rotation,new THREE.Vector3(.035,.23,.23));trailer.wheelHubs.setMatrixAt(i++,matrix);}trailer.wheelHubs.instanceMatrix.needsUpdate=true;
   }
+  refreshUI();
  }
  if(typeof game.updateCamera==='function'){
   const originalCamera=game.updateCamera.bind(game);
@@ -163,5 +190,38 @@ export function installSemiCargoTrailers(game){
  }
  const originalLighting=game.updateVehicleLighting.bind(game);game.updateVehicleLighting=dt=>{originalLighting(dt);update(game.paused?0:dt);};
  const originalRemove=game.removeVehicle.bind(game);game.removeVehicle=car=>{dispose(car);return originalRemove(car);};
- game.semiCargoTrailers={update,dispose,trailers,visualOnly:true};return game.semiCargoTrailers;
+ game.semiCargoTrailers={update,dispose,trailers,setAttached,toggleDoors,getState:(car=game.vehicle)=>semiTrailerLoadState(car,game),visualOnly:true};
+ refreshUI=installSemiTrailerControls(game,game.semiCargoTrailers);return game.semiCargoTrailers;
 }
+
+// Reuse existing phone layouts. These are independent actions, never brake or
+// parking handlers. Empty-box selection is per vehicle for the current session.
+function installSemiTrailerControls(game,service){
+ const ui=game.ui;if(typeof ui?.renderPhone!=='function')return()=>{};
+ const render=ui.renderPhone.bind(ui);let controls=null;
+ const refresh=()=>{
+  if(!controls?.panel.isConnected)return;
+  const {car,status,attach,doors}=controls,state=service.getState(car);
+  const label=state.loaded?`货箱已装货 · ${state.payloadKg/1000} 吨 · 交付或取消订单后才能卸下`:state.attached?'已装上空货箱':'无货箱 · 仅牵引车';
+  const setText=(node,text)=>{if(node.textContent!==text)node.textContent=text;};
+  setText(status,label);setText(attach,state.attached?'卸下货箱':'装上空货箱');
+  attach.title=state.loaded?'当前订单仍有货物，不能直接卸下货箱':'';
+  setText(doors,state.doorsOpen?'关闭货箱门':'打开货箱门');doors.disabled=!state.attached;doors.setAttribute('aria-pressed',String(state.doorsOpen));
+ };
+ ui.renderPhone=page=>{
+  render(page);controls=null;
+  if(!['garage','jobs'].includes(page)||game.vehicle?.model?.id!=='semi')return;
+  const content=document.getElementById('phone-content');if(!content)return;
+  const panel=document.createElement('section');panel.dataset.semiTrailerControls='';
+  const heading=document.createElement('h4');heading.className='phone-section-label';heading.textContent='当前 Semi · 货箱控制';
+  const status=document.createElement('p');status.className='phone-note';status.setAttribute('role','status');
+  const attach=document.createElement('button');attach.type='button';attach.className='phone-row';attach.dataset.semiTrailerAttach='';
+  const doors=document.createElement('button');doors.type='button';doors.className='phone-row';doors.dataset.semiTrailerDoors='';
+  const note=document.createElement('p');note.className='phone-note';note.textContent='停稳后操作。货箱门独立手动开关，与刹车 / P 挡无关；起步自动关门，停车不会重新打开。无货默认不带货箱；空货箱选择仅保留本次车辆会话，载货存档会自动恢复货箱。挂车仅为视觉随动，无独立碰撞或铰接物理。';
+  const car=game.vehicle,act=action=>{if(game.vehicle!==car){ui.renderPhone(page);return;}const result=action();ui.toast?.(result.reason,result.ok?'':'error');refresh();};
+  attach.onclick=()=>act(()=>service.setAttached(!service.getState(car).attached,car));doors.onclick=()=>act(()=>service.toggleDoors(car));
+  panel.append(heading,status,attach,doors,note);content.prepend(panel);controls={panel,car,status,attach,doors};refresh();
+ };
+ return refresh;
+}
+

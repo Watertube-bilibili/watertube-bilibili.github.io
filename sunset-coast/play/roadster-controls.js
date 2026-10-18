@@ -26,6 +26,7 @@ export function clampRoadsterControls(v,input={}){
 export function requestRoadsterManeuver(game,action){
  const v=game.vehicle;if(roadsterTrim(v)!=='rocket')return{ok:false,reason:'智能空中特技仅限 Rocket（游戏设定）'};
  if(!['vault','spin','cancel'].includes(action))return{ok:false,reason:'未知动作'};
+ if(v.parkingBrakeEngaged&&action!=='cancel')return{ok:false,reason:'P 驻车中，请先挂 N / R / D 再执行特技'};
  if(!game.inCar||game.transition||game.paused||game.aircraft?.active||game.flight?.active||game.autonomyTest?.active||game.ui?.isPhoneOpen?.()||globalThis.document?.body?.classList.contains('mobile-drawer-open'))return{ok:false,reason:'请先结束当前操作并进入 Rocket'};
  if(!game.physics?.ready||game.physics.failed)return{ok:false,reason:'智能特技需要 Godot 物理引擎'};
  const request=roadsterRequest(v);
@@ -38,6 +39,7 @@ export function requestRoadsterManeuver(game,action){
 }
 export function toggleRoadsterAir(game){
  const v=game.vehicle;if(roadsterTrim(v)!=='rocket')return{ok:false,reason:'空中模式仅限 Rocket 配置（游戏设定）'};
+ if(v.parkingBrakeEngaged)return{ok:false,reason:'P 驻车中，请先挂 N / R / D 再起飞'};
  if(!game.inCar||game.transition||game.paused||game.aircraft?.active||game.flight?.active||game.autonomyTest?.active)return{ok:false,reason:'请先结束当前操作并进入 Rocket'};
  if(!game.physics?.ready||game.physics.failed)return{ok:false,reason:'空中模式需要 Godot 物理引擎，空中功能不可用'};
  const request=roadsterRequest(v);

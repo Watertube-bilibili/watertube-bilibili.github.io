@@ -1,3 +1,4 @@
+import {vehicleGear} from './touch-transmission.js';
 import {semiDisplayState,paintSemiDisplay} from './semi-displays.js';
 import {infotainmentState,paintVehicleInfotainment} from './vehicle-infotainment.js';
 import {cockpitProfile} from './cockpit-profiles.js';
@@ -414,7 +415,7 @@ export class VehicleCockpit {
     n['vc-model'].textContent = v.model.trim || v.model.name;
     n['vc-clock'].textContent = g.clockString?.() || '';
     n['vc-speed'].textContent = String(g.inCar ? Math.round(Math.abs(v.speed) * 3.6) : 0);
-    const gear = Math.abs(v.speed) < .15 ? 'P' : v.speed < 0 ? 'R' : 'D';
+    const gear = vehicleGear(v);
     if (gear !== this.displayGear) {
       n['vc-gear'].innerHTML = ['P', 'R', 'N', 'D'].map(k => `<span${k === gear ? ' class="selected"' : ''}>${k}</span>`).join('');
       this.displayGear = gear;

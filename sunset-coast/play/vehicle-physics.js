@@ -1,3 +1,4 @@
+import {parkingBrakeControls} from './touch-transmission.js';
 import {cargoEffects} from './cargo-career.js';
 import {stepAxleFault,axleFaultEffects,updateAxleFaultVisuals} from './axle-fault.js';
 import {updateRoadsterVisuals,resetRoadsterControls} from './roadster-controls.js';
@@ -41,6 +42,7 @@ function pressureStep(previous,target,dt) {
 }
 
 export function stepVehicleMotion(vehicle, input, dt) {
+ input = parkingBrakeControls(vehicle, input);
   const v = vehicle;
   const oldSpeed = v.speed;
   stepAxleFault(v,input,dt);const axle=axleFaultEffects(v);

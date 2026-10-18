@@ -1,9 +1,10 @@
+import {vehicleGear} from './touch-transmission.js';
 import * as THREE from './vendor/three.module.js';
 export const SEMI_DISPLAY_SPECS=Object.freeze(['Left','Right'].map(side=>Object.freeze({type:side.toLowerCase(),name:side+'_Display_Surface',width:1200,height:760})));
 const number=value=>typeof value==='number'&&Number.isFinite(value)?value:null;
 export function semiDisplayState(car,{autopilot=null,job=null,cargoStatus=null}={}){
  const speed=number(car?.speed),battery=number(car?.battery),cargoKg=number(cargoStatus?.massKg),cargo=cargoKg!==null?cargoKg/1000:number(car?.cargo?.tonnes),limit=number(car?.cargo?.ratedTonnes);
- return {connected:!!car,speed:speed===null?null:Math.round(Math.abs(speed)*3.6),battery:battery===null?null:Math.max(0,Math.min(100,battery)),gear:car?.gear??null,cargo,overloaded:cargoStatus?.overloaded??(cargo!==null&&limit!==null&&cargo>limit),coupled:car?.trailer?true:car?.trailer===null?false:null,autopilot:typeof autopilot==='boolean'?autopilot:null,destination:cargoStatus?.destination??job?.destination??null,distance:number(job?.distanceKm),jobStatus:cargoStatus?.phase??job?.status??null,cargoLabel:cargoStatus?.cargoLabel??null,integrity:number(cargoStatus?.integrity),reward:number(cargoStatus?.reward),abstractCargo:!!cargoStatus,warning:car?.warning??''};
+ return {connected:!!car,speed:speed===null?null:Math.round(Math.abs(speed)*3.6),battery:battery===null?null:Math.max(0,Math.min(100,battery)),gear:car?vehicleGear(car):null,cargo,overloaded:cargoStatus?.overloaded??(cargo!==null&&limit!==null&&cargo>limit),coupled:car?.trailer?true:car?.trailer===null?false:null,autopilot:typeof autopilot==='boolean'?autopilot:null,destination:cargoStatus?.destination??job?.destination??null,distance:number(job?.distanceKm),jobStatus:cargoStatus?.phase??job?.status??null,cargoLabel:cargoStatus?.cargoLabel??null,integrity:number(cargoStatus?.integrity),reward:number(cargoStatus?.reward),abstractCargo:!!cargoStatus,warning:car?.warning??''};
 }
 const shown=(v,suffix='',digits=0)=>v===null||v===undefined?'--':typeof v==='number'?v.toFixed(digits)+suffix:String(v)+suffix;
 export function paintSemiDisplay(ctx,type,s){

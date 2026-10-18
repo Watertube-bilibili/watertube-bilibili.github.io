@@ -1,3 +1,4 @@
+import {vehicleGear} from './touch-transmission.js';
 import {attachSemiDisplays,semiDisplayState} from './semi-displays.js';
 import {updateVehicleInfotainment,disposeVehicleInfotainment} from './vehicle-infotainment.js';
 import {attachG9Navigation,updateG9Navigation,disposeG9Navigation} from './g9-navigation.js';
@@ -59,7 +60,7 @@ export function updateVehicleInstruments(car,time=0,{autopilot=false,game=null}=
   if(panel.kind==='roadster'){updateRoadsterDisplays(car,time,{autopilot});return;}
   if(time>=panel.lastUpdate && time-panel.lastUpdate<.05)return;
   const signedSpeed=Number.isFinite(car.speed)?car.speed:0;
-  const speed=Math.round(Math.abs(signedSpeed)*3.6),gear=Math.abs(signedSpeed)<.15?'P':signedSpeed<0?'R':'D';
+  const speed=Math.round(Math.abs(signedSpeed)*3.6),gear=vehicleGear(car);
   const charge=Math.round(clamp(Number.isFinite(car.battery)?car.battery:100,0,100));
   const range=Math.round((car.model?.range??420)*charge/100);
   const state={speed,gear,charge,range,autopilot:!!autopilot};

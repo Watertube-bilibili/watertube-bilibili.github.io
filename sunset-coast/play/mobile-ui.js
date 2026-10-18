@@ -1,5 +1,6 @@
 /** Touch-first driving layout. Original control elements and handlers remain authoritative. */
 import './game.js';
+import {TOUCH_GEARS} from './touch-transmission.js';
 
 // Camera mode 1 is the actual interior view. cockpit-open is a separate car-computer panel.
 export function syncCockpitSpeedHUD(game) {
@@ -44,9 +45,10 @@ if (game?.ui) {
       <button id="mobile-pedal-signal-right" type="button" aria-label="切换右转向灯" aria-pressed="false">${icon('<path d="m14 5 7 7-7 7M3 12h18"/>')}<span>右灯</span></button>
     </div>
     <div id="mobile-gears" role="group" aria-label="行驶挡位" hidden>
-      <button id="mobile-gear-d" type="button" aria-label="D 前进挡" aria-pressed="true">D</button>
-      <button id="mobile-gear-n" type="button" aria-label="N 空挡" aria-pressed="false">N</button>
+      <button id="mobile-gear-p" type="button" aria-label="P 驻车挡" aria-pressed="false">P</button>
       <button id="mobile-gear-r" type="button" aria-label="R 倒车挡" aria-pressed="false">R</button>
+      <button id="mobile-gear-n" type="button" aria-label="N 空挡" aria-pressed="false">N</button>
+      <button id="mobile-gear-d" type="button" aria-label="D 前进挡" aria-pressed="true">D</button>
     </div>
     <button id="mobile-tools-toggle" type="button" aria-label="展开左侧操作" aria-expanded="false" aria-controls="mobile-driving-tools">${icons.settings}<span>操作</span></button>
     <section id="mobile-driving-tools" aria-label="左侧操作" hidden>
@@ -156,7 +158,7 @@ if (game?.ui) {
   $('mobile-vehicle-tools').onclick = () => { setTools(false); $('roadster-details-toggle')?.click(); };
   $('mobile-pilot').onclick = () => { closeRoutineTools(); $('autopilot-btn').click(); };
   const signalsAllowed = () => game.inCar && !game.paused && !game.transition && !drawerOpen && !game.ui.isPhoneOpen() && !$('modal').open && !game.aircraft?.active && !game.flight?.active && !game.robotaxi?.passenger;
-  for (const gear of ['D', 'N', 'R']) {
+  for (const gear of TOUCH_GEARS) {
     const button = $('mobile-gear-' + gear.toLowerCase());
     button.onclick = () => { if (signalsAllowed()) game.selectTouchGear?.(gear); syncStatus(); };
     button.addEventListener('keydown', event => { if (event.code === 'Space' || event.code === 'Enter') event.stopPropagation(); });
@@ -355,7 +357,7 @@ if (game?.ui) {
     const gearVisible = touchLayout() && signalsAvailable && !game.isRoadsterFlying?.();
     $('mobile-gears').hidden = !gearVisible || !signalsAllowed();
     const gear = game.getTouchGear?.() ?? 'D';
-    for (const value of ['D', 'N', 'R']) {
+    for (const value of TOUCH_GEARS) {
       const button = $('mobile-gear-' + value.toLowerCase());
       button.disabled = !gearVisible || !signalsAllowed();
       button.setAttribute('aria-pressed', String(gear === value));
