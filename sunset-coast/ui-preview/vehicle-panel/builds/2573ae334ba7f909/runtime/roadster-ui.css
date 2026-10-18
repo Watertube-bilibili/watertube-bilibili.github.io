@@ -1,0 +1,59 @@
+/* Coastal screen-space vehicle controls. One panel geometry for road, air and landing.
+   Brand-specific in-car instruments are not selected here. */
+#roadster-controls[hidden],#roadster-controls [hidden]{display:none!important}
+#roadster-controls{--roadster-status-top:max(112px,calc(env(safe-area-inset-top) + 88px));--roadster-status-width:min(320px,calc(100vw - max(12px,env(safe-area-inset-left)) - max(12px,env(safe-area-inset-right))));--roadster-pad-reserve:190px;position:fixed;inset:0;z-index:17;pointer-events:none;color:#f5f0e6;font:12px/1.5 system-ui}
+#roadster-controls button{box-sizing:border-box;min-height:46px;min-width:44px;max-width:100%;border:1px solid #78909a;border-radius:3px;background:#142b38;color:#f5f0e6;font:600 12px/1.4 system-ui;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;pointer-events:auto;overflow-wrap:anywhere;white-space:normal;padding:8px}
+#roadster-controls button:is(.is-pressed,[aria-pressed=true]){background:#f08a68;color:#142b38;border-color:#f08a68}
+#roadster-controls button:focus-visible{outline:3px solid #f08a68;outline-offset:2px}
+#roadster-controls button:disabled{opacity:.45}
+#roadster-controls kbd{display:block;font:10px/1.4 system-ui;color:inherit;opacity:.75}
+.roadster-overlay{visibility:hidden}
+#roadster-controls .roadster-status{position:absolute;left:max(12px,env(safe-area-inset-left));box-sizing:border-box;text-align:left;background:#142b38;color:#f5f0e6;border:1px solid #78909a;border-radius:3px;backdrop-filter:none;box-shadow:0 8px 24px #07192344}
+#roadster-controls.roadster-details-open .roadster-status{top:var(--roadster-status-top);bottom:auto;transform:none;width:var(--roadster-status-width);height:auto;min-height:0;max-height:calc(100dvh - var(--roadster-status-top) - var(--roadster-pad-reserve) - env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:10px;padding:12px;overflow:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#78909a #142b38;pointer-events:auto}
+#roadster-controls .roadster-status>*{min-width:0;max-width:100%;box-sizing:border-box}
+#roadster-controls .roadster-status>strong{font-size:12px;font-weight:650;letter-spacing:.06em;line-height:1.5;color:#f5f0e6}
+#roadster-controls .roadster-status>span,#roadster-controls .roadster-status>small{white-space:normal;overflow-wrap:anywhere;line-height:1.6}
+#roadster-controls .roadster-status>small{font-size:10px;color:#c0ced0}
+#roadster-telemetry{color:#c0ced0;font-variant-numeric:tabular-nums}
+#roadster-controls #roadster-warning{font-size:11px;color:#f4c782}
+#roadster-controls .roadster-utility{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;min-width:0;border-top:1px solid #78909a;padding-top:10px}
+#roadster-controls .roadster-ground{display:contents}
+#roadster-controls.roadster-in-air .roadster-ground{display:none}
+#roadster-controls .roadster-utility button{width:100%;white-space:normal;overflow-wrap:anywhere}
+#roadster-controls .roadster-maneuvers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;border-top:1px solid #78909a;padding-top:10px}
+#roadster-controls #roadster-cancel,#roadster-maneuver-status{grid-column:1/-1}
+#roadster-controls #roadster-maneuver-status{white-space:normal;overflow-wrap:anywhere;line-height:1.6;text-align:left;font-size:11px;color:#c0ced0;min-height:16px}
+#roadster-controls #roadster-details-toggle{display:block;min-width:44px;min-height:44px}
+#roadster-controls.roadster-details-open #roadster-details-toggle{background:#244453;color:#f5f0e6}
+#roadster-controls:not(.roadster-details-open) .roadster-status{left:max(12px,env(safe-area-inset-left));top:45%;bottom:auto;transform:translateY(-50%);width:56px;height:56px;min-height:56px;display:flex;flex-direction:column;padding:5px;gap:0}
+#roadster-controls:not(.roadster-details-open) .roadster-status>strong,
+#roadster-controls:not(.roadster-details-open) .roadster-status>span,
+#roadster-controls:not(.roadster-details-open) .roadster-status>small,
+#roadster-controls:not(.roadster-details-open) .roadster-ground,
+#roadster-controls:not(.roadster-details-open) .roadster-maneuvers,
+#roadster-controls:not(.roadster-details-open) .roadster-utility>button:not(#roadster-details-toggle){display:none!important}
+#roadster-controls:not(.roadster-details-open) .roadster-utility{display:flex;min-height:44px;gap:0;border:0;padding:0}
+#roadster-controls:not(.roadster-details-open) #roadster-details-toggle{padding:4px}
+#roadster-controls.roadster-warning-active #roadster-details-toggle{border-color:#f4c782;color:#f4c782}
+/* Flight-pad geometry remains independent of the scrollable operations panel. */
+.roadster-flight-left,.roadster-flight-right,.roadster-attitude{display:none;position:absolute;bottom:calc(30px + env(safe-area-inset-bottom));gap:6px}
+.roadster-in-air .roadster-flight-left,.roadster-in-air .roadster-flight-right,.roadster-in-air .roadster-attitude{display:grid}
+.roadster-flight-left{left:max(14px,env(safe-area-inset-left));grid-template-columns:64px 64px}
+.roadster-flight-right{right:max(14px,env(safe-area-inset-right));grid-template-columns:80px}
+.roadster-attitude{left:50%;transform:translateX(-50%);grid-template-columns:60px 60px;bottom:calc(30px + env(safe-area-inset-bottom));padding:7px;background:#142b38;border:1px solid #78909a;border-radius:3px}
+.roadster-attitude button:last-child{grid-column:1/-1}
+body.roadster-air-active #mobile-controls,body.roadster-air-active #sensor-panel,body.roadster-air-active #autopilot-btn,body.roadster-air-active #mobile-route,body.roadster-air-active .bottom-hud,body.roadster-air-active .vehicle-cockpit{display:none!important}
+@media(max-width:768px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+ #roadster-controls kbd{display:none}
+ body.roadster-controls-active #sensor-panel{visibility:hidden;pointer-events:none}
+}
+@media(max-width:600px){.roadster-flight-left{grid-template-columns:48px 48px}.roadster-flight-right{grid-template-columns:66px}.roadster-attitude{grid-template-columns:48px 48px;left:calc(50% + 18px)}}
+@media(orientation:landscape) and (max-height:500px){
+ #roadster-controls{--roadster-status-top:max(54px,calc(env(safe-area-inset-top) + 42px));--roadster-pad-reserve:176px}
+ .roadster-flight-left,.roadster-flight-right,.roadster-attitude{bottom:calc(14px + env(safe-area-inset-bottom))}
+ #roadster-controls kbd{display:none}
+ #roadster-controls button{min-height:44px}
+}
+
+/* On touch road mode, the existing 操作 menu is the sole collapsed entry. */
+body.mobile-controls-v2 #roadster-controls:not(.roadster-in-air):not(.roadster-details-open) .roadster-status{display:none}

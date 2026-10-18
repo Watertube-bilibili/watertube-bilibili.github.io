@@ -1,0 +1,77 @@
+#roadster-controls[hidden],#roadster-controls [hidden]{display:none!important}
+#roadster-controls{--roadster-status-top:188px;--roadster-status-width:min(400px,calc(100% - 24px));position:fixed;inset:0;z-index:17;pointer-events:none;color:#eef4f7;font:12px system-ui}
+#roadster-controls button{min-height:46px;min-width:46px;border:1px solid #e2ebf247;border-radius:12px;background:#1b2532ed;color:#edf4ff;font:600 12px system-ui;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;pointer-events:auto}
+#roadster-controls button.is-pressed,#roadster-controls button[aria-pressed=true]{background:#d4e5f4;color:#182633}
+#roadster-controls button:disabled{opacity:.4}#roadster-controls kbd{display:block;font:10px system-ui;opacity:.65}.roadster-overlay{visibility:hidden}
+/* Road mode reserves the navigation band above this panel. Ground actions share
+   its utility row, rather than floating over the speed HUD or pedals. */
+.roadster-status{position:absolute;top:var(--roadster-status-top);left:50%;transform:translateX(-50%);width:var(--roadster-status-width);height:132px;box-sizing:border-box;text-align:center;display:grid;grid-template-rows:14px 16px 16px 12px 46px;gap:3px;background:#182330df;border-radius:14px;padding:8px;backdrop-filter:blur(8px)}
+.roadster-status strong{font-size:11px;line-height:14px;letter-spacing:1.6px}.roadster-status small{font-size:9px;line-height:12px;opacity:.66}#roadster-warning{font-size:11px;line-height:16px;color:#f5d7a1}#roadster-telemetry{line-height:16px}
+.roadster-status>strong,.roadster-status>span,.roadster-status>small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.roadster-utility{display:flex;justify-content:center;gap:4px;min-width:0}.roadster-utility button{padding:4px 3px;flex:1;white-space:nowrap}.roadster-ground{display:contents}
+.roadster-flight-left,.roadster-flight-right,.roadster-attitude{display:none;position:absolute;bottom:calc(30px + env(safe-area-inset-bottom));gap:6px}.roadster-in-air .roadster-ground{display:none}.roadster-in-air .roadster-flight-left,.roadster-in-air .roadster-flight-right,.roadster-in-air .roadster-attitude{display:grid}.roadster-flight-left{left:max(14px,env(safe-area-inset-left));grid-template-columns:64px 64px}.roadster-flight-right{right:max(14px,env(safe-area-inset-right));grid-template-columns:80px}.roadster-attitude{left:50%;transform:translateX(-50%);grid-template-columns:60px 60px;bottom:calc(30px + env(safe-area-inset-bottom));padding:7px;background:#182330ee;border-radius:12px}.roadster-attitude button:last-child{grid-column:1/-1}
+body.roadster-air-active #mobile-controls,body.roadster-air-active #sensor-panel,body.roadster-air-active #autopilot-btn,body.roadster-air-active #mobile-route,body.roadster-air-active .bottom-hud,body.roadster-air-active .vehicle-cockpit{display:none!important}
+body.roadster-air-active #roadster-controls{--roadster-status-top:94px}
+@media(max-width:768px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+ #roadster-controls{--roadster-status-top:calc(143px + env(safe-area-inset-top))}
+ .roadster-status{height:107px;grid-template-rows:12px 14px 14px 46px;padding:6px;font-size:11px}.roadster-status strong{line-height:12px}.roadster-status small{display:none}#roadster-warning,#roadster-telemetry{line-height:14px}
+ .roadster-utility button{font-size:10px!important}#roadster-controls kbd{display:none}
+ /* The optional perception thumbnail otherwise occupies the same narrow band.
+    Its sensing/assistance remains active; navigation and driving controls stay. */
+ body.roadster-controls-active #sensor-panel{visibility:hidden;pointer-events:none}
+ body.roadster-air-active #roadster-controls{--roadster-status-top:calc(66px + env(safe-area-inset-top))}
+}
+@media(max-width:600px){.roadster-flight-left{grid-template-columns:48px 48px}.roadster-flight-right{grid-template-columns:66px}.roadster-attitude{grid-template-columns:48px 48px;left:calc(50% + 18px)}}
+@media(orientation:landscape) and (max-height:500px){
+ #roadster-controls{--roadster-status-top:calc(65px + env(safe-area-inset-top));--roadster-status-width:min(310px,calc(100% - 328px))}
+ .roadster-status{height:90px;grid-template-rows:14px 14px 44px;padding:6px}.roadster-status strong,.roadster-status small{display:none}
+ .roadster-flight-left,.roadster-flight-right,.roadster-attitude{bottom:calc(14px + env(safe-area-inset-bottom))}#roadster-controls kbd{display:none}#roadster-controls button{min-height:44px}
+ body.roadster-air-active #roadster-controls{--roadster-status-top:max(9px,env(safe-area-inset-top));--roadster-status-width:310px}
+}
+
+/* Touch ground controls live below the road view. Details are opt-in; the
+   permanent bar contains actions only, rather than a tall telemetry card. */
+#roadster-details-toggle{display:none}
+@media(max-width:768px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+ #roadster-details-toggle{display:block}
+ #roadster-controls:not(.roadster-in-air) .roadster-status{top:auto;bottom:calc(146px + env(safe-area-inset-bottom));height:auto;min-height:56px;display:flex;flex-direction:column;padding:6px;gap:4px;background:#182330b8}
+ #roadster-controls:not(.roadster-in-air):not(.roadster-details-open) .roadster-status>strong,
+ #roadster-controls:not(.roadster-in-air):not(.roadster-details-open) .roadster-status>span,
+ #roadster-controls:not(.roadster-in-air) .roadster-status>small{display:none}
+ #roadster-controls .roadster-utility button{min-width:44px;min-height:44px}
+ #roadster-controls:not(.roadster-in-air) .roadster-utility{min-height:44px}
+}
+@media(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+ #roadster-controls:not(.roadster-in-air) .roadster-status{bottom:calc(8px + env(safe-area-inset-bottom));width:min(310px,calc(100% - 328px))}
+ #roadster-controls:not(.roadster-in-air) .roadster-utility{display:grid;grid-template-columns:repeat(3,minmax(44px,1fr));gap:4px}
+}
+
+@media(max-width:768px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){#roadster-controls.roadster-warning-active:not(.roadster-in-air) #roadster-warning{display:block}}
+
+
+
+/* Large touch tablets can use desktop breakpoints too. Across every viewport,
+   the default Roadster overlay is a side tab, never a forward-view card. */
+#roadster-controls #roadster-details-toggle{display:block;min-width:44px;min-height:44px}
+#roadster-controls:not(.roadster-details-open) .roadster-status{left:max(12px,env(safe-area-inset-left));top:45%;bottom:auto;transform:translateY(-50%);width:56px;height:56px;min-height:56px;display:flex;flex-direction:column;padding:6px;gap:0;background:#182330b8}
+#roadster-controls:not(.roadster-details-open) .roadster-status>strong,
+#roadster-controls:not(.roadster-details-open) .roadster-status>span,
+#roadster-controls:not(.roadster-details-open) .roadster-status>small,
+#roadster-controls:not(.roadster-details-open) .roadster-ground,
+#roadster-controls:not(.roadster-details-open) .roadster-utility>button:not(#roadster-details-toggle){display:none!important}
+#roadster-controls:not(.roadster-details-open) .roadster-utility{display:flex;min-height:44px;gap:0}
+#roadster-controls.roadster-warning-active #roadster-details-toggle{border-color:#f5d7a1;color:#f5d7a1}
+#roadster-controls.roadster-details-open .roadster-status{left:max(12px,env(safe-area-inset-left));transform:none}
+
+
+@media(max-width:1024px) and (orientation:landscape) and (max-height:500px){#roadster-controls.roadster-details-open:not(.roadster-in-air) .roadster-status{bottom:calc(132px + env(safe-area-inset-bottom));max-height:calc(100dvh - 150px);overflow:auto;pointer-events:auto}}
+
+/* Opt-in actions share the existing side panel, never the centre view.
+   Closed remains exactly the r6 56px tab. No controls cover the driving pads. */
+#roadster-controls:not(.roadster-details-open) .roadster-maneuvers{display:none!important}
+#roadster-controls.roadster-details-open .roadster-status{height:auto;grid-template-rows:none;max-height:calc(100dvh - 260px);overflow-y:auto;pointer-events:auto}
+.roadster-maneuvers{display:grid;grid-template-columns:repeat(3,minmax(44px,1fr));gap:4px;margin-top:4px}
+#roadster-maneuver-status{grid-column:1/-1;white-space:normal;line-height:1.4;text-align:left;font-size:11px;min-height:16px;color:inherit}
+@media(orientation:landscape) and (max-height:500px){#roadster-controls.roadster-details-open .roadster-status{max-height:calc(100dvh - 156px)}}
+/* Short-screen flight pads keep their full hit area even with details open. */
+@media(orientation:landscape) and (max-height:500px){#roadster-controls.roadster-details-open.roadster-in-air .roadster-status{max-height:calc(100dvh - max(9px,env(safe-area-inset-top)) - 176px - env(safe-area-inset-bottom))}}

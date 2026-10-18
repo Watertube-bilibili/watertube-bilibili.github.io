@@ -1,0 +1,390 @@
+/* The phone layout uses CSS pixels, never the 1320 × 2868 hardware pixel grid.
+   iPhone 16 Pro Max reference: 440 × 956 at DPR 3. Safari chrome varies the height. */
+:root{--mobile-safe-top:env(safe-area-inset-top,0px);--mobile-safe-right:env(safe-area-inset-right,0px);--mobile-safe-bottom:env(safe-area-inset-bottom,0px);--mobile-safe-left:env(safe-area-inset-left,0px);--mobile-vh:100dvh;--mobile-vtop:0px}
+#mobile-ui{display:none}
+.touch-steering{display:none}
+body.mobile-driving .joystick{display:none!important}
+body.mobile-walking #touch-gentle,body.mobile-walking #touch-handbrake{display:none!important}
+@media(max-width:768px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+  html,body{width:100%;height:100%;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+  #mobile-ui{display:contents}
+  .topbar{left:0;right:0;width:auto;top:var(--mobile-safe-top);height:62px;padding:10px max(14px,var(--mobile-safe-right)) 10px max(14px,var(--mobile-safe-left));gap:0;z-index:18}
+  .wordmark{font-size:24px;letter-spacing:.2px;gap:2px}
+  .wordmark small,.topbar .top-right,.topbar .session-tag,.right-tools,.mission-card,.location .character-chip,.bottom-center{display:none!important}
+  .mobile-quick-actions{position:fixed;top:calc(var(--mobile-safe-top) + 10px);right:max(14px,var(--mobile-safe-right));display:flex;gap:7px;z-index:22}
+  .mobile-quick-actions button,.mobile-drawer-header>button{display:grid;place-items:center;width:44px;height:44px;padding:10px;border:1px solid #deecdc30;border-radius:13px;background:#11232caa;color:#f2f6ec;backdrop-filter:blur(12px);touch-action:manipulation}
+  .mobile-quick-actions svg{width:19px;height:19px}
+  .mobile-quick-actions #mobile-menu{color:var(--lime);border-color:#c4f58055}
+  .mobile-quick-actions #mobile-menu[aria-expanded="true"]{background:#c4f580;color:#233629}
+  .location,body.cockpit-open .location{visibility:visible;left:max(16px,var(--mobile-safe-left));top:calc(var(--mobile-safe-top) + 69px);max-width:calc(100vw - 130px);gap:9px;pointer-events:none}
+  .location-line{height:28px;width:2px;margin-top:1px;background:#c4f580a3}
+  .location small{display:none}
+  .location h1{font-size:14px;letter-spacing:1px;font-weight:500;line-height:1.2;margin:0 0 7px}
+  .location p{font-size:8px;letter-spacing:.2px;color:#e0e8dd;opacity:.8;white-space:nowrap}
+  .location p svg{width:10px}
+  .wanted{top:calc(var(--mobile-safe-top) + 72px);right:max(16px,var(--mobile-safe-right));font-size:15px;letter-spacing:3px}
+  .bottom-hud,body[data-input-mode="touch"] .bottom-hud{left:max(16px,var(--mobile-safe-left));right:max(16px,var(--mobile-safe-right));bottom:calc(var(--mobile-safe-bottom) + 177px);gap:16px;align-items:flex-end;z-index:10}
+  body[data-input-mode="keyboard"] .bottom-hud{bottom:calc(var(--mobile-safe-bottom) + 20px)}
+  .map-panel{width:126px;max-width:34vw;filter:drop-shadow(0 4px 12px #0002)}
+  .map-heading{padding:0;border:0;background:transparent;height:0;position:relative;z-index:1}
+  .map-heading>span{display:none}
+  .map-heading>button{position:absolute;right:0;top:0;z-index:2;width:44px;height:44px;display:grid;place-items:center;background:linear-gradient(225deg,#10252ccc,transparent);border-radius:0 13px 0 0}
+  .map-heading button svg{width:15px;height:15px;color:#e1eadb}
+  .mini-map-wrap,body[data-input-mode="touch"] .mini-map-wrap{height:91px;border-color:#d7e6d438;border-radius:13px;background:#23343acf}
+  .map-north{left:9px;right:auto;top:8px;font-size:8px}
+  .map-expand{display:none}
+  .vitals{padding:7px 2px 0;gap:4px}
+  .vital-icon svg{width:9px;height:9px}
+  .vital-bar{height:3px;margin-right:2px;border-radius:3px;overflow:hidden}
+  .map-footer{display:none}
+  .drive-hud{width:144px;max-width:39vw;padding:0}
+  .car-label{display:none}
+  .speed{gap:8px;margin:0;justify-content:flex-end;align-items:baseline}
+  .speed strong{font-size:58px;font-weight:500;line-height:.98;letter-spacing:0;text-shadow:0 2px 20px #0e202a88}
+  .gear{display:grid;width:19px;height:22px;margin:0;font-size:10px;align-self:center}
+  .speed-unit{font-size:8px;letter-spacing:.8px;padding:0;line-height:1.5}
+  .speed-unit small{font-size:7px;letter-spacing:0;margin-top:3px;max-width:38px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .charge-row{margin:8px 0 10px;gap:6px;justify-content:flex-end;font-size:9px}
+  .charge-row svg{width:14px;height:12px}
+  .battery-bar{width:31px;height:3px}
+  .charge-row .range{display:none}
+  .autopilot-button{min-height:44px;padding:8px 9px;gap:7px;border-radius:12px;background:#15262db8;border-color:#dcebd32e}
+  .autopilot-button svg{width:18px}
+  .autopilot-button strong{font-size:10px;letter-spacing:0}
+  .autopilot-button small{font-size:7px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:4px}
+  .autopilot-button .toggle-track{width:23px;height:13px;padding:2px;margin-left:auto;flex-shrink:0}
+  .toggle-track i{width:7px;height:7px}
+  .active .toggle-track i{transform:translateX(9px)}
+  body[data-input-mode="touch"] .mobile-controls{left:max(20px,var(--mobile-safe-left));right:max(18px,var(--mobile-safe-right));bottom:calc(var(--mobile-safe-bottom) + 16px);align-items:flex-end;z-index:15}
+  body[data-input-mode="touch"] .joystick{width:112px;height:112px;margin-bottom:13px}
+  body[data-input-mode="touch"] .joystick-ring{border:1px solid #e6f5e63e;background:#12232c57;backdrop-filter:blur(3px)}
+  body[data-input-mode="touch"] .joystick-thumb{width:42px;height:42px;left:35px;top:35px;background:#c4f58035;border-color:#d2f7a66e}
+  body[data-input-mode="touch"] .touch-actions{display:grid;grid-template-columns:56px 70px;grid-template-rows:70px 44px;gap:10px;max-width:136px;align-items:center;justify-items:center}
+  body[data-input-mode="touch"] .touch-actions>button{width:48px;height:44px;border-radius:13px;padding:3px;font-size:10px;line-height:1.2;white-space:nowrap;border-color:#d9e9db38;background:#162830a8}
+  body[data-input-mode="touch"] .touch-actions #touch-go{grid-column:2;grid-row:1;width:70px;height:70px;border-radius:23px;font-size:14px;background:#c4f5802b;border-color:#c4f58085}
+  body[data-input-mode="touch"] .touch-actions #touch-brake{grid-column:1;grid-row:1;width:56px;height:58px;border-radius:18px;font-size:12px;background:#162830b8}
+  body[data-input-mode="touch"] .touch-actions #touch-enter{grid-column:1;grid-row:2;width:56px;height:44px;font-size:9px}
+  body[data-input-mode="touch"] #touch-jump{grid-column:1;grid-row:1;width:56px;height:58px;border-radius:18px;font-size:11px}
+  body[data-input-mode="touch"] #touch-fire{grid-column:2;grid-row:2;width:62px;height:44px;font-size:11px;color:#ffc3a4;border-color:#e8aa8266}
+  .interaction,body[data-input-mode="keyboard"] .interaction{bottom:calc(var(--mobile-safe-bottom) + 320px);max-width:calc(100vw - 36px);padding:9px 12px;border-radius:10px;font-size:10px;line-height:1.6;white-space:normal;text-align:center}
+  .interaction .keycap{display:none}
+  body[data-input-mode="keyboard"] .interaction{bottom:calc(var(--mobile-safe-bottom) + 180px)}
+  #toast-container{top:calc(var(--mobile-safe-top) + 170px);width:calc(100vw - 40px);gap:5px;z-index:60;max-height:170px;overflow:hidden}
+  .toast{font-size:10px;line-height:1.65;padding:9px 12px;border-radius:11px;max-width:100%;text-align:center}
+  .sensor-panel,body[data-input-mode="touch"] .sensor-panel,body.cockpit-open .sensor-panel{top:calc(var(--mobile-safe-top) + 172px);right:max(14px,var(--mobile-safe-right));width:140px;border-radius:12px;z-index:17}
+  .sensor-header{height:33px;padding:5px 8px;font-size:7px}
+  .sensor-header button{width:32px;height:32px;font-size:18px}
+  .sensor-panel canvas,body.cockpit-open .sensor-panel canvas{display:block;width:100%;height:78px}
+  .sensor-meta,body.cockpit-open .sensor-panel .sensor-meta{display:flex;padding:6px 7px;font-size:7px}
+  .sensor-meter{display:none}
+  .mobile-drawer-backdrop{position:fixed;inset:0;z-index:40;background:#07101766;backdrop-filter:blur(4px);touch-action:none}
+  .mobile-drawer{position:fixed;z-index:41;left:max(10px,var(--mobile-safe-left));right:max(10px,var(--mobile-safe-right));bottom:calc(var(--mobile-safe-bottom) + 10px);max-height:calc(var(--mobile-vh) - var(--mobile-safe-top) - var(--mobile-safe-bottom) - 32px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:21px 18px 16px;border:1px solid #a6c5b33d;border-radius:25px;background:linear-gradient(150deg,#1c3039f5,#0e1d26fa);box-shadow:0 20px 80px #0007;touch-action:pan-y}
+  .mobile-drawer-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .mobile-drawer-header>div>span{font-size:8px;letter-spacing:2.6px;color:#b7d993}
+  .mobile-drawer-header h2{font-size:20px;font-weight:500;letter-spacing:1px;margin:7px 0 0}
+  .mobile-drawer-header>button{width:44px;height:44px;border-radius:50%;background:#ffffff06}
+  .mobile-drawer-header>button svg{width:18px;height:18px}
+  .mobile-drawer-status{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:17px 0 15px;margin-bottom:9px;border-bottom:1px solid #c6ddc71a;font-size:10px;color:#9db7b5}
+  #mobile-balance{font-size:17px;letter-spacing:.4px;color:#e8f3d5;font-variant-numeric:tabular-nums}
+  #mobile-clock{font-size:9px;text-align:right}
+  .mobile-drawer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px 5px}
+  .mobile-drawer-grid>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:76px;padding:8px 2px;border-radius:15px;background:transparent;font-size:10px;line-height:1.2;color:#d9e5dc;touch-action:manipulation}
+  .mobile-action-icon{display:grid;place-items:center;width:44px;height:44px;border:1px solid #afc2b627;border-radius:14px;background:#d2edd908;color:#c6ddd0}
+  .mobile-action-icon svg{width:20px;height:20px}
+  .mobile-drawer-grid>button[aria-pressed="true"] .mobile-action-icon{color:#c4f580;border-color:#c4f58070;background:#c4f58013}
+  .mobile-drawer-grid>button:hover{background:#ffffff06;filter:none}
+  .mobile-drawer-footer{display:flex;justify-content:space-between;gap:12px;border-top:1px solid #c6ddc71a;margin-top:14px;padding-top:13px;font-size:8px;color:#849c99;line-height:1.6}
+  #mobile-vehicle-status{max-width:65%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #mobile-save-status{text-align:right}
+  body.mobile-drawer-open .mobile-controls,body.mobile-drawer-open .bottom-hud,body.mobile-drawer-open .mobile-route,body.mobile-drawer-open .mobile-quick-actions{visibility:hidden;pointer-events:none}
+  body.mobile-panel-open .mobile-controls,body.mobile-panel-open .bottom-hud,body.mobile-panel-open .mobile-quick-actions,body.mobile-panel-open .mobile-route{visibility:hidden;pointer-events:none}
+  .phone{top:calc(var(--mobile-vtop) + var(--mobile-safe-top) + 14px);bottom:auto;left:max(14px,var(--mobile-safe-left));right:max(14px,var(--mobile-safe-right));transform:none;z-index:50;filter:drop-shadow(0 20px 45px #06101899)}
+  .phone-shell{width:100%;max-width:410px;margin:0 auto;height:calc(var(--mobile-vh) - var(--mobile-safe-top) - var(--mobile-safe-bottom) - 28px);max-height:760px;border-width:3px;border-radius:28px;outline-color:#87999166}
+  .phone-status{height:39px;flex-shrink:0;padding:0 21px;font-size:10px}
+  .phone-top{min-height:55px;padding:0 12px 8px;flex-shrink:0}
+  .phone-top>button{width:44px;height:44px;display:grid;place-items:center}
+  .phone-content{padding:0 20px 22px;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+  .phone-content input,.phone-content select{font-size:16px}
+  .phone-app{min-height:80px;touch-action:manipulation}
+  .phone-row,.phone-action,.secondary-action{min-height:46px;touch-action:manipulation}
+  .phone-home{position:relative;left:auto;bottom:auto;transform:none;height:24px;min-height:24px;padding:9px 0;margin:0 auto 2px;flex-shrink:0;background:linear-gradient(#b8c8c5,#b8c8c5) center/72px 4px no-repeat}
+  dialog{width:calc(100vw - max(12px,var(--mobile-safe-left)) - max(12px,var(--mobile-safe-right)));max-height:calc(var(--mobile-vh) - var(--mobile-safe-top) - var(--mobile-safe-bottom) - 24px);padding:20px 17px;border-radius:21px;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+  .modal-top{gap:12px}
+  #modal-close{width:44px;height:44px;flex-shrink:0;border-radius:12px}
+  .modal-top h2{font-size:21px}
+  dialog select,dialog input{font-size:16px}
+  .world-map-toolbar{gap:4px;flex-wrap:wrap}
+  .world-map-toolbar button{height:42px;min-width:42px;padding:0 9px}
+  .world-map-toolbar span{font-size:9px}
+  .setting-row{gap:10px}
+  .load-brand{font-size:48px;letter-spacing:2px}
+}
+@media(max-width:380px){
+  .wordmark{font-size:21px}
+  .mobile-quick-actions{gap:5px;right:11px}
+  .mobile-quick-actions button{width:44px;height:44px;padding:10px}
+  .map-panel{width:113px}
+  .drive-hud{width:133px}
+  .speed strong{font-size:52px}
+  body[data-input-mode="touch"] .joystick{width:102px;height:102px}
+  body[data-input-mode="touch"] .joystick-thumb{width:40px;height:40px;left:31px;top:31px}
+  .mobile-drawer{padding:18px 13px 13px}
+  .mobile-drawer-grid{gap:7px 2px}
+}
+@media(max-width:768px) and (max-height:740px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+  .location,body.cockpit-open .location{top:calc(var(--mobile-safe-top) + 63px)}
+  .location p{display:none}
+  .location-line{height:17px}
+  .bottom-hud,body[data-input-mode="touch"] .bottom-hud{bottom:calc(var(--mobile-safe-bottom) + 153px)}
+  .mini-map-wrap,body[data-input-mode="touch"] .mini-map-wrap{height:76px}
+  .speed strong{font-size:48px}
+  .charge-row{margin:5px 0 7px}
+  body[data-input-mode="touch"] .mobile-controls{bottom:calc(var(--mobile-safe-bottom) + 12px)}
+  body[data-input-mode="touch"] .joystick{width:100px;height:100px}
+  body[data-input-mode="touch"] .joystick-thumb{width:38px;height:38px;left:31px;top:31px}
+  body[data-input-mode="touch"] .touch-actions{grid-template-rows:62px 44px;gap:8px}
+  body[data-input-mode="touch"] .touch-actions #touch-go{width:62px;height:62px;border-radius:20px}
+  .interaction{bottom:calc(var(--mobile-safe-bottom) + 290px)}
+  #toast-container{top:calc(var(--mobile-safe-top) + 146px)}
+  .sensor-panel,body[data-input-mode="touch"] .sensor-panel,body.cockpit-open .sensor-panel{top:calc(var(--mobile-safe-top) + 144px)}
+  .mobile-drawer-grid>button{min-height:68px;gap:6px}
+}
+/* Narrow landscape stays playable without moving desktop controls into mobile UI. */
+@media(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+  .location,body.cockpit-open .location{top:calc(var(--mobile-safe-top) + 60px)}
+  .bottom-hud,body[data-input-mode="touch"] .bottom-hud{bottom:calc(var(--mobile-safe-bottom) + 132px);left:max(20px,var(--mobile-safe-left));right:max(20px,var(--mobile-safe-right))}
+  .map-panel{width:108px}.mini-map-wrap,body[data-input-mode="touch"] .mini-map-wrap{height:65px}
+  .drive-hud{width:134px}.charge-row{display:none}.speed strong{font-size:43px}.autopilot-button{margin-top:7px;min-height:40px}
+  body[data-input-mode="touch"] .mobile-controls{bottom:calc(var(--mobile-safe-bottom) + 8px)}
+  body[data-input-mode="touch"] .joystick{width:86px;height:86px;margin-bottom:6px}
+  body[data-input-mode="touch"] .joystick-thumb{left:26px;top:26px;width:34px;height:34px}
+  body[data-input-mode="touch"] .touch-actions{grid-template-columns:50px 62px;grid-template-rows:54px 44px;gap:7px}
+  body[data-input-mode="touch"] .touch-actions #touch-go{width:54px;height:54px;border-radius:18px}
+  body[data-input-mode="touch"] .touch-actions #touch-brake{width:50px;height:50px;border-radius:16px}
+  body[data-input-mode="touch"] .touch-actions #touch-enter,body[data-input-mode="touch"] .touch-actions #touch-fire{height:44px}
+  .interaction{bottom:calc(var(--mobile-safe-bottom) + 80px);max-width:45vw}
+  .mobile-drawer{left:50%;right:auto;transform:translateX(-50%);width:min(500px,calc(100vw - 32px));padding:14px 17px;max-height:calc(var(--mobile-vh) - 18px)}
+  .mobile-drawer-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+  .mobile-drawer-grid>button{min-height:62px;font-size:9px;gap:5px}
+  .mobile-drawer-header h2{font-size:17px;margin-top:4px}
+  .mobile-drawer-status{padding:10px 0;margin-bottom:4px}
+  .mobile-drawer-footer{margin-top:8px;padding-top:9px}
+  .mobile-action-icon{width:38px;height:38px;border-radius:11px}
+  .phone{left:50%;right:auto;transform:translateX(-50%);width:min(420px,calc(100vw - 32px));top:10px}
+  .phone-shell{height:calc(var(--mobile-vh) - 20px)}
+}
+@media(prefers-reduced-motion:reduce){.mobile-drawer,.mobile-route{animation:none;transition:none}}
+@media(max-width:768px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+  body.mobile-panel-open .vehicle-cockpit,body.mobile-panel-open .sensor-panel{visibility:hidden;pointer-events:none}
+  body.brake-failed #mobile-route{visibility:hidden}
+  #brake-warning{white-space:normal;text-align:center;line-height:1.5}
+  #brake-closeup header button{width:36px;height:36px}
+}
+
+/* Driving uses two compact, permanent thumb clusters. Walking keeps its joystick.
+   Both clusters have a 44 px utility row and a larger steering / pedal row, so
+   every brake is one press away without moving the existing map or speed HUD. */
+body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:62px;--drive-pedal-width:66px;--drive-main-height:68px;--drive-gap:10px;align-items:flex-end}
+body[data-input-mode="touch"].mobile-driving .touch-steering,
+body[data-input-mode="touch"].mobile-driving .touch-actions{display:grid;grid-template-rows:44px var(--drive-main-height);gap:var(--drive-gap);align-items:stretch;justify-items:stretch;flex:none;max-width:none}
+body[data-input-mode="touch"].mobile-driving .touch-steering{grid-template-columns:repeat(2,var(--drive-steer-width))}
+body[data-input-mode="touch"].mobile-driving .touch-actions{grid-template-columns:repeat(2,var(--drive-pedal-width));position:static}
+body[data-input-mode="touch"].mobile-driving .touch-steering button,
+body[data-input-mode="touch"].mobile-driving .touch-actions>button{display:grid;place-items:center;width:100%;height:100%;min-width:44px;min-height:44px;margin:0;padding:4px;border:1px solid #d9e9db38;border-radius:14px;background:#162830a8;backdrop-filter:blur(10px);color:#e5eee1;font-size:11px;line-height:1.2;white-space:nowrap;touch-action:none;-webkit-touch-callout:none}
+body[data-input-mode="touch"].mobile-driving .touch-steering #touch-left{grid-column:1;grid-row:2;border-radius:20px}
+body[data-input-mode="touch"].mobile-driving .touch-steering #touch-right{grid-column:2;grid-row:2;border-radius:20px}
+body[data-input-mode="touch"].mobile-driving .touch-steering svg{width:25px;height:25px;pointer-events:none}
+body[data-input-mode="touch"].mobile-driving .touch-steering #touch-handbrake{grid-column:2;grid-row:1;font-size:10px;color:#cbd9d3}
+body[data-input-mode="touch"].mobile-driving .touch-actions #touch-enter{position:absolute;top:0;left:0;width:var(--drive-steer-width);height:44px;font-size:9px;color:#cbd9d3}
+body[data-input-mode="touch"].mobile-driving .touch-actions #touch-gentle{grid-column:1;grid-row:1;border-color:#c4f58065;color:var(--lime);background:#b9e98a12}
+body[data-input-mode="touch"].mobile-driving .touch-actions #touch-reverse{grid-column:2;grid-row:1;border-color:#f7bc8c4d;color:#f3c3a0}
+body[data-input-mode="touch"].mobile-driving .touch-actions #touch-brake{grid-column:1;grid-row:2;width:100%;height:100%;border-radius:20px;font-size:12px;background:#162830b8}
+body[data-input-mode="touch"].mobile-driving .touch-actions #touch-go{grid-column:2;grid-row:2;width:100%;height:100%;border-radius:20px;font-size:14px;color:var(--lime);background:#c4f5802b;border-color:#c4f58085}
+body[data-input-mode="touch"].mobile-driving .mobile-controls button:active,
+body[data-input-mode="touch"].mobile-driving .mobile-controls button.is-pressed{transform:none;background:#c4f58044;border-color:#d7f7a9;color:#f4ffe3}
+body[data-input-mode="touch"].mobile-driving.brake-failed #touch-handbrake{border-color:#ffc28b;background:#8b522342;box-shadow:0 0 0 2px #ffc28b1c}
+@media(max-width:380px){
+  body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:56px;--drive-pedal-width:60px;--drive-main-height:62px;--drive-gap:8px}
+}
+@media(max-width:1024px) and (orientation:landscape) and (max-height:500px){
+  body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:58px;--drive-pedal-width:62px;--drive-main-height:54px;--drive-gap:8px}
+}
+
+.assist-speed-input{width:106px;max-width:45%;min-height:44px;background:#142830;border:1px solid #afc5b855;border-radius:9px;color:#eef5e8;padding:8px 10px;font-size:16px;text-align:right}
+#assist-warning{position:fixed;z-index:35;top:78px;left:50%;transform:translateX(-50%);max-width:calc(100vw - 32px);padding:9px 16px;border:1px solid #ffda8799;border-radius:12px;background:#342b14e8;color:#ffeab5;font-size:13px;pointer-events:none;white-space:nowrap}
+#assist-warning.aeb{background:#5e2424eb;color:#fff0e7;border-color:#ff9c80}
+@media(max-width:768px),(max-width:1024px) and (orientation:landscape) and (max-height:500px){#assist-warning{top:calc(var(--mobile-safe-top) + 172px);font-size:11px;padding:7px 12px}.vc-footer .vc-signal{display:none}.vc-footer button{min-height:44px}.vc-footer .vc-settings{margin-left:auto}}
+
+#release-badge{position:fixed;z-index:16;left:max(12px,env(safe-area-inset-left,0px));bottom:calc(env(safe-area-inset-bottom,0px) + 2px);padding:0 2px;height:13px;line-height:13px;border:0;background:none;color:#f2f5ec;font-size:9px;opacity:.5;cursor:pointer}#release-badge:hover,#release-badge:focus-visible{opacity:1}.release-entry{padding:10px 0 18px;border-bottom:1px solid #e1ecde22}.release-entry small{color:var(--lime);font-size:11px}.release-entry h3{font-size:17px;margin:10px 0}.release-entry ul{padding-left:19px;color:#c4d0c8;line-height:1.75;font-size:13px}
+
+.travel-select{display:block;width:100%;min-height:46px;padding:10px;margin:10px 0 18px;border:1px solid #abc2b850;border-radius:9px;background:#172d35;color:#edf3e7;font-size:16px}.phone-action:disabled{opacity:.4;cursor:default}#flight-veil{position:fixed;inset:0;z-index:44;background:#071117;pointer-events:none}#flight-status{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 42px);transform:translateX(-50%);z-index:45;color:#f1f6e9;background:#10222cdb;padding:12px 18px;border-radius:14px;font-size:13px;max-width:90vw;text-align:center;pointer-events:none}
+
+body.flight-active .mobile-controls,body.flight-active .vehicle-cockpit,body.flight-active .sensor-panel{visibility:hidden;pointer-events:none}body.mobile-passenger #touch-left,body.mobile-passenger #touch-right,body.mobile-passenger #touch-reverse,body.mobile-passenger #touch-go,body.mobile-passenger #touch-brake,body.mobile-passenger #touch-gentle,body.mobile-passenger #touch-handbrake,body.mobile-passenger #joystick{visibility:hidden;pointer-events:none}
+
+body.flight-active #assist-warning,body.flight-active .bottom-hud,body.flight-active .mobile-quick-actions,body.flight-active .mobile-route{visibility:hidden;pointer-events:none}
+
+body[data-input-mode="touch"].mobile-driving .touch-actions #touch-reverse{font-weight:600;border-color:#91bdc96b;background:#163344ba;color:#cbe4ed;letter-spacing:.3px}body[data-input-mode="touch"].mobile-driving .touch-steering #touch-handbrake{font-size:10px;color:#f3c3a0;border-color:#f7bc8c4d}
+
+.assist-toggle{min-width:92px;min-height:44px;padding:9px 15px;border:1px solid #c4f58070;border-radius:22px;background:#c4f58024;color:#dbf6be;font-size:16px;touch-action:manipulation}.assist-toggle[aria-checked="false"]{background:#384149;border-color:#929b9d;color:#d1d7da}#assist-follow-gap{min-height:44px;max-width:52%;font-size:16px}#assist-warning.assist-off,.vc-warning.assist-off{background:#22313be8;border-color:#97aeb950;color:#c1ccd2;font-size:11px}
+
+#assist-aeb-sensitivity{min-height:44px;max-width:52%;font-size:16px}
+
+/* Hide only the duplicate screen HUD; physical car instruments and the car
+   computer's vc-speed remain intact. Chase/top-down/walking restore it. */
+body.interior-driving-view.cockpit-speed-readable .drive-hud .speed{display:none!important}
+
+/* 2.0 touch cockpit: opaque physical controls, fixed left/right ownership.
+   This opt-in class also covers coarse-pointer tablets above phone breakpoints.
+   Desktop/keyboard layout and the vehicle's in-world dashboard are untouched. */
+#mobile-tools-toggle,#mobile-driving-tools{display:none}
+.mobile-quick-actions button>span{display:none}
+body.mobile-controls-v2{
+ --drive-edge:12px;--drive-bottom:16px;--drive-steer-width:62px;--drive-pedal-width:66px;
+ --drive-main-height:84px;--drive-utility-height:44px;--drive-gap:8px;
+ --drive-controls-height:calc(var(--drive-main-height) + var(--drive-utility-height) + var(--drive-gap));
+ --drive-panel-width:min(230px,calc(100vw - var(--mobile-safe-left) - var(--mobile-safe-right) - 28px));
+ --drive-panel:#14212b;--drive-button:#223441;--drive-border:#697f8b;
+}
+body.mobile-controls-v2 #mobile-ui{display:contents}
+body.mobile-controls-v2 :is(.mobile-controls button,.mobile-quick-actions button,#mobile-driving-tools button,#mobile-tools-toggle,.mobile-drawer,.mobile-drawer-backdrop,.mobile-action-icon,.mobile-route,.sensor-panel,.joystick-ring,dialog,dialog::backdrop){backdrop-filter:none;-webkit-backdrop-filter:none}
+body.mobile-controls-v2 .topbar{left:0;right:0;top:var(--mobile-safe-top);height:50px;padding:10px max(var(--drive-edge),var(--mobile-safe-right)) 10px max(var(--drive-edge),var(--mobile-safe-left));pointer-events:none}
+body.mobile-controls-v2 .wordmark{font-size:22px}
+body.mobile-controls-v2 :is(.wordmark small,.topbar .top-right,.topbar .session-tag,.right-tools,.mission-card,.bottom-center,.location .character-chip){display:none!important}
+body.mobile-controls-v2 .location,body.mobile-controls-v2.cockpit-open .location{left:max(var(--drive-edge),var(--mobile-safe-left));top:calc(var(--mobile-safe-top) + 56px);max-width:40vw;pointer-events:none;visibility:visible}
+body.mobile-controls-v2 .location h1{font-size:12px;letter-spacing:.5px}
+body.mobile-controls-v2 .location small,body.mobile-controls-v2 .location p{display:none}
+body.mobile-controls-v2 .location-line{height:22px}
+body.mobile-controls-v2 .wanted{right:max(var(--drive-edge),var(--mobile-safe-right));top:calc(var(--mobile-safe-top) + 12px);font-size:16px}
+body.mobile-controls-v2[data-input-mode="touch"] .mobile-controls{left:max(var(--drive-edge),var(--mobile-safe-left));right:max(var(--drive-edge),var(--mobile-safe-right));bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom));display:flex;align-items:flex-end;z-index:20;pointer-events:none}
+body.mobile-controls-v2[data-input-mode="touch"] .mobile-controls>*{pointer-events:auto}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-steering{display:grid;grid-template-columns:repeat(2,var(--drive-steer-width));grid-template-rows:var(--drive-main-height);gap:var(--drive-gap)}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-actions{display:grid;grid-template-columns:repeat(2,var(--drive-pedal-width));grid-template-rows:var(--drive-utility-height) var(--drive-main-height);gap:var(--drive-gap);max-width:none;position:static;align-items:stretch}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .mobile-controls button{min-width:44px;min-height:44px;width:100%;height:100%;margin:0;padding:7px;border:1px solid var(--drive-border);border-radius:12px;background:var(--drive-button);box-shadow:inset 0 -4px 0 #0b1720;color:#edf4f7;font-size:11px;line-height:1.25;touch-action:none;transform:none}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-steering #touch-left{grid-column:1;grid-row:1;border-radius:12px}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-steering #touch-right{grid-column:2;grid-row:1;border-radius:12px}
+body.mobile-controls-v2 .touch-steering svg{width:30px;height:30px;pointer-events:none}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-actions #touch-handbrake{grid-column:1;grid-row:1;display:flex;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#ffd3a1;border-color:#b18a61;background:#302a25}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-actions #touch-brake{grid-column:1;grid-row:2;background:#283741;border-color:#8b9ba5;border-radius:12px;font-size:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-actions #touch-go{grid-column:2;grid-row:1/3;background:#30432a;border-color:#b8d683;border-radius:12px;color:#d7f7ad;font-size:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px}
+/* Distinct wide brake pedal and long accelerator pedal. Visible labels remain
+   alongside the symbols; accessible production button labels remain intact. */
+body.mobile-controls-v2.mobile-driving #touch-brake::before{content:"";width:37px;height:25px;border:2px solid currentColor;border-radius:4px;background:repeating-linear-gradient(90deg,transparent 0 6px,currentColor 6px 8px,transparent 8px 12px);transform:skewY(-7deg)}
+body.mobile-controls-v2.mobile-driving #touch-brake::after{content:"刹车";font-size:12px;font-weight:600}
+body.mobile-controls-v2.mobile-driving #touch-go::before{content:"";width:25px;height:55px;border:2px solid currentColor;border-radius:5px;background:repeating-linear-gradient(0deg,transparent 0 8px,currentColor 8px 10px,transparent 10px 14px);transform:skewY(-7deg)}
+body.mobile-controls-v2.mobile-driving #touch-go::after{content:"油门";font-size:12px;font-weight:600}
+body.mobile-controls-v2.mobile-driving #touch-handbrake::before{content:"⒫";font-size:21px;line-height:1}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .mobile-controls button:is(:active,.is-pressed){background:#56723b;border-color:#e3ffbd;color:#fff;box-shadow:inset 0 3px 0 #172510;transform:none}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving.brake-failed #touch-handbrake{background:#543820;border-color:#ffd199;box-shadow:inset 0 -4px 0 #28170b}
+body.mobile-controls-v2[data-input-mode="touch"] .bottom-hud{left:max(var(--drive-edge),var(--mobile-safe-left));right:max(var(--drive-edge),var(--mobile-safe-right));bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-controls-height) + 12px);gap:0;z-index:12;pointer-events:none;justify-content:flex-end}
+body.mobile-controls-v2 .map-panel,body.mobile-controls-v2 #autopilot-btn{display:none!important}
+body.mobile-controls-v2 .drive-hud{width:calc(2 * var(--drive-pedal-width) + var(--drive-gap));max-width:none;padding:0}
+body.mobile-controls-v2 .car-label{font-size:9px;letter-spacing:.3px}
+body.mobile-controls-v2 .car-trim{display:none}
+body.mobile-controls-v2 .speed{gap:5px}
+body.mobile-controls-v2 .speed strong{font-size:44px}
+body.mobile-controls-v2 .speed-unit{font-size:8px;padding-top:8px}
+body.mobile-controls-v2 .speed-unit small{font-size:7px;margin-top:4px}
+body.mobile-controls-v2 .gear{font-size:9px;margin-top:7px}
+body.mobile-controls-v2 .charge-row{font-size:8px;margin:4px 0 0}
+body.mobile-controls-v2 #mobile-tools-toggle{display:flex;align-items:center;justify-content:center;gap:7px;position:fixed;z-index:24;left:max(var(--drive-edge),var(--mobile-safe-left));bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-main-height) + var(--drive-gap));width:calc(2 * var(--drive-steer-width) + var(--drive-gap));min-height:44px;padding:7px 12px;border:1px solid var(--drive-border);border-radius:10px;background:var(--drive-panel);color:#e6eff3;font-size:12px;touch-action:manipulation}
+body.mobile-controls-v2 #mobile-tools-toggle>span:first-child{font-size:22px;line-height:1}
+body.mobile-controls-v2 #mobile-tools-toggle[aria-expanded="true"]{border-color:#c4f580;color:#c4f580}
+body.mobile-controls-v2 #mobile-driving-tools{display:block;position:fixed;z-index:25;left:max(var(--drive-edge),var(--mobile-safe-left));right:auto;bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-controls-height) + 8px);width:var(--drive-panel-width);max-height:calc(var(--mobile-vh) - var(--mobile-safe-top) - var(--mobile-safe-bottom) - var(--drive-controls-height) - var(--drive-bottom) - 24px);overflow:auto;overscroll-behavior:contain;touch-action:pan-y;padding:10px;box-sizing:border-box;border:1px solid var(--drive-border);border-radius:12px;background:var(--drive-panel);box-shadow:none}
+body.mobile-controls-v2 #mobile-driving-tools header{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11px;color:#a7b9c3;margin:0 0 8px}
+body.mobile-controls-v2 #mobile-driving-tools header button{display:grid;place-items:center;width:44px;min-height:44px;padding:10px;border-radius:8px}
+body.mobile-controls-v2 #mobile-driving-tools header svg{width:18px;height:18px}
+body.mobile-controls-v2 #mobile-driving-tools button{min-width:44px;min-height:44px;border:1px solid #4d6573;border-radius:8px;background:var(--drive-button);color:#e8f1f5;font-size:11px;line-height:1.25;touch-action:manipulation}
+body.mobile-controls-v2 #mobile-secondary-driving{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px}
+body.mobile-controls-v2 #mobile-secondary-driving #touch-enter{grid-column:1/-1;position:static;width:100%;min-height:44px;font-size:11px}
+body.mobile-controls-v2 #mobile-secondary-driving :is(#touch-reverse,#touch-gentle){position:static;width:100%;min-height:48px;touch-action:none}
+body.mobile-controls-v2 #mobile-secondary-driving .is-pressed{background:#f08a68;border-color:#f08a68;color:#142b38}
+body.mobile-controls-v2 #mobile-vehicle-tools{width:100%;margin-bottom:8px;padding:10px;text-align:left}
+body.mobile-controls-v2 #mobile-tools-toggle.has-vehicle-warning::after{content:"!";display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#e3ac65;color:#1f252a;font-size:12px;font-weight:700}
+body.mobile-controls-v2 #mobile-pilot{width:100%;display:flex;align-items:center;justify-content:space-between;padding:8px;margin-bottom:8px;text-align:left;gap:7px}
+body.mobile-controls-v2 #mobile-pilot small{font-size:9px;max-width:58%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#a8bfcb}
+body.mobile-controls-v2 #mobile-driving-tools button[aria-pressed="true"]{background:#3c4e2d;border-color:#c4f580;color:#d8f5b7}
+body.mobile-controls-v2 #mobile-driving-tools button:disabled{opacity:.4}
+body.mobile-controls-v2 #mobile-signals{display:grid;grid-template-columns:repeat(3,minmax(44px,1fr));gap:5px;margin-bottom:8px}
+body.mobile-controls-v2 #mobile-signals button{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;font-size:10px;padding:6px 3px}
+body.mobile-controls-v2 #mobile-signals button>span{font-size:16px;color:#ffc675}
+body.mobile-controls-v2 .mobile-quick-actions{position:static;display:grid;grid-template-columns:repeat(3,minmax(44px,1fr));gap:5px}
+body.mobile-controls-v2 .mobile-quick-actions button{width:100%;height:auto;min-height:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:6px 3px;background:var(--drive-button);border-color:#4d6573;border-radius:8px}
+body.mobile-controls-v2 .mobile-quick-actions button>span{display:block;font-size:10px}
+body.mobile-controls-v2 .mobile-quick-actions svg{width:18px;height:18px}
+body.mobile-controls-v2.mobile-walking #mobile-tools-toggle{bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + 128px)}
+body.mobile-controls-v2.mobile-walking #mobile-driving-tools{bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + 180px)}
+body.mobile-controls-v2.mobile-walking .joystick-ring{background:#1d313e;border-color:#7b8f9b}
+body.mobile-controls-v2.mobile-walking .joystick-thumb{background:#769956;border-color:#d0e8ac}
+body.mobile-controls-v2.mobile-walking .touch-actions button{background:var(--drive-button);border-color:var(--drive-border);border-radius:12px}
+/* Navigation is a compact left-side status strip. Expanded actions and maps
+   are explicit, so the normal forward view carries no central menu card. */
+body.mobile-controls-v2 .mobile-route,body.mobile-controls-v2 .mobile-route:active{left:max(var(--drive-edge),var(--mobile-safe-left));right:auto;top:calc(var(--mobile-safe-top) + 52px);width:min(224px,calc(100vw - 2 * var(--drive-edge) - var(--mobile-safe-left) - var(--mobile-safe-right)));min-height:44px;padding:7px 9px;gap:7px;transform:none;background:var(--drive-panel);border:1px solid #597382;border-radius:9px;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+body.mobile-controls-v2 .mobile-route .navigation-hud-icon{flex-basis:26px;height:28px;padding:0;border:0;background:none}
+body.mobile-controls-v2 .mobile-route .navigation-hud-icon svg{width:23px;height:23px}
+body.mobile-controls-v2 .mobile-route strong{font-size:11px}
+body.mobile-controls-v2 .mobile-route small,body.mobile-controls-v2 .mobile-route .mobile-route-arrow{display:none}
+body.mobile-controls-v2 .mobile-route .navigation-hud-distance{font-size:14px}
+body.mobile-controls-v2.navigation-active .location{visibility:hidden}
+body.mobile-controls-v2 .sensor-panel,body.mobile-controls-v2.cockpit-open .sensor-panel{left:max(var(--drive-edge),var(--mobile-safe-left));right:auto;top:calc(var(--mobile-safe-top) + 108px);width:140px;background:var(--drive-panel);border-radius:9px}
+body.mobile-controls-v2 .sensor-header{display:flex;height:40px;font-size:8px;padding:4px 8px}
+body.mobile-controls-v2 .sensor-header button{min-width:36px;min-height:36px}
+body.mobile-controls-v2 .sensor-panel canvas{width:100%;height:78px}
+body.mobile-controls-v2 .sensor-meta{display:flex;font-size:7px}
+body.mobile-controls-v2 .sensor-meter{display:none}
+
+
+
+body.mobile-controls-v2 .mobile-drawer{position:fixed;left:max(var(--drive-edge),var(--mobile-safe-left));right:auto;top:calc(var(--mobile-vtop) + var(--mobile-safe-top) + 10px);bottom:auto;transform:none;width:min(330px,calc(100vw - var(--mobile-safe-left) - var(--mobile-safe-right) - 24px));max-height:calc(var(--mobile-vh) - var(--mobile-safe-top) - var(--mobile-safe-bottom) - 20px);padding:16px;box-sizing:border-box;border:1px solid #607887;border-radius:14px;background:var(--drive-panel);box-shadow:none;z-index:41;overflow:auto;touch-action:pan-y}
+body.mobile-controls-v2 .mobile-drawer-backdrop{position:fixed;inset:0;z-index:40;background:#07101780;backdrop-filter:none}
+body.mobile-controls-v2 .mobile-drawer-header{display:flex;align-items:center;justify-content:space-between}
+body.mobile-controls-v2 .mobile-drawer-header h2{font-size:18px;margin:5px 0 0}
+body.mobile-controls-v2 .mobile-drawer-header>div>span{font-size:9px;color:#c4f580;letter-spacing:2px}
+body.mobile-controls-v2 .mobile-drawer-header>button{display:grid;place-items:center;width:44px;height:44px;background:#223441;border:1px solid #536c7c;border-radius:9px}
+body.mobile-controls-v2 .mobile-drawer-header svg{width:18px;height:18px}
+body.mobile-controls-v2 .mobile-drawer-status{display:flex;justify-content:space-between;gap:10px;margin:12px 0;padding:10px 0;border-bottom:1px solid #3d535f}
+body.mobile-controls-v2 .mobile-drawer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+body.mobile-controls-v2 .mobile-drawer-grid>button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:72px;border-radius:9px;background:#20323f;color:#e5eff4;font-size:11px;padding:8px 2px;touch-action:manipulation}
+body.mobile-controls-v2 .mobile-action-icon{display:grid;place-items:center;width:36px;height:32px;border:0;background:none;color:#bed7c8;border-radius:0}
+body.mobile-controls-v2 .mobile-action-icon svg{width:22px;height:22px}
+body.mobile-controls-v2 .mobile-drawer-footer{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #3d535f;margin-top:12px;padding-top:10px;font-size:9px;color:#b4c6ce}
+body.mobile-controls-v2 .interaction{bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-controls-height) + 84px);font-size:10px;max-width:60vw;white-space:normal;line-height:1.5}
+body.mobile-controls-v2 .interaction .keycap{display:none}
+body.mobile-controls-v2 :is(#toast-container,#assist-warning){top:calc(var(--mobile-safe-top) + 108px)}
+body.mobile-controls-v2 #assist-warning{white-space:normal;max-width:calc(100vw - 30px)}
+body.mobile-controls-v2.mobile-panel-open :is(#mobile-tools-toggle,#mobile-driving-tools),body.mobile-controls-v2.mobile-drawer-open :is(#mobile-tools-toggle,#mobile-driving-tools),body.mobile-controls-v2.flight-active :is(#mobile-tools-toggle,#mobile-driving-tools){visibility:hidden;pointer-events:none}
+body.mobile-controls-v2 :is(button:focus-visible,a:focus-visible){outline:2px solid #d2f5a6;outline-offset:3px}
+/* A 320px phone retains >=44px targets and two separated thumb zones. */
+@media(max-width:380px){body.mobile-controls-v2{--drive-edge:10px;--drive-bottom:12px;--drive-steer-width:56px;--drive-pedal-width:58px;--drive-main-height:76px;--drive-gap:7px;--drive-panel-width:min(218px,calc(100vw - 24px - var(--mobile-safe-left) - var(--mobile-safe-right)))}body.mobile-controls-v2 .speed strong{font-size:38px}}
+/* Short landscape compresses height, never changes side ownership. */
+@media(orientation:landscape) and (max-height:500px){body.mobile-controls-v2{--drive-edge:12px;--drive-bottom:8px;--drive-steer-width:58px;--drive-pedal-width:60px;--drive-main-height:62px;--drive-gap:7px;--drive-panel-width:230px}body.mobile-controls-v2 .topbar{height:38px;padding-top:7px}body.mobile-controls-v2 .wordmark{font-size:18px}body.mobile-controls-v2 .mobile-route{top:calc(var(--mobile-safe-top) + 43px);width:204px}body.mobile-controls-v2 .location{top:calc(var(--mobile-safe-top) + 44px)}body.mobile-controls-v2 .charge-row{display:none}body.mobile-controls-v2 .speed strong{font-size:35px}body.mobile-controls-v2 .car-label{display:none}body.mobile-controls-v2.mobile-driving #touch-go::before{height:42px}body.mobile-controls-v2 .interaction{bottom:calc(var(--mobile-safe-bottom) + 66px);max-width:35vw}}
+@media(min-width:769px) and (min-height:501px){body.mobile-controls-v2{--drive-edge:24px;--drive-bottom:24px;--drive-steer-width:76px;--drive-pedal-width:78px;--drive-main-height:96px;--drive-gap:10px;--drive-panel-width:256px}body.mobile-controls-v2 .mobile-drawer-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Utility holds keep the same local iOS guard as the main controls after moving. */
+:where(#mobile-tools-toggle,#mobile-tools-toggle *,#mobile-secondary-driving button,#mobile-secondary-driving button *,#mobile-signals button,#mobile-signals button *){-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+
+/* Reserved right-side shortcut row: visibility never changes pedal geometry. */
+#mobile-pedal-signals{display:none}
+body.mobile-controls-v2.mobile-driving #mobile-pedal-signals{position:fixed;display:grid;grid-template-columns:repeat(2,var(--drive-pedal-width));gap:var(--drive-gap);right:max(var(--drive-edge),var(--mobile-safe-right));bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-controls-height) + 8px);z-index:24}
+body.mobile-controls-v2 #mobile-pedal-signals[hidden]{display:none!important}
+body.mobile-controls-v2 #mobile-pedal-signals button{display:flex;align-items:center;justify-content:center;gap:4px;min-width:44px;height:44px;padding:4px;border:1px solid var(--drive-border);border-radius:10px;background:var(--drive-panel);color:#ffd394;font-size:10px;touch-action:none}
+body.mobile-controls-v2 #mobile-pedal-signals svg{width:20px;height:20px;pointer-events:none}
+body.mobile-controls-v2 #mobile-pedal-signals button[aria-pressed="true"]{background:#3c4e2d;border-color:#c4f580;color:#d8f5b7}
+body.mobile-controls-v2 #mobile-pedal-signals button:disabled{opacity:.4}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .bottom-hud{bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-controls-height) + 60px)}
+body.mobile-controls-v2.mobile-panel-open #mobile-pedal-signals,body.mobile-controls-v2.mobile-drawer-open #mobile-pedal-signals{visibility:hidden;pointer-events:none}
+:where(#mobile-pedal-signals,#mobile-pedal-signals *){-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+
+/* Interior fallback is a compact edge readout, never the full driving panel.
+   Renderer-confirmed readable instruments still hide the duplicate speed. */
+body.mobile-controls-v2.interior-driving-view .drive-hud :is(.car-label,.car-trim,.charge-row,.gear,.speed-unit small){display:none!important}
+body.mobile-controls-v2.interior-driving-view .drive-hud{width:auto;min-width:66px;max-width:calc(2 * var(--drive-pedal-width) + var(--drive-gap));padding:5px 8px;border:1px solid var(--drive-border);border-radius:8px;background:var(--drive-panel)}
+body.mobile-controls-v2.interior-driving-view .drive-hud .speed{gap:5px}
+body.mobile-controls-v2.interior-driving-view .drive-hud .speed strong{font-size:24px;line-height:1;font-variant-numeric:tabular-nums}
+body.mobile-controls-v2.interior-driving-view .drive-hud .speed-unit{font-size:8px;padding:0}
+body.mobile-controls-v2.interior-driving-view.cockpit-speed-readable .drive-hud{display:none!important}
+
+/* iOS long-hold protection stays on game controls, never the page or dialogs. */
+:where(.mobile-controls button,.mobile-controls button *,#joystick,#joystick *){-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+:where(#touch-go,#touch-brake,#touch-gentle,#touch-handbrake,#touch-left,#touch-right,#touch-reverse,#joystick){touch-action:none}
+/* Editable UI keeps normal selection, copy/paste and native text callouts. */
+input,textarea,[contenteditable]:not([contenteditable="false"]){-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+

@@ -1,0 +1,68 @@
+// Game tuning over normal collision energy; touching/rubbing is not damage.
+export function impactDamage(normalSpeed,mass=1500,otherMass=Infinity,normalImpulse=null){
+ if(!Number.isFinite(normalSpeed)||normalSpeed<=1.2)return 0;
+ const own=Math.max(300,Math.min(6000,Number(mass)||1500));
+ const other=Number.isFinite(otherMass)?Math.max(300,Math.min(6000,otherMass)):Infinity;
+ // Legacy parked cars have zero inverse mass. The actual solver impulse
+ // captures that constraint; a stopped but mobile car still shares momentum.
+ const deltaV=Number.isFinite(normalImpulse)?Math.min(normalSpeed,Math.max(0,normalImpulse)/own):normalSpeed*(Number.isFinite(other)?other/(own+other):1);
+ if(deltaV<=1.2)return 0;
+ return Math.min(100,.065*(deltaV*deltaV-1.44)*Math.sqrt(own/1500));
+}
+
+// A cooldown belongs to a collision, never the whole car: a second object can
+// hit another face during the same step. Keep only the peak severity within
+// one event, so a later/reciprocal manifold adds at most the missing amount.
+export function consumeImpactDamage(v,amount,time,contact=null,other=null){
+ if(!Number.isFinite(amount)||amount<=0||!Number.isFinite(time))return 0;
+ let ledger=v.collisionDamage;
+ if(!ledger||ledger.identity!==v.instanceId||ledger.reset!==(v.physicsResetSerial??0)||time<ledger.time||v.condition>ledger.condition+1e-8){
+  ledger=v.collisionDamage={identity:v.instanceId,reset:v.physicsResetSerial??0,time,condition:v.condition,records:new Map()};
+ }
+ const event=contact?.damageEvent,key=event??other??contact?.obstacle??contact?.damageSource??'unknown',previous=ledger.records.get(key);
+ const same=previous&&(event||time-previous.time<.3),increment=Math.max(0,amount-(same?previous.amount:0));
+ ledger.time=time;
+ if(increment<=0)return 0;
+ ledger.records.set(key,{time:same?previous.time:time,amount});
+ if(ledger.records.size>64)ledger.records.delete(ledger.records.keys().next().value);
+ ledger.condition=Math.max(0,v.condition-increment);v.lastDamageTime=time;
+ return increment;
+}
+
+const finiteVector=v=>Array.isArray(v)&&v.length===3&&v.every(Number.isFinite);
+// Godot can repeat a completed manifold and its pre-solve velocity over many
+// callbacks. Keep the event alive until separation is observed; merely waiting
+// out a timer is not a new collision. Four missing 60 Hz ticks tolerate solver
+// manifold flicker and the three-frame pre-solve velocity history.
+export class ContactImpactTracker{
+ constructor(){this.active=new Map();}
+ forgetBody(id){for(const [key,pair]of this.active)if(pair.a===id||pair.b===id)this.active.delete(key);}
+ collect(contacts,tick,ignored=new Set()){
+  const pairs=new Map();
+  for(const c of contacts){
+   if(typeof c.a!=='string'||typeof c.b!=='string'||c.a===c.b||ignored.has(c.a)||ignored.has(c.b)||!finiteVector(c.point)||!finiteVector(c.normal)||Math.hypot(...c.normal)<1e-6||!Number.isFinite(c.impulse)||c.impulse<0||!Number.isFinite(c.relativeNormalSpeed)||c.relativeNormalSpeed<0)continue;
+   const key=JSON.stringify([c.a,c.b].sort());
+   let pair=this.active.get(key);
+   if(!pair||tick-pair.tick>4){pair={a:c.a,b:c.b,event:{},tick};this.active.set(key,pair);}
+   pair.tick=tick;
+   if(c.relativeNormalSpeed<=1.2||c.impulse<80)continue;
+   let aggregate=pairs.get(key);
+   if(!aggregate){aggregate={contact:c,native:new Map(),fallback:0,event:pair.event};pairs.set(key,aggregate);}
+   if(c.relativeNormalSpeed>aggregate.contact.relativeNormalSpeed)aggregate.contact=c;
+   // Native impulses are per manifold point; mirrored A/B reports describe
+   // the same momentum transfer. A CCD fallback estimates the whole body.
+   if(c.impulseSource==='manifold-normal-speed-loss')aggregate.fallback=Math.max(aggregate.fallback,c.impulse);
+   else aggregate.native.set(c.a,(aggregate.native.get(c.a)??0)+c.impulse);
+  }
+  for(const [key,pair]of this.active)if(tick-pair.tick>4)this.active.delete(key);
+  return [...pairs.values()].map(p=>({...p.contact,impulse:Math.max(p.fallback,0,...p.native.values()),damageEvent:p.event}));
+ }
+}
+
+// The legacy solver supplies a normal into A just like Godot. Its support
+// point may be near a corner, so choose the struck face from this normal.
+export function planarImpactRegion(normal,yaw,sign=-1){
+ if(!Number.isFinite(normal?.x)||!Number.isFinite(normal?.z)||Math.hypot(normal.x,normal.z)<1e-6)return undefined;
+ const x=(normal.x*Math.cos(yaw)-normal.z*Math.sin(yaw))*sign,z=(normal.x*Math.sin(yaw)+normal.z*Math.cos(yaw))*sign;
+ return Math.abs(x)>Math.abs(z)?x<0?'left':'right':z<0?'front':'rear';
+}

@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {constrainPanelRect} from '../panel-layout.js';
+import {MODELS} from '../vehicle-catalog.js';
+import {createDesignedCar} from '../vehicle-design.js';
+import {cockpitProfile} from '../cockpit-profiles.js';
+import {infotainmentState,paintVehicleInfotainment,attachVehicleInfotainment,updateVehicleInfotainment,disposeVehicleInfotainment} from '../vehicle-infotainment.js';
+import {VEHICLE_PANEL_LAYOUTS} from '../vehicle-panel-layouts.js';
+let tests=0;function test(name,fn){fn();tests++;console.log('PASS',name)}
+const context=()=>new Proxy({calls:[]},{get(target,key){if(key in target)return target[key];return (...args)=>target.calls.push([key,...args]);},set(target,key,value){target[key]=value;return true;}});
+globalThis.document={createElement(){const ctx=context();return{width:0,height:0,getContext:()=>ctx};}};
+test('panel bounds remain visible in portrait landscape and tiny viewports',()=>{for(const[width,height]of [[390,844],[844,390],[140,100],[1920,1080]]){const r=constrainPanelRect({left:-200,top:9999,width:9999,height:9999},{width,height},{minWidth:280,minHeight:220});assert.ok(r.left>=8&&r.top>=8);assert.ok(r.left+r.width<=width-8);assert.ok(r.top+r.height<=height-8);}});
+test('invalid saved dimensions sanitized',()=>{const r=constrainPanelRect({left:NaN,top:Infinity,width:NaN,height:-10},{width:400,height:600});assert.deepEqual(r,{width:160,height:100,left:8,top:8});});
+test('all catalog designs have explicit stable profiles and paintable layouts',()=>{const shapes=new Set();for(const model of MODELS){const profile=cockpitProfile(model);assert.equal(profile.display,'vehicle');assert.ok(profile.edition);const ctx=context();paintVehicleInfotainment(ctx,infotainmentState({model,battery:81,speed:12,condition:97}));assert.ok(ctx.calls.length>10);shapes.add(profile.layout);}assert.equal(shapes.size,8);});
+test('all 22 designed car center surfaces survive static mesh merge',()=>{for(const model of MODELS){const car=createDesignedCar(model.id,true);assert.ok(car.infotainmentMesh.isMesh,model.id);assert.equal(car.infotainmentMesh.parent,car.chassis,model.id);assert.equal(car.infotainmentMesh.userData.animated,true);}});
+test('independent per-car textures do not leak routes and restore original materials',()=>{const a=createDesignedCar('s',true),b=createDesignedCar('s',true);a.speed=b.speed=0;a.battery=b.battery=90;const original=a.infotainmentMesh.material;attachVehicleInfotainment(a);attachVehicleInfotainment(b);assert.notEqual(a.infotainment.texture,b.infotainment.texture);assert.notEqual(a.infotainment.material,b.infotainment.material);const game={vehicle:a,inCar:true,autopilot:true,destination:{name:'Airport'}};updateVehicleInfotainment(a,1,game);assert.ok(a.infotainment.signature.includes('Airport'));game.vehicle=b;updateVehicleInfotainment(b,2,game);assert.ok(!a.infotainment.signature.includes('Airport'));disposeVehicleInfotainment(a);assert.equal(a.infotainmentMesh.material,original);assert.equal(a.infotainment,undefined);});
+test('management panel registry has separate touch and Rocket flight pads',()=>{for(const selector of ['#modal','#phone','#sensor-panel','#brake-closeup','#touch-steering','.touch-actions','.roadster-attitude','.roadster-flight-left','.roadster-flight-right','.aircraft-utility'])assert.ok(VEHICLE_PANEL_LAYOUTS.some(p=>p[0]===selector),selector);});
+console.log(`${tests} panel/infotainment checks passed; DOM gestures and visual rendering require browser tests.`);

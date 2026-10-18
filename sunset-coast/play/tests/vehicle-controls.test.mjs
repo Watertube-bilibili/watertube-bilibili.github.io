@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {laneContext,requestLaneChange,laneChangeControls} from '../lane-change.js';
+import {cockpitProfile} from '../cockpit-profiles.js';
+function game({x=3204.5,z=800,yaw=0,speed=15}={}){return {effectiveInputMode:'keyboard',inCar:true,vehicle:{pos:{x,z},yaw,speed,lightState:{}},traffic:[],police:[],ui:{toast(){}},manualTakeover(){this.autopilot=false;this.laneChange=null},setTurnSignal(d){this.vehicle.lightState.turnSignal=this.vehicle.lightState.turnSignal===d?null:d}};}
+let checks=0;const test=(name,fn)=>{fn();checks++;console.log('PASS',name)};
+test('road geometry matches north and south same-direction lanes',()=>{assert.equal(laneContext(game({x:2.75,z:120,speed:3}).vehicle).lane,0);assert.equal(laneContext(game({x:-8.25,z:120,yaw:Math.PI}).vehicle).lane,1);assert.equal(laneContext(game({x:-2.75,z:120}).vehicle),null)});
+test('desktop lane request accepted and bounded against median/edge',()=>{const g=game();assert.equal(requestLaneChange(g,'left'),false);assert.equal(requestLaneChange(g,'right'),true);assert.equal(g.laneChange.target,12.5);assert.equal(requestLaneChange(g,'right'),false)});
+test('touch mode cannot trigger keyboard lane change',()=>{const g=game();g.effectiveInputMode='touch';assert.equal(requestLaneChange(g,'right'),false)});
+test('junction and exit exclusions',()=>{assert.equal(requestLaneChange(game({x:2.75,z:85,speed:3}),'right'),false);assert.equal(requestLaneChange(game({z:1600}),'right'),false)});
+test('traffic gap rejects adjacent car',()=>{const g=game();g.traffic=[{pos:{x:3212.5,z:810},speed:15}];assert.equal(requestLaneChange(g,'right'),false)});
+test('brake cancels steering automation',()=>{const g=game();requestLaneChange(g,'right');const input={throttle:0,steer:0,brake:1};assert.equal(laneChangeControls(g,input,.016),input);assert.equal(g.laneChange,null)});
+test('physical steering converges without position teleport',()=>{const g=game();requestLaneChange(g,'right');let maxSteer=0;for(let i=0;i<500&&g.laneChange;i++){const c=laneChangeControls(g,{throttle:.2,steer:0,brake:0},.02);maxSteer=Math.max(maxSteer,Math.abs(c.steer));g.vehicle.yaw+=c.steer*g.vehicle.speed/2.9*.02;g.vehicle.pos.x-=Math.sin(g.vehicle.yaw)*g.vehicle.speed*.02;g.vehicle.pos.z-=Math.cos(g.vehicle.yaw)*g.vehicle.speed*.02;}assert.equal(g.laneChange,null);assert.ok(Math.abs(g.vehicle.pos.x-3212.5)<.8,JSON.stringify(g.vehicle));assert.ok(maxSteer<=.32)});
+test('car profiles isolate G9 Roadster and existing cars',()=>{assert.equal(cockpitProfile({id:'g9'}).display,'g9');assert.equal(cockpitProfile({id:'roadster_rocket'}).display,'roadster');assert.notDeepEqual(cockpitProfile({id:'s',name:'VOLT S'}),cockpitProfile({id:'x',name:'VOLT X'}))});
+console.log(`${checks} regression checks passed; kinematic harness is NOT a Godot runtime validation.`);

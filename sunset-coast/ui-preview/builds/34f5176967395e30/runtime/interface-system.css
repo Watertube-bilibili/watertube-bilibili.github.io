@@ -1,0 +1,461 @@
+/* NEON COAST — screen-space interface. Never targets vehicle instruments. */
+:is(#phone,#modal,#loading){--ui-surface:#f5f0e6;--ui-raised:#e7dfd0;--ui-edge:#807e74;--ui-text:#142b38;--ui-muted:#55636a;--ui-accent:#a43c28;--lime:var(--ui-accent);--line:#c7beaf;--white:var(--ui-text);color:var(--ui-text);font-family:Inter,'Noto Sans SC',system-ui,sans-serif;font-size:14px;line-height:1.55;color-scheme:light}
+:is(#phone,#modal) ::selection{background:#a43c28;color:#f5f0e6}
+:is(#phone,#modal) :is(button,input,select,a,summary){touch-action:manipulation}
+:is(#phone,#modal) :is(button,input,select){min-height:44px;font-size:13px;border-radius:3px}
+:is(#phone,#modal) :is(button,a,input,select,summary):focus-visible{outline:3px solid var(--ui-accent);outline-offset:3px}
+:is(#phone,#modal) button:hover{filter:none;background-color:#e1d7c8}
+:is(#phone,#modal) button:active{transform:none}
+:is(#phone,#modal) button:disabled{opacity:.5;cursor:not-allowed}
+:is(#phone,#modal) :is(input,select){background:var(--ui-raised);color:var(--ui-text);border:1px solid var(--ui-edge);padding:10px 12px;max-width:100%;caret-color:var(--ui-accent)}
+:is(#phone,#modal) :is(input,select)::placeholder{color:var(--ui-muted);opacity:1}
+:is(#phone,#modal) :is(.phone-action,.primary-action,.garage-card>button,.character-card button){background:var(--ui-accent);color:#fffaf2;font-weight:650;border:0}
+:is(#phone,#modal) :is(.phone-action,.primary-action,.garage-card>button,.character-card button):hover{background:#85301f}
+:is(#phone,#modal) :is(.secondary-action,.garage-card>button.secondary){background:var(--ui-raised);color:var(--ui-text);border:1px solid var(--line)}
+:is(#phone,#modal) :is(.phone-note,.phone-subtitle,.modal-intro,.about-note){font-size:13px;color:var(--ui-muted);line-height:1.75;letter-spacing:0}
+:is(#phone,#modal) :is(.phone-section-label,.world-map-section){font-size:13px;letter-spacing:0;font-weight:650;color:var(--ui-text);margin:24px 0 10px}
+/* Phone is a usable task surface; no ornamental device frame. */
+#phone{right:24px;top:84px;bottom:24px;transform:none;filter:none;width:min(432px,calc(100vw - 48px));height:auto}
+#phone .phone-shell{width:100%;height:100%;max-height:none;background:var(--ui-surface);border:1px solid var(--ui-edge);outline:0;border-radius:3px;box-shadow:0 16px 48px #0006}
+#phone .phone-status{height:32px;padding:8px 20px;color:var(--ui-muted);font-size:11px;border-bottom:1px solid var(--line)}
+#phone .dynamic-island,#phone .phone-status>span:last-child{display:none}
+#phone .phone-top{padding:8px 12px;gap:12px;border-bottom:1px solid var(--line)}
+#phone .phone-top>span{font-size:16px;font-weight:650;flex:1}
+#phone .phone-top button{width:44px;padding:12px;justify-content:center;color:var(--ui-text);background:transparent}
+#phone .phone-top svg{width:20px;height:20px}
+#phone .phone-content{padding:20px;scrollbar-width:thin;scrollbar-color:#807e74 #f5f0e6;overscroll-behavior:contain}
+#phone .phone-content h3{font-size:22px;font-weight:650;letter-spacing:-.02em;line-height:1.35;margin:0 0 8px}
+#phone .phone-content .phone-subtitle{margin:0 0 24px}
+#phone .phone-home{position:static;transform:none;flex-shrink:0;width:100%;height:44px;min-height:44px;border-radius:0;border-top:1px solid var(--line);background:var(--ui-surface);color:var(--ui-muted);font-size:12px;left:auto}
+#phone .phone-balance{border:0;border-radius:0;background:none;padding:0 0 20px;margin:0 0 24px;border-bottom:1px solid var(--line)}
+#phone .phone-balance strong{font-family:inherit;font-size:28px;line-height:1.3;font-weight:650;color:var(--ui-text);margin:6px 0 12px;font-variant-numeric:tabular-nums}
+#phone .phone-balance small,#phone .balance-bottom{font-size:12px;color:var(--ui-muted)}
+#phone .phone-balance small{display:block}
+#phone .phone-app-grid{display:block;margin:0}
+#phone .interface-app-group{margin:0 0 24px}
+#phone .interface-app-group h4{margin:0 0 10px;color:var(--ui-muted);font-size:12px;font-weight:500}
+#phone .interface-app-items{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#phone .phone-app{flex-direction:row;align-items:center;justify-content:flex-start;min-height:60px;padding:10px 12px;gap:10px;font-size:13px;text-align:left;background:var(--ui-raised);border:1px solid transparent;border-radius:3px}
+#phone .phone-app:hover{border-color:var(--ui-edge)}
+#phone .app-icon{display:grid;place-items:center;width:28px;height:28px;background:none!important;border-radius:0;color:var(--ui-accent);box-shadow:none}
+#phone .app-icon svg{width:22px;height:22px}
+#phone .phone-now{display:block;margin:0;padding-top:18px;color:var(--ui-muted);font-size:12px;border-color:var(--line)}
+#phone .phone-now b{font-size:14px;color:var(--ui-text);margin-bottom:4px}
+#phone .phone-row{padding:16px 0;gap:12px;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;margin:0;text-align:left;min-height:72px}
+#phone .phone-row:hover{background:var(--ui-raised)}
+#phone .phone-row div{min-width:0}
+#phone .phone-row strong{font-size:14px;font-weight:600}
+#phone .phone-row small{font-size:12px;color:var(--ui-muted);line-height:1.6}
+#phone .phone-row .row-end{font-size:12px;max-width:116px;text-align:right;color:var(--ui-accent);flex-shrink:0;line-height:1.6}
+#phone .phone-row.selected{background:#eddfcf}
+#phone .phone-garage-brand{padding-top:12px;margin-bottom:0}
+#phone .phone-garage-brand span{font-size:12px;color:var(--ui-muted)}
+#phone .travel-select,#phone .cheat-input{width:100%;margin:0 0 12px}
+#phone .code-list{background:var(--ui-raised);padding:16px;font-size:13px;line-height:2.2;border-radius:3px;color:var(--ui-muted)}
+#phone .code-list code{color:var(--ui-text)}
+#phone .transaction{border-bottom:1px solid var(--line);padding:14px 0;font-size:14px}
+#phone .transaction small{color:var(--ui-muted);font-size:12px}
+.interface-phone-nav{display:flex;gap:4px;padding:6px 12px;border-bottom:1px solid var(--line);overflow:auto;flex-shrink:0}
+#phone .interface-phone-nav button{background:transparent;color:var(--ui-muted);min-width:52px;min-height:40px;padding:8px;font-size:12px;white-space:nowrap}
+#phone .interface-phone-nav button[aria-current=page]{background:var(--ui-raised);color:var(--ui-accent)}
+/* Dialog workspace: stable title/actions, scrollable contents, wide catalog/map. */
+#modal{padding:0;background:var(--ui-surface);backdrop-filter:none;width:min(940px,calc(100vw - 48px));max-height:calc(100dvh - 48px);border:1px solid var(--ui-edge);border-radius:3px;box-shadow:0 24px 64px #0006;scrollbar-width:thin;scrollbar-color:#807e74 #f5f0e6}
+#modal::backdrop{background:#080b0db3;backdrop-filter:none}
+#modal .modal-top{position:sticky;top:0;z-index:3;background:var(--ui-surface);padding:20px 24px;margin:0;border-bottom:1px solid var(--line);gap:20px}
+#modal .modal-top small{display:none}
+#modal .modal-top h2{font-size:24px;line-height:1.3;margin:0;font-weight:650;letter-spacing:-.02em}
+#modal .modal-top .icon-button{width:44px;height:44px;flex-shrink:0;border:1px solid var(--line);background:var(--ui-raised)}
+#modal #modal-body{padding:24px}
+#modal[data-surface=settings],#modal[data-surface=assist]{width:min(780px,calc(100vw - 48px))}
+#modal .settings-grid{grid-template-columns:minmax(0,1.2fr) minmax(220px,.8fr);gap:32px;align-items:start}
+#modal .interface-section-title{font-size:15px;font-weight:650;margin:0 0 8px;color:var(--ui-text)}
+#modal .setting-row{padding:14px 0;min-height:72px;gap:16px;align-items:center;font-size:14px}
+#modal .setting-row>span,#modal .setting-row>label{flex:1}
+#modal .setting-row select{max-width:190px;font-size:13px;border-color:var(--ui-edge);background:var(--ui-raised)}
+#modal .assist-speed-input{width:110px}
+#modal .assist-toggle{min-width:88px;background:var(--ui-raised);border:1px solid var(--ui-edge)}
+#modal .assist-toggle[aria-checked=true]{background:var(--ui-accent);color:#fffaf2}
+#modal details.interface-disclosure{margin-top:24px;border-top:1px solid var(--line);padding-top:12px}
+#modal details.interface-disclosure>summary{cursor:pointer;min-height:44px;padding:10px 0;font-size:14px;font-weight:600}
+#modal .help-grid{margin:10px 0;gap:0 24px;border:0;background:none;padding:0}
+#modal .help-grid>span{min-height:44px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px;color:var(--ui-muted)}
+#modal .about-note{margin:12px 0;max-width:75ch}
+#modal .garage-intro{margin-bottom:20px}
+#modal .garage-filters{gap:8px;padding:4px 2px 12px;margin:0 0 8px}
+#modal .garage-filters button{min-height:44px;border-radius:3px;font-size:13px;padding:10px 14px;background:var(--ui-raised);border-color:var(--line)}
+#modal .garage-filters button[aria-pressed=true]{background:var(--ui-accent);color:#fffaf2}
+#modal .garage-results{font-size:13px;color:var(--ui-muted);margin:12px 0 20px}
+#modal .garage-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+#modal .garage-card{display:flex;flex-direction:column;padding:0 0 20px;border:0;border-radius:0;background:none;border-bottom:1px solid var(--line);overflow:visible}
+#modal .garage-card[hidden]{display:none}
+#modal .garage-brand{font-size:12px;color:var(--ui-muted);letter-spacing:0;margin-bottom:8px}
+#modal .garage-preview{background:var(--ui-raised);border-radius:3px;margin:0 0 16px;overflow:hidden;display:grid;place-items:center;min-height:160px}
+#modal .garage-card .car-visual{height:150px;margin:0;width:100%;object-fit:contain}
+#modal .garage-preview span{background:var(--ui-surface);border:0;border-radius:4px;font-size:11px;padding:5px 8px;bottom:8px;right:8px}
+#modal .garage-card h3{font-size:18px;font-weight:650;letter-spacing:0;line-height:1.4;margin:0 0 8px;gap:12px;align-items:center}
+#modal .garage-card h3 small{font-size:11px;white-space:nowrap;color:var(--ui-accent)}
+#modal .garage-card p{font-size:13px;line-height:1.6;color:var(--ui-muted);margin:0 0 18px;flex:1}
+#modal .garage-stats{justify-content:space-between;gap:12px;font-size:11px;margin-bottom:18px;color:var(--ui-muted)}
+#modal .garage-stats b{font-size:17px;font-weight:600;color:var(--ui-text);font-variant-numeric:tabular-nums;margin-bottom:2px}
+#modal .garage-card button{font-size:13px;min-height:46px}
+.interface-search{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.interface-search label{font-size:13px;color:var(--ui-muted);white-space:nowrap}
+.interface-search input{width:100%;min-width:0}
+.interface-empty{padding:24px 0;color:var(--ui-muted);font-size:14px;line-height:1.7}
+.interface-empty[hidden]{display:none}
+#modal .character-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+#modal .character-card{border:1px solid var(--line);background:transparent;border-radius:3px;padding:16px;align-items:center}
+#modal .character-card.selected{border-color:var(--ui-accent);background:#eddfcf}
+#modal .character-card h3{font-size:18px}
+#modal .character-card span{font-size:12px;color:var(--ui-accent)}
+#modal .character-card p{display:block;font-size:12px;color:var(--ui-muted);line-height:1.65}
+#modal .character-card button{font-size:13px}
+#modal .release-entry{border-bottom:1px solid var(--line);padding:0 0 20px;margin:0 0 24px}
+#modal .release-entry small{font-size:12px;color:var(--ui-muted)}
+#modal .release-entry h3{font-size:18px;margin:8px 0 12px;color:var(--ui-text)}
+#modal .release-entry li{font-size:13px;line-height:1.8;color:var(--ui-muted);margin-bottom:6px}
+/* Map: map + destination workspace, rather than a stack of nested cards. */
+#modal .world-map-layout{grid-template-columns:minmax(0,1fr) 248px;gap:24px}
+#modal .world-map-layout #full-map{border-radius:3px;border:1px solid var(--line);background:#e7dfd0}
+#modal .world-map-toolbar{gap:8px;flex-wrap:wrap}
+#modal .world-map-toolbar button{height:44px;min-width:44px;font-size:12px;background:var(--ui-raised);border:1px solid var(--line);border-radius:3px}
+#modal .world-map-toolbar span{color:var(--ui-muted);font-size:11px}
+#modal .world-map-guidance{padding:14px 0;margin:0 0 16px;background:none;border:0;border-radius:0;border-bottom:1px solid var(--line);gap:12px}
+#modal .world-map-guidance strong{font-size:15px}
+#modal .world-map-guidance small,#modal .world-map-mode{font-size:12px;color:var(--ui-muted)}
+#modal .world-map-turn{color:var(--ui-accent)}
+#modal .world-map-section{margin:0 0 12px}
+#modal .world-map-places{max-height:300px;scrollbar-color:#807e74 #f5f0e6}
+#modal .world-map-places button{border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;margin:0;padding:14px 10px;min-height:58px;font-size:13px}
+#modal .world-map-places button.selected{background:#eddfcf;color:var(--ui-accent)}
+#modal .world-map-places small{color:var(--ui-muted);font-size:11px}
+#modal .world-map-nav{border-color:var(--line);padding-top:16px;margin-top:16px}
+#modal .world-map-nav p,#modal .world-map-hint,#modal .world-map-status{font-size:12px;line-height:1.7;color:var(--ui-muted)}
+#modal .world-map-nav button{border-radius:3px;font-size:13px;background:var(--ui-raised);color:var(--ui-text);border:1px solid var(--line)}
+#modal .world-map-nav #map-set-destination{background:var(--ui-accent);color:#fffaf2;border:0}
+#modal .world-map-sidebar .interface-search{display:block}
+#modal .world-map-sidebar .interface-search label{display:block;margin-bottom:6px}
+/* Screen-space status / loading share material while steering geometry stays untouched. */
+#toast-container .toast{background:#f5f0e6;color:#142b38;border:1px solid #807e74;backdrop-filter:none;border-radius:3px;font-family:Inter,system-ui,sans-serif;white-space:normal;max-width:min(460px,calc(100vw - 32px));line-height:1.6;box-shadow:0 8px 24px #0004}
+#toast-container .toast.error{border-color:#a12620;color:#a12620}
+#loading{background:#f5f0e6}
+#loading .load-brand{font-family:Inter,system-ui,sans-serif;letter-spacing:-.02em;font-weight:650}
+#loading .load-brand span{color:inherit;margin-left:8px}
+#loading .load-brand i{font-style:normal;color:#55636a;letter-spacing:0}
+#loading .load-track{background:#c7beaf;border-radius:2px}
+#loading .load-track span{background:#a43c28}
+#loading p{color:#55636a;font-size:13px;line-height:1.7}
+#loading a{display:block;padding:12px 16px;background:#e7dfd0;border:1px solid #807e74;border-radius:3px;margin-top:16px}
+@media(max-width:740px){
+ #phone{top:12px;bottom:12px;right:12px;width:calc(100vw - 24px)}
+ #phone .phone-shell{height:100%;border-radius:3px}
+ #phone .phone-status{height:28px;padding:6px 16px}
+ #phone .phone-content{padding:20px 16px}
+ #phone .phone-content h3{font-size:21px}
+ #modal,#modal[data-surface=settings],#modal[data-surface=assist]{width:calc(100vw - 24px);max-height:calc(100dvh - 24px)}
+ #modal .modal-top{padding:12px 16px}
+ #modal .modal-top h2{font-size:21px}
+ #modal #modal-body{padding:20px 16px}
+ #modal .settings-grid{grid-template-columns:1fr;gap:24px}
+ #modal .settings-grid>div:last-child{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ #modal .settings-grid>div:last-child>.interface-section-title,#modal #resume-game{grid-column:1/-1}
+ #modal .settings-grid>div:last-child>button{margin:0}
+ #modal .garage-grid{grid-template-columns:1fr;gap:24px}
+ #modal .garage-preview{min-height:164px}
+ #modal .garage-card .car-visual{height:164px}
+ #modal .world-map-layout{grid-template-columns:1fr;gap:20px}
+ #modal .world-map-sidebar{display:block}
+ #modal .world-map-places{display:grid;grid-template-columns:1fr 1fr;max-height:236px;gap:0 12px}
+ #modal .world-map-places button{display:flex;flex-wrap:wrap}
+ #modal .world-map-nav{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+ #modal .world-map-nav p{grid-column:1/-1}
+ #modal .world-map-mode{display:none}
+ #modal .character-grid{gap:12px}
+ #modal .character-card{padding:12px;flex-direction:column;align-items:stretch}
+ #modal .character-card img{height:120px;width:100%}
+ .interface-search{display:block}
+ .interface-search label{display:block;margin-bottom:6px}
+}
+@media(max-width:380px){#phone .interface-app-items{grid-template-columns:1fr}#modal .character-grid{grid-template-columns:1fr}#modal .setting-row{align-items:stretch;flex-direction:column;gap:8px}#modal .setting-row select{max-width:none;width:100%}}
+@media(max-height:520px) and (min-width:741px){#phone{top:12px;bottom:12px}#phone .phone-status{display:none}#phone .phone-content{padding:16px}#modal .modal-top{padding:10px 20px}}
+@media(prefers-reduced-motion:reduce){:is(#phone,#modal,#loading) *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(forced-colors:active){:is(#phone,#modal) button{border:1px solid ButtonText}:is(#phone,#modal) [aria-pressed=true]{outline:2px solid Highlight}}
+@media(pointer:coarse){:is(#phone,#modal) :is(input,select){font-size:16px}}
+/* Keep the mobile module's visual-viewport contract when the keyboard opens. */
+@media(max-width:740px),(pointer:coarse){
+ #phone{top:calc(var(--mobile-vtop,0px) + max(12px,var(--mobile-safe-top,0px)));bottom:auto;left:max(12px,var(--mobile-safe-left,0px));right:max(12px,var(--mobile-safe-right,0px));width:auto;height:calc(var(--mobile-vh,100dvh) - max(12px,var(--mobile-safe-top,0px)) - max(12px,var(--mobile-safe-bottom,0px)))}
+ #phone .phone-shell{max-width:480px;height:100%;margin:0 auto}
+ #modal,#modal[data-surface=settings],#modal[data-surface=assist]{width:min(940px,calc(100vw - max(12px,var(--mobile-safe-left,0px)) - max(12px,var(--mobile-safe-right,0px))));max-height:calc(var(--mobile-vh,100dvh) - max(12px,var(--mobile-safe-top,0px)) - max(12px,var(--mobile-safe-bottom,0px)))}
+}
+@media(max-width:740px),(pointer:coarse){
+ #modal{top:calc(var(--mobile-vtop,0px) + max(12px,var(--mobile-safe-top,0px)));bottom:auto;margin-block:0;margin-inline:auto}
+}
+/* Short desktop windows: compact the mission and map into non-overlapping docks. */
+@media(min-width:741px) and (max-height:660px){
+ body:not(.mobile-controls-v2) .bottom-hud .mini-map-wrap{height:88px}
+ body:not(.mobile-controls-v2) .mission-card{top:auto;bottom:224px;width:238px;padding:10px 12px}
+ body:not(.mobile-controls-v2) .mission-card .mission-label{min-height:20px}
+ body:not(.mobile-controls-v2) .mission-card h2{font-size:14px;line-height:1.4;margin:6px 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ body:not(.mobile-controls-v2) .mission-card p,body:not(.mobile-controls-v2) .mission-card .reward{display:none}
+ body:not(.mobile-controls-v2) .mission-card .mission-bottom{border:0;padding:0;justify-content:flex-start}
+ body:not(.mobile-controls-v2) .mission-card .mission-bottom button{min-height:36px}
+}
+@media(min-width:741px) and (max-height:560px){
+ body:not(.mobile-controls-v2) .bottom-hud .mini-map-wrap{height:64px}
+ body:not(.mobile-controls-v2) .mission-card{bottom:192px}
+ body:not(.mobile-controls-v2) .mission-card .mission-label{position:absolute;right:12px;top:8px}
+ body:not(.mobile-controls-v2) .mission-card .mission-label>:not(#mission-close){display:none}
+ body:not(.mobile-controls-v2) .mission-card h2{margin:0 24px 0 0}
+ body:not(.mobile-controls-v2) .mission-card .mission-bottom button{min-height:32px}
+}
+@media(min-width:741px) and (max-height:490px){
+ body:not(.mobile-controls-v2) .mission-card{display:none}
+}
+/* COAST EDITORIAL — a warm atlas and maritime ink, rather than a gray dashboard.
+   These roles belong only to screen-space UI; brand cabins keep their own colors. */
+@font-face{font-family:CoastEditorial;src:url('./fonts/CoastEditorial.woff') format('woff');font-weight:400;font-style:normal;font-display:swap}
+:is(.topbar,.mission-card,.right-tools,.bottom-hud,.mobile-route,#mobile-ui,.mobile-controls,#sensor-panel,#interaction,#toast-container,#loading,#aircraft-controls,#flight-status){--lime:#f08a68;--line:#78909a;--white:#f5f0e6}
+:is(#phone,#modal){--ui-surface:#f5f0e6;--ui-raised:#e7dfd0;--ui-edge:#807e74;--ui-text:#142b38;--ui-muted:#55636a;--ui-accent:#a43c28;--line:#c7beaf;--lime:#a43c28;--white:#142b38}
+:is(#phone,#modal) :is(button,input,select){border-radius:3px}
+:is(#phone,#modal) input{user-select:text}
+:is(#phone,#modal) :is(.phone-action,.primary-action,.garage-card>button,.character-card button){color:#fffaf2;background:#a43c28}
+:is(#phone,#modal) :is(.phone-action,.primary-action,.garage-card>button,.character-card button):hover{background:#85301f}
+:is(#phone,#modal) :is(.phone-action,.primary-action,.garage-card>button,.character-card button):disabled{background:#d4c7b8;color:#59646a;opacity:1}
+:is(#phone,#modal) :is(.secondary-action,.garage-card>button.secondary){background:transparent;color:#142b38;border:1px solid #807e74}
+:is(#phone,#modal) :is(.secondary-action,.garage-card>button.secondary):hover{background:#e7dfd0}
+:is(#phone,#modal) :is(.phone-note,.phone-subtitle,.modal-intro,.about-note){color:#55636a}
+:is(#phone,#modal) :is(.phone-section-label,.world-map-section){color:#142b38;font-weight:700}
+/* Dark title bands anchor the warm-paper workspaces. */
+#phone .phone-shell{background:#f5f0e6;border:0;border-radius:4px;box-shadow:0 18px 44px #07192366}
+#phone .phone-status{background:#142b38;color:#c0ced0;border-color:#3d5661;height:30px;font-size:10px;letter-spacing:.06em}
+#phone .phone-top{background:#142b38;color:#f5f0e6;border-color:#3d5661;min-height:66px;padding:10px 12px}
+#phone .phone-top>span{font-size:19px;font-weight:500;letter-spacing:.02em}
+#phone .phone-top button{color:#f5f0e6}
+#phone .phone-top button:hover{background:#244453}
+#phone .interface-phone-nav{background:#142b38;border-bottom:0;padding:0 16px 12px;gap:4px}
+#phone .interface-phone-nav button{color:#c0ced0;background:transparent;border-radius:2px;min-height:36px;padding:7px 12px;font-size:12px}
+#phone .interface-phone-nav button[aria-current=page]{background:#f5f0e6;color:#142b38}
+#phone .interface-phone-nav button:hover{background:#244453;color:#f5f0e6}
+#phone .phone-content{padding:28px 24px;scrollbar-color:#807e74 #f5f0e6}
+#phone .phone-content h3{font-size:27px;font-weight:650;letter-spacing:-.035em;line-height:1.25;margin:0 0 12px;color:#142b38}
+#phone .phone-content .phone-subtitle{font-size:12px;margin:0 0 24px;line-height:1.8}
+#phone .phone-content .phone-balance{background:none;border:0;border-top:1px solid #142b38;border-bottom:1px solid #c7beaf;display:flex;align-items:baseline;flex-wrap:wrap;gap:8px 16px;padding:16px 0;margin:0 0 28px}
+#phone .phone-content .phone-balance>small:first-child{flex:1;min-width:100px;font-size:11px;color:#55636a;letter-spacing:.02em}
+#phone .phone-balance strong{font-size:25px;color:#142b38;margin:0;font-weight:550;letter-spacing:-.03em}
+#phone .phone-balance .balance-bottom{width:100%;font-size:10px;color:#55636a;display:flex;justify-content:space-between;margin-top:6px}
+#phone .interface-app-group{margin-bottom:28px}
+#phone .interface-app-group h4{font-size:13px;color:#142b38;font-weight:700;padding-bottom:10px;border-bottom:1px solid #142b38;margin-bottom:0}
+#phone .interface-app-items{gap:0 18px}
+#phone .phone-app{background:none;border:0;border-bottom:1px solid #c7beaf;min-height:68px;padding:12px 0;gap:12px;font-size:13px;border-radius:0;color:#142b38}
+#phone .phone-app:hover{background:#e7dfd0}
+#phone .app-icon{color:#a43c28;width:26px;height:26px;background:none!important}
+#phone .interface-app-group:first-child .phone-app:first-child{grid-column:1/-1;min-height:80px;font-size:19px;font-weight:600;justify-content:flex-start}
+#phone .interface-app-group:first-child .phone-app:first-child .app-icon{width:38px;height:38px;color:#142b38}
+#phone .interface-app-group:first-child .phone-app:first-child svg{width:32px;height:32px}
+#phone .interface-app-group:first-child .phone-app:first-child:after{content:'→';margin-left:auto;color:#a43c28;font-size:24px;font-weight:400}
+#phone .phone-now{padding:16px 0;border-top:1px solid #142b38;color:#55636a;font-size:12px}
+#phone .phone-now b{font-size:14px;color:#142b38;font-weight:650}
+#phone .phone-home{background:#e7dfd0;color:#142b38;border-top:1px solid #c7beaf;font-weight:600;min-height:44px;font-size:12px;letter-spacing:.03em}
+#phone .phone-row{border-color:#c7beaf;gap:14px}
+#phone .phone-row strong{color:#142b38;font-size:14px}
+#phone .phone-row svg{color:#a43c28}
+#phone .phone-row small{color:#55636a}
+#phone .phone-row .row-end{color:#a43c28;font-weight:650}
+#phone .phone-row.selected{background:#eddfcf}
+#phone .phone-section-label{letter-spacing:0}
+#phone .code-list{background:#e7dfd0;border-radius:3px;color:#55636a}
+#phone .code-list code{color:#142b38}
+#phone .transaction{color:#142b38}
+#modal{border:0;border-radius:4px;background:#f5f0e6;box-shadow:0 24px 64px #07192366}
+#modal::backdrop{background:#081b26b3}
+#modal .modal-top{background:#142b38;color:#f5f0e6;border:0;padding:24px 28px;min-height:92px}
+#modal .modal-top h2{font-size:29px;font-weight:500;letter-spacing:-.025em;color:#f5f0e6}
+#modal .modal-top .icon-button{background:transparent;color:#f5f0e6;border-color:#78909a;border-radius:2px}
+#modal .modal-top .icon-button:hover{background:#244453}
+#modal #modal-body{padding:28px}
+#modal .modal-intro{font-size:14px;max-width:70ch;color:#55636a}
+#modal .interface-section-title{font-size:15px;padding-bottom:12px;border-bottom:1px solid #142b38;color:#142b38;margin-bottom:4px}
+#modal .setting-row{border-color:#c7beaf}
+#modal .setting-row :is(input,select){background:#fffaf2;border-color:#807e74;color:#142b38}
+#modal .assist-toggle{background:#e7dfd0;color:#142b38}
+#modal .assist-toggle[aria-checked=true]{background:#142b38;color:#f5f0e6;border-color:#142b38}
+#modal .help-grid>span{color:#55636a}
+#modal kbd{background:#e7dfd0;color:#142b38;border-color:#807e74;border-radius:2px}
+#modal details.interface-disclosure{border-color:#807e74}
+#modal .garage-intro{padding-bottom:18px;border-bottom:1px solid #c7beaf;margin-bottom:22px}
+#modal .garage-filters{padding-bottom:14px;gap:6px}
+#modal .garage-filters button{background:transparent;border:1px solid #c7beaf;color:#142b38;border-radius:2px;font-size:12px;padding:10px 13px}
+#modal .garage-filters button[aria-pressed=true]{background:#142b38;color:#f5f0e6;border-color:#142b38}
+#modal .garage-filters button:hover{background:#e7dfd0;color:#142b38}
+#modal .garage-results{font-size:12px;color:#55636a;margin-bottom:24px}
+#modal .garage-grid{gap:32px}
+#modal .garage-card{padding-bottom:24px;border-color:#807e74}
+#modal .garage-brand{color:#55636a;letter-spacing:.08em;font-size:10px;font-weight:650;margin-bottom:10px;text-transform:uppercase}
+#modal .garage-preview{background:#e7dfd0;border-radius:0;min-height:184px;margin-bottom:18px}
+#modal .garage-card .car-visual{height:184px;mix-blend-mode:multiply}
+#modal .garage-preview span{background:#142b38;color:#f5f0e6;border-radius:2px;font-size:10px;bottom:10px;right:10px;padding:6px 8px}
+#modal .garage-preview:hover span{color:#f08a68}
+#modal .garage-card h3{font-size:21px;font-weight:600;letter-spacing:-.02em;color:#142b38;margin-bottom:10px}
+#modal .garage-card h3 small{color:#a43c28;font-size:10px;letter-spacing:0}
+#modal .garage-card p{color:#55636a;font-size:13px;margin-bottom:22px}
+#modal .garage-stats{border-top:1px solid #c7beaf;padding-top:14px;gap:20px;margin-bottom:20px}
+#modal .garage-stats b{font-size:20px;font-weight:500;color:#142b38;letter-spacing:-.03em}
+#modal .garage-stats span{font-size:10px;color:#55636a}
+#modal .garage-card>button{min-height:48px;border-radius:2px;letter-spacing:.02em}
+#modal .character-card{background:transparent;border:0;border-top:1px solid #807e74;border-radius:0;padding:20px 0}
+#modal .character-card.selected{background:#eddfcf;border-color:#142b38}
+#modal .character-card span{color:#a43c28}
+#modal .character-card p{color:#55636a}
+#modal .world-map-layout #full-map{background:#eee7da;border:1px solid #807e74;border-radius:0}
+#modal .world-map-toolbar button{background:transparent;border-color:#807e74;color:#142b38;border-radius:2px}
+#modal .world-map-guidance{border-color:#807e74;color:#142b38}
+#modal .world-map-turn{color:#a43c28}
+#modal .world-map-places button{color:#142b38;border-color:#c7beaf}
+#modal .world-map-places button.selected{background:#eddfcf;color:#a43c28}
+#modal .world-map-places button:hover{background:#e7dfd0}
+#modal .world-map-nav button{background:transparent;border-color:#807e74;color:#142b38;border-radius:2px}
+#modal .world-map-nav #map-set-destination{background:#a43c28;color:#fffaf2}
+#modal .world-map-nav #map-drive{background:#142b38;color:#f5f0e6}
+#modal .world-map-nav button:disabled{background:#e7dfd0;color:#55636a;border-color:#c7beaf;opacity:.65}
+#modal .release-entry{border-color:#c7beaf}
+#modal .release-entry h3{color:#142b38;font-size:20px;font-weight:600;letter-spacing:-.02em}
+#modal .release-entry :is(li,small){color:#55636a}
+/* Navigation app has its own canvas, but shares the warm atlas vocabulary. */
+#phone .navigation-kicker{display:none}
+#phone .navigation-app-heading h3{font-size:27px!important;letter-spacing:-.035em;margin:0 0 12px!important}
+#phone .navigation-summary{background:#e7dfd0;border:0;border-radius:0;padding:20px 16px;margin:22px 0 0;color:#142b38;--nav-color:#a43c28!important}
+#phone .navigation-summary strong{color:#a43c28;font-size:30px;font-weight:550}
+#phone .navigation-summary span{font-size:12px}
+#phone .navigation-total{border-color:#b6aa99}
+#phone .navigation-total small{color:#55636a;font-size:10px}
+#phone .navigation-total b{color:#142b38;font-size:15px}
+#phone .navigation-map-preview{border:0;border-radius:0;background:#eee7da}
+#phone .navigation-map-preview>span{background:#142b38;color:#f5f0e6;border:0;border-radius:2px;font-size:11px}
+#phone .navigation-map-preview b{color:#f08a68}
+#phone .navigation-actions button{border-radius:2px;font-size:12px}
+#phone .navigation-places summary{border-bottom:1px solid #142b38;color:#142b38;font-size:14px}
+#phone .navigation-places summary span{color:#55636a;font-size:11px}
+#phone .navigation-place-grid{gap:0 16px}
+#phone .navigation-place{background:transparent;border:0;border-bottom:1px solid #c7beaf;border-radius:0;padding:16px 0;min-height:80px}
+#phone .navigation-place.selected{background:#eddfcf;color:#a43c28}
+#phone .navigation-place-icon{color:#a43c28}
+#phone .navigation-place strong{color:#142b38;font-size:13px}
+#phone .navigation-place small,#phone .navigation-footnote{color:#55636a;font-size:11px;line-height:1.7}
+/* Road HUD: navy protection, warm white instrumentation, coral only for action. */
+.topbar .wordmark{font-family:CoastEditorial,Georgia,serif;font-weight:400;font-size:21px;letter-spacing:-.04em;color:#f5f0e6;text-shadow:0 2px 5px #071923cc}
+.topbar .wordmark small{font-family:Inter,system-ui,sans-serif;letter-spacing:.03em}
+.topbar :is(.cash,.clock){color:#f5f0e6}
+.topbar .session-tag{color:#e1e6e4}
+.mission-card{background:#f5f0e6;color:#142b38;border-radius:3px}
+.mission-card .mission-label,.mission-card p{color:#55636a}
+.mission-card .reward{color:#a43c28}
+.mission-card #jobs-btn{color:#142b38}
+.mission-card #mission-close{color:#142b38}
+.mission-card kbd,.mission-card .keycap{color:#142b38;border-color:#807e74;background:transparent}
+.mission-card .mission-bottom{border-color:#c7beaf}
+.bottom-hud .map-heading{background:#f5f0e6;color:#142b38;border-radius:3px 3px 0 0}
+.bottom-hud .map-heading i{background:#a43c28}
+.bottom-hud .map-heading button{color:#142b38}
+.bottom-hud .map-heading svg{color:#142b38}
+.bottom-hud .map-north{color:#142b38}
+.bottom-hud .mini-map-wrap{background:#eee7da;border-radius:0 0 3px 3px}
+.bottom-hud .map-expand{background:#142b38;color:#f5f0e6;border:0;border-radius:2px}
+.bottom-hud .drive-hud{background:#f5f0e6;color:#142b38;border-radius:3px}
+.bottom-hud :is(.car-label,.speed-unit,.charge-row,.range){color:#55636a}
+.bottom-hud .speed strong{color:#142b38;font-weight:550;letter-spacing:-.04em}
+.bottom-hud .gear{background:#142b38;color:#f5f0e6;border-radius:2px}
+.bottom-hud .charge-row svg,.bottom-hud .battery-bar i{color:#a43c28;background:#a43c28}
+.bottom-hud .battery-bar{background:#c7beaf}
+.bottom-hud .autopilot-button{background:#142b38;color:#f5f0e6;border-radius:2px}
+.bottom-hud .autopilot-button small{color:#c0ced0}
+.bottom-hud .autopilot-button>span:first-child{color:#f08a68}
+.bottom-hud .autopilot-button .toggle-track{border-color:#78909a}
+.bottom-hud .autopilot-button.active .toggle-track{background:#f08a68;border-color:#f08a68}
+.bottom-hud .vital-bar.health i{background:#f08a68}
+.bottom-hud .vital-bar.armor i{background:#c0ced0}
+.bottom-hud .vital-icon{color:#f5f0e6}
+.mobile-route{background:#142b38;border-radius:3px;--nav-color:#f08a68!important;color:#f5f0e6}
+.mobile-route small{color:#c0ced0}
+body.mobile-controls-v2 .bottom-hud .drive-hud{background:#f5f0e6;color:#142b38}
+body.mobile-controls-v2 .bottom-hud .speed strong{color:#142b38}
+body.mobile-controls-v2 .bottom-hud .gear{background:#142b38;color:#f5f0e6}
+body.mobile-controls-v2 .bottom-hud .charge-row{color:#55636a}
+body.mobile-controls-v2 .bottom-hud .map-heading>button{background:#f5f0e6;color:#142b38;border-radius:0 3px 0 3px}
+body.mobile-controls-v2 .bottom-hud .mini-map-wrap{border:1px solid #807e74;border-radius:3px}
+body.mobile-controls-v2[data-input-mode=touch].mobile-driving .touch-actions #touch-go{background:#f08a68;border-color:#f08a68;color:#142b38;border-radius:3px}
+body.mobile-controls-v2[data-input-mode=touch].mobile-driving .touch-actions #touch-brake{background:#f5f0e6;border-color:#807e74;color:#142b38;border-radius:3px}
+body.mobile-controls-v2[data-input-mode=touch].mobile-driving .mobile-controls button:is(:active,.is-pressed){background:#fff1db;color:#142b38;border-color:#142b38;box-shadow:inset 0 0 0 2px #142b38}
+body.mobile-controls-v2 #mobile-driving-tools button[aria-pressed=true]{background:#533a32;color:#ffd0b8;border-color:#f08a68}
+body.mobile-controls-v2 #mobile-tools-pin[aria-pressed=true]{color:#ffd0b8;border-color:#f08a68}
+body.mobile-controls-v2 #mobile-transmission button[aria-pressed=true]{background:#f08a68;color:#142b38;border-color:#f08a68}
+body.mobile-controls-v2 .mobile-drawer-grid>button[aria-pressed=true] .mobile-action-icon{color:#f08a68;background:#244453;border-color:#f08a68}
+body.mobile-controls-v2 .mobile-drawer-grid>button .mobile-action-icon{background:none;border:0;color:#f5f0e6}
+body.mobile-controls-v2 .mobile-drawer-grid>button small{color:#c0ced0}
+#sensor-panel{background:#142b38;backdrop-filter:none;border:1px solid #78909a;border-radius:3px;color:#f5f0e6}
+#sensor-panel :is(.sensor-meta,.sensor-meter){color:#c0ced0}
+#sensor-panel .sensor-header i{background:#f08a68}
+#interaction{background:#142b38;color:#f5f0e6;border-color:#78909a;border-radius:3px;backdrop-filter:none}
+#interaction .keycap{color:#f08a68;border-color:#f08a68}
+#toast-container .toast{background:#142b38;color:#f5f0e6;border:0;border-radius:3px;box-shadow:0 10px 24px #07192355}
+#toast-container .toast.error{background:#7e2525;color:#fff5eb;border:0}
+#toast-container .toast.reward-toast{color:#f08a68}
+#assist-warning{background:#7e2525;color:#fff5eb;border:1px solid #ffc9ba;border-radius:3px}
+#aircraft-controls button{background:#142b38;color:#f5f0e6;border-color:#78909a;border-radius:3px}
+#aircraft-controls button.is-pressed{background:#f08a68;color:#142b38;transform:none}
+.aircraft-readout{background:#142b38;color:#f5f0e6;border-radius:3px;backdrop-filter:none}
+#aircraft-condition{color:#c0ced0}
+#aircraft-warning{color:#f4c782}
+#flight-status{background:#142b38;color:#f5f0e6;border:1px solid #78909a;border-radius:3px}
+#loading{background:#142b38;color:#f5f0e6}
+#loading .load-brand{font-family:CoastEditorial,Georgia,serif;font-weight:400;font-size:64px;letter-spacing:-.04em}
+#loading .load-brand i{font-family:Inter,system-ui,sans-serif;color:#c0ced0;font-size:12px;letter-spacing:.16em}
+#loading .load-track{background:#3d5661;width:220px;height:3px}
+#loading .load-track span{background:#f08a68}
+#loading p{color:#c0ced0;font-size:12px;letter-spacing:.02em}
+#loading a{background:#f5f0e6;color:#142b38;border:0;border-radius:3px}
+@media(max-width:740px){
+ #phone .phone-content{padding:24px 20px}
+ #phone .phone-content h3{font-size:25px}
+ #phone .phone-top{min-height:60px;padding:8px 12px}
+ #phone .interface-phone-nav{padding:0 12px 10px}
+ #phone .interface-phone-nav button{padding:7px 10px}
+ #modal .modal-top{padding:18px 20px;min-height:80px}
+ #modal .modal-top h2{font-size:25px}
+ #modal #modal-body{padding:24px 20px}
+ #modal .garage-grid{gap:28px}
+ #modal .garage-card h3{font-size:21px}
+ #loading .load-brand{font-size:42px}
+}
+@media(max-height:520px) and (min-width:741px){#phone .phone-top{min-height:54px;padding:4px 12px}#phone .phone-content{padding:20px}#modal .modal-top{min-height:72px;padding:14px 24px}}
+.bottom-hud .charge-row svg{background:none}
+#release-badge,.beta-save-home{color:#f5f0e6}
+#release-badge:focus-visible,.beta-save-home:focus-visible{outline:3px solid #f08a68;outline-offset:2px}
+#brake-closeup{border-color:#f4c782;border-radius:3px}
+#brake-closeup header,#brake-closeup footer{background:#142b38;color:#f5f0e6}
+#brake-closeup header button{background:#244453;color:#f5f0e6;border-radius:3px}
+#brake-closeup footer span{color:#c0ced0}
+#brake-warning{background:#7e2525;color:#fff5eb;border-color:#ffc9ba;border-radius:3px}
+body.brake-failed .touch-actions #touch-brake{background:#7e2525!important;color:#fff5eb!important;border-color:#ffc9ba!important;box-shadow:inset 0 0 0 2px #ffc9ba}
+/* External aircraft/Rocket overlay shell only, never in-car displays. */
+#roadster-controls button{background:#142b38;color:#f5f0e6;border-color:#78909a;border-radius:3px}
+#roadster-controls button:is(.is-pressed,[aria-pressed=true]){background:#f08a68;color:#142b38}
+#roadster-controls :is(.roadster-status,.roadster-attitude){background:#142b38;color:#f5f0e6;backdrop-filter:none;border-radius:3px}
+#roadster-warning{color:#f4c782}
+.location{--lime:#f08a68}
+.mission-card .mission-index{color:#55636a}
+.bottom-hud .autopilot-button.active .toggle-track i{background:#142b38}
+body[data-input-mode=touch] .joystick-ring{background:#142b38;border-color:#78909a;backdrop-filter:none}
+body[data-input-mode=touch] .joystick-thumb{background:#f08a68;border-color:#f08a68}
+body[data-input-mode=touch].mobile-walking .touch-actions button{background:#142b38;color:#f5f0e6;border:1px solid #78909a;border-radius:3px;backdrop-filter:none}
+body[data-input-mode=touch].mobile-walking .touch-actions button:is(:active,.is-pressed){background:#f08a68;color:#142b38}
+body.mobile-controls-v2.mobile-walking .joystick-thumb{background:#f08a68;border-color:#f08a68}
+body.mobile-controls-v2 .mobile-quick-actions #mobile-menu{background:#142b38;color:#f5f0e6;border-color:#78909a;border-radius:3px}
+body.mobile-controls-v2 .mobile-quick-actions #mobile-menu[aria-expanded=true]{background:#f08a68;color:#142b38;border-color:#f08a68}
+body[data-input-mode=touch].mobile-walking .touch-actions #touch-go{background:#f08a68;color:#142b38;border-color:#f08a68;border-radius:3px}
+body[data-input-mode=touch].mobile-walking .touch-actions #touch-go:is(:active,.is-pressed){background:#fff1db;color:#142b38;border-color:#142b38}
+#phone :is(.phone-top,.interface-phone-nav) button:focus-visible,#modal .modal-top button:focus-visible{outline-color:#f08a68}
+/* Light HUD surfaces own their foregrounds; legacy HUD :is() includes IDs. */
+#mission-card{color:#142b38;--white:#142b38;--hud-text:#142b38;--hud-muted:#55636a;--hud-accent:#a43c28}
+#mission-card h2,#mission-title{color:#142b38}
+#mission-card p,#mission-desc,#mission-card .mission-label,#mission-card .mission-index{color:#55636a}
+.bottom-hud .speed-unit small{color:#55636a}

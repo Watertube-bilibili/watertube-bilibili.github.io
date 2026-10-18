@@ -1,0 +1,54 @@
+import * as THREE from './vendor/three.module.js';
+import {cockpitProfile} from './cockpit-profiles.js';
+const activeCars=new WeakMap();
+export function infotainmentState(car,game=null){
+ const speed=Number.isFinite(car?.speed)?car.speed:0,battery=Math.max(0,Math.min(100,car?.battery??100));
+ const active=game?.vehicle===car&&game.inCar;
+ return{speed:Math.round(Math.abs(speed)*3.6),gear:Math.abs(speed)<.15?'P':speed<0?'R':'D',battery:Math.round(battery),range:Math.round((car?.model?.range??0)*battery/100),condition:Math.round(Math.max(0,Math.min(100,car?.condition??100))),pilot:!!(active&&game.autopilot),destination:active&&game.destination?.name?String(game.destination.name):'自由驾驶',model:car?.model?.name??'sunset coast',profile:cockpitProfile(car?.model)};
+}
+export function paintVehicleInfotainment(ctx,s){
+ const W=768,H=400,p=s.profile,accent=p.accent;
+ ctx.clearRect(0,0,W,H);ctx.fillStyle='#101923';ctx.fillRect(0,0,W,H);ctx.textBaseline='middle';ctx.textAlign='left';
+ const text=(value,x,y,size=22,color='#edf3f6',align='left')=>{ctx.fillStyle=color;ctx.font=`500 ${size}px sans-serif`;ctx.textAlign=align;ctx.fillText(String(value),x,y);};
+ const rect=(x,y,w,h,fill='#1c2a36')=>{ctx.fillStyle=fill;ctx.fillRect(x,y,w,h);};
+ const bar=(x,y,w,value)=>{rect(x,y,w,6,'#34424c');rect(x,y,w*Math.max(0,Math.min(1,value)),6,accent);};
+ const nav=(x,y,w)=>{rect(x,y,w,72);text('目的地',x+16,y+18,13,accent);text(s.destination.slice(0,16),x+16,y+48,23);};
+ const metric=(label,value,x,y,w=160)=>{rect(x,y,w,86);text(label,x+16,y+21,14,accent);text(value,x+16,y+57,30);};
+ text(s.model,24,25,21,accent);text(p.edition,744,25,14,'#a8b6c2','right');rect(24,49,720,1,accent);
+ if(p.layout==='sport'){
+  text(s.speed,38,147,106);text('km/h',45,221,21,accent);text(s.gear,300,150,80);bar(30,260,708,s.speed/280);
+  metric('电量',s.battery+'%',425,78,145);metric('车况',s.condition+'%',590,78,145);nav(425,183,310);text(s.pilot?'PILOT ACTIVE':'DRIVER CONTROL',32,307,20,accent);
+ }else if(p.layout==='wide'){
+  rect(24,72,720,105);text(s.speed,45,124,76);text('km/h · '+s.gear,225,126,22,accent);text(s.range+' km',720,124,41,'#edf3f6','right');
+  nav(24,198,440);metric('电量',s.battery+'%',486,198,258);bar(24,307,720,s.battery/100);
+ }else if(p.layout==='touring'){
+  nav(24,74,430);metric('剩余续航',s.range+' km',24,169,205);metric('电量',s.battery+'%',249,169,205);
+  rect(477,74,267,245);text(s.speed,610,158,96,'#edf3f6','center');text('km/h  ·  '+s.gear,610,236,23,accent,'center');bar(24,300,430,s.battery/100);
+ }else if(p.layout==='utility'){
+  metric('车速',s.speed+' km/h',24,74,224);metric('挡位',s.gear,272,74,224);metric('车况',s.condition+'%',520,74,224);
+  nav(24,182,472);metric('续航',s.range+' km',520,182,224);bar(24,296,720,s.battery/100);text('电量 '+s.battery+'%',24,324,18,accent);
+ }else if(p.layout==='lounge'){
+  nav(24,74,720);metric('续航',s.range+' km',24,170,224);metric('电量',s.battery+'%',272,170,224);metric('车况',s.condition+'%',520,170,224);
+  text(s.speed+' km/h',24,309,40);text('挡位 '+s.gear,744,309,24,accent,'right');
+ }else if(p.layout==='classic'||p.layout==='compact'){
+  for(const [x,value,label]of [[193,s.speed,'km/h'],[575,p.layout==='classic'?s.range:s.battery,p.layout==='classic'?'km range':'% battery']]){ctx.strokeStyle=accent;ctx.lineWidth=p.layout==='classic'?3:9;ctx.beginPath();ctx.arc(x,172,94,0,Math.PI*2);ctx.stroke();text(value,x,159,63,'#edf3f6','center');text(label,x,218,17,accent,'center');}
+  text(s.gear,384,172,42,accent,'center');nav(24,282,720);
+ }else{
+  rect(24,74,220,245);text(s.speed,134,153,96,'#edf3f6','center');text('km/h · '+s.gear,134,232,21,accent,'center');nav(268,74,476);metric('电量',s.battery+'%',268,169,226);metric('续航',s.range+' km',518,169,226);bar(268,300,476,s.battery/100);
+ }
+ text(s.pilot?'辅助驾驶已开启':'手动驾驶',24,378,17,accent);text('车辆实时数据 · 原创游戏界面',744,378,14,'#8ea3b4','right');
+}
+export function attachVehicleInfotainment(car){
+ if(!car?.infotainmentMesh?.isMesh||car.infotainment)return car?.infotainment??null;
+ const canvas=document.createElement('canvas');canvas.width=768;canvas.height=400;const context=canvas.getContext('2d');if(!context)return null;
+ const texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.minFilter=texture.magFilter=THREE.LinearFilter;texture.generateMipmaps=false;
+ const material=new THREE.MeshBasicMaterial({map:texture,toneMapped:false});const surface=car.infotainmentMesh;
+ car.infotainment={canvas,context,texture,material,surface,originalMaterial:surface.material,lastUpdate:-Infinity,signature:''};surface.material=material;return car.infotainment;
+}
+export function updateVehicleInfotainment(car,time=0,game=null){
+ if(game){const previous=activeCars.get(game);if(previous&&previous!==car&&previous.infotainment){previous.infotainment.lastUpdate=-Infinity;updateVehicleInfotainment(previous,time,null);}activeCars.set(game,car);}
+ const panel=car?.infotainment??attachVehicleInfotainment(car);if(!panel||time>=panel.lastUpdate&&time-panel.lastUpdate<.2)return;
+ panel.lastUpdate=time;const state=infotainmentState(car,game),signature=JSON.stringify(state);if(signature===panel.signature)return;
+ panel.signature=signature;paintVehicleInfotainment(panel.context,state);panel.texture.needsUpdate=true;
+}
+export function disposeVehicleInfotainment(car){const p=car?.infotainment;if(!p)return;if(p.surface.material===p.material)p.surface.material=p.originalMaterial;p.texture.dispose();p.material.dispose();delete car.infotainment;}

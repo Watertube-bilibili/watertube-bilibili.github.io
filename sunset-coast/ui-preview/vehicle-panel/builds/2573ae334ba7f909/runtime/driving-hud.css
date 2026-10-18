@@ -1,0 +1,165 @@
+/* Driving HUD / Impeccable-guided replacement. This file owns screen-space HUD
+   only. In-world displays, aircraft and Rocket flight controls keep their skins. */
+body{
+ --hud-surface:#142b38;--hud-raised:#244453;--hud-edge:#78909a;
+ --hud-text:#f5f0e6;--hud-muted:#c0ced0;--hud-accent:#f08a68;
+ --hud-warning:#f4c782;--hud-radius:8px;
+}
+/* Scope typography and palette to screen-space controls, not vehicle displays. */
+:is(.topbar,.location,.mission-card,.right-tools,.bottom-hud,.mobile-route,#mobile-ui,.mobile-controls){font-family:Inter,"Noto Sans SC",system-ui,sans-serif;color:var(--hud-text)}
+:is(.topbar,.location,.mission-card,.right-tools,.bottom-hud,.mobile-route,#mobile-ui) ::selection{background:var(--hud-accent);color:#142b38}
+:is(.topbar,.mission-card,.right-tools,.bottom-hud,.mobile-route,#mobile-ui) button:focus-visible{outline:3px solid var(--hud-accent);outline-offset:3px}
+:is(.topbar,.mission-card,.right-tools,.bottom-hud,.mobile-route,#mobile-ui) button:disabled{opacity:.45;cursor:not-allowed}
+.topbar{padding:20px 24px;gap:24px}
+.topbar .wordmark{font-family:inherit;font-size:18px;font-weight:750;letter-spacing:-.5px;gap:4px}
+.topbar .wordmark>span{color:inherit}
+.topbar .wordmark small{font-family:inherit;font-size:10px;letter-spacing:0;color:var(--hud-muted);margin-left:12px}
+.topbar .session-tag{border:0;border-radius:0;background:none;padding:0;font-size:11px;color:var(--hud-muted)}
+.topbar .live-dot{background:var(--hud-accent)}
+.topbar .cash small{font-size:10px;letter-spacing:0;color:var(--hud-muted)}
+.topbar .cash strong{font-size:16px;letter-spacing:0;font-variant-numeric:tabular-nums}
+.topbar .cash svg{color:var(--hud-accent)}
+.topbar :is(.mode-button,.icon-button){background:var(--hud-surface);border:1px solid var(--hud-edge);border-radius:3px;min-height:44px}
+.topbar .icon-button{width:44px}
+.location{left:24px;top:89px;gap:0}
+.location .location-line,.location small{display:none}
+.location h1{font-size:17px;letter-spacing:0;margin:0 0 5px;font-weight:600;text-shadow:0 2px 5px #0008}
+.location p{font-size:11px;letter-spacing:0;color:var(--hud-muted)}
+.location .character-chip{background:var(--hud-surface);border-color:var(--hud-edge);left:260px;top:0;margin:0;font-size:11px;min-height:36px}
+.right-tools{top:92px;right:24px;gap:6px}
+.right-tools .tool-button{background:var(--hud-surface);backdrop-filter:none;border:1px solid var(--hud-edge);border-radius:3px;min-height:44px;font-size:12px;gap:12px}
+.right-tools .tool-button kbd{border:0;background:none;color:var(--hud-muted)}
+.mission-card{left:24px;top:236px;width:238px;padding:15px;background:var(--hud-surface);border:0;border-radius:3px;backdrop-filter:none;box-shadow:none}
+.mission-card .mission-label{color:var(--hud-muted);font-size:11px;letter-spacing:0}
+.mission-card h2{font-size:16px;margin:14px 0 8px;font-weight:600;letter-spacing:0}
+.mission-card p{font-size:12px;line-height:1.6;color:var(--hud-muted);margin:0 0 12px}
+.mission-card .reward{color:var(--hud-accent)}
+.mission-card .mission-bottom button{min-height:36px;font-size:12px}
+.bottom-hud{left:24px;right:24px;bottom:24px}
+.bottom-hud .map-panel{width:220px;filter:none}
+.bottom-hud .map-heading{background:var(--hud-surface);border:0;border-radius:3px 8px 0 0;min-height:36px;padding:0 12px}
+.bottom-hud .map-heading>span{font-size:10px;letter-spacing:.3px}
+.bottom-hud .map-heading i{background:var(--hud-accent)}
+.bottom-hud .map-heading button{min-width:44px;min-height:36px;justify-content:center;align-items:center}
+.bottom-hud .mini-map-wrap{border:0;border-radius:0 0 8px 8px;background:var(--hud-surface);height:128px}
+.bottom-hud .map-north{color:var(--hud-text)}
+.bottom-hud .map-footer{font-size:10px;letter-spacing:0;color:var(--hud-muted);padding-top:5px}
+.bottom-hud .drive-hud{width:226px;padding:16px;background:var(--hud-surface);border-radius:3px}
+.bottom-hud .car-label{font-size:12px;letter-spacing:0;gap:7px;color:var(--hud-muted)}
+.bottom-hud .volt-mark,.bottom-hud .car-trim{display:none}
+.bottom-hud .speed{margin:12px 0 0;align-items:baseline;gap:10px}
+.bottom-hud .speed strong{font-family:inherit;font-size:64px;line-height:1;letter-spacing:-2px;font-weight:600;text-shadow:none;font-variant-numeric:tabular-nums}
+.bottom-hud .speed-unit{font-size:10px;padding:0;letter-spacing:0;color:var(--hud-muted)}
+.bottom-hud .speed-unit small{font-size:10px;letter-spacing:0}
+.bottom-hud .gear{align-self:center;margin:0;background:var(--hud-raised);color:var(--hud-accent);border:0;border-radius:4px;font-size:12px;width:24px;height:26px}
+.bottom-hud .charge-row{font-size:11px;margin:12px 0;color:var(--hud-muted)}
+.bottom-hud .battery-bar i{background:var(--hud-accent)}
+.bottom-hud .autopilot-button{background:var(--hud-raised);border:0;border-radius:3px;min-height:48px}
+.bottom-hud .autopilot-button strong{font-size:12px}
+.bottom-hud .autopilot-button small{font-size:10px;color:var(--hud-muted)}
+.bottom-hud .radio{margin-bottom:14px;justify-content:flex-start}
+.bottom-hud .radio small{font-size:10px;letter-spacing:0}
+.bottom-hud .radio div>span{font-size:12px;letter-spacing:0}
+.bottom-hud .key-hints{gap:14px;font-size:11px}
+.mobile-route,.mobile-route:active{left:24px;top:154px;transform:none;width:300px;min-height:64px;background:var(--hud-surface);border:0;border-radius:3px;box-shadow:none;backdrop-filter:none;--nav-color:var(--hud-accent)}
+.mobile-route .navigation-hud-icon{background:none;padding:0;border:0;border-radius:0;color:var(--hud-accent)}
+.mobile-route strong{font-size:14px;letter-spacing:0}
+.mobile-route small{font-size:11px;color:var(--hud-muted)}
+.mobile-route .navigation-hud-distance{font-size:21px;letter-spacing:-.5px}
+.mobile-route .mobile-route-arrow{display:none}
+/* Touch topology is stable: neither press nor signal reveal changes geometry. */
+body.mobile-controls-v2{--drive-panel:var(--hud-surface);--drive-button:var(--hud-raised);--drive-border:var(--hud-edge)}
+body.mobile-controls-v2 .topbar{height:44px;padding-top:10px}
+body.mobile-controls-v2 .wordmark{font-size:16px;letter-spacing:-.4px}
+body.mobile-controls-v2 .location,body.mobile-controls-v2.cockpit-open .location{top:calc(var(--mobile-safe-top) + 52px);max-width:52vw}
+body.mobile-controls-v2 .location h1{font-size:13px;line-height:1.4;font-weight:600}
+body.mobile-controls-v2 .mobile-route,body.mobile-controls-v2 .mobile-route:active{top:calc(var(--mobile-safe-top) + 48px);width:min(230px,calc(100vw - 118px));min-height:64px;padding:10px;gap:8px;background:var(--hud-surface);border:0;border-radius:3px}
+body.mobile-controls-v2 .mobile-route .navigation-hud-icon{flex-basis:24px}
+body.mobile-controls-v2 .mobile-route strong{font-size:12px;line-height:1.4}
+body.mobile-controls-v2 .mobile-route small{display:block;font-size:10px;line-height:1.4;margin-top:3px}
+body.mobile-controls-v2 .mobile-route .navigation-hud-distance{font-size:17px}
+/* Restore the existing live minimap, with no new renderer or duplicated data. */
+body.mobile-controls-v2 .bottom-hud .map-panel{display:block!important;position:fixed;left:max(var(--drive-edge),var(--mobile-safe-left));top:calc(var(--mobile-safe-top) + 124px);width:132px;max-width:35vw;pointer-events:auto}
+body.mobile-controls-v2 .bottom-hud .map-heading{height:0;min-height:0;background:none;padding:0}
+body.mobile-controls-v2 .bottom-hud .map-heading>span{display:none}
+body.mobile-controls-v2 .bottom-hud .map-heading>button{position:absolute;right:0;top:0;min-height:44px;width:44px;background:var(--hud-surface);border-radius:0 8px 0 8px;z-index:2}
+body.mobile-controls-v2 .bottom-hud .mini-map-wrap{height:92px;border-radius:3px;border:1px solid var(--hud-edge)}
+body.mobile-controls-v2 .bottom-hud .vitals{padding:7px 2px 0}
+body.mobile-controls-v2 .bottom-hud .map-footer{display:none}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .bottom-hud{bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-controls-height) + 64px)}
+body.mobile-controls-v2 .bottom-hud .drive-hud{padding:10px 12px;width:calc(2 * var(--drive-pedal-width) + var(--drive-gap));border-radius:3px;background:var(--hud-surface)}
+body.mobile-controls-v2 .bottom-hud .speed{margin:0;gap:7px;justify-content:flex-end}
+body.mobile-controls-v2 .bottom-hud .speed strong{font-size:40px;letter-spacing:-1.5px}
+body.mobile-controls-v2 .bottom-hud .gear{width:20px;height:24px;font-size:11px}
+body.mobile-controls-v2 .bottom-hud .speed-unit{font-size:9px;padding:0}
+body.mobile-controls-v2 .bottom-hud .speed-unit small{display:none}
+body.mobile-controls-v2 .bottom-hud .charge-row{margin:8px 0 0;font-size:10px;gap:6px;justify-content:flex-end}
+body.mobile-controls-v2 .bottom-hud .car-label{display:none}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .mobile-controls button{border-radius:3px;box-shadow:none;border-color:var(--hud-edge);background:var(--hud-raised);color:var(--hud-text)}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-steering :is(#touch-left,#touch-right){border-radius:3px}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-actions #touch-handbrake{background:var(--hud-surface);border-color:var(--hud-edge);color:var(--hud-warning);border-radius:3px;gap:4px}
+body.mobile-controls-v2.mobile-driving #touch-handbrake::before{content:none}
+#touch-handbrake .hud-handbrake-icon{display:none}
+body.mobile-controls-v2.mobile-driving #touch-handbrake .hud-handbrake-icon{display:block;width:20px;height:20px;flex:none}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-actions #touch-brake{background:var(--hud-raised);border-color:var(--hud-edge);border-radius:3px}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .touch-actions #touch-go{background:#f08a68;border-color:#f08a68;color:#142b38;border-radius:3px}
+body.mobile-controls-v2.mobile-driving #touch-go::before,body.mobile-controls-v2.mobile-driving #touch-brake::before{transform:none;border-width:1.5px;border-radius:3px}
+body.mobile-controls-v2.mobile-driving #touch-go::after,body.mobile-controls-v2.mobile-driving #touch-brake::after{font-size:11px;font-weight:600}
+body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .mobile-controls button:is(:active,.is-pressed){background:#fff1db;border-color:#fff;color:#142b38;box-shadow:inset 0 0 0 2px #142b38;transform:none}
+body.mobile-controls-v2 #mobile-tools-toggle{background:var(--hud-surface);border-radius:3px;border-color:var(--hud-edge);font-size:12px}
+body.mobile-controls-v2 #mobile-tools-toggle svg{width:18px;height:18px}
+body.mobile-controls-v2 #mobile-tools-toggle[aria-expanded="true"]{background:var(--hud-raised);color:var(--hud-accent);border-color:var(--hud-accent)}
+body.mobile-controls-v2 #mobile-pedal-signals button{background:var(--hud-surface);border-radius:3px;border-color:var(--hud-edge);color:var(--hud-warning);font-size:11px}
+body.mobile-controls-v2 #mobile-pedal-signals button[aria-pressed="true"]{color:#142b38;background:var(--hud-accent);border-color:var(--hud-accent)}
+body.mobile-controls-v2 #mobile-driving-tools{padding:12px;border-radius:3px;border-color:var(--hud-edge);background:var(--hud-surface);scrollbar-color:var(--hud-edge) var(--hud-surface);scrollbar-width:thin}
+body.mobile-controls-v2 #mobile-driving-tools header{font-size:12px;color:var(--hud-muted)}
+body.mobile-controls-v2 #mobile-driving-tools button{background:var(--hud-raised);border-color:var(--hud-edge);font-size:12px;color:var(--hud-text);border-radius:3px}
+body.mobile-controls-v2 #mobile-driving-tools button[aria-pressed="true"]{background:#533a32;border-color:var(--hud-accent);color:var(--hud-accent)}
+body.mobile-controls-v2 #mobile-pilot small{font-size:10px;color:var(--hud-muted)}
+body.mobile-controls-v2 #mobile-signals button svg{width:19px;height:19px;color:var(--hud-warning)}
+body.mobile-controls-v2 .mobile-drawer{background:var(--hud-surface);border-radius:3px;border-color:var(--hud-edge)}
+body.mobile-controls-v2 .mobile-drawer-header>div>span{display:none}
+body.mobile-controls-v2 .mobile-drawer-header h2{font-size:20px;margin:0}
+body.mobile-controls-v2 .mobile-drawer-grid>button{background:var(--hud-raised);font-size:12px;border-radius:3px}
+body.mobile-controls-v2 .mobile-action-icon{color:var(--hud-text)}
+body.mobile-controls-v2 #mobile-balance{font-size:18px;color:var(--hud-text)}
+body.mobile-controls-v2 .mobile-drawer-footer{font-size:10px;color:var(--hud-muted)}
+/* Do not hide speed until the existing renderer explicitly proves readability. */
+body.mobile-controls-v2.interior-driving-view .bottom-hud .drive-hud{width:auto;min-width:66px;padding:6px 8px;max-width:calc(2 * var(--drive-pedal-width) + var(--drive-gap))}
+body.mobile-controls-v2.interior-driving-view .bottom-hud .drive-hud .speed strong{font-size:24px;letter-spacing:-.5px}
+body.mobile-controls-v2.interior-driving-view.cockpit-speed-readable .bottom-hud .drive-hud{display:none!important}
+body.mobile-controls-v2.mobile-tools-open .bottom-hud .map-panel{visibility:hidden;pointer-events:none}
+@media(max-width:380px){body.mobile-controls-v2 .mobile-route{width:calc(100vw - 108px);gap:6px;padding:8px}body.mobile-controls-v2 .mobile-route strong{font-size:11px}body.mobile-controls-v2 .mobile-route .navigation-hud-distance{font-size:15px}body.mobile-controls-v2 .bottom-hud .speed strong{font-size:35px}body.mobile-controls-v2 .bottom-hud .drive-hud{padding:9px}}
+@media(orientation:landscape) and (max-height:500px){
+ body.mobile-controls-v2 .topbar{height:36px}
+ body.mobile-controls-v2 .mobile-route{top:calc(var(--mobile-safe-top) + 42px);min-height:48px;width:216px}
+ body.mobile-controls-v2 .mobile-route small{display:none}
+ body.mobile-controls-v2 .bottom-hud .map-panel{display:none!important}
+ body.mobile-controls-v2 .bottom-hud .drive-hud{padding:6px 9px}
+ body.mobile-controls-v2 .bottom-hud .speed strong{font-size:30px}
+ body.mobile-controls-v2 .bottom-hud .charge-row{display:none}
+ body.mobile-controls-v2[data-input-mode="touch"].mobile-driving .bottom-hud{bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + var(--drive-controls-height) + 59px)}
+}
+@media(prefers-reduced-motion:reduce){:is(.mobile-route,#mobile-ui,.mobile-controls) *{transition:none;animation:none}}
+@media(forced-colors:active){body.mobile-controls-v2 .mobile-controls button,body.mobile-controls-v2 #mobile-tools-toggle,body.mobile-controls-v2 #mobile-pedal-signals button{border:2px solid ButtonText}body.mobile-controls-v2 .mobile-controls button.is-pressed{outline:3px solid Highlight}}
+/* A persistent tools panel remains a non-modal driving surface. */
+body.mobile-controls-v2 #mobile-driving-tools header>span{flex:1}
+body.mobile-controls-v2 #mobile-driving-tools #mobile-tools-pin{width:auto;min-width:52px;padding:8px}
+/* D/N/R occupies the existing middle gap immediately beside the right pedals. */
+#mobile-gears{display:none}
+body.mobile-controls-v2.mobile-driving #mobile-gears{position:fixed;display:grid;grid-template-columns:44px;gap:4px;right:calc(max(var(--drive-edge),var(--mobile-safe-right)) + 2 * var(--drive-pedal-width) + var(--drive-gap) + 4px);bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom));z-index:24;pointer-events:auto}
+body.mobile-controls-v2 #mobile-gears[hidden]{display:none!important}
+body.mobile-controls-v2 #mobile-gears button{width:44px;height:44px;padding:0;border:1px solid var(--hud-edge);border-radius:3px;background:var(--hud-surface);color:var(--hud-muted);font:600 16px Inter,system-ui,sans-serif;touch-action:manipulation}
+body.mobile-controls-v2 #mobile-gears button[aria-pressed="true"]{background:var(--hud-accent);border-color:var(--hud-accent);color:#142b38}
+body.mobile-controls-v2 #mobile-gears button:focus-visible{outline:3px solid var(--hud-accent);outline-offset:1px}
+body.mobile-controls-v2 #mobile-secondary-driving #touch-reverse{display:none!important}
+body.mobile-controls-v2.mobile-driving #mobile-driving-tools{bottom:calc(var(--mobile-safe-bottom) + var(--drive-bottom) + max(var(--drive-controls-height),140px) + 8px);max-height:calc(var(--mobile-vh) - var(--mobile-safe-top) - var(--mobile-safe-bottom) - max(var(--drive-controls-height),140px) - var(--drive-bottom) - 24px)}
+body.mobile-controls-v2.mobile-panel-open #mobile-gears,body.mobile-controls-v2.mobile-drawer-open #mobile-gears{visibility:hidden;pointer-events:none}
+:where(#mobile-gears,#mobile-gears *){-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
+/* Keep the expanded utility surface left of the right-side lamp/speed column. */
+body.mobile-controls-v2 #mobile-driving-tools{width:min(var(--drive-panel-width),calc(100vw - max(var(--drive-edge),var(--mobile-safe-left)) - max(var(--drive-edge),var(--mobile-safe-right)) - 2 * var(--drive-pedal-width) - var(--drive-gap) - 8px))}
+body.mobile-controls-v2 #mobile-driving-tools header{flex-wrap:wrap}
+body.mobile-controls-v2 #mobile-driving-tools header>span{flex-basis:100%}
+body.mobile-controls-v2 #mobile-driving-tools #mobile-tools-pin{margin-right:auto}
+body.mobile-controls-v2 #mobile-signals,body.mobile-controls-v2 #mobile-driving-tools .mobile-quick-actions{grid-template-columns:repeat(auto-fit,minmax(44px,1fr))}
+body.mobile-controls-v2 #mobile-secondary-driving #touch-gentle{grid-column:1/-1}

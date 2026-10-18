@@ -1,0 +1,33 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>NEON COAST · 入口界面预览</title><style>*{box-sizing:border-box}body{margin:0;background:#e7dfd0;color:#142b38;font:14px/1.6 system-ui}header{padding:16px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;border-bottom:1px solid #bcb7aa;background:#f5f0e6}h1{font-size:17px;margin:0}p{font-size:12px;margin:2px 0;color:#52616a}nav{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}button,select{font:inherit;min-height:44px;padding:8px 12px;border:1px solid #bcb7aa;background:#f5f0e6;color:#142b38;border-radius:3px;cursor:pointer}button:hover{background:#e7dfd0}:focus-visible{outline:2px solid #a43c28;outline-offset:3px}main{padding:18px;overflow:auto}iframe{display:block;width:100%;height:900px;border:1px solid #bcb7aa;background:#f5f0e6;margin:auto}footer{padding:0 24px 18px;color:#52616a;font-size:12px}@media(max-width:600px){header{padding:12px}nav{margin:0}main{padding:8px}}</style></head><body>
+<header><div><h1>出发入口 / UI-only 交互预览</h1><p>使用实际入口 HTML 与 CSS。示例进度仅存内存，不读取、复制或改动真实存档。</p></div><nav aria-label="入口预览工具"><select id="viewport" aria-label="预览尺寸"><option value="desktop">桌面 · 自适应</option><option value="390">手机 · 390 × 844</option><option value="768">平板 · 768 × 1024</option></select><button id="empty">查看空存档状态</button><button id="reset">重置示例</button></nav></header>
+<main><iframe id="preview" title="真实测试版入口界面预览"></iframe></main><footer id="review-status" role="status">正在载入入口模板…</footer>
+<script type="module">
+const frame=document.querySelector('#preview'),status=document.querySelector('#review-status');
+const sourceURL=new URL('./entry/index.html',location.href);
+try{
+ const response=await fetch(sourceURL);if(!response.ok)throw Error('入口模板无法载入：'+response.status);
+ const template=new DOMParser().parseFromString(await response.text(),'text/html');
+ template.querySelectorAll('script').forEach(node=>node.remove());
+ const base=template.createElement('base');base.href=new URL('./',sourceURL);template.head.prepend(base);
+ // The fixture never imports beta-launcher.js, its storage helpers, or game boot code.
+ const note=template.createElement('p');note.textContent='UI-only 界面演示 · 以下为示例进度 · 不访问真实存档';note.setAttribute('role','note');note.style.cssText='margin:0;padding:10px 20px;background:#142b38;color:#f5f0e6;text-align:center;font:12px/1.6 system-ui';template.body.prepend(note);
+ frame.onload=()=>{
+  const doc=frame.contentDocument,$=id=>doc.getElementById(id);let slots=[],serial=2;
+  const say=text=>{$('beta-status').textContent=text;status.textContent=text};
+  const render=()=>{
+   $('beta-continue').hidden=!slots.length;$('beta-slots').replaceChildren();
+   for(const slot of slots){const b=doc.createElement('button');b.type='button';b.textContent=slot.label+' · '+slot.detail;b.onclick=()=>say('已选中“'+slot.label+'”。这是界面演示，不启动游戏。');$('beta-slots').append(b)}
+   say(slots.length?'示例列表：'+slots.length+' 份内存测试进度。可试用继续、复制和新建按钮。':'示例空状态：暂无测试进度。可试用复制或新建按钮。');
+  };
+  const reset=()=>{serial=2;slots=[{label:'示例 · 海岸旅程',detail:'演示副本 A'},{label:'示例 · 城市探索',detail:'演示副本 B'}];render()};
+  $('beta-continue').onclick=()=>say('已选择继续“'+slots[0].label+'”。不读取真实存档，不启动游戏。');
+  $('beta-copy').onclick=()=>{let slot=slots.find(x=>x.copied);if(!slot){slot={label:'示例 · 标准版副本',detail:'内存副本，未读取标准版',copied:true};slots.unshift(slot);render();say('已添加内存示例副本。真实标准版与测试版存档均未访问。')}else say('再次选择相同示例进度：继续已有内存副本，不重复创建。')};
+  $('beta-new').onclick=()=>{slots.unshift({label:'示例 · 新旅程 '+(++serial),detail:'仅存在于此预览页面'});render();say('新建示例进度已加入列表。刷新页面后重置，不启动游戏。')};
+  doc.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();say('已点击“返回标准版”入口。UI-only 预览停留在此，不跳转游戏。')}));
+  document.querySelector('#empty').onclick=()=>{slots=[];render();$('beta-saved').open=true};document.querySelector('#reset').onclick=reset;
+  reset();status.textContent='入口交互就绪。按钮与存档列表是内存演示，版式来自真实入口模板。';
+ };
+ frame.srcdoc='<!doctype html>'+template.documentElement.outerHTML;
+}catch(e){status.textContent='预览未载入：'+e.message}
+document.querySelector('#viewport').onchange=e=>{const v=e.target.value;frame.style.width=v==='desktop'?'100%':v+'px';frame.style.height=v==='390'?'844px':v==='768'?'1024px':'900px'};
+</script></body></html>

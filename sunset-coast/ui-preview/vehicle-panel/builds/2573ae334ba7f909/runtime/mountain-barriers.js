@@ -1,0 +1,24 @@
+import {MOUNTAIN_ROADS} from './regions.js';
+const key=p=>p.x+','+p.z,HALF=14,GATE=24;
+/** Offset the connected road, meeting at genuine two-way corners. Junctions
+ * and the entrance keep their existing openings; the outside of a bend is not
+ * an exit. All returned rails are rendered and use matching physical boxes.
+ */
+export function mountainBarrierSegments(roads=MOUNTAIN_ROADS){
+ const nodes=new Map();for(const {a,b}of roads)for(const [p,n]of [[a,b],[b,a]]){const id=key(p);if(!nodes.has(id))nodes.set(id,new Map());nodes.get(id).set(key(n),n);}
+ const result=[];
+ for(const {a,b}of roads){const length=Math.hypot(b.x-a.x,b.z-a.z),dx=(b.x-a.x)/length,dz=(b.z-a.z)/length,nx=-dz,nz=dx;
+  for(const side of [-1,1]){
+   function endpoint(p,opposite,start){const links=[...nodes.get(key(p)).values()],out={x:p.x+nx*side*HALF,z:p.z+nz*side*HALF};
+    if(links.length!==2){out.x+=dx*(start?GATE:-GATE);out.z+=dz*(start?GATE:-GATE);return out;}
+    const other=links.find(n=>key(n)!==key(opposite)),len=Math.hypot(other.x-p.x,other.z-p.z),sign=start?-1:1,ox=(other.x-p.x)/len*sign,oz=(other.z-p.z)/len*sign;
+    if(Math.abs(dx*oz-dz*ox)<.01)return out;
+    if(dx===0)out.z=p.z+ox*side*HALF;else out.x=p.x-oz*side*HALF;
+    return out;
+   }
+   result.push({a:endpoint(a,b,true),b:endpoint(b,a,false),vertical:dx===0,side});
+  }
+ }
+ return result;
+}
+export const MOUNTAIN_BARRIER_SEGMENTS=mountainBarrierSegments();
