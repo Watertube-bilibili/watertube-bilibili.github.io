@@ -42,7 +42,7 @@ export class VehicleCockpit {
     this.panel.setAttribute('aria-label', 'VOLT 车机与驾驶可视化');
     this.panel.hidden = true;
     this.panel.innerHTML = `
-      <header class="vc-header"><div class="vc-brand" role="button" tabindex="0" aria-label="移动车机，使用方向键调整，Shift 加方向键快速移动，Home 重置" title="拖动标题栏移动 · 方向键调整 · Home 重置"><span class="vc-volt">Ⅴ</span><strong>VOLT<span>OS</span></strong><i></i><span class="vc-model">VOLT S</span></div><div class="vc-header-actions"><span class="vc-clock">18:42</span><button class="vc-reset" type="button" aria-label="重置车机位置" title="重置车机位置">${ICON.reset}</button><button class="vc-expand" type="button" aria-label="展开车机" title="展开车机">${ICON.expand}</button><button class="vc-close" type="button" aria-label="关闭车机" title="收起车机 · U">${ICON.close}</button></div></header>
+      <header class="vc-header"><div class="vc-brand"><span class="vc-volt">Ⅴ</span><strong>VOLT<span>OS</span></strong><i></i><span class="vc-model">VOLT S</span></div><div class="vc-header-actions"><span class="vc-clock">18:42</span><button class="vc-expand" type="button" aria-label="展开车机" title="展开车机">${ICON.expand}</button><button class="vc-close" type="button" aria-label="关闭车机" title="收起车机 · U">${ICON.close}</button></div></header>
       <div class="vc-body"><aside class="vc-instruments"><div class="vc-gear">P <span>R N D</span></div><strong class="vc-speed">0</strong><span class="vc-unit">KM/H</span><div class="vc-wheel">${ICON.wheel}</div><div class="vc-energy">${ICON.battery}<span>98%</span></div><span class="vc-range">412 km</span></aside><div class="vc-visual"><div class="vc-navigation"><span class="vc-nav-icon">${ICON.nav}</span><div><strong class="vc-destination">自由驾驶</strong><span class="vc-distance">选择目的地，探索城市</span></div></div><div class="vc-webgl" aria-label="来自车载摄像头检测的三维车辆和行人"></div><div class="vc-scene-label"><span class="vc-perception-dot"></span><span class="vc-scene-state">等待车载摄像头</span><span class="vc-count">0 辆 · 0 人</span></div><div class="vc-warning" hidden></div><span class="vc-offline" hidden>请进入车辆</span></div></div>
       <footer class="vc-footer"><button class="vc-pilot" type="button" aria-label="切换 VOLT Pilot 辅助驾驶">${ICON.wheel}<span>VOLT Pilot</span><i></i></button><button class="vc-camera" type="button" aria-label="开关车载摄像头画面">${ICON.camera}<span>摄像头</span></button><button class="vc-nav" type="button" aria-label="选择导航目的地">${ICON.nav}<span>导航</span></button><button class="vc-settings" type="button" aria-label="设置巡航速度、跟车距离与 AEB">⚙<span>设置</span></button><span class="vc-signal">路面 <b>—</b></span></footer>`;
     document.body.append(this.panel);
@@ -60,9 +60,8 @@ export class VehicleCockpit {
     (document.querySelector('.right-tools') ?? document.body).append(this.launcher);
     this.launcher.onclick = () => this.toggle();
     this.nodes['vc-close'].onclick = () => this.close();
-    this.nodes['vc-reset'].onclick = () => this.resetPosition();
-    this.setupPositioning();
-    // Responsive cockpit size; native drag retains its own position preference.
+    // Ignore old layout coordinates without deleting saved preferences or gameplay.
+    this.panelPosition = null;
     this.panel.addEventListener("panelresize",()=>this.resize());
     this.nodes['vc-expand'].onclick = () => {
       this.panel.classList.toggle('vc-expanded');

@@ -232,6 +232,10 @@ export async function loadGodotEngine(callbacks){
  globalThis.__neonPhysics=callbacks;
  const engine=new globalThis.Engine({executable:'./physics/neon-physics',canvasResizePolicy:0,focusCanvas:false,ensureCrossOriginIsolationHeaders:false,fileSizes:manifest.fileSizes,
   onProgress:(loaded,total)=>{diagnostics.progress(loaded,total);show();},onPrint:()=>{},onPrintError:console.error});
- await engine.startGame({canvas});if(diagnostics.state.phase!=='ready')diagnostics.record('bridge-wait');show();return engine;
+ await engine.startGame({canvas});
+ // The compiled Godot project can set its old title during scene startup.
+ const title='SUNSET COAST · 2.0 Beta',titleNode=document.querySelector('title');
+ document.title=title;if(titleNode)new MutationObserver(()=>{if(document.title!==title)document.title=title;}).observe(titleNode,{childList:true,subtree:true,characterData:true});
+ if(diagnostics.state.phase!=='ready')diagnostics.record('bridge-wait');show();return engine;
  }catch(error){diagnostics.record('failed',{failed:true,error:String(error?.message??error)});throw error;}finally{clearInterval(statusTimer);diagnostics.cache();console.info('Godot startup diagnostics',diagnostics.state);}
 }

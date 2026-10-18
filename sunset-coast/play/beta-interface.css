@@ -1314,3 +1314,7 @@ body.mobile-controls-v2.mobile-driving #mobile-gears{grid-template-columns:max(4
 body.mobile-controls-v2 #mobile-gears button,body.mobile-controls-v2 #mobile-pedal-signals button{min-height:max(44px,calc(44px * var(--control-button-scale,1)))}
 body.mobile-walking .touch-actions>button{width:max(44px,calc(52px * var(--control-button-scale,1)))!important;height:max(44px,calc(52px * var(--control-button-scale,1)))!important}
 :is(.aircraft-pitch,.aircraft-roll,.aircraft-yaw,.aircraft-right,.roadster-flight-left,.roadster-flight-right)>button{min-width:max(44px,calc(44px * var(--control-button-scale,1)));min-height:max(44px,calc(44px * var(--control-button-scale,1)))}
+
+/* Layout editing is not part of gameplay. Ordinary map/camera gestures remain. */
+.vehicle-panel-dragbar,.panel-layout-reset,.vehicle-panel-resize,.panel-layout-grip,.vc-reset{display:none!important;pointer-events:none!important}
+.vc-header,.vc-brand,.panel-layout-move{cursor:default!important;touch-action:auto}
