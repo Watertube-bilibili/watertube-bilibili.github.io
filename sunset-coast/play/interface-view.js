@@ -10,7 +10,8 @@ function enhancePhone(){
   const nav=create('nav','interface-phone-nav');nav.setAttribute('aria-label','手机常用应用');
   for(const [page,label] of [['home','全部'],['nav','导航'],['jobs','工作'],['garage','车库'],['save','存档']]){
    const b=create('button','',label);b.type='button';b.dataset.interfacePage=page;
-   b.addEventListener('click',()=>{home?.click();if(page!=='home')content.querySelector(`[data-page="${page}"]`)?.click();});nav.append(b);
+   // GameUI delegates navigation from the phone root, without synthetic clicks.
+   nav.append(b);
   }
   phone.querySelector('.phone-top')?.after(nav);
  }
