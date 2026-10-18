@@ -1,0 +1,21 @@
+{
+  "name": "SUNSET COAST",
+  "short_name": "SUNSET COAST",
+  "start_url": "/sunset-coast/",
+  "scope": "/sunset-coast/",
+  "display": "standalone",
+  "background_color": "#142b38",
+  "theme_color": "#142b38",
+  "icons": [
+    {
+      "src": "./sunset-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./sunset-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ export const COCKPIT_MODEL_DESIGNS=Object.freeze(designs);
 export function cockpitProfile(model={}){
  if(model.id==='semi')return{id:'semi',name:'SEMI · 货运座舱',emblem:'T',layout:'semi',edition:'四接地点物理原型',accent:'#bfcbd5',pilot:'Semi Pilot',display:'semi'};
  const id=model.id??'unknown',roadster=id.startsWith('roadster'),g9=id==='g9',d=designs[id]??['split',model.trim??'DRIVE','#a6cfca'];
- return{id,name:g9?'G9 · 山野座舱':roadster?'ROADSTER · 驾驶中心':`${model.name??'sunset coast'} · DRIVE`,emblem:g9?'G9':roadster?'R':(model.name??'N').charAt(0),
+ return{id,name:g9?'G9 · 山野座舱':roadster?'ROADSTER · 驾驶中心':`${model.name??'SUNSET COAST'} · DRIVE`,emblem:g9?'G9':roadster?'R':(model.name??'S').charAt(0),
  layout:g9?'g9':roadster?'roadster':d[0],edition:g9?'WILDERNESS LUXURY':roadster?(model.roadsterTrim??model.trim??'PERFORMANCE'):d[1],
- accent:g9?'#87aa96':roadster?'#bbc9d8':d[2],pilot:g9?'G9 辅助驾驶':roadster?'Roadster Pilot':`${model.name??'sunset coast'} Pilot`,display:g9?'g9':roadster?'roadster':'vehicle'};
+ accent:g9?'#87aa96':roadster?'#bbc9d8':d[2],pilot:g9?'G9 辅助驾驶':roadster?'Roadster Pilot':`${model.name??'SUNSET COAST'} Pilot`,display:g9?'g9':roadster?'roadster':'vehicle'};
 }

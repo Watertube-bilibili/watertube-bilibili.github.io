@@ -802,7 +802,7 @@ body.mobile-controls-v2 #mobile-signals,body.mobile-controls-v2 #mobile-driving-
 body.mobile-controls-v2 #mobile-secondary-driving #touch-gentle{grid-column:1/-1}
 
 /* interface-system.css */
-/* sunset coast — screen-space interface. Never targets vehicle instruments. */
+/* SUNSET COAST — screen-space interface. Never targets vehicle instruments. */
 :is(#phone,#modal,#loading){--ui-surface:#f5f0e6;--ui-raised:#e7dfd0;--ui-edge:#807e74;--ui-text:#142b38;--ui-muted:#55636a;--ui-accent:#a43c28;--lime:var(--ui-accent);--line:#c7beaf;--white:var(--ui-text);color:var(--ui-text);font-family:Inter,'Noto Sans SC',system-ui,sans-serif;font-size:14px;line-height:1.55;color-scheme:light}
 :is(#phone,#modal) ::selection{background:#a43c28;color:#f5f0e6}
 :is(#phone,#modal) :is(button,input,select,a,summary){touch-action:manipulation}
@@ -1296,3 +1296,13 @@ body[data-input-mode=touch].mobile-walking .touch-actions #touch-go:is(:active,.
 #mobile-gears.panel-layout-custom,#mobile-pedal-signals.panel-layout-custom{display:flex!important;flex-wrap:wrap!important;align-content:start!important}
 #mobile-gears .vehicle-panel-dragbar,#mobile-pedal-signals .vehicle-panel-dragbar{width:100%}
 #mobile-gears.panel-layout-custom[hidden],#mobile-pedal-signals.panel-layout-custom[hidden],#mobile-driving-tools.panel-layout-custom[hidden],#mobile-drawer.panel-layout-custom[hidden],#touch-steering.panel-layout-custom[hidden],.touch-actions.panel-layout-custom[hidden],.roadster-attitude.panel-layout-custom[hidden],.panel-layout-custom[hidden]{display:none!important}
+
+/* SUNSET COAST: one responsive loading column, without inherited offsets. */
+#loading{padding:24px max(20px,env(safe-area-inset-left));gap:0;text-align:center;overflow:hidden}
+#loading .load-brand{width:100%;max-width:560px;font-size:clamp(28px,7vw,64px);line-height:1.15;white-space:nowrap;text-align:center;margin:0;transform:none}
+#loading .load-brand span{margin-left:0}
+#loading .load-brand i{white-space:normal;line-height:1.5;letter-spacing:.08em}
+#loading .load-track{flex:0 0 3px;width:min(220px,80%);max-width:100%;margin:28px auto 0;position:relative;left:auto;right:auto;transform:none}
+#loading p{width:100%;max-width:440px;margin:16px auto 0;overflow-wrap:anywhere;text-align:center}
+/* Fixed custom layouts must not retain animation/individual transforms. */
+.panel-layout-custom{transform:none!important;translate:none!important;rotate:none!important;scale:none!important;animation:none!important;transition:none!important}

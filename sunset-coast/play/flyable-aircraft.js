@@ -18,7 +18,7 @@ const DAMAGE_REGIONS=['nose','tail','leftWing','rightWing'];
 const damageRegions=(value,condition=100)=>Object.fromEntries(DAMAGE_REGIONS.map(region=>[region,clamp(finite(value?.[region],!value&&region==='nose'?(100-condition)/100:0),0,1)]));
 
 export const TRAINER=Object.freeze({
- id:'nc11',name:'潮翼 NC-11',brand:'NEON AERO',type:'轻型电动教练机',
+ id:'nc11',name:'潮翼 SC-11',brand:'SUNSET AERO',type:'轻型电动教练机',
  mass:1300,size:Object.freeze([2.2,1.3,8]),wingSpan:11,wingArea:18,thrust:5.6,rideHeight:1.16
 });
 
@@ -58,7 +58,7 @@ export function airportRunwayPose(airportOrId){
 
 /** Original low-wing, two-seat electric trainer, with no external assets. */
 export function createLightTrainer(){
- const root=new THREE.Group();root.name='NEON AERO NC-11 original flyable trainer';
+ const root=new THREE.Group();root.name='SUNSET AERO SC-11 original flyable trainer';
  root.userData.originalProceduralAsset=true;root.userData.aircraftType='electric light trainer';root.userData.physicsKind='aircraft';
  const paint=new THREE.MeshStandardMaterial({color:0xe2e9db,roughness:.53,metalness:.18});
  const teal=new THREE.MeshStandardMaterial({color:0x187d86,roughness:.48,metalness:.22});

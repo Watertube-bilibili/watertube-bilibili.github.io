@@ -1,5 +1,5 @@
 const layouts=new WeakMap();
-const styleKeys=['position','left','top','right','bottom','transform','width','height','max-width','max-height','margin','overflow'];
+const styleKeys=['position','left','top','right','bottom','transform','width','height','max-width','max-height','margin','overflow','translate','rotate','scale','animation','transition','--vc-left','--vc-top'];
 export function constrainPanelRect(rect,viewport,{minWidth=160,minHeight=100,inset=8}={}){
  const finite=(v,f)=>Number.isFinite(v)?v:f;
  const availableWidth=Math.max(44,finite(viewport.width,320)-inset*2),availableHeight=Math.max(44,finite(viewport.height,480)-inset*2);
@@ -17,6 +17,9 @@ export function installPanelLayout(panel,{id,handle=null,resize=true,resetContro
   if(!enabled()){if(applied)restore();return;}
   const bounded=constrainPanelRect(rect,{width:innerWidth,height:innerHeight},{minWidth,minHeight});
   Object.assign(panel.style,{position:'fixed',left:bounded.left+'px',top:bounded.top+'px',right:'auto',bottom:'auto',transform:'none',width:bounded.width+'px',height:bounded.height+'px',maxWidth:'calc(100vw - 16px)',maxHeight:'calc(100dvh - 16px)',margin:'0',overflow:'auto'});
+  // The cockpit's positioned CSS uses these variables with !important. Keep
+  // resize and native drag in the same viewport coordinate system.
+  if(panel.id==='vehicle-cockpit'){panel.style.setProperty('--vc-left',bounded.left+'px');panel.style.setProperty('--vc-top',bounded.top+'px');}
   saved=bounded;applied=true;panel.classList.add('panel-layout-custom');panel.dispatchEvent(new Event('panelresize'));
  };
  const save=()=>{try{localStorage.setItem(key,JSON.stringify(saved));}catch{}};

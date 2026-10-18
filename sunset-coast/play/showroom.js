@@ -63,7 +63,7 @@ async function selectModel(id){
     const bounds=new THREE.Box3().setFromObject(current.root),size=bounds.getSize(new THREE.Vector3());
     modelScale=Math.max(size.z/5.2,size.x/2.5,1);focusHeight=clamp(size.y*.52,.62,1.2);
     $('door-toggle').disabled=!current.doors.length;$('interior-view').hidden=!current.driverCamera;
-    $('model-caption').textContent=isRoadsterModel(model)?'Blender 自建 Roadster · 游戏性能设定':model.id==='vision'?'LUCENT VISION · 概念车设计':'sunset coast · 原创车系';
+    $('model-caption').textContent=isRoadsterModel(model)?'Blender 自建 Roadster · 游戏性能设定':model.id==='vision'?'LUCENT VISION · 概念车设计':'SUNSET COAST · 原创车系';
     setView('orbit');loading('');resize();
   }catch(error){console.error(error);loading('这款展品暂时无法显示，请重试或切换车型。',true);}
 }
