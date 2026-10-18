@@ -1,5 +1,5 @@
 import {semiDriveScale} from './semi-powertrain.js';
-// 2.0 Beta: abstract cargo contracts, NOT an articulated trailer simulation.
+// 2.0 Beta: cargo contracts with a render-only box trailer, NOT a physical articulated trailer simulation.
 // Payload changes bounded drive/service-brake commands only; the WASM rigid
 // body's mass, collision shape and handbrake remain unchanged.
 export const CARGO_CONTRACTS=Object.freeze({
@@ -59,5 +59,5 @@ export function installCargoCareer(game,places){
 function installCargoUI(g){
  const ui=g.ui,render=ui.renderPhone.bind(ui),update=ui.updateMission.bind(ui);
  ui.updateMission=()=>{update();if(!isCargoJob(g.job))return;const s=g.cargoStatus;document.getElementById('mission-kind').textContent='Semi 货运生涯';document.getElementById('mission-desc').textContent=s.destination+' · 停稳 2 秒 · '+(s.selectedMassKg/1000)+' 吨 · 货物 '+Math.round(s.integrity)+'%';document.getElementById('mission-reward').textContent='预计 +$ '+s.reward.toLocaleString();};
- ui.renderPhone=page=>{render(page);if(page!=='jobs')return;const first=document.querySelector('[data-job]');if(!first)return;const panel=document.createElement('section');panel.dataset.cargoJobs='';const p=document.createElement('p');p.className='phone-note';p.textContent='2.0 Beta 抽象货运：需自有 Semi；无挂车铰接物理。载重降低动力和常用制动，手刹不变。超载固定扣款 $1,200；碰撞降低完好率和报酬。';panel.append(p);for(const [type,c]of Object.entries(CARGO_CONTRACTS)){const b=document.createElement('button');b.className='phone-row';b.disabled=!!g.job;b.textContent=c.title+' · '+c.massKg/1000+' 吨 · 完好交付 $'+cargoPayout(type).toLocaleString();b.onclick=()=>g.acceptJob(type);panel.append(b);}first.before(panel);};
+ ui.renderPhone=page=>{render(page);if(page!=='jobs')return;const first=document.querySelector('[data-job]');if(!first)return;const panel=document.createElement('section');panel.dataset.cargoJobs='';const p=document.createElement('p');p.className='phone-note';p.textContent='2.0 Beta 货运：需自有 Semi；已配可见货箱、装卸货物与转弯随动。挂车暂为视觉模型，无独立碰撞/铰接物理。载重降低动力和常用制动，手刹不变。超载固定扣款 $1,200；碰撞降低完好率和报酬。';panel.append(p);for(const [type,c]of Object.entries(CARGO_CONTRACTS)){const b=document.createElement('button');b.className='phone-row';b.disabled=!!g.job;b.textContent=c.title+' · '+c.massKg/1000+' 吨 · 完好交付 $'+cargoPayout(type).toLocaleString();b.onclick=()=>g.acceptJob(type);panel.append(b);}first.before(panel);};
 }
