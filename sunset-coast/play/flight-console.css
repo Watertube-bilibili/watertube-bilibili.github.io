@@ -1,0 +1,59 @@
+/* SUNSET COAST flight console. This replaces the former three-column Roadster UI. */
+#roadster-controls{--flight-paper:#f5f0e6;--flight-ink:#142b38;--flight-muted:#55636a;--flight-line:#c7beaf;--flight-accent:#a43c28;--flight-left:max(12px,env(safe-area-inset-left));--flight-right:max(12px,env(safe-area-inset-right));--flight-bottom:max(16px,env(safe-area-inset-bottom));position:fixed;inset:0;z-index:17;pointer-events:none;padding:max(12px,env(safe-area-inset-top)) var(--flight-right) var(--flight-bottom) var(--flight-left);color:var(--flight-ink);font:13px/1.4 system-ui,sans-serif}
+#roadster-controls[hidden],#roadster-controls [hidden]{display:none!important}
+#roadster-controls.roadster-overlay{visibility:hidden}
+#roadster-controls button{font:inherit;min-width:44px;min-height:44px;color:var(--flight-ink);background:var(--flight-paper);border:0;border-radius:10px;padding:8px;pointer-events:auto;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+#roadster-controls button:hover{filter:none;background:#e7dfd0}
+#roadster-controls button:active{transform:none}
+#roadster-controls button:is(.is-pressed,[aria-pressed=true]){color:#fffaf2;background:var(--flight-accent)}
+#roadster-controls button:focus-visible,#roadster-controls .flight-panel-handle:focus-visible{outline:3px solid var(--flight-accent);outline-offset:2px}
+#roadster-controls button:disabled{opacity:.45;cursor:default}
+#roadster-controls .flight-launcher{position:absolute;top:max(124px,calc(env(safe-area-inset-top) + 112px));left:var(--flight-left);display:flex;align-items:center;gap:9px;min-height:44px;padding:8px 14px;border-radius:24px;background:var(--flight-paper);box-shadow:0 3px 14px #142b3824;font-size:12px}
+.flight-status-dot{width:7px;height:7px;border-radius:50%;background:var(--flight-accent)}
+#roadster-controls.roadster-warning-active .flight-launcher{background:#fff0d4;color:#733e14}
+#roadster-controls.roadster-warning-active .flight-status-dot{background:#b76a1d}
+.flight-console,.flight-attitude{position:absolute;left:var(--flight-left);width:min(420px,calc(100vw - var(--flight-left) - var(--flight-right)));background:var(--flight-paper);color:var(--flight-ink);border:1px solid #f5f0e6a8;border-radius:16px;box-shadow:0 8px 26px #142b3840;pointer-events:auto;overflow:hidden;box-sizing:border-box}
+.flight-console{bottom:var(--flight-bottom);max-height:calc(100dvh - max(92px,env(safe-area-inset-top)) - var(--flight-bottom));display:flex;flex-direction:column}
+.flight-attitude{bottom:calc(var(--flight-bottom) + 196px)}
+.flight-panel-header{display:flex;align-items:center;gap:4px;padding:4px 8px;border-bottom:1px solid var(--flight-line);flex-shrink:0}
+.flight-panel-handle{flex:1;min-width:0;min-height:44px;display:flex;align-items:center;gap:8px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;border-radius:8px}
+.flight-panel-handle.is-dragging{cursor:grabbing}
+.flight-grip{color:#8c918c;font-size:18px;line-height:1}
+.flight-panel-handle strong{font-size:13px;font-weight:650;display:block;white-space:nowrap}
+.flight-panel-handle small{font-size:10px;color:var(--flight-muted);display:block;line-height:1.4;font-variant-numeric:tabular-nums;max-width:190px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#roadster-controls .flight-panel-header>button{font-size:12px;flex:0 0 auto;background:transparent;padding:8px}
+#roadster-controls .flight-panel-header>button[aria-expanded=true]{color:var(--flight-accent)}
+.flight-command-deck{padding:8px;display:grid;gap:6px;flex-shrink:0}
+.flight-motion-row,.flight-lift-row,.flight-attitude-row{display:grid;gap:6px}
+.flight-motion-row{grid-template-columns:repeat(4,minmax(44px,1fr))}
+.flight-lift-row,.flight-attitude-row{grid-template-columns:repeat(5,minmax(44px,1fr))}
+.flight-attitude-row{padding:8px}
+#roadster-controls .flight-command{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:5px 2px;min-height:52px;font-size:11px;line-height:1.2;background:#e7dfd0;border-radius:10px;white-space:nowrap}
+#roadster-controls .flight-command.is-pressed{background:var(--flight-accent);color:#fffaf2;box-shadow:inset 0 0 0 2px #85301f}
+.flight-command-symbol{font-size:18px;line-height:18px;font-weight:500}
+#roadster-controls .flight-command kbd{font-size:9px;line-height:1;height:auto;min-width:0;padding:0;border:0;background:none;color:inherit;opacity:.7}
+.flight-console-options{padding:8px 12px 12px;overflow:auto;overscroll-behavior:contain;min-height:0;scrollbar-width:thin;touch-action:pan-y}
+.flight-options-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.flight-options-heading>strong{font-size:11px;letter-spacing:.08em;color:var(--flight-muted)}
+#roadster-controls .flight-options-heading button{background:transparent;font-size:12px}
+#roadster-warning{margin:0 0 10px;color:#865221;font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.flight-option-actions,.flight-maneuvers{display:grid;grid-template-columns:repeat(2,minmax(44px,1fr));gap:6px}
+#roadster-controls .flight-option-actions>button,#roadster-controls .flight-maneuvers>button{font-size:12px;background:#e7dfd0}
+.flight-ground-actions{display:contents}
+.roadster-in-air .flight-ground-actions{display:none}
+.flight-maneuvers{margin-top:10px;padding-top:10px;border-top:1px solid var(--flight-line)}
+#roadster-cancel,#roadster-maneuver-status{grid-column:1/-1}
+#roadster-maneuver-status{font-size:11px;color:var(--flight-muted);line-height:1.6}
+.flight-disclaimer{display:block;margin-top:8px;color:var(--flight-muted);font-size:10px}
+body.roadster-air-active #mobile-controls,body.roadster-air-active #sensor-panel,body.roadster-air-active #autopilot-btn,body.roadster-air-active #mobile-route,body.roadster-air-active .bottom-hud,body.roadster-air-active .vehicle-cockpit{display:none!important}
+@media(pointer:coarse),(max-width:768px){#roadster-controls .flight-command kbd{display:none}body.roadster-controls-active #sensor-panel{visibility:hidden;pointer-events:none}}
+@media(orientation:landscape) and (max-height:500px){
+ #roadster-controls .flight-launcher{top:max(64px,calc(env(safe-area-inset-top) + 52px))}
+ .flight-console{width:min(380px,calc(100vw - var(--flight-left) - var(--flight-right)));max-height:calc(100dvh - 80px - var(--flight-bottom))}
+ .flight-attitude{left:auto;right:var(--flight-right);bottom:var(--flight-bottom);width:min(320px,calc(100vw - var(--flight-left) - var(--flight-right)))}
+}
+@media(orientation:landscape) and (max-width:740px){
+ .flight-console{width:min(330px,calc(100vw - var(--flight-left) - var(--flight-right)))}
+ .flight-attitude{bottom:calc(var(--flight-bottom) + 64px);width:min(300px,calc(100vw - var(--flight-left) - var(--flight-right)))}
+}
+@media(prefers-reduced-motion:reduce){#roadster-controls *{transition:none;animation:none}}
