@@ -302,7 +302,7 @@ body.mobile-walking #touch-gentle,body.mobile-walking #touch-handbrake{display:n
 /* Driving uses two compact, permanent thumb clusters. Walking keeps its joystick.
    Both clusters have a 44 px utility row and a larger steering / pedal row, so
    every brake is one press away without moving the existing map or speed HUD. */
-body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:62px;--drive-pedal-width:66px;--drive-main-height:68px;--drive-gap:10px;align-items:flex-end}
+body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:max(44px,calc(62px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(66px * var(--control-button-scale,1)));--drive-main-height:max(44px,calc(68px * var(--control-button-scale,1)));--drive-gap:10px;align-items:flex-end}
 body[data-input-mode="touch"].mobile-driving .touch-steering,
 body[data-input-mode="touch"].mobile-driving .touch-actions{display:grid;grid-template-rows:44px var(--drive-main-height);gap:var(--drive-gap);align-items:stretch;justify-items:stretch;flex:none;max-width:none}
 body[data-input-mode="touch"].mobile-driving .touch-steering{grid-template-columns:repeat(2,var(--drive-steer-width))}
@@ -322,10 +322,10 @@ body[data-input-mode="touch"].mobile-driving .mobile-controls button:active,
 body[data-input-mode="touch"].mobile-driving .mobile-controls button.is-pressed{transform:none;background:#c4f58044;border-color:#d7f7a9;color:#f4ffe3}
 body[data-input-mode="touch"].mobile-driving.brake-failed #touch-handbrake{border-color:#ffc28b;background:#8b522342;box-shadow:0 0 0 2px #ffc28b1c}
 @media(max-width:380px){
-  body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:56px;--drive-pedal-width:60px;--drive-main-height:62px;--drive-gap:8px}
+  body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:max(44px,calc(56px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(60px * var(--control-button-scale,1)));--drive-main-height:max(44px,calc(62px * var(--control-button-scale,1)));--drive-gap:8px}
 }
 @media(max-width:1024px) and (orientation:landscape) and (max-height:500px){
-  body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:58px;--drive-pedal-width:62px;--drive-main-height:54px;--drive-gap:8px}
+  body[data-input-mode="touch"].mobile-driving .mobile-controls{--drive-steer-width:max(44px,calc(58px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(62px * var(--control-button-scale,1)));--drive-main-height:max(44px,calc(54px * var(--control-button-scale,1)));--drive-gap:8px}
 }
 
 .assist-speed-input{width:106px;max-width:45%;min-height:44px;background:#142830;border:1px solid #afc5b855;border-radius:9px;color:#eef5e8;padding:8px 10px;font-size:16px;text-align:right}
@@ -357,8 +357,8 @@ body.interior-driving-view.cockpit-speed-readable .drive-hud .speed{display:none
 #mobile-tools-toggle,#mobile-driving-tools{display:none}
 .mobile-quick-actions button>span{display:none}
 body.mobile-controls-v2{
- --drive-edge:12px;--drive-bottom:16px;--drive-steer-width:62px;--drive-pedal-width:66px;
- --drive-main-height:84px;--drive-utility-height:44px;--drive-gap:8px;
+ --drive-edge:12px;--drive-bottom:16px;--drive-steer-width:max(44px,calc(62px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(66px * var(--control-button-scale,1)));
+ --drive-main-height:max(44px,calc(84px * var(--control-button-scale,1)));--drive-utility-height:max(44px,calc(44px * var(--control-button-scale,1)));--drive-gap:8px;
  --drive-controls-height:calc(var(--drive-main-height) + var(--drive-utility-height) + var(--drive-gap));
  --drive-panel-width:min(230px,calc(100vw - var(--mobile-safe-left) - var(--mobile-safe-right) - 28px));
  --drive-panel:#14212b;--drive-button:#223441;--drive-border:#697f8b;
@@ -472,10 +472,10 @@ body.mobile-controls-v2 #assist-warning{white-space:normal;max-width:calc(100vw 
 body.mobile-controls-v2.mobile-panel-open :is(#mobile-tools-toggle,#mobile-driving-tools),body.mobile-controls-v2.mobile-drawer-open :is(#mobile-tools-toggle,#mobile-driving-tools),body.mobile-controls-v2.flight-active :is(#mobile-tools-toggle,#mobile-driving-tools){visibility:hidden;pointer-events:none}
 body.mobile-controls-v2 :is(button:focus-visible,a:focus-visible){outline:2px solid #d2f5a6;outline-offset:3px}
 /* A 320px phone retains >=44px targets and two separated thumb zones. */
-@media(max-width:380px){body.mobile-controls-v2{--drive-edge:10px;--drive-bottom:12px;--drive-steer-width:56px;--drive-pedal-width:58px;--drive-main-height:76px;--drive-gap:7px;--drive-panel-width:min(218px,calc(100vw - 24px - var(--mobile-safe-left) - var(--mobile-safe-right)))}body.mobile-controls-v2 .speed strong{font-size:38px}}
+@media(max-width:380px){body.mobile-controls-v2{--drive-edge:10px;--drive-bottom:12px;--drive-steer-width:max(44px,calc(56px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(58px * var(--control-button-scale,1)));--drive-main-height:max(44px,calc(76px * var(--control-button-scale,1)));--drive-gap:7px;--drive-panel-width:min(218px,calc(100vw - 24px - var(--mobile-safe-left) - var(--mobile-safe-right)))}body.mobile-controls-v2 .speed strong{font-size:38px}}
 /* Short landscape compresses height, never changes side ownership. */
-@media(orientation:landscape) and (max-height:500px){body.mobile-controls-v2{--drive-edge:12px;--drive-bottom:8px;--drive-steer-width:58px;--drive-pedal-width:60px;--drive-main-height:62px;--drive-gap:7px;--drive-panel-width:230px}body.mobile-controls-v2 .topbar{height:38px;padding-top:7px}body.mobile-controls-v2 .wordmark{font-size:18px}body.mobile-controls-v2 .mobile-route{top:calc(var(--mobile-safe-top) + 43px);width:204px}body.mobile-controls-v2 .location{top:calc(var(--mobile-safe-top) + 44px)}body.mobile-controls-v2 .charge-row{display:none}body.mobile-controls-v2 .speed strong{font-size:35px}body.mobile-controls-v2 .car-label{display:none}body.mobile-controls-v2.mobile-driving #touch-go::before{height:42px}body.mobile-controls-v2 .interaction{bottom:calc(var(--mobile-safe-bottom) + 66px);max-width:35vw}}
-@media(min-width:769px) and (min-height:501px){body.mobile-controls-v2{--drive-edge:24px;--drive-bottom:24px;--drive-steer-width:76px;--drive-pedal-width:78px;--drive-main-height:96px;--drive-gap:10px;--drive-panel-width:256px}body.mobile-controls-v2 .mobile-drawer-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(orientation:landscape) and (max-height:500px){body.mobile-controls-v2{--drive-edge:12px;--drive-bottom:8px;--drive-steer-width:max(44px,calc(58px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(60px * var(--control-button-scale,1)));--drive-main-height:max(44px,calc(62px * var(--control-button-scale,1)));--drive-gap:7px;--drive-panel-width:230px}body.mobile-controls-v2 .topbar{height:38px;padding-top:7px}body.mobile-controls-v2 .wordmark{font-size:18px}body.mobile-controls-v2 .mobile-route{top:calc(var(--mobile-safe-top) + 43px);width:204px}body.mobile-controls-v2 .location{top:calc(var(--mobile-safe-top) + 44px)}body.mobile-controls-v2 .charge-row{display:none}body.mobile-controls-v2 .speed strong{font-size:35px}body.mobile-controls-v2 .car-label{display:none}body.mobile-controls-v2.mobile-driving #touch-go::before{height:42px}body.mobile-controls-v2 .interaction{bottom:calc(var(--mobile-safe-bottom) + 66px);max-width:35vw}}
+@media(min-width:769px) and (min-height:501px){body.mobile-controls-v2{--drive-edge:24px;--drive-bottom:24px;--drive-steer-width:max(44px,calc(76px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(78px * var(--control-button-scale,1)));--drive-main-height:max(44px,calc(96px * var(--control-button-scale,1)));--drive-gap:10px;--drive-panel-width:256px}body.mobile-controls-v2 .mobile-drawer-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 /* Utility holds keep the same local iOS guard as the main controls after moving. */
 :where(#mobile-tools-toggle,#mobile-tools-toggle *,#mobile-secondary-driving button,#mobile-secondary-driving button *,#mobile-signals button,#mobile-signals button *){-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-user-drag:none}
 
@@ -1306,3 +1306,11 @@ body[data-input-mode=touch].mobile-walking .touch-actions #touch-go:is(:active,.
 #loading p{width:100%;max-width:440px;margin:16px auto 0;overflow-wrap:anywhere;text-align:center}
 /* Fixed custom layouts must not retain animation/individual transforms. */
 .panel-layout-custom{transform:none!important;translate:none!important;rotate:none!important;scale:none!important;animation:none!important;transition:none!important}
+
+/* Settings-only button sizing: no map/camera scale and no live resize grips. */
+.vehicle-panel-resize,.panel-layout-grip{display:none!important;pointer-events:none!important}
+.panel-position-custom{transform:none!important;translate:none!important;rotate:none!important;scale:none!important;animation:none!important;transition:none!important}
+body.mobile-controls-v2.mobile-driving #mobile-gears{grid-template-columns:max(44px,calc(44px * var(--control-button-scale,1)))}
+body.mobile-controls-v2 #mobile-gears button,body.mobile-controls-v2 #mobile-pedal-signals button{min-height:max(44px,calc(44px * var(--control-button-scale,1)))}
+body.mobile-walking .touch-actions>button{width:max(44px,calc(52px * var(--control-button-scale,1)))!important;height:max(44px,calc(52px * var(--control-button-scale,1)))!important}
+:is(.aircraft-pitch,.aircraft-roll,.aircraft-yaw,.aircraft-right,.roadster-flight-left,.roadster-flight-right)>button{min-width:max(44px,calc(44px * var(--control-button-scale,1)));min-height:max(44px,calc(44px * var(--control-button-scale,1)))}

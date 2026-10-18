@@ -1,6 +1,5 @@
 import {semiDisplayState,paintSemiDisplay} from './semi-displays.js';
 import {infotainmentState,paintVehicleInfotainment} from './vehicle-infotainment.js';
-import {installPanelLayout} from './panel-layout.js';
 import {cockpitProfile} from './cockpit-profiles.js';
 import {g9NavigationState,paintG9Navigation} from './g9-navigation.js';
 import {roadsterDisplayState,paintRoadsterDisplay} from './roadster-displays.js';
@@ -63,7 +62,7 @@ export class VehicleCockpit {
     this.nodes['vc-close'].onclick = () => this.close();
     this.nodes['vc-reset'].onclick = () => this.resetPosition();
     this.setupPositioning();
-    this.resizable=installPanelLayout(this.panel,{id:"vehicle-cockpit",resetControl:false,minWidth:280,minHeight:230});
+    // Responsive cockpit size; native drag retains its own position preference.
     this.panel.addEventListener("panelresize",()=>this.resize());
     this.nodes['vc-expand'].onclick = () => {
       this.panel.classList.toggle('vc-expanded');
