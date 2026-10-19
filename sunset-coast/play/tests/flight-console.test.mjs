@@ -47,3 +47,18 @@ test('phone/modal activity and vehicle switching clear active held inputs',()=>{
 test('CSS targets stay >=44px and reserve iOS safe-area edges',()=>{assert.match(css,/min-width:44px;min-height:44px/);assert.match(css,/min-height:52px/);for(const edge of ['left','right','bottom','top'])assert.ok(css.includes(`env(safe-area-inset-${edge})`));assert.match(css,/width:min\(420px,calc\(100vw - var\(--flight-left\) - var\(--flight-right\)\)\)/);});
 
 for(const[width,height]of [[568,320],[667,375]])test(`short landscape ${width}x${height} switches between movement and attitude without stacked overflow`,()=>{const h=fixture();h.view.innerWidth=width;h.view.innerHeight=height;h.$('roadster-attitude-toggle').onclick();assert.equal(h.$('flight-attitude').hidden,false);assert.equal(h.$('flight-command-deck').hidden,true);h.$('flight-console-fold').onclick();assert.equal(h.$('flight-command-deck').hidden,false);assert.equal(h.$('flight-attitude').hidden,true);assert.match(css,/bottom:calc\(var\(--flight-bottom\) \+ 64px\)/);});
+
+test('ground aero-brake feedback follows native wing output in every Roadster trim',()=>{
+ const h=fixture();
+ for(const id of ['roadster','roadster_thrust','roadster_rocket']){
+  Object.assign(h.game.vehicle,{model:{id},speed:60,grounded:true,roadsterRequest:{air:false,aeroMode:'lowDrag'},roadsterState:{mode:'road',wing:1,wingPitch:.6}});h.ui.update();
+  assert.equal(h.$('flight-launcher-label').textContent,'气动制动 · 工作中');assert.equal(h.$('roadster-wing-toggle').textContent,'气动制动 · 自动');assert.equal(h.game.vehicle.roadsterRequest.aeroMode,'lowDrag');assert.equal(h.$('flight-command-deck').hidden,true);
+  h.game.vehicle.roadsterState.wingPitch=.35;h.ui.update();assert.equal(h.$('flight-launcher-label').textContent,'车辆选项');assert.equal(h.$('roadster-wing-toggle').textContent,'低风阻模式 · Y');
+ }
+});
+test('P, flight and unavailable physics never announce active ground aero braking',()=>{
+ for(const change of [{parkingBrakeEngaged:true},{grounded:false},{roadsterState:{mode:'air',wing:1,wingPitch:.6}}]){
+  const h=fixture();Object.assign(h.game.vehicle,{speed:60,grounded:true,roadsterRequest:{air:false},roadsterState:{mode:'road',wing:1,wingPitch:.6}},change);h.ui.update();assert.notEqual(h.$('flight-launcher-label').textContent,'气动制动 · 工作中');
+ }
+ const h=fixture();Object.assign(h.game.vehicle,{speed:60,grounded:true,roadsterRequest:{air:false},roadsterState:{mode:'road',wing:1,wingPitch:.6}});h.game.physics.ready=false;h.ui.update();assert.notEqual(h.$('flight-launcher-label').textContent,'气动制动 · 工作中');
+});

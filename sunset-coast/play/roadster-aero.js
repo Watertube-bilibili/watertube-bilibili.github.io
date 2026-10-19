@@ -1,6 +1,6 @@
 /** Visible transforms reconstructed from Tesla's 2026-10-16 film.
  * Distances/timing are game approximation, not measured production specifications.
- * No chassis, contact, suspension, collision, mass or flight-force changes.
+ * Braking follows the existing Godot wing snapshot; this module adds no forces.
  */
 export const ROADSTER_AERO_MODES=Object.freeze(['road','highDownforce','lowDrag']);
 export const ROADSTER_AERO_LABELS=Object.freeze({road:'公路模式',highDownforce:'高下压力模式',lowDrag:'低风阻模式'});
@@ -12,12 +12,27 @@ export const ROADSTER_AERO_POSES=Object.freeze({
 });
 const smooth=(a,b,x)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
 const sane=(n,d=0)=>Number.isFinite(n)?n:d;
+/** Ground aero braking, not Rocket's thrust-based Space/airBrake hover command.
+ * Godot reports wingPitch = wing * .6 while the service brake is applied,
+ * versus wing * .35 otherwise. Read that authoritative output, not held keys:
+ * this also covers touch braking, Pilot/AEB and the engine's deployment ramp.
+ */
+export function roadsterAeroBrakeState(v){
+ const s=v?.roadsterState,wing=Math.max(0,Math.min(1,sane(s?.wing))),pitch=Math.max(0,Math.min(.65,sane(s?.wingPitch)));
+ const q=v?.physicsQuaternion,up=q?1-2*(sane(q.x)**2+sane(q.z)**2):1;
+ const active=['roadster','roadster_thrust','roadster_rocket'].includes(v?.model?.id)&&s?.mode==='road'&&v?.grounded!==false&&!v?.parkingBrakeEngaged&&up>.65&&Math.hypot(sane(v?.speed),sane(v?.lateralSpeed))>.15&&wing>1e-6&&pitch>wing*.45;
+ return{active,wing:active?wing:0,pitch:active?pitch:0};
+}
 export function roadsterAeroMode(v){const m=v?.roadsterRequest?.aeroMode;return ROADSTER_AERO_MODES.includes(m)?m:'road';}
 export function setRoadsterAeroMode(v,mode){if(!['roadster','roadster_thrust','roadster_rocket'].includes(v?.model?.id)||!ROADSTER_AERO_MODES.includes(mode))return false;v.roadsterRequest??={air:false,wingMode:'auto'};v.roadsterRequest.aeroMode=mode;return true;}
 export function cycleRoadsterAero(v){const mode=ROADSTER_AERO_MODES[(ROADSTER_AERO_MODES.indexOf(roadsterAeroMode(v))+1)%3];return setRoadsterAeroMode(v,mode)?mode:null;}
 export function updateRoadsterAero(v,dt){
  const rig=v.roadsterRig;if(!rig?.hoodAero)return false;
- const target=ROADSTER_AERO_POSES[roadsterAeroMode(v)],pose=v.roadsterAeroVisual??={...ROADSTER_AERO_POSES.road},alpha=1-Math.exp(-3.4*Math.max(0,Math.min(.1,sane(dt))));
+ const base=ROADSTER_AERO_POSES[roadsterAeroMode(v)],braking=roadsterAeroBrakeState(v);
+ // A service-brake request overrides only the rear wing, never the selected
+ // mode or front panels. Releasing it smoothly restores the selected pose.
+ const target=braking.active?{...base,lift:Math.max(base.lift,.34*braking.wing),rear:Math.max(base.rear,.18*braking.wing),pitch:Math.max(base.pitch,braking.pitch)}:base;
+ const pose=v.roadsterAeroVisual??={...ROADSTER_AERO_POSES.road},alpha=1-Math.exp(-(braking.active?12:3.4)*Math.max(0,Math.min(.1,sane(dt))));
  for(const key of Object.keys(target)){pose[key]=sane(pose[key])+(target[key]-sane(pose[key]))*alpha;if(Math.abs(target[key]-pose[key])<1e-6)pose[key]=target[key];}
  for(const node of [rig.wingLift,rig.wingPitch,rig.hoodAero,...(rig.sideAero??[]),...(rig.wingSupports??[])])if(node){node.userData??={};node.userData.aeroRest??={x:node.position.x,y:node.position.y,z:node.position.z,rx:node.rotation.x,ry:node.rotation.y,sy:node.scale.y};}
  // Clear the deep downturned tips before sliding aft or pitching; reverse on stow.

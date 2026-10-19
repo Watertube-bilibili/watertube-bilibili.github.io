@@ -63,3 +63,63 @@ test('real bounded bicycle physics moves patrols and brings responding officers 
  run(g,1,1/60);const first=g.police[0],origin=first.pos.clone();run(g,12,1/60);assert(d(origin,first.pos)>20);
  raiseWanted(g,5);run(g,65,1/60);assert(g.police.some(c=>d(c.pos,g.position)<35),'response must physically approach the player');
 });
+
+function detentionFixture(){
+ const g=fixture('ultralow');g.wanted=1;g.policeDispatchAt=Infinity;g.policePlanAt=Infinity;
+ g.position=g.vehicle.pos;g.vehicle.grounded=true;g.world.groundHeight=()=>0;
+ const officer=g.makeVehicle('s',g.position.x+3,g.position.z,0);
+ Object.assign(officer,{isPolice:true,grounded:true,policeId:0,policeMode:'pursuit',nextPolicePlan:Infinity,patrolPath:[{x:4.5,z:174}]});g.police=[officer];
+ return g;
+}
+function ticks(g,count,dt=1/60){for(let i=0;i<count;i++){g.time+=dt;updatePolice(g,dt);}}
+
+test('hovering over police never accumulates detention, even within the old three-metre height window',()=>{
+ for(const height of [.2,1.5,2.9,30]){
+  const g=detentionFixture();g.position.y=height;g.vehicle.grounded=false;g.arrestTimer=4.9;
+  ticks(g,360);assert.equal(g.arrestTimer,0);assert(!g.arrested);assert.equal(g.wanted,1);assert.equal(g.police[0].policeMode,'pursuit');
+ }
+});
+test('landing on a police roof is not local ground even when wheel contact reports grounded',()=>{
+ const g=detentionFixture();g.position.copy(g.police[0].pos);g.position.y=1.8;
+ g.vehicle.grounded=true;g.vehicle.roadsterState={mode:'landing',verticalSpeed:0,altitude:0};g.arrestTimer=4.99;
+ ticks(g,360);assert.equal(g.arrestTimer,0);assert(!g.arrested);
+});
+test('rapid vertical landing and sideways escape cannot look stationary through forward speed alone',()=>{
+ for(const motion of [{roadsterState:{verticalSpeed:-8}},{roadsterState:{verticalSpeed:8}},{slipVelocityX:8},{slipVelocityZ:-8},{speed:8}]){
+  const g=detentionFixture();Object.assign(g.vehicle,motion);g.position.y=.2;g.arrestTimer=4.9;
+  ticks(g,360);assert.equal(g.arrestTimer,0);assert(!g.arrested);
+ }
+});
+test('a brief road touch after flight starts a fresh five-second window, not the old accumulated time',()=>{
+ const g=detentionFixture();ticks(g,240);assert(g.arrestTimer>3.9);assert(!g.arrested);
+ g.vehicle.grounded=false;g.position.y=2;ticks(g,1);assert.equal(g.arrestTimer,0);
+ g.vehicle.grounded=true;g.position.y=.02;ticks(g,15);assert(g.arrestTimer<=.26);assert(!g.arrested);
+ g.vehicle.grounded=false;g.position.y=1.8;ticks(g,1);assert.equal(g.arrestTimer,0);
+ g.vehicle.grounded=true;g.position.y=.02;ticks(g,299);assert(!g.arrested);ticks(g,2);assert(g.arrested);
+});
+test('sustained real ground detention still works on elevated roads and sloped surfaces',()=>{
+ for(const height of [(x,z)=>0,(x,z)=>120,(x,z)=>120+(x-4.5)*.15]){
+  const g=detentionFixture();g.groundContact={heightAt:height};g.position.y=height(g.position.x,g.position.z)+.04;
+  for(const officer of g.police)officer.pos.y=height(officer.pos.x,officer.pos.z)+.04;
+  ticks(g,299);assert(!g.arrested);ticks(g,2);assert(g.arrested);
+ }
+});
+test('a moving or airborne patrol cannot count as sustained ground control',()=>{
+ for(const motion of [{grounded:false},{speed:6},{slipVelocityX:6},{posY:1.8}]){
+  const g=detentionFixture(),officer=g.police[0];Object.assign(officer,motion);if(motion.posY)officer.pos.y=motion.posY;
+  ticks(g,360);assert.equal(g.arrestTimer,0);assert(!g.arrested);
+ }
+});
+test('entry transitions, jumps and aircraft contexts reset detention instead of using stale car state',()=>{
+ for(const context of [{transition:{entering:false}},{jump:.5},{aircraft:{active:true}},{flight:{active:true}}]){
+  const g=detentionFixture();g.arrestTimer=4.99;Object.assign(g,context);ticks(g,1);assert.equal(g.arrestTimer,0);assert(!g.arrested);
+ }
+});
+test('on-foot ground detention does not depend on the previously driven vehicle',()=>{
+ const g=detentionFixture();g.inCar=false;g.position=g.position.clone();g.vehicle.grounded=false;g.vehicle.speed=25;
+ g.vehicle.pos.set(700,50,700);ticks(g,299);assert(!g.arrested);ticks(g,2);assert(g.arrested);
+});
+test('zero wanted never detains and clears old progress',()=>{
+ const g=detentionFixture();g.wanted=0;g.arrestTimer=4.99;g.police[0].policeMode='patrol';ticks(g,360);
+ assert.equal(g.arrestTimer,0);assert(!g.arrested);
+});

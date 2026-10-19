@@ -85,7 +85,15 @@ export class VehicleCockpit {
     this.observer.observe(this.nodes['vc-webgl']);
     let open = innerWidth >= 1100 && innerHeight >= 600;
     try { const pref = localStorage.getItem(COCKPIT_OPEN_KEY); if (pref !== null) open = pref === 'true'; } catch {}
-    this.setOpen(open, false);
+    this.drivingOpenPreference = open;
+    this.wasDriving = !!game.inCar;
+    this.setOpen(game.inCar && open, false);
+  }
+  syncContext() {
+    const driving = !!this.g.inCar;
+    if (driving === this.wasDriving) return;
+    this.wasDriving = driving;
+    this.setOpen(driving && this.drivingOpenPreference, false);
   }
   get isOpen() { return this._open; }
   get hasCustomPosition() { return !!this.panelPosition; }
@@ -194,6 +202,7 @@ export class VehicleCockpit {
   toggle() { this.setOpen(!this._open); }
   close() { this.setOpen(false); }
   setOpen(open, save = true) {
+    if (save) this.drivingOpenPreference = !!open;
     if (!open) { this.finishDrag?.(); this.frameElapsed = 0; this.motionElapsed = 0; }
     this._open = !!open;
     this.panel.hidden = !this._open;

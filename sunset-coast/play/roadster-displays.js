@@ -1,6 +1,6 @@
 import {vehicleGear} from './touch-transmission.js';
 import * as THREE from './vendor/three.module.js';
-import {roadsterAeroMode} from './roadster-aero.js';
+import {roadsterAeroMode,roadsterAeroBrakeState} from './roadster-aero.js';
 import {roadsterTrim} from './roadster-controls.js';
 
 const finite=(value,fallback=0)=>Number.isFinite(value)?value:fallback;
@@ -24,7 +24,7 @@ export function roadsterDisplayState(car,{autopilot=false}={}){
  const speed=finite(car?.speed),battery=Math.round(clamp(car?.battery??100,0,100)),condition=Math.round(clamp(car?.condition??100,0,100));
  const air=['air','landing','recover','unpowered'].includes(mode);
  return{trim,mode,air,aeroMode:roadsterAeroMode(car),speed:Math.round(Math.min(999,Math.abs(speed)*3.6)),gear:air?'AIR':vehicleGear(car),battery,range:Math.round(Math.max(0,finite(car?.model?.range,480))*battery/100),autopilot:!!autopilot,
-  condition,wing:Math.round(clamp(car?.roadsterAeroVisual?.lift!==undefined?car.roadsterAeroVisual.lift/.34:state.wing??car?.roadsterWingVisual??0,0,1)*100),wingMode:LABELS[car?.roadsterRequest?.wingMode]?car.roadsterRequest.wingMode:'auto',airBrake:finite(state.wingPitch)>.45,
+  condition,wing:Math.round(clamp(car?.roadsterAeroVisual?.lift!==undefined?car.roadsterAeroVisual.lift/.34:state.wing??car?.roadsterWingVisual??0,0,1)*100),wingMode:LABELS[car?.roadsterRequest?.wingMode]?car.roadsterRequest.wingMode:'auto',airBrake:roadsterAeroBrakeState(car).active,
   altitude:round(clamp(state.altitude??0,0,9999)),verticalSpeed:round(clamp(state.verticalSpeed??0,-999,999)),pitch:round(Math.asin(clamp(forwardY,-1,1))*180/Math.PI),roll:round(Math.atan2(-rightY,upY)*180/Math.PI),heading:Math.round((Math.atan2(forwardX,-forwardZ)*180/Math.PI+360)%360)%360,
   warning:condition<=0||battery<=0?'POWER OFF':mode==='unpowered'?'LIFT UNAVAILABLE':mode==='landing'?'CONTROLLED DESCENT':''};
 }
@@ -85,7 +85,7 @@ export function paintRoadsterDisplay(ctx,type,s){
   line(ctx,20,304,472,'#30373e');
   // Mobile-friendly state dock. This physical screen is not touch-interactive.
   text(ctx,'DRIVE',22,318,9,colors.muted);text(ctx,s.autopilot?'PILOT ACTIVE':'MANUAL',22,336,12,colors.text);
-  text(ctx,'AERO',256,318,9,colors.muted,'center');text(ctx,AERO_LABELS[s.aeroMode]??'ROAD',256,336,12,colors.text,'center');
+  text(ctx,'AERO',256,318,9,colors.muted,'center');text(ctx,s.airBrake?'AERO BRAKING':AERO_LABELS[s.aeroMode]??'ROAD',256,336,12,s.airBrake?colors.amber:colors.text,'center');
   text(ctx,'BODY',490,318,9,colors.muted,'right');text(ctx,s.condition+'%',490,336,12,s.condition<25?colors.red:colors.text,'right');
  }else if(type==='aux'){
   background(ctx,512,192);text(ctx,s.air?'FLIGHT ATTITUDE':'BODY ATTITUDE',20,18,16,colors.muted);line(ctx,20,33,472);

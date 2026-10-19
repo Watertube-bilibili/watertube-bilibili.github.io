@@ -154,11 +154,13 @@ for (const blocker of ['paused', 'transition', 'phone', 'drawer', 'overhead']) {
   });
 }
 
-test('right click remains ignored and walking weapon click still shoots', () => {
+test('right mouse drag looks around and walking left click still shoots', () => {
   const h = setup();
   h.emit('pointerdown', {button: 2, pointerType: 'mouse'});
   h.emit('pointermove', {clientX: 400, pointerType: 'mouse'});
-  assert.equal(h.game.cameraYaw, 0);
+  assert.equal(h.game.cameraYaw, -.8);
+  h.emit('pointerup', {button: 2, pointerType: 'mouse'});
+  h.game.cameraYaw = 0;
   h.game.inCar = false;
   h.game.weapon = true;
   h.swipe(80);
@@ -171,4 +173,25 @@ test('game binds the isolated handler and resets its capture with other controls
   assert.match(source, /import \{installCameraControls\} from '\.\/camera-controls\.js'/);
   assert.match(source, /installCameraControls\(this,\$\('world'\)\)/);
   assert.match(source, /resetControls\(\)\{[^\n]*this\.releaseCameraDrag\?\.\(\)/);
+});
+
+
+test('armed walking can aim with right drag without firing; release restores left fire', () => {
+  const h = setup({inCar: false, weapon: true, playerYaw: 0, person: {root: new THREE.Object3D()}});
+  h.emit('pointerdown', {button: 2, pointerType: 'mouse'});
+  h.emit('pointermove', {button: 2, pointerType: 'mouse', clientX: 280});
+  assert.equal(h.game.shoots, 0);
+  assert.equal(h.game.cameraYaw, -.32);
+  assert.equal(h.game.playerYaw, -.32);
+  assert.equal(h.game.person.root.rotation.y, -.32);
+  h.emit('pointerup', {button: 2, pointerType: 'mouse'});
+  h.emit('pointerdown', {pointerType: 'mouse'});
+  assert.equal(h.game.shoots, 1);
+  assert.equal(h.captures.size, 0);
+});
+
+test('leaving an overhead driving view does not lock on-foot mouse look', () => {
+  const h = setup({inCar: false, cameraMode: 2});
+  h.swipe(80, 'mouse');
+  assert.equal(h.game.cameraYaw, .32);
 });

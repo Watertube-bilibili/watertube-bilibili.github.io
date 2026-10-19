@@ -2,6 +2,7 @@ import {populationRoadCandidates,populationSpawnClear} from './population-stream
 import {trafficControls} from './traffic-controller.js';
 import {planRoute,groundHeight,nearestRoad,roadEdgeAllowed} from './streaming-world.js';
 import {box,mat} from './world.js';
+import {vehicleVelocity} from './vehicle-dynamics.js';
 
 const distance=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const level=game=>Math.max(0,Math.min(5,Math.floor(Number(game.wanted)||0)));
@@ -9,6 +10,26 @@ const PATROL_LIGHT=mat(0x627ade,{emissive:0x253fff,emissiveIntensity:.15});
 const BLUE_LIGHT=mat(0x627ade,{emissive:0x253fff,emissiveIntensity:1.5});
 const RED_LIGHT=mat(0xef5a5a,{emissive:0xff2222,emissiveIntensity:1.5});
 const HOLD={throttle:0,steer:0,brake:1,brakeSource:'pilot',electronicBrake:1};
+const DETAIN_STOP_SPEED=1,GROUND_CLEARANCE=.65;
+function onLocalGround(game,position,vehicle=null){
+ if(vehicle?.grounded===false||!Number.isFinite(position?.y))return false;
+ // A wheel ray can report grounded on a police car's roof. Only the road /
+ // terrain floor counts as a place where a ground patrol can detain someone.
+ const floor=game.groundContact?.heightAt(position.x,position.z)??game.world?.groundHeight?.(position.x,position.z)??groundHeight(position.x,position.z);
+ return Number.isFinite(floor)&&Math.abs(position.y-floor)<=GROUND_CLEARANCE;
+}
+function stoppedForDetention(vehicle){
+ const velocity=vehicleVelocity(vehicle);
+ // Godot's speed is the forward component, not total movement: a sideways
+ // slide or a vertical landing must not masquerade as a stopped vehicle.
+ return Math.hypot(velocity.x,velocity.z,vehicle.roadsterState?.verticalSpeed??0)<DETAIN_STOP_SPEED;
+}
+function groundDetentionTarget(game){
+ if(game.transition||game.aircraft?.active||game.flight?.active||game.jump>0)return null;
+ const vehicle=game.inCar?game.vehicle:null,position=game.position;
+ if(vehicle&&!stoppedForDetention(vehicle))return null;
+ return onLocalGround(game,position,vehicle)?position:null;
+}
 export function policeTargetCount(game){
  const q=game.performanceProfile?.quality??game.quality;
  const counts=q==='ultralow'||q==='ultra-low'?[1,1,2,2,3,4]:q==='low'?[1,2,3,4,5,6]:[2,3,4,6,8,10];
@@ -52,6 +73,7 @@ export function updatePolice(game,dt){
   spawnOfficer(game);game.policeDispatchAt=now+(wanted>=4?1.5:3);
  }
  let canPlan=now>=(game.policePlanAt??0),arrestContact=false;
+ const arrestTarget=wanted?groundDetentionTarget(game):null;
  const nextPlanner=wanted?game.police.reduce((best,c)=>!best||(c.nextPolicePlan??0)<(best.nextPolicePlan??0)?c:best,null):null;
  for(const car of game.police){
   const pursuing=wanted>0;
@@ -73,10 +95,11 @@ export function updatePolice(game,dt){
   car.cruise=pursuing?10+wanted:8;
   const near=distance(car.pos,game.position)<9;
   game.integrate(car,pursuing&&near?HOLD:trafficControls(game,car,dt),dt);
-  if(pursuing&&distance(car.pos,game.position)<7&&Math.abs((car.pos.y??0)-(game.position.y??0))<3&&(!game.inCar||Math.abs(game.vehicle.speed)<1))arrestContact=true;
+  if(arrestTarget&&distance(car.pos,arrestTarget)<7&&Math.abs(car.pos.y-arrestTarget.y)<3&&stoppedForDetention(car)&&onLocalGround(game,car.pos,car))arrestContact=true;
   if(car.siren){const flash=pursuing&&Math.sin(now*9+car.policeId)>0;car.siren.material=pursuing?(flash?RED_LIGHT:BLUE_LIGHT):PATROL_LIGHT;}
  }
- // One elapsed timer, independent of officer count; leaving the area resets it.
+ // One continuous ground-detainment timer, independent of officer count.
+ // Taking off, sliding away, a roof touch or changing actor context resets it.
  game.arrestTimer=arrestContact?(game.arrestTimer??0)+dt:0;
  if(game.arrestTimer>5){game.respawn(true);return;}
  game.policeStats={wanted,target,active:game.police.length,patrol:game.police.filter(c=>c.policeMode==='patrol').length,pursuit:game.police.filter(c=>c.policeMode==='pursuit').length};

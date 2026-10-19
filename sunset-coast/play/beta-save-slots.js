@@ -75,7 +75,7 @@ async function checksum(raw,crypto=globalThis.crypto){
  return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw))),v=>v.toString(16).padStart(2,'0')).join('');
 }
 export function freshSave(now=new Date().toISOString()){
- return JSON.stringify({version:1,savedAt:now,region:'coast',money:12500,health:100,armor:70,wanted:0,owned:['s'],jobsCompleted:0,clockMinutes:1122,transactions:[],vehicle:{model:'s',isGarageVehicle:true,instanceId:'garage:s',x:4.5,z:174,yaw:0,battery:98,condition:100},inCar:true,player:{x:1.7,z:174,yaw:0},job:null,destination:null,character:'alex',god:false,ammo:60});
+ return JSON.stringify({version:1,savedAt:now,region:'coast',money:12500,health:100,armor:70,wanted:0,owned:['s'],jobsCompleted:0,clockMinutes:1122,transactions:[],vehicle:{model:'s',isGarageVehicle:true,instanceId:'garage:s',x:9.5,z:174,yaw:0,battery:98,condition:100},inCar:false,player:{x:13,z:174,yaw:0},job:null,destination:null,character:'alex',god:false,ammo:60});
 }
 export function resolveStandardSave(storage,preferredKey){
  if(preferredKey!==undefined){if(!isStandardSaveKey(preferredKey))fail('invalid-source','标准版存档入口无效。');return{key:preferredKey,raw:get(storage,preferredKey)};}

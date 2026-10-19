@@ -1,7 +1,7 @@
 import {installPanelDrag} from './panel-drag.js';
 import {installControlSelectionGuard} from './touch-selection.js';
 import {roadsterTrim,roadsterFlightLocked,toggleRoadsterAir,requestRoadsterManeuver} from './roadster-controls.js';
-import {cycleRoadsterAero,roadsterAeroMode,ROADSTER_AERO_LABELS} from './roadster-aero.js';
+import {cycleRoadsterAero,roadsterAeroMode,roadsterAeroBrakeState,ROADSTER_AERO_LABELS} from './roadster-aero.js';
 export const ROADSTER_BUTTONS=Object.freeze([
  ['forward','前进','W'],['back','后退','S'],['yawLeft','左转','A'],['yawRight','右转','D'],['left','左移','Q'],['right','右移','E'],
  ['up','上升','Shift'],['down','下降','B'],['airBrake','悬停刹停','Space'],
@@ -66,20 +66,20 @@ export function installRoadsterUI(game){
   $('flight-command-deck').hidden=!air||folded;$('flight-console-fold').hidden=!air;$('flight-console-fold').textContent=folded?'展开':'收起';$('flight-console-fold').setAttribute('aria-expanded',String(!folded));$('flight-console-fold').setAttribute('aria-label',folded?'展开飞行动作':'收起飞行动作');
   $('roadster-details-toggle').setAttribute('aria-expanded',String(detailsOpen));
   if(!air){attitudePanel.hidden=true;$('roadster-attitude-toggle').setAttribute('aria-expanded','false');}
-  if(!visible)return;const s=v.roadsterState??{},ready=!!game.physics?.ready&&!game.physics.failed;
+  if(!visible)return;const s=v.roadsterState??{},ready=!!game.physics?.ready&&!game.physics.failed,aeroBraking=ready&&roadsterAeroBrakeState(v).active;
   root.classList.toggle('roadster-warning-active',!ready||!!s.warning||s.maneuver?.status==='rejected');
-  $('flight-launcher-label').textContent=!ready||s.warning||s.maneuver?.status==='rejected'?'飞行状态 · 警告':s.maneuver?.status==='active'?'特技进行中':air?'飞行选项':'车辆选项';
+  $('flight-launcher-label').textContent=!ready||s.warning||s.maneuver?.status==='rejected'?'飞行状态 · 警告':s.maneuver?.status==='active'?'特技进行中':air?'飞行选项':aeroBraking?'气动制动 · 工作中':'车辆选项';
   $('roadster-trim').textContent='ROADSTER · '+trim.toUpperCase();
   const mode={air:'空中',landing:'缓降',recover:'回正',unpowered:'失去动力',road:'地面'}[s.mode]??'地面';
   $('roadster-telemetry').textContent=mode+(game.inCar&&game.cameraMode===1?'':' · '+Math.round(v.speed*3.6)+' km/h')+(air?' · 离地 '+(s.altitude??0).toFixed(1)+' m':'');
-  $('roadster-warning').textContent=!ready?'Godot 未就绪：空中功能不可用':s.warning||(trim==='rocket'?'T 起飞 / 缓降 · X 按住回正':trim==='thrust'?'按住 Shift + 油门推进':'主动尾翼 · 地面下压力');
+  $('roadster-warning').textContent=!ready?'Godot 未就绪：空中功能不可用':s.warning||(aeroBraking?'气动制动中 · 尾翼自动抬起增阻，松开刹车后恢复':trim==='rocket'?'T 起飞 / 缓降 · X 按住回正 · 地面刹车自动联动尾翼':trim==='thrust'?'按住 Shift + 油门推进 · 地面刹车自动联动尾翼':'地面刹车自动联动尾翼 · 气动制动随速度增强');
   $('roadster-air-toggle').hidden=trim!=='rocket';$('roadster-air-toggle').disabled=!ready;$('roadster-air-toggle').setAttribute('aria-pressed',String(v.roadsterRequest?.air===true));$('roadster-air-toggle').textContent=air?'缓降着陆 · T':'空中模式 · T';
   root.querySelector('.flight-maneuvers').hidden=trim!=='rocket';
   const maneuver=s.maneuver??{},notice=[maneuver.serial,maneuver.status,maneuver.reason].join(':');if(!blocked()&&['rejected','cancelled','complete'].includes(maneuver.status)&&notice!==lastManeuverNotice){lastManeuverNotice=notice;game.ui.toast(maneuver.reason,maneuver.status==='rejected'?'error':'');}
   const busy=v.roadsterRequest?.pending||maneuver.status==='active';for(const action of ['vault','spin'])$('roadster-'+action).disabled=!ready||busy;$('roadster-cancel').disabled=!ready||!busy;
   $('roadster-maneuver-status').dataset.code=maneuver.code??'';
   $('roadster-maneuver-status').textContent=maneuver.reason||(v.roadsterRequest?.pending?'正在检查空间…':'可行驶中启动 · 自动刹稳 · 新输入接管');
-  const aero=roadsterAeroMode(v);$('roadster-wing-toggle').textContent=ROADSTER_AERO_LABELS[aero]+' · Y';$('roadster-wing-toggle').title='切换公路 / 高下压力 / 低风阻；外观运动为参考视频重建，尺寸未经测量';$('roadster-wing-toggle').dataset.aeroMode=aero;
+  const aero=roadsterAeroMode(v);$('roadster-wing-toggle').textContent=aeroBraking?'气动制动 · 自动':ROADSTER_AERO_LABELS[aero]+' · Y';$('roadster-wing-toggle').title='Y 切换公路 / 高下压力 / 低风阻；地面行车制动自动抬翼增阻，松开后恢复所选模式。运动与阻力为游戏近似，非量产参数';$('roadster-wing-toggle').dataset.aeroMode=aero;
   $('roadster-attitude-toggle').hidden=!air;
   for(const element of root.querySelectorAll('[data-roadster-control]')){element.disabled=!ready;element.hidden=element.dataset.roadsterControl==='boost'?trim==='performance':element.dataset.roadsterControl==='stabilize'?trim!=='rocket':false;}
  };
