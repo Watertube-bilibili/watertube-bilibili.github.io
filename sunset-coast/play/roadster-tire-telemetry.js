@@ -1,0 +1,14 @@
+// Read-only native telemetry. Rendering never changes body velocity or grip.
+const finiteFour=value=>Array.isArray(value)&&value.length===4&&value.every(Number.isFinite);
+const boolFour=value=>Array.isArray(value)&&value.length===4&&value.every(v=>typeof v==='boolean');
+export function applyRoadsterTireSnapshot(vehicle,state){
+ const tires=state?.roadster?state.wheelDynamics:null;
+ if(!tires||!['angularSpeeds','angles','slipRatios','normalLoads'].every(key=>finiteFour(tires[key]))||!['contacts','tcsActive'].every(key=>boolFour(tires[key]))||!Array.isArray(tires.forces)||tires.forces.length!==4||tires.forces.some(f=>!Array.isArray(f)||f.length!==2||!f.every(Number.isFinite))){vehicle.roadsterTires=null;return;}
+ vehicle.roadsterTires=Object.fromEntries(Object.entries(tires).map(([key,value])=>[key,Array.isArray(value)?value.map(v=>Array.isArray(v)?v.slice():v):value]));
+}
+export function nativeRoadsterWheelAngle(vehicle,wheel){
+ if(!vehicle.godotPhysics||!vehicle.roadsterTires)return null;
+ const index=(wheel.front?0:2)+(wheel.side>0?1:0);
+ const angle=vehicle.roadsterTires.angles[index];
+ return Number.isFinite(angle)?-angle:null;
+}

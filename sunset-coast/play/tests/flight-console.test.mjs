@@ -62,3 +62,5 @@ test('P, flight and unavailable physics never announce active ground aero brakin
  }
  const h=fixture();Object.assign(h.game.vehicle,{speed:60,grounded:true,roadsterRequest:{air:false},roadsterState:{mode:'road',wing:1,wingPitch:.6}});h.game.physics.ready=false;h.ui.update();assert.notEqual(h.$('flight-launcher-label').textContent,'气动制动 · 工作中');
 });
+
+test('combined vault/roll is a real UI action and P still locks it',()=>{const h=fixture(),button=h.$('roadster-vault_spin');assert.ok(button);assert.match(renderRoadsterConsole(),/越障＋转圈/);h.game.vehicle.parkingBrakeEngaged=true;button.onclick();assert.match(h.game.messages.at(-1),/P 驻车中/);assert.notEqual(h.game.vehicle.roadsterRequest.pending,true);h.game.vehicle.parkingBrakeEngaged=false;button.onclick();assert.equal(h.game.vehicle.roadsterRequest.action,'vault_spin');h.ui.update();assert.equal(button.disabled,true);assert.equal(h.$('roadster-cancel').disabled,false);h.$('roadster-cancel').onclick();assert.equal(h.game.vehicle.roadsterRequest.action,'cancel');});

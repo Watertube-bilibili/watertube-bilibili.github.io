@@ -41,3 +41,7 @@ These are regression-fixture measurements, not predicted Roadster performance. J
 ## Remaining verification boundary
 
 Headless Godot integration and JavaScript tests are not an interactive desktop/browser playtest. Actual WebGL rendering, keyboard feel and visible wing clearance still need an in-browser check. Existing high-downforce/low-drag preset force calibration is outside this narrow regression fix; the legacy native wing controller is unchanged.
+
+## Later combination-action update
+
+The separate vault-plus-roll change now recompiles only the maneuver controller in the production PCK. The “unchanged PCK” statement above describes the aerodynamic-braking fix itself, not that later release. The force/body resources used by these aerobraking tests remain byte-for-byte unchanged, and the tests continue to load the current production pack.

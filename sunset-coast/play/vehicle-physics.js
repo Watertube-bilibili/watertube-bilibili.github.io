@@ -1,3 +1,4 @@
+import {nativeRoadsterWheelAngle} from './roadster-tire-telemetry.js';
 import {parkingBrakeControls} from './touch-transmission.js';
 import {cargoEffects} from './cargo-career.js';
 import {stepAxleFault,axleFaultEffects,updateAxleFaultVisuals} from './axle-fault.js';
@@ -158,7 +159,9 @@ export function updateVehicleVisuals(v, dt) {
       ? Math.hypot(axleRadius, wheel.front ? v.wheelBase : 0) / centreRadius : 1;
     // Unwrapped travel preserves rolling direction during render interpolation.
     wheel.spinAngle ??= wheel.spin.rotation.x;
-    if(dt>0)wheel.spinAngle -= v.travelDistance * pathRatio / wheel.radius;
+    const nativeSpin=nativeRoadsterWheelAngle(v,wheel);
+    if(nativeSpin!==null)wheel.spinAngle=nativeSpin;
+    else if(dt>0)wheel.spinAngle -= v.travelDistance * pathRatio / wheel.radius;
     wheel.spin.rotation.x = wrap(wheel.spinAngle);
   }
   updateAxleFaultVisuals(v);

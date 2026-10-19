@@ -15,7 +15,7 @@ export function refillRoadster(v){if(!roadsterTrim(v))return;v.roadsterRefillSer
 export function roadsterSpawnConfig(v){const trim=roadsterTrim(v);return trim?{roadsterTrim:trim,roadsterCharge:clamp(v.roadsterCharge??100,0,100),roadsterRefillSerial:v.roadsterRefillSerial??0}:{};}
 export function clampRoadsterControls(v,input={}){
  const trim=roadsterTrim(v);if(!trim)return{};
- return{roadsterAction:trim==='rocket'&&['vault','spin','cancel'].includes(input.roadsterAction)?input.roadsterAction:'',roadsterActionSerial:Math.floor(clamp(input.roadsterActionSerial??0,0,1e9)),roadsterCancelLanding:input.roadsterCancelLanding===true,roadsterManualOverride:input.roadsterManualOverride===true,roadsterAir:trim==='rocket'&&input.roadsterAir===true,roadsterBoost:trim!=='performance'&&input.roadsterBoost===true,
+ return{roadsterAction:trim==='rocket'&&['vault','vault_spin','spin','cancel'].includes(input.roadsterAction)?input.roadsterAction:'',roadsterActionSerial:Math.floor(clamp(input.roadsterActionSerial??0,0,1e9)),roadsterCancelLanding:input.roadsterCancelLanding===true,roadsterManualOverride:input.roadsterManualOverride===true,roadsterAir:trim==='rocket'&&input.roadsterAir===true,roadsterBoost:trim!=='performance'&&input.roadsterBoost===true,
   roadsterRecover:trim==='rocket'&&input.roadsterRecover===true,roadsterStabilize:input.roadsterStabilize!==false,
   roadsterPitch:clamp(input.roadsterPitch??0,-1,1),roadsterRoll:clamp(input.roadsterRoll??0,-1,1),
   roadsterYaw:clamp(input.roadsterYaw??0,-1,1),roadsterVertical:clamp(input.roadsterVertical??0,-1,1),
@@ -25,7 +25,7 @@ export function clampRoadsterControls(v,input={}){
 }
 export function requestRoadsterManeuver(game,action){
  const v=game.vehicle;if(roadsterTrim(v)!=='rocket')return{ok:false,reason:'智能空中特技仅限 Rocket（游戏设定）'};
- if(!['vault','spin','cancel'].includes(action))return{ok:false,reason:'未知动作'};
+ if(!['vault','vault_spin','spin','cancel'].includes(action))return{ok:false,reason:'未知动作'};
  if(v.parkingBrakeEngaged&&action!=='cancel')return{ok:false,reason:'P 驻车中，请先挂 N / R / D 再执行特技'};
  if(!game.inCar||game.transition||game.paused||game.aircraft?.active||game.flight?.active||game.autonomyTest?.active||game.ui?.isPhoneOpen?.()||globalThis.document?.body?.classList.contains('mobile-drawer-open'))return{ok:false,reason:'请先结束当前操作并进入 Rocket'};
  if(!game.physics?.ready||game.physics.failed)return{ok:false,reason:'智能特技需要 Godot 物理引擎'};
@@ -35,7 +35,7 @@ export function requestRoadsterManeuver(game,action){
  if(action!=='cancel')request.inputLatch={keys:{...game.keys},touch:{...game.touch},air:{...game.roadsterTouch}};
  request.action=action;request.actionSerial=(request.actionSerial??0)+1;request.cancelLanding=false;request.pending=action!=='cancel';
  game.manualTakeover?.();game.autopilot=false;game.pilot?.reset();
- return{ok:true,reason:action==='cancel'?'已请求取消，正在交还控制':action==='vault'?'正在评估刹停空间，随后检查前方障碍和落地':'正在评估刹停与转圈空间'};
+ return{ok:true,reason:action==='cancel'?'已请求取消，正在交还控制':action==='vault_spin'?'正在检查越障航线、整车转圈空间和落地区域':action==='vault'?'正在评估刹停空间，随后检查前方障碍和落地':'正在评估刹停与转圈空间'};
 }
 export function toggleRoadsterAir(game){
  const v=game.vehicle;if(roadsterTrim(v)!=='rocket')return{ok:false,reason:'空中模式仅限 Rocket 配置（游戏设定）'};
@@ -78,7 +78,7 @@ export function roadsterPlayerInput(game,input={}){
 }
 export function applyRoadsterSnapshot(v,state){
  if(!roadsterTrim(v)||!state?.roadster)return;
- const previousMode=v.roadsterState?.mode,previousManeuver=v.roadsterState?.maneuver;const s=state.roadster,m=s.maneuver??{},maneuver={kind:['vault','spin'].includes(m.kind)?m.kind:'',phase:typeof m.phase==='string'?m.phase:'',status:['idle','active','complete','cancelled','rejected'].includes(m.status)?m.status:'idle',reason:typeof m.reason==='string'?m.reason:'',code:typeof m.code==='string'?m.code:'',progress:clamp(m.progress,0,1),serial:Math.floor(clamp(m.serial,0,1e9)),angle:clamp(m.angle,-100,100)};v.roadsterState={mode:['road','air','landing','recover','unpowered'].includes(s.mode)?s.mode:'road',charge:clamp(s.charge,0,100),heat:clamp(s.heat,0,1),boost:clamp(s.boost,0,1),lift:clamp(s.lift,0,1),wing:clamp(s.wing,0,1),wingPitch:clamp(s.wingPitch,0,.65),altitude:clamp(s.altitude,0,10000),verticalSpeed:clamp(s.verticalSpeed,-300,300),grounded:!!state.grounded,warning:typeof s.warning==='string'?s.warning:'',jets:sanitizeRoadsterJets(s.jets),autoStabilizing:s.autoStabilizing===true,automaticAirborne:s.automaticAirborne===true,landingCushion:clamp(s.landingCushion,0,1),rollRate:clamp(s.rollRate,-100,100),maneuver};
+ const previousMode=v.roadsterState?.mode,previousManeuver=v.roadsterState?.maneuver;const s=state.roadster,m=s.maneuver??{},maneuver={kind:['vault','vault_spin','spin'].includes(m.kind)?m.kind:'',phase:typeof m.phase==='string'?m.phase:'',status:['idle','active','complete','cancelled','rejected'].includes(m.status)?m.status:'idle',reason:typeof m.reason==='string'?m.reason:'',code:typeof m.code==='string'?m.code:'',progress:clamp(m.progress,0,1),serial:Math.floor(clamp(m.serial,0,1e9)),angle:clamp(m.angle,-100,100)};v.roadsterState={mode:['road','air','landing','recover','unpowered'].includes(s.mode)?s.mode:'road',charge:clamp(s.charge,0,100),heat:clamp(s.heat,0,1),boost:clamp(s.boost,0,1),lift:clamp(s.lift,0,1),wing:clamp(s.wing,0,1),wingPitch:clamp(s.wingPitch,0,.65),altitude:clamp(s.altitude,0,10000),verticalSpeed:clamp(s.verticalSpeed,-300,300),grounded:!!state.grounded,warning:typeof s.warning==='string'?s.warning:'',jets:sanitizeRoadsterJets(s.jets),autoStabilizing:s.autoStabilizing===true,automaticAirborne:s.automaticAirborne===true,landingCushion:clamp(s.landingCushion,0,1),rollRate:clamp(s.rollRate,-100,100),maneuver};
  v.roadsterCharge=v.roadsterState.charge;
  const request=roadsterRequest(v);if(maneuver.serial>=(request.actionSerial??0)){request.pending=false;if((previousManeuver?.status!==maneuver.status||previousManeuver?.serial!==maneuver.serial||previousMode!==s.mode)&&(['active','complete','cancelled'].includes(maneuver.status)&&s.mode==='air'))request.air=true;}
  if(s.mode==='road'&&maneuver.status==='complete'&&(previousManeuver?.status!==maneuver.status||previousManeuver?.serial!==maneuver.serial))request.air=false;

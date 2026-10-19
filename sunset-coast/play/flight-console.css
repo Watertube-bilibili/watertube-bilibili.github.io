@@ -42,7 +42,7 @@
 .flight-ground-actions{display:contents}
 .roadster-in-air .flight-ground-actions{display:none}
 .flight-maneuvers{margin-top:10px;padding-top:10px;border-top:1px solid var(--flight-line)}
-#roadster-cancel,#roadster-maneuver-status{grid-column:1/-1}
+#roadster-vault_spin,#roadster-cancel,#roadster-maneuver-status{grid-column:1/-1}
 #roadster-maneuver-status{font-size:11px;color:var(--flight-muted);line-height:1.6}
 .flight-disclaimer{display:block;margin-top:8px;color:var(--flight-muted);font-size:10px}
 body.roadster-air-active #mobile-controls,body.roadster-air-active #sensor-panel,body.roadster-air-active #autopilot-btn,body.roadster-air-active #mobile-route,body.roadster-air-active .bottom-hud,body.roadster-air-active .vehicle-cockpit{display:none!important}

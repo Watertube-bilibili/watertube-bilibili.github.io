@@ -137,7 +137,7 @@ test('Rocket boost, takeoff and maneuver channels cannot bypass P',()=>{
  const command=godotCarControls(g.vehicle,{throttle:1,steer:0,brake:0,roadsterBoost:true,roadsterAir:true,roadsterAction:'vault',roadsterForward:1,roadsterVertical:1},1/60);
  for(const field of ['roadsterBoost','roadsterAir','roadsterRecover'])assert.equal(command[field],false);
  for(const field of ['throttle','roadsterForward','roadsterVertical','roadsterLateral'])assert.equal(command[field],0);
- assert.equal(command.roadsterAction,'');assert.equal(toggleRoadsterAir(g).ok,false);assert.equal(requestRoadsterManeuver(g,'vault').ok,false);
+ assert.equal(command.roadsterAction,'');assert.equal(toggleRoadsterAir(g).ok,false);assert.equal(requestRoadsterManeuver(g,'vault').ok,false);assert.equal(requestRoadsterManeuver(g,'vault_spin').ok,false);assert.equal(godotCarControls(g.vehicle,{roadsterAction:'vault_spin'},1/60).roadsterAction,'');
  selectTouchGear(g,'D');assert.equal(toggleRoadsterAir(g).ok,true);
 });
 

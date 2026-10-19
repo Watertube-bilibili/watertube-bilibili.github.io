@@ -15,7 +15,10 @@ export function createGodotAssetCache(manifest,{baseURL=new URL('./physics/',glo
   const cache=await open(),key=cacheKey(item);
   if(cache){try{const stored=await bounded(cache.match(key));if(stored){const bytes=await valid(stored,item);if(bytes){stats.hits++;return new Response(bytes,{headers:{'Content-Type':item.name.endsWith('.gz')?'application/gzip':'application/octet-stream'}});}stats.corrupt++;await bounded(cache.delete(key));}}catch{stats.unavailable++;}}
   stats.misses++;stats.network++;
-  const response=await network(url,options);if(!response.ok||!cache)return response;
+  // A fresh manifest must not stream an older HTTP-cached pack into Godot.
+  // CacheStorage already keys by content; version only the PCK network URL too.
+  const networkURL=new URL(url);if(item.name==='neon-physics.pck')networkURL.searchParams.set('v',item.sha256);
+  const response=await network(networkURL.href,options);if(!response.ok||!cache)return response;
   // Start the caller's original streaming path immediately. A second stream verifies
   // compressed bytes before committing; slow/denied storage never gates gameplay.
   const reusable=response.clone();

@@ -1,3 +1,4 @@
+import {applyRoadsterTireSnapshot} from './roadster-tire-telemetry.js';
 import {parkingBrakeControls} from './touch-transmission.js';
 import {cargoGodotControls} from './cargo-career.js';
 import {createGodotAssetCache} from './godot-asset-cache.js';
@@ -121,7 +122,7 @@ export class GodotPhysicsSystem{
    v.speed=state.speed;v.yawRate=state.angular?.[1]??0;v.lateralSpeed=state.lateralSpeed??0;v.slipVelocityX=state.linear[0]+Math.sin(v.yaw)*v.speed;v.slipVelocityZ=state.linear[2]+Math.cos(v.yaw)*v.speed;
    v.travelDistance=previous.distanceTo(p)*Math.sign(v.speed||oldSpeed||1);v.longitudinalAcceleration=(v.speed-oldSpeed)/(snapshot.dt||1/60);
    v.steer=state.steer;v.manualBrakePressure=state.manualBrakePressure;v.brakeAmount=state.brakeAmount;v.brake=state.brakeAmount>.025;v.driftAmount=state.driftAmount;v.grounded=state.grounded;v.suspensionRest=state.suspensionRest??.18;v.suspensionRebound=state.suspensionRebound??.08;v.wheelCompressions=state.wheelCompressions;v.wheelVisualCompressions=state.wheelVisualCompressions??state.wheelCompressions;
-   applyRoadsterSnapshot(v,state);updateVehicleVisuals(v,snapshot.dt||1/60);entry.position.copy(v.pos);entry.yaw=v.yaw;entry.resetSerial=v.physicsResetSerial??0;
+   applyRoadsterSnapshot(v,state);applyRoadsterTireSnapshot(v,state);updateVehicleVisuals(v,snapshot.dt||1/60);entry.position.copy(v.pos);entry.yaw=v.yaw;entry.resetSerial=v.physicsResetSerial??0;
   }
   for(const c of this.contactImpacts.collect(snapshot.contacts??[],snapshot.tick,ignoredContacts)){
    const a=this.byId.get(c.a),b=this.byId.get(c.b),point={x:c.point[0],y:c.point[1],z:c.point[2]};
