@@ -1,0 +1,9 @@
+export class GameAudio{
+ constructor(){this.enabled=false;this.ctx=null;this.lastNote=0;this.step=0;this.timer=null;}
+ toggle(){if(!this.ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return false;this.ctx=new A();this.master=this.ctx.createGain();this.master.gain.value=.075;this.master.connect(this.ctx.destination);this.motor=this.ctx.createOscillator();this.motor.type='sine';this.motorGain=this.ctx.createGain();this.motorGain.gain.value=.07;this.motor.connect(this.motorGain);this.motorGain.connect(this.master);this.motor.start();this.timer=setInterval(()=>this.music(),250)}this.enabled=!this.enabled;this.ctx.resume();this.master.gain.setTargetAtTime(this.enabled?.075:0,this.ctx.currentTime,.2);return this.enabled;}
+ update(speed){if(this.ctx&&this.enabled){this.motor.frequency.setTargetAtTime(65+Math.abs(speed)*6,this.ctx.currentTime,.1);this.motorGain.gain.setTargetAtTime(.12+Math.abs(speed)*.003,this.ctx.currentTime,.1)}}
+ music(){if(!this.enabled||!this.ctx)return;const notes=[261.63,329.63,392,493.88,293.66,349.23,440,523.25];const t=this.ctx.currentTime;this.note(notes[(this.step*3)%notes.length],t,.32,.17,'sine');if(this.step%4===0)this.note(notes[(this.step/4|0)%4]/2,t,.8,.35,'triangle');if(this.step%2===0)this.note(60,t,.07,.5,'sine');this.step++;}
+ note(f,t,d,g,type){const o=this.ctx.createOscillator(),a=this.ctx.createGain();o.frequency.value=f;o.type=type;a.gain.setValueAtTime(0,t);a.gain.linearRampToValueAtTime(g,t+.025);a.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(a);a.connect(this.master);o.start(t);o.stop(t+d+.05);}
+ horn(){if(this.ctx&&this.enabled){this.note(349,this.ctx.currentTime,.35,.4,'sawtooth');this.note(440,this.ctx.currentTime,.35,.25,'sawtooth')}}
+ impact(){if(this.ctx&&this.enabled)this.note(48,this.ctx.currentTime,.2,.9,'triangle')}
+}

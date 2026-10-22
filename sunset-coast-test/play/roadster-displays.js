@@ -1,0 +1,137 @@
+import {vehicleGear} from './touch-transmission.js';
+import * as THREE from './vendor/three.module.js';
+import {roadsterAeroMode,roadsterAeroBrakeState} from './roadster-aero.js';
+import {roadsterTrim} from './roadster-controls.js';
+
+const finite=(value,fallback=0)=>Number.isFinite(value)?value:fallback;
+const clamp=(value,a,b)=>Math.max(a,Math.min(b,finite(value,a)));
+const round=value=>Math.round(finite(value)*10)/10;
+const MODES={road:'GROUND',air:'AIRBORNE',landing:'LANDING',recover:'RECOVERY',unpowered:'POWER LOSS'};
+const AERO_LABELS={road:'ROAD',highDownforce:'HIGH DOWNFORCE',lowDrag:'LOW DRAG'};
+const LABELS={auto:'AUTO',raised:'RAISED',stowed:'STOWED'};
+export const ROADSTER_DISPLAY_SPECS=Object.freeze([
+ Object.freeze({type:'driver',name:'Driver_Display_Surface',optional:true,width:512,height:192}),
+ Object.freeze({type:'center',name:'Center_Display_Surface',width:512,height:352}),
+ Object.freeze({type:'aux',name:'Aux_Display_Surface',optional:true,width:512,height:192})
+]);
+
+/** Display data only. No physics, geometry, shared materials or root pose changes. */
+export function roadsterDisplayState(car,{autopilot=false}={}){
+ const state=car?.roadsterState??{},trim=roadsterTrim(car)??'performance',mode=MODES[state.mode]?state.mode:'road';
+ const q=car?.physicsQuaternion??car?.root?.quaternion??{x:0,y:0,z:0,w:1},length=Math.hypot(finite(q.x),finite(q.y),finite(q.z),finite(q.w,1));
+ const [x,y,z,w]=length>1e-8?[finite(q.x)/length,finite(q.y)/length,finite(q.z)/length,finite(q.w,1)/length]:[0,0,0,1];
+ const forwardX=-2*(x*z+w*y),forwardY=2*(w*x-y*z),forwardZ=-(1-2*(x*x+y*y)),rightY=2*(x*y+w*z),upY=1-2*(x*x+z*z);
+ const speed=finite(car?.speed),battery=Math.round(clamp(car?.battery??100,0,100)),condition=Math.round(clamp(car?.condition??100,0,100));
+ const air=['air','landing','recover','unpowered'].includes(mode);
+ return{trim,mode,air,aeroMode:roadsterAeroMode(car),speed:Math.round(Math.min(999,Math.abs(speed)*3.6)),gear:air?'AIR':vehicleGear(car),battery,range:Math.round(Math.max(0,finite(car?.model?.range,480))*battery/100),autopilot:!!autopilot,
+  condition,wing:Math.round(clamp(car?.roadsterAeroVisual?.lift!==undefined?car.roadsterAeroVisual.lift/.34:state.wing??car?.roadsterWingVisual??0,0,1)*100),wingMode:LABELS[car?.roadsterRequest?.wingMode]?car.roadsterRequest.wingMode:'auto',airBrake:roadsterAeroBrakeState(car).active,
+  altitude:round(clamp(state.altitude??0,0,9999)),verticalSpeed:round(clamp(state.verticalSpeed??0,-999,999)),pitch:round(Math.asin(clamp(forwardY,-1,1))*180/Math.PI),roll:round(Math.atan2(-rightY,upY)*180/Math.PI),heading:Math.round((Math.atan2(forwardX,-forwardZ)*180/Math.PI+360)%360)%360,
+  warning:condition<=0||battery<=0?'POWER OFF':mode==='unpowered'?'LIFT UNAVAILABLE':mode==='landing'?'CONTROLLED DESCENT':''};
+}
+
+const colors={background:'#090e13',line:'#26313c',muted:'#99a8b4',text:'#edf2f5',accent:'#adc1d0',green:'#b4d1c6',amber:'#d1b07c',red:'#c64b49',blue:'#465963',earth:'#3c3432'};
+function text(ctx,value,x,y,size=20,color=colors.text,align='left',weight=500){ctx.fillStyle=color;ctx.font=`${weight} ${size}px Arial, sans-serif`;ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillText(String(value),x,y);}
+function line(ctx,x,y,width,color=colors.line,height=1){ctx.fillStyle=color;ctx.fillRect(x,y,width,height);}
+function bar(ctx,x,y,width,value,color=colors.accent){line(ctx,x,y,width,colors.line,5);line(ctx,x,y,width*clamp(value,0,100)/100,color,5);}
+function background(ctx,width,height){ctx.clearRect(0,0,width,height);ctx.fillStyle=colors.background;ctx.fillRect(0,0,width,height);}
+const signed=value=>(value>0?'+':'')+value.toFixed(1);
+
+// Original vector coupe illustration; not a camera feed or obstacle visualization.
+function drawCarDiagram(ctx,s){
+ const polygon=(points,fill,stroke=null)=>{ctx.beginPath();points.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=fill;ctx.fill();if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=1;ctx.stroke();}};
+ ctx.save();ctx.fillStyle='#050608';ctx.beginPath();ctx.ellipse(270,244,166,22,-.11,0,Math.PI*2);ctx.fill();
+ const wheel=(x,y,rx,ry)=>{ctx.fillStyle='#090b0f';ctx.beginPath();ctx.ellipse(x,y,rx,ry,-.16,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#7c8288';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(x,y,rx*.67,ry*.76,-.16,0,Math.PI*2);ctx.stroke();ctx.strokeStyle='#a8adb3';ctx.lineWidth=2;for(let i=0;i<5;i++){const a=i*Math.PI*2/5;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a)*rx*.6,y+Math.sin(a)*ry*.69);ctx.stroke();}};
+ wheel(147,230,14,24);wheel(373,189,13,22);
+ polygon([[110,215],[170,189],[223,155],[299,143],[352,162],[420,180],[427,209],[235,269],[117,241]],'#8d939a','#b6bbc1');
+ polygon([[110,215],[229,235],[427,183],[427,209],[235,269],[117,241]],'#535a62');
+ polygon([[117,226],[228,249],[424,196],[427,209],[235,269],[117,241]],'#383e46');
+ polygon([[110,215],[170,189],[257,203],[229,235]],'#c7cbd0');
+ polygon([[170,189],[223,155],[299,143],[352,162],[257,203]],'#b1b7be');
+ polygon([[181,187],[227,160],[293,151],[319,165],[253,195]],'#17212b','#d0d5da');
+ polygon([[266,199],[328,168],[348,170],[391,183],[285,214]],'#101921','#a6afb7');
+ polygon([[264,203],[285,214],[391,183],[405,187],[280,224]],'#8a929c');
+ polygon([[117,215],[225,234],[220,238],[119,221]],'#e8f1f5');
+ polygon([[123,230],[215,247],[215,251],[124,236]],'#11151a');
+ polygon([[404,185],[426,180],[427,185],[406,191]],'#bc3b3e');
+ ctx.strokeStyle='#343c45';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(285,219);ctx.lineTo(282,245);ctx.lineTo(362,221);ctx.stroke();
+ wheel(246,247,18,27);wheel(395,204,15,23);
+ if(s.wing>5){polygon([[352,160-s.wing*.05],[409,146-s.wing*.05],[436,154-s.wing*.05],[376,174-s.wing*.05]],'#8e979f','#c2c9ce');}
+ ctx.restore();
+}
+
+export function paintRoadsterDisplay(ctx,type,s){
+ if(type==='driver'){
+  background(ctx,512,192);
+  text(ctx,'ROADSTER',20,19,17,colors.muted);text(ctx,s.trim.toUpperCase(),492,19,15,colors.muted,'right');line(ctx,20,34,472);
+  text(ctx,s.speed,20,91,84,colors.text,'left',600);text(ctx,'km/h',24,142,19,colors.muted);
+  text(ctx,s.gear,308,89,s.air?37:64,s.gear==='R'?colors.amber:colors.accent,'center',600);text(ctx,s.air?'FLIGHT':'GEAR',308,139,15,colors.muted,'center');
+  text(ctx,s.battery+'%',492,92,37,s.battery<15?colors.amber:colors.green,'right',600);text(ctx,'BATTERY',492,139,15,colors.muted,'right');
+  bar(ctx,20,159,472,s.battery,s.battery<15?colors.amber:colors.green);
+  text(ctx,s.autopilot?'PILOT ACTIVE':s.air?MODES[s.mode]:'MANUAL',20,179,14,s.autopilot?colors.accent:colors.muted);text(ctx,s.range+' km',492,179,16,colors.muted,'right');
+ }else if(type==='center'){
+  // Inspired by the official Roadster cabin photo's car-centric dark display.
+  // Fine Roadster UI details are not legible there; this is an original game UI.
+  background(ctx,512,352);
+  text(ctx,'ROADSTER',22,20,12,'#aeb6be');text(ctx,s.trim.toUpperCase(),490,20,11,'#7f8b95','right');
+  text(ctx,s.speed,22,73,64,colors.text,'left',600);text(ctx,'km/h',25,115,14,colors.muted);
+  text(ctx,s.gear,190,76,s.air?27:36,colors.text,'center',500);
+  text(ctx,'BATTERY',490,51,10,colors.muted,'right');text(ctx,s.battery+'%',490,76,27,s.battery<15?colors.amber:colors.text,'right',500);
+  text(ctx,s.range+' km',490,104,13,colors.muted,'right');
+  // These are actual vehicle states, not decorative app buttons.
+  text(ctx,s.warning||MODES[s.mode],256,118,12,s.warning?colors.amber:colors.muted,'center');
+  drawCarDiagram(ctx,s);
+  text(ctx,s.air?'FLIGHT':'DRIVING',23,282,10,colors.muted);
+  text(ctx,s.condition>0&&s.battery>0?'READY':'OFF',490,282,11,colors.muted,'right');
+  line(ctx,20,304,472,'#30373e');
+  // Mobile-friendly state dock. This physical screen is not touch-interactive.
+  text(ctx,'DRIVE',22,318,9,colors.muted);text(ctx,s.autopilot?'PILOT ACTIVE':'MANUAL',22,336,12,colors.text);
+  text(ctx,'AERO',256,318,9,colors.muted,'center');text(ctx,s.airBrake?'AERO BRAKING':AERO_LABELS[s.aeroMode]??'ROAD',256,336,12,s.airBrake?colors.amber:colors.text,'center');
+  text(ctx,'BODY',490,318,9,colors.muted,'right');text(ctx,s.condition+'%',490,336,12,s.condition<25?colors.red:colors.text,'right');
+ }else if(type==='aux'){
+  background(ctx,512,192);text(ctx,s.air?'FLIGHT ATTITUDE':'BODY ATTITUDE',20,18,16,colors.muted);line(ctx,20,33,472);
+  text(ctx,'ALTITUDE',20,53,14,colors.muted);text(ctx,s.altitude.toFixed(1),20,91,48,colors.text,'left',600);text(ctx,'m AGL',20,128,16,colors.muted);text(ctx,'V/S '+signed(s.verticalSpeed),221,128,18,colors.accent,'right');
+  // A small true attitude horizon, clipped to its own screen region.
+  ctx.save();ctx.beginPath();ctx.rect(254,43,238,103);ctx.clip();ctx.translate(373,95);ctx.rotate(-s.roll*Math.PI/180);const offset=clamp(s.pitch,-85,85)*.9;
+  ctx.fillStyle=colors.blue;ctx.fillRect(-400,-400+offset,800,400);ctx.fillStyle=colors.earth;ctx.fillRect(-400,offset,800,400);line(ctx,-400,offset,800,colors.accent,2);
+  ctx.strokeStyle='#b8daed99';ctx.lineWidth=1.5;for(const angle of[-30,-15,15,30]){const y=offset+angle*.9;ctx.beginPath();ctx.moveTo(-28,y);ctx.lineTo(28,y);ctx.stroke();}ctx.restore();
+  ctx.strokeStyle=colors.amber;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(335,95);ctx.lineTo(361,95);ctx.lineTo(373,102);ctx.lineTo(385,95);ctx.lineTo(411,95);ctx.stroke();
+  line(ctx,20,157,472);text(ctx,'HDG '+String(s.heading).padStart(3,'0')+'°',20,177,17,colors.muted);text(ctx,'P '+signed(s.pitch)+'°   R '+signed(s.roll)+'°',492,177,17,colors.accent,'right');
+ }
+}
+
+function signature(type,s){return JSON.stringify(type==='driver'?[s.trim,s.speed,s.gear,s.battery,s.range,s.autopilot,s.mode]:type==='center'?[s.aeroMode,s.trim,s.speed,s.gear,s.range,s.autopilot,s.mode,s.battery,s.wing,s.wingMode,s.condition,s.airBrake,s.warning]:[s.air,s.altitude,s.verticalSpeed,s.pitch,s.roll,s.heading]);}
+
+export function attachRoadsterDisplays(car){
+ if(!roadsterTrim(car)||!car?.root)return null;
+ if(car.instruments)return car.instruments.kind==='roadster'?car.instruments:null;
+ const surfaces=ROADSTER_DISPLAY_SPECS.map(spec=>car.root.getObjectByName(spec.name));
+ if(surfaces.some((surface,i)=>!ROADSTER_DISPLAY_SPECS[i].optional&&!surface?.isMesh))return null;
+ const displays=[];
+ try{
+  for(let i=0;i<ROADSTER_DISPLAY_SPECS.length;i++){
+   const spec=ROADSTER_DISPLAY_SPECS[i],surface=surfaces[i];if(!surface?.isMesh)continue;
+   const originalMaterial=surface.material,panel={...spec,surface,originalMaterial,material:null,texture:null,signature:''};displays.push(panel);
+   const canvas=document.createElement('canvas');canvas.width=spec.width;canvas.height=spec.height;
+   const context=canvas.getContext('2d');if(!context)throw Error('Roadster 2D display context unavailable');
+   const texture=panel.texture=new THREE.CanvasTexture(canvas);texture.colorSpace=THREE.SRGBColorSpace;texture.flipY=false;texture.minFilter=texture.magFilter=THREE.LinearFilter;texture.generateMipmaps=false;
+   const base=Array.isArray(originalMaterial)?originalMaterial[0]:originalMaterial,material=panel.material=base.clone();material.name='Roadster_Live_'+spec.type;material.map=texture;material.toneMapped=false;material.side=THREE.DoubleSide;material.transparent=false;material.opacity=1;material.depthWrite=true;material.alphaTest=0;
+   if(material.emissive){material.color.setHex(0x000000);material.emissive.setHex(0xffffff);material.emissiveMap=texture;material.emissiveIntensity=1;material.metalness=0;material.roughness=1;if('transmission'in material)material.transmission=0;if('clearcoat'in material)material.clearcoat=0;}else material.color.setHex(0xffffff);
+   surface.material=material;surface.userData.semantic=3;
+   Object.assign(panel,{canvas,context});
+  }
+ }catch(error){for(const panel of displays){panel.surface.material=panel.originalMaterial;panel.texture?.dispose();panel.material?.dispose();}return null;}
+ car.instruments={kind:'roadster',displays,lastUpdate:-Infinity,state:null};updateRoadsterDisplays(car,0);return car.instruments;
+}
+
+export function updateRoadsterDisplays(car,time=0,options={}){
+ const instruments=car?.instruments;if(instruments?.kind!=='roadster')return;
+ const now=finite(time);if(now>=instruments.lastUpdate&&now-instruments.lastUpdate<.1)return;
+ const state=roadsterDisplayState(car,options);instruments.state=state;instruments.lastUpdate=now;
+ for(const panel of instruments.displays){const next=signature(panel.type,state);if(panel.signature===next)continue;paintRoadsterDisplay(panel.context,panel.type,state);panel.signature=next;panel.texture.needsUpdate=true;}
+}
+
+export function disposeRoadsterDisplays(car){
+ const instruments=car?.instruments;if(instruments?.kind!=='roadster')return false;
+ for(const panel of instruments.displays){if(panel.surface.material===panel.material)panel.surface.material=panel.originalMaterial;panel.texture.dispose();panel.material.dispose();}
+ delete car.instruments;return true;
+}

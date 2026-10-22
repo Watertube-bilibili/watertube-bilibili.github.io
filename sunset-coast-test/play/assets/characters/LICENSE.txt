@@ -1,0 +1,33 @@
+Ultimate Modular Men and Ultimate Modular Women by Quaternius
+License: CC0 1.0 Universal (CC0 1.0), Public Domain Dedication
+https://creativecommons.org/publicdomain/zero/1.0/
+
+Official source pages:
+https://quaternius.com/packs/ultimatemodularcharacters.html
+https://quaternius.com/packs/ultimatemodularwomen.html
+
+Official download folders linked by those pages:
+https://drive.google.com/drive/folders/1USAAquX2JJWuA2m6zol0KUkFe3UkZ8zX
+https://drive.google.com/drive/folders/1720N9IGyQHXYvtvZJzazhxtTTlz-y2Vf
+
+Source: Individual Characters / glTF. Retrieved 2026-10-22.
+Source-file SHA-256 hashes and runtime counts are in manifest.json.
+
+Adaptations: six clothed characters, all original geometry and skin weights
+preserved. Merged mesh primitives into a single vertex-colored skinned mesh;
+removed unused texture coordinates; retained seven original animation clips;
+repacked embedded glTF data as GLB. No image textures or network dependencies.
+Runtime normalizes height to 1.85m and faces the model toward the game -Z axis.
+
+Original license file text (both official folders contain this text):
+------------------------------------------------------
+Ultimate Modular Males by @Quaternius
+Consider supporting me on Patreon, even $1 helps me a lot!
+
+https://www.patreon.com/quaternius
+-------------------------------------------------------
+
+License:
+CC0 1.0 Universal (CC0 1.0)
+Public Domain Dedication
+https://creativecommons.org/publicdomain/zero/1.0/

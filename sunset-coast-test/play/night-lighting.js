@@ -1,0 +1,95 @@
+import * as THREE from './vendor/three.module.js';
+import {vehicleHeadlampAnchors} from './vehicle-lights.js';
+
+// Presentation-only, bounded forward-renderer budget. No physics, timers or saves.
+const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,Number.isFinite(n)?n:0));
+const smooth=(a,b,n)=>{const t=clamp((n-a)/(b-a));return t*t*(3-2*t);};
+export function nightLightAmount(solar){return Number.isFinite(solar?.altitude)?1-smooth(-.10,.10,solar.altitude):1-clamp(solar?.day??1);}
+export function nightLightBudget(quality='medium',mobile=false){
+ const q=mobile?'low':quality;
+ return Object.freeze({player:2,traffic:q==='high'?2:q==='low'?0:1,street:q==='high'?5:q==='low'?1:3,shadows:q==='high'&&!mobile});
+}
+const facadeMasks=new WeakMap();
+export function registerFacadeNightMask(texture,mask){facadeMasks.set(texture,mask);return texture;}
+export function configureNightWindows(material,source=material.map){
+ const mask=facadeMasks.get(source);if(!mask)return material;
+ const emission=mask.clone();emission.wrapS=material.map.wrapS;emission.wrapT=material.map.wrapT;
+ emission.repeat.copy(material.map.repeat);emission.offset.copy(material.map.offset);emission.needsUpdate=true;
+ material.emissive.setHex(0xffd29b);material.emissiveMap=emission;material.emissiveIntensity=0;
+ material.userData.nightEmission=1.15;
+ const previous=material.onBeforeCompile,key=material.customProgramCacheKey();
+ material.onBeforeCompile=function(shader,renderer){
+  previous.call(this,shader,renderer);
+  // Match the existing streamed facade's world-space UVs, not box UVs.
+  if(shader.fragmentShader.includes('varying vec2 coastFacadeUV;'))shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','totalEmissiveRadiance *= texture2D(emissiveMap,coastFacadeUV).rgb;');
+ };
+ material.customProgramCacheKey=()=>key+'-night-windows-v1';
+ material.addEventListener('dispose',()=>emission.dispose());return material;
+}
+export function createStreetBulbMaterial(){
+ const material=new THREE.MeshStandardMaterial({color:0xc9ccba,emissive:0xffd4a0,emissiveIntensity:0,roughness:.6});
+ material.userData.nightEmission=2.4;return material;
+}
+export function nearestNightLamps(world,position,limit=5,radius=100){
+ const candidates=[],r2=radius*radius;
+ const add=points=>{for(const p of points??[]){const d=(p.x-position.x)**2+(p.z-position.z)**2;if(d<r2)candidates.push({p,d});}};
+ add(world?.nightLamps);for(const chunk of world?.chunks?.values?.()??[])add(chunk.nightLamps);
+ return candidates.sort((a,b)=>a.d-b.d).slice(0,limit).map(x=>x.p);
+}
+function createSpot(group,name,street=false,shadow=false){
+ const light=new THREE.SpotLight(street?0xffd2a0:0xe8f2ff,0,street?22:65,street?Math.PI*.36:.38,street?.65:.5,2);
+ light.name=name;light.userData.nightShadow=shadow;light.castShadow=shadow;
+ if(shadow){light.shadow.mapSize.set(512,512);light.shadow.camera.near=.25;light.shadow.camera.far=65;light.shadow.bias=-.0002;light.shadow.normalBias=.08;}
+ group.add(light,light.target);return light;
+}
+export function createNightLighting(game){
+ const group=new THREE.Group();group.name='bounded-night-lights';game.scene.add(group);
+ let poolKey='',player=[],traffic=[],street=[],selected=[],selectionClock=.25,lastWorldRevision=-1,disposed=false,amount=0;
+ const vehiclePos=new THREE.Vector3(),target=new THREE.Vector3(),origin=new THREE.Vector3();
+ function clearPool(){for(const light of [...player,...traffic,...street])light.dispose();group.clear();player=[];traffic=[];street=[];}
+ function configure(){
+  const budget=nightLightBudget(game.quality,game.performanceProfile?.mobile),key=JSON.stringify(budget);if(key===poolKey)return budget;
+  clearPool();poolKey=key;
+  player=Array.from({length:budget.player},(_,i)=>createSpot(group,'player-headlight-'+i,false,budget.shadows));
+  traffic=Array.from({length:budget.traffic},(_,i)=>createSpot(group,'traffic-headlight-'+i));
+  street=Array.from({length:budget.street},(_,i)=>createSpot(group,'street-light-'+i,true));selectionClock=.25;return budget;
+ }
+ function aimVehicle(light,v,side,strength){
+  if(!v?.root||v.root.visible===false||strength<=.002){light.intensity=0;light.castShadow=false;return;}
+  light.castShadow=light.userData.nightShadow;
+  v.root.updateWorldMatrix(true,false);
+  const anchors=vehicleHeadlampAnchors(v),a=anchors[side];
+  origin.copy(a);origin.z-=.07;light.position.copy(origin.applyMatrix4(v.root.matrixWorld));
+  // Same local frame as the authored lamps, including hills/body attitude.
+  target.set(a.x*.65,Math.max(.10,a.y-.7),a.z-34).applyMatrix4(v.root.matrixWorld);light.target.position.copy(target);
+  light.intensity=1050*strength;
+ }
+ function update(dt=0){
+  if(disposed)return;
+  configure();amount=nightLightAmount(game.skyCycle?.state);
+  const weather=['rain','fog'].includes(game.weather)?.62:0,beam=Math.max(amount,weather);
+  const current=game.vehicle,driving=game.inCar&&!game.flight?.active&&!game.aircraft?.active;
+  for(let i=0;i<player.length;i++)aimVehicle(player[i],driving?current:null,i,beam);
+  const position=game.position??game.camera.position,cars=[];
+  for(const v of new Set([...(game.traffic??[]),...(game.police??[]),game.robotaxi?.taxi])){
+   if(!v?.root||v===current&&driving||!v.lightState?.active||v.populationDormant||v.parked||v.root.visible===false)continue;
+   v.root.getWorldPosition(vehiclePos);const d=vehiclePos.distanceToSquared(position);if(d<65**2)cars.push({v,d});
+  }
+  cars.sort((a,b)=>a.d-b.d);for(let i=0;i<traffic.length;i++)aimVehicle(traffic[i],cars[i]?.v,0,beam*.72);
+  // Refresh only 5 Hz or on chunk changes; teleports also force a selection.
+  selectionClock+=Math.max(0,dt);const revision=game.world?.stats?.colliderRevision??0;
+  if(selectionClock>=.2||revision!==lastWorldRevision||selected.length&&!selected.some(p=>(p.x-position.x)**2+(p.z-position.z)**2<100**2)){
+   selected=nearestNightLamps(game.world,position,street.length);selectionClock=0;lastWorldRevision=revision;
+  }
+  for(let i=0;i<street.length;i++){
+   const light=street[i],p=selected[i];if(!p){light.intensity=0;continue;}
+   light.position.set(p.x,p.y-.1,p.z);light.target.position.set(p.x,p.y-8,p.z);light.intensity=430*amount;
+  }
+  for(const material of game.world?.nightMaterials??[])material.emissiveIntensity=material.userData.nightEmission*amount;
+  // Counts stay stable through traffic/chunk churn. A single dawn/dusk change
+  // skips all additional light work in bright weather, rather than per-lamp churn.
+  group.visible=Math.max(amount,beam)>.002;
+ }
+ function dispose(){if(disposed)return;disposed=true;clearPool();game.scene.remove(group);}
+ return {group,update,dispose,get amount(){return amount;},get budget(){return nightLightBudget(game.quality,game.performanceProfile?.mobile);}};
+}
