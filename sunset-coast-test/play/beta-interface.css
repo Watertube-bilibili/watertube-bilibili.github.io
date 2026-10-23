@@ -1152,3 +1152,24 @@ body.disabled-driving .key-hints{flex-wrap:wrap;max-width:620px;row-gap:8px}
 #phone .interface-launch small{display:block;margin-top:4px;font-size:10px;color:#55636a}
 #phone .interface-symbol{display:flex;align-items:center;flex-shrink:0;width:24px;color:#a43c28}
 #phone .interface-symbol svg{width:22px;height:22px}
+
+
+/* Phone scenery-first HUD. Maps and detailed telemetry remain in the phone;
+   ADAS/cockpit and vehicle actions stay available through the existing controls. */
+body.mobile-controls-v2 .bottom-hud .map-panel{display:none!important}
+body.mobile-controls-v2 .bottom-hud .drive-hud{width:auto;min-width:76px;padding:4px 8px;border:0;border-radius:8px;background:#14232eb8;color:#f5f0e6}
+body.mobile-controls-v2 .bottom-hud .speed{gap:5px}
+body.mobile-controls-v2 .bottom-hud .speed strong{font-size:26px;line-height:1.15;color:#f5f0e6}
+body.mobile-controls-v2 .bottom-hud .speed-unit{font-size:8px;color:#d9e5ea}
+body.mobile-controls-v2 .bottom-hud .gear{margin:0;background:none;color:#f5f0e6}
+body.mobile-controls-v2 .bottom-hud .charge-row{display:none}
+body.mobile-controls-v2{--drive-main-height:max(44px,calc(64px * var(--control-button-scale,1)));--drive-steer-width:max(44px,calc(56px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(58px * var(--control-button-scale,1)))}
+body.mobile-controls-v2.mobile-driving #touch-go::before{height:32px}
+/* Flight temporarily leaves the ground-control layout; do not restore large
+   desktop branding/location cards while the touch flight pads are active. */
+body[data-input-mode=touch].roadster-air-active :is(.topbar .wordmark,.location,.beta-save-home,.mission-card){display:none!important}
+@media(orientation:landscape) and (max-height:500px){
+ body.mobile-controls-v2{--drive-main-height:max(44px,calc(52px * var(--control-button-scale,1)));--drive-steer-width:max(44px,calc(52px * var(--control-button-scale,1)));--drive-pedal-width:max(44px,calc(54px * var(--control-button-scale,1)))}
+ body.mobile-controls-v2 .bottom-hud .speed strong{font-size:22px}
+ body.mobile-controls-v2.mobile-driving #touch-go::before{height:24px}
+}

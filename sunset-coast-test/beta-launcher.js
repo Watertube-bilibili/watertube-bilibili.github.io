@@ -1,5 +1,5 @@
 import {validateSave} from './play/save-validation.js';
-import {activeBetaSlot,listBetaSlots,createBetaSlot,selectBetaSlot} from './play/beta-save-slots.js?v=2d7ecb2250da';
+import {activeBetaSlot,listBetaSlots,createBetaSlot,selectBetaSlot} from './play/beta-save-slots.js?v=eb80fd8ba5b2';
 export async function installBetaLauncher({document,window,storage,locks=window.navigator?.locks,navigate=url=>window.location.replace(url),manage=false,createSlot=createBetaSlot}={}){
  const $=id=>document.getElementById(id),status=$('beta-status'),list=$('beta-slots'),copy=$('beta-copy'),fresh=$('beta-new'),cont=$('beta-continue');let busy=false,generation=0,active=null;
  const setBusy=value=>{busy=value;copy.disabled=fresh.disabled=cont.disabled=value;for(const button of list.children)button.disabled=value;};

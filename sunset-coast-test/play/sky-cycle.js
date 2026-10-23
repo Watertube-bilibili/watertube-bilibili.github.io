@@ -5,10 +5,25 @@ import {Lensflare,LensflareElement} from './vendor/Lensflare.js';
 
 const clamp=THREE.MathUtils.clamp;
 const smooth=(a,b,x)=>THREE.MathUtils.smoothstep(x,a,b);
-export const CLOCK_MINUTES_PER_SECOND=.5; // 48 real minutes per game day; pause uses the existing simulation clock.
+export const DEFAULT_CLOCK_MINUTES=8*60;
+export const CLOCK_MINUTES_PER_SECOND=.5;
+export const NIGHT_CLOCK_MINUTES_PER_SECOND=CLOCK_MINUTES_PER_SECOND*3;
+// Match the sun's 07:00/19:00 horizon crossings: 24 real minutes of day,
+// 8 of night. Use simulation dt, so pause/background never skip the morning.
+export function advanceClock(minutes,dt){
+ const minute=((Number.isFinite(minutes)?minutes:DEFAULT_CLOCK_MINUTES)%1440+1440)%1440;
+ if(!Number.isFinite(dt)||dt<=0)return minute;
+ const daylightMinutes=12*60,daySeconds=daylightMinutes/CLOCK_MINUTES_PER_SECOND;
+ const cycleSeconds=daySeconds+daylightMinutes/NIGHT_CLOCK_MINUTES_PER_SECOND;
+ const sinceDawn=(minute-7*60+1440)%1440;
+ const elapsed=sinceDawn<daylightMinutes?sinceDawn/CLOCK_MINUTES_PER_SECOND:daySeconds+(sinceDawn-daylightMinutes)/NIGHT_CLOCK_MINUTES_PER_SECOND;
+ // Advance in elapsed-cycle space, including boundary crossings and long steps.
+ const phase=(elapsed+dt%cycleSeconds)%cycleSeconds;
+ return (7*60+(phase<daySeconds?phase*CLOCK_MINUTES_PER_SECOND:daylightMinutes+(phase-daySeconds)*NIGHT_CLOCK_MINUTES_PER_SECOND))%1440;
+}
 export const SKY_EFFECT_LAYER=1; // Optical effects must never contaminate the semantic driving sensor.
-export function solarState(minutes=1122,weather='clear'){
- const hour=((Number.isFinite(minutes)?minutes:1122)/60%24+24)%24;
+export function solarState(minutes=DEFAULT_CLOCK_MINUTES,weather='clear'){
+ const hour=((Number.isFinite(minutes)?minutes:DEFAULT_CLOCK_MINUTES)/60%24+24)%24;
  const angle=(hour-13)*Math.PI/12;
  const direction=new THREE.Vector3(-Math.sin(angle),Math.cos(angle)*.86,Math.cos(angle)*.32).normalize();
  const altitude=direction.y,day=smooth(-.14,.16,altitude),direct=smooth(-.015,.18,altitude);

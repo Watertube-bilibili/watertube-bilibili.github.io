@@ -80,15 +80,33 @@ export class VehicleCockpit {
     };
     this.observer = new ResizeObserver(() => this.resize());
     this.observer.observe(this.nodes['vc-webgl']);
-    let open = innerWidth >= 1100 && innerHeight >= 600;
-    try { const pref = localStorage.getItem(COCKPIT_OPEN_KEY); if (pref !== null) open = pref === 'true'; } catch {}
-    this.drivingOpenPreference = open;
+    this.syncOpenPreference();
+    const open = this.drivingOpenPreference;
     this.wasDriving = !!game.inCar;
     this.setOpen(game.inCar && open, false);
   }
+  touchContext() {
+    return this.g.effectiveInputMode === 'touch' || window.matchMedia?.('(pointer:coarse)')?.matches === true;
+  }
+  syncOpenPreference() {
+    const touch = this.touchContext(), key = touch ? COCKPIT_OPEN_KEY + ':touch-v1' : COCKPIT_OPEN_KEY;
+    if (key === this.openPreferenceKey) return false;
+    this.openPreferenceKey = key;
+    let open = !touch && innerWidth >= 1100 && innerHeight >= 600;
+    try { const pref = localStorage.getItem(key); if (pref !== null) open = pref === 'true'; } catch {}
+    this.drivingOpenPreference = open;
+    return true;
+  }
+  openForAssist() {
+    // Enabling Pilot is not a request to cover the phone with another screen.
+    // An explicitly opened touch cockpit stays open; desktop behavior is kept.
+    this.syncContext();
+    if (!this.touchContext()) this.setOpen(true);
+  }
   syncContext() {
+    const preferenceChanged = this.syncOpenPreference();
     const driving = !!this.g.inCar;
-    if (driving === this.wasDriving) return;
+    if (driving === this.wasDriving && !preferenceChanged) return;
     this.wasDriving = driving;
     this.setOpen(driving && this.drivingOpenPreference, false);
   }
@@ -124,14 +142,14 @@ export class VehicleCockpit {
   toggle() { this.setOpen(!this._open); }
   close() { this.setOpen(false); }
   setOpen(open, save = true) {
-    if (save) this.drivingOpenPreference = !!open;
+    if (save) { this.syncOpenPreference(); this.drivingOpenPreference = !!open; }
     if (!open) { this.drag?.cancel(); this.frameElapsed = 0; this.motionElapsed = 0; }
     this._open = !!open;
     this.panel.hidden = !this._open;
     document.body.classList.toggle('cockpit-open', this._open);
     this.launcher.classList.toggle('active', this._open);
     this.launcher.setAttribute('aria-expanded', String(this._open));
-    if (save) try { localStorage.setItem(COCKPIT_OPEN_KEY, String(this._open)); } catch {}
+    if (save) try { localStorage.setItem(this.openPreferenceKey, String(this._open)); } catch {}
     if (this._open) {
       this.updateHUD();
       if(this.usesScene)this.initScene();
@@ -411,3 +429,4 @@ export class VehicleCockpit {
     this.frameElapsed = 1 / 30;
   }
 }
+
