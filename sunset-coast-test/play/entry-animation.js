@@ -19,6 +19,11 @@ const rotate=(p,yaw)=>({x:p.x*Math.cos(yaw)+p.z*Math.sin(yaw),y:p.y,z:-p.x*Math.
 const world=(p,plan)=>{const v=rotate(p,plan.vehicleYaw);return{x:v.x+plan.vehiclePosition.x,y:v.y+plan.vehiclePosition.y,z:v.z+plan.vehiclePosition.z};};
 const local=(p,origin,yaw)=>rotate({x:p.x-origin.x,y:p.y-origin.y,z:p.z-origin.z},-yaw);
 const rotation=(x=0,y=0,z=0)=>({x,y,z});
+// Animation limits, not vehicle speed gates. Feet cannot teleport to a door
+// that moved, and a ten-centimetre shuffle must not require a half-turn.
+export const ENTRY_APPROACH_TURN_RATE=4.5;
+export const ENTRY_APPROACH_SPEED=4;
+const turnTime=angle=>1.875*Math.abs(wrap(angle))/ENTRY_APPROACH_TURN_RATE;
 
 // A tiny visibility graph routes passenger-side approaches around the vehicle,
 // rather than pulling the avatar through the bonnet or across the roof.
@@ -84,13 +89,20 @@ export function createEntryAnimation(options={}){
  plan.doorYaw=plan.vehicleYaw+plan.side*Math.PI/2;
  const start=local(plan.startPosition,plan.vehiclePosition,plan.vehicleYaw);
  plan.route=approachRoute(start,plan.outsideLocal,plan.halfWidth+.34,plan.halfLength+.32);
- plan.segments=[];let elapsed=0;
+ plan.segments=[];
  for(let i=1;i<plan.route.length;i++){
-  const a=plan.route[i-1],b=plan.route[i],length=distance(a,b),duration=.12+length/2;
-  plan.segments.push({a,b,length,start:elapsed,duration,heading:plan.vehicleYaw+Math.atan2(-(b.x-a.x),-(b.z-a.z))});elapsed+=duration;
+  const a=plan.route[i-1],b=plan.route[i],length=distance(a,b);
+  plan.segments.push({a,b,length,heading:plan.vehicleYaw+Math.atan2(-(b.x-a.x),-(b.z-a.z))});
  }
- // Even an avatar already at the door gets a short continuous turn/settle.
- plan.approachDuration=plan.entering?Math.max(.22,elapsed):0;
+ plan.directDoorTurn=plan.segments.length<=1&&plan.segments.reduce((sum,s)=>sum+s.length,0)<.45;
+ let elapsed=0;
+ for(let i=0;i<plan.segments.length;i++){
+  const segment=plan.segments[i],next=i===plan.segments.length-1?plan.doorYaw:plan.segments[i+1].heading;
+  const turn=plan.directDoorTurn?turnTime(plan.doorYaw-plan.startYaw):2*Math.max(i===0?turnTime(segment.heading-plan.startYaw):0,turnTime(next-segment.heading));
+  segment.start=elapsed;segment.duration=Math.max(.12+segment.length/2,turn);elapsed+=segment.duration;
+ }
+ // Even at the door, give the shortest turn enough time at the same rate.
+ plan.approachDuration=plan.entering?Math.max(.22,elapsed,plan.directDoorTurn?turnTime(plan.doorYaw-plan.startYaw):0):0;
  plan.coreDuration=1.72;plan.duration=plan.approachDuration+plan.coreDuration;
  // The original human rig has rigid legs, not knee joints. Keep its full size
  // and lean the torso to fit low roofs; the hip stays on the actual seat.
@@ -109,7 +121,7 @@ function approach(plan,time){
   pose.position=world(mix(segment.a,segment.b,p),plan);
   const previous=index?segment.heading:plan.startYaw;
   const next=index===plan.segments.length-1?plan.doorYaw:plan.segments[index+1].heading;
-  pose.yaw=u<.5?angle(previous,segment.heading,smooth(u/.5)):angle(segment.heading,next,smooth((u-.5)/.5));
+  pose.yaw=plan.directDoorTurn?angle(plan.startYaw,plan.doorYaw,smooth(time/plan.approachDuration)):u<.5?angle(previous,segment.heading,smooth(u/.5)):angle(segment.heading,next,smooth((u-.5)/.5));
   walk=Math.sin(u*Math.PI)**2*Math.sin(segment.length*p*8)*.44;
   if(time>=plan.approachDuration)pose=standing(plan);
  }else{pose.position=mix(plan.startPosition,plan.outside,smooth(time/plan.approachDuration));pose.yaw=angle(plan.startYaw,plan.doorYaw,smooth(time/plan.approachDuration));}
@@ -166,10 +178,47 @@ export function sampleEntryAnimation(plan,elapsedSeconds=0){
  const carBlend=smooth(core/plan.coreDuration);
  let phase=atApproach?'approach':core<.30?'door':core<.51?'bend':core<1.04?'step':core<1.40?'sit':'close';
  if(!plan.entering)phase=core>1.40?'door':core>1.04?'rise':core>.51?'step':core>.30?'stand':'close';
- const result={...pose,doorAngle:atApproach?0:-1.16*openness,carBlend,phase,progress,done:elapsed>=plan.duration,outside:point(plan.outside)};
+ const result={...pose,entering:plan.entering,doorAngle:atApproach?0:-1.16*openness,carBlend,phase,progress,done:elapsed>=plan.duration,outside:point(plan.outside)};
  // The outside endpoint is a neutral standing pose, shared with updatePlayer.
  if(!atApproach&&core<=0){Object.assign(result,standing(plan));result.doorAngle=0;}
  return result;
+}
+
+/** Update the vehicle frame, keeping authored door/seat coordinates local.
+ * The sampler remains pure; the live transition owns its advancing clock. */
+export function reanchorEntryAnimation(plan,vehiclePosition,vehicleYaw){
+ const position=point(vehiclePosition,plan.vehiclePosition),yaw=finite(vehicleYaw,plan.vehicleYaw),delta=wrap(yaw-plan.vehicleYaw);
+ const live={...plan,vehiclePosition:position,vehicleYaw:yaw,doorYaw:plan.doorYaw+delta,
+  segments:plan.segments.map(segment=>({...segment,heading:segment.heading+delta})),outsideLocal:point(plan.outsideLocal)};
+ live.outside=world(live.outsideLocal,live);live.seat=world(live.seatLocal,live);
+ if(live.groundHeight){live.outside.y=finite(live.groundHeight(live.outside.x,live.outside.z,live.doorYaw),live.outside.y);live.outsideLocal.y=live.outside.y-live.vehiclePosition.y;}
+ return live;
+}
+
+/** Follow an actual moving door without moving the vehicle or snapping a
+ * still-grounded actor. Delay the cabin step until their feet reach the door.
+ * After that step begins, the actor is carried in the vehicle's live frame. */
+export function advanceEntryAnimation(transition,dt,vehiclePosition,vehicleYaw){
+ const step=Math.max(0,finite(dt)),plan=reanchorEntryAnimation(transition.animation,vehiclePosition,vehicleYaw);
+ const previous=transition.pose??sampleEntryAnimation(plan,transition.time??0),time=finite(transition.time);
+ let nextTime=time+step,pose=sampleEntryAnimation(plan,nextTime);
+ const groundedApproach=plan.entering&&time<=plan.approachDuration+.51;
+ if(groundedApproach){
+  const reachable=value=>Math.hypot(value.position.x-previous.position.x,value.position.y-previous.position.y,value.position.z-previous.position.z)<=ENTRY_APPROACH_SPEED*step+1e-8&&Math.abs(wrap(value.yaw-previous.yaw))<=ENTRY_APPROACH_TURN_RATE*step+1e-8;
+  // A moved door must not advance the seated phase while the person is still
+  // catching up. If a moving target lengthens a step, slow the animation clock
+  // rather than dropping that step forever or snapping its position.
+  if(!reachable(pose)){
+   const atCurrent=sampleEntryAnimation(plan,time);
+   if(!reachable(atCurrent)){nextTime=time;pose=atCurrent;}
+   else{let lo=time,hi=nextTime;for(let i=0;i<16;i++){const mid=(lo+hi)/2;if(reachable(sampleEntryAnimation(plan,mid)))lo=mid;else hi=mid;}nextTime=lo;pose=sampleEntryAnimation(plan,nextTime);}
+  }
+  const length=Math.hypot(pose.position.x-previous.position.x,pose.position.y-previous.position.y,pose.position.z-previous.position.z);
+  pose.position=mix(previous.position,pose.position,length>0?Math.min(1,ENTRY_APPROACH_SPEED*step/length):1);
+  pose.yaw=previous.yaw+clamp(wrap(pose.yaw-previous.yaw),-ENTRY_APPROACH_TURN_RATE*step,ENTRY_APPROACH_TURN_RATE*step);
+ }
+ transition.animation=plan;transition.time=nextTime;transition.duration=plan.duration;transition.pose=pose;
+ return pose;
 }
 
 /** Optional camera interpolation for already-computed walking/driving rigs. */

@@ -127,7 +127,7 @@ export function teleportToLocation(game,target){
   game.person.root.position.copy(game.playerPos);
   game.cameraAnchor=null;game.cameraRigKey=null;game.followYaw=plan.yaw;
   game.ui?.closePhone?.();game.ui?.closeModal?.();
-  if(typeof window!=='undefined')window.neonMobileUI?.closeDrawer?.();
+  if(typeof window!=='undefined')window.sunsetMobileUI?.closeTools?.();
   game.resetControls();game.updateCamera?.(0);
   game.ui?.toast?.('已传送至 '+plan.name+' · '+plan.region.name+(!wasInCar?' · 车辆在身旁':''));
   game.save?.(false);

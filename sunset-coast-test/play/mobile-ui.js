@@ -18,22 +18,11 @@ const touchLayout = () => game?.effectiveInputMode === 'touch' && !game.aircraft
 const compactLayout = () => mobile.matches || touchLayout();
 const icon = path => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${path}</svg>`;
 const icons = {
-  more: icon('<circle cx="5" cy="5" r="2"/><circle cx="19" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/>'),
   phone: icon('<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/>'),
   view: icon('<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>'),
   close: icon('<path d="m6 6 12 12M6 18 18 6"/>'),
   map: icon('<path d="m3 5 6-2 6 2 6-2v16l-6 2-6-2-6 2V5ZM9 3v16m6-14v16"/>'),
-  jobs: icon('<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12h18m-11-1v3h4v-3"/>'),
-  garage: icon('<path d="m4 10 2-6h12l2 6M3 10h18v8H3zM5 18v2m14-2v2M6 14h2m8 0h2"/>'),
-  character: icon('<circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3"/>'),
-  cockpit: icon('<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8m-4-4v4m-4-8 4-2 4 2"/>'),
-  sensor: icon('<rect x="3" y="5" width="14" height="14" rx="2"/><path d="m17 10 4-3v10l-4-3M7 9h6m-6 4h4"/>'),
-  sound: icon('<path d="M3 9h4l5-5v16l-5-5H3zM16 8c3 2 3 6 0 8m3-12c6 4 6 12 0 16"/>'),
-  save: icon('<path d="M5 3h13l3 3v15H3V3zM7 3v6h10V3M7 21v-8h10v8"/>'),
-  recenter: icon('<path d="M4 10a8 8 0 1 1 2 8M4 3v7h7"/>'),
-  input: icon('<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M7 9v6m-3-3h6m6-2h.1m2 3h.1"/>'),
   settings: icon('<path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2" fill="currentColor"/><circle cx="16" cy="12" r="2" fill="currentColor"/><circle cx="10" cy="18" r="2" fill="currentColor"/>'),
-  bag: icon('<path d="M4 7h16l1 14H3L4 7ZM8 7V5a4 4 0 0 1 8 0v2"/>'),
 };
 
 if (game?.ui) {
@@ -66,24 +55,14 @@ if (game?.ui) {
     <nav class="mobile-quick-actions" id="mobile-quick-actions" aria-label="常用操作">
       <button id="mobile-view" type="button" aria-label="切换驾驶视角" title="切换视角">${icons.view}<span>视角</span></button>
       <button id="mobile-phone" type="button" aria-label="打开游戏手机" title="游戏手机">${icons.phone}<span>手机</span></button>
-      <button id="mobile-menu" type="button" aria-label="展开全部功能" aria-expanded="false" aria-controls="mobile-drawer" title="全部功能">${icons.more}<span>全部</span></button>
     </nav>
     <button id="mobile-route" class="mobile-route" type="button" hidden aria-label="打开当前任务或导航详情"><span id="mobile-route-icon" class="navigation-hud-icon">${icons.map}</span><span class="navigation-hud-copy"><strong id="mobile-route-title"></strong><small id="mobile-route-detail"></small></span><span class="navigation-hud-distance" id="mobile-route-distance"></span><span class="mobile-route-arrow" aria-hidden="true">›</span></button>
-    <button class="mobile-drawer-backdrop" id="mobile-drawer-backdrop" type="button" hidden aria-label="收起全部功能"></button>
-    <section id="mobile-drawer" class="mobile-drawer" hidden role="dialog" aria-modal="true" aria-labelledby="mobile-drawer-title">
-      <header class="mobile-drawer-header"><div><span>SUNSET COAST</span><h2 id="mobile-drawer-title">城市随行</h2></div><button id="mobile-drawer-close" type="button" aria-label="收起全部功能">${icons.close}</button></header>
-      <div class="mobile-drawer-status"><span id="mobile-balance"></span><span id="mobile-clock"></span></div>
-      <div class="mobile-drawer-grid">
-        ${[['phone','手机','phone-btn'],['map','地图','map-btn'],['jobs','工作','jobs-btn'],['garage','车库','garage-btn'],['character','角色','character-btn'],['cockpit','车机','cockpit-btn'],['sensor','摄像头','sensor'],['bag','物品','inventory'],['save','存档','saves'],['sound','声音','audio-btn'],['recenter','视角归位','recenter'],['settings','设置','pause-btn']].map(([ico,label,action]) => `<button type="button" data-mobile-action="${action}"><span class="mobile-action-icon">${icons[ico]}</span><span>${label}</span></button>`).join('')}
-      </div>
-      <div class="mobile-drawer-footer"><span id="mobile-vehicle-status"></span><span id="mobile-save-status"></span></div>
-    </section>`;
+`;
   document.body.append(root);
   // Navigation is shared by desktop and phone layouts; menu controls stay mobile-only.
   document.body.append($('mobile-route'));
   const announcement=document.createElement('span');announcement.id='navigation-announcement';announcement.className='navigation-sr-only';announcement.setAttribute('role','status');announcement.setAttribute('aria-live','polite');document.body.append(announcement);
 
-  let drawerOpen = false;
   let toolsOpen = false;
   const pinKey = 'sunset-coast-test.tools-pinned.v1';
   let toolsPinned = false, windowActive = true;
@@ -114,7 +93,7 @@ if (game?.ui) {
     if (heldFlight) game.aircraft.setControls?.({ throttle: heldFlight.throttle, flaps: heldFlight.flaps, brake: heldFlight.brake });
   }
   function setTools(open, restoreFocus = false) {
-    if (open && (!touchLayout() || drawerOpen || overlayOpen || game.paused || game.transition)) return;
+    if (open && (!touchLayout() || overlayOpen || game.paused || game.transition)) return;
     if (toolsOpen === open) return;
     toolsOpen = open;
     if (open) {
@@ -143,7 +122,6 @@ if (game?.ui) {
       $('touch-steering').setAttribute('aria-label', '驾驶方向');
       pedalGroup?.setAttribute('aria-label', '油门、刹车与手刹');
     } else {
-      if (drawerOpen) setDrawer(false, false);
       for (const [node, { parent, next }] of originalPositions) {
         if (parent) parent.insertBefore(node, next?.parentElement === parent ? next : null);
       }
@@ -157,7 +135,7 @@ if (game?.ui) {
   $('roadster-details-toggle')?.addEventListener('click', () => setTools(false));
   $('mobile-vehicle-tools').onclick = () => { setTools(false); $('roadster-details-toggle')?.click(); };
   $('mobile-pilot').onclick = () => { closeRoutineTools(); $('autopilot-btn').click(); };
-  const signalsAllowed = () => game.inCar && !game.paused && !game.transition && !drawerOpen && !game.ui.isPhoneOpen() && !$('modal').open && !game.aircraft?.active && !game.flight?.active && !game.robotaxi?.passenger;
+  const signalsAllowed = () => game.inCar && !game.paused && !game.transition && !game.ui.isPhoneOpen() && !$('modal').open && !game.aircraft?.active && !game.flight?.active && !game.robotaxi?.passenger;
   for (const gear of TOUCH_GEARS) {
     const button = $('mobile-gear-' + gear.toLowerCase());
     button.onclick = () => { if (signalsAllowed()) game.selectTouchGear?.(gear); syncStatus(); };
@@ -222,37 +200,9 @@ if (game?.ui) {
     if (event.key !== 'Escape' || !toolsOpen) return;
     event.preventDefault(); event.stopImmediatePropagation(); dismissTools(true);
   });
-  let aircraftDrawerPause = null;
-  let lastFocus = null;
   let overlayOpen = false;
   const controls = $('mobile-controls');
-  const drawer = $('mobile-drawer');
 
-  function setDrawer(open, restoreFocus = true) {
-    if (open && !compactLayout()) return;
-    if (open === drawerOpen) return;
-    if (open) setTools(false);
-    drawerOpen = open;
-    if(open&&(game.aircraft?.active||game.isRoadsterFlying?.())){aircraftDrawerPause=game.paused;game.paused=true;}else if(!open&&aircraftDrawerPause!==null){game.paused=aircraftDrawerPause||game.ui.isPhoneOpen()||$('modal').open||document.hidden||!!game.physics?.failed;aircraftDrawerPause=null;}
-    document.body.classList.toggle('mobile-drawer-open', open);
-    $('mobile-menu').setAttribute('aria-expanded', String(open));
-    $('mobile-menu').setAttribute('aria-label', open ? '收起全部功能' : '展开全部功能');
-    drawer.hidden = !open;
-    $('mobile-drawer-backdrop').hidden = !open;
-    controls.inert = compactLayout() && (open || overlayOpen);
-    const heldFlight=game.aircraft?.active?{...game.aircraft.controls}:null;game.resetControls();if(heldFlight)game.aircraft.setControls?.({throttle:heldFlight.throttle,flaps:heldFlight.flaps,brake:heldFlight.brake});
-    if (open) {
-      lastFocus = touchLayout() ? $('mobile-tools-toggle') : document.activeElement;
-      syncStatus();
-      $('mobile-drawer-close').focus({ preventScroll: true });
-    } else if (restoreFocus && lastFocus instanceof HTMLElement && lastFocus.isConnected) {
-      lastFocus.focus({ preventScroll: true });
-    }
-  }
-
-  $('mobile-menu').onclick = () => setDrawer(!drawerOpen);
-  $('mobile-drawer-close').onclick = () => setDrawer(false);
-  $('mobile-drawer-backdrop').onclick = () => setDrawer(false);
   $('mobile-phone').onclick = () => { setTools(false); $('phone-btn').click(); };
   $('mobile-view').onclick = () => { closeRoutineTools(); $('camera-btn').click(); syncCockpitSpeedHUD(game); };
   $('mobile-route').onclick = () => game.ui.openPhone('nav');
@@ -262,53 +212,15 @@ if (game?.ui) {
     if(!event.repeat)$('mobile-route').click();
   });
 
-  drawer.addEventListener('click', event => {
-    const button = event.target.closest('[data-mobile-action]');
-    if (!button) return;
-    const action = button.dataset.mobileAction;
-    setDrawer(false, false);
-    if (action === 'recenter') game.recenterCamera();
-    else if (action === 'saves') game.ui.openPhone('save');
-    else if (action === 'inventory') game.ui.openPhone('inventory');
-    else if (action === 'sensor') {
-      const show = $('sensor-panel').hidden;
-      game.ui.previewSensor = show;
-      $('sensor-panel').hidden = !show;
-      // Manual camera view needs the same sampling as the original cockpit camera action.
-      if (show && !game.cockpit?.isOpen && !game.autopilot) game.cockpit?.setOpen(true);
-    } else $(action)?.click();
-    syncStatus();
-  });
-
-  document.addEventListener('keydown', event => {
-    if (!drawerOpen) {
-      if (toolsOpen && event.key === 'Escape') { event.preventDefault(); event.stopImmediatePropagation(); dismissTools(true); }
-      return;
-    }
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      setDrawer(false);
-    } else if (event.key === 'Tab') {
-      const focusable = [...drawer.querySelectorAll('button:not(:disabled)')];
-      const first = focusable[0], last = focusable.at(-1);
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-    } else {
-      // A menu is not a driving surface, including when touch mode is mouse-operated.
-      event.stopImmediatePropagation();
-    }
-  }, true);
-
   function syncOverlay() {
     const next = !$('phone').hidden || $('modal').open;
     if (next !== overlayOpen) {
       overlayOpen = next;
       document.body.classList.toggle('mobile-panel-open', next);
-      if (next) { setTools(false); setDrawer(false, false); game.resetControls(); }
+      if (next) { setTools(false); game.resetControls(); }
     }
-    controls.inert = compactLayout() && (next || drawerOpen);
-    $('mobile-driving-tools').inert = next || drawerOpen;
+    controls.inert = compactLayout() && (next);
+    $('mobile-driving-tools').inert = next;
   }
   const overlays = new MutationObserver(syncOverlay);
   overlays.observe($('phone'), { attributes: true, attributeFilter: ['hidden'] });
@@ -353,7 +265,7 @@ if (game?.ui) {
     }
     $('mobile-hazards').disabled = !signalsAllowed() || typeof game.setHazards !== 'function';
     $('mobile-hazards').setAttribute('aria-pressed', String(!!lights?.hazards));
-    if ((game.paused || game.transition) && !drawerOpen) setTools(false);
+    if ((game.paused || game.transition)) setTools(false);
     const gearVisible = touchLayout() && signalsAvailable && !game.isRoadsterFlying?.();
     $('mobile-gears').hidden = !gearVisible || !signalsAllowed();
     const gear = game.getTouchGear?.() ?? 'D';
@@ -363,15 +275,8 @@ if (game?.ui) {
       button.setAttribute('aria-pressed', String(gear === value));
     }
     $('mobile-gears').setAttribute('aria-label', game.autopilot ? '行驶挡位 · 点击接管辅助驾驶' : '行驶挡位 · ' + gear);
-    if (toolsPinned && windowActive && !document.hidden && !overlayOpen && !drawerOpen && !game.paused && !game.transition && !$('roadster-controls')?.classList.contains('roadster-details-open')) setTools(true);
-    if (!drawerOpen) return;
-    put('mobile-balance', $('money').textContent);
-    put('mobile-clock', `${$('game-time').textContent} · ${$('weather-label').textContent}`);
-    put('mobile-vehicle-status', `${game.vehicle.model.name} · ${$('battery').textContent} · ${$('range').textContent}`);
-    put('mobile-save-status', $('save-status').textContent);
-    for (const [action, active] of [['cockpit-btn', !game.cockpit?.panel.hidden], ['sensor', !$('sensor-panel').hidden], ['audio-btn', game.audio.enabled]]) {
-      drawer.querySelector(`[data-mobile-action="${action}"]`).setAttribute('aria-pressed', String(active));
-    }
+    if (toolsPinned && windowActive && !document.hidden && !overlayOpen && !game.paused && !game.transition && !$('roadster-controls')?.classList.contains('roadster-details-open')) setTools(true);
+
   }
 
   function onViewportChange() {
@@ -380,7 +285,6 @@ if (game?.ui) {
     document.documentElement.style.setProperty('--mobile-vh', `${Math.round(view?.height || innerHeight)}px`);
     document.documentElement.style.setProperty('--mobile-vtop', `${Math.round(view?.offsetTop || 0)}px`);
     if (touchLayout() || compactControlsInstalled) cancelTouchHolds();
-    if (!compactLayout()) setDrawer(false, false);
     syncControlPlacement();
     syncOverlay();
   }
@@ -398,5 +302,5 @@ if (game?.ui) {
   onViewportChange();
   syncStatus();
   document.body.classList.add('mobile-ui-ready');
-  window.neonMobileUI = { closeDrawer: () => setDrawer(false), closeTools: () => setTools(false), sync: () => { syncOverlay(); syncStatus(); } };
+  window.sunsetMobileUI = { closeTools: () => setTools(false), sync: () => { syncOverlay(); syncStatus(); } };
 }

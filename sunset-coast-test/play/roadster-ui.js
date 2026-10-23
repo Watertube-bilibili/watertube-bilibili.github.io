@@ -29,9 +29,10 @@ export function installRoadsterUI(game){
  const consolePanel=root.querySelector('.flight-console'),attitudePanel=root.querySelector('.flight-attitude');
  const consoleDrag=installPanelDrag(consolePanel,{handle:root.querySelector('[data-flight-drag="console"]')});
  const attitudeDrag=installPanelDrag(attitudePanel,{handle:root.querySelector('[data-flight-drag="attitude"]')});
- let folded=false;
+ let folded=false,previousAir=false;
+ const touchFlight=()=>game.effectiveInputMode==='touch'||window.matchMedia?.('(pointer:coarse)')?.matches===true;
  game.roadsterTouch={};const releases=[];
- const blocked=()=>game.paused||!game.inCar||game.transition||!roadsterTrim(game.vehicle)||game.ui.isPhoneOpen()||document.body.classList.contains('mobile-drawer-open');
+ const blocked=()=>game.paused||!game.inCar||game.transition||!roadsterTrim(game.vehicle)||game.ui.isPhoneOpen()||document.getElementById('modal')?.open||document.hidden;
  // Track pointers per action across duplicate stabilization buttons too.
  const actionPointers=new Map();
  for(const element of root.querySelectorAll('[data-roadster-control]')){
@@ -42,12 +43,14 @@ export function installRoadsterUI(game){
   releases.push(()=>{for(const id of ids)if(element.hasPointerCapture?.(id))element.releasePointerCapture(id);ids.clear();game.roadsterTouch[key]=false;element.classList.remove('is-pressed');});
  }
  game.clearRoadsterPointers=()=>releases.forEach(release=>release());
+ window.addEventListener('blur',()=>game.clearRoadsterPointers());
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)game.clearRoadsterPointers();});
  const $=id=>document.getElementById(id),notify=result=>game.ui.toast(result.reason,result.ok?'':'error');
  const setDetails=open=>{if(open){attitudePanel.hidden=true;$('roadster-attitude-toggle').setAttribute('aria-expanded','false');}root.classList.toggle('roadster-details-open',open);$('roadster-details-toggle').setAttribute('aria-expanded',String(open));$('roadster-details-toggle').setAttribute('aria-label',open?'收起车辆选项':'展开车辆选项');game.clearRoadsterPointers();update();consoleDrag.reflow();};
  $('roadster-details-toggle').onclick=()=>{if(!blocked())setDetails(!root.classList.contains('roadster-details-open'));};
  $('flight-options-close').onclick=()=>setDetails(false);
- $('flight-console-fold').onclick=()=>{folded=!folded;if(!folded&&window.innerHeight<400&&window.innerWidth<=740){attitudePanel.hidden=true;$('roadster-attitude-toggle').setAttribute('aria-expanded','false');}game.clearRoadsterPointers();update();consoleDrag.reflow();};
- const setAttitude=open=>{if(open){root.classList.remove('roadster-details-open');if(window.innerHeight<400&&window.innerWidth<=740)folded=true;}attitudePanel.hidden=!open;$('roadster-attitude-toggle').setAttribute('aria-expanded',String(open));game.clearRoadsterPointers();update();if(open)attitudeDrag.reflow();};
+ $('flight-console-fold').onclick=()=>{folded=touchFlight()?false:!folded;if(!touchFlight()&&!folded&&window.innerHeight<400&&window.innerWidth<=740){attitudePanel.hidden=true;$('roadster-attitude-toggle').setAttribute('aria-expanded','false');}game.clearRoadsterPointers();update();consoleDrag.reflow();};
+ const setAttitude=open=>{if(open){root.classList.remove('roadster-details-open');if(!touchFlight()&&window.innerHeight<400&&window.innerWidth<=740)folded=true;}attitudePanel.hidden=!open;$('roadster-attitude-toggle').setAttribute('aria-expanded',String(open));game.clearRoadsterPointers();update();if(open)attitudeDrag.reflow();};
  $('flight-attitude-close').onclick=()=>setAttitude(false);
  // Panel keyboard activation must not also actuate gameplay. Releases still clear held game keys.
  root.addEventListener('keydown',event=>{if(['Space','Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.code))event.stopPropagation();});
@@ -61,9 +64,13 @@ export function installRoadsterUI(game){
   const v=game.vehicle,trim=roadsterTrim(v),visible=!!trim&&game.inCar&&!game.aircraft?.active&&!game.flight?.active,air=visible&&roadsterFlightLocked(v);
   if(previousVehicle!==v||blocked()){game.clearRoadsterPointers();if(previousVehicle!==v){consoleDrag.reset();attitudeDrag.reset();folded=false;lastManeuverNotice='';root.classList.remove('roadster-details-open');$('roadster-details-toggle').setAttribute('aria-expanded','false');$('roadster-details-toggle').setAttribute('aria-label','展开车辆状态');attitudePanel.hidden=true;$('roadster-attitude-toggle').setAttribute('aria-expanded','false');}previousVehicle=v;}
   root.hidden=!visible;root.inert=blocked();document.body.classList.toggle('roadster-controls-active',visible&&!blocked());root.classList.toggle('roadster-overlay',blocked());root.classList.toggle('roadster-in-air',air);document.body.classList.toggle('roadster-air-active',air);
+  // A phone has no physical fallback keys: never collapse its only flight inputs.
+  // Re-entering flight also restores controls after a previous desktop collapse.
+  if(touchFlight()||air&&!previousAir)folded=false;previousAir=air;
+  root.classList.toggle('flight-touch',touchFlight());
   const detailsOpen=root.classList.contains('roadster-details-open');
   consolePanel.hidden=!visible||(!air&&!detailsOpen);$('flight-console-options').hidden=!detailsOpen;
-  $('flight-command-deck').hidden=!air||folded;$('flight-console-fold').hidden=!air;$('flight-console-fold').textContent=folded?'展开':'收起';$('flight-console-fold').setAttribute('aria-expanded',String(!folded));$('flight-console-fold').setAttribute('aria-label',folded?'展开飞行动作':'收起飞行动作');
+  $('flight-command-deck').hidden=!air||folded;$('flight-console-fold').hidden=!air||touchFlight();$('flight-console-fold').textContent=folded?'展开':'收起';$('flight-console-fold').setAttribute('aria-expanded',String(!folded));$('flight-console-fold').setAttribute('aria-label',folded?'展开飞行动作':'收起飞行动作');
   $('roadster-details-toggle').setAttribute('aria-expanded',String(detailsOpen));
   if(!air){attitudePanel.hidden=true;$('roadster-attitude-toggle').setAttribute('aria-expanded','false');}
   if(!visible)return;const s=v.roadsterState??{},ready=!!game.physics?.ready&&!game.physics.failed,aeroBraking=ready&&roadsterAeroBrakeState(v).active;

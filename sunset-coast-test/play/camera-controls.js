@@ -4,7 +4,7 @@ export function installCameraControls(game, canvas) {
   let drag = null;
   const document = canvas.ownerDocument;
   const blocked = () => (game.inCar && game.cameraMode === 2) || game.paused || game.transition ||
-    game.ui.isPhoneOpen() || document.body.classList.contains('mobile-drawer-open');
+    game.ui.isPhoneOpen();
 
   const release = () => {
     const id = drag?.pointerId;

@@ -47,7 +47,7 @@ export function touchGear(game) {
 }
 export function selectTouchGear(game, gear) {
   const current = touchGear(game);
-  if (!touchTransmissionActive(game) || !TOUCH_GEARS.includes(gear) || game.paused || game.transition || game.ui?.isPhoneOpen() || document.getElementById('modal')?.open || document.body.classList.contains('mobile-drawer-open')) return false;
+  if (!touchTransmissionActive(game) || !TOUCH_GEARS.includes(gear) || game.paused || game.transition || game.ui?.isPhoneOpen() || document.getElementById('modal')?.open) return false;
   if (current === gear && !game.autopilot) return true;
   // N releases the drive at any speed. P and direction engagement require rest,
   // including a sideways slide reported by the native physics snapshot.

@@ -9,7 +9,7 @@ export function installAircraftUI(game){
  for(const element of root.querySelectorAll('[data-aircraft-control]')){
   installControlSelectionGuard(element,{continuous:true});const ids=new Set(),key=element.dataset.aircraftControl;
   const release=event=>{ids.delete(event.pointerId);game.aircraftTouch[key]=ids.size>0;element.classList.toggle('is-pressed',ids.size>0);};
-  element.addEventListener('pointerdown',event=>{event.preventDefault();if(!game.aircraft?.active||game.paused||game.ui.isPhoneOpen()||document.body.classList.contains('mobile-drawer-open'))return;ids.add(event.pointerId);element.setPointerCapture(event.pointerId);game.aircraftTouch[key]=true;element.classList.add('is-pressed');});
+  element.addEventListener('pointerdown',event=>{event.preventDefault();if(!game.aircraft?.active||game.paused||game.ui.isPhoneOpen())return;ids.add(event.pointerId);element.setPointerCapture(event.pointerId);game.aircraftTouch[key]=true;element.classList.add('is-pressed');});
   for(const event of ['pointerup','pointercancel','lostpointercapture'])element.addEventListener(event,release);
   releases.push(()=>{ids.clear();game.aircraftTouch[key]=false;element.classList.remove('is-pressed');});
  }
@@ -20,7 +20,7 @@ export function installAircraftUI(game){
  document.getElementById('aircraft-flaps').onclick=()=>{const service=game.aircraft;service.setControls({...service.controls,flaps:service.controls.flaps>.5?0:1});};
  const update=()=>{
   const active=!!game.aircraft?.active,status=game.aircraft?.status;root.hidden=!active;document.body.classList.toggle('aircraft-active',active);
-  if(!active)return;const visible=!game.paused&&!game.ui.isPhoneOpen()&&!document.body.classList.contains('mobile-drawer-open');root.classList.toggle('aircraft-overlay',!visible);root.inert=!visible;
+  if(!active)return;const visible=!game.paused&&!game.ui.isPhoneOpen();root.classList.toggle('aircraft-overlay',!visible);root.inert=!visible;
   document.getElementById('aircraft-telemetry').textContent=Math.round(status.speed*3.6)+' km/h · 离地 '+Math.round(status.altitude)+' m · 油门 '+Math.round(status.throttle*100)+'%';
   document.getElementById('aircraft-condition').textContent='机况 '+Math.round(status.condition)+'% · 电量 '+Math.round(status.battery)+'%';
   document.getElementById('aircraft-warning').textContent=status.condition<=0?'动力损坏：着陆维修或回到跑道':status.stalled?'失速：减小抬头角度，增加空速':status.detail??'';

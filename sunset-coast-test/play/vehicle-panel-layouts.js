@@ -1,6 +1,5 @@
 export const VEHICLE_PANEL_LAYOUTS=Object.freeze([
  ['#mobile-driving-tools','header','mobile-driving-tools',180,160],
- ['#mobile-drawer','header','mobile-management',240,220],
  ['#mobile-gears',null,'mobile-gears',110,90],
  ['#mobile-pedal-signals',null,'mobile-turn-signals',130,90],
  ['#modal','.modal-top','management-dialog',280,220],

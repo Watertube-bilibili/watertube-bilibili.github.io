@@ -27,7 +27,7 @@ export function requestRoadsterManeuver(game,action){
  const v=game.vehicle;if(roadsterTrim(v)!=='rocket')return{ok:false,reason:'智能空中特技仅限 Rocket（游戏设定）'};
  if(!['vault','vault_spin','spin','cancel'].includes(action))return{ok:false,reason:'未知动作'};
  if(v.parkingBrakeEngaged&&action!=='cancel')return{ok:false,reason:'P 驻车中，请先挂 N / R / D 再执行特技'};
- if(!game.inCar||game.transition||game.paused||game.aircraft?.active||game.flight?.active||game.autonomyTest?.active||game.ui?.isPhoneOpen?.()||globalThis.document?.body?.classList.contains('mobile-drawer-open'))return{ok:false,reason:'请先结束当前操作并进入 Rocket'};
+ if(!game.inCar||game.transition||game.paused||game.aircraft?.active||game.flight?.active||game.autonomyTest?.active||game.ui?.isPhoneOpen?.())return{ok:false,reason:'请先结束当前操作并进入 Rocket'};
  if(!game.physics?.ready||game.physics.failed)return{ok:false,reason:'智能特技需要 Godot 物理引擎'};
  const request=roadsterRequest(v);
  if(action!=='cancel'&&(v.condition<=0||v.battery<=0))return{ok:false,reason:'动力损坏或车辆电量耗尽'};
@@ -54,7 +54,7 @@ export function toggleRoadsterAir(game){
 export function cycleRoadsterWing(v){if(!roadsterTrim(v))return null;const request=roadsterRequest(v);request.wingMode=ROADSTER_WING_MODES[(ROADSTER_WING_MODES.indexOf(request.wingMode)+1)%3];return request.wingMode;}
 export function roadsterPlayerInput(game,input={}){
  const v=game.vehicle,trim=roadsterTrim(v);if(!trim)return input;
- const request=roadsterRequest(v),blocked=game.paused||game.transition||game.ui?.isPhoneOpen?.()||globalThis.document?.body?.classList.contains('mobile-drawer-open');
+ const request=roadsterRequest(v),blocked=game.paused||game.transition||game.ui?.isPhoneOpen?.();
  const rawKeys=blocked?{}:game.keys??{},rawTouch=blocked?{}:game.touch??{},rawAir=blocked?{}:game.roadsterTouch??{};
  // The action button explicitly takes over controls that were already held.
  // Each source re-arms on release; any fresh key/pedal still cancels immediately.

@@ -15,15 +15,9 @@ function enhancePhone(){
   }
   phone.querySelector('.phone-top')?.after(nav);
  }
- const title=$('phone-title')?.textContent||'',page=({'coastOS':'home','城市导航':'nav','城市工作':'jobs','我的车库':'garage','游戏存档':'save'})[title];
+ const title=$('phone-title')?.textContent||'',page=({'SUNSET COAST':'home','城市导航':'nav','城市工作':'jobs','我的车库':'garage','游戏存档':'save'})[title];
  for(const button of phone.querySelectorAll('[data-interface-page]')){
   const current=button.dataset.interfacePage===page?'page':'false';if(button.getAttribute('aria-current')!==current)button.setAttribute('aria-current',current);
- }
- const grid=content.querySelector('.phone-app-grid');
- if(grid&&!grid.dataset.organized){
-  grid.dataset.organized='true';
-  const groups=[['出行与探索',['nav','rides','flights']],['城市生活',['jobs','garage','bank','characters','inventory']],['游戏与进度',['save','settings','cheats']]];
-  for(const[label,ids]of groups){const section=create('section','interface-app-group'),heading=create('h4','',label),items=create('div','interface-app-items');section.append(heading,items);for(const id of ids){const app=grid.querySelector(`[data-page="${id}"]`);if(app)items.append(app);}grid.append(section);}
  }
  // Label the existing select without replacing it or its onchange callback.
  for(const select of content.querySelectorAll('select'))if(!select.hasAttribute('aria-label')&&!content.querySelector(`label[for="${select.id}"]`))select.setAttribute('aria-label',select.id==='ride-brand'?'接送品牌':'选择选项');
