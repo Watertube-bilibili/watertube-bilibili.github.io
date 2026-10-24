@@ -1,3 +1,4 @@
+import {applySurfaceMaterial} from './surface-materials.js';
 import * as THREE from './vendor/three.module.js';
 import {groundHeight} from './regions.js';
 import {SURFACE_DEPTH_BIAS} from './surface-layout.js';
@@ -41,7 +42,7 @@ export function animatePassengerJet(root,pose,dt=0){
 export function createAirportScene(parent,airport){
  const root=new THREE.Group();root.name=airport.id;root.userData.airport=airport.id;parent.add(root);root.visible=false;const colliders=[],y=airport.altitude;
  const mats=new Map();const material=(color,opts={})=>{const key=color+JSON.stringify(opts);if(!mats.has(key))mats.set(key,new THREE.MeshStandardMaterial({color,roughness:.88,...opts}));return mats.get(key)};
- const box=(w,h,d,color,x,yy,z,opts={})=>{const bias=opts.semantic===1?SURFACE_DEPTH_BIAS.road:opts.semantic===2?SURFACE_DEPTH_BIAS.paint:{};const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d,Math.max(1,Math.ceil(w/40)),1,Math.max(1,Math.ceil(d/40))),material(color,{...bias,...Object.fromEntries(Object.entries(opts).filter(([key])=>key!=='semantic'))}));m.position.set(x,y+yy,z);m.userData.semantic=opts.semantic??5;root.add(m);return m};
+ const box=(w,h,d,color,x,yy,z,opts={})=>{const bias=opts.semantic===1?SURFACE_DEPTH_BIAS.road:opts.semantic===2?SURFACE_DEPTH_BIAS.paint:{};const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d,Math.max(1,Math.ceil(w/40)),1,Math.max(1,Math.ceil(d/40))),material(color,{...bias,...Object.fromEntries(Object.entries(opts).filter(([key])=>key!=='semantic'))}));m.position.set(x,y+yy,z);m.userData.semantic=opts.semantic??5;if(opts.semantic===1)applySurfaceMaterial(m.material,'asphalt');else if(h<1&&w>20&&d>20&&opts.semantic!==2)applySurfaceMaterial(m.material,opts.polygonOffsetUnits===1?'terrain':'concrete');root.add(m);return m};
  const b=airport.bounds,r=airport.runway;
  box(b.maxX-b.minX-28,.06,b.maxZ-b.minZ-28,0x83928a,(b.maxX+b.minX)/2,-.04,(b.maxZ+b.minZ)/2,SURFACE_DEPTH_BIAS.underlay);
  box(450,.10,640,0x758284,r.x-145,.018,r.z,SURFACE_DEPTH_BIAS.shoulder);

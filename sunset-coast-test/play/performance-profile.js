@@ -23,10 +23,16 @@ export function saveQualityPreference(storage,q){
  try{storage?.setItem(QUALITY_PREFERENCE_KEY,q);return !!storage;}catch{return false;}
 }
 
-export function getPerformanceProfile(quality,env=globalThis){
+export function getPerformanceProfile(quality,env=globalThis,maxTextureSize=4096){
  const mobile=isMobilePerformanceDevice(env),q=valid(quality)?quality:defaultQuality(env);
- const index=QUALITY_LEVELS.indexOf(q),pixelCap=(mobile?[1,1.25,1.5]:[1,1.5,2])[index];
- return Object.freeze({quality:q,mobile,pixelRatio:clamp(finite(env.devicePixelRatio,1),.5,pixelCap),
+ const index=QUALITY_LEVELS.indexOf(q),pixelCap=(mobile?[1.25,1.5,1.75]:[1,1.5,2])[index];
+ // A little extra mobile coverage, never an unbounded DPR-3/4 render buffer.
+ // The pixel/edge budgets also cap framebuffer-copy AA memory and fill-rate.
+ const renderPixelBudget=(mobile?[1200000,1600000,2200000]:[2100000,3200000,4500000])[index];
+ const width=Math.max(1,finite(env.innerWidth,1920)),height=Math.max(1,finite(env.innerHeight,1080));
+ const requested=clamp(finite(env.devicePixelRatio,1),mobile?1.15:.5,pixelCap);
+ const pixelRatio=Math.min(requested,Math.sqrt(renderPixelBudget/(width*height)),Math.max(1,finite(maxTextureSize,4096))/Math.max(width,height));
+ return Object.freeze({quality:q,mobile,pixelRatio,renderPixelBudget,
   shadows:index>0,shadowMapSize:(mobile?[0,768,1024]:[0,1024,1536])[index],
   trafficBudget:(mobile?[16,24,32]:[24,34,44])[index],sensorInterval:q==='low'?.18:.1});
 }

@@ -24,6 +24,6 @@ export async function startBetaRuntime({window,document,storage,locks,validateSa
  });
 }
 if(typeof window!=='undefined'){
- try{if(getComputedStyle(document.documentElement).getPropertyValue('--beta-ui-contract').trim()!=='2')throw Error('2.0 界面资源未完整载入，请刷新重试');const {validateSave}=await import('./save-validation.js');startBetaRuntime({window,document,storage:localStorage,locks:navigator.locks,validateSave,loadGame:()=>import('./mobile-ui.js')}).catch(error=>{const label=document.getElementById('load-text');if(label)label.textContent='测试版存档锁不可用：'+error.message+'。原有存档未覆盖。';});}
+ try{if(getComputedStyle(document.documentElement).getPropertyValue('--beta-ui-contract').trim()!=='2')throw Error('1.0 界面资源未完整载入，请刷新重试');const {validateSave}=await import('./save-validation.js');startBetaRuntime({window,document,storage:localStorage,locks:navigator.locks,validateSave,loadGame:()=>import('./mobile-ui.js')}).catch(error=>{const label=document.getElementById('load-text');if(label)label.textContent='测试版存档锁不可用：'+error.message+'。原有存档未覆盖。';});}
  catch(error){const label=document.getElementById('load-text');if(label)label.textContent='测试版无法启动：'+error.message+'。请返回测试版首页检查，原存档未覆盖。';}
 }

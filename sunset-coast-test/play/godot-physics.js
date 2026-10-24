@@ -7,7 +7,7 @@ import {createStartupDiagnostics} from './godot-startup-diagnostics.js';
 import {physicsSurfaceMesh} from './physics-surfaces.js';
 import {stepAxleFault,axleFaultEffects} from './axle-fault.js';
 import {clampRoadsterControls,roadsterSpawnConfig,applyRoadsterSnapshot} from './roadster-controls.js';
-import {CURRENT_RELEASE} from './release-notes.js';
+import {CURRENT_RELEASE,DISPLAY_RELEASE} from './release-notes.js';
 import * as THREE from './vendor/three.module.js';
 import {stepBrakeFault} from './brake-fault.js';
 import {captureVehiclePose,resetVehiclePose} from './render-motion.js';
@@ -83,7 +83,7 @@ export class GodotPhysicsSystem{
  queueCommand(command){this.commands.push(command);}
  sendControls(control){this.externalControls.set(control.id,control);}
  submitVehicle(v,input,dt,isPlayer=false){
-  const controls=cargoGodotControls(v,godotCarControls(v,input,dt));this.controlMap.set(v,controls);
+  const controls=cargoGodotControls(v,godotCarControls(v,{...input,offroadDriverPresent:isPlayer&&this.game.inCar&&this.game.vehicle===v},dt));this.controlMap.set(v,controls);
   if(isPlayer){this.game.handleAxleFault?.(v);v.battery=Math.max(0,v.battery-dt*(Math.abs(v.speed)*.0008+(v.roadsterState?.lift??0)*.06+(v.roadsterState?.boost??0)*.04));if(v.model.id==='c800'&&(v.brakeFault.justCounted||v.brakeFault.justTriggered||v.brakeFault.justBroke)){this.game.rememberBrakeFault?.();this.game.save?.(false);}}
  }
  // Godot's process phase is authoritative. A callback arrival timestamp is
@@ -123,7 +123,7 @@ export class GodotPhysicsSystem{
    v.speed=state.speed;v.yawRate=state.angular?.[1]??0;v.lateralSpeed=state.lateralSpeed??0;v.slipVelocityX=state.linear[0]+Math.sin(v.yaw)*v.speed;v.slipVelocityZ=state.linear[2]+Math.cos(v.yaw)*v.speed;
    v.travelDistance=previous.distanceTo(p)*Math.sign(v.speed||oldSpeed||1);v.longitudinalAcceleration=(v.speed-oldSpeed)/(snapshot.dt||1/60);
    v.steer=state.steer;v.manualBrakePressure=state.manualBrakePressure;v.brakeAmount=state.brakeAmount;v.brake=state.brakeAmount>.025;v.driftAmount=state.driftAmount;v.grounded=state.grounded;v.suspensionRest=state.suspensionRest??.18;v.suspensionRebound=state.suspensionRebound??.08;v.wheelCompressions=state.wheelCompressions;v.wheelVisualCompressions=state.wheelVisualCompressions??state.wheelCompressions;
-   v.offroadDiffLockActive=state.offroadDiffLock===true;
+   v.offroadDiffLockActive=state.offroadDiffLock===true;v.offroadChassisSpeed=Math.hypot(...state.linear);
    applyRoadsterSnapshot(v,state);applyRoadsterTireSnapshot(v,state);updateVehicleVisuals(v,snapshot.dt||1/60);entry.position.copy(v.pos);entry.yaw=v.yaw;entry.resetSerial=v.physicsResetSerial??0;
   }
   for(const c of this.contactImpacts.collect(snapshot.contacts??[],snapshot.tick,ignoredContacts)){
@@ -239,7 +239,7 @@ export async function loadGodotEngine(callbacks){
   onProgress:(loaded,total)=>{diagnostics.progress(loaded,total);show();},onPrint:()=>{},onPrintError:console.error});
  await engine.startGame({canvas});
  // The compiled Godot project can set its old title during scene startup.
- const title='SUNSET COAST · 2.0 Beta · 隔离测试',titleNode=document.querySelector('title');
+ const title='SUNSET COAST · '+DISPLAY_RELEASE+' · 隔离测试',titleNode=document.querySelector('title');
  document.title=title;if(titleNode)new MutationObserver(()=>{if(document.title!==title)document.title=title;}).observe(titleNode,{childList:true,subtree:true,characterData:true});
  if(diagnostics.state.phase!=='ready')diagnostics.record('bridge-wait');show();return engine;
  }catch(error){diagnostics.record('failed',{failed:true,error:String(error?.message??error)});throw error;}finally{clearInterval(statusTimer);diagnostics.cache();console.info('Godot startup diagnostics',diagnostics.state);}

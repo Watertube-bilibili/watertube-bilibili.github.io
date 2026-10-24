@@ -1,6 +1,7 @@
 /** Touch-first driving layout. Original control elements and handlers remain authoritative. */
 import './game.js';
 import {TOUCH_GEARS} from './touch-transmission.js';
+import {syncMobileLockStatus} from './mobile-lock-status.js';
 
 // Camera mode 1 is the actual interior view. cockpit-open is a separate car-computer panel.
 export function syncCockpitSpeedHUD(game) {
@@ -26,6 +27,10 @@ const icons = {
 };
 
 if (game?.ui) {
+  const lockStatus = document.createElement('div');
+  lockStatus.id = 'mobile-lock-status'; lockStatus.hidden = true;
+  lockStatus.setAttribute('role', 'status'); lockStatus.setAttribute('aria-live', 'polite'); lockStatus.setAttribute('aria-atomic', 'true');
+  document.querySelector('.drive-hud')?.append(lockStatus);
   const root = document.createElement('div');
   root.id = 'mobile-ui';
   root.innerHTML = `
@@ -246,6 +251,7 @@ if (game?.ui) {
   const put = (id, value) => { if ($(id).textContent !== value) $(id).textContent = value; };
   function syncStatus() {
     syncDrivingControls();
+    syncMobileLockStatus(game, lockStatus, document.body);
     game.ui.updateNavigation();
     $('mobile-pilot').hidden = !game.inCar || !!game.aircraft?.active || !!game.flight?.active || !!game.robotaxi?.passenger;
     $('mobile-pilot').setAttribute('aria-pressed', String(!!game.autopilot));

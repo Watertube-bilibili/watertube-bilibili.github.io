@@ -1,3 +1,4 @@
+import {applySurfaceMaterial} from './surface-materials.js';
 // 2.0 Beta: inexpensive presentation only. Physics and road geometry are unchanged.
 import * as THREE from './vendor/three.module.js';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -19,31 +20,8 @@ export function applyNaturalLighting(game){
  game.sun.color.setHex(0xeaf1ff).lerp(new THREE.Color(0xffd5a8),p.warm);game.sun.intensity=p.sun;
  game.scene.environmentIntensity=.35+p.day*.25;game.renderer.toneMappingExposure=p.exposure;
 }
-let grain;
-function roadGrain(){
- if(grain)return grain;const size=128,data=new Uint8Array(size*size*4);let seed=371;
- for(let i=0;i<size*size;i++){seed=(Math.imul(seed,1664525)+1013904223)>>>0;const value=195+(seed>>>26);data.set([value,value,value,255],i*4);}
- grain=new THREE.DataTexture(data,size,size);grain.wrapS=grain.wrapT=THREE.RepeatWrapping;grain.generateMipmaps=true;grain.minFilter=THREE.LinearMipmapLinearFilter;grain.magFilter=THREE.LinearFilter;grain.needsUpdate=true;return grain;
-}
-export function applyRoadSurface(material){
- material.roughness=.96;
- material.onBeforeCompile=shader=>{
-  shader.uniforms.coastGrain={value:roadGrain()};
-  shader.vertexShader='varying vec2 coastWorldXZ;\n'+shader.vertexShader;
-  shader.vertexShader=shader.vertexShader.replace('#include <worldpos_vertex>',`#include <worldpos_vertex>
-  vec4 coastPosition=vec4(transformed,1.0);
-  #ifdef USE_INSTANCING
-   coastPosition=instanceMatrix*coastPosition;
-  #endif
-  coastWorldXZ=(modelMatrix*coastPosition).xz;`);
-  shader.fragmentShader='varying vec2 coastWorldXZ;\nuniform sampler2D coastGrain;\n'+shader.fragmentShader;
-  shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
-  float coastFine=texture2D(coastGrain,coastWorldXZ*.32).r;
-  float coastWear=texture2D(coastGrain,coastWorldXZ*.009).r;
-  diffuseColor.rgb*=.83+.14*coastFine+.10*coastWear;`);
- };
- material.customProgramCacheKey=()=> 'coast-road-2.0-beta';return material;
-}
+// One shared packed map, two mipmapped samples; all detail remains presentation-only.
+export function applyRoadSurface(material){material.roughness=.94;return applySurfaceMaterial(material,'asphalt');}
 // Rectangular baked contact falloff, one instanced draw per district, no shadow map.
 let aoGeometry,aoMaterial;
 export function addBuildingContactShadows(parent,buildings,heightAt=()=>0){
@@ -69,7 +47,14 @@ export function applyFacadeScale(material){
    facadePosition=modelMatrix*facadePosition;
    coastFacadeUV=vec2(abs(normal.x)>.5?facadePosition.z:facadePosition.x,facadePosition.y)/vec2(12.0,24.0);`);
   shader.fragmentShader='varying vec2 coastFacadeUV;\n'+shader.fragmentShader;
-  shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>','diffuseColor *= texture2D(map,coastFacadeUV);');
+  shader.fragmentShader=shader.fragmentShader.replace('#include <map_fragment>',`vec4 coastFacadeTexel=texture2D(map,coastFacadeUV);
+   diffuseColor*=coastFacadeTexel;
+   // Dark glazing gets a separate physical response from matte masonry.
+   float coastWindow=1.0-smoothstep(.18,.32,dot(coastFacadeTexel.rgb,vec3(.2126,.7152,.0722)));`);
+  shader.fragmentShader=shader.fragmentShader.replace('#include <roughnessmap_fragment>',`#include <roughnessmap_fragment>
+   roughnessFactor=mix(.88,.23,coastWindow);`);
+  shader.fragmentShader=shader.fragmentShader.replace('#include <metalnessmap_fragment>',`#include <metalnessmap_fragment>
+   metalnessFactor=mix(.0,.18,coastWindow);`);
  };
- material.customProgramCacheKey=()=> 'coast-facade-2.0-beta';return material;
+ material.customProgramCacheKey=()=> 'coast-facade-pbr-v3';return material;
 }

@@ -1,3 +1,4 @@
+import {applySurfaceMaterial} from './surface-materials.js';
 import {registerFacadeNightMask,configureNightWindows,createStreetBulbMaterial} from './night-lighting.js';
 import {signalState,signalLensColor} from './intersection-signals.js';
 import {applyRoadSurface,applyFacadeScale,addBuildingContactShadows} from './realistic-visuals.js';
@@ -28,12 +29,14 @@ export function district(pos){if(mountainAt(pos))return MOUNTAIN.name+' · '+Mat
 function hash(x,z){let h=Math.imul(x^0x5bd1e995,0x27d4eb2d)^Math.imul(z^34,0x165667b1);h=Math.imul(h^(h>>>15),0x85ebca6b);return(h^(h>>>13))>>>0;}
 function seeded(x,z){let s=hash(x,z);return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};}
 function facadeTexture(){
- const w=64,h=128,data=new Uint8Array(w*h*4),emission=new Uint8Array(w*h*4);
+ const w=128,h=256,data=new Uint8Array(w*h*4),emission=new Uint8Array(w*h*4);
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
-  const window=x%16>4&&x%16<12&&y%16>3&&y%16<12,lit=hash(x>>4,y>>4)%7===0;
-  const color=window?(lit?[181,188,171]:[70,92,98]):[213,218,214],n=(y*w+x)*4;
-  data[n]=color[0];data[n+1]=color[1];data[n+2]=color[2];data[n+3]=255;
-  emission[n]=emission[n+1]=emission[n+2]=window&&lit?255:0;emission[n+3]=255;
+  const xx=x%32,yy=y%32,window=xx>8&&xx<24&&yy>6&&yy<24,lit=hash(x>>5,y>>5)%7===0;
+  const frame=xx>=7&&xx<=25&&yy>=5&&yy<=25,sill=xx>=6&&xx<=26&&yy===26;
+  const n=(y*w+x)*4,grain=(hash(x,y)%9)-4;
+  let color=window?(lit?[129,145,142]:[56+(24-yy),78+(24-yy),89+(24-yy)]):frame?[47,61,66]:sill?[225,224,210]:[202+grain,204+grain,198+grain];
+  if(!window&&!frame&&!sill&&yy===31)color=[180,183,178];
+  data.set([...color,255],n);emission.set([window&&lit?255:0,window&&lit?255:0,window&&lit?255:0,255],n);
  }
  const texture=new THREE.DataTexture(data,w,h),mask=new THREE.DataTexture(emission,w,h);texture.colorSpace=THREE.SRGBColorSpace;
  for(const t of [texture,mask]){t.magFilter=THREE.LinearFilter;t.minFilter=THREE.LinearMipmapLinearFilter;t.generateMipmaps=true;t.needsUpdate=true;}
@@ -59,6 +62,9 @@ export function createStreamingWorld(scene,coreColliders){
  const surfaceGeometries=new Map();
  const texture=facadeTexture(),materials={plain:new THREE.MeshStandardMaterial({color:0xffffff,roughness:.9}),shoulder:new THREE.MeshStandardMaterial({color:0xffffff,roughness:.9,...SURFACE_DEPTH_BIAS.shoulder}),building:new THREE.MeshStandardMaterial({color:0xffffff,map:texture,roughness:.87}),road:new THREE.MeshStandardMaterial({color:0xffffff,roughness:.97,...SURFACE_DEPTH_BIAS.road}),mark:new THREE.MeshStandardMaterial({color:0xffffff,roughness:.92,...SURFACE_DEPTH_BIAS.paint}),signal:new THREE.MeshBasicMaterial({color:0xffffff,toneMapped:false})};
  materials.streetBulb=createStreetBulbMaterial();
+ materials.terrain=applySurfaceMaterial(new THREE.MeshStandardMaterial({color:0xffffff,roughness:.96}),'terrain');
+ materials.rock=applySurfaceMaterial(new THREE.MeshStandardMaterial({color:0xffffff,roughness:.94}),'rock');
+ applySurfaceMaterial(materials.shoulder,'concrete');
  applyRoadSurface(materials.road);applyFacadeScale(materials.building);configureNightWindows(materials.building);
  const stats={colliderRevision:0,loadedChunks:0,queuedChunks:0,generatedChunks:0,residentBuildings:0,seed:34,extentKm:32,highwayKm:highwayLength()/1000,regions:REGIONS.length};
  for(const material of Object.values(materials))material.vertexColors=true;
@@ -77,8 +83,8 @@ export function createStreamingWorld(scene,coreColliders){
    const a=p(ix,iz),b=p(ix+1,iz),c=p(ix,iz+1),d=p(ix+1,iz+1);
    for(const v of [a,c,b,b,c,d]){groundPositions.push(...v);groundColors.push(...surfaceColor(v[0],v[2],v[1]));}
   }
-  const terrainGeometry=new THREE.BufferGeometry();terrainGeometry.setAttribute('position',new THREE.Float32BufferAttribute(groundPositions,3));terrainGeometry.setAttribute('color',new THREE.Float32BufferAttribute(groundColors,3));terrainGeometry.computeVertexNormals();terrainGeometry.computeBoundingSphere();
-  const terrainMesh=new THREE.Mesh(terrainGeometry,materials.plain);terrainMesh.userData.semantic=5;terrainMesh.userData.chunkOwnedGeometry=true;terrainMesh.userData.terrain=true;terrainMesh.receiveShadow=true;group.add(terrainMesh);
+  const terrainGeometry=new THREE.BufferGeometry();terrainGeometry.setAttribute('position',new THREE.Float32BufferAttribute(groundPositions,3));terrainGeometry.setAttribute('color',new THREE.Float32BufferAttribute(groundColors,3));const visualNormals=[];for(let i=0;i<groundPositions.length;i+=3){const n=groundNormal(groundPositions[i],groundPositions[i+2]);visualNormals.push(n.x,n.y,n.z);}terrainGeometry.setAttribute('normal',new THREE.Float32BufferAttribute(visualNormals,3));terrainGeometry.computeBoundingSphere();
+  const terrainMesh=new THREE.Mesh(terrainGeometry,materials.terrain);terrainMesh.userData.semantic=5;terrainMesh.userData.chunkOwnedGeometry=true;terrainMesh.userData.terrain=true;terrainMesh.receiveShadow=true;group.add(terrainMesh);
   // Every road band is clipped to the chunk; old roads are cut out of new bands.
   for(let i=Math.max(MIN_ROAD_I,Math.ceil((x0-14)/GRID));i<=Math.floor((x1+14)/GRID);i++){
    const x=i*GRID,express=x===HIGHWAY.x&&z1>HIGHWAY.zMin&&z0<HIGHWAY.zMax,half=express?17:11,shoulder=express?21:14,a=Math.max(x0,x-shoulder),b=Math.min(x1,x+shoulder),ra=Math.max(x0,x-half),rb=Math.min(x1,x+half);
@@ -179,7 +185,7 @@ export function createStreamingWorld(scene,coreColliders){
   const shoulders=[],otherBoxes=[];
   for(const item of boxes)(Math.abs(item[1]+item[4]/2-SHOULDER_TOP)<1e-9?shoulders:otherBoxes).push(item);
   batchSurfaces(removeCoplanarSurfaceOverlaps(shoulders,CORE_SHOULDERS),materials.shoulder,5);
-  batchSurfaces(removeCoplanarSurfaceOverlaps(otherBoxes),materials.plain,5);batch(walls,geo.box,materials.building,5);batchSurfaces(asphalt,materials.road,1);batchSurfaces(marks,materials.mark,2);batch(rocks,geo.box,materials.plain,5);batch(trunks,geo.trunk,materials.plain,5);batch(leaves,geo.leaf,materials.plain,5);batch(streetBulbs,geo.box,materials.streetBulb,5);const signalMesh=batch(lamps,geo.box,materials.signal,5);
+  batchSurfaces(removeCoplanarSurfaceOverlaps(otherBoxes),materials.plain,5);batch(walls,geo.box,materials.building,5);batchSurfaces(asphalt,materials.road,1);batchSurfaces(marks,materials.mark,2);batch(rocks,geo.box,materials.rock,5);batch(trunks,geo.trunk,materials.plain,5);batch(leaves,geo.leaf,materials.plain,5);batch(streetBulbs,geo.box,materials.streetBulb,5);const signalMesh=batch(lamps,geo.box,materials.signal,5);
   chunks.set(key,{key,group,colliders:solid,cx,cz,terrain,heightfield:terrain,signalMesh,lampGrid,nightLamps});root.add(group);stats.generatedChunks++;return true;
  }
  function refreshColliders(){stats.colliderRevision++;colliders.length=0;colliders.push(...coreColliders);for(const a of airportScenery)if(a.root.visible)colliders.push(...a.colliders);let total=0;for(const chunk of chunks.values()){colliders.push(...chunk.colliders);total+=chunk.colliders.length;}stats.residentBuildings=total;stats.loadedChunks=chunks.size;stats.queuedChunks=pending.length;}

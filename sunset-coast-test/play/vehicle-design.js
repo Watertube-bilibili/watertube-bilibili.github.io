@@ -1,3 +1,4 @@
+import {tuneVehicleMaterial} from './surface-materials.js';
 import * as THREE from './vendor/three.module.js';
 import {MODELS} from './vehicle-catalog.js';
 
@@ -32,7 +33,7 @@ const cache=(key,build)=>{if(!geometryCache.has(key)){const g=build();geometryCa
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const lerp=(a,b,t)=>a+(b-a)*t;
 const smooth=t=>t*t*(3-2*t);
-function material(key,params){if(!materialCache.has(key))materialCache.set(key,new THREE.MeshPhysicalMaterial(params));return materialCache.get(key);}
+function material(key,params){if(!materialCache.has(key))materialCache.set(key,tuneVehicleMaterial(new THREE.MeshPhysicalMaterial(params),key));return materialCache.get(key);}
 function mesh(parent,geo,mat){const o=new THREE.Mesh(geo,mat);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
 function geo(vertices,indices){const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));g.setIndex(indices);g.computeVertexNormals();return g;}
 function grid(rows,cols,fn,flip=false){const v=[],idx=[];for(let i=0;i<=rows;i++)for(let j=0;j<=cols;j++)v.push(...fn(i/rows,j/cols));for(let i=0;i<rows;i++)for(let j=0;j<cols;j++){const a=i*(cols+1)+j,b=a+1,c=a+cols+1,d=c+1;idx.push(...(flip?[a,b,c,b,d,c]:[a,c,b,b,c,d]));}return geo(v,idx);}

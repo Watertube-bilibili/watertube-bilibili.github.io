@@ -22,6 +22,6 @@ export function resolvePreviewSlot(search='',storage){const slot=parsePreviewSlo
 export const ACTIVE_PREVIEW_SLOT=globalThis.document?.documentElement?.dataset?.neonBetaEntry==='true'?null:resolvePreviewSlot(globalThis.location?.search??'',globalThis.localStorage);
 export const STORAGE_KEYS=betaStorageKeys(ACTIVE_PREVIEW_SLOT);
 export const {SAVE_KEY,ASSIST_SETTINGS_KEY,QUALITY_PREFERENCE_KEY,RELEASE_READ_KEY,COCKPIT_OPEN_KEY,COCKPIT_POSITION_KEY,INPUT_MODE_KEY,MISSION_HIDDEN_KEY}=STORAGE_KEYS;
-export const SAVE_SCOPE_LABEL='2.0 Beta · 独立测试存档';
+export const SAVE_SCOPE_LABEL='1.0 Beta · 独立测试存档';
 export const SAVE_SCOPE_NOTE='此入口使用独立测试存档，不读取或改写正式版进度。';
 export const SAVE_EXPORT_PREFIX='sunset-coast-test-2.0-beta-';

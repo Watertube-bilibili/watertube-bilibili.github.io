@@ -1,9 +1,11 @@
+import {createCityArchitecture} from './city-architecture.js';
+import {applySurfaceMaterial,applyVehicleMaterials} from './surface-materials.js';
 import {registerFacadeNightMask,configureNightWindows,createStreetBulbMaterial} from './night-lighting.js';
 import {attachCharacterAsset} from './character-assets.js';
 import {SEMI_MODEL} from './semi-vehicle.js';
 import {createSemiCar} from './semi-asset.js';
 import {signalState,signalLensColor} from './intersection-signals.js';
-import {applyRoadSurface,addBuildingContactShadows} from './realistic-visuals.js';
+import {applyRoadSurface,applyFacadeScale,addBuildingContactShadows} from './realistic-visuals.js';
 import * as THREE from './vendor/three.module.js';
 import {MODELS as DESIGNED_MODELS} from './vehicle-catalog.js';
 import {createDesignedCar} from './vehicle-design.js';
@@ -41,7 +43,7 @@ function facade(color){
  const ctx=c.getContext('2d'),mc=mask.getContext('2d');ctx.fillStyle=color;ctx.fillRect(0,0,128,256);mc.fillStyle='#000';mc.fillRect(0,0,128,256);
  for(let x=9;x<128;x+=25)for(let y=12;y<256;y+=27){
   // Preserve the original random calls so buildings and collisions do not move.
-  const tint=rand()>.55?'#4f646a':rand()>.4?'#b5a481':'#293e48';ctx.fillStyle=tint;ctx.fillRect(x,y,13,18);
+  const tint=rand()>.55?'#4f646a':rand()>.4?'#b5a481':'#293e48';ctx.fillStyle='#273b42';ctx.fillRect(x-1,y-1,15,21);ctx.fillStyle=tint;ctx.fillRect(x,y,13,18);ctx.fillStyle='#b4c6c62c';ctx.fillRect(x,y,13,5);ctx.fillStyle='#102b373a';ctx.fillRect(x,y+13,13,5);ctx.fillStyle='#d1d1c4';ctx.fillRect(x-2,y+19,17,1);
   if(tint==='#b5a481'){mc.fillStyle='#fff';mc.fillRect(x,y,13,18);}ctx.fillStyle='#9fb1ae44';ctx.fillRect(x,y,2,18);
  }
  const t=new THREE.CanvasTexture(c),emission=new THREE.CanvasTexture(mask);t.colorSpace=THREE.SRGBColorSpace;
@@ -49,13 +51,13 @@ function facade(color){
 }
 function instanced(parent,geo,material,items,sem=0){const m=new THREE.InstancedMesh(geo,material,items.length),dummy=new THREE.Object3D();items.forEach((q,i)=>{dummy.position.set(q[0],q[1],q[2]);dummy.scale.set(q[3]??1,q[4]??1,q[5]??1);dummy.rotation.set(0,q[6]??0,0);dummy.updateMatrix();m.setMatrixAt(i,dummy.matrix)});m.userData.semantic=sem;parent.add(m);return m}
 let leafGeo;function palmLeafGeometry(){if(leafGeo)return leafGeo;const vertices=[],indices=[];for(let i=0;i<=9;i++){const t=i/9,d=t*4.5,w=Math.sin(t*Math.PI)*.42,y=Math.sin(t*Math.PI)*.7-t*t*1.8;vertices.push(-w,y,d,0,y+.13*Math.sin(t*Math.PI),d,w,y,d)}for(let i=0;i<9;i++){let a=i*3,b=a+3;indices.push(a,b,a+1,a+1,b,b+1,a+1,b+1,a+2,a+2,b+1,b+2)}leafGeo=new THREE.BufferGeometry();leafGeo.setAttribute('position',new THREE.Float32BufferAttribute(vertices,3));leafGeo.setIndex(indices);leafGeo.computeVertexNormals();return leafGeo;}
-export function createWorld(scene){const colliders=[],roads=new THREE.Group();scene.add(roads);const ground=box(scene,620,1,650,0x707e61,15,-.6,0,SURFACE_DEPTH_BIAS.underlay);ground.userData.semantic=5;ground.receiveShadow=true;
+export function createWorld(scene){const colliders=[],roads=new THREE.Group();scene.add(roads);const ground=box(scene,620,1,650,0x707e61,15,-.6,0,SURFACE_DEPTH_BIAS.underlay);ground.material=applySurfaceMaterial(ground.material,'terrain');ground.userData.semantic=5;ground.receiveShadow=true;
 const asphalt=applyRoadSurface(mat(0x383d40,{roughness:.97,...SURFACE_DEPTH_BIAS.road}));
 for(const x of ROAD)box(roads,22,.13,650,asphalt,x,0,0).userData.semantic=1;
 for(const z of ROAD)box(roads,650,.13,22,asphalt,0,.02,z).userData.semantic=1;
 // The streamed terrain also covers the original city. Old sidewalk tops at
 // Y=0 fought that terrain and each other at every corner of an intersection.
-for(const [x,y,z,w,h,d,tint] of removeCoplanarSurfaceOverlaps(CORE_SHOULDERS)){const curb=box(roads,w,h,d,tint,x,y,z,SURFACE_DEPTH_BIAS.shoulder);curb.userData.shoulder=true;}
+for(const [x,y,z,w,h,d,tint] of removeCoplanarSurfaceOverlaps(CORE_SHOULDERS)){const curb=box(roads,w,h,d,tint,x,y,z,SURFACE_DEPTH_BIAS.shoulder);curb.material=applySurfaceMaterial(curb.material,'concrete');curb.userData.shoulder=true;}
 const dashes=[],edge=[],cross=[],lanes=[];for(const v of ROAD)for(let i=-316;i<320;i+=10){if(ROAD.some(q=>Math.abs(i-q)<17))continue;for(const side of [-1,1])lanes.push([v+side*5.5,.056,i,.18,.02,4.2],[i,.076,v+side*5.5,4.2,.02,.18]);dashes.push([v,.056,i,.22,.02,4.2]);dashes.push([i,.076,v,4.2,.02,.17]);edge.push([v-10,.056,i,.12,.02,10],[v+10,.056,i,.12,.02,10],[i,.076,v-10,10,.02,.12],[i,.076,v+10,10,.02,.12])}
 instanced(roads,boxGeo,mat(0xf0ece0,{...SURFACE_DEPTH_BIAS.paint}),lanes,2);
 instanced(roads,boxGeo,mat(0xe2c575,SURFACE_DEPTH_BIAS.paint),dashes,2);instanced(roads,boxGeo,mat(0xf0ece0,SURFACE_DEPTH_BIAS.paint),edge,2);
@@ -64,8 +66,9 @@ for(const x of ROAD)for(const z of ROAD)for(let a=-8;a<=8;a+=2.1){cross.push([x+
 const stops=[];for(const x of ROAD)for(const z of ROAD)stops.push([x+5.5,.056,z+19,9,.02,.4],[x-5.5,.056,z-19,9,.02,.4],[x-19,.076,z+5.5,.4,.02,9],[x+19,.076,z-5.5,.4,.02,9]);
 instanced(roads,boxGeo,mat(0xf0ece0,{...SURFACE_DEPTH_BIAS.paint}),stops,2);
 roads.traverse(o=>{if(o.isMesh)o.receiveShadow=o.userData.semantic!==2;});
-const buildings=new THREE.Group();scene.add(buildings);const colors=['#b3a798','#b6b7aa','#8a9e9d','#8995a1','#c3b6a0','#7b8b96','#9f968b'];const bm=colors.map(c=>mat(0xffffff,{map:facade(c)}));const walls=new Map();
-for(let ix=0;ix<ROAD.length-1;ix++)for(let iz=0;iz<ROAD.length-1;iz++){const cx=(ROAD[ix]+ROAD[ix+1])/2,cz=(ROAD[iz]+ROAD[iz+1])/2;if((ix===0&&iz===2)||(ix===3&&iz===2)){box(scene,53,.25,53,0x82936c,cx,.15,cz);continue}for(let a=0;a<2;a++)for(let b=0;b<2;b++){const x=cx+(a-.5)*29,z=cz+(b-.5)*29,w=18+rand()*8,d=18+rand()*8,h=9+rand()*(ix<3&&iz>=4?15:39)+(ix>2?rand()*24:0);const mi=Math.floor(rand()*bm.length),level=Math.max(1,Math.round(h/18)),wk=mi+":"+level;if(!walls.has(wk)){const tex=bm[mi].map.clone();tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.repeat.set(1.3,level);tex.needsUpdate=true;walls.set(wk,configureNightWindows(new THREE.MeshStandardMaterial({map:tex,roughness:.85}),bm[mi].map))}const wallMat=walls.get(wk);const body=box(buildings,w,h,d,wallMat,x,h/2,z);body.castShadow=true;body.receiveShadow=true;body.userData.semantic=5;box(buildings,w+1,.5,d+1,0x3e5157,x,h+.2,z).userData.semantic=5;box(buildings,w+1.3,.5,d+1.3,0xd0c8b6,x,.55,z).userData.semantic=5;colliders.push({x,z,w:w/2+.7,d:d/2+.7,baseY:0,height:h+.45,yaw:0,kind:'building'});if(h<24){const sign=box(buildings,w*.75,1.2,.12,mat(0xffffff,{map:labelTexture(['COAST COFFEE','MOTEL 24','PACIFIC CLUB','VOLT','SUNSET MARKET'][Math.floor(rand()*5)])}),x,3,z+d/2+.1);sign.userData.semantic=5;box(buildings,w+1,.18,2.8,0x395d59,x,3.8,z+d/2+.9).userData.semantic=5}}}
+// 1.0 local review: actual depth and enterable shells replace flat façade boxes.
+const cityArchitecture=createCityArchitecture(scene,colliders,{roads:ROAD});
+for(const [x,z] of [[-200,-40],[40,-40]])box(scene,53,.25,53,0x82936c,x,.15,z);
 // Coastal promenade, a horizon of water, and distant hills.
 box(scene,25,.2,700,0xccbea0,-287,0,0).userData.semantic=5;box(scene,32,.13,700,asphalt,-262,.01,0).userData.semantic=1;box(scene,25,.16,700,0xdfcfac,-307,-.18,0);box(scene,20000,.2,32400,0x397c85,-10335,-.5,0);
 const waterGeo=new THREE.PlaneGeometry(20000,32400,48,70);waterGeo.rotateX(-Math.PI/2);const water=new THREE.Mesh(waterGeo,new THREE.MeshStandardMaterial({color:0x599da3,roughness:.25,metalness:.55,transparent:true,opacity:.87}));water.position.set(-10335,-.3,0);scene.add(water);water.userData.semantic=0;
@@ -92,22 +95,22 @@ updateCoreSignals(0);addBuildingContactShadows(scene,colliders);
 
 const staticBoxes=new Map();scene.updateMatrixWorld(true);scene.traverse(o=>{if(o.isMesh&&!o.isInstancedMesh&&(o.geometry===boxGeo||o.geometry.userData.surfaceSlab)){const key=o.material.uuid+':'+(o.userData.semantic??0)+':'+o.geometry.uuid;if(!staticBoxes.has(key))staticBoxes.set(key,[]);staticBoxes.get(key).push(o)}});for(const meshes of staticBoxes.values()){if(meshes.length<2)continue;const m=new THREE.InstancedMesh(meshes[0].geometry,meshes[0].material,meshes.length);m.userData.semantic=meshes[0].userData.semantic??0;m.castShadow=meshes.some(o=>o.castShadow);m.receiveShadow=meshes.some(o=>o.receiveShadow);meshes.forEach((o,i)=>m.setMatrixAt(i,o.matrixWorld));meshes.forEach(o=>o.parent.remove(o));scene.add(m)}
 const streamed=createStreamingWorld(scene,colliders);streamed.update({x:0,z:80});
-return{...streamed,water,signals,updateCoreSignals,roads,leafGroup,nightLamps,nightMaterials:[...streamed.nightMaterials,...walls.values(),bulbMaterial]};}
+return{...streamed,cityArchitecture,interiors:cityArchitecture.interiors,update(pos,force=false){cityArchitecture.update(pos);return streamed.update(pos,force);},water,signals,updateCoreSignals,roads,leafGroup,nightLamps,nightMaterials:[...streamed.nightMaterials,...cityArchitecture.nightMaterials,bulbMaterial]};}
 export function createCar(modelId='s',simple=false,colorOverride=null){
  const model=MODELS.find(m=>m.id===modelId)||MODELS[0];
- if(model.id==='semi'){const car=createSemiCar(model,simple,colorOverride);if(car)return attachVehicleLights(car);throw Object.assign(new Error('Semi 模型尚未载入，请先加载车型资源。'),{code:'SEMI_ASSET_NOT_READY',modelId:model.id});}
+ if(model.id==='semi'){const car=createSemiCar(model,simple,colorOverride);if(car)return attachVehicleLights(applyVehicleMaterials(car));throw Object.assign(new Error('Semi 模型尚未载入，请先加载车型资源。'),{code:'SEMI_ASSET_NOT_READY',modelId:model.id});}
  if(isRoadsterModel(model)){
-  const loaded=createRoadsterCar(model,simple,colorOverride);if(loaded)return attachVehicleLights(loaded);
+  const loaded=createRoadsterCar(model,simple,colorOverride);if(loaded)return attachVehicleLights(applyVehicleMaterials(loaded));
   throw Object.assign(new Error('Roadster 模型尚未载入，请先加载车型资源。'),{code:'ROADSTER_ASSET_NOT_READY',modelId:model.id});
  }
  if(model.id==='vision'){
-  const loaded=createAssetCar(model.id,simple,colorOverride,model);if(loaded)return attachVehicleLights(loaded);
+  const loaded=createAssetCar(model.id,simple,colorOverride,model);if(loaded)return attachVehicleLights(applyVehicleMaterials(loaded));
   throw Object.assign(new Error('Lucent 模型尚未载入，请先加载车型资源。'),{code:'LUCENT_ASSET_NOT_READY',modelId:model.id});
  }
  const car=model.id==='g9'?createG9Car(simple,colorOverride,model):createDesignedCar(model.id,simple,colorOverride);
  if(!car&&model.id==='g9')throw new Error('G9_ASSET_NOT_READY: load the G9 model before creating it');
  if(car.driverCamera){car.driverCamera.z+=.14;if(car.steeringWheel)car.driverCamera.y=Math.min(car.driverCamera.y,car.steeringWheel.position.y+.35);}
- car.driverViewPitch=.14;return attachVehicleLights(car);
+ car.driverViewPitch=.14;return attachVehicleLights(applyVehicleMaterials(car));
 }
 export function createPerson(color=0x486b78,options={}){const root=new THREE.Group(),body=box(root,.43,.67,.26,color,0,1.12,0),head=new THREE.Mesh(new THREE.SphereGeometry(.165,8,7),mat(0xc4a388));head.position.y=1.64;root.add(head);const hair=box(root,.28,.07,.25,0x3b3737,0,1.78,0);const arms=[],legs=[];for(let side of [-1,1]){const arm=new THREE.Group();arm.position.set(side*.3,1.36,0);root.add(arm);box(arm,.13,.52,.15,color,0,-.23,0);box(arm,.12,.15,.14,0xc4a388,0,-.52,0);arms.push(arm);const leg=new THREE.Group();leg.position.set(side*.12,.8,0);root.add(leg);box(leg,.16,.68,.19,0x334450,0,-.3,0);box(leg,.19,.11,.29,0x28353b,0,-.66,-.045);legs.push(leg)}semantic(root,4);body.castShadow=true;return attachCharacterAsset({root,arms,legs,head,animate(t,speed=1){arms[0].rotation.x=Math.sin(t*8)*.55*speed;arms[1].rotation.x=-arms[0].rotation.x;legs[0].rotation.x=-arms[0].rotation.x;legs[1].rotation.x=arms[0].rotation.x;root.position.y=Math.abs(Math.sin(t*8))*.025*speed}},{color,...options});}
 export const CHARACTERS=[{id:'alex',name:'林 Alex',role:'自由车手',color:0xddd6b4,description:'从海岸出发，驾驶探索整座城市。'},{id:'maya',name:'叶 Maya',role:'城市信使',color:0x8a8e9b,description:'熟悉每一条街道，也喜欢新的冒险。'},{id:'nico',name:'周 Nico',role:'夜班司机',color:0x476c74,description:'城市入夜，旅程才刚刚开始。'},{id:'mochi',name:'Mochi',role:'城市猫咪',color:0xdaab79,description:'四只爪子，一座城市。跑、跳、探索，也能搭车。'}];

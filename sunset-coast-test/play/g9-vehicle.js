@@ -1,3 +1,4 @@
+import {tuneVehicleMaterial} from './surface-materials.js';
 import * as THREE from './vendor/three.module.js';
 import {createG9DisplayTexture} from './g9-displays.js';
 import {G9_MATERIALS} from './assets/g9/g9-materials.js';
@@ -45,6 +46,7 @@ function material(name,color,detail){
   if(name==='paint')p.color=color;
   const displayTexture=displayKind?createG9DisplayTexture(displayKind,detail==='simple'):null;
   const m=displayKind?new THREE.MeshBasicMaterial({map:displayTexture,color:displayTexture?0xffffff:0x10262b,toneMapped:false,side:THREE.DoubleSide}):new THREE.MeshPhysicalMaterial(p);m.name=name==='paint'?'Paint 1 G9':`G9 ${name}`;
+  tuneVehicleMaterial(m,m.name);
   // Do not cache a failed canvas allocation: a later car can retry successfully.
   if(!displayKind||displayTexture||typeof document==='undefined')materialCache.set(key,m);
   else return m;

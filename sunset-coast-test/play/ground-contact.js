@@ -1,3 +1,4 @@
+import {pedestrianColliderContains} from './city-architecture.js';
 import * as THREE from './vendor/three.module.js';
 import {getVehicleCollider,pedestrianVehicleContact} from './vehicle-dynamics.js';
 import {WORLD_MIN_X,WORLD_LIMIT} from './regions.js';
@@ -142,7 +143,7 @@ export function createGroundContact(world,scene){
  function snap(position,{radius=.3,clearance=CLEARANCE}={}){position.y=heightAt(position.x,position.z,{radius})+clearance;return position;}
  function clearAt(p,radius,vehicles){
   if(p.x<WORLD_MIN_X+radius+1||p.x>WORLD_LIMIT-8-radius||Math.abs(p.z)>WORLD_LIMIT-8-radius)return false;
-  for(const b of world?.colliders??[]){const yaw=b.yaw??0,dx=p.x-b.x,dz=p.z-b.z,x=dx*Math.cos(yaw)-dz*Math.sin(yaw),z=dx*Math.sin(yaw)+dz*Math.cos(yaw);if(Math.abs(x)<b.w+radius+.08&&Math.abs(z)<b.d+radius+.08)return false;}
+  for(const b of world?.colliders??[])if(pedestrianColliderContains(b,p,radius+.08))return false;
   return !vehicles.some(v=>v&&!v.populationDormant&&v.root?.visible!==false&&pedestrianVehicleContact(p,radius+.08,v));
  }
  function findExit(vehicle,{radius=.3,vehicles=[],preferredSide=-1}={}){
