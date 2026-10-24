@@ -111,8 +111,8 @@ export function createSkyCycle(game){
  }
  function update(){
   updateLighting();if(disposed)return;
-  const budget=skyBudget(game.quality,game.performanceProfile?.mobile);
-  anchor.copy(game.position??game.camera.position);
+  const budget=skyBudget(game.photoMode?.renderQuality??game.quality,game.performanceProfile?.mobile);
+  anchor.copy(game.photoMode?.target??game.position??game.camera.position);
   // One direction drives the visible sun, shadows and lens flare. Follow the player only to keep shadow precision.
   game.sun.position.copy(anchor).addScaledVector(state.direction,state.direct>.001?220:-220);
   game.sun.target.position.copy(anchor);game.sun.target.updateMatrixWorld();

@@ -99,7 +99,7 @@ function evaluateTrack(track,isStatic,game,path,state,frameAge,ego,thresholds){
  const stoppingHold=confirmedOverlap&&gap<5&&Math.abs(objectSpeed)<1;
  const {deceleration,brakeThreshold,emergencyTtc}=thresholds;
  const warningTtc=clamp(2.2+speed*.035,2.3,3.15);
- const closingRisk=closing>.7||collisionTime!==null;
+ const closingRisk=closing>.7||collisionTime!==null||confirmedOverlap&&gap<.7&&closing>.2;
  const warning=closingRisk&&(ttc<warningTtc||requiredDeceleration>3.1)||inside&&gap<1.1&&closing>.2;
  // Relative closing speed, rather than ego speed alone, distinguishes a close
  // moving lead from an actual collision. First uncertain frames warn first,
@@ -133,7 +133,13 @@ export function evaluateDrivingAssist(game,input,dt=1/60){
  const enabled=game.inCar!==false&&!game.transition,fcwEnabled=game.fcwEnabled!==false,aebEnabled=game.aebEnabled!==false&&game.assistSettings?.aebEnabled!==false;
  const requestedSensitivity=game.assistSettings?.aebSensitivity,aebSensitivity=typeof requestedSensitivity==='string'&&Object.hasOwn(AEB_SENSITIVITY_PRESETS,requestedSensitivity)?requestedSensitivity:'medium',preset=AEB_SENSITIVITY_PRESETS[aebSensitivity];
  const speed=Math.max(0,finite(v.speed)),deceleration=effectiveBrakeDeceleration(v),thresholds={deceleration,brakeThreshold:Math.min(preset.decelerationCap,deceleration*preset.decelerationRatio),emergencyTtc:clamp(preset.ttcBase+speed*preset.ttcPerSpeed,preset.ttcMin,preset.ttcMax)};
- const age=now-finite(s.timestamp,-100),available=enabled&&age>=-.1&&age<.65&&finite(s.confidence)>.08;
+ // Road-pixel confidence describes lane visibility, not whether the camera
+ // saw a human. Fresh visible depth detections must still work off-road, on
+ // slopes, or when a close road user fills the image. Hidden/stale tracks
+ // cannot enable sensing and are independently rejected by evaluateTrack.
+ const hasVisibleMeasurement=(Array.isArray(s.tracks)?s.tracks:[]).some(t=>t.visible!==false&&finite(t.confidence)>=.32&&finite(t.age)<=.32&&Number.isFinite(t.distance))||
+  (Array.isArray(s.staticObstacles)?s.staticObstacles:[]).some(t=>t.visible!==false&&finite(t.confidence)>=.4&&finite(t.age)<=.32&&Number.isFinite(t.distance));
+ const age=now-finite(s.timestamp,-100),available=enabled&&age>=-.1&&age<.65&&(finite(s.confidence)>.08||hasVisibleMeasurement);
  let hazard=null,emergency=null,stopHold=false,observedThreat=false;
  for(const [key,memory] of state.tracks)if(now-memory.seen>.8)state.tracks.delete(key);
  if(available&&v.speed>-.2){

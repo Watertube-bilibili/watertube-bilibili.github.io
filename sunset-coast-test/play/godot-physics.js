@@ -1,4 +1,5 @@
 import {applyRoadsterTireSnapshot} from './roadster-tire-telemetry.js';
+import {offroadDriveControls,offroadDriveSpawnConfig} from './offroad-drive.js';
 import {parkingBrakeControls} from './touch-transmission.js';
 import {cargoGodotControls} from './cargo-career.js';
 import {createGodotAssetCache} from './godot-asset-cache.js';
@@ -37,7 +38,7 @@ export function godotCarControls(v,input,dt){
  v.manualBrakeAmount=effective;v.electronicBrakeAmount=electronic;v.brakeSource=pilot?'pilot':'manual';
  v.handbrake=!!input.handbrake;v.propulsionDisabled=v.condition<=0;
  return{throttle,axleBroken:axle.broken,axleSide:axle.side,steer:clamp(input.steer,-.8,.8),manualBrake:effective,electronicBrake:electronic,
-  manualBrakeBroken:!!v.brakeFault?.broken,handbrake:!!input.handbrake,condition:v.condition,battery:v.battery,steeringAssistEnabled:input.steeringAssistEnabled!==false,...clampRoadsterControls(v,input)};
+  manualBrakeBroken:!!v.brakeFault?.broken,handbrake:!!input.handbrake,condition:v.condition,battery:v.battery,steeringAssistEnabled:input.steeringAssistEnabled!==false,...clampRoadsterControls(v,input),...offroadDriveControls(v,input)};
 }
 
 // Optional authored four-contact layout. The existing Godot binary still simulates
@@ -50,7 +51,7 @@ export function authoredPhysicsWheelOffsets(v){
 export function vehicleSpawnCommand(v,id){
  const collider=getVehicleCollider(v),q=new THREE.Quaternion().setFromAxisAngle(Y,v.yaw??0);
  const height=Math.max(.7,(v.height??1.5)-.35);
- return{type:'spawn',id,kind:'car',...roadsterSpawnConfig(v),pos:[v.pos.x,v.pos.y+.72,v.pos.z],quat:q.toArray(),
+ return{type:'spawn',id,kind:'car',...roadsterSpawnConfig(v),...offroadDriveSpawnConfig(v),pos:[v.pos.x,v.pos.y+.72,v.pos.z],quat:q.toArray(),
   linear:[-Math.sin(v.yaw)*(v.speed??0),0,-Math.cos(v.yaw)*(v.speed??0)],
   ...(v.model.id==='apex'?{suspensionProfile:'low-sports'}:{}),
   mass:v.mass??v.model.mass??1700,size:[Math.max(1.2,collider.halfWidth*2-.08),height,collider.halfLength*2-.1],collisionOffset:[collider.offsetX??0,.2+height/2-.72,collider.offsetZ??0],
@@ -122,6 +123,7 @@ export class GodotPhysicsSystem{
    v.speed=state.speed;v.yawRate=state.angular?.[1]??0;v.lateralSpeed=state.lateralSpeed??0;v.slipVelocityX=state.linear[0]+Math.sin(v.yaw)*v.speed;v.slipVelocityZ=state.linear[2]+Math.cos(v.yaw)*v.speed;
    v.travelDistance=previous.distanceTo(p)*Math.sign(v.speed||oldSpeed||1);v.longitudinalAcceleration=(v.speed-oldSpeed)/(snapshot.dt||1/60);
    v.steer=state.steer;v.manualBrakePressure=state.manualBrakePressure;v.brakeAmount=state.brakeAmount;v.brake=state.brakeAmount>.025;v.driftAmount=state.driftAmount;v.grounded=state.grounded;v.suspensionRest=state.suspensionRest??.18;v.suspensionRebound=state.suspensionRebound??.08;v.wheelCompressions=state.wheelCompressions;v.wheelVisualCompressions=state.wheelVisualCompressions??state.wheelCompressions;
+   v.offroadDiffLockActive=state.offroadDiffLock===true;
    applyRoadsterSnapshot(v,state);applyRoadsterTireSnapshot(v,state);updateVehicleVisuals(v,snapshot.dt||1/60);entry.position.copy(v.pos);entry.yaw=v.yaw;entry.resetSerial=v.physicsResetSerial??0;
   }
   for(const c of this.contactImpacts.collect(snapshot.contacts??[],snapshot.tick,ignoredContacts)){

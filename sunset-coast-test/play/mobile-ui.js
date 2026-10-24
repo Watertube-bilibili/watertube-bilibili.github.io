@@ -44,6 +44,7 @@ if (game?.ui) {
       <header><span>驾驶操作</span><button id="mobile-tools-pin" type="button" aria-label="固定操作面板" aria-pressed="false">固定</button><button id="mobile-tools-close" type="button" aria-label="收起左侧操作">${icons.close}</button></header>
       <div id="mobile-secondary-driving" role="group" aria-label="其他驾驶操作"></div>
       <button id="mobile-pilot" type="button" aria-pressed="false"><span>辅助驾驶</span><small id="mobile-pilot-state">待命</small></button>
+      <button id="mobile-surround-camera" type="button" aria-pressed="false" hidden>360 · 场景环视</button>
       <button id="mobile-vehicle-tools" type="button" hidden>车辆操作</button>
       <div id="mobile-signals" role="group" aria-label="车辆灯光">
         <button id="mobile-signal-left" type="button" aria-label="切换左转向灯" aria-pressed="false">${icon('<path d="m10 5-7 7 7 7M3 12h18"/>')}左灯</button>
@@ -133,6 +134,7 @@ if (game?.ui) {
   $('mobile-tools-pin').onclick = () => setPinned(!toolsPinned);
   $('mobile-tools-close').onclick = () => dismissTools(true);
   $('roadster-details-toggle')?.addEventListener('click', () => setTools(false));
+  $('mobile-surround-camera').onclick = () => { closeRoutineTools(); game.vehicleCameras?.toggleSurround(); };
   $('mobile-vehicle-tools').onclick = () => { setTools(false); $('roadster-details-toggle')?.click(); };
   $('mobile-pilot').onclick = () => { closeRoutineTools(); $('autopilot-btn').click(); };
   const signalsAllowed = () => game.inCar && !game.paused && !game.transition && !game.ui.isPhoneOpen() && !$('modal').open && !game.aircraft?.active && !game.flight?.active && !game.robotaxi?.passenger;

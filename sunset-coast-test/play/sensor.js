@@ -1,4 +1,5 @@
 import * as THREE from './vendor/three.module.js';
+import {TERRAIN_CLASS,cameraSemanticClass,observedTerrainNormal,terrainBlocksCamera} from './sensor-terrain.js';
 
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 // Both passes are rendered through the real front camera. The semantic pass
@@ -24,7 +25,7 @@ export class VisionSensor {
   }));this.depthScene.add(this.depthQuad);
   this.rgb=new Uint8Array(this.w*this.h*4);this.pixels=new Uint8Array(this.w*this.h*4);
   this.classes=new Uint8Array(this.w*this.h);
-  this.materials=[0x000000,0x00aa50,0xffffff,0xff0000,0xffff00,0x2233ff].map(color=>new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,toneMapped:false}));
+  this.materials=[0x000000,0x00aa50,0xffffff,0xff0000,0xffff00,0x2233ff,0x00ffff].map(color=>new THREE.MeshBasicMaterial({color,side:THREE.DoubleSide,toneMapped:false}));
   // Keep ordinary and instanced shader variants on separate palettes.
   this.instancedMaterials=this.materials.map(m=>m.clone());
   this.data={confidence:0,laneOffset:0,obstacle:90,pedestrians:0,cars:0,boxes:[],tracks:[],road:[],staticObstacles:[],timestamp:0,frames:0,source:'semantic-camera'};
@@ -43,7 +44,7 @@ export class VisionSensor {
    r.setRenderTarget(this.rgbTarget);r.setScissorTest(false);r.render(this.scene,this.camera);
    r.readRenderTargetPixels(this.rgbTarget,0,0,this.w,this.h,this.rgb);
    this.scene.traverse(o=>{if(o.isMesh){
-    changed.push([o,o.material,o.instanceColor]);const palette=o.isInstancedMesh?this.instancedMaterials:this.materials;o.material=palette[o.userData.semantic??0]??palette[0];
+    changed.push([o,o.material,o.instanceColor]);const palette=o.isInstancedMesh?this.instancedMaterials:this.materials;o.material=palette[cameraSemanticClass(o)]??palette[0];
     // Instance colours also multiply MeshBasicMaterial, independently of its
     // vertexColors flag. Remove them only for this pass to preserve class IDs.
     // Three.js switches the USE_INSTANCING_COLOR shader variant automatically.
@@ -65,6 +66,7 @@ export class VisionSensor {
  classify(x,y){
   const idx=((this.h-1-y)*this.w+x)*4,r=this.pixels[idx],g=this.pixels[idx+1],b=this.pixels[idx+2];
   if(r>150&&g<90&&b<90)return 3;if(r>150&&g>150&&b<90)return 4;
+  if(r<100&&g>150&&b>150)return TERRAIN_CLASS;
   if(g>70&&r<100&&b<130)return 1;if(b>120&&r<120&&g<130)return 5;
   if(r>150&&g>150&&b>150)return 2;return 0;
  }
@@ -123,22 +125,46 @@ export class VisionSensor {
   const samples=[],startY=Math.max(box.minY,box.maxY-Math.max(2,Math.round((box.maxY-box.minY)*.4)));
   for(let y=startY;y<=box.maxY;y++)for(let x=box.minX;x<=box.maxX;x++){
    if(this.classes[y*this.w+x]!==box.cls)continue;
-   const p=this.depthSample(x,y,car);if(p&&p.height<2.6&&p.height>-.3)samples.push(p);
+   const p=this.depthSample(x,y,car);if(p)samples.push(p);
   }
-  if(!samples.length)return this.ground((box.minX+box.maxX+1)/2,box.maxY+1,car);
+  // A labelled person on a hill is still a person. Ego-relative height is
+  // not a validity test for a measured depth pixel. When this depth frame
+  // has no usable labelled sample, do not invent feet on the world y=0 plane.
+  if(!samples.length)return this.depthValid?null:this.ground((box.minX+box.maxX+1)/2,box.maxY+1,car);
   const median=key=>{const values=samples.map(p=>p[key]).sort((a,b)=>a-b),i=Math.floor(values.length/2);return values.length%2?values[i]:(values[i-1]+values[i])/2};
   const worldX=median('worldX'),worldZ=median('worldZ'),dx=worldX-car.pos.x,dz=worldZ-car.pos.z;
-  return{worldX,worldZ,distance:-dx*Math.sin(car.yaw)-dz*Math.cos(car.yaw),lateral:dx*Math.cos(car.yaw)-dz*Math.sin(car.yaw)};
+  return{worldX,worldZ,height:median('height'),distance:-dx*Math.sin(car.yaw)-dz*Math.cos(car.yaw),lateral:dx*Math.cos(car.yaw)-dz*Math.sin(car.yaw)};
+ }
+ observedWidth(box,surface,car){
+  if(this.depthValid&&Number.isFinite(surface.height)){
+   // Resolve the silhouette's angular width at its observed depth, not at
+   // a fictitious sea-level footpoint. This works uphill and at altitude.
+   const z=new THREE.Vector3(surface.worldX,car.pos.y+surface.height,surface.worldZ).project(this.camera).z;
+   const y=1-2*(box.maxY+.5)/this.h;
+   const a=new THREE.Vector3(2*box.minX/this.w-1,y,z).unproject(this.camera),b=new THREE.Vector3(2*(box.maxX+1)/this.w-1,y,z).unproject(this.camera);
+   return Math.abs((b.x-a.x)*Math.cos(car.yaw)-(b.z-a.z)*Math.sin(car.yaw));
+  }
+  const a=this.ground(box.minX,box.maxY+1,car),b=this.ground(box.maxX+1,box.maxY+1,car);
+  return a&&b?Math.abs(b.lateral-a.lateral):box.cls===4?.55:1.85;
  }
  staticSurfaces(car){
-  // Class 5 includes walls, poles, grass and trees. Depth pixels separate
-  // car-height visible surfaces from flat terrain and overhead leaves.
+  // Class 5 remains solid scenery. Heightfield ground has a separate camera
+  // label: merely rising .26m above the car is not a wall. Only its observed
+  // steep faces are obstacles. No hidden mesh, heightmap or collider query.
   // Keep compact metric cells so a long roadside wall never becomes a wide
   // fictitious box stretching across the travel corridor.
-  const cells=new Map();
+  const cells=new Map(),terrainSamples=new Map();
+  const terrainSample=(x,y)=>{
+   if(x<0||x>=this.w||y<0||y>=this.h||this.classes[y*this.w+x]!==TERRAIN_CLASS)return null;
+   const key=y*this.w+x;if(!terrainSamples.has(key))terrainSamples.set(key,this.depthSample(x,y,car));return terrainSamples.get(key);
+  };
   for(let y=0;y<this.h;y++)for(let x=0;x<this.w;x++){
-   if(this.classes[y*this.w+x]!==5)continue;
+   const cls=this.classes[y*this.w+x];if(cls!==5&&cls!==TERRAIN_CLASS)continue;
    const p=this.depthSample(x,y,car);if(!p||p.height<.26||p.height>1.85)continue;
+   if(cls===TERRAIN_CLASS){
+    const horizontal=terrainSample(x+1,y)??terrainSample(x-1,y),vertical=terrainSample(x,y+1)??terrainSample(x,y-1);
+    if(!terrainBlocksCamera(observedTerrainNormal(p,horizontal,vertical)))continue;
+   }
    const key=Math.floor(p.distance/2)+':'+Math.floor(p.lateral/1.2);
    let cell=cells.get(key);if(!cell){cell={distance:p.distance,left:p.lateral,right:p.lateral,count:0,minY:y,maxY:y};cells.set(key,cell)}
    cell.distance=Math.min(cell.distance,p.distance);cell.left=Math.min(cell.left,p.lateral);cell.right=Math.max(cell.right,p.lateral);cell.count++;cell.minY=Math.min(cell.minY,y);cell.maxY=Math.max(cell.maxY,y);
@@ -218,8 +244,7 @@ export class VisionSensor {
   const detections=[];
   for(const box of this.components()){
    const ground=this.observedSurface(box,car);if(!ground)continue;
-   const a=this.ground(box.minX,box.maxY+1,car),b=this.ground(box.maxX+1,box.maxY+1,car);
-   const observedWidth=a&&b?Math.abs(b.lateral-a.lateral):box.cls===4?.55:1.85;
+   const observedWidth=this.observedWidth(box,ground,car);
    const confidence=clamp(.3+Math.sqrt(box.count)/28,.3,.98)*(box.minX===0||box.maxX===this.w-1?.65:1);
    detections.push({...box,...ground,width:clamp(observedWidth,box.cls===4?.3:1.35,box.cls===4?1:3.1),confidence});
   }
