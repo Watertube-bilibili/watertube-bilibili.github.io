@@ -4,7 +4,7 @@ export function installCameraControls(game, canvas) {
   let drag = null;
   const document = canvas.ownerDocument;
   const blocked = () => (game.inCar && game.cameraMode === 2) || game.paused || game.transition ||
-    game.ui.isPhoneOpen();
+    game.ui.isPhoneOpen() || game.photoMode?.active || game.flight?.active || game.robotaxi?.passenger;
 
   const release = () => {
     const id = drag?.pointerId;
@@ -16,7 +16,7 @@ export function installCameraControls(game, canvas) {
   canvas.addEventListener('pointerdown', event => {
     const rightLook = event.pointerType === 'mouse' && event.button === 2;
     if (event.target !== canvas || drag || (event.button !== 0 && !rightLook) || blocked()) return;
-    if (game.weapon && !game.inCar && !game.aircraft?.active && !rightLook) {
+    if (game.weapon && !game.inCar && !game.aircraft?.active && !rightLook && event.pointerType === 'mouse') {
       game.shoot();
       return;
     }
@@ -44,9 +44,12 @@ export function installCameraControls(game, canvas) {
     // the mouse right looks right, even while a weapon is equipped.
     const direction = drag.pointerType === 'touch' || drag.rightLook ? -1 : 1;
     game.cameraYaw += (event.clientX - drag.x) * .004 * direction;
-    if (drag.rightLook && game.weapon && !game.inCar && !game.aircraft?.active) {
+    if ((drag.rightLook || drag.pointerType === 'touch') && game.weapon && !game.inCar && !game.aircraft?.active) {
       game.playerYaw = game.cameraYaw;
       if (game.person?.root) game.person.root.rotation.y = game.playerYaw;
+    }
+    if (game.weapon && !game.inCar && !game.aircraft?.active) {
+      game.cameraPitch = Math.max(-.9, Math.min(.9, (game.cameraPitch ?? 0) + (event.clientY - drag.y) * .003));
     }
     if (game.inCar && game.cameraMode === 1) {
       game.cameraYaw = Math.max(-2.75, Math.min(2.75, game.cameraYaw));
@@ -63,5 +66,11 @@ export function installCameraControls(game, canvas) {
       if (event.pointerId === drag?.pointerId) release();
     });
   }
+  // Pointer Events do not emit another pointerdown for the second mouse
+  // button. Keep left-click fire usable while right-look is still held.
+  canvas.addEventListener('mousedown', event => {
+    if (event.button === 0 && drag?.rightLook && game.weapon && !game.inCar &&
+      !game.aircraft?.active && !blocked()) { event.preventDefault(); game.shoot(); }
+  });
   canvas.addEventListener('contextmenu', event => event.preventDefault());
 }

@@ -1,9 +1,11 @@
+import {createNaiwaSculpture} from './naiwa-sculpture.js';
 /** SUNSET COAST 1.0 — local review candidate, NOT published.
  * Actual punched masonry shells, recessed glazing and open furnished interiors.
  * No façade image contains windows. Geometry is batched by block/material;
  * a distant solid silhouette LOD is never used within walking/detail range.
  */
 import * as THREE from './vendor/three.module.js';
+import {createFurnitureScene} from './furniture-scene.js';
 import {isMobilePerformanceDevice} from './performance-profile.js';
 
 export const ARCHITECTURE_VERSION='sunset-coast-1.0-geometry-review-1';
@@ -67,12 +69,14 @@ export function coreBuildingSpecifications(roads){
   }
  }return specs;
 }
-function authorBuilding(spec,batch,far,colliders,labels,interiorLights){
+function authorBuilding(spec,batch,far,colliders,labels,interiorLights,movableDefinitions=null){
  const s=STYLE[spec.style],{w,d,floors}=spec,h=4+floors*3.2,cs=Math.cos(spec.yaw),sn=Math.sin(spec.yaw);
  const point=(x,z)=>({x:spec.x+x*cs+z*sn,z:spec.z-x*sn+z*cs});
- const add=(mat,tint,x,y,z,bw,bh,bd,yaw=0,geometry=unitBox,rx=0,rz=0)=>{const p=point(x,z);batch.add(mat,geometry,tint,p.x,y,p.z,bw,bh,bd,yaw+spec.yaw,rx,rz);};
+ let capture=null,propSerial=0;
+ const add=(mat,tint,x,y,z,bw,bh,bd,yaw=0,geometry=unitBox,rx=0,rz=0)=>{const p=point(x,z);if(capture){const c=Math.cos(capture.yaw),n=Math.sin(capture.yaw),dx=p.x-capture.x,dz=p.z-capture.z;capture.parts.push({mat,geometry,tint,x:dx*c-dz*n,y,z:dx*n+dz*c,w:bw,h:bh,d:bd,yaw:yaw+spec.yaw-capture.yaw,rx,rz});return;}batch.add(mat,geometry,tint,p.x,y,p.z,bw,bh,bd,yaw+spec.yaw,rx,rz);};
+ const movable=(type,x,z,width,depth,height,yaw,build)=>{if(!movableDefinitions){build();return;}const p=point(x,z);capture={id:spec.id+':'+type+':'+propSerial++,roomId:spec.id,type,x:p.x,z:p.z,yaw:spec.yaw+yaw,width,depth,height,parts:[]};build();movableDefinitions.push(capture);capture=null;};
  const box=(tint,x,y,z,bw,bh,bd,mat='masonry',yaw=0)=>add(mat,tint,x,y,z,bw,bh,bd,yaw);
- const collision=(x,z,bw,bd,base,height,kind='architecture-wall',yaw=0)=>{const p=point(x,z);colliders.push({x:p.x,z:p.z,w:bw/2,d:bd/2,baseY:base,height,yaw:yaw+spec.yaw,kind,architectureId:spec.id});};
+ const collision=(x,z,bw,bd,base,height,kind='architecture-wall',yaw=0)=>{if(capture&&kind==='interior-furniture')return;const p=point(x,z);colliders.push({x:p.x,z:p.z,w:bw/2,d:bd/2,baseY:base,height,yaw:yaw+spec.yaw,kind,architectureId:spec.id});};
  const facade=(width,depth,faceYaw)=>{
   const c=Math.cos(faceYaw),n=Math.sin(faceYaw),f=(tint,u,y,v,bw,bh,bd,mat='masonry')=>box(tint,u*c+v*n,y,-u*n+v*c,bw,bh,bd,mat,faceYaw),outer=depth/2,thick=.52;
   const bays=Math.max(3,Math.round(width/4.4)),pitch=width/bays,opening=pitch-1.02;
@@ -169,7 +173,7 @@ function authorBuilding(spec,batch,far,colliders,labels,interiorLights){
   const side=(w-3)/2;for(const xx of [-1,1])collision(xx*(1.5+side/2),d/2-.23,side,.46,0,3.5);
   collision(0,0,w,d,3.78,h-3.78,'architecture-upper');
   collision(0,d/2-.23,3,.46,3.12,.66,'architecture-lintel');
-  furnish(spec,{box,add,collision,point},s,interiorLights);
+  furnish(spec,{box,add,collision,point,movable},s,interiorLights);
  }else collision(0,0,w+.12,d+.12,0,h+.9,'building');
  far.add('masonry',unitBox,s.wall,spec.x,h/2,spec.z,w,h,d,spec.yaw);
  far.add('trim',unitBox,s.trim,spec.x,h+.2,spec.z,w+.5,.4,d+.5,spec.yaw);
@@ -183,16 +187,16 @@ function authorBuilding(spec,batch,far,colliders,labels,interiorLights){
 
  spec.height=h+.9;spec.front=point(0,d/2);spec.doorWidth=spec.enterable?3:0;spec.windowRecess=.38;
 }
-function furnish(spec,{box,add,collision,point},s,lights){
+function furnish(spec,{box,add,collision,point,movable},s,lights){
  const {w,d}=spec;
  const furniture=(x,z,bw,bd,height=.9)=>collision(x,z,bw,bd,.08,height,'interior-furniture');
- const chair=(x,z,yaw=0)=>{
+ const chair=(x,z,yaw=0)=>movable('chair',x,z,.66,.66,1.16,yaw,()=>{
   add('wood',s.wood,x,.52,z,.62,.14,.60,yaw,rounded);
   const c=Math.cos(yaw),n=Math.sin(yaw),p=(u,v)=>[x+u*c+v*n,z-u*n+v*c];
   for(const u of [-.23,.23])for(const v of [-.22,.22]){const [xx,zz]=p(u,v);box(s.metal,xx,.26,zz,.055,.52,.055,'metal');}
   const [xx,zz]=p(0,.26);add('wood',s.wood,xx,.88,zz,.64,.64,.11,yaw,rounded);furniture(x,z,.66,.66,1.16);
- };
- const table=(x,z,r=.63)=>{add('wood',s.wood,x,.86,z,r*2,.10,r*2,0,cylinder);add('metal',s.metal,x,.43,z,.10,.83,.10,0,cylinder);add('metal',s.metal,x,.10,z,.65,.08,.65,0,cylinder);furniture(x,z,r*2,r*2,.91);};
+ });
+ const table=(x,z,r=.63)=>movable('table',x,z,r*2,r*2,.91,0,()=>{add('wood',s.wood,x,.86,z,r*2,.10,r*2,0,cylinder);add('metal',s.metal,x,.43,z,.10,.83,.10,0,cylinder);add('metal',s.metal,x,.10,z,.65,.08,.65,0,cylinder);furniture(x,z,r*2,r*2,.91);});
  const planter=(x,z,size=1)=>{add('trim',0xb09d81,x,.32,z,.65*size,.62*size,.65*size,0,cylinder);for(let q=0;q<5;q++)add('greenery',q%2?0x68815c:0x415f45,x+Math.sin(q*2.4)*.24,.8+q*.13,z+Math.cos(q*2.4)*.23,.35,.7,.30,q*.7,leaf,0,.32);furniture(x,z,.66,.66,1.4);};
  const pendant=(x,z)=>{box(s.metal,x,3.30,z,.024,.96,.024,'metal');add('metal',s.accent,x,2.75,z,.62,.40,.62,0,shade);add('glow',0xffffff,x,2.58,z,.31,.08,.31,0,cylinder);};
  // Wainscot, framed wall art and acoustic ceiling slats.
@@ -264,14 +268,21 @@ function furnish(spec,{box,add,collision,point},s,lights){
  // Small exterior bench and tactile planters are geometric, not decals.
  for(const side of [-1,1]){box(s.wood,side*w*.31,.52,d/2+1.05,2.45,.13,.62,'wood');for(const xx of [-.95,.95])box(s.metal,side*w*.31+xx,.28,d/2+1.05,.08,.5,.50,'metal');}
 }
-export function createCityArchitecture(scene,colliders=[],{roads=[-240,-160,-80,0,80,160,240],specs=coreBuildingSpecifications(roads),mobile=isMobilePerformanceDevice()}={}){
+export function createCityArchitecture(scene,colliders=[],{roads=[-240,-160,-80,0,80,160,240],specs=coreBuildingSpecifications(roads),mobile=isMobilePerformanceDevice(),interactiveFurniture=false}={}){
  const root=new THREE.Group();root.name='SUNSET COAST 1.0 / rebuilt architecture';scene.add(root);
  const labels=new THREE.Group();labels.name='enterable-premises-signs';root.add(labels);
- const blocks=new Map(),lights=[],before=colliders.length;
- for(const spec of specs){let block=blocks.get(spec.block??'showcase');if(!block){const group=new THREE.Group();root.add(group);block={group,detail:new Batch(group,'physical-facades'),far:new Batch(group,'distant-silhouettes'),specs:[]};blocks.set(spec.block??'showcase',block);}block.specs.push(spec);authorBuilding(spec,block.detail,block.far,colliders,labels,lights);}
+ const blocks=new Map(),lights=[],movableDefinitions=interactiveFurniture?[]:null,before=colliders.length;
+ for(const spec of specs){let block=blocks.get(spec.block??'showcase');if(!block){const group=new THREE.Group();root.add(group);block={group,detail:new Batch(group,'physical-facades'),far:new Batch(group,'distant-silhouettes'),specs:[]};blocks.set(spec.block??'showcase',block);}block.specs.push(spec);authorBuilding(spec,block.detail,block.far,colliders,labels,lights,movableDefinitions);}
  for(const block of blocks.values()){block.detailGroup=block.detail.flush();block.farGroup=block.far.flush();block.x=block.specs.reduce((n,s)=>n+s.x,0)/block.specs.length;block.z=block.specs.reduce((n,s)=>n+s.z,0)/block.specs.length;block.farGroup.visible=false;}
+ // One requested fan-art exhibit; original city/tower models and centre aisle remain.
+ for(const spec of specs.filter(s=>s.id==='gallery'&&s.enterable)){
+  const block=blocks.get(spec.block??'showcase'),exhibit=createNaiwaSculpture({quality:mobile?'low':'standard'}),c=Math.cos(spec.yaw??0),s=Math.sin(spec.yaw??0),lx=-4.7,lz=3.5;
+  exhibit.position.set(spec.x+lx*c+lz*s,.09,spec.z-lx*s+lz*c);exhibit.rotation.y=spec.yaw??0;block.detailGroup.add(exhibit);
+  const fp=exhibit.userData.collidableFootprint;colliders.push({x:exhibit.position.x,z:exhibit.position.z,w:fp.width/2,d:fp.depth/2,baseY:.09,height:fp.height,yaw:spec.yaw??0,kind:'interior-furniture',architectureId:'gallery',exhibitId:'naiwa'});
+ }
  lights.forEach(l=>root.add(l));
+ const furniture=interactiveFurniture?createFurnitureScene(root,colliders,{definitions:movableDefinitions,rooms:specs.filter(s=>s.enterable),mobile,materials}):null;
  const stats={version:ARCHITECTURE_VERSION,buildings:specs.length,enterable:specs.filter(s=>s.enterable).length,instances:[...blocks.values()].reduce((n,b)=>n+b.detail.count,0),colliders:colliders.length-before,mobile,detailRadius:mobile?ARCHITECTURE_MOBILE_DETAIL_RADIUS:ARCHITECTURE_DETAIL_RADIUS,activeDetailBlocks:blocks.size,drawBatches:[...blocks.values()].reduce((n,b)=>n+b.detail.items.size,0)};
- function update(position,{allDetailed=false}={}){let active=0;for(const b of blocks.values()){const radius=(mobile?ARCHITECTURE_MOBILE_DETAIL_RADIUS:ARCHITECTURE_DETAIL_RADIUS)+(b.detailActive===true?10:b.detailActive===false?-10:0),close=allDetailed||Math.hypot(position.x-b.x,position.z-b.z)<radius;b.detailActive=close;b.detailGroup.visible=close;b.farGroup.visible=!close;active+=+close;}for(const l of lights)l.visible=allDetailed||Math.hypot(position.x-l.position.x,position.z-l.position.z)<38;for(const label of labels.children)label.visible=allDetailed||Math.hypot(position.x-label.position.x,position.z-label.position.z)<260;stats.activeDetailBlocks=active;return stats;}
- return{root,blocks,specs,interiors:specs.filter(s=>s.enterable),lights,stats,update,nightMaterials:[materials.glass]};
+ function update(position,{allDetailed=false}={}){furniture?.updateFocus(position,{allDetailed});let active=0;for(const b of blocks.values()){const radius=(mobile?ARCHITECTURE_MOBILE_DETAIL_RADIUS:ARCHITECTURE_DETAIL_RADIUS)+(b.detailActive===true?10:b.detailActive===false?-10:0),close=allDetailed||Math.hypot(position.x-b.x,position.z-b.z)<radius;b.detailActive=close;b.detailGroup.visible=close;b.farGroup.visible=!close;active+=+close;}for(const l of lights)l.visible=allDetailed||Math.hypot(position.x-l.position.x,position.z-l.position.z)<38;for(const label of labels.children)label.visible=allDetailed||Math.hypot(position.x-label.position.x,position.z-label.position.z)<260;stats.activeDetailBlocks=active;return stats;}
+ return{root,blocks,specs,furniture,interiors:specs.filter(s=>s.enterable),lights,stats,update,nightMaterials:[materials.glass]};
 }

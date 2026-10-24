@@ -33,7 +33,7 @@ export function physicsSurfaceMesh(root,terrain,{exclude=null}={}){
   for(let i=0;i<count;i+=3){a.fromBufferAttribute(p,index?index.getX(i):i).applyMatrix4(m);b.fromBufferAttribute(p,index?index.getX(i+1):i+1).applyMatrix4(m);c.fromBufferAttribute(p,index?index.getX(i+2):i+2).applyMatrix4(m);triangle();}
  }
  function visit(o){
-  if(o===exclude||o.userData?.guidance||o.userData?.model||o.userData?.character||o.userData?.aircraftType||o.userData?.terrain)return;
+  if(o===exclude||o.userData?.nativeSurfaceOwned||o.userData?.guidance||o.userData?.dynamicFurniture||o.userData?.model||o.userData?.character||o.userData?.aircraftType||o.userData?.terrain)return;
   if(o.isMesh&&[undefined,0,1,5].includes(o.userData.semantic)&&!o.material?.transparent){
    if(o.isInstancedMesh){for(let i=0;i<o.count;i++){o.getMatrixAt(i,instance);matrix.multiplyMatrices(o.matrixWorld,instance);mesh(o,matrix);}}else mesh(o,o.matrixWorld);
   }

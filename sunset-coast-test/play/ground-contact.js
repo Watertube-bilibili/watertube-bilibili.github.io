@@ -110,7 +110,7 @@ export function createGroundContact(world,scene){
  const terrain=(x,z)=>finite(world?.groundHeight?.(x,z));
  const cache=new Map(),coreObjects=[],airports=[];let core=null;
  scene?.updateMatrixWorld?.(true);
- const collect=(root,exclude)=>{const found=[];function visit(o){if(o===exclude||o.userData?.guidance)return;if(o.isMesh)found.push(o);for(const child of o.children??[])visit(child);}if(root)visit(root);return found;};
+ const collect=(root,exclude)=>{const found=[];function visit(o){if(o===exclude||o.userData?.guidance||o.userData?.dynamicFurniture)return;if(o.isMesh)found.push(o);for(const child of o.children??[])visit(child);}if(root)visit(root);return found;};
  if(scene)coreObjects.push(...collect(scene,world?.root));
  for(const root of world?.root?.children??[])if(root.userData?.airport)airports.push(root);
  const stats={indexedChunks:0,indexedTriangles:0,queries:0};
@@ -126,6 +126,7 @@ export function createGroundContact(world,scene){
   stats.indexedChunks=cache.size;stats.indexedTriangles=core.triangles+[...cache.values()].reduce((n,i)=>n+i.triangles,0);
  }
  function pointHeight(x,z){
+  const authored=world?.actorFloorHeight?.(x,z);if(Number.isFinite(authored))return authored;
   let height=core.height(x,z);
   // Geometry at a chunk border belongs to either neighbor. A 1 cm nudge is
   // sufficient; queries farther from borders visit only one chunk.

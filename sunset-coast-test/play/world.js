@@ -1,3 +1,4 @@
+import {LANDMARK_PLACES,WORLD_LANDMARKS} from './landmark-world.js';
 import {createCityArchitecture} from './city-architecture.js';
 import {applySurfaceMaterial,applyVehicleMaterials} from './surface-materials.js';
 import {registerFacadeNightMask,configureNightWindows,createStreetBulbMaterial} from './night-lighting.js';
@@ -20,7 +21,7 @@ import {CORE_ROAD_LINES,CORE_SHOULDERS,SURFACE_DEPTH_BIAS,removeCoplanarSurfaceO
 export {groundHeight,groundNormal,roadInfo,roadEdgeAllowed,REGIONS,AIRPORTS,HIGHWAY,MOUNTAIN,MOUNTAIN_ROADS,mountainAt,mountainRoadAt,snapMountainRoad,regionAt,getRegionTravel,airportAt,clampWorldPosition,inWorld,highwayLength} from './regions.js';
 export {GRID,WORLD_LIMIT,WORLD_MIN_X,CHUNK_SIZE,buildTerrainHeightfield,roadCoord,roadSpans,nearestRoad,isRoadIntersection,planRoute,safeTreePosition} from './streaming-world.js';
 export const ROAD = CORE_ROAD_LINES;
-export const PLACES = [{id:'coast',name:'日落海滨',x:4,z:170,icon:'sun'},{id:'downtown',name:'中央广场',x:84,z:0,icon:'building'},{id:'garage',name:'VOLT 体验中心',x:4,z:80,icon:'car'},{id:'port',name:'南港货运站',x:164,z:240,icon:'box'},{id:'park',name:'棕榈公园',x:-156,z:-80,icon:'tree'},{id:'hills',name:'北城观景台',x:84,z:-240,icon:'mountain'},{id:'tech',name:'星河科技城 · 0.8 km',x:804,z:-320,icon:'building'},{id:'station',name:'东城城际枢纽 · 1.8 km',x:1604,z:960,icon:'building'},{id:'east',name:'远东工业港 · 3.6 km',x:3204,z:-1600,icon:'box'},{id:'north',name:'北岸山麓新区 · 2.4 km',x:164,z:-2400,icon:'mountain'},{id:'south',name:'南湾滨海新城 · 2.5 km',x:804,z:2400,icon:'sun'},...REGION_PLACES];
+export const PLACES = [{id:'coast',name:'日落海滨',x:4,z:170,icon:'sun'},{id:'downtown',name:'中央广场',x:84,z:0,icon:'building'},{id:'garage',name:'VOLT 体验中心',x:4,z:80,icon:'car'},{id:'port',name:'南港货运站',x:164,z:240,icon:'box'},{id:'park',name:'棕榈公园',x:-156,z:-80,icon:'tree'},{id:'hills',name:'北城观景台',x:84,z:-240,icon:'mountain'},{id:'tech',name:'星河科技城 · 0.8 km',x:804,z:-320,icon:'building'},{id:'station',name:'东城城际枢纽 · 1.8 km',x:1604,z:960,icon:'building'},{id:'east',name:'远东工业港 · 3.6 km',x:3204,z:-1600,icon:'box'},{id:'north',name:'北岸山麓新区 · 2.4 km',x:164,z:-2400,icon:'mountain'},{id:'south',name:'南湾滨海新城 · 2.5 km',x:804,z:2400,icon:'sun'},...REGION_PLACES,...LANDMARK_PLACES];
 export const MODELS=[...DESIGNED_MODELS,ASSET_MODEL,G9_MODEL,...ROADSTER_MODELS,SEMI_MODEL];
 let seed=34;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296};
 const mats=new Map();
@@ -67,13 +68,13 @@ const stops=[];for(const x of ROAD)for(const z of ROAD)stops.push([x+5.5,.056,z+
 instanced(roads,boxGeo,mat(0xf0ece0,{...SURFACE_DEPTH_BIAS.paint}),stops,2);
 roads.traverse(o=>{if(o.isMesh)o.receiveShadow=o.userData.semantic!==2;});
 // 1.0 local review: actual depth and enterable shells replace flat façade boxes.
-const cityArchitecture=createCityArchitecture(scene,colliders,{roads:ROAD});
+const cityArchitecture=createCityArchitecture(scene,colliders,{roads:ROAD,interactiveFurniture:true});
 for(const [x,z] of [[-200,-40],[40,-40]])box(scene,53,.25,53,0x82936c,x,.15,z);
 // Coastal promenade, a horizon of water, and distant hills.
 box(scene,25,.2,700,0xccbea0,-287,0,0).userData.semantic=5;box(scene,32,.13,700,asphalt,-262,.01,0).userData.semantic=1;box(scene,25,.16,700,0xdfcfac,-307,-.18,0);box(scene,20000,.2,32400,0x397c85,-10335,-.5,0);
 const waterGeo=new THREE.PlaneGeometry(20000,32400,48,70);waterGeo.rotateX(-Math.PI/2);const water=new THREE.Mesh(waterGeo,new THREE.MeshStandardMaterial({color:0x599da3,roughness:.25,metalness:.55,transparent:true,opacity:.87}));water.position.set(-10335,-.3,0);scene.add(water);water.userData.semantic=0;
 const palmTrunks=[],leaves=[];for(let v=-310;v<=320;v+=23){addPalm(-294,v,7+rand()*2);addPalm(-221,v+6,6+rand()*3);if(Math.abs(v%80)>16){addPalm(-20,v,6);addPalm(20,v+9,6)}}for(let i=0;i<35;i++){const x=-205+rand()*45,z=-110+rand()*50;addPalm(x,z,5+rand()*3)}
-function addPalm(x,z,h){if(!safeTreePosition({x,z}))return;palmTrunks.push([x,h/2,z,.35,h,.35]);for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(palmLeafGeometry(),mat(j%2?0x637b44:0x456743,{side:THREE.DoubleSide}));leaf.position.set(x,h-.2,z);leaf.rotation.y=ang;leaf.userData.semantic=5;leaves.push(leaf)}}instanced(scene,new THREE.CylinderGeometry(.2,.32,1,6),mat(0x9b8870),palmTrunks,5);const leafGroup=new THREE.Group();scene.add(leafGroup);instanced(leafGroup,palmLeafGeometry(),mat(0x527845,{side:THREE.DoubleSide}),leaves.map(l=>[l.position.x,l.position.y,l.position.z,1,1,1,l.rotation.y]),5);
+function addPalm(x,z,h){if(WORLD_LANDMARKS.some(p=>Math.hypot(x-p.x,z-p.z)<25))return;if(!safeTreePosition({x,z}))return;palmTrunks.push([x,h/2,z,.35,h,.35]);for(let j=0;j<7;j++){const ang=j*Math.PI*2/7;const leaf=new THREE.Mesh(palmLeafGeometry(),mat(j%2?0x637b44:0x456743,{side:THREE.DoubleSide}));leaf.position.set(x,h-.2,z);leaf.rotation.y=ang;leaf.userData.semantic=5;leaves.push(leaf)}}instanced(scene,new THREE.CylinderGeometry(.2,.32,1,6),mat(0x9b8870),palmTrunks,5);const leafGroup=new THREE.Group();scene.add(leafGroup);instanced(leafGroup,palmLeafGeometry(),mat(0x527845,{side:THREE.DoubleSide}),leaves.map(l=>[l.position.x,l.position.y,l.position.z,1,1,1,l.rotation.y]),5);
 const lamps=[],bulbs=[],nightLamps=[],bulbMaterial=createStreetBulbMaterial();
 for(const x of [-16,16,-247])for(let z=-290;z<320;z+=45){const lx=x+Math.sign(-x)*1.6;lamps.push([x,3.9,z,.12,7.8,.12],[x+Math.sign(-x)*.9,7.8,z,2,.12,.12]);bulbs.push([lx,7.7,z,.6,.1,.5]);nightLamps.push({x:lx,y:7.7,z});}
 instanced(scene,boxGeo,mat(0x536365),lamps,5);instanced(scene,boxGeo,bulbMaterial,bulbs,5);
@@ -95,7 +96,7 @@ updateCoreSignals(0);addBuildingContactShadows(scene,colliders);
 
 const staticBoxes=new Map();scene.updateMatrixWorld(true);scene.traverse(o=>{if(o.isMesh&&!o.isInstancedMesh&&(o.geometry===boxGeo||o.geometry.userData.surfaceSlab)){const key=o.material.uuid+':'+(o.userData.semantic??0)+':'+o.geometry.uuid;if(!staticBoxes.has(key))staticBoxes.set(key,[]);staticBoxes.get(key).push(o)}});for(const meshes of staticBoxes.values()){if(meshes.length<2)continue;const m=new THREE.InstancedMesh(meshes[0].geometry,meshes[0].material,meshes.length);m.userData.semantic=meshes[0].userData.semantic??0;m.castShadow=meshes.some(o=>o.castShadow);m.receiveShadow=meshes.some(o=>o.receiveShadow);meshes.forEach((o,i)=>m.setMatrixAt(i,o.matrixWorld));meshes.forEach(o=>o.parent.remove(o));scene.add(m)}
 const streamed=createStreamingWorld(scene,colliders);streamed.update({x:0,z:80});
-return{...streamed,cityArchitecture,interiors:cityArchitecture.interiors,update(pos,force=false){cityArchitecture.update(pos);return streamed.update(pos,force);},water,signals,updateCoreSignals,roads,leafGroup,nightLamps,nightMaterials:[...streamed.nightMaterials,...cityArchitecture.nightMaterials,bulbMaterial]};}
+return{...streamed,coreColliders:colliders,cityArchitecture,interiors:cityArchitecture.interiors,update(pos,force=false){cityArchitecture.update(pos);return streamed.update(pos,force);},water,signals,updateCoreSignals,roads,leafGroup,nightLamps,nightMaterials:[...streamed.nightMaterials,...cityArchitecture.nightMaterials,bulbMaterial]};}
 export function createCar(modelId='s',simple=false,colorOverride=null){
  const model=MODELS.find(m=>m.id===modelId)||MODELS[0];
  if(model.id==='semi'){const car=createSemiCar(model,simple,colorOverride);if(car)return attachVehicleLights(applyVehicleMaterials(car));throw Object.assign(new Error('Semi 模型尚未载入，请先加载车型资源。'),{code:'SEMI_ASSET_NOT_READY',modelId:model.id});}

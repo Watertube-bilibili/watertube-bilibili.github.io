@@ -169,7 +169,7 @@ export class GodotPhysicsSystem{
   const revision=world.stats?.colliderRevision;
   if(revision===undefined||revision!==this.extraRevision){
    this.extraRevision=revision;
-   const extras=(world.colliders??[]).filter(b=>!b.chunk),signature=extras.map(b=>`${b.x},${b.z},${b.w},${b.d},${b.baseY},${b.height},${b.yaw??0}`).join(';');
+   const extras=(world.colliders??[]).filter(b=>!b.chunk&&!b.dynamicFurniture),signature=extras.map(b=>`${b.x},${b.z},${b.w},${b.d},${b.baseY},${b.height},${b.yaw??0}`).join(';');
    if(signature!==this.extraSignature){this.extraSignature=signature;this.commands.push({type:'staticChunk',id:'world-extras',boxes:extras.map((b,i)=>colliderCommand(b,'static:'+i))});
     for(const root of world.root?.children??[])if(root.userData?.airport){const id='airport:'+root.userData.airport,mesh=root.visible?physicsSurfaceMesh(root,world.groundHeight):null;this.commands.push({type:'staticChunk',id:'road-surfaces:'+id,...(mesh?.indices.length?{surfaceMesh:mesh}:{remove:true})});this.surfaceStats.set(id,mesh?.indices.length/3||0);}
    }
