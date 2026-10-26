@@ -6,7 +6,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const smooth=(a,b,v)=>{const t=clamp((v-a)/(b-a),0,1);return t*t*(3-2*t)};
 export const HIGHWAY=Object.freeze({id:'coastal-express',name:'H1 海岸纵贯高速',x:3200,zMin:-14400,zMax:14400,width:34,exitSpacing:1600,approachLength:400,elevation:9,speedLimit:120/3.6,exits:Object.freeze(Array.from({length:19},(_,i)=>(i-9)*1600))});
 export const AIRPORTS=Object.freeze([
- {id:'coast-airport',regionId:'coast',name:'SUNSET COAST国际机场',code:'NCI',x:6484.5,z:1600,yaw:0,arrival:{x:6484.5,z:1600,yaw:0},terminal:{x:6530,z:1560},runway:{x:6880,z:1600,length:1760,width:46},bounds:{minX:6480,maxX:7280,minZ:640,maxZ:2560},altitude:12},
+ {id:'coast-airport',regionId:'coast',name:'SUNRISE COAST国际机场',code:'NCI',x:6484.5,z:1600,yaw:0,arrival:{x:6484.5,z:1600,yaw:0},terminal:{x:6530,z:1560},runway:{x:6880,z:1600,length:1760,width:46},bounds:{minX:6480,maxX:7280,minZ:640,maxZ:2560},altitude:12},
  {id:'plateau-airport',regionId:'plateau',name:'云岭高原机场',code:'YLP',x:11684.5,z:-9600,yaw:0,arrival:{x:11684.5,z:-9600,yaw:0},terminal:{x:11730,z:-9640},runway:{x:12080,z:-9600,length:1760,width:46},bounds:{minX:11680,maxX:12480,minZ:-10560,maxZ:-8640},altitude:205}
 ]);
 /** The mountain preserve uses the existing 80 m graph, with a single graded
@@ -32,7 +32,7 @@ export function mountainRoadSpans(spans,line,vertical){
  const result=[];for(const [s,e]of spans)for(const [a,b]of allowed){const lo=Math.max(s,a),hi=Math.min(e,b);if(hi>lo)result.push([lo,hi])}result.sort((a,b)=>a[0]-b[0]);return result.reduce((merged,span)=>{const last=merged.at(-1);if(last&&span[0]<=last[1])last[1]=Math.max(last[1],span[1]);else merged.push(span);return merged},[]);
 }
 export const REGIONS=Object.freeze([
- {id:'coast',name:'SUNSET COAST',description:'海港、城市街区与 H1 纵贯高速',airportId:'coast-airport',arrival:AIRPORTS[0].arrival,center:{x:3200,z:0},bounds:{minX:WORLD_MIN_X,maxX:WORLD_LIMIT,minZ:-WORLD_LIMIT,maxZ:WORLD_LIMIT}},
+ {id:'coast',name:'SUNRISE COAST',description:'海港、城市街区与 H1 纵贯高速',airportId:'coast-airport',arrival:AIRPORTS[0].arrival,center:{x:3200,z:0},bounds:{minX:WORLD_MIN_X,maxX:WORLD_LIMIT,minZ:-WORLD_LIMIT,maxZ:WORLD_LIMIT}},
  {id:'plateau',name:'云岭高原',description:'高原机场、起伏山丘与北境盆地',airportId:'plateau-airport',arrival:AIRPORTS[1].arrival,center:{x:11200,z:-9600},bounds:{minX:9600,maxX:WORLD_LIMIT,minZ:-WORLD_LIMIT,maxZ:-4800}}
 ]);
 export const REGION_PLACES=Object.freeze([

@@ -152,7 +152,7 @@ export class PhotoMode{
 export function installPhotoMode(game){
  const mode=new PhotoMode(game);game.photoMode=mode;
  const root=document.createElement('section');root.id='photo-mode';root.hidden=true;root.setAttribute('role','dialog');root.setAttribute('aria-modal','true');root.setAttribute('aria-label','拍照模式');
- root.innerHTML=`<header class="photo-top"><div class="photo-title"><small>SUNSET COAST</small><strong>拍照模式 <span>世界已暂停</span></strong></div><div class="photo-actions"><button id="photo-clean" type="button">隐藏面板</button><button id="photo-close" type="button" aria-label="退出拍照模式">返回游戏 ×</button></div></header>
+ root.innerHTML=`<header class="photo-top"><div class="photo-title"><small>SUNRISE COAST</small><strong>拍照模式 <span>世界已暂停</span></strong></div><div class="photo-actions"><button id="photo-clean" type="button">隐藏面板</button><button id="photo-close" type="button" aria-label="退出拍照模式">返回游戏 ×</button></div></header>
  <div id="photo-grid" aria-hidden="true" hidden></div>
  <button id="photo-show" type="button" hidden>显示拍照面板</button>
  <section class="photo-panel" aria-label="拍照调整"><div class="photo-panel-heading"><span>自由构图</span><button id="photo-reset" type="button">重置</button></div>
@@ -164,7 +164,7 @@ export function installPhotoMode(game){
  <p class="photo-help">输出 <output id="photo-resolution-value"></output> · PNG</p>
  <p class="photo-help">单指拖动环绕 / 平移；双指缩放与平移。精细按屏幕尺寸最高 2 倍输出，有像素上限；退出即恢复，不保存为游戏画质。</p>
  <button id="photo-capture" class="photo-shutter" type="button">拍照 · 生成 PNG</button><p id="photo-status" role="status" aria-live="polite">照片不包含界面、网格和导航标记。</p></section>
- <section id="photo-result" hidden aria-label="照片预览"><button id="photo-result-close" type="button">关闭预览 ×</button><img id="photo-preview" alt="刚拍摄的 SUNSET COAST 游戏照片"><a id="photo-download" download="sunset-coast.png">下载 PNG</a><p>iPhone 可长按图片，选择存储到“照片”。</p></section>`;
+ <section id="photo-result" hidden aria-label="照片预览"><button id="photo-result-close" type="button">关闭预览 ×</button><img id="photo-preview" alt="刚拍摄的 SUNRISE COAST 游戏照片"><a id="photo-download" download="sunset-coast.png">下载 PNG</a><p>iPhone 可长按图片，选择存储到“照片”。</p></section>`;
  document.body.append(root);const $=id=>document.getElementById(id);let photoURL=null;
  const clearPhoto=()=>{if(photoURL)URL.revokeObjectURL(photoURL);photoURL=null;$('photo-preview').removeAttribute('src');$('photo-download').removeAttribute('href');$('photo-result').hidden=true;};
  const clean=value=>{root.classList.toggle('photo-clean',value);$('photo-show').hidden=!value;};

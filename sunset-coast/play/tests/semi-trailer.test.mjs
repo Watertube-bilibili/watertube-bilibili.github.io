@@ -63,8 +63,8 @@ test('dormant vehicles hide trailers and parked owned Semi remains visible, with
  const {g,car}=fixture();installSemiCargoTrailers(g).setAttached(true);g.updateVehicleLighting(1/60);const empty=car.trailer;car.populationDormant=true;g.updateVehicleLighting(.1);assert.equal(empty.root.visible,false);car.populationDormant=false;g.personalVehicle=car;g.vehicle={model:{id:'s'}};g.updateVehicleLighting(.1);assert.equal(empty.root.visible,true);assert.equal(empty.payloadKg,0);
 });
 
-test('side and rear branding reuses canonical SUNSET COAST logo without reversed UVs',()=>{
- const source=readFileSync(new URL('../semi-trailer.js',import.meta.url),'utf8'),svg=readFileSync(new URL('../neon-2-0-icon.svg',import.meta.url),'utf8');assert(svg.includes('<title>SUNSET COAST</title>'));assert(source.includes("new URL('./neon-2-0-icon.svg'"));assert(source.includes("ctx.fillText('SUNSET COAST'"));assert(source.includes("rearCtx.fillText('SUNSET COAST'"));assert(source.includes("ctx.fillText('日落海岸'"));assert(!source.includes("NEON COAST"));
+test('side and rear branding reuses canonical SUNRISE COAST logo without reversed UVs',()=>{
+ const source=readFileSync(new URL('../semi-trailer.js',import.meta.url),'utf8'),svg=readFileSync(new URL('../neon-2-0-icon.svg',import.meta.url),'utf8');assert(svg.includes('<title>SUNRISE COAST</title>'));assert(source.includes("new URL('./neon-2-0-icon.svg'"));assert(source.includes("ctx.fillText('SUNRISE COAST'"));assert(source.includes("rearCtx.fillText('SUNRISE COAST'"));assert(source.includes("ctx.fillText('日出海岸'"));assert(!source.includes("NEON COAST"));
  const ctx=new Proxy({},{get:(_,key)=>key==='getContext'?undefined:()=>{},set:()=>true});const t=createSemiTrailer({makeCanvas:()=>({getContext:()=>ctx})});const labels=[];t.root.traverse(o=>{if(o.name==='TrailerPayloadLabel'||o.name==='RearSunsetCoastBrand')labels.push(o);});assert.equal(labels.length,4);for(const label of labels){assert(label.scale.x>0);assert(label.scale.y>0);}t.dispose();
 });
 

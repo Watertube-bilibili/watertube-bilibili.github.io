@@ -15,7 +15,7 @@ function enhancePhone(){
   }
   phone.querySelector('.phone-top')?.after(nav);
  }
- const title=$('phone-title')?.textContent||'',page=({'SUNSET COAST':'home','城市导航':'nav','城市工作':'jobs','我的车库':'garage','游戏存档':'save'})[title];
+ const title=$('phone-title')?.textContent||'',page=({'SUNRISE COAST':'home','城市导航':'nav','城市工作':'jobs','我的车库':'garage','游戏存档':'save'})[title];
  for(const button of phone.querySelectorAll('[data-interface-page]')){
   const current=button.dataset.interfacePage===page?'page':'false';if(button.getAttribute('aria-current')!==current)button.setAttribute('aria-current',current);
  }

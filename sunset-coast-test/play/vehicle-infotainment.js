@@ -5,7 +5,7 @@ const activeCars=new WeakMap();
 export function infotainmentState(car,game=null){
  const speed=Number.isFinite(car?.speed)?car.speed:0,battery=Math.max(0,Math.min(100,car?.battery??100));
  const active=game?.vehicle===car&&game.inCar;
- return{speed:Math.round(Math.abs(speed)*3.6),gear:vehicleGear(car),battery:Math.round(battery),range:Math.round((car?.model?.range??0)*battery/100),condition:Math.round(Math.max(0,Math.min(100,car?.condition??100))),pilot:!!(active&&game.autopilot),destination:active&&game.destination?.name?String(game.destination.name):'自由驾驶',model:car?.model?.name??'SUNSET COAST',profile:cockpitProfile(car?.model)};
+ return{speed:Math.round(Math.abs(speed)*3.6),gear:vehicleGear(car),battery:Math.round(battery),range:Math.round((car?.model?.range??0)*battery/100),condition:Math.round(Math.max(0,Math.min(100,car?.condition??100))),pilot:!!(active&&game.autopilot),destination:active&&game.destination?.name?String(game.destination.name):'自由驾驶',model:car?.model?.name??'SUNRISE COAST',profile:cockpitProfile(car?.model)};
 }
 export function paintVehicleInfotainment(ctx,s){
  const W=768,H=400,p=s.profile,accent=p.accent;

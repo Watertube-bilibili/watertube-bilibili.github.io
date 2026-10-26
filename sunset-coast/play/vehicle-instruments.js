@@ -67,7 +67,7 @@ export function updateVehicleInstruments(car,time=0,{autopilot=false,game=null}=
   const signature=Object.values(state).join('|');panel.lastUpdate=time;
   if(signature===panel.signature)return;
   panel.signature=signature;panel.state=state;
-  paint(panel.context,state,car.model?.brand??car.model?.name?.split(' ')[0]??'SUNSET COAST');
+  paint(panel.context,state,car.model?.brand??car.model?.name?.split(' ')[0]??'SUNRISE COAST');
   panel.texture.needsUpdate=true;
 }
 

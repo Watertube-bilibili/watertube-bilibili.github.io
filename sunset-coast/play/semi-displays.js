@@ -11,7 +11,7 @@ export function paintSemiDisplay(ctx,type,s){
  const W=1200,H=760;ctx.clearRect(0,0,W,H);ctx.fillStyle='#0b1016';ctx.fillRect(0,0,W,H);
  const text=(value,x,y,size=25,color='#e9f0f7')=>{ctx.fillStyle=color;ctx.font=`500 ${size}px Arial, sans-serif`;ctx.textAlign='left';ctx.textBaseline='middle';ctx.fillText(String(value),x,y);};
  const line=y=>{ctx.fillStyle='#32404c';ctx.fillRect(30,y,1140,2);};
- text('SEMI',36,37,28);text('SUNSET COAST / 2.0 Beta',856,37,20,'#91a5b8');line(74);
+ text('SEMI',36,37,28);text('SUNRISE COAST / 2.0 Beta',856,37,20,'#91a5b8');line(74);
  if(!s.connected)text('TELEMETRY NOT CONNECTED',36,115,25,'#d3ac72');
  if(type==='left'){
   text(shown(s.speed),36,218,108);text('km/h',40,294,24,'#91a5b8');text(shown(s.gear),338,219,66);

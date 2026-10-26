@@ -18,7 +18,7 @@ export async function startBetaRuntime({window,document,storage,locks,validateSa
    const save=game.save.bind(game);game.save=(...args)=>owned?save(...args):false;
    if(released){owned=false;game.paused=true;game.resetControls?.();return{cancelled:true};}
    document.documentElement.dataset.betaUiReady='2';
-   const home=document.createElement('a');home.href=BETA_PATH+'?manage=1';home.textContent='SUNSET COAST · 存档管理';home.className='beta-save-home';document.body.append(home);
+   const home=document.createElement('a');home.href=BETA_PATH+'?manage=1';home.textContent='SUNRISE COAST · 存档管理';home.className='beta-save-home';document.body.append(home);
    await done;return{released:true};
   }catch(error){owned=false;if(window.game){window.game.save=()=>false;window.game.paused=true;window.game.resetControls?.();}failure(error.message||'测试版启动失败。');return{blocked:true};}
  });

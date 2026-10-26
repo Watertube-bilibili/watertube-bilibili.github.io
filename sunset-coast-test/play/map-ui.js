@@ -69,7 +69,7 @@ export function drawWorldMap(ui,canvas,full=false){
 }
 
 export function openWorldMap(ui){
- const g=ui.g;ui.openModal('SUNSET COAST · 开放世界','EXPLORE / LIVE WORLD');
+ const g=ui.g;ui.openModal('SUNRISE COAST · 开放世界','EXPLORE / LIVE WORLD');
  ui.worldMapView={x:g.position.x,z:g.position.z,span:1800};ui.worldMapSelection=null;
  $('modal-body').innerHTML=`<div class="world-map-layout"><div class="world-map-main"><div class="world-map-guidance" id="map-guidance" hidden></div><div class="world-map-toolbar" aria-label="地图操作"><button id="map-zoom-in" aria-label="放大地图" title="放大地图">＋</button><button id="map-zoom-out" aria-label="缩小地图" title="缩小地图">−</button><button id="map-recenter">我的位置</button><button id="map-fit-route">路线</button><button id="map-overview">全域</button><span id="map-span"></span></div><canvas id="full-map" width="700" height="520" tabindex="0" aria-label="城市地图，拖动平移，点击选择地点，再选择导航或传送，滚轮或加减按钮缩放"></canvas><p class="world-map-hint">拖动探索 · 点击标记目的地 · 滚轮或 ＋ − 缩放</p><div class="world-map-status" id="map-world-status"></div></div><div class="world-map-sidebar"><p class="world-map-section">沿途与目的地</p><div class="world-map-places">${PLACES.map(p=>`<button data-map-place="${esc(p.id)}"><span>${esc(p.name)}</span><small>${meters(Math.hypot(p.x-g.position.x,p.z-g.position.z))}</small></button>`).join('')}</div><div class="world-map-nav"><p id="map-selection" aria-live="polite"></p><button id="map-set-destination" class="primary-action">设置目的地</button><button id="map-teleport" class="secondary-action">传送到此处</button><p id="map-destination" aria-live="polite"></p><button id="map-drive" class="primary-action">启动辅助驾驶</button><button id="map-clear" class="secondary-action">取消导航</button></div></div></div>`;
  const canvas=$('full-map'),view=ui.worldMapView;
