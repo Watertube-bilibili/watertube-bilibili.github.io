@@ -1,7 +1,10 @@
 {
   "product": "SUNRISE COAST",
-  "version": "2.0 Beta",
+  "version": "1.0 Beta",
   "saveNamespace": "sunset-coast-2.0-beta",
   "previousProjectPreserved": true,
-  "liveGameplayAcceptance": false
+  "liveGameplayAcceptance": false,
+  "build": "2026-10-27-rocket-air",
+  "release": "2026-10-27-rocket-air",
+  "sourceBaseline": "8de93b5101868781b8f6a5cdcb48644953f281a8"
 }

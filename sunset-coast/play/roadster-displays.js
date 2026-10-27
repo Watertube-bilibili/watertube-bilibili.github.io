@@ -1,3 +1,4 @@
+import {roadsterAirDisplay} from './roadster-air-display.js';
 import {vehicleGear} from './touch-transmission.js';
 import * as THREE from './vendor/three.module.js';
 import {roadsterAeroMode,roadsterAeroBrakeState} from './roadster-aero.js';
@@ -23,7 +24,7 @@ export function roadsterDisplayState(car,{autopilot=false}={}){
  const forwardX=-2*(x*z+w*y),forwardY=2*(w*x-y*z),forwardZ=-(1-2*(x*x+y*y)),rightY=2*(x*y+w*z),upY=1-2*(x*x+z*z);
  const speed=finite(car?.speed),battery=Math.round(clamp(car?.battery??100,0,100)),condition=Math.round(clamp(car?.condition??100,0,100));
  const air=['air','landing','recover','unpowered'].includes(mode);
- return{trim,mode,air,aeroMode:roadsterAeroMode(car),speed:Math.round(Math.min(999,Math.abs(speed)*3.6)),gear:air?'AIR':vehicleGear(car),battery,range:Math.round(Math.max(0,finite(car?.model?.range,480))*battery/100),autopilot:!!autopilot,
+ return{trim,mode,air,airReserve:roadsterAirDisplay(car),aeroMode:roadsterAeroMode(car),speed:Math.round(Math.min(999,Math.abs(speed)*3.6)),gear:air?'AIR':vehicleGear(car),battery,range:Math.round(Math.max(0,finite(car?.model?.range,480))*battery/100),autopilot:!!autopilot,
   condition,wing:Math.round(clamp(car?.roadsterAeroVisual?.lift!==undefined?car.roadsterAeroVisual.lift/.34:state.wing??car?.roadsterWingVisual??0,0,1)*100),wingMode:LABELS[car?.roadsterRequest?.wingMode]?car.roadsterRequest.wingMode:'auto',airBrake:roadsterAeroBrakeState(car).active,
   altitude:round(clamp(state.altitude??0,0,9999)),verticalSpeed:round(clamp(state.verticalSpeed??0,-999,999)),pitch:round(Math.asin(clamp(forwardY,-1,1))*180/Math.PI),roll:round(Math.atan2(-rightY,upY)*180/Math.PI),heading:Math.round((Math.atan2(forwardX,-forwardZ)*180/Math.PI+360)%360)%360,
   warning:condition<=0||battery<=0?'POWER OFF':mode==='unpowered'?'LIFT UNAVAILABLE':mode==='landing'?'CONTROLLED DESCENT':''};
@@ -80,8 +81,8 @@ export function paintRoadsterDisplay(ctx,type,s){
   // These are actual vehicle states, not decorative app buttons.
   text(ctx,s.warning||MODES[s.mode],256,118,12,s.warning?colors.amber:colors.muted,'center');
   drawCarDiagram(ctx,s);
-  text(ctx,s.air?'FLIGHT':'DRIVING',23,282,10,colors.muted);
-  text(ctx,s.condition>0&&s.battery>0?'READY':'OFF',490,282,11,colors.muted,'right');
+  text(ctx,s.trim==='performance'?(s.air?'FLIGHT':'DRIVING'):'AIR '+s.airReserve.percent+'%',23,282,13,s.airReserve.low?colors.amber:colors.green);
+  text(ctx,s.condition<=0||s.battery<=0?'OFF':s.trim==='performance'?'READY':s.airReserve.english,490,282,11,s.airReserve.low?colors.amber:colors.muted,'right');
   line(ctx,20,304,472,'#30373e');
   // Mobile-friendly state dock. This physical screen is not touch-interactive.
   text(ctx,'DRIVE',22,318,9,colors.muted);text(ctx,s.autopilot?'PILOT ACTIVE':'MANUAL',22,336,12,colors.text);
@@ -99,7 +100,7 @@ export function paintRoadsterDisplay(ctx,type,s){
  }
 }
 
-function signature(type,s){return JSON.stringify(type==='driver'?[s.trim,s.speed,s.gear,s.battery,s.range,s.autopilot,s.mode]:type==='center'?[s.aeroMode,s.trim,s.speed,s.gear,s.range,s.autopilot,s.mode,s.battery,s.wing,s.wingMode,s.condition,s.airBrake,s.warning]:[s.air,s.altitude,s.verticalSpeed,s.pitch,s.roll,s.heading]);}
+function signature(type,s){return JSON.stringify([s.airReserve,type==='driver'?[s.trim,s.speed,s.gear,s.battery,s.range,s.autopilot,s.mode]:type==='center'?[s.aeroMode,s.trim,s.speed,s.gear,s.range,s.autopilot,s.mode,s.battery,s.wing,s.wingMode,s.condition,s.airBrake,s.warning]:[s.air,s.altitude,s.verticalSpeed,s.pitch,s.roll,s.heading]]);}
 
 export function attachRoadsterDisplays(car){
  if(!roadsterTrim(car)||!car?.root)return null;

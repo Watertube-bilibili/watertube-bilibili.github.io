@@ -13,6 +13,14 @@ const GROUND_THRUST_PROFILES := {
 var trim : = "performance"
 var mode : = "road"
 
+const AirReserve = preload("res://roadster_air_reserve.gd")
+var air_reserve := AirReserve.new()
+var vehicle_instance_id := ""
+var requested_jet_force := Vector3.ZERO
+var requested_jet_torque := Vector3.ZERO
+var requested_jet_demand := 0.0
+var actual_jet_scale := 0.0
+var air_refill_eligible := false
 var charge : = 100.0
 var heat : = 0.0
 var boost : = 0.0
@@ -53,10 +61,17 @@ static func axis ( controls : Dictionary , key : String ) -> float :
 
 func configure ( config : Dictionary ) -> void :
     trim = str ( config . get ( "roadsterTrim" , "performance" ) )
-    charge = clampf ( number ( config . get ( "roadsterCharge" ) , 100.0 ) , 0.0 , 100.0 )
+    vehicle_instance_id = str(config.get("vehicleInstanceId", ""))
+    # New vehicles default full. Existing/malformed saved amounts never refill.
+    if config.has("roadsterAirUnits"):
+        air_reserve.restore(config.roadsterAirUnits)
+    elif config.has("roadsterCharge"):
+        air_reserve.restore(number(config.roadsterCharge, 0.0) * AirReserve.CAPACITY / 100.0)
+    charge = air_reserve.units / AirReserve.CAPACITY * 100.0
 
 func reset ( ) -> void :
     maneuver . reset ( )
+    air_refill_eligible = false
 
     mode = "road"
     previous_air = true
@@ -81,7 +96,13 @@ func ground_resistance ( planar_speed : float , up_y : float , controls : Dictio
     return wing * planar_speed * planar_speed * ( 0.0008 if braking > 0.15 else 0.00012 )
 
 func step ( body : RigidBody3D , state : PhysicsDirectBodyState3D , controls : Dictionary , grounded : bool ) -> void :
-    var dt : = clampf ( state . step , 0.0001 , 0.1 )
+    var dt := state.step
+    if not is_finite(dt) or dt <= 0.0 or dt > 0.1:
+        return
+    requested_jet_force = Vector3.ZERO
+    requested_jet_torque = Vector3.ZERO
+    requested_jet_demand = 0.0
+    var automatic_cushion_requested := 0.0
     var basis : = state . transform . basis . orthonormalized ( )
     var forward : = - basis . z
     var up : = basis . y
@@ -175,6 +196,17 @@ func step ( body : RigidBody3D , state : PhysicsDirectBodyState3D , controls : D
         for key in AIR_AXES :
             manual_air_control = manual_air_control or absf ( axis ( flight_controls , key ) ) > 0.01
         manual_air_control = manual_air_control or bool ( flight_controls . get ( "roadsterAirBrake" , false ) )
+    # Fresh airborne input takes priority over automatic descent. Preserve the
+    # launch-time latch so a held driving key cannot accidentally take over.
+    # Release returns to automatic landing; explicit flight mode owns its input.
+    if automatic_airborne and healthy and not recover and mode in ["air", "landing"] and not maneuver.active() and not special.get("controlled", false):
+        if air:
+            automatic_airborne = false
+            automatic_input_latch.clear()
+            flight_controls = controls
+            mode = "air"
+        elif manual_air_control:
+            mode = "air"
     var active : = mode in [ "air" , "landing" , "recover" ] and healthy
 
 
@@ -206,9 +238,9 @@ func step ( body : RigidBody3D , state : PhysicsDirectBodyState3D , controls : D
 
                 var needed : = maxf ( 0.0 , ( velocity . y * velocity . y - 0.64 ) / ( 2.0 * maxf ( 0.12 , altitude - 0.12 ) ) )
                 lift_accel = minf ( minf ( 26.0 , 9.81 + needed ) , automatic_cushion_impulse / dt )
-                automatic_cushion_impulse = maxf ( 0.0 , automatic_cushion_impulse - lift_accel * dt )
+                automatic_cushion_requested = lift_accel
         jet_acceleration += Vector3 . UP * lift_accel
-        state . apply_central_force ( Vector3 . UP * mass * lift_accel )
+        _request_jet_force(Vector3 . UP * mass * lift_accel, mass)
         lift = clampf ( lift_accel / 18.0 , 0.0 , 1.0 )
         landing_cushion = clampf ( ( lift_accel - 9.81 ) / 16.19 , 0.0 , 1.0 ) if cushioning else 0.0
         var heading : = forward . slide ( Vector3 . UP )
@@ -216,10 +248,10 @@ func step ( body : RigidBody3D , state : PhysicsDirectBodyState3D , controls : D
             heading = Vector3 . FORWARD
         heading = heading . normalized ( )
         var right : = heading . cross ( Vector3 . UP ) . normalized ( )
-        var command_forward : = axis ( controls , "roadsterForward" ) if mode == "air" and not recover else 0.0
-        var command_lateral : = axis ( controls , "roadsterLateral" ) if mode == "air" and not recover else 0.0
+        var command_forward : = axis ( flight_controls , "roadsterForward" ) if mode == "air" and not recover else 0.0
+        var command_lateral : = axis ( flight_controls , "roadsterLateral" ) if mode == "air" and not recover else 0.0
         var planar : = velocity . slide ( Vector3 . UP )
-        var air_brake : = bool ( controls . get ( "roadsterAirBrake" , false ) ) or mode != "air" or recover
+        var air_brake : = bool ( flight_controls . get ( "roadsterAirBrake" , false ) ) or mode != "air" or recover
         var acceleration : = ( heading * command_forward * 8.0 + right * command_lateral * 5.0 ) . limit_length ( 8.0 )
         if air_brake :
             acceleration = Vector3 . ZERO
@@ -231,7 +263,7 @@ func step ( body : RigidBody3D , state : PhysicsDirectBodyState3D , controls : D
         elif special . get ( "braking" , false ) :
             maneuver_accel = ( - planar * 4.0 ) . limit_length ( 20.0 )
         jet_acceleration += maneuver_accel
-        state . apply_central_force ( maneuver_accel * mass )
+        _request_jet_force(maneuver_accel * mass, mass)
         boost = absf ( command_forward ) * 0.6
 
 
@@ -251,10 +283,27 @@ func step ( body : RigidBody3D , state : PhysicsDirectBodyState3D , controls : D
             var thrust_profile: Dictionary = GROUND_THRUST_PROFILES.get(trim, GROUND_THRUST_PROFILES.performance)
             var boost_accel := forward * float(thrust_profile.acceleration) * boost * clampf((float(thrust_profile.fadeEndSpeed) - velocity.length()) / (float(thrust_profile.fadeEndSpeed) - float(thrust_profile.fadeStartSpeed)), 0.0, 1.0)
             jet_acceleration += boost_accel
-            state . apply_central_force ( boost_accel * mass )
+            _request_jet_force(boost_accel * mass, mass)
     if special . get ( "groundPrepare" , false ) and healthy :
         jet_acceleration += special . acceleration
-        state . apply_central_force ( special . acceleration * mass )
+        _request_jet_force(special . acceleration * mass, mass)
+    # One budget, one Godot force application; never integrate position/velocity here.
+    actual_jet_scale = air_reserve.consume(requested_jet_demand, dt)
+    # This is a safety impulse allowance, not a second fuel inventory. Only
+    # delivered cushion impulse spends it, after the sole air-reserve consume.
+    automatic_cushion_impulse = maxf(0.0, automatic_cushion_impulse - automatic_cushion_requested * actual_jet_scale * dt)
+    state.apply_central_force(requested_jet_force * actual_jet_scale)
+    state.apply_torque(requested_jet_torque * actual_jet_scale)
+    boost *= actual_jet_scale
+    lift *= actual_jet_scale
+    landing_cushion *= actual_jet_scale
+    jet_acceleration *= actual_jet_scale
+    jet_angular_accel *= actual_jet_scale
+    air_refill_eligible = grounded and up.y > 0.65 and velocity.length() < 0.25 and state.angular_velocity.length() < 0.2 and requested_jet_demand == 0.0 and not active
+    air_reserve.refill(dt, grounded, velocity.length(), state.angular_velocity.length(), requested_jet_demand > 0.0 or active, up.y > 0.65)
+    charge = air_reserve.units / AirReserve.CAPACITY * 100.0
+    if charge < 15.0 and requested_jet_demand > 0.0:
+        warning = "储气不足：推力降低" if air_reserve.units > 0.0 else "储气耗尽"
     jets = _jet_channels ( basis . transposed ( ) * jet_acceleration , jet_angular_accel )
     var wing_mode : = str ( controls . get ( "roadsterWingMode" , "auto" ) )
     var braking : = maxf ( number ( controls . get ( "manualBrake" ) ) , number ( controls . get ( "electronicBrake" ) ) )
@@ -268,6 +317,10 @@ func step ( body : RigidBody3D , state : PhysicsDirectBodyState3D , controls : D
         if trim == "performance" and healthy and velocity . length ( ) > 4.0 :
             downforce += 0.45
         state . apply_central_force ( - Vector3 . UP * mass * downforce )
+
+func _request_jet_force(force: Vector3, mass: float) -> void:
+    requested_jet_force += force
+    requested_jet_demand += force.length() / mass
 
 func _stabilize ( state : PhysicsDirectBodyState3D , basis : Basis , mass : float , controls : Dictionary , level_only : bool ) -> void :
     var forward : = - basis . z
@@ -303,7 +356,8 @@ func _stabilize ( state : PhysicsDirectBodyState3D , basis : Basis , mass : floa
     var inverse_inertia : = state . inverse_inertia_tensor
     if absf ( inverse_inertia . determinant ( ) ) > 1e-15 :
         var torque : = ( inverse_inertia . inverse ( ) * desired_accel ) . limit_length ( mass * 12.0 )
-        state . apply_torque ( torque )
+        requested_jet_torque += torque
+        requested_jet_demand += torque.length() / (mass * AirReserve.TORQUE_LEVER_METERS)
         jet_angular_accel = basis . transposed ( ) * ( inverse_inertia * torque )
 
 func _jet_channels ( local_accel : Vector3 , local_angular : Vector3 ) -> Dictionary :
@@ -317,4 +371,4 @@ func _jet_channels ( local_accel : Vector3 , local_angular : Vector3 ) -> Dictio
         "yawLeft" : clampf ( local_angular . y / 12.0 , 0.0 , 1.0 ) , "yawRight" : clampf ( - local_angular . y / 12.0 , 0.0 , 1.0 ) }
 
 func snapshot ( ) -> Dictionary :
-    return { "trim" : trim , "mode" : mode , "charge" : charge , "heat" : heat , "boost" : boost , "lift" : lift , "wing" : wing , "wingPitch" : wing_pitch , "altitude" : altitude , "verticalSpeed" : vertical_speed , "warning" : warning , "jets" : jets , "autoStabilizing" : auto_stabilizing , "automaticAirborne" : automatic_airborne , "landingCushion" : landing_cushion , "rollRate" : roll_rate , "maneuver" : maneuver . snapshot ( ) }
+    return { "vehicleInstanceId": vehicle_instance_id, "airUnits": air_reserve.units, "airCapacity": AirReserve.CAPACITY, "airPressure": air_reserve.pressure(), "airSpraying": requested_jet_demand > 0.0, "airRefillEligible": air_refill_eligible, "trim" : trim , "mode" : mode , "charge" : charge , "heat" : heat , "boost" : boost , "lift" : lift , "wing" : wing , "wingPitch" : wing_pitch , "altitude" : altitude , "verticalSpeed" : vertical_speed , "warning" : warning , "jets" : jets , "autoStabilizing" : auto_stabilizing , "automaticAirborne" : automatic_airborne , "landingCushion" : landing_cushion , "rollRate" : roll_rate , "maneuver" : maneuver . snapshot ( ) }

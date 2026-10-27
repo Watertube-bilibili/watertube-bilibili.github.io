@@ -64,3 +64,11 @@ test('P, flight and unavailable physics never announce active ground aero brakin
 });
 
 test('combined vault/roll is a real UI action and P still locks it',()=>{const h=fixture(),button=h.$('roadster-vault_spin');assert.ok(button);assert.match(renderRoadsterConsole(),/越障＋转圈/);h.game.vehicle.parkingBrakeEngaged=true;button.onclick();assert.match(h.game.messages.at(-1),/P 驻车中/);assert.notEqual(h.game.vehicle.roadsterRequest.pending,true);h.game.vehicle.parkingBrakeEngaged=false;button.onclick();assert.equal(h.game.vehicle.roadsterRequest.action,'vault_spin');h.ui.update();assert.equal(button.disabled,true);assert.equal(h.$('roadster-cancel').disabled,false);h.$('roadster-cancel').onclick();assert.equal(h.game.vehicle.roadsterRequest.action,'cancel');});
+
+test('air reserve stays visible beside live aero braking without replacing critical status',()=>{
+ const h=fixture();Object.assign(h.game.vehicle,{roadsterAirUnits:1200,speed:60,grounded:true,roadsterRequest:{air:false,aeroMode:'lowDrag'},roadsterState:{mode:'road',wing:1,wingPitch:.6}});h.ui.update();
+ assert.equal(h.$('flight-launcher-label').textContent,'气动制动 · 工作中');assert.match(h.$('flight-air-reserve').textContent,/储气 50%/);assert.equal(h.$('flight-air-reserve').hidden,false);
+ h.game.vehicle.roadsterState.warning='低气压，请着陆';h.game.vehicle.roadsterAirUnits=120;h.ui.update();assert.equal(h.$('flight-launcher-label').textContent,'飞行状态 · 警告');assert.match(h.$('flight-air-reserve').textContent,/储气 5%.*低气压/);
+ h.game.vehicle.roadsterState={mode:'road',airRefillEligible:true,wing:0,wingPitch:0};h.game.vehicle.speed=0;h.game.vehicle.roadsterAirUnits=1200;h.ui.update();assert.equal(h.$('flight-launcher-label').textContent,'车辆选项');assert.match(h.$('flight-air-reserve').textContent,/储气 50%.*补气中/);
+ h.game.vehicle.model.id='roadster';h.ui.update();assert.equal(h.$('flight-air-reserve').hidden,true);
+});

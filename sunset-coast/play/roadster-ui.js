@@ -1,3 +1,4 @@
+import {roadsterAirDisplay} from './roadster-air-display.js';
 import {installPanelDrag} from './panel-drag.js';
 import {installControlSelectionGuard} from './touch-selection.js';
 import {roadsterTrim,roadsterFlightLocked,toggleRoadsterAir,requestRoadsterManeuver} from './roadster-controls.js';
@@ -15,7 +16,7 @@ export const FLIGHT_CONTROL_GROUPS=Object.freeze({
 const CONTROL_SYMBOLS={forward:'↑',back:'↓',yawLeft:'↶',yawRight:'↷',left:'←',right:'→',up:'＋',down:'−',airBrake:'Ⅱ',pitchUp:'↗',pitchDown:'↘',rollLeft:'↶',rollRight:'↷',stabilize:'◎',boost:'↟'};
 export function renderRoadsterConsole(){
  const button=id=>{const[,label,hint]=ROADSTER_BUTTONS.find(c=>c[0]===id);return `<button class="flight-command" type="button" data-roadster-control="${id}" aria-label="按住${label}"><span class="flight-command-symbol" aria-hidden="true">${CONTROL_SYMBOLS[id]}</span><span>${label}</span><kbd>${hint}</kbd></button>`;};
- return `<button id="roadster-details-toggle" class="flight-launcher" type="button" aria-expanded="false" aria-controls="flight-console-options"><span class="flight-status-dot" aria-hidden="true"></span><span id="flight-launcher-label">车辆选项</span><span aria-hidden="true">›</span></button>
+ return `<button id="roadster-details-toggle" class="flight-launcher" type="button" aria-expanded="false" aria-controls="flight-console-options"><span class="flight-status-dot" aria-hidden="true"></span><span class="flight-launcher-copy"><span id="flight-launcher-label">车辆选项</span><small id="flight-air-reserve" hidden></small></span><span aria-hidden="true">›</span></button>
  <section class="flight-console" aria-label="飞行控制面板" hidden>
   <header class="flight-panel-header"><div class="flight-panel-handle" data-flight-drag="console" aria-label="拖动飞行控制面板"><span class="flight-grip" aria-hidden="true">⠿</span><div><strong>飞行控制</strong><small id="roadster-telemetry"></small></div></div><button id="roadster-attitude-toggle" type="button" aria-expanded="false" aria-controls="flight-attitude">姿态</button><button id="flight-console-fold" type="button" aria-label="收起飞行动作" aria-expanded="true" aria-controls="flight-command-deck">收起</button></header>
   <div id="flight-console-options" class="flight-console-options" hidden><div class="flight-options-heading"><strong id="roadster-trim"></strong><button id="flight-options-close" type="button" aria-label="收起车辆选项">完成</button></div><p id="roadster-warning" role="status"></p><div class="flight-option-actions"><button id="roadster-air-toggle" type="button">空中模式 · T</button><button id="roadster-wing-toggle" type="button">公路模式 · Y</button><span class="flight-ground-actions">${button('boost')}${button('stabilize')}</span></div><div class="flight-maneuvers"><button id="roadster-vault_spin" type="button" title="同一次动作内越过障碍并转一圈，检查完整旋转空间并回正落地">越障＋转圈</button><button id="roadster-vault" type="button" title="检查前方 20 米内的游戏碰撞体及落地区域">智能越障</button><button id="roadster-spin" type="button" title="检查可供车身完整翻滚的空间">一键转圈</button><button id="roadster-cancel" type="button">取消动作</button><span id="roadster-maneuver-status" role="status" aria-live="polite"></span></div><small class="flight-disclaimer">游戏设定 · 不代表真实车辆性能</small></div>
@@ -66,13 +67,17 @@ export function installRoadsterUI(game){
   $('flight-command-deck').hidden=!air||folded;$('flight-console-fold').hidden=!air;$('flight-console-fold').textContent=folded?'展开':'收起';$('flight-console-fold').setAttribute('aria-expanded',String(!folded));$('flight-console-fold').setAttribute('aria-label',folded?'展开飞行动作':'收起飞行动作');
   $('roadster-details-toggle').setAttribute('aria-expanded',String(detailsOpen));
   if(!air){attitudePanel.hidden=true;$('roadster-attitude-toggle').setAttribute('aria-expanded','false');}
-  if(!visible)return;const s=v.roadsterState??{},ready=!!game.physics?.ready&&!game.physics.failed,aeroBraking=ready&&roadsterAeroBrakeState(v).active;
-  root.classList.toggle('roadster-warning-active',!ready||!!s.warning||s.maneuver?.status==='rejected');
+  if(!visible)return;const s=v.roadsterState??{},ready=!!game.physics?.ready&&!game.physics.failed,aeroBraking=ready&&roadsterAeroBrakeState(v).active,airReserve=roadsterAirDisplay(v,{paused:game.paused||!ready});
+  root.classList.toggle('roadster-warning-active',!ready||!!s.warning||airReserve.low||s.maneuver?.status==='rejected');
   $('flight-launcher-label').textContent=!ready||s.warning||s.maneuver?.status==='rejected'?'飞行状态 · 警告':s.maneuver?.status==='active'?'特技进行中':air?'飞行选项':aeroBraking?'气动制动 · 工作中':'车辆选项';
+  $('flight-air-reserve').hidden=trim==='performance';
+  $('flight-air-reserve').textContent=airReserve.label+' · '+(airReserve.empty?'气罐空':airReserve.low?'低气压':airReserve.refilling?'补气中':airReserve.full?'已满':airReserve.status);
   $('roadster-trim').textContent='ROADSTER · '+trim.toUpperCase();
   const mode={air:'空中',landing:'缓降',recover:'回正',unpowered:'失去动力',road:'地面'}[s.mode]??'地面';
   $('roadster-telemetry').textContent=mode+(game.inCar&&game.cameraMode===1?'':' · '+Math.round(v.speed*3.6)+' km/h')+(air?' · 离地 '+(s.altitude??0).toFixed(1)+' m':'');
+  if(trim!=='performance')$('roadster-telemetry').textContent+=' · '+airReserve.label;
   $('roadster-warning').textContent=!ready?'Godot 未就绪：空中功能不可用':s.warning||(aeroBraking?'气动制动中 · 尾翼自动抬起增阻，松开刹车后恢复':trim==='rocket'?'T 起飞 / 缓降 · X 按住回正 · 地面刹车自动联动尾翼':trim==='thrust'?'按住 Shift + 油门推进 · 地面刹车自动联动尾翼':'地面刹车自动联动尾翼 · 气动制动随速度增强');
+  if(trim!=='performance')$('roadster-warning').textContent=(airReserve.warning?airReserve.warning+' · ':'')+airReserve.label+' · '+airReserve.status+'。停放或切换车辆后继续在线补气。 '+$('roadster-warning').textContent;
   $('roadster-air-toggle').hidden=trim!=='rocket';$('roadster-air-toggle').disabled=!ready;$('roadster-air-toggle').setAttribute('aria-pressed',String(v.roadsterRequest?.air===true));$('roadster-air-toggle').textContent=air?'缓降着陆 · T':'空中模式 · T';
   root.querySelector('.flight-maneuvers').hidden=trim!=='rocket';
   const maneuver=s.maneuver??{},notice=[maneuver.serial,maneuver.status,maneuver.reason].join(':');if(!blocked()&&['rejected','cancelled','complete'].includes(maneuver.status)&&notice!==lastManeuverNotice){lastManeuverNotice=notice;game.ui.toast(maneuver.reason,maneuver.status==='rejected'?'error':'');}

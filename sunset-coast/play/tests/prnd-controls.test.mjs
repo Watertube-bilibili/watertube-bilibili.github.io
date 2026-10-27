@@ -142,7 +142,7 @@ test('Rocket boost, takeoff and maneuver channels cannot bypass P',()=>{
 });
 
 test('native fallback still holds parked vehicles when no player controls are submitted',()=>{
- const {g}=fixture();selectTouchGear(g,'P');g.world={update(){}};g.position=g.vehicle.pos;g.physicsTick=()=>{};
+ const {g}=fixture();selectTouchGear(g,'P');g.allVehicles=()=>[g.vehicle];g.world={update(){}};g.position=g.vehicle.pos;g.physicsTick=()=>{};
  const physics=new GodotPhysicsSystem(g);physics.vehicles.set(g.vehicle,{id:'parked'});
  physics.syncVehicles=()=>{};physics.applySnapshot=()=>{};physics.syncWorld=()=>{};
  const packet=physics.tick({v:1,tick:1,bodies:[],contacts:[],dt:1/60});

@@ -1,3 +1,4 @@
+import {roadsterAirUnits,setRoadsterAirUnits} from './roadster-air-ledger.js';
 // Roadster controls are fictional gameplay balancing, not real vehicle capability.
 // Godot alone owns pose, forces and collision/landing damage.
 import {sanitizeRoadsterJets,updateRoadsterJets,clearRoadsterJets} from './roadster-jets.js';
@@ -10,9 +11,9 @@ export function roadsterTrim(v){return TRIMS[v?.model?.id]??null;}
 export function roadsterFlightLocked(v){return roadsterTrim(v)==='rocket'&&(v.roadsterRequest?.pending===true||v.roadsterState?.maneuver?.status==='active'||v.roadsterRequest?.air===true||['air','landing','recover','unpowered'].includes(v.roadsterState?.mode)||v.grounded===false&&(finite(v.roadsterState?.altitude)>.3||Math.abs(finite(v.roadsterState?.verticalSpeed))>.8));}
 export function roadsterRequest(v){return v.roadsterRequest??={air:false,wingMode:'auto'};}
 export function resetRoadsterControls(v){if(!roadsterTrim(v))return;Object.assign(roadsterRequest(v),{air:false,pending:false,inputLatch:null,action:'',actionSerial:(roadsterRequest(v).actionSerial??0)+1});v.roadsterState={...v.roadsterState,mode:'road',boost:0,lift:0,jets:sanitizeRoadsterJets(null),autoStabilizing:false,automaticAirborne:false,landingCushion:0,rollRate:0,maneuver:{status:'idle'}};clearRoadsterJets(v);}
-// Legacy save compatibility only; this field never limits propulsion.
-export function refillRoadster(v){if(!roadsterTrim(v))return;v.roadsterRefillSerial=(v.roadsterRefillSerial??0)+1;v.roadsterCharge=100;}
-export function roadsterSpawnConfig(v){const trim=roadsterTrim(v);return trim?{roadsterTrim:trim,roadsterCharge:clamp(v.roadsterCharge??100,0,100),roadsterRefillSerial:v.roadsterRefillSerial??0}:{};}
+// Repairs do not bypass the compressor or reset the persistent air tank.
+export function refillRoadster(v){if(!roadsterTrim(v))return;setRoadsterAirUnits(v,roadsterAirUnits(v));}
+export function roadsterSpawnConfig(v){const trim=roadsterTrim(v);return trim?{roadsterTrim:trim,vehicleInstanceId:v.instanceId,roadsterAirUnits:roadsterAirUnits(v),roadsterCharge:roadsterAirUnits(v)/24,roadsterRefillSerial:v.roadsterRefillSerial??0}:{};}
 export function clampRoadsterControls(v,input={}){
  const trim=roadsterTrim(v);if(!trim)return{};
  return{roadsterAction:trim==='rocket'&&['vault','vault_spin','spin','cancel'].includes(input.roadsterAction)?input.roadsterAction:'',roadsterActionSerial:Math.floor(clamp(input.roadsterActionSerial??0,0,1e9)),roadsterCancelLanding:input.roadsterCancelLanding===true,roadsterManualOverride:input.roadsterManualOverride===true,roadsterAir:trim==='rocket'&&input.roadsterAir===true,roadsterBoost:trim!=='performance'&&input.roadsterBoost===true,
@@ -78,8 +79,12 @@ export function roadsterPlayerInput(game,input={}){
 }
 export function applyRoadsterSnapshot(v,state){
  if(!roadsterTrim(v)||!state?.roadster)return;
+ if(state.roadster.vehicleInstanceId&&state.roadster.vehicleInstanceId!==v.instanceId)return;
  const previousMode=v.roadsterState?.mode,previousManeuver=v.roadsterState?.maneuver;const s=state.roadster,m=s.maneuver??{},maneuver={kind:['vault','vault_spin','spin'].includes(m.kind)?m.kind:'',phase:typeof m.phase==='string'?m.phase:'',status:['idle','active','complete','cancelled','rejected'].includes(m.status)?m.status:'idle',reason:typeof m.reason==='string'?m.reason:'',code:typeof m.code==='string'?m.code:'',progress:clamp(m.progress,0,1),serial:Math.floor(clamp(m.serial,0,1e9)),angle:clamp(m.angle,-100,100)};v.roadsterState={mode:['road','air','landing','recover','unpowered'].includes(s.mode)?s.mode:'road',charge:clamp(s.charge,0,100),heat:clamp(s.heat,0,1),boost:clamp(s.boost,0,1),lift:clamp(s.lift,0,1),wing:clamp(s.wing,0,1),wingPitch:clamp(s.wingPitch,0,.65),altitude:clamp(s.altitude,0,10000),verticalSpeed:clamp(s.verticalSpeed,-300,300),grounded:!!state.grounded,warning:typeof s.warning==='string'?s.warning:'',jets:sanitizeRoadsterJets(s.jets),autoStabilizing:s.autoStabilizing===true,automaticAirborne:s.automaticAirborne===true,landingCushion:clamp(s.landingCushion,0,1),rollRate:clamp(s.rollRate,-100,100),maneuver};
- v.roadsterCharge=v.roadsterState.charge;
+ setRoadsterAirUnits(v,Number.isFinite(s.airUnits)?s.airUnits:Number.isFinite(s.charge)?s.charge*24:roadsterAirUnits(v));
+ Object.assign(v.roadsterState,{airUnits:v.roadsterAirUnits,airCapacity:2400,charge:v.roadsterCharge,airPressure:clamp(s.airPressure,0,1),airSpraying:s.airSpraying===true,airRefillEligible:s.airRefillEligible===true});
+ v.roadsterAngularSpeed=Array.isArray(state.angular)&&state.angular.length===3&&state.angular.every(Number.isFinite)?Math.hypot(...state.angular):Infinity;
+ v.roadsterUpright=Array.isArray(state.quat)&&state.quat.length===4&&state.quat.every(Number.isFinite)&&1-2*(state.quat[0]**2+state.quat[2]**2)>.75;
  const request=roadsterRequest(v);if(maneuver.serial>=(request.actionSerial??0)){request.pending=false;if((previousManeuver?.status!==maneuver.status||previousManeuver?.serial!==maneuver.serial||previousMode!==s.mode)&&(['active','complete','cancelled'].includes(maneuver.status)&&s.mode==='air'))request.air=true;}
  if(s.mode==='road'&&maneuver.status==='complete'&&(previousManeuver?.status!==maneuver.status||previousManeuver?.serial!==maneuver.serial))request.air=false;
  if(['unpowered','landing'].includes(s.mode)||s.warning==='起飞条件未满足')roadsterRequest(v).air=false;

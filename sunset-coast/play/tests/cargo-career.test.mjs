@@ -1,3 +1,4 @@
+import {validRoadsterAirLedger} from '../roadster-air-ledger.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
@@ -20,7 +21,7 @@ test('block vehicle replacement, teleport and passenger/air travel',()=>{const g
 test('cargo restoration permitted on foot without starting new work',()=>{const g=game();g.inCar=false;g.acceptJob('freight-light',false);g.job.stage=1;g.restoreCargoState({job:{cargoIntegrity:83}});assert.equal(g.vehicle.cargoPayloadKg,8000);assert.equal(g.cargoStatus.integrity,83);tick(g);assert.equal(g.job.stage,1);});
 // Run both validators with identical deterministic dependency stubs. This tests
 // the complete validator source, not a rewritten approximation of its branches.
-function validator(path){const source=readFileSync(path,'utf8').replace(/^import .*;\n/gm,'').replace(/export /g,'');const context={MODELS:[{id:'s'},{id:'semi'},{id:'c800'}],CHARACTERS:[{id:'alex'}],WORLD_LIMIT:10000,isValidBrakeFaultSave:v=>v==='valid',isValidAxleFaultSave:v=>v==='valid',sanitizeDamageRegions:v=>v==='valid',isCargoJob,validCargoSave};vm.createContext(context);vm.runInContext(source,context);return context.validateSave;}
+function validator(path){const source=readFileSync(path,'utf8').replace(/^import .*;\n/gm,'').replace(/export /g,'');const context={MODELS:[{id:'s'},{id:'semi'},{id:'c800'}],CHARACTERS:[{id:'alex'}],WORLD_LIMIT:10000,isValidBrakeFaultSave:v=>v==='valid',isValidAxleFaultSave:v=>v==='valid',sanitizeDamageRegions:v=>v==='valid',isCargoJob,validCargoSave,validRoadsterAirLedger};vm.createContext(context);vm.runInContext(source,context);return context.validateSave;}
 const old=validator(new URL('./fixtures/save-validation-before-cargo.js',import.meta.url)),next=validator(new URL('../save-validation.js',import.meta.url));
 const fixture=()=>({version:1,money:100,health:100,armor:70,owned:['s'],vehicle:{model:'s',x:0,z:0,yaw:0,battery:100,condition:100}});
 const result=(fn,s)=>{try{fn(s);return 'ok';}catch(e){return e.message;}};

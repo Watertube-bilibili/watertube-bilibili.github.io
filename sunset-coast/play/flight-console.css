@@ -57,3 +57,7 @@ body.roadster-air-active #mobile-controls,body.roadster-air-active #sensor-panel
  .flight-attitude{bottom:calc(var(--flight-bottom) + 64px);width:min(300px,calc(100vw - var(--flight-left) - var(--flight-right)))}
 }
 @media(prefers-reduced-motion:reduce){#roadster-controls *{transition:none;animation:none}}
+
+/* Keep active flight/aero warnings above the independent compact air readout. */
+.flight-launcher-copy{display:grid;gap:1px;text-align:left;min-width:0}
+#flight-air-reserve{font-size:10px;line-height:1.2;opacity:.85}

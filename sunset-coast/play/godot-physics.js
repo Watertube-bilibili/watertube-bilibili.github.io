@@ -1,3 +1,4 @@
+import {tickRoadsterAirLedger,rememberRoadsterAir} from './roadster-air-ledger.js';
 import {applyRoadsterTireSnapshot} from './roadster-tire-telemetry.js';
 import {parkingBrakeControls} from './touch-transmission.js';
 import {cargoGodotControls} from './cargo-career.js';
@@ -95,9 +96,9 @@ export class GodotPhysicsSystem{
   try{this.game.loop(this.now(),true);}catch(error){this.fail(error);}
  }
  desiredVehicles(){const g=this.game,p=g.aircraft?.pendingBoard?g.aircraft.aircraft.pos:g.position;return g.allVehicles().filter(v=>v.kind!=='aircraft'&&Math.hypot(v.pos.x-p.x,v.pos.z-p.z)<550);}
- syncVehicles(){
+ syncVehicles(snapshot=null){
   const desired=new Set(this.desiredVehicles());
-  for(const [v,entry]of this.vehicles)if(!desired.has(v)){this.commands.push({type:'remove',id:entry.id});this.contactImpacts.forgetBody(entry.id);this.vehicles.delete(v);this.byId.delete(entry.id);v.godotPhysics=false;}
+  for(const [v,entry]of this.vehicles)if(!desired.has(v)){const finalState=snapshot?.bodies?.find(s=>s.id===entry.id);if(finalState&&!entry.skipSnapshot){applyRoadsterSnapshot(v,finalState);v.grounded=finalState.grounded;}rememberRoadsterAir(this.game,v);this.commands.push({type:'remove',id:entry.id});this.contactImpacts.forgetBody(entry.id);this.vehicles.delete(v);this.byId.delete(entry.id);v.godotPhysics=false;}
   for(const v of desired){
    let entry=this.vehicles.get(v);
    if(!entry){const id='vehicle:'+ ++this.serial;entry={id,position:v.pos.clone(),yaw:v.yaw,resetSerial:v.physicsResetSerial??0,skipSnapshot:true};this.vehicles.set(v,entry);this.byId.set(id,v);v.godotPhysics=true;v.physicsId=id;const spawn=vehicleSpawnCommand(v,id);entry.mass=spawn.mass;this.commands.push(spawn);resetVehiclePose(v);}
@@ -179,7 +180,7 @@ export class GodotPhysicsSystem{
   try{
    if(snapshot.v!==1||!Number.isFinite(snapshot.tick)||snapshot.tick<=this.lastTick)throw Error('Godot 物理时钟无效');
    this.lastTick=snapshot.tick;this.lastSnapshotTime=this.now();this.metrics.ticks++;this.metrics.bodies=snapshot.bodies.length;this.metrics.contacts=snapshot.contacts.length;
-   this.game.beginVehicleStep?.();this.syncVehicles();this.applySnapshot(snapshot);this.controlMap.clear();
+   const physicsOwnedThisStep=new Set(this.vehicles.keys());this.game.beginVehicleStep?.();this.syncVehicles(snapshot);this.applySnapshot(snapshot);tickRoadsterAirLedger(this.game,snapshot.dt,physicsOwnedThisStep);this.controlMap.clear();
    if(!this.game.paused)this.game.physicsTick(snapshot.dt||1/60);
    this.game.world.update(this.game.aircraft?.pendingBoard?this.game.aircraft.aircraft.pos:this.game.position);this.syncWorld();this.syncVehicles();
    const controls=[];
@@ -237,7 +238,7 @@ export async function loadGodotEngine(callbacks){
   onProgress:(loaded,total)=>{diagnostics.progress(loaded,total);show();},onPrint:()=>{},onPrintError:console.error});
  await engine.startGame({canvas});
  // The compiled Godot project can set its old title during scene startup.
- const title='SUNRISE COAST · 2.0 Beta',titleNode=document.querySelector('title');
+ const title='SUNRISE COAST · 1.0 Beta',titleNode=document.querySelector('title');
  document.title=title;if(titleNode)new MutationObserver(()=>{if(document.title!==title)document.title=title;}).observe(titleNode,{childList:true,subtree:true,characterData:true});
  if(diagnostics.state.phase!=='ready')diagnostics.record('bridge-wait');show();return engine;
  }catch(error){diagnostics.record('failed',{failed:true,error:String(error?.message??error)});throw error;}finally{clearInterval(statusTimer);diagnostics.cache();console.info('Godot startup diagnostics',diagnostics.state);}

@@ -12,7 +12,7 @@
   "compressedSha256": "9352825a316f4449b81d326706e78be95ed5a81c0e797f35879ef8b39bc505bd",
   "fileSizes": {
     "./physics/neon-physics.wasm": 37700666,
-    "./physics/neon-physics.pck": 58096
+    "./physics/neon-physics.pck": 61304
   },
   "projectSources": {
     "bridge.gd": "5a8381b3b91cac066a3601b7ea15597177057405ac8afb1c9bc52aeaca6f9d96",
@@ -20,10 +20,11 @@
     "main.tscn": "d8a5c615ebde00f7ea266fb36247b880dffbd4d1480c441c12c22daacfb6ba79",
     "neon-icon.svg": "d9121caf3438ca25dd0318a8f3630f02fccfa755a05eea11e8aed441e4c36bae",
     "project.godot": "8c16493e53246d91b27e5839be20fe3c797f93a1e6db14e1f56dd3c5d2a27cc4",
-    "roadster_forces.gd": "7d18b3d76bf864130a64ca63af9f73df499fc98bcd1a38e5e2ea9c435aca114e",
+    "roadster_forces.gd": "043ca0f83ca9d2891b38382308a7c02ece9ee3638ccc2172d8e6bb909d60c656",
     "roadster_maneuver.gd": "7e5123c3203ac2178b6f2683b6cb8b50268638cb709388a9d7f615e5dae87a83",
     "vehicle_body.gd": "d6aa56e95da25ff610cc3548c6c71fe505735378d962ee2a54019bb399246d54",
-    "roadster_tires.gd": "30baf75e92d499687cd40041d967e47de22cf834f5008ea5119ffbdbbb0010c1"
+    "roadster_tires.gd": "30baf75e92d499687cd40041d967e47de22cf834f5008ea5119ffbdbbb0010c1",
+    "roadster_air_reserve.gd": "4b185ca09f4aa6b6ef31e0a32104bf02348285cf5375f139344188b527993be9"
   },
   "transportPatchSha256": "bb9055ea66fb8785c08e74137650495bc2f90bc97ccf0b980516748eaad40da6",
   "files": {
@@ -32,8 +33,8 @@
       "sha256": "b3330849267d56ddd3d62a513817506606c2195034411fe05859f0140bff9d8a"
     },
     "neon-physics.pck": {
-      "bytes": 58096,
-      "sha256": "4385b0f9482c7489963d034acf1f4ee066edca31d8f1ccce19d863fe45dea833"
+      "bytes": 61304,
+      "sha256": "166265ac7c420134f2c7059fdc1fd9d168bc1d27f7002029a08b6071dec08cb3"
     },
     "LICENSE.txt": {
       "bytes": 1149,
@@ -75,5 +76,13 @@
     "maneuverBaselinePackSha256": "e342962efc87d98adcec8258a81f039b3fb9b4f51e660f7dda00080f81cbdc26",
     "preservedResources": "source/tire-preserved-resources.json",
     "method": "Original-token source recovery; 60/120 Hz trajectory equivalence; official Godot 4.6.3 Web GDC export; whitelisted body/force/tire replacement"
+  },
+  "airReserveCandidate": {
+    "baseline": "8de93b5101868781b8f6a5cdcb48644953f281a8",
+    "published": false
+  },
+  "flightControlCandidate": {
+    "published": false,
+    "scope": "manual airborne takeover and actual delivered cushion impulse"
   }
 }

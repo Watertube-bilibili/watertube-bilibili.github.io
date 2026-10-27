@@ -1,3 +1,4 @@
+import {loadRoadsterAirLedger} from '../roadster-air-ledger.js';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -64,7 +65,7 @@ test('driving C still cycles all three existing views',()=>{
  const g=fixture();g.cameraMode=0;g.cycleCamera();assert.equal(g.cameraMode,1);g.cycleCamera();assert.equal(g.cameraMode,2);g.cycleCamera();assert.equal(g.cameraMode,0);
 });
 
-const load=getMethod(' load(', '\n restoreQuietly(',{vehicleAssetReady:()=>true,cancelPendingVehicleAsset:noop,resetPolice:noop,resetDrivingAssist:noop,streamPopulation:noop,clamp:THREE.MathUtils.clamp,WORLD_LIMIT,WORLD_MIN_X,CHARACTERS}).load;
+const load=getMethod(' load(', '\n restoreQuietly(',{loadRoadsterAirLedger,vehicleAssetReady:()=>true,cancelPendingVehicleAsset:noop,resetPolice:noop,resetDrivingAssist:noop,streamPopulation:noop,clamp:THREE.MathUtils.clamp,WORLD_LIMIT,WORLD_MIN_X,CHARACTERS}).load;
 for(const inCar of [true,false])test(`existing save inCar=${inCar} retains stored mode and exact horizontal position`,()=>{
  const g=fixture();g.placePlayerOnFoot();g.cameraMode=2;
  Object.assign(g,{validateSave:s=>s,cancelEntry:noop,clearDestination:noop,removeVehicle:noop,isGarageCar:()=>false,makeVehicle(id,x,z,yaw){const v=this.vehicle;v.pos.set(x,0,z);v.yaw=yaw;return v;},switchCharacter:noop,setQuality:noop,setWeather:noop,updateLighting:noop});
