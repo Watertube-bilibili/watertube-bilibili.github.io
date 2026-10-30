@@ -1,0 +1,56 @@
+{
+  "verifiedCommit": "0e38203c747a96a859032547537a525586742083",
+  "pagesRun": 41036484171,
+  "pagesConclusion": "success",
+  "publicByteChecks": [
+    {
+      "path": "sunset-coast/release-info.json",
+      "status": 200,
+      "sha256": "a6212252a4629c3e677765dfe720f6f5249c7090c2dd13dd04bfbc3ad88b1c1d",
+      "matches": true
+    },
+    {
+      "path": "sunset-coast/play/godot-asset-cache.js",
+      "status": 200,
+      "sha256": "e647c9a593d4cc2752be803c03d35407b87b5611f9a4e04bddf8fddabded8ce6",
+      "matches": true
+    },
+    {
+      "path": "sunset-coast/play/godot-physics.js",
+      "status": 200,
+      "sha256": "6ca3bea674c4e0e881a1cd5e169cc6c95c2a5467927321cfeefab526612f17d9",
+      "matches": true
+    },
+    {
+      "path": "sunrise-browser-preview/runtime-candidate/sunset-coast/release-info.json",
+      "status": 200,
+      "sha256": "fb7ff0c33c86b51f9288912c4ca6bb6d2cf96c15cc66be6e10c0fb6fb6b0252d",
+      "matches": true
+    },
+    {
+      "path": "sunrise-browser-preview/runtime-candidate/sunset-coast/play/game.js",
+      "status": 200,
+      "sha256": "b58b7ede2f0a6c3e5624aa2e2b889595bab28b1f0b2c957be6f59d332a1d1f83",
+      "matches": true
+    }
+  ],
+  "browserUI": {
+    "officialEntryLink": true,
+    "mapHub": true,
+    "httpsNewEstuarySlot": true,
+    "httpsNewCrescentSlot": true,
+    "webglFailureStopsStartup": true,
+    "estuarySlotVisibleAfterReload": true,
+    "bfcacheChooserRefresh": "Patched with generation guards and pageshow refresh; 5 targeted tests passed; public r2 UI verification follows",
+    "crescentSlotVisibleAfterReload": true
+  },
+  "notAccepted": [
+    "3D gameplay",
+    "real-device startup performance",
+    "flight parity",
+    "motorcycle parity",
+    "structural damage",
+    "PHP hosting",
+    "real KV consistency"
+  ]
+}

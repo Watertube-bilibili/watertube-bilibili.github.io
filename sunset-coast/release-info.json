@@ -21,5 +21,11 @@
     "browserGameplay": "not-accepted-WebGL-unavailable-in-review-browser",
     "realDevices": "not-tested",
     "fullRelease": "not-approved"
+  },
+  "publicDeploymentVerified": true,
+  "publicDeploymentEvidence": {
+    "verifiedContentCommit": "0e38203c747a96a859032547537a525586742083",
+    "pagesRun": 41036484171,
+    "scope": "Static publication only; no 3D gameplay acceptance"
   }
 }

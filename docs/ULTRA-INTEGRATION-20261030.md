@@ -54,3 +54,9 @@ The API deliberately remains unavailable for account/cloud-write operations. The
 ## Release and rollback
 
 All changes are additive except the bounded native startup fix, cache hashes and corrected entry links. The native/test/history assets are retained. Use the previous Git commit or the pre-integration branch to roll code back; do not clear browser storage. Current release acceptance flags remain false until the actual gameplay and device checks pass.
+
+## Public deployment evidence
+
+Commit `0e38203c747a96a859032547537a525586742083` completed Pages run `41036484171` successfully. The official launcher and browser preview were opened over HTTPS; both maps created independent test slots and stopped on this browser's disabled WebGL. Five critical public files matched local SHA256 values. The first deployment exposed a BFCache chooser-refresh bug, fixed in the follow-up commit. None of these checks establishes 3D gameplay acceptance.
+
+The BFCache chooser follow-up has 5 additional targeted tests passing, without rerunning unrelated suites. The hub re-reads durable slots after browser Back, restores create controls, ignores late asynchronous UI results and uses a content-hashed chooser URL.

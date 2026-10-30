@@ -146,8 +146,8 @@
   },
   {
     "path": "runtime-candidate/sunset-coast/browser-worlds.html",
-    "bytes": 1432,
-    "sha256": "ae4ed97eb4cc8f254a0f6f53e9cc93eff0675ad73f3b8c34c44acad36d240929"
+    "bytes": 1447,
+    "sha256": "d20522dfe67daffd48802c8b507b7c9beea9f7eb702f846d5c0d19b612166ca2"
   },
   {
     "path": "runtime-candidate/sunset-coast/favicon.ico",
@@ -156,8 +156,8 @@
   },
   {
     "path": "runtime-candidate/sunset-coast/index.html",
-    "bytes": 1432,
-    "sha256": "ae4ed97eb4cc8f254a0f6f53e9cc93eff0675ad73f3b8c34c44acad36d240929"
+    "bytes": 1447,
+    "sha256": "d20522dfe67daffd48802c8b507b7c9beea9f7eb702f846d5c0d19b612166ca2"
   },
   {
     "path": "runtime-candidate/sunset-coast/manifest.webmanifest",
@@ -441,8 +441,8 @@
   },
   {
     "path": "runtime-candidate/sunset-coast/play/browser-world-chooser.js",
-    "bytes": 1307,
-    "sha256": "c1a3f6a5a004e33e2447e3c9f329176863da7c7fd96f4952748f705025522637"
+    "bytes": 2683,
+    "sha256": "f456f92a78494d2f3d948def256457c62bc8b58103719dc576480250c453a94c"
   },
   {
     "path": "runtime-candidate/sunset-coast/play/browser-world-entry.js",
@@ -621,8 +621,8 @@
   },
   {
     "path": "runtime-candidate/sunset-coast/play/index.html",
-    "bytes": 19870,
-    "sha256": "e7547fc121b572dbdd10bc87243a7eb357b1868c7f3fc44ed3b418dc7c6054fd"
+    "bytes": 19868,
+    "sha256": "01aff5ca870aec8ae880cd32e2f9e0440496a4826bbccdcda718adf30a3ab8e0"
   },
   {
     "path": "runtime-candidate/sunset-coast/play/interface-view.js",
@@ -1201,8 +1201,8 @@
   },
   {
     "path": "runtime-candidate/sunset-coast/release-info.json",
-    "bytes": 2002,
-    "sha256": "fb7ff0c33c86b51f9288912c4ca6bb6d2cf96c15cc66be6e10c0fb6fb6b0252d"
+    "bytes": 2336,
+    "sha256": "6a97d273598c29ee44136b3234c5d75b6d5eb459747fdc38fb28c961f4d077f6"
   },
   {
     "path": "runtime-candidate/sunset-coast/sunset-icon-192.png",

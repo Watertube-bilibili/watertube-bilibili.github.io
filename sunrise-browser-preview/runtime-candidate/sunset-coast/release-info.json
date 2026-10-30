@@ -1,7 +1,7 @@
 {
   "product": "SUNRISE COAST",
   "version": "1.0 Browser Preview · 20261030",
-  "release": "2026-10-30-browser-preview-r1",
+  "release": "2026-10-30-browser-preview-r2",
   "status": "preview-not-gameplay-accepted",
   "saveNamespace": "sunrise-coast:browser-world:v2",
   "entry": "./",
@@ -14,7 +14,7 @@
   "localNormalEntryAcceptance": false,
   "browserGameplayAcceptance": false,
   "realDeviceAcceptance": false,
-  "publicDeploymentVerified": false,
+  "publicDeploymentVerified": true,
   "automatedTests": {
     "status": "passed-with-native-skips",
     "total": 437,
@@ -45,8 +45,20 @@
     "hubTwoMaps": true,
     "legacyLinkPresent": true,
     "insecurePreviewLockRejected": true,
-    "secureContextSlotCreation": false,
+    "secureContextSlotCreation": true,
     "webglAvailable": false,
-    "environment": "Managed browser local HTTP preview, GL_VENDOR Disabled"
+    "environment": "Managed browser local HTTP preview, GL_VENDOR Disabled",
+    "failedWebGLSavePreserved": true
+  },
+  "publicDeploymentEvidence": {
+    "verifiedContentCommit": "0e38203c747a96a859032547537a525586742083",
+    "pagesRun": 41036484171,
+    "scope": "Static publication only; no 3D gameplay acceptance"
+  },
+  "followUpTests": {
+    "chooserBFCache": {
+      "passed": 5,
+      "failed": 0
+    }
   }
 }
