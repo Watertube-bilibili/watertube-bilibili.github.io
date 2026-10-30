@@ -33,3 +33,32 @@ test('WASM transport and unrelated resource URLs remain unchanged',async()=>{
  await(await cache.fetch('./physics/neon-physics.wasm.gz')).arrayBuffer();await(await cache.fetch('./other.js?existing=1')).arrayBuffer();
  assert.deepEqual(requests,[baseURL+'neon-physics.wasm.gz','./other.js?existing=1']);
 });
+test('a cached body that never resolves falls back to network without deleting it as corrupt',async()=>{
+ const bytes='current pack',storage=memoryStorage(),key=baseURL+'__neon_engine_cache__/'+info(bytes).sha256+'/neon-physics.pck';
+ let deleted=0,calls=0;
+ const hanging={async open(){return{async match(){return{arrayBuffer:()=>new Promise(()=>{})};},async put(k,response){storage.entries.set(k,response);},async delete(){deleted++;},async keys(){return[];}};}};
+ const cache=createGodotAssetCache(manifest(bytes),{baseURL,storage:hanging,crypto:webcrypto,verifyTimeoutMs:15,fetch:async()=>{calls++;return new Response(bytes);}});
+ assert.equal(await(await cache.fetch('./physics/neon-physics.pck')).text(),bytes);await cache.settled();
+ assert.equal(calls,1);assert.equal(deleted,0);assert.equal(cache.stats.corrupt,0);assert.equal(cache.stats.unavailable,1);assert.equal(await storage.entries.get(key).text(),bytes);
+});
+test('late cache verification cannot evict the newer successfully verified network write',async()=>{
+ const bytes='current pack';let complete,deleted=0,calls=0;const entries=new Map();
+ const storage={async open(){return{async match(){return{arrayBuffer:()=>new Promise(r=>complete=r)};},async put(k,response){entries.set(k,response);},async delete(k){deleted++;entries.delete(k);},async keys(){return[...entries.keys()];}};}};
+ const cache=createGodotAssetCache(manifest(bytes),{baseURL,storage,crypto:webcrypto,verifyTimeoutMs:15,fetch:async()=>{calls++;return new Response(bytes);}});
+ assert.equal(await(await cache.fetch('./physics/neon-physics.pck')).text(),bytes);await cache.settled();
+ complete(new TextEncoder().encode('bad').buffer);await new Promise(r=>setTimeout(r,10));
+ assert.equal(calls,1);assert.equal(deleted,0);assert.equal(cache.stats.corrupt,0);assert.equal(entries.size,1);assert.equal(await[...entries.values()][0].text(),bytes);
+});
+test('stalled cache pruning does not keep asset completion waiting forever',async()=>{
+ const bytes='pack';const storage={async open(){return{async match(){},async put(){},async keys(){return new Promise(()=>{});}};}};
+ const cache=createGodotAssetCache(manifest(bytes),{baseURL,storage,crypto:webcrypto,timeoutMs:15,fetch:async()=>new Response(bytes)});
+ assert.equal(await(await cache.fetch('./physics/neon-physics.pck')).text(),bytes);
+ const completed=await Promise.race([cache.settled().then(()=>true),new Promise(r=>setTimeout(()=>r(false),300))]);
+ assert.equal(completed,true);assert.equal(cache.stats.writes,1);assert.equal(cache.stats.unavailable,1);
+});
+test('digest verification remains mandatory: corrupt cached and downloaded bytes are never persisted',async()=>{
+ const bytes='good',storage=memoryStorage(),key=baseURL+'__neon_engine_cache__/'+info(bytes).sha256+'/neon-physics.pck';storage.entries.set(key,new Response('evil'));
+ const cache=createGodotAssetCache(manifest(bytes),{baseURL,storage,crypto:webcrypto,fetch:async()=>new Response('evil')});
+ await(await cache.fetch('./physics/neon-physics.pck')).text();await cache.settled();
+ assert.equal(cache.stats.corrupt,1);assert.equal(cache.stats.writes,0);assert.equal(storage.entries.size,0);
+});

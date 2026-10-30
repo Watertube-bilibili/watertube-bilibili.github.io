@@ -198,7 +198,13 @@ export function colliderCommand(b,id){
 
 let preparedEnginePromise,engineDownloadPromise;
 export function shouldPreloadEngine(navigator=globalThis.navigator){
- return !navigator?.connection?.saveData&&!(Number.isFinite(navigator?.deviceMemory)&&navigator.deviceMemory<=4);
+ const connection=navigator?.connection;
+ // Defer the required engine until startPhysics on constrained connections so
+ // its download does not compete with the selected vehicle's bootstrap asset.
+ // Unknown connection/memory information keeps the existing default behavior.
+ return !connection?.saveData&&!['slow-2g','2g','3g'].includes(connection?.effectiveType)&&
+  !(Number.isFinite(connection?.downlink)&&connection.downlink>0&&connection.downlink<=1.5)&&
+  !(Number.isFinite(navigator?.deviceMemory)&&navigator.deviceMemory<=4);
 }
 function downloadPreparedEngine(manifest){
  return engineDownloadPromise??=globalThis.Engine.load('./physics/neon-physics',manifest.fileSizes['./physics/neon-physics.wasm']);

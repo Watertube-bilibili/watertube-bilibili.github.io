@@ -1,0 +1,52 @@
+{
+  "product": "SUNRISE COAST",
+  "version": "1.0 Browser Preview · 20261030",
+  "release": "2026-10-30-browser-preview-r1",
+  "status": "preview-not-gameplay-accepted",
+  "saveNamespace": "sunrise-coast:browser-world:v2",
+  "entry": "./",
+  "publicEntry": "/sunrise-browser-preview/",
+  "sourceBaseline": "ec486e48c0f368f707039f685944356bcea1d832",
+  "recoveredSource": "v4.1 + v4.2 + v4.3 + v5 lifecycle, exact SHA256 verified before scoped fixes",
+  "previousProjectPreserved": true,
+  "legacyEntry": "../../../sunset-coast/?manage=1",
+  "liveGameplayAcceptance": false,
+  "localNormalEntryAcceptance": false,
+  "browserGameplayAcceptance": false,
+  "realDeviceAcceptance": false,
+  "publicDeploymentVerified": false,
+  "automatedTests": {
+    "status": "passed-with-native-skips",
+    "total": 437,
+    "passed": 434,
+    "failed": 0,
+    "skipped": 3,
+    "skippedReason": "Godot executable unavailable; native trajectory/pack tests not run",
+    "scope": "Node source/contract/geometry tests; no WebGL or real-device acceptance"
+  },
+  "capabilities": {
+    "maps": [
+      "estuary",
+      "crescent"
+    ],
+    "independentSaves": true,
+    "estuaryDelivery": true,
+    "crescentCareer": false,
+    "motorcycles": false,
+    "roadsterFlight": false,
+    "aircraft": false,
+    "structural3D": false,
+    "phpAccounts": false,
+    "kvCloudSaves": false
+  },
+  "acceptanceScope": "Recovered source plus isolated browser preview. Automated source/contract tests do not establish WebGL gameplay, physical-device performance, or public release acceptance. Full Godot runner and historical save namespaces remain in the previous entry.",
+  "browserUIAcceptance": {
+    "scope": "Hub navigation and lock fail-closed only; no WebGL gameplay acceptance",
+    "hubTwoMaps": true,
+    "legacyLinkPresent": true,
+    "insecurePreviewLockRejected": true,
+    "secureContextSlotCreation": false,
+    "webglAvailable": false,
+    "environment": "Managed browser local HTTP preview, GL_VENDOR Disabled"
+  }
+}

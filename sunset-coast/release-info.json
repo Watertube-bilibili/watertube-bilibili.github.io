@@ -4,7 +4,22 @@
   "saveNamespace": "sunset-coast-2.0-beta",
   "previousProjectPreserved": true,
   "liveGameplayAcceptance": false,
-  "build": "2026-10-27-rocket-air",
-  "release": "2026-10-27-rocket-air",
-  "sourceBaseline": "8de93b5101868781b8f6a5cdcb48644953f281a8"
+  "build": "2026-10-30-ultra-integration-preview",
+  "release": "2026-10-30-ultra-integration-preview",
+  "sourceBaseline": "ec486e48c0f368f707039f685944356bcea1d832",
+  "channel": "beta",
+  "browserPreview": "../sunrise-browser-preview/",
+  "cloudAccountsAvailable": false,
+  "cloudSavesAvailable": false,
+  "acceptance": {
+    "automated": {
+      "passed": 188,
+      "failed": 0,
+      "skipped": 3,
+      "skipReason": "Godot executable unavailable for native source tests"
+    },
+    "browserGameplay": "not-accepted-WebGL-unavailable-in-review-browser",
+    "realDevices": "not-tested",
+    "fullRelease": "not-approved"
+  }
 }
