@@ -1,0 +1,8 @@
+import * as data from './map-data.js';
+import {createMapRenderer} from './geometry.js';
+import {makeMapMaterialFactory} from './material-adapter.js';
+export const MAP_MANIFEST=Object.freeze({id:'estuary-coast',version:'0.2.0-candidate',coordinateUnits:'metres',up:'Y',bounds:Object.freeze({...data.BOUNDS}),chunkSize:data.CHUNK,terrainSpacing:10,products:Object.freeze(['sunrise','ultra']),productNeutral:true,integratedIntoLegacyGame:false});
+export function getTerrainChunk(cx,cz){const heights=[];for(let z=0;z<=40;z++)for(let x=0;x<=40;x++)heights.push(data.groundHeight(cx*400+x*10,cz*400+z*10));return{width:41,depth:41,spacingX:10,spacingZ:10,origin:[cx*400+200,0,cz*400+200],originConvention:'center',heights};}
+export function getChunkColliders(cx,cz){const minX=cx*400,minZ=cz*400;return data.structures.filter(b=>b.solid&&b.x+b.w/2>=minX&&b.x-b.w/2<=minX+400&&b.z+b.d/2>=minZ&&b.z-b.d/2<=minZ+400).map(b=>({id:b.id,center:[b.x,b.y,b.z],size:[b.w,b.h,b.d]}));}
+export function createSharedMap({scene,materialPack=null}){return{manifest:MAP_MANIFEST,renderer:createMapRenderer(scene,{materialFactory:materialPack?makeMapMaterialFactory(materialPack):null}),groundHeight:data.groundHeight,surfaceAt:data.surfaceAt,route:data.route,getTerrainChunk,getChunkColliders,places:data.places};}
+export {data};

@@ -1,0 +1,17 @@
+import {RIDES} from './ultra-map-layout.js';
+/** A two-step, in-game-only quote/confirm state machine. No payments or new wallet. */
+export class AmusementExperience{
+ constructor(economy){if(!economy?.balance||!economy?.change)throw TypeError('Existing game economy required');this.economy=economy;this.offer=null;this.pending=null;this.sequence=0;this.completed=0;this.clock=0;this.cooldown=0;}
+ request(id){if(this.pending||this.clock<this.cooldown)return{ok:false,reason:'busy'};const ride=RIDES[id];if(!ride)return{ok:false,reason:'unknown-ride'};if(this.offer?.id===id)return{ok:true,...this.offer};this.offer={id,token:++this.sequence,price:ride.price};return{ok:true,...this.offer};}
+ confirm(token){if(this.pending||this.clock<this.cooldown)return{ok:false,reason:'busy'};const offer=this.offer;if(!offer||offer.token!==token)return{ok:false,reason:'stale-offer'};const before=this.economy.balance();if(!Number.isFinite(before)||before<offer.price)return{ok:false,reason:'insufficient-funds'};
+  // Claim the offer before invoking UI/economy hooks: even re-entrant clicks
+  // cannot issue a second debit using the same token.
+  this.offer=null;this.pending={...offer,elapsed:0,duration:RIDES[offer.id].duration,refunded:false};
+  try{this.economy.change(-offer.price,RIDES[offer.id].name+' · 单次体验（游戏币）');if(this.economy.balance()!==before-offer.price)throw Error('Non-exact economy transaction');}
+  catch{const applied=before-this.economy.balance();this.pending=null;if(applied===offer.price){try{this.economy.change(applied,RIDES[offer.id].name+' · 未启动退款');}catch{}}return{ok:false,reason:'economy-error'};}
+  return{ok:true,...this.pending};
+ }
+ cancel(reason='cancel'){this.offer=null;const p=this.pending;if(!p)return{ok:true,refunded:0,reason};this.pending=null;this.cooldown=this.clock+.4;if(!p.refunded){p.refunded=true;const before=this.economy.balance();try{this.economy.change(p.price,RIDES[p.id].name+' · 未完成退款');}catch(error){if(this.economy.balance()!==before+p.price){p.refunded=false;this.pending=p;return{ok:false,reason:'economy-error',refunded:0};}}}return{ok:true,refunded:p.price,reason};}
+ update(dt){if(!Number.isFinite(dt)||dt<0)return null;this.clock+=dt;const p=this.pending;if(!p)return null;p.elapsed=Math.min(p.duration,p.elapsed+dt);if(p.elapsed<p.duration)return null;this.pending=null;this.completed++;this.cooldown=this.clock+.4;return{...p,complete:true};}
+ snapshot(base){const p=this.pending;if(!p)return base;const ride=RIDES[p.id];return{...base,money:base.money+p.price,inCar:false,player:{...base.player,x:ride.exit.x,z:ride.exit.z},transactions:[{amount:p.price,label:ride.name+' · 未完成存档退款',time:''},...(base.transactions??[])].slice(0,18)};}
+}

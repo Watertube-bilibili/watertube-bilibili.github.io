@@ -1,0 +1,68 @@
+import {freshSave,validateBetaRaw} from './beta-save-slots.js';
+import {ESTUARY_DELIVERY_CATALOG} from './delivery-offers.js';
+import {assertBrowserSnapshotCapability,BROWSER_WORLD_SCHEMA} from './browser-world-policy.js';
+export const PREFIX='sunrise-coast:browser-world:v2';
+const digest=async raw=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw))),x=>x.toString(16).padStart(2,'0')).join('');
+export function browserWorldConfig(map,id){
+ if(!['estuary','crescent'].includes(map)||!/^b-[a-z0-9-]{1,96}$/.test(id??''))throw Error('地图存档身份无效');
+ return {production:true,key:`${PREFIX}:${map}:${id}`,slot:id,map,schema:{version:2,map,backend:'browser',catalog:map==='estuary'?ESTUARY_DELIVERY_CATALOG:'crescent-no-career-v1',playerId:id}};
+}
+export function validateWorldSnapshot(s,config,validate){
+ validateBetaRaw(JSON.stringify(s),validate);
+ if(JSON.stringify(s.deliveryHost)!==JSON.stringify(config.schema)||s.browserWorld?.version!==BROWSER_WORLD_SCHEMA||s.browserWorld?.map!==config.map||s.browserWorld?.backend!=='browser')throw Error('存档地图、物理后端或版本不匹配，原档保留');
+ if(!Number.isSafeInteger(s.saveRevision)||s.saveRevision<0)throw Error('存档修订号无效');
+ if(!Number.isFinite(s.player?.y))throw Error('完整玩家高度缺失，原档保留');
+ assertBrowserSnapshotCapability(s,config.map);return s;
+}
+export function freshWorldSave(config,now=new Date().toISOString()){
+ const s=JSON.parse(freshSave(now));const p=config.map==='estuary'?{x:1290,z:211,y:0,yaw:0}:{x:-590,z:15,y:8.03,yaw:Math.PI/2};
+ Object.assign(s.vehicle,{x:p.x,z:p.z,yaw:p.yaw});Object.assign(s.player,{x:p.x+3,y:p.y,z:p.z,yaw:p.yaw});
+ s.deliveryHost=config.schema;s.browserWorld={version:2,map:config.map,backend:'browser'};s.saveRevision=0;return s;
+}
+export async function readWorldSlot(storage,map,id,validate){
+ const config=browserWorldConfig(map,id),raw=storage.getItem(config.key);if(raw===null)throw Error('存档不存在，禁止自动新建覆盖');
+ const save=validateWorldSnapshot(validateBetaRaw(raw,validate),config,validate);
+ const backupRaw=storage.getItem(config.key+':initial-backup');if(!backupRaw||backupRaw.length>1100000)throw Error('初始备份缺失');
+ const backup=JSON.parse(backupRaw);if(backup.version!==1||typeof backup.raw!=='string'||await digest(backup.raw)!==backup.sha256)throw Error('初始备份校验失败');
+ validateWorldSnapshot(validateBetaRaw(backup.raw,validate),config,validate);
+ if(storage.getItem(config.key)!==raw||storage.getItem(config.key+':initial-backup')!==backupRaw)throw Error('读取期间存档改变，原档保留');
+ return {id,map,raw,save,config};
+}
+export async function createWorldSlot(storage,map,validate,{locks=globalThis.navigator?.locks,idFactory=()=>('b-'+crypto.randomUUID())}={}){
+ if(!locks?.request)throw Error('安全存档锁不可用');return locks.request(PREFIX+':create',async()=>{
+ const id=idFactory(),c=browserWorldConfig(map,id);if(storage.getItem(c.key)!==null||storage.getItem(c.key+':initial-backup')!==null)throw Error('存档已存在，禁止覆盖');
+ const raw=JSON.stringify(freshWorldSave(c));validateWorldSnapshot(JSON.parse(raw),c,validate);const backup=JSON.stringify({version:1,raw,sha256:await digest(raw)});
+ storage.setItem(c.key+':initial-backup',backup);if(storage.getItem(c.key+':initial-backup')!==backup)throw Error('备份写入失败');storage.setItem(c.key,raw);if(storage.getItem(c.key)!==raw)throw Error('新档写入失败，初始备份保留');return readWorldSlot(storage,map,id,validate);
+ });
+}
+export async function listWorldSlots(storage,map,validate){const out=[],prefix=PREFIX+':'+map+':';for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!key?.startsWith(prefix))continue;const id=key.slice(prefix.length);if(!/^b-[a-z0-9-]{1,96}$/.test(id))continue;try{out.push(await readWorldSlot(storage,map,id,validate));}catch(e){out.push({map,id,error:e.message});}}return out;}
+export async function acquireWorldLease(config,{locks=globalThis.navigator?.locks,window=globalThis.window,signal,manageLifecycle=true}={}){
+ if(!locks?.request)throw Error('安全存档锁不可用');
+ let owned=false,closed=false,hidden=false,reloadRequested=false,finish,resolve,reject;
+ const done=new Promise(r=>finish=r),ready=new Promise((r,j)=>{resolve=r;reject=j;});
+ const cancelled=()=>Object.assign(Error('页面已离开，日出存档锁已取消'),{name:'AbortError',code:'BROWSER_WORLD_CANCELLED'});
+ const remove=(target,type,listener)=>{try{target?.removeEventListener?.(type,listener);}catch{}};
+ const close=error=>{
+  if(closed)return;closed=true;owned=false;
+  remove(signal,'abort',onAbort);remove(window,'pagehide',onHide);
+  if(!hidden)remove(window,'pageshow',onShow);
+  finish();reject(error);
+ };
+ const onAbort=()=>close(signal.reason??cancelled());
+ const onHide=()=>{hidden=true;close(cancelled());};
+ const onShow=event=>{
+  if(!event.persisted||!hidden||reloadRequested)return;
+  reloadRequested=true;remove(window,'pageshow',onShow);window.location.reload();
+ };
+ const lease={ownsLock:()=>owned&&!closed,release:()=>close(cancelled())};
+ try{
+  if(manageLifecycle){window.addEventListener('pagehide',onHide,{once:true});window.addEventListener('pageshow',onShow);}
+  if(signal){signal.addEventListener('abort',onAbort,{once:true});if(signal.aborted)onAbort();}
+  if(!closed)Promise.resolve(locks.request(config.key,{ifAvailable:true},async lock=>{
+   if(closed)return;
+   if(!lock){close(Error('该存档已被其他标签页打开'));return;}
+   owned=true;resolve(lease);await done;
+  })).catch(close);
+ }catch(error){close(error);}
+ return ready;
+}

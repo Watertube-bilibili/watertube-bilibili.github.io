@@ -1,0 +1,7 @@
+import {createEstuarySlot,listEstuarySlots} from './estuary-save-slots.js';
+import {validateSave} from './save-validation.js';
+const status=document.getElementById('status'),button=document.getElementById('create'),list=document.getElementById('slots');
+const url=id=>'./play/?world=estuary&estuarySlot='+encodeURIComponent(id)+'&blenderVehicle=volt-s-v2&damage=structure';
+async function render(){list.replaceChildren();for(const entry of await listEstuarySlots(localStorage,validateSave)){const item=document.createElement(entry.error?'p':'a');item.textContent=entry.error?entry.id+'：'+entry.error:'继续进度 · $'+entry.save.money.toLocaleString()+' · '+entry.id.slice(-8);if(!entry.error)item.href=url(entry.id);else item.className='error';list.append(item);}}
+button.onclick=async()=>{button.disabled=true;status.textContent='正在安全创建独立进度…';try{const entry=await createEstuarySlot(localStorage,validateSave);location.assign(url(entry.id));}catch(e){status.textContent=e.message;button.disabled=false;await render();}};
+render().catch(e=>status.textContent=e.message);
