@@ -1,0 +1,32 @@
+✔ estuary waits for runtime restore before marking the entry ready (43.914597ms)
+✔ crescent waits for runtime restore before marking the entry ready (22.430567ms)
+✔ leaving while acquiring a slot releases a late lease without importing Game (17.000829ms)
+✔ leaving while textures load disposes the late pack and never constructs Game (27.019057ms)
+✔ a Game created by an already pending import is stopped before installing a writer (21.130149ms)
+日出启动清理失败 Error: release cleanup rejected
+    at TestContext.<anonymous> (file:///workspace/scratch/9c6acae15f30/assembled-candidate/source/runtime-candidate/sunset-coast/play/tests/browser-world-entry-lifecycle.test.mjs:78:54)
+    at async Test.run (node:internal/test_runner/test:1409:7)
+    at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+✔ failed restore disables writes before cleanup and preserves the original error (18.822428ms)
+✔ losing the lease during async restore prevents readiness and the installed writer (21.705099ms)
+✔ leaving during async restore blocks a writer installed after pagehide (19.164359ms)
+✔ an async restore rejected after departure does not append a stale startup alert (17.913769ms)
+✔ a second boot in the same document cannot acquire another lease or stop the first Game (19.333237ms)
+✔ entry and actual lease cancel a pending lock immediately, without waiting for its late callback (18.649268ms)
+✔ entry and actual lease use one BFCache reload and permanently close the old writer (21.826216ms)
+✔ estuary waits for actual physics readiness before restoring or opening writes (17.890844ms)
+✔ crescent waits for actual physics readiness before restoring or opening writes (13.21541ms)
+✔ physics startup failure during entry releases ownership and never restores or marks ready (32.949059ms)
+✔ real constructor WebGL failure propagates in independent browser world (4.409773ms)
+✔ real constructor WebGL failure retains native retry UI (2.735386ms)
+✔ real asynchronous physics start rejection closes writes, pauses game and releases lease (1.491848ms)
+✔ real browser physics readiness succeeds without native UI and delayed hide obeys departure (0.916524ms)
+✔ native physics start rejection keeps existing logging behavior without browser lifecycle (0.523978ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 471.137071

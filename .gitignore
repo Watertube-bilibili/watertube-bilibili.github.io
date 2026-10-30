@@ -1,0 +1,5 @@
+/deploy/
+/browser-stage/
+__pycache__/
+*.pyc
+/source/runtime-candidate/sunset-coast/play/physics/neon-physics.wasm

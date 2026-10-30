@@ -1,0 +1,37 @@
+// Local, explicitly gated inspection controls in the ACTUAL Game/Godot world.
+// Starting poses/velocities are controlled test inputs. No damage or contact is fabricated.
+import * as T from './vendor/three.module.js';
+import {structuralDiagnosticsRequested,readStructuralDiagnostics} from './s-runtime.js';
+import {godotCarControls} from './godot-physics.js';
+import {structuralWheelStats} from './structural-wheels.js';
+export function mountWheelGameQA(g){
+ if(!structuralDiagnosticsRequested()||new URLSearchParams(location.search).get('collisionQA')!=='1')return;
+ const panel=document.createElement('section');panel.id='wheel-game-qa';panel.style.cssText='position:fixed;left:16px;top:148px;z-index:10001;background:#071d2ee8;color:#ecfaff;padding:10px;width:315px;font:12px/1.4 monospace;border:1px solid #70b8c7;border-radius:6px;pointer-events:auto';
+ const title=document.createElement('b');title.textContent='NATIVE GAME COLLISION QA · isolated preview';panel.append(title);
+ const buttons=document.createElement('div'),out=document.createElement('pre');out.style.cssText='white-space:pre-wrap;margin:7px 0';panel.append(buttons,out);document.body.append(panel);
+ let angle=0,pending=null,run=null,latest=null,contacts=[],captures=[],other=null,runNumber=0,history=[],lastControl=null;
+ const cameras=[[-5.5,2.3,-5.4],[6,1.7,2],[-5,1.3,1.1],[0,7,2]];
+ const view=()=>{const d=latest?.wheelDebris?.[0];if(angle%5===4&&d){const p=new T.Vector3(...d.pos);g.camera.fov=48;g.camera.updateProjectionMatrix();g.camera.position.copy(p).add(new T.Vector3(2.7,1.25,3));g.camera.lookAt(p);return;}const v=g.vehicle,o=cameras[angle%5%4],q=v.physicsQuaternion??v.root.quaternion,offset=new T.Vector3(...o).applyQuaternion(q);g.camera.fov=48;g.camera.updateProjectionMatrix();g.camera.position.copy(v.pos).add(offset);g.camera.lookAt(v.pos.clone().add(new T.Vector3(0,.65,0)));};
+ const originalCamera=g.updateCamera.bind(g);g.updateCamera=(...args)=>{originalCamera(...args);view();};
+ const snapshot=()=>({qaBuild:'attached-contact-skin-7',control:lastControl,label:run?.label??'inspection',nativeTick:g.physics?.lastTick,position:g.vehicle.pos.toArray(),condition:g.vehicle.condition,body:latest,structure:readStructuralDiagnostics(g.vehicle),other:other?{condition:other.condition,structure:readStructuralDiagnostics(other)}:null,contacts:contacts.slice(-30),money:g.money,paused:g.paused,history:history.slice(-32)});
+ const report=()=>{const s=readStructuralDiagnostics(g.vehicle),w=structuralWheelStats(g.vehicle);out.textContent=[run?.label??'READY (keys 1–8)',`Godot: ${g.physics?.backend??'loading'}`,`Native tick: ${g.physics?.lastTick??0}   ${g.paused?'PAUSED':'LIVE'}`,`Condition: ${g.vehicle.condition.toFixed(1)}%`, `Native speed: ${Number(latest?.speed??0).toFixed(3)} m/s`, `Node dent: ${Number(s.maxDisplacement).toFixed(3)} m`, `Real impact contacts: ${contacts.length}`,`Wheel native support: ${!!g.vehicle.nativeWheelDamageSupported}`,`Detached: ${(g.vehicle.nativeDetachedWheels??[]).join(', ')||'none'} | supports ${g.vehicle.nativeWheelSupportCount??'?'}`, ...w.map(q=>`W${q.index} load ${q.stress.toFixed(0)} flat ${(q.flat*100).toFixed(1)}% ${q.detached?'DETACHED':q.broken?'BROKEN':'attached'}`),other?`Other car: ${other.condition.toFixed(1)}% / ${Number(readStructuralDiagnostics(other).maxDisplacement).toFixed(3)} m`:'Second car: not spawned',`Balance (preview): $${g.money}`].join('\n');};
+ const save=label=>{const data=snapshot();captures.push(data);fetch('/qa-evidence/'+label,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}).catch(()=>{});};
+ const ready=()=>{if(!g.physics?.ready)return false;g.ui.closeModal?.();g.ui.closePhone?.();g.cockpit?.setOpen(false);g.inCar=true;g.person.root.visible=false;g.transition=null;g.autopilot=false;g.resetControls();g.vehicle.parkingBrakeEngaged=false;g.vehicle.touchDriveGear='D';g.selectedTouchGear='D';g.paused=false;g.ui.updateAll();return true;};
+ const place=(label,pos,yaw,linear,freeze=false)=>{if(!ready())return;contacts=[];history=[];runNumber++;pending={id:g.vehicle.physicsId,type:'teleport',pos:[pos[0],g.world.groundHeight(pos[0],pos[2])+.18+pos[1]+.72,pos[2]],quat:new T.Quaternion().setFromAxisAngle(new T.Vector3(0,1,0),yaw).toArray(),linear,angular:[0,0,0]};run={label,start:null,freeze,number:runNumber};g.physics.contactImpacts.forgetBody(g.vehicle.physicsId);};
+ const act={
+  '1':()=>place((g.vehicle.condition<99?'INSPECTION REPOSITION · damage retained':'BASELINE · settled actual atrium'),[1290,.03,120],0,[0,0,0],true),
+  '2':()=>place('FRONT · 26 m/s into existing atrium wall',[1290,.03,116],0,[0,0,-26]),
+  '3':()=>place('SIDE · 28 m/s into existing atrium wall',[1290,.03,108],Math.PI/2,[0,0,-28]),
+  '4':()=>{g.paused=false;g.resetControls();const r=g.repair();run={label:'REPAIR · '+(r?.status??'requested'),start:null,freeze:true,number:++runNumber};save('repair-'+runNumber);},
+  '5':()=>{angle++;view();report();},
+  '6':()=>{g.paused=!g.paused;if(!g.paused&&run)run.start=g.physics.lastTick;g.resetControls();view();report();save('inspection-'+runNumber+'-'+angle);},
+  '7':()=>{if(!ready())return;if(!other){other=g.makeVehicle('s',1297,121,0,false);other.parked=true;g.traffic.push(other);}report();},
+  '8':()=>save('manual-'+runNumber+'-'+angle),
+  '9':()=>place('MODERATE SIDE · 12 m/s real wall contact',[1290,.03,98],Math.PI/2,[0,0,-12]),
+  '0':()=>{place('DRIVE CHECK · same 60% throttle / native wheels',[1290,.03,125],Math.PI/2,[0,0,0]);run.drive=true;}
+ };
+ for(const [key,label]of [['1','1 Park'],['2','2 Front hit'],['3','3 Side hit'],['4','4 Repair'],['5','5 Camera'],['6','6 Pause'],['7','7 Other car'],['8','8 Record'],['0','0 Drive check'],['9','9 Moderate hit']]){const b=document.createElement('button');b.textContent=label;b.style.cssText='font:11px monospace;padding:5px;margin:3px 2px;color:white;background:#21526a;border:1px solid #73a5b8';b.onclick=e=>{e.stopPropagation();act[key]();};buttons.append(b);}
+ window.addEventListener('keydown',e=>{if(e.code.startsWith('Digit')&&act[e.code.slice(5)]&&!e.repeat){e.preventDefault();e.stopImmediatePropagation();act[e.code.slice(5)]();}},true);
+ const install=()=>{if(!g.physics?.ready)return;clearInterval(timer);const orig=g.physics.tick.bind(g.physics);g.physics.tick=s=>{latest=s.bodies?.find(b=>b.id===g.vehicle.physicsId)??latest;for(const c of s.contacts??[])if((c.a===g.vehicle.physicsId||c.b===g.vehicle.physicsId)&&c.relativeNormalSpeed>1.2&&c.impulse>80)contacts.push({...c,tick:s.tick});if(contacts.length>100)contacts.splice(0,contacts.length-100);const r=orig(s);if(pending){r.commands.push(pending);pending=null;run.start=s.tick;run.started=true;}if(run&&run.start==null)run.start=s.tick;if(run?.drive){const c=r.controls.find(c=>c.id===g.vehicle.physicsId);if(c)Object.assign(c,godotCarControls(g.vehicle,{throttle:.6,steer:0,brake:0,handbrake:false},s.dt));}lastControl=r.controls.find(c=>c.id===g.vehicle.physicsId)??null;if(run&&s.tick%10===0)history.push({tick:s.tick,pos:latest?.pos,linear:latest?.linear,quat:latest?.quat,supports:latest?.wheelSupportCount,debris:latest?.wheelDebris});const limit=run?.freeze?90:run?.drive?90:220;if(run&&s.tick-run.start>limit&&!g.paused){g.paused=true;r.paused=true;view();save('native-run-'+run.number);run.label+=' · captured';}report();return r;};g.renderer.setPixelRatio(.65);g.sensorInterval=10;g.aebEnabled=false;g.fcwEnabled=false;report();};
+ const timer=setInterval(install,300);install();
+}

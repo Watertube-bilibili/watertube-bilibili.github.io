@@ -1,0 +1,35 @@
+{
+  "source_files": 365,
+  "tests_files": 13,
+  "verified_import_hashes": 150,
+  "air_suite": {
+    "pass": 64,
+    "fail": 0,
+    "skip": 0
+  },
+  "lifecycle_default_suite": {
+    "pass": 187,
+    "fail": 0,
+    "skip": 0
+  },
+  "suites_overlap": true,
+  "browser_acceptance": "not run for this merge",
+  "deployment": "none",
+  "formal_gates": "unchanged",
+  "same_Game_sha256": "b58b7ede2f0a6c3e5624aa2e2b889595bab28b1f0b2c957be6f59d332a1d1f83",
+  "same_entry_sha256": "179a713241836d60db2ed8f9cc35e1e14d4bc8b00f67ff2dc53ab1473224ca6f",
+  "delta_sha256": "da472616ca28b01ccc0b1aa2f07cb92bbc92088120b94e86f494c31b9131e058",
+  "latest_baseline_fixes_preserved": [
+    "physicsReady startup gate",
+    "slot control preference",
+    "legacy-career mutation rejection",
+    "truthful preview release metadata",
+    "chooser BFCache generation and fresh slot list"
+  ],
+  "delta_files": 24,
+  "chooser_focused_suite": {
+    "pass": 5,
+    "fail": 0,
+    "skip": 0
+  }
+}

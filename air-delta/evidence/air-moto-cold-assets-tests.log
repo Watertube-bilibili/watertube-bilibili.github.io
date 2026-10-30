@@ -1,0 +1,394 @@
+TAP version 13
+# Subtest: production browser worlds retain planar capabilities and deny unsupported save content
+ok 1 - production browser worlds retain planar capabilities and deny unsupported save content
+  ---
+  duration_ms: 6.127891
+  type: 'test'
+  ...
+# Subtest: explicit local air and motorcycle options select only the requested adapters
+ok 2 - explicit local air and motorcycle options select only the requested adapters
+  ---
+  duration_ms: 8.202154
+  type: 'test'
+  ...
+# Subtest: public hosts, ambiguous options and production-slot air injection fail closed
+ok 3 - public hosts, ambiguous options and production-slot air injection fail closed
+  ---
+  duration_ms: 13.916429
+  type: 'test'
+  ...
+# Subtest: formal lifecycle remains the sole BFCache reload owner, local previews reload once
+ok 4 - formal lifecycle remains the sole BFCache reload owner, local previews reload once
+  ---
+  duration_ms: 1.61402
+  type: 'test'
+  ...
+# Subtest: mica_scooter actual GLB backend throttle/steer/brake + wheel and quaternion rendering
+ok 5 - mica_scooter actual GLB backend throttle/steer/brake + wheel and quaternion rendering
+  ---
+  duration_ms: 169.820546
+  type: 'test'
+  ...
+# Subtest: ember_street actual GLB backend throttle/steer/brake + wheel and quaternion rendering
+ok 6 - ember_street actual GLB backend throttle/steer/brake + wheel and quaternion rendering
+  ---
+  duration_ms: 88.882884
+  type: 'test'
+  ...
+# Subtest: ridge_dual actual GLB backend throttle/steer/brake + wheel and quaternion rendering
+ok 7 - ridge_dual actual GLB backend throttle/steer/brake + wheel and quaternion rendering
+  ---
+  duration_ms: 49.667476
+  type: 'test'
+  ...
+# Subtest: production reset serial applies once then physics continues; pause and hidden preserve body
+ok 8 - production reset serial applies once then physics continues; pause and hidden preserve body
+  ---
+  duration_ms: 21.921281
+  type: 'test'
+  ...
+# Subtest: actual acceleration hits thin finite 3D wall, damage reported, no through-wall travel
+ok 9 - actual acceleration hits thin finite 3D wall, damage reported, no through-wall travel
+  ---
+  duration_ms: 106.645564
+  type: 'test'
+  ...
+# Subtest: height-separated overhead box does not block motorcycle below it
+ok 10 - height-separated overhead box does not block motorcycle below it
+  ---
+  duration_ms: 37.24637
+  type: 'test'
+  ...
+# Subtest: moving bike hits parked bike with reciprocal impulses and damage identities
+ok 11 - moving bike hits parked bike with reciprocal impulses and damage identities
+  ---
+  duration_ms: 99.485235
+  type: 'test'
+  ...
+# Subtest: moving bike couples with planar car without losing vertical collision separation
+ok 12 - moving bike couples with planar car without losing vertical collision separation
+  ---
+  duration_ms: 216.193746
+  type: 'test'
+  ...
+# Subtest: default backend stays gated and optional native capabilities remain blocked
+ok 13 - default backend stays gated and optional native capabilities remain blocked
+  ---
+  duration_ms: 16.238886
+  type: 'test'
+  ...
+# Subtest: actual Game.toggleEntry/animateEntry use safe exit and one reset; fast dismount rejected
+ok 14 - actual Game.toggleEntry/animateEntry use safe exit and one reset; fast dismount rejected
+  ---
+  duration_ms: 60.062934
+  type: 'test'
+  ...
+# Subtest: mica_scooter real Game snapshot → isolated delivery save → fresh body, no refill or foreign writes
+ok 15 - mica_scooter real Game snapshot → isolated delivery save → fresh body, no refill or foreign writes
+  ---
+  duration_ms: 49.651415
+  type: 'test'
+  ...
+# Subtest: ember_street real Game snapshot → isolated delivery save → fresh body, no refill or foreign writes
+ok 16 - ember_street real Game snapshot → isolated delivery save → fresh body, no refill or foreign writes
+  ---
+  duration_ms: 43.875329
+  type: 'test'
+  ...
+# Subtest: ridge_dual real Game snapshot → isolated delivery save → fresh body, no refill or foreign writes
+ok 17 - ridge_dual real Game snapshot → isolated delivery save → fresh body, no refill or foreign writes
+  ---
+  duration_ms: 134.216308
+  type: 'test'
+  ...
+# Subtest: t=0 touching thin wall still catches inward swept motion
+ok 18 - t=0 touching thin wall still catches inward swept motion
+  ---
+  duration_ms: 0.876974
+  type: 'test'
+  ...
+# Subtest: finite overhead surface cannot teleport motorcycle to upper floor
+ok 19 - finite overhead surface cannot teleport motorcycle to upper floor
+  ---
+  duration_ms: 77.47456
+  type: 'test'
+  ...
+# Subtest: malformed world collider stops before partial physical state and time commit
+ok 20 - malformed world collider stops before partial physical state and time commit
+  ---
+  duration_ms: 27.631788
+  type: 'test'
+  ...
+# Subtest: high relative motion broadphase retains swept pair, not just endpoint distance
+ok 21 - high relative motion broadphase retains swept pair, not just endpoint distance
+  ---
+  duration_ms: 27.341926
+  type: 'test'
+  ...
+# Subtest: authored finite ramp: actual drive climbs, leaves edge airborne, lands back on terrain
+ok 22 - authored finite ramp: actual drive climbs, leaves edge airborne, lands back on terrain
+  ---
+  duration_ms: 86.433465
+  type: 'test'
+  ...
+# Subtest: reserve exact high/low pressure integral and timestep partition invariance
+ok 23 - reserve exact high/low pressure integral and timestep partition invariance
+  ---
+  duration_ms: 2.652114
+  type: 'test'
+  ...
+# Subtest: malformed saves never grant full tank; compressor only parked upright
+ok 24 - malformed saves never grant full tank; compressor only parked upright
+  ---
+  duration_ms: 0.29379
+  type: 'test'
+  ...
+# Subtest: three stable IDs keep distinct flight and ground-boost permissions
+ok 25 - three stable IDs keep distinct flight and ground-boost permissions
+  ---
+  duration_ms: 2.062163
+  type: 'test'
+  ...
+# Subtest: force-only controller never mutates body; boost brake veto and fade
+ok 26 - force-only controller never mutates body; boost brake veto and fade
+  ---
+  duration_ms: 0.981321
+  type: 'test'
+  ...
+# Subtest: real integrated launch, hover, lateral control, brake and landing on plane
+ok 27 - real integrated launch, hover, lateral control, brake and landing on plane
+  ---
+  duration_ms: 38.884001
+  type: 'test'
+  ...
+# Subtest: empty battery enters unpowered; empty air cannot generate wrench
+ok 28 - empty battery enters unpowered; empty air cannot generate wrench
+  ---
+  duration_ms: 0.556325
+  type: 'test'
+  ...
+# Subtest: repair/reset does not refill or relaunch held toggle and is idempotent
+ok 29 - repair/reset does not refill or relaunch held toggle and is idempotent
+  ---
+  duration_ms: 0.588546
+  type: 'test'
+  ...
+# Subtest: browser telemetry preserves identity/reset/fuel; mismatches refuse
+ok 30 - browser telemetry preserves identity/reset/fuel; mismatches refuse
+  ---
+  duration_ms: 1.059148
+  type: 'test'
+  ...
+# Subtest: invalid dt/terrain and unsupported maneuver reject before controller mutation
+ok 31 - invalid dt/terrain and unsupported maneuver reject before controller mutation
+  ---
+  duration_ms: 1.839704
+  type: 'test'
+  ...
+# Subtest: released attitude stabilizes over 20s without numerical energy explosion
+ok 32 - released attitude stabilizes over 20s without numerical energy explosion
+  ---
+  duration_ms: 32.467345
+  type: 'test'
+  ...
+# Subtest: invalid force overflow leaves live controller and rigid body untouched
+ok 33 - invalid force overflow leaves live controller and rigid body untouched
+  ---
+  duration_ms: 1.066459
+  type: 'test'
+  ...
+# Subtest: jets use delivered local wrench, not held controls at empty pressure
+ok 34 - jets use delivered local wrench, not held controls at empty pressure
+  ---
+  duration_ms: 0.346735
+  type: 'test'
+  ...
+# Subtest: high downward velocity delivers actual ground collision impulse
+ok 35 - high downward velocity delivers actual ground collision impulse
+  ---
+  duration_ms: 0.526584
+  type: 'test'
+  ...
+# Subtest: legacy air ledger serialize/restore preserves live amount without refill
+ok 36 - legacy air ledger serialize/restore preserves live amount without refill
+  ---
+  duration_ms: 2.534539
+  type: 'test'
+  ...
+# Subtest: prototype model IDs, invalid serials and invalid instance identities rejected
+ok 37 - prototype model IDs, invalid serials and invalid instance identities rejected
+  ---
+  duration_ms: 0.284117
+  type: 'test'
+  ...
+# Subtest: high-rate free air body stays finite with low-pressure controller
+ok 38 - high-rate free air body stays finite with low-pressure controller
+  ---
+  duration_ms: 72.984659
+  type: 'test'
+  ...
+# Subtest: old repair serial cannot reset current air epoch
+ok 39 - old repair serial cannot reset current air epoch
+  ---
+  duration_ms: 0.507481
+  type: 'test'
+  ...
+# Subtest: browser unpowered telemetry clears flight toggle like existing state bridge
+ok 40 - browser unpowered telemetry clears flight toggle like existing state bridge
+  ---
+  duration_ms: 0.469197
+  type: 'test'
+  ...
+# Subtest: roadster actual GLB four-wheel drive, brake, tire telemetry and browser-owned pose
+ok 41 - roadster actual GLB four-wheel drive, brake, tire telemetry and browser-owned pose
+  ---
+  duration_ms: 200.791332
+  type: 'test'
+  ...
+# Subtest: roadster_thrust actual GLB four-wheel drive, brake, tire telemetry and browser-owned pose
+ok 42 - roadster_thrust actual GLB four-wheel drive, brake, tire telemetry and browser-owned pose
+  ---
+  duration_ms: 160.210186
+  type: 'test'
+  ...
+# Subtest: roadster_rocket actual GLB four-wheel drive, brake, tire telemetry and browser-owned pose
+ok 43 - roadster_rocket actual GLB four-wheel drive, brake, tire telemetry and browser-owned pose
+  ---
+  duration_ms: 120.393945
+  type: 'test'
+  ...
+# Subtest: real Rocket toggle input → integrated takeoff → local jets → landing on terrain
+ok 44 - real Rocket toggle input → integrated takeoff → local jets → landing on terrain
+  ---
+  duration_ms: 226.494879
+  type: 'test'
+  ...
+# Subtest: flight finite thin wall collision gives real impact and no pass-through
+ok 45 - flight finite thin wall collision gives real impact and no pass-through
+  ---
+  duration_ms: 213.392682
+  type: 'test'
+  ...
+# Subtest: pause/hidden and repair serial preserve air, old serial cannot force reset
+ok 46 - pause/hidden and repair serial preserve air, old serial cannot force reset
+  ---
+  duration_ms: 38.548302
+  type: 'test'
+  ...
+# Subtest: finite overhead deck does not teleport road car onto upper surface
+ok 47 - finite overhead deck does not teleport road car onto upper surface
+  ---
+  duration_ms: 6.027437
+  type: 'test'
+  ...
+# Subtest: actual Game snapshot isolated save/load retains model, instance, air ledger and energy
+ok 48 - actual Game snapshot isolated save/load retains model, instance, air ledger and energy
+  ---
+  duration_ms: 50.167029
+  type: 'test'
+  ...
+# Subtest: real Game.updatePlayer input chain reaches browser flight, blocks midair exit state
+ok 49 - real Game.updatePlayer input chain reaches browser flight, blocks midair exit state
+  ---
+  duration_ms: 172.18412
+  type: 'test'
+  ...
+# Subtest: one failed late physics tick rolls back live tank, ledger, pose and time
+ok 50 - one failed late physics tick rolls back live tank, ledger, pose and time
+  ---
+  duration_ms: 5.778762
+  type: 'test'
+  ...
+# Subtest: parked live tank recharges once, dormant ledger recharges independently
+ok 51 - parked live tank recharges once, dormant ledger recharges independently
+  ---
+  duration_ms: 44.292094
+  type: 'test'
+  ...
+# Subtest: box-only roof real downward probe enables lift-off; below roof is not projected above
+ok 52 - box-only roof real downward probe enables lift-off; below roof is not projected above
+  ---
+  duration_ms: 207.079147
+  type: 'test'
+  ...
+# Subtest: fast swept Roadster crossing retains finite wall despite far endpoint
+ok 53 - fast swept Roadster crossing retains finite wall despite far endpoint
+  ---
+  duration_ms: 2.132963
+  type: 'test'
+  ...
+# Subtest: cold restore awaits active mica_scooter asset without storage writes
+ok 54 - cold restore awaits active mica_scooter asset without storage writes
+  ---
+  duration_ms: 3.933212
+  type: 'test'
+  ...
+# Subtest: cold restore awaits active ember_street asset without storage writes
+ok 55 - cold restore awaits active ember_street asset without storage writes
+  ---
+  duration_ms: 0.674299
+  type: 'test'
+  ...
+# Subtest: cold restore awaits active ridge_dual asset without storage writes
+ok 56 - cold restore awaits active ridge_dual asset without storage writes
+  ---
+  duration_ms: 0.203388
+  type: 'test'
+  ...
+# Subtest: cold restore awaits active roadster asset without storage writes
+ok 57 - cold restore awaits active roadster asset without storage writes
+  ---
+  duration_ms: 0.155538
+  type: 'test'
+  ...
+# Subtest: cold restore awaits active roadster_thrust asset without storage writes
+ok 58 - cold restore awaits active roadster_thrust asset without storage writes
+  ---
+  duration_ms: 0.728585
+  type: 'test'
+  ...
+# Subtest: cold restore awaits active roadster_rocket asset without storage writes
+ok 59 - cold restore awaits active roadster_rocket asset without storage writes
+  ---
+  duration_ms: 0.520919
+  type: 'test'
+  ...
+# Subtest: asset failure never substitutes defaults or overwrites durable data
+ok 60 - asset failure never substitutes defaults or overwrites durable data
+  ---
+  duration_ms: 0.968897
+  type: 'test'
+  ...
+# Subtest: real Game.load→removeVehicle→makeVehicle→newVehicleInstanceId preserves world ID and air ledger
+ok 61 - real Game.load→removeVehicle→makeVehicle→newVehicleInstanceId preserves world ID and air ledger
+  ---
+  duration_ms: 3.625311
+  type: 'test'
+  ...
+# Subtest: genuinely occupied ID refuses before removing active objects or rewriting ledger
+ok 62 - genuinely occupied ID refuses before removing active objects or rewriting ledger
+  ---
+  duration_ms: 0.407023
+  type: 'test'
+  ...
+# Subtest: garage fixed identity remains stable while unrelated active world IDs remain reserved
+ok 63 - garage fixed identity remains stable while unrelated active world IDs remain reserved
+  ---
+  duration_ms: 0.523337
+  type: 'test'
+  ...
+# Subtest: 24 original Godot air reserve outputs match browser analytical port
+ok 64 - 24 original Godot air reserve outputs match browser analytical port
+  ---
+  duration_ms: 2.44591
+  type: 'test'
+  ...
+1..64
+# tests 64
+# suites 0
+# pass 64
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 4912.474157

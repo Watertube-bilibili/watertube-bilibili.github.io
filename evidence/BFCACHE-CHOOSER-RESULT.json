@@ -1,0 +1,36 @@
+{
+  "change": "BFCache hub refresh and stale async generation guards",
+  "baselineFullSuite": {
+    "tests": 437,
+    "pass": 434,
+    "fail": 0,
+    "skip": 3
+  },
+  "followupTargetedSuite": {
+    "tests": 5,
+    "pass": 5,
+    "fail": 0,
+    "skip": 0
+  },
+  "fullSuiteRerun": false,
+  "changedSource": [
+    "runtime-candidate/sunset-coast/play/browser-world-chooser.js",
+    "runtime-candidate/sunset-coast/play/tests/browser-world-chooser.test.mjs",
+    "runtime-candidate/sunset-coast/play/index.html",
+    "runtime-candidate/sunset-coast/index.html",
+    "runtime-candidate/sunset-coast/browser-worlds.html"
+  ],
+  "publicBrowserObservation": {
+    "httpsBothMapsCanCreateSlot": true,
+    "oldEstuarySlotRetainedAfterWebGLFailure": true,
+    "webGLDisabledInManagedEnvironment": true
+  },
+  "regressionsCovered": [
+    "BFCache newly-created slot visible and create button enabled",
+    "stale list ignored",
+    "late create cannot redirect after departure",
+    "old errors cannot overwrite new status",
+    "duplicate clicks rejected"
+  ],
+  "runtimeModuleSHA256": "f456f92a78494d2f3d948def256457c62bc8b58103719dc576480250c453a94c"
+}

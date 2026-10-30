@@ -1,8 +1,0 @@
-import {roadsterAirUnits,ROADSTER_AIR_CAPACITY} from './roadster-air-ledger.js';
-// Read-only view of the authoritative inventory; never advances time or fuel.
-export function roadsterAirDisplay(v,{paused=false}={}){
- const units=roadsterAirUnits(v),percent=Math.floor(units/ROADSTER_AIR_CAPACITY*100),full=units>=ROADSTER_AIR_CAPACITY,empty=units<.01,low=units<ROADSTER_AIR_CAPACITY*.15;
- const spraying=v?.roadsterState?.airSpraying===true,refilling=!paused&&!full&&v?.roadsterState?.airRefillEligible===true;
- const status=paused?'暂停补气':full?'已充满':spraying?'喷射耗气':refilling?'自动补气中':'停稳着地后补气';
- return {units,percent,full,empty,low,refilling,status,label:`储气 ${percent}%`,warning:empty?'气罐已空 · 请停稳着地补气':low?'气压偏低 · 推力减弱，请尽快着陆补气':'',english:full?'FULL':spraying?'USING AIR':refilling?'REFILLING':empty?'EMPTY / PARK TO REFILL':low?'LOW PRESSURE':'PARK TO REFILL'};
-}

@@ -1,0 +1,905 @@
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-air-rigidbody.js
+@@ -0,0 +1,30 @@
++// Experimental shared-convention wrench integrator. Angular algorithm copied unchanged
++// from independently checked browser-motorcycle-rigidbody.js; no motorcycle forces.
++// Caller must solve contacts. This file alone is NOT flight gameplay.
++import {Vector3 as V,Quaternion as Q} from './vendor/three.module.js';
++export function integrateAirWrench(body,wrench,dt){
++ if(!Number.isFinite(dt)||dt<=0||dt>1/60+1e-10||!Number.isFinite(body.config.mass)||body.config.mass<=0)throw Error('Invalid rigid timestep/mass');
++ const all=[...body.position.toArray(),...body.velocity.toArray(),...body.orientation.toArray(),...body.angularVelocity.toArray(),...body.inertia.toArray(),...wrench.force.toArray(),...wrench.torque.toArray()];
++ if(!all.every(Number.isFinite)||body.inertia.toArray().some(x=>x<=0)||Math.abs(body.orientation.length()-1)>1e-6)throw Error('Invalid rigid state/wrench');
++ const b={...body,position:body.position.clone(),velocity:body.velocity.clone(),orientation:body.orientation.clone(),angularVelocity:body.angularVelocity.clone()};
++ b.velocity.addScaledVector(wrench.force,dt/body.config.mass).addScaledVector(new V(0,-9.81,0),dt);b.position.addScaledVector(b.velocity,dt);
++ integrateRotation(b,wrench.torque,dt);
++ if(![...b.position.toArray(),...b.velocity.toArray(),...b.orientation.toArray(),...b.angularVelocity.toArray()].every(Number.isFinite))throw Error('Nonfinite rigid result');
++ Object.assign(body,b);return body;
++}
++function integrateRotation(b,torque,dt){
++ const q=b.orientation,L=b.angularVelocity.clone().applyQuaternion(q.clone().invert()).multiply(b.inertia).applyQuaternion(q);
++ const minInertia=Math.min(...b.inertia.toArray());
++ const count=Math.max(1,Math.ceil(dt*(L.length()+torque.length()*dt)/minInertia/.05));
++ if(count>1024)throw Error('Motorcycle angular integration budget exceeded');
++ const h=dt/count;
++ const omegaAt=(orientation,momentum)=>momentum.clone().applyQuaternion(orientation.clone().invert()).divide(b.inertia).applyQuaternion(orientation);
++ const rotate=(start,omega,duration)=>{const n=omega.length();return n>1e-14?start.clone().premultiply(new Q().setFromAxisAngle(omega.clone().divideScalar(n),n*duration)).normalize():start.clone();};
++ for(let i=0;i<count;i++){
++  const nextL=L.clone().addScaledVector(torque,h).multiplyScalar(Math.exp(-.3*h));
++  const midL=L.clone().add(nextL).multiplyScalar(.5);let omega=omegaAt(q,midL);
++  for(let iteration=0;iteration<8;iteration++)omega=omegaAt(rotate(q,omega,h*.5),midL);
++  q.copy(rotate(q,omega,h));L.copy(nextL);
++ }
++ b.angularVelocity.copy(omegaAt(q,L));
++}
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-motorcycle-adapter.js
+@@ -0,0 +1,44 @@
++import {Vector3 as V,Quaternion as Q} from './vendor/three.module.js';
++import {createMotorcycleBody,stepMotorcycleBody,resolveMotorcyclePlane} from './browser-motorcycle-rigidbody.js';
++import {BrowserMotorcycleSurface} from './browser-motorcycle-surface.js';
++import {collideBodies,staticBox,snapshotBody,collideBodyTriangle} from './browser-rigidbody-contacts.js';
++import {getVehicleCollider} from './vehicle-dynamics.js';
++import {captureVehiclePose,resetVehiclePose} from './render-motion.js';
++import {updateMotorcycleVisuals} from './motorcycle-asset.js';
++import {parkingBrakeControls} from './touch-transmission.js';
++const Y=new V(0,1,0),COM=new V(0,.72,0);
++export const BROWSER_MOTORCYCLE_IDS=Object.freeze(['mica_scooter','ember_street','ridge_dual']);
++export class BrowserMotorcycleAdapter {
++ constructor(game){this.game=game;this.states=new Map();this.surface=new BrowserMotorcycleSurface(game.world);this.tickContacts=new Map();this.stepped=new Set();}
++ begin(){for(const c of this.game.world.colliders??[])staticBox(c);this.surface.refresh();this.tickContacts.clear();this.stepped.clear();const desired=new Set(this.game.allVehicles());for(const v of this.states.keys())if(!desired.has(v)){this.states.delete(v);delete v.browserMotorcycleBody;}for(const [v,e]of this.states)e.previous=snapshotBody(e.body);}
++ checkpoint(){const states=[...this.states].map(([v,e])=>[v,e,{...e,body:{...e.body,position:e.body.position.clone(),orientation:e.body.orientation.clone(),velocity:e.body.velocity.clone(),angularVelocity:e.body.angularVelocity.clone()},published:e.published.clone()}]);return()=>{this.states.clear();for(const [v,e,s]of states){Object.assign(e.body,s.body);Object.assign(e,{...s,body:e.body});this.states.set(v,e);}this.tickContacts.clear();};}
++ config(v){const c=getVehicleCollider(v),height=Math.max(.7,(v.height??1.5)-.35);return{mass:v.mass??v.model.mass,size:[Math.max(.3,c.halfWidth*2-.08),height,c.halfLength*2-.1],collisionOffset:[c.offsetX??0,.2+height/2-.72,c.offsetZ??0],wheelOffsets:v.physicsWheelOffsets,power:v.model.power,maxSpeed:v.model.max,lateralGrip:v.lateralGrip??8.5,maxSteer:v.maxSteer??.6,powertrain:v.model.powertrain};}
++ state(v){let e=this.states.get(v);const changed=e&&(e.serial!==(v.physicsResetSerial??0)||e.published.distanceToSquared(v.pos)>1e-8||Math.abs(e.yaw-v.yaw)>1e-5);
++  if(!e||changed){const q=new Q().setFromAxisAngle(Y,v.yaw??0),body=createMotorcycleBody(this.config(v),{position:v.pos.clone().add(COM.clone().applyQuaternion(q)).toArray(),orientation:q.toArray(),velocity:[-Math.sin(v.yaw)*(v.speed??0),0,-Math.cos(v.yaw)*(v.speed??0)]});e={body,previous:snapshotBody(body),serial:v.physicsResetSerial??0,published:v.pos.clone(),yaw:v.yaw};this.states.set(v,e);resetVehiclePose(v);v.browserMotorcycleBody=true;}return e;
++ }
++ finish(dt){for(const v of this.game.allVehicles())if(v.kind==='motorcycle'&&BROWSER_MOTORCYCLE_IDS.includes(v.model.id)&&!this.stepped.has(v))this.step(v,{throttle:0,steer:0,brake:1},dt,false);}
++ step(v,input,dt,isPlayer){this.stepped.add(v);const e=this.state(v),b=e.body;captureVehiclePose(v);e.previous=snapshotBody(b);e.oldPosition=v.pos.clone();e.oldSpeed=v.speed;
++  const controls=parkingBrakeControls(v,input),occupied=isPlayer&&!!this.game.inCar;v.motorcycleOccupied=occupied;
++  // Energy remains the existing per-vehicle save field, whose UI label already
++  // distinguishes fuel from battery. No new key or silent refill on ICE/EV switch.
++  const energyBefore=b.energyUsed;
++  stepMotorcycleBody(b,{...controls,brake:controls.brake===true?1:controls.brake,occupied,condition:v.condition,energy:v.battery,engineStalled:!!v.engineStalled},dt,this.surface);
++  const world=this.game.world;
++  for(const c of world.colliders??[]){if(Math.hypot(c.x-b.position.x,c.z-b.position.z)>Math.hypot(c.w,c.d)+v.wheelBase+3+b.position.distanceTo(e.previous.position))continue;const hit=collideBodies(b,staticBox(c),e.previous);if(hit)this.remember(v,c.id??c,hit);}
++  // Terrain is a heightfield; authored elevated surfaces are finite, double-sided
++  // triangle manifolds. Never select a roof above the chassis as an infinite floor.
++  for(const face of this.surface.nearby(b,e.previous)){const hit=collideBodyTriangle(b,face,e.previous);if(hit&&hit.impactSpeed>1)this.remember(v,face,hit);}
++  const height=world.groundHeight?.(b.position.x,b.position.z)??0,normal=this.surface.normal(b.position.x,b.position.z),point=new V(b.position.x,height,b.position.z);
++  const groundHit=resolveMotorcyclePlane(b,{normal,offset:point.dot(normal),friction:.6});if(groundHit&&groundHit.impactSpeed>1)this.remember(v,'terrain',groundHit);
++  const bounds=world.bounds;if(bounds){const sides=[[new V(1,0,0),bounds.minX+2],[new V(-1,0,0),-bounds.maxX+2],[new V(0,0,1),bounds.minZ+2],[new V(0,0,-1),-bounds.maxZ+2]];for(const [normal,offset]of sides){const hit=resolveMotorcyclePlane(b,{normal,offset});if(hit)this.remember(v,'boundary',hit);}}
++  if(isPlayer)v.battery=Math.max(0,v.battery-(b.energyUsed-energyBefore));this.publish(v,e,dt);
++ }
++ publish(v,e,dt=0){const b=e.body,oldSpeed=e.oldSpeed??v.speed,oldPosition=e.oldPosition??v.pos.clone();v.physicsQuaternion??=new Q();v.physicsQuaternion.copy(b.orientation);v.pos.copy(b.position).sub(COM.clone().applyQuaternion(b.orientation));const forward=new V(0,0,-1).applyQuaternion(b.orientation);v.yaw=Math.atan2(-forward.x,-forward.z);v.speed=b.velocity.dot(forward);v.yawRate=b.angularVelocity.y;v.lateralSpeed=b.velocity.dot(new V(1,0,0).applyQuaternion(b.orientation));v.slipVelocityX=b.velocity.x+Math.sin(v.yaw)*v.speed;v.slipVelocityZ=b.velocity.z+Math.cos(v.yaw)*v.speed;v.travelDistance=dt>0?oldPosition.distanceTo(v.pos)*Math.sign(v.speed||oldSpeed||1):0;v.longitudinalAcceleration=dt>0?(v.speed-oldSpeed)/dt:0;v.steer=b.steer;v.manualBrakePressure=b.manualPressure;v.brakeAmount=b.brakeAmount;v.brake=b.brakeAmount>.025;v.grounded=b.supportCount>0;v.wheelSupportCount=b.supportCount;v.wheelCompressions=[...b.compressions];v.wheelVisualCompressions=[...b.compressions];v.suspensionRest=.18;v.suspensionRebound=.08;v.driftAmount=0;v.root.position.copy(v.pos);v.root.quaternion.copy(b.orientation);updateMotorcycleVisuals(v,dt);e.published.copy(v.pos);e.yaw=v.yaw;e.serial=v.physicsResetSerial??0;}
++ remember(v,other,hit){let contacts=this.tickContacts.get(v);if(!contacts)this.tickContacts.set(v,contacts=new Map());if(!contacts.has(other)||contacts.get(other).impactSpeed<hit.impactSpeed)contacts.set(other,hit);}
++ planarBody(v,previous=false){const c=getVehicleCollider(v),height=Math.max(.7,(v.height??1.5)-.35),p=previous?v.collisionPrevious:null,yaw=p?.yaw??v.yaw,mass=v.mass??v.model.mass??1500,size=[c.halfWidth*2,height,c.halfLength*2];return{planar:true,config:{mass,size,collisionOffset:[c.offsetX??0,.2+height/2,c.offsetZ??0]},position:new V(p?.x??v.pos.x,v.pos.y,p?.z??v.pos.z),orientation:new Q().setFromAxisAngle(Y,yaw),velocity:new V(-Math.sin(v.yaw)*v.speed+(v.slipVelocityX??0),0,-Math.cos(v.yaw)*v.speed+(v.slipVelocityZ??0)),angularVelocity:new V(0,v.yawRate??0,0),inertia:new V(Infinity,mass*(size[0]**2+size[2]**2)/12,Infinity)};}
++ pair(a,b){if(a.kind!=='motorcycle'&&b.kind!=='motorcycle')return null;const ea=a.kind==='motorcycle'?this.state(a):null,eb=b.kind==='motorcycle'?this.state(b):null,A=ea?.body??this.planarBody(a),B=eb?.body??this.planarBody(b),hit=collideBodies(A,B,ea?.previous??this.planarBody(a,true),eb?.previous??this.planarBody(b,true));if(!hit)return null;
++  for(const [v,e,body]of [[a,ea,A],[b,eb,B]]){if(e)this.publish(v,e);else{v.pos.x=body.position.x;v.pos.z=body.position.z;const f=new V(0,0,-1).applyQuaternion(body.orientation);v.yaw=Math.atan2(-f.x,-f.z);v.speed=body.velocity.dot(f);v.yawRate=body.angularVelocity.y;v.slipVelocityX=body.velocity.x+Math.sin(v.yaw)*v.speed;v.slipVelocityZ=body.velocity.z+Math.cos(v.yaw)*v.speed;}}
++  this.remember(a,b,hit);this.remember(b,a,{...hit,normal:hit.normal.clone().negate()});return hit;
++ }
++ flushDamage(){for(const [v,contacts]of this.tickContacts)for(const [other,hit]of contacts){if(hit.impactSpeed<.75)continue;const dynamic=typeof other==='object'&&other?.model;this.game.applyCollisionDamage(v,hit.impactSpeed,!!dynamic,{...hit,normalImpulse:hit.impulse,bodyMass:v.mass??v.model.mass,otherMass:dynamic?(other.mass??other.model.mass):Infinity},dynamic?other:null);}}
++}
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-motorcycle-surface.js
+@@ -0,0 +1,21 @@
++import {Vector3 as V,Ray,Triangle} from './vendor/three.module.js';
++import {physicsSurfaceMesh} from './physics-surfaces.js';
++// Existing world provider inputs only: true terrain function + authored surfaces.
++// A separate spatial index avoids traversing render meshes on every wheel tick.
++export class BrowserMotorcycleSurface {
++ constructor(world){this.world=world;this.cache=new WeakMap();this.groups=[];this.cells=new Map();this.wide=[];}
++ refresh(){const groups=[...[...(this.world.chunks?.values()??[])].map(c=>c.group),...[...(this.world.entities?.values()??[])].map(e=>e.group)].filter(Boolean);if(groups.length===this.groups.length&&groups.every((g,i)=>g===this.groups[i]))return;this.groups=groups;this.cells.clear();this.wide=[];
++  for(const group of groups){let triangles=this.cache.get(group);if(!triangles){let raw=[];group.traverse?.(o=>{if(o.userData?.surfaces)raw.push(...o.userData.surfaces);});if(!raw.length){const mesh=physicsSurfaceMesh(group,this.world.groundHeight??(()=>0));for(const i of mesh.indices)raw.push(...mesh.vertices.slice(i*3,i*3+3));}triangles=[];for(let i=0;i+8<raw.length;i+=9){if(!raw.slice(i,i+9).every(Number.isFinite))throw Error('Invalid authored motorcycle surface');const points=[0,3,6].map(j=>new V(...raw.slice(i+j,i+j+3))),normal=new Triangle(...points).getNormal(new V());if(normal.y>.05)triangles.push({points,normal});}this.cache.set(group,triangles);}
++   for(const face of triangles){const xs=face.points.map(p=>p.x),zs=face.points.map(p=>p.z),x0=Math.floor(Math.min(...xs)/32),x1=Math.floor(Math.max(...xs)/32),z0=Math.floor(Math.min(...zs)/32),z1=Math.floor(Math.max(...zs)/32);if((x1-x0+1)*(z1-z0+1)>4096){this.wide.push(face);continue;}for(let x=x0;x<=x1;x++)for(let z=z0;z<=z1;z++){const key=x+','+z;if(!this.cells.has(key))this.cells.set(key,[]);this.cells.get(key).push(face);}}
++  }
++ }
++ nearby(body,previous=body){const radius=Math.hypot(...body.config.size)/2+1,faces=new Set(this.wide);const xs=[body.position.x,previous.position.x],zs=[body.position.z,previous.position.z];for(let x=Math.floor((Math.min(...xs)-radius)/32);x<=Math.floor((Math.max(...xs)+radius)/32);x++)for(let z=Math.floor((Math.min(...zs)-radius)/32);z<=Math.floor((Math.max(...zs)+radius)/32);z++)for(const f of this.cells.get(x+','+z)??[])faces.add(f);return faces;}
++ normal(x,z){const n=this.world.groundNormal?.(x,z);if(n)return new V(n.x,n.y,n.z).normalize();const h=this.world.groundHeight??(()=>0),e=.1;return new V(-(h(x+e,z)-h(x-e,z))/(2*e),1,-(h(x,z+e)-h(x,z-e))/(2*e)).normalize();}
++ raycast(origin,direction,maxDistance){
++  const h=this.world.groundHeight??(()=>0),point=origin.clone(),signed=t=>{point.copy(origin).addScaledVector(direction,t);const height=h(point.x,point.z);if(!Number.isFinite(height))throw Error('Invalid motorcycle terrain height');return point.y-height;};let hit=null,last=0,value=signed(0);
++  if(value>=0)for(let i=1;i<=12;i++){const end=maxDistance*i/12,next=signed(end);if(next<=0){let lo=last,hi=end;for(let j=0;j<16;j++){const mid=(lo+hi)/2;if(signed(mid)>0)lo=mid;else hi=mid;}const distance=(lo+hi)/2,position=origin.clone().addScaledVector(direction,distance),normal=this.normal(position.x,position.z);if(normal.dot(direction)<0)hit={position,normal,distance};break;}last=end;value=next;}
++  const end=origin.clone().addScaledVector(direction,maxDistance),faces=new Set(this.wide);for(let x=Math.floor(Math.min(origin.x,end.x)/32);x<=Math.floor(Math.max(origin.x,end.x)/32);x++)for(let z=Math.floor(Math.min(origin.z,end.z)/32);z<=Math.floor(Math.max(origin.z,end.z)/32);z++)for(const f of this.cells.get(x+','+z)??[])faces.add(f);
++  const ray=new Ray(origin,direction);for(const face of faces){const p=ray.intersectTriangle(...face.points,true,new V());if(!p)continue;const distance=p.distanceTo(origin);if(distance<=maxDistance&&(!hit||distance<hit.distance))hit={position:p,normal:face.normal.clone(),distance};}
++  return hit;
++ }
++}
+--- a/source/runtime-candidate/sunset-coast/play/browser-physics.js
++++ b/source/runtime-candidate/sunset-coast/play/browser-physics.js
+@@ -1,3 +1,6 @@
++import {tickRoadsterAirLedger} from './roadster-air-ledger.js';
++import {BrowserRoadsterAdapter,BROWSER_ROADSTER_IDS} from './browser-roadster-adapter.js';
++import {BrowserMotorcycleAdapter,BROWSER_MOTORCYCLE_IDS} from './browser-motorcycle-adapter.js';
+ import {WORLD_MIN_X,WORLD_LIMIT} from './regions.js';
+ import {FixedStepClock} from './fixed-step-clock.mjs';
+ import {stepVehicleMotion,updateVehicleVisuals} from './vehicle-physics.js';
+@@ -5,8 +8,8 @@
+ import {resolveVehicleWorld,resolveVehiclePair} from './vehicle-dynamics.js';
+ export const BROWSER_CAPABILITIES=Object.freeze({carPlanar:true,walk:true,deliveryClock:true,native3D:false,motorcycle:false,aircraft:false,roadsterFlight:false,structuralWheelDetachment:false,surfaceMeshVehicleCollision:false});
+ export class BrowserPhysicsSystem {
+- constructor(game,{hidden=()=>globalThis.document?.hidden??false}={}){this.game=game;this.hidden=hidden;this.clock=new FixedStepClock();this.lastTick=0;this.ready=false;this.failed=false;this.drivesRender=false;this.backend='Browser planar experiment (NOT native 3D)';this.capabilities=BROWSER_CAPABILITIES;this.metrics={ticks:0,bodies:0,contacts:0,droppedSeconds:0};this.unsupported=new Set();}
+- supportsVehicle(v){return v?.kind!=='motorcycle'&&v?.kind!=='aircraft'&&!/roadster/i.test(v?.model?.id??'');}
++ constructor(game,{hidden=()=>globalThis.document?.hidden??false,motorcycles=false,roadsters=false}={}){this.game=game;this.hidden=hidden;this.clock=new FixedStepClock();this.lastTick=0;this.ready=false;this.failed=false;this.drivesRender=false;this.backend='Browser planar experiment (NOT native 3D)';this.roadsters=roadsters?new BrowserRoadsterAdapter(game):null;this.motorcycles=motorcycles?new BrowserMotorcycleAdapter(game):null;this.capabilities=Object.freeze({...BROWSER_CAPABILITIES,motorcycle:!!motorcycles,motorcycleRigidBody:!!motorcycles,roadsterManualFlight:!!roadsters,roadsterFlight:false,roadsterManeuvers:false});this.metrics={ticks:0,bodies:0,contacts:0,droppedSeconds:0};this.unsupported=new Set();}
++ supportsVehicle(v){return (v?.kind!=='motorcycle'||(!!this.motorcycles&&BROWSER_MOTORCYCLE_IDS.includes(v?.model?.id)))&&v?.kind!=='aircraft'&&(!/roadster/i.test(v?.model?.id??'')||!!this.roadsters&&BROWSER_ROADSTER_IDS.includes(v?.model?.id));}
+  reject(feature){this.unsupported.add(feature);this.game.ui?.toast('浏览器实验暂不支持：'+feature+'；正式功能尚未迁移','error');return false;}
+  async start(){
+   const g=this.game;
+@@ -14,10 +17,10 @@
+   globalThis.document?.addEventListener('visibilitychange',()=>this.clock.suspend(),{signal:this.lifecycle.signal});
+   globalThis.window?.addEventListener('blur',()=>this.clock.suspend(),{signal:this.lifecycle.signal});
+   globalThis.window?.addEventListener('pagehide',()=>{this.clock.suspend();this.ready=false;this.lifecycle.abort();},{once:true});
+-  const garage=g.ui?.openGarage?.bind(g.ui);if(garage)g.ui.openGarage=(...args)=>{const result=garage(...args);for(const b of document.querySelectorAll('[data-garage-car]'))if(/mica_scooter|ember_street|ridge_dual|roadster/i.test(b.dataset.garageCar)){b.disabled=true;b.textContent='浏览器物理尚未支持 · 保留原版';}return result;};
++  const garage=g.ui?.openGarage?.bind(g.ui);if(garage)g.ui.openGarage=(...args)=>{const result=garage(...args);for(const b of document.querySelectorAll('[data-garage-car]'))if((!this.roadsters&&/roadster/i.test(b.dataset.garageCar))||(!this.motorcycles&&BROWSER_MOTORCYCLE_IDS.includes(b.dataset.garageCar))){b.disabled=true;b.textContent='浏览器物理尚未支持 · 保留原版';}return result;};
+   const entry=g.toggleEntry?.bind(g);if(entry)g.toggleEntry=()=>!g.inCar&&g.nearestCar&&!this.supportsVehicle(g.nearestCar)?this.reject('该车型上车'):entry();
+   for(const service of [g.aircraft,g.flight])for(const name of ['board','start','spawn'])if(typeof service?.[name]==='function')service[name]=()=>{this.reject('飞行');return {ok:false,reason:'浏览器实验未实现飞行物理'};};
+-  const original=g.spawnCar?.bind(g);if(original)g.spawnCar=id=>/mica_scooter|ember_street|ridge_dual|roadster/i.test(id)?this.reject('该车型'):original(id);
++  const original=g.spawnCar?.bind(g);if(original)g.spawnCar=id=>((!this.roadsters&&/roadster/i.test(id))||(!this.motorcycles&&BROWSER_MOTORCYCLE_IDS.includes(id)))?this.reject('该车型'):original(id);
+   if(!this.supportsVehicle(g.vehicle))throw Error('该实验存档车型尚不支持；原存档保留');
+   // The production world lifecycle owns BFCache reload; local previews retain their own owner.
+   if(!g.browserWorldLifecycle&&!globalThis.window?.__sunriseBrowserWorldLifecycle)globalThis.window?.addEventListener('pageshow',event=>{if(event.persisted)globalThis.location.reload();});
+@@ -31,14 +34,23 @@
+   const g=this.game;
+   this.clock.advance(now,g.paused||this.hidden(),(dt,tick)=>{
+    if(g.paused||this.hidden()||this.failed)return false;
+-   this.lastTick=tick;g.beginVehicleStep();g.world.update(g.position);g.physicsTick(dt);
+-   if(g.paused||this.hidden()||this.failed)return false;
+-   this.resolveContacts();
+-   this.metrics.ticks=tick;this.metrics.bodies=g.allVehicles().length;
++   const previousTick=this.lastTick,time=g.time,restoreVehicles=(this.motorcycles||this.roadsters)?checkpointVehicles(g.allVehicles()):null,restoreBodies=this.motorcycles?.checkpoint(),restoreAir=this.roadsters?.checkpoint();
++   try{
++    g.world.update(g.position);this.motorcycles?.begin();this.roadsters?.begin();
++    this.lastTick=tick;g.beginVehicleStep();g.physicsTick(dt);
++    if(g.paused||this.hidden()||this.failed)return false;
++    this.motorcycles?.finish(dt);this.roadsters?.finish(dt);this.resolveContacts();this.motorcycles?.flushDamage();this.roadsters?.flushDamage();if(this.roadsters)tickRoadsterAirLedger(g,dt,new Set(this.roadsters.states.keys()));
++    this.metrics.ticks=tick;this.metrics.bodies=g.allVehicles().length;
++   }catch(error){
++    restoreVehicles?.();restoreBodies?.();restoreAir?.();g.time=time;this.lastTick=previousTick;this.clock.tick=previousTick;this.failed=true;g.paused=true;this.error=error;
++    g.ui?.toast?.('浏览器物理异常，已暂停：'+error.message+'；请刷新恢复最近存档','error');return false;
++   }
+   });this.metrics.droppedSeconds=this.clock.droppedSeconds;
+  }
+  submitVehicle(v,input,dt,isPlayer=false){
+   if(!this.supportsVehicle(v)){if(isPlayer)this.reject(v.kind??v.model?.id);v.speed=0;return;}
++  if(BROWSER_ROADSTER_IDS.includes(v.model.id)){this.roadsters.step(v,input,dt,isPlayer);return;}
++  if(v.kind==='motorcycle'){this.motorcycles.step(v,input,dt,isPlayer);return;}
+   captureVehiclePose(v);const previous={x:v.pos.x,z:v.pos.z,yaw:v.yaw};
+   stepVehicleMotion(v,input,dt);
+   const hit=resolveVehicleWorld(v,previous,this.game.world.colliders??[]);
+@@ -51,9 +63,17 @@
+  resolveContacts(){
+   const cars=this.game.allVehicles().filter(v=>this.supportsVehicle(v));
+   for(let i=0;i<cars.length;i++)for(let j=i+1;j<cars.length;j++){
+-   const a=cars[i],b=cars[j];if(Math.hypot(a.pos.x-b.pos.x,a.pos.z-b.pos.z)>30)continue;
++   const a=cars[i],b=cars[j];const movement=Math.hypot(a.pos.x-(a.collisionPrevious?.x??a.pos.x),a.pos.z-(a.collisionPrevious?.z??a.pos.z))+Math.hypot(b.pos.x-(b.collisionPrevious?.x??b.pos.x),b.pos.z-(b.collisionPrevious?.z??b.pos.z));if(Math.hypot(a.pos.x-b.pos.x,a.pos.z-b.pos.z)>30+movement)continue;
++   if(BROWSER_ROADSTER_IDS.includes(a.model.id)||BROWSER_ROADSTER_IDS.includes(b.model.id)){if(this.roadsters.pairWith(a,b,this.motorcycles))this.metrics.contacts++;continue;}
++   if(a.kind==='motorcycle'||b.kind==='motorcycle'){if(this.motorcycles.pair(a,b))this.metrics.contacts++;continue;}
+    const hit=resolveVehiclePair(a,b,{previousA:a.collisionPrevious,previousB:b.collisionPrevious});if(!hit)continue;
+    this.metrics.contacts++;this.game.applyCollisionDamage(a,hit.impactSpeed,true,{...hit,normalSign:-1},b);this.game.applyCollisionDamage(b,hit.impactSpeed,true,{...hit,normalSign:1},a);
+   }
+  }
+ }
++
++function checkpointVehicles(vehicles){
++ const saved=vehicles.map(v=>{const scalar=Object.fromEntries(Object.entries(v).filter(([,x])=>x===null||['number','string','boolean','undefined'].includes(typeof x))),arrays=Object.fromEntries(['wheelCompressions','wheelVisualCompressions'].map(k=>[k,v[k]?.slice()]));
++  return{v,scalar,arrays,pos:v.pos.clone(),rootPosition:v.root.position.clone(),rootQuaternion:v.root.quaternion.clone(),q:v.physicsQuaternion?.clone(),previous:v.previousRenderPose?{...v.previousRenderPose,position:v.previousRenderPose.position.clone(),quaternion:v.previousRenderPose.quaternion?.clone(),wheels:v.previousRenderPose.wheels?.map(w=>({...w}))}:undefined,wheels:(v.wheels??[]).map(w=>({w,spinAngle:w.spinAngle,p:w.pivot.position.clone(),q:w.pivot.quaternion.clone(),sq:w.spin.quaternion.clone()}))};});
++ return()=>{for(const {v,scalar,arrays,pos,rootPosition,rootQuaternion,q,previous,wheels}of saved){for(const [k,x]of Object.entries(v))if((x===null||['number','string','boolean','undefined'].includes(typeof x))&&!(k in scalar))delete v[k];Object.assign(v,scalar);for(const[k,x]of Object.entries(arrays))if(x)v[k]=x;else delete v[k];v.pos.copy(pos);v.root.position.copy(rootPosition);v.root.quaternion.copy(rootQuaternion);if(q){v.physicsQuaternion??=q.clone();v.physicsQuaternion.copy(q);}else delete v.physicsQuaternion;if(previous)v.previousRenderPose=previous;else delete v.previousRenderPose;for(const x of wheels){x.w.spinAngle=x.spinAngle;x.w.pivot.position.copy(x.p);x.w.pivot.quaternion.copy(x.q);x.w.spin.quaternion.copy(x.sq);}}};
++}
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-rigidbody-contacts.js
+@@ -0,0 +1,100 @@
++// Local browser rigid-contact primitives. 3D OBB SAT + conservative swept interval.
++// A normal points B -> A. Planar cars are explicitly constrained, not fake 6DOF.
++import {Vector3 as V,Quaternion as Q,Triangle} from './vendor/three.module.js';
++const axes=[new V(1,0,0),new V(0,1,0),new V(0,0,1)],EPS=1e-8;
++export function bodyBox(body){validateBody(body);if(!body.config.size||body.config.size.length!==3||body.config.size.some(x=>!Number.isFinite(x)||x<=0))throw Error('Invalid body box dimensions');if(body.config.collisionOffset&&body.config.collisionOffset.some(x=>!Number.isFinite(x)))throw Error('Invalid collision offset');const q=body.orientation;return{center:new V(...(body.config.collisionOffset??[0,0,0])).applyQuaternion(q).add(body.position),half:body.config.size.map(x=>x/2),axes:axes.map(v=>v.clone().applyQuaternion(q)),body};}
++const radius=(b,n)=>b.half.reduce((sum,h,i)=>sum+h*Math.abs(b.axes[i].dot(n)),0);
++function directions(a,b){const result=[...a.axes,...b.axes].map(x=>x.clone());for(const x of a.axes)for(const y of b.axes){const z=x.clone().cross(y);if(z.lengthSq()>1e-10)result.push(z.normalize());}return result;}
++function support(b,n){const point=b.center.clone();for(let i=0;i<3;i++){const dot=b.axes[i].dot(n);if(Math.abs(dot)>1e-6)point.addScaledVector(b.axes[i],Math.sign(dot)*b.half[i]);}return point;}
++function point(a,b,n){return support(a,n.clone().negate()).add(support(b,n)).multiplyScalar(.5);}
++export function boxContact3D(a,b){const delta=a.center.clone().sub(b.center);let depth=Infinity,normal;
++ for(const axis of directions(a,b)){const d=delta.dot(axis),overlap=radius(a,axis)+radius(b,axis)-Math.abs(d);if(overlap< -EPS)return null;if(overlap<depth){depth=Math.max(0,overlap);normal=axis.clone().multiplyScalar(d<0?-1:1);}}
++ return{normal,depth,point:point(a,b,normal),time:1,swept:false};
++}
++// Both endpoint bases plus angular-radius padding conservatively cover rotation.
++// Conservative early stop is preferable to tunnelling; not an exact curved TOI.
++export function sweepBoxes3D(a0,a1,b0,b1=b0){
++ const initial=boxContact3D(a0,b0);if(initial&&initial.depth>1e-6)return{...initial,time:0,swept:true};
++ const delta=a0.center.clone().sub(b0.center),motion=a1.center.clone().sub(a0.center).sub(b1.center.clone().sub(b0.center));let enter=0,leave=1,normal;
++ const turn=(a,b)=>Math.max(...a.axes.map((x,i)=>Math.acos(Math.max(-1,Math.min(1,x.dot(b.axes[i]))))));
++ const padding=Math.hypot(...a0.half)*Math.sin(Math.min(Math.PI/2,turn(a0,a1)))+Math.hypot(...b0.half)*Math.sin(Math.min(Math.PI/2,turn(b0,b1)));
++ for(const axis of [...directions(a0,b0),...directions(a1,b1)]){const extent=Math.max(radius(a0,axis),radius(a1,axis))+Math.max(radius(b0,axis),radius(b1,axis))+padding;const at=delta.dot(axis),rate=motion.dot(axis);
++  if(Math.abs(rate)<EPS){if(Math.abs(at)>extent)return null;continue;}
++  let t0=(-extent-at)/rate,t1=(extent-at)/rate;let sign=-1;if(t0>t1){[t0,t1]=[t1,t0];sign=1;}
++  if(t0>enter||(Math.abs(t0-enter)<EPS&&!normal)){enter=t0;normal=axis.clone().multiplyScalar(sign);}leave=Math.min(leave,t1);if(enter>leave)return null;
++ }
++ if(!normal||enter<0||enter>1)return boxContact3D(a1,b1);
++ const aa={...a0,center:a0.center.clone().lerp(a1.center,enter)},bb={...b0,center:b0.center.clone().lerp(b1.center,enter)};
++ return{normal,depth:0,point:point(aa,bb,normal),time:enter,swept:true};
++}
++function inverseLinear(body,v){if(body.static)return new V();return body.planar?new V(v.x/body.config.mass,0,v.z/body.config.mass):v.clone().multiplyScalar(1/body.config.mass);}
++function inverseAngular(body,v){if(body.static)return new V();if(body.planar)return new V(0,v.y/body.inertia.y,0);return v.clone().applyQuaternion(body.orientation.clone().invert()).divide(body.inertia).applyQuaternion(body.orientation);}
++const velocityAt=(b,r)=>b.velocity.clone().add(b.angularVelocity.clone().cross(r));
++const effective=(b,r,n)=>n.dot(inverseLinear(b,n))+n.dot(inverseAngular(b,r.clone().cross(n)).cross(r));
++function impulse(b,j,r){if(b.static)return;b.velocity.add(inverseLinear(b,j));b.angularVelocity.add(inverseAngular(b,r.clone().cross(j)));}
++export function resolveBodyContact(a,b,hit,options={}){
++ validateBody(a);validateBody(b);if(!hit||![...hit.normal.toArray(),...hit.point.toArray(),hit.depth].every(Number.isFinite)||hit.normal.lengthSq()<1e-12||hit.depth<0)throw Error('Invalid contact manifold');
++ const {friction=.45,restitution=.06}=options;if(!Number.isFinite(friction)||friction<0||!Number.isFinite(restitution)||restitution<0||restitution>1)throw Error('Invalid contact material');
++ const A=cloneBody(a),B=cloneBody(b),result=resolveContact(A,B,hit,{friction,restitution});validateBody(A);validateBody(B);commitBody(a,A);commitBody(b,B);return result;
++}
++function resolveContact(a,b,hit,{friction=.45,restitution=.06}={}){
++ const n=hit.normal.clone().normalize(),ra=hit.point.clone().sub(a.position),rb=hit.point.clone().sub(b.position);
++ const rel=velocityAt(a,ra).sub(velocityAt(b,rb)),vn=rel.dot(n),den=effective(a,ra,n)+effective(b,rb,n);if(den<EPS)return{...hit,impactSpeed:0,impulse:0};
++ const amount=vn<0?-(1+restitution)*vn/den:0;
++ if(amount>0){const j=n.clone().multiplyScalar(amount);impulse(a,j,ra);impulse(b,j.clone().negate(),rb);
++  const tangent=velocityAt(a,ra).sub(velocityAt(b,rb));tangent.addScaledVector(n,-tangent.dot(n));const speed=tangent.length();if(speed>EPS){tangent.divideScalar(speed);const mass=effective(a,ra,tangent)+effective(b,rb,tangent);if(mass>EPS){const jt=tangent.multiplyScalar(-Math.min(speed/mass,friction*amount));impulse(a,jt,ra);impulse(b,jt.clone().negate(),rb);}}
++ }
++ if(hit.depth>0){const ia=inverseLinear(a,n),ib=inverseLinear(b,n),total=n.dot(ia)+n.dot(ib);if(total>EPS){const correction=(hit.depth+.0001)/total;a.position.addScaledVector(ia,correction);b.position.addScaledVector(ib,-correction);}}
++ return{...hit,impactSpeed:Math.max(0,-vn),impulse:amount};
++}
++export function snapshotBody(b){return{...b,position:b.position.clone(),orientation:b.orientation.clone()};}
++export function collideBodies(a,b,previousA=null,previousB=null){
++ const A=cloneBody(a),B=cloneBody(b),result=collide(A,B,previousA,previousB);validateBody(A);validateBody(B);commitBody(a,A);commitBody(b,B);return result;
++}
++function collide(a,b,previousA=null,previousB=null){
++ const aa=bodyBox(a),bb=bodyBox(b),hit=previousA?sweepBoxes3D(bodyBox(previousA),aa,previousB?bodyBox(previousB):bb,bb):boxContact3D(aa,bb);if(!hit)return null;
++ if(hit.swept&&hit.time<1){const endA=a.orientation.clone(),endB=b.orientation.clone(),posA=a.position.clone(),posB=b.position.clone();if(!a.static){a.position.copy(previousA.position).lerp(posA,Math.max(0,hit.time-1e-5));a.orientation.copy(previousA.orientation).slerp(endA,hit.time);}if(previousB&&!b.static){b.position.copy(previousB.position).lerp(posB,Math.max(0,hit.time-1e-5));b.orientation.copy(previousB.orientation).slerp(endB,hit.time);}}
++ return resolveBodyContact(a,b,hit);
++}
++export function staticBox(collider){const w=collider.w,d=collider.d,h=collider.height??10,y=collider.baseY??0;if(![w,d,h,y,collider.x,collider.z,collider.yaw??0].every(Number.isFinite)||Math.min(w,d,h)<=0)throw Error('Invalid static collider');return{static:true,config:{size:[2*w,h,2*d],mass:Infinity},position:new V(collider.x,y+h/2,collider.z),orientation:new Q().setFromAxisAngle(axes[1],collider.yaw??0),velocity:new V(),angularVelocity:new V(),inertia:new V(Infinity,Infinity,Infinity)};}
++
++// Finite, double-sided triangle contact. No infinite floor substitution; the SAT
++// includes triangle edges so a roof cannot catch a chassis beyond its perimeter.
++export function collideBodyTriangle(body,face,previous=null){
++ const draft=cloneBody(body),result=collideTriangle(draft,face,previous);validateBody(draft);commitBody(body,draft);return result;
++}
++function collideTriangle(body,face,previous=null){
++ const current=bodyBox(body),start=previous?bodyBox(previous):current,points=face.points,n=face.normal;
++ const edges=[points[1].clone().sub(points[0]),points[2].clone().sub(points[1]),points[0].clone().sub(points[2])];
++ const axesFor=box=>{const result=[...box.axes,n].map(v=>v.clone());for(const axis of box.axes)for(const edge of edges){const a=axis.clone().cross(edge);if(a.lengthSq()>1e-10)result.push(a.normalize());}return result;};
++ const projection=axis=>{const values=points.map(p=>p.dot(axis));return[Math.min(...values),Math.max(...values)];};
++ const overlaps=box=>axesFor(box).every(axis=>{const [lo,hi]=projection(axis),c=box.center.dot(axis),r=radius(box,axis);return c+r>=lo-EPS&&c-r<=hi+EPS;});
++ let hit=null;
++ if(overlaps(start)){
++  const distance=start.center.clone().sub(points[0]).dot(n),normal=n.clone().multiplyScalar(distance<0?-1:1),depth=Math.max(0,radius(start,n)-Math.abs(distance));
++  // Touching while leaving needs no contact; touching into the surface does.
++  if(depth>EPS||current.center.clone().sub(start.center).dot(normal)<0)hit={normal,depth,time:0,swept:true};
++ }else if(previous){
++  const motion=current.center.clone().sub(start.center),turn=Math.max(...start.axes.map((a,i)=>Math.acos(Math.max(-1,Math.min(1,a.dot(current.axes[i])))))),padding=Math.hypot(...start.half)*Math.sin(Math.min(Math.PI/2,turn));
++  let enter=0,leave=1,normal=null,miss=false;
++  for(const axis of [...axesFor(start),...axesFor(current)]){const [lo,hi]=projection(axis),r=Math.max(radius(start,axis),radius(current,axis))+padding,c=start.center.dot(axis),rate=motion.dot(axis);
++   if(Math.abs(rate)<EPS){if(c+r<lo||c-r>hi){miss=true;break;}continue;}
++   let a=(lo-r-c)/rate,b=(hi+r-c)/rate,sign=-1;if(a>b){[a,b]=[b,a];sign=1;}if(a>enter||(Math.abs(a-enter)<EPS&&!normal)){enter=a;normal=axis.clone().multiplyScalar(sign);}leave=Math.min(leave,b);if(enter>leave){miss=true;break;}
++  }
++  if(!miss&&normal&&enter>=0&&enter<=1)hit={normal,depth:0,time:enter,swept:true};
++ }
++ if(!hit&&overlaps(current)){const d=current.center.clone().sub(points[0]).dot(n);hit={normal:n.clone().multiplyScalar(d<0?-1:1),depth:Math.max(0,radius(current,n)-Math.abs(d)),time:1,swept:false};}
++ if(!hit)return null;
++ if(previous&&hit.swept&&hit.time<1){const end=body.orientation.clone(),endPosition=body.position.clone();body.position.copy(previous.position).lerp(endPosition,Math.max(0,hit.time-1e-5));body.orientation.copy(previous.orientation).slerp(end,hit.time);}
++ hit.point=new Triangle(...points).closestPointToPoint(support(bodyBox(body),hit.normal.clone().negate()),new V());
++ const obstacle={static:true,config:{mass:Infinity},position:hit.point.clone(),velocity:new V(),angularVelocity:new V()};return resolveBodyContact(body,obstacle,hit);
++}
++
++function validateBody(b){
++ if(!b||!b.config||(!b.static&&(!Number.isFinite(b.config.mass)||b.config.mass<=0)))throw Error('Invalid rigid body mass');
++ for(const k of ['position','velocity','angularVelocity'])if(!b[k]||!b[k].toArray().every(Number.isFinite))throw Error('Invalid rigid body '+k);
++ if(b.orientation&&(!b.orientation.toArray().every(Number.isFinite)||Math.abs(b.orientation.length()-1)>.001))throw Error('Invalid rigid body orientation');
++ if(!b.static&&(!b.inertia||b.inertia.toArray().some((n,i)=>!(n>0)||(!Number.isFinite(n)&&!(b.planar&&i!==1)))))throw Error('Invalid inertia');
++}
++function cloneBody(b){validateBody(b);return{...b,position:b.position.clone(),velocity:b.velocity.clone(),angularVelocity:b.angularVelocity.clone(),...(b.orientation?{orientation:b.orientation.clone()}: {})};}
++function commitBody(b,d){b.position.copy(d.position);b.velocity.copy(d.velocity);b.angularVelocity.copy(d.angularVelocity);if(b.orientation)b.orientation.copy(d.orientation);}
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-roadster-adapter.js
+@@ -0,0 +1,52 @@
++// LOCAL EXPERIMENT ONLY. Ordinary manual Rocket flight and 4-wheel road driving.
++// Shared finite3D contacts, actual body pose and force telemetry; no Godot flag.
++import {Vector3 as V,Quaternion as Q} from './vendor/three.module.js';
++import {BrowserRoadsterSurface} from './browser-roadster-surface.js';
++import {BrowserMotorcycleAdapter} from './browser-motorcycle-adapter.js';
++import {resolveMotorcyclePlane} from './browser-motorcycle-rigidbody.js';
++import {staticBox,snapshotBody,collideBodies,collideBodyTriangle} from './browser-rigidbody-contacts.js';
++import {getVehicleCollider} from './vehicle-dynamics.js';
++import {createRoadsterAirController,stepRoadsterAir,commitRoadsterAirTelemetry,AirReserve} from './browser-roadster-air.js';
++import {roadsterAirUnits,rememberRoadsterAir} from './roadster-air-ledger.js';
++import {createRoadsterWheels,roadsterWheelWrench} from './browser-roadster-wheels.js';
++import {integrateAirWrench} from './browser-air-rigidbody.js';
++import {browserRoadsterControls} from './browser-roadster-controls.js';
++import {captureVehiclePose,resetVehiclePose} from './render-motion.js';
++import {updateVehicleVisuals} from './vehicle-physics.js';
++export const BROWSER_ROADSTER_IDS=Object.freeze(['roadster','roadster_thrust','roadster_rocket']);
++const Y=new V(0,1,0),COM=new V(0,.72,0);
++export class BrowserRoadsterAdapter extends BrowserMotorcycleAdapter {
++ constructor(game){super(game);this.surface=new BrowserRoadsterSurface(game.world);}
++ begin(){for(const c of this.game.world.colliders??[])staticBox(c);this.surface.refresh();this.tickContacts.clear();this.stepped.clear();const desired=new Set(this.game.allVehicles());for(const [v,e]of this.states)if(!desired.has(v)){rememberRoadsterAir(this.game,v);this.states.delete(v);delete v.browserRoadsterBody;}for(const e of this.states.values())e.previous=snapshotBody(e.body);}
++ checkpoint(){const undo=super.checkpoint(),ledger=structuredClone(this.game.roadsterAirLedger),extras=[...this.states].map(([v,e])=>[e,structuredClone(e.wheels),{...e.air,reserve:new AirReserve(e.air.reserve.units)}]),visible=this.game.allVehicles().filter(v=>BROWSER_ROADSTER_IDS.includes(v.model.id)).map(v=>[v,structuredClone(v.roadsterState),structuredClone(v.roadsterRequest),v.roadsterTires?structuredClone(v.roadsterTires):null]);return()=>{undo();if(ledger===undefined)delete this.game.roadsterAirLedger;else this.game.roadsterAirLedger=ledger;for(const[e,wheels,air]of extras){e.wheels=wheels;e.air=air;}for(const[v,state,request,tires]of visible){v.roadsterRequest=request;v.roadsterState=state;v.roadsterTires=tires;}};}
++
++ config(v){const c=getVehicleCollider(v),height=Math.max(.7,(v.height??1.5)-.35);return{mass:v.mass??v.model.mass,size:[Math.max(1.2,c.halfWidth*2-.08),height,c.halfLength*2-.1],collisionOffset:[c.offsetX??0,.2+height/2-.72,c.offsetZ??0],power:v.model.power,maxSpeed:v.model.max,lateralGrip:v.lateralGrip??v.model.tireGrip??11.8,maxSteer:v.maxSteer??.55,wheelBase:v.wheelBase??2.9,track:v.track??1.65,wheelOffsets:[true,false].flatMap(front=>[-1,1].map(side=>{const w=v.wheels.find(w=>w.front===front&&w.side===side);return[w.pivot.position.x,.1,w.pivot.position.z,w.radius,w.suspensionRestY??w.pivot.position.y];}))};}
++ state(v){let e=this.states.get(v);const serial=v.physicsResetSerial??0,changed=e&&(serial>e.serial||e.published.distanceToSquared(v.pos)>1e-8||Math.abs(e.yaw-v.yaw)>1e-5);
++  if(!e||changed){const cfg=this.config(v),q=new Q().setFromAxisAngle(Y,v.yaw??0),m=cfg.mass,[w,h,l]=cfg.size;
++   if(![m,w,h,l,cfg.power,cfg.maxSpeed,cfg.lateralGrip,cfg.maxSteer,cfg.wheelBase,cfg.track].every(x=>Number.isFinite(x)&&x>0))throw Error('Invalid Roadster rigid configuration');
++   const body={config:cfg,position:v.pos.clone().add(COM.clone().applyQuaternion(q)),orientation:q,velocity:new V(-Math.sin(v.yaw)*(v.speed??0),0,-Math.cos(v.yaw)*(v.speed??0)),angularVelocity:new V(),inertia:new V(m*(h*h+l*l)/12,m*(w*w+l*l)/12,m*(w*w+h*h)/12)};
++   const air=createRoadsterAirController({modelId:v.model.id,instanceId:v.instanceId,airUnits:roadsterAirUnits(v),resetSerial:serial});if(e)air.previousAir=true;
++   e={body,air,wheels:createRoadsterWheels(cfg,v.speed??0),previous:snapshotBody(body),serial,published:v.pos.clone(),yaw:v.yaw,grounded:false};this.states.set(v,e);resetVehiclePose(v);v.browserRoadsterBody=true;
++  }return e;
++ }
++ finish(dt){for(const v of this.game.allVehicles())if(BROWSER_ROADSTER_IDS.includes(v.model.id)&&!this.stepped.has(v))this.step(v,{throttle:0,steer:0,brake:1},dt,false);}
++ step(v,input,dt,isPlayer){this.stepped.add(v);if(v.structuralWheelPreview)throw Error('Structural Roadster wheels not supported');const e=this.state(v),b=e.body;captureVehiclePose(v);e.previous=snapshotBody(b);e.oldPosition=v.pos.clone();e.oldSpeed=v.speed;
++  const c=browserRoadsterControls(v,input,dt);const wheels=roadsterWheelWrench(b,e.wheels,c,dt,this.surface,{...v.roadsterState,trim:e.air.trim,mode:e.air.mode,wing:e.air.wing});
++  const groundRay=this.surface.raycast(b.position,new V(0,-1,0),1000),altitude=groundRay?Math.max(0,groundRay.distance-.72):1000;
++  const result=stepRoadsterAir(e.air,b,c,dt,{grounded:e.wheels.supportCount>0||e.grounded,altitude});
++  integrateAirWrench(b,{force:result.force.clone().add(wheels.force),torque:result.torque.clone().add(wheels.torque)},dt);
++  e.grounded=e.wheels.supportCount>0;
++  const reach=Math.hypot(...b.config.size)/2+Math.hypot(...(b.config.collisionOffset??[0,0,0]))+b.position.distanceTo(e.previous.position);
++  for(const collider of this.game.world.colliders??[]){const h=collider.height??10;if(Math.hypot(collider.x-b.position.x,(collider.baseY??0)+h/2-b.position.y,collider.z-b.position.z)>Math.hypot(collider.w,collider.d,h/2)+reach)continue;const hit=collideBodies(b,staticBox(collider),e.previous);if(hit){this.remember(v,collider.id??collider,hit);if(hit.normal.y>.4)e.grounded=true;}}
++  for(const face of this.surface.nearby(b,e.previous)){const hit=collideBodyTriangle(b,face,e.previous);if(hit){if(hit.impactSpeed>1)this.remember(v,face,hit);if(hit.normal.y>.4)e.grounded=true;}}
++  const world=this.game.world,height=world.groundHeight?.(b.position.x,b.position.z)??0,normal=this.surface.normal(b.position.x,b.position.z),point=new V(b.position.x,height,b.position.z),hit=resolveMotorcyclePlane(b,{normal,offset:point.dot(normal),friction:.6});if(hit){if(hit.impactSpeed>1)this.remember(v,'terrain',hit);e.grounded=true;}
++  if(world.bounds){for(const [n,o]of [[new V(1,0,0),world.bounds.minX+2],[new V(-1,0,0),-world.bounds.maxX+2],[new V(0,0,1),world.bounds.minZ+2],[new V(0,0,-1),-world.bounds.maxZ+2]]){const hit=resolveMotorcyclePlane(b,{normal:n,offset:o});if(hit)this.remember(v,'boundary',hit);}}
++  if(!isPlayer)result.batteryUsed=0;commitRoadsterAirTelemetry(v,e.air,result);this.publish(v,e,dt);rememberRoadsterAir(this.game,v);
++ }
++ publish(v,e,dt=0){const b=e.body,t=e.wheels,oldSpeed=e.oldSpeed??v.speed,oldPosition=e.oldPosition??v.pos.clone();v.physicsQuaternion??=new Q();v.physicsQuaternion.copy(b.orientation);v.pos.copy(b.position).sub(COM.clone().applyQuaternion(b.orientation));const forward=new V(0,0,-1).applyQuaternion(b.orientation);v.yaw=Math.atan2(-forward.x,-forward.z);v.speed=b.velocity.dot(forward);v.yawRate=b.angularVelocity.y;v.lateralSpeed=b.velocity.dot(new V(1,0,0).applyQuaternion(b.orientation));v.slipVelocityX=b.velocity.x+Math.sin(v.yaw)*v.speed;v.slipVelocityZ=b.velocity.z+Math.cos(v.yaw)*v.speed;v.travelDistance=dt>0?oldPosition.distanceTo(v.pos)*Math.sign(v.speed||oldSpeed||1):0;v.longitudinalAcceleration=dt>0?(v.speed-oldSpeed)/dt:0;v.steer=t.steer;v.manualBrakePressure=t.manualPressure;v.brakeAmount=t.brakeAmount;v.brake=t.brakeAmount>.025;v.grounded=e.grounded;v.wheelSupportCount=t.supportCount;v.wheelCompressions=[...t.compressions];v.wheelVisualCompressions=[...t.compressions];v.suspensionRest=.18;v.suspensionRebound=.08;v.driftAmount=t.drift;v.roadsterTires=structuredClone(t);v.root.position.copy(v.pos);v.root.quaternion.copy(b.orientation);updateVehicleVisuals(v,dt);e.published.copy(v.pos);e.yaw=v.yaw;e.serial=Math.max(e.serial,v.physicsResetSerial??0);}
++ // Real Roadster/motorcycle bodies are selected by the unified browser dispatcher.
++ pairWith(a,b,otherAdapter){const ea=this.states.get(a)??otherAdapter?.states.get(a),eb=this.states.get(b)??otherAdapter?.states.get(b),A=ea?.body??this.planarBody(a),B=eb?.body??this.planarBody(b),hit=collideBodies(A,B,ea?.previous??this.planarBody(a,true),eb?.previous??this.planarBody(b,true));if(!hit)return null;
++  for(const[v,e,body]of[[a,ea,A],[b,eb,B]])if(e){(this.states.has(v)?this:otherAdapter).publish(v,e);}else{v.pos.x=body.position.x;v.pos.z=body.position.z;const f=new V(0,0,-1).applyQuaternion(body.orientation);v.yaw=Math.atan2(-f.x,-f.z);v.speed=body.velocity.dot(f);v.yawRate=body.angularVelocity.y;v.slipVelocityX=body.velocity.x+Math.sin(v.yaw)*v.speed;v.slipVelocityZ=body.velocity.z+Math.cos(v.yaw)*v.speed;}
++  this.remember(a,b,hit);this.remember(b,a,{...hit,normal:hit.normal.clone().negate()});return hit;
++ }
++}
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-roadster-air.js
+@@ -0,0 +1,114 @@
++/** Experimental force controller, not a physics backend. Default gameplay gates stay closed.
++ * Ported from physics/source/roadster_{forces,air_reserve}.gd. Gameplay values only.
++ * Caller owns gravity, rigid integration, terrain query, contacts and pose/save bridge.
++ * Unsupported automatic jump catch / vault / spin MUST remain gated by the host.
++ */
++import {Vector3 as V,Quaternion as Q} from './vendor/three.module.js';
++export const AIR_CAPABILITIES=Object.freeze({manualRocketForces:true,groundBoost:true,automaticJumpCatch:false,maneuvers:false,aircraft:false,gameplayReady:false});
++const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
++const n=(x,d=0)=>Number.isFinite(x)?x:d;
++const axis=(c,k)=>clamp(n(c[k]),-1,1);
++const trims={roadster:'performance',roadster_thrust:'thrust',roadster_rocket:'rocket'};
++export class AirReserve {
++ constructor(value=2400){this.units=clamp(n(value),0,2400);}
++ pressure(){return clamp(this.units/360,0,1);}
++ consume(demand,dt){
++  if(!Number.isFinite(dt)||dt<=0||dt>.1||!Number.isFinite(demand)||demand<=0)return 0;
++  const before=this.units;let remaining=dt;
++  if(this.units>360){const time=Math.min(remaining,(this.units-360)/demand);this.units-=time*demand;remaining-=time;}
++  if(remaining>0)this.units*=Math.exp(-demand*remaining/360);
++  this.units=clamp(this.units,0,2400);return clamp((before-this.units)/(demand*dt),0,1);
++ }
++ refill(dt,{grounded,upright,speed,angularSpeed,spraying}){
++  if(Number.isFinite(dt)&&dt>0&&dt<=.1&&grounded&&upright&&!spraying&&Number.isFinite(speed)&&speed>=0&&speed<.25&&Number.isFinite(angularSpeed)&&angularSpeed>=0&&angularSpeed<.2)this.units=Math.min(2400,this.units+8*dt);
++ }
++}
++export function createRoadsterAirController({modelId,instanceId,airUnits,charge,resetSerial=0}){
++ if(!Object.hasOwn(trims,modelId)||!Number.isSafeInteger(resetSerial)||resetSerial<0||typeof instanceId!=='string'||!instanceId||instanceId.length>96||['__proto__','constructor','prototype'].includes(instanceId))throw Error('Roadster identity required');
++ const units=airUnits!==undefined?n(airUnits):charge!==undefined?n(charge)*24:2400;
++ return {modelId,instanceId,trim:trims[modelId],reserve:new AirReserve(units),resetSerial,mode:'road',previousAir:false,previousRecover:false,launching:false,landingTime:0,recoveryTime:0,rollTarget:0,wing:0};
++}
++// Repair/reset is edge-triggered by serial and NEVER refills the air inventory.
++export function resetRoadsterAirController(s,serial){
++ if(!Number.isSafeInteger(serial)||serial<0)throw Error('Invalid reset serial');
++ if(serial<=s.resetSerial)return false;
++ Object.assign(s,{resetSerial:serial,mode:'road',previousAir:true,previousRecover:false,launching:false,landingTime:0,recoveryTime:0,rollTarget:0,wing:0});return true;
++}
++const limit=(v,m)=>v.length()>m?v.multiplyScalar(m/v.length()):v;
++/** Pure wrench output; no position or velocity mutations and no native snapshot impersonation.
++ * body uses shared 6DOF convention: config.mass, orientation Q, velocity V,
++ * angularVelocity V, body-frame diagonal inertia V. terrain.grounded + altitude
++ * must be obtained from real contacts/raycast, not inferred from render height.
++ */
++export function stepRoadsterAir(s,body,c,dt,terrain){
++ const draft={...s,reserve:new AirReserve(s.reserve.units)};
++ const result=advanceRoadsterAir(draft,body,c,dt,terrain);
++ if(![...result.force.toArray(),...result.torque.toArray(),result.demand,result.scale,result.batteryUsed,draft.reserve.units].every(Number.isFinite))throw Error('Nonfinite air controller result');
++ Object.assign(s,draft);return result;
++}
++function advanceRoadsterAir(s,body,c,dt,terrain){
++ if(!Number.isFinite(dt)||dt<=0||dt>1/60+1e-10)throw Error('Fixed substep required');
++ const m=body.config.mass,q=body.orientation;
++ if(!(Number.isFinite(m)&&m>0)||![...q.toArray(),...body.velocity.toArray(),...body.angularVelocity.toArray(),...body.inertia.toArray(),terrain.altitude].every(Number.isFinite)||body.inertia.toArray().some(x=>x<=0)||Math.abs(q.length()-1)>1e-6||terrain.altitude<0||typeof terrain.grounded!=='boolean')throw Error('Invalid rigid body/contact input');
++ if(c.roadsterAction&&c.roadsterAction!=='cancel')throw Error('Maneuvers not ported; host must gate');
++ const grounded=terrain.grounded,altitude=terrain.altitude,up=new V(0,1,0).applyQuaternion(q),forward=new V(0,0,-1).applyQuaternion(q),velocity=body.velocity,omega=body.angularVelocity;
++ const healthy=n(c.condition,100)>0&&n(c.battery,100)>0,air=c.roadsterAir===true&&s.trim==='rocket',recover=c.roadsterRecover===true&&s.trim==='rocket';
++ let warning='',boost=0,lift=0,cushion=0,autoStabilizing=false;
++ if(air&&!s.previousAir&&s.mode==='road'){
++  if(healthy&&up.y>.6&&velocity.length()<25){s.mode='air';s.rollTarget=Math.atan2(new V(1,0,0).applyQuaternion(q).y,up.y);s.launching=grounded||altitude<1.5;s.landingTime=0;}else warning='起飞条件未满足';
++ }
++ s.previousAir=air;
++ if(recover&&!s.previousRecover&&s.mode==='road'&&healthy&&velocity.length()<3&&altitude<1.8){s.mode='recover';s.recoveryTime=0;}
++ s.previousRecover=recover;
++ if(s.mode==='air'&&!air){s.mode='landing';s.launching=false;}
++ if(!healthy){if(s.mode!=='road')s.mode=grounded?'road':'unpowered';warning=n(c.condition,100)<=0?'动力损坏':'车辆电量耗尽';}
++ if(s.mode==='unpowered'&&grounded)s.mode='road';
++ if(s.mode==='landing'){s.landingTime=grounded&&up.y>.7&&Math.abs(velocity.y)<1?s.landingTime+dt:0;if(s.landingTime>.3)s.mode='road';}
++ if(s.mode==='recover'){s.recoveryTime+=dt;if(s.recoveryTime>3||!recover||up.y>.98&&omega.length()<.25)s.mode=grounded?'road':'landing';}
++ const active=['air','landing','recover'].includes(s.mode)&&healthy,force=new V(),torque=new V();let demand=0;
++ const request=f=>{force.add(f);demand+=f.length()/m;};
++ if(active){
++  const vertical=axis(c,'roadsterVertical');if(altitude>2)s.launching=false;
++  let target=vertical*(vertical>=0?4:2);if(s.launching)target=Math.max(target,2.6);
++  if(s.mode==='landing')target=altitude>6?-2.5:altitude>1.4?-1.3:-.65;
++  else if(s.mode==='recover')target=altitude<1.2?.9:0;
++  if(altitude>60)target=Math.min(target,-Math.min(2,(altitude-60)*.4));
++  const cushioning=s.mode==='landing'&&altitude<6&&velocity.y<0;
++  const liftAccel=clamp(9.81+(target-velocity.y)*(cushioning?4.5:3.5),0,cushioning?26:18);
++  request(new V(0,m*liftAccel,0));lift=clamp(liftAccel/18,0,1);cushion=cushioning?clamp((liftAccel-9.81)/16.19,0,1):0;
++  const heading=new V(forward.x,0,forward.z);if(heading.lengthSq()<.001)heading.set(0,0,-1);heading.normalize();const right=heading.clone().cross(new V(0,1,0));
++  const f=s.mode==='air'&&!recover?axis(c,'roadsterForward'):0,l=s.mode==='air'&&!recover?axis(c,'roadsterLateral'):0,brake=c.roadsterAirBrake===true||s.mode!=='air'||recover;
++  const accel=brake?new V():limit(heading.multiplyScalar(f*8).addScaledVector(right,l*5),8);
++  request(limit(accel.addScaledVector(new V(velocity.x,0,velocity.z),brake?-1.1:-.32),20).multiplyScalar(m));boost=Math.abs(f)*.6;
++  const level=recover||s.mode==='recover',roll=level?0:axis(c,'roadsterRoll');let feed=0;
++  if(level)s.rollTarget=0;else if(Math.abs(roll)>.001){feed=roll*3.4;s.rollTarget=((s.rollTarget-feed*dt+Math.PI)%(2*Math.PI)+2*Math.PI)%(2*Math.PI)-Math.PI;}else{const old=s.rollTarget;s.rollTarget+=clamp(-s.rollTarget,-1.15*dt,1.15*dt);feed=(old-s.rollTarget)/dt;}
++  autoStabilizing=level||Math.abs(roll)<=.001;
++  const yaw=Math.atan2(-forward.x,-forward.z),targetQ=new Q().setFromAxisAngle(new V(0,1,0),yaw).multiply(new Q().setFromAxisAngle(new V(1,0,0),level?0:axis(c,'roadsterPitch')*.36)).multiply(new Q().setFromAxisAngle(new V(0,0,1),s.rollTarget));
++  const error=targetQ.multiply(q.clone().invert()).normalize();if(error.w<0){error.x*=-1;error.y*=-1;error.z*=-1;error.w*=-1;}
++  const rotation=new V(error.x,error.y,error.z),length=rotation.length();if(length>1e-5)rotation.multiplyScalar(2*Math.atan2(length,clamp(error.w,-1,1))/length);else rotation.set(0,0,0);
++  const desired=new V(0,level?0:axis(c,'roadsterYaw')*.8,0).addScaledVector(forward,feed).sub(omega).multiplyScalar(5).addScaledVector(rotation,10);
++  torque.copy(limit(desired.applyQuaternion(q.clone().invert()).multiply(body.inertia).applyQuaternion(q),m*12));demand+=torque.length()/(m*2);
++ }else if(s.trim!=='performance'&&healthy&&c.roadsterBoost&&grounded&&up.y>.65){
++  const throttle=Math.max(0,axis(c,'throttle'));if(throttle>.1&&n(c.manualBrake)<.05&&n(c.electronicBrake)<.05&&!c.handbrake){boost=throttle;request(forward.clone().multiplyScalar(m*19*throttle*clamp((80-velocity.length())/15,0,1)));}
++ }
++ const scale=s.reserve.consume(demand,dt);force.multiplyScalar(scale);torque.multiplyScalar(scale);boost*=scale;lift*=scale;cushion*=scale;
++ const eligible=grounded&&up.y>.65&&velocity.length()<.25&&omega.length()<.2&&demand===0&&!active;
++ s.reserve.refill(dt,{grounded,upright:up.y>.65,speed:velocity.length(),angularSpeed:omega.length(),spraying:demand>0||active});
++ if(s.reserve.units<360&&demand>0)warning=s.reserve.units>0?'储气不足：推力降低':'储气耗尽';
++ const braking=Math.max(n(c.manualBrake),n(c.electronicBrake)),wingTarget=active||braking>.15||c.roadsterWingMode==='raised'||(c.roadsterWingMode??'auto')==='auto'&&velocity.length()>20?1:0;s.wing+=clamp(wingTarget-s.wing,-dt*1.4,dt*1.4);
++ const local=force.clone().multiplyScalar(1/m).applyQuaternion(q.clone().invert()),angular=torque.clone().applyQuaternion(q.clone().invert()).divide(body.inertia);
++ const jet=(value,den)=>clamp(value/den,0,1),jets={up:jet(local.y,26),down:jet(-local.y,26),forward:jet(-local.z,8),reverse:jet(local.z,8),right:jet(local.x,8),left:jet(-local.x,8),pitchUp:jet(angular.x,12),pitchDown:jet(-angular.x,12),rollRight:jet(-angular.z,12),rollLeft:jet(angular.z,12),yawLeft:jet(angular.y,12),yawRight:jet(-angular.y,12)};
++ return {force,torque,demand,scale,energyKind:'battery' ,batteryUsed:dt*(Math.abs(velocity.dot(forward))*.0008+lift*.06+boost*.04),telemetry:{source:'browser-force-controller',vehicleInstanceId:s.instanceId,trim:s.trim,mode:s.mode,jets,heat:0,automaticAirborne:false,rollRate:omega.dot(forward),airUnits:s.reserve.units,airCapacity:2400,airPressure:s.reserve.pressure(),charge:s.reserve.units/24,airSpraying:demand>0,airRefillEligible:eligible,boost,lift,wing:s.wing,wingPitch:s.wing*(braking>.15?.6:.35),altitude,verticalSpeed:velocity.y,warning,autoStabilizing,landingCushion:cushion}};
++}
++/** Explicit browser telemetry bridge, never calls applyNativeSnapshot. Does not own pose.
++ * Host still needs to commit the 6DOF body/contact state and render interpolation.
++ */
++export function commitRoadsterAirTelemetry(v,s,result){
++ if(v.instanceId!==s.instanceId||v.model?.id!==s.modelId||result.telemetry?.vehicleInstanceId!==s.instanceId)throw Error('Roadster identity mismatch');
++ if(!Number.isFinite(result.telemetry.airUnits)||result.telemetry.airUnits<0||result.telemetry.airUnits>2400||!Number.isFinite(result.batteryUsed)||result.batteryUsed<0)throw Error('Invalid air telemetry');
++ v.roadsterAirUnits=result.telemetry.airUnits;v.roadsterCharge=v.roadsterAirUnits/24;
++ v.roadsterState={...v.roadsterState,...result.telemetry};
++ if(['unpowered','landing'].includes(result.telemetry.mode)||result.telemetry.warning==='起飞条件未满足'){v.roadsterRequest??={air:false,wingMode:'auto'};v.roadsterRequest.air=false;}
++ v.battery=Math.max(0,n(v.battery)-result.batteryUsed);
++ // Fuel/ICE faults, stable instance identity, resetSerial and saved pose unchanged.
++}
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-roadster-controls.js
+@@ -0,0 +1,22 @@
++// Reuses existing control/parking/fault semantics without importing the Godot bridge.
++import {parkingBrakeControls} from './touch-transmission.js';
++import {stepAxleFault,axleFaultEffects} from './axle-fault.js';
++import {stepBrakeFault} from './brake-fault.js';
++import {clampRoadsterControls} from './roadster-controls.js';
++const clamp=(v,a,b)=>Math.max(a,Math.min(b,Number.isFinite(v)?v:0));
++export function browserRoadsterControls(v,input,dt){
++ input=parkingBrakeControls(v,input);
++ stepAxleFault(v,input,dt);const axle=axleFaultEffects(v);
++ let throttle=clamp(input.throttle,-1,1);
++ const request=typeof input.brake==='number'?clamp(input.brake,0,1):input.brake?1:0;
++ const pilot=input.brakeSource==='pilot';
++ let manual=pilot?0:request,electronic=Math.max(pilot?request:0,clamp(input.electronicBrake,0,1));
++ if(throttle<0&&v.speed>1.2){if(pilot)electronic=Math.max(electronic,-throttle);else manual=Math.max(manual,-throttle);throttle=0;}
++ v.requestedBrakeAmount=manual;
++ const effective=stepBrakeFault(v,manual,dt);
++ v.manualBrakeAmount=effective;v.electronicBrakeAmount=electronic;v.brakeSource=pilot?'pilot':'manual';
++ v.handbrake=!!input.handbrake;v.propulsionDisabled=v.condition<=0;
++ return{throttle,axleBroken:axle.broken,axleSide:axle.side,steer:clamp(input.steer,-.8,.8),manualBrake:effective,electronicBrake:electronic,
++  manualBrakeBroken:!!v.brakeFault?.broken,handbrake:!!input.handbrake,condition:v.condition,battery:v.battery,motorcycleOccupied:!!v.motorcycleOccupied,...clampRoadsterControls(v,input)};
++}
++
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-roadster-surface.js
+@@ -0,0 +1,19 @@
++// Extend shared terrain/triangle query with actual finite static-box faces.
++// Necessary for native-equivalent downward ground probes on collider-only roofs.
++import {Vector3 as V,Ray,Box3} from './vendor/three.module.js';
++import {BrowserMotorcycleSurface} from './browser-motorcycle-surface.js';
++import {staticBox} from './browser-rigidbody-contacts.js';
++export class BrowserRoadsterSurface extends BrowserMotorcycleSurface {
++ raycast(origin,direction,maxDistance){
++  let best=super.raycast(origin,direction,maxDistance);
++  for(const c of this.world.colliders??[]){
++   if(Math.hypot(c.x-origin.x,c.z-origin.z)>Math.hypot(c.w,c.d)+maxDistance*Math.hypot(direction.x,direction.z))continue;
++   const b=staticBox(c),inv=b.orientation.clone().invert(),o=origin.clone().sub(b.position).applyQuaternion(inv),d=direction.clone().applyQuaternion(inv),half=new V(...b.config.size).multiplyScalar(.5);
++   const local=new Ray(o,d).intersectBox(new Box3(half.clone().negate(),half),new V());if(!local)continue;
++   const normal=new V();let face=0,error=Infinity;for(let i=0;i<3;i++){const e=Math.abs(Math.abs(local.getComponent(i))-half.getComponent(i));if(e<error){error=e;face=i;}}normal.setComponent(face,Math.sign(local.getComponent(face)));normal.applyQuaternion(b.orientation);
++   // Exit intersections from an origin inside a box cannot masquerade as support.
++   if(normal.dot(direction)>=-1e-8)continue;
++   const position=local.applyQuaternion(b.orientation).add(b.position),distance=position.distanceTo(origin);if(distance<=maxDistance&&(!best||distance<best.distance))best={position,normal,distance};
++  }return best;
++ }
++}
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/browser-roadster-wheels.js
+@@ -0,0 +1,47 @@
++// Experimental four-wheel force port from vehicle_body.gd and roadster_tires.gd.
++// Shares the 6DOF body convention; outputs a wrench, never edits chassis pose.
++import {Vector3 as V} from './vendor/three.module.js';
++const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),approach=(x,y,d)=>x+clamp(y-x,-d,d),num=(x,d=0)=>Number.isFinite(x)?x:d;
++const limit=(x,y,r)=>{const s=Math.min(1,r/(Math.hypot(x,y)||1));return[x*s,y*s];};
++export function createRoadsterWheels(config,speed=0){
++ const radii=Array.from({length:4},(_,i)=>clamp(config.wheelOffsets?.[i]?.[3]??.389,.15,1));
++ return {radii,angularSpeeds:radii.map(r=>speed/r),angles:[0,0,0,0],slipRatios:[0,0,0,0],normalLoads:[0,0,0,0],forces:[[0,0],[0,0],[0,0],[0,0]],contacts:[false,false,false,false],tcsActive:[false,false,false,false],freeSpeed:Math.max(20,config.maxSpeed+15),manualPressure:0,steer:0,drift:0,compressions:[0,0,0,0],brakeAmount:0,supportCount:0};
++}
++function contact(t,i,long,lat,drive,brake,load,tireLimit,grip,quarter,dt,tcs){
++ t.contacts[i]=true;t.normalLoads[i]=load;const r=t.radii[i],old=t.angularSpeeds[i],slipScale=Math.max(2,Math.abs(long));t.slipRatios[i]=(old*r-long)/slipScale;const request=drive;
++ if(tcs){const budget=Math.min(Math.sqrt(Math.max(0,tireLimit*tireLimit-Math.min(Math.abs(lat),tireLimit)**2))*.9,quarter*grip*.9);drive=clamp(drive,-budget,budget);const slip=t.slipRatios[i]*Math.sign(drive);if(slip>.12)drive*=clamp(.1/slip,0,1);t.tcsActive[i]=Math.abs(drive)<Math.abs(request)-.01;}
++ const torque=(drive*r+2*drive/Math.max(1,quarter)/r)*clamp((t.freeSpeed-Math.abs(old*r))/10,0,1);let free=old+torque/2*dt,locked=false,combined=[0,0];const brakeTorque=brake*r;
++ if(tireLimit>.001){const bodyCompliance=slipScale/(tireLimit/.1)+dt/Math.max(1,quarter),compliance=bodyCompliance+dt*r*r/2;
++  if(brakeTorque>0){const lockedForce=limit(-long/bodyCompliance,lat,tireLimit),holding=free*2/dt-lockedForce[0]*r;if(Math.abs(holding)<=brakeTorque){combined=lockedForce;locked=true;}else free-=Math.sign(holding)*brakeTorque/2*dt;}
++  if(!locked)combined=limit((free*r-long)/compliance,lat,tireLimit);
++ }else free=approach(free,0,brakeTorque/2*dt);
++ t.angularSpeeds[i]=locked?0:free-combined[0]*r/2*dt;t.angles[i]+=(old+t.angularSpeeds[i])*.5*dt;t.forces[i]=combined;return combined;
++}
++export function roadsterWheelWrench(b,t,c,dt,surface,airState){
++ if(!(Number.isFinite(dt)&&dt>0&&dt<=1/60+1e-10)||typeof surface?.raycast!=='function')throw Error('Invalid wheel step');
++ const cfg=b.config,m=cfg.mass,q=b.orientation,up=new V(0,1,0).applyQuaternion(q),f=new V(0,0,-1).applyQuaternion(q),right=new V(1,0,0).applyQuaternion(q),speed=b.velocity.dot(f);
++ let throttle=clamp(num(c.throttle),-1,1),requested=c.manualBrakeBroken?0:clamp(num(c.manualBrake),0,1),electronic=clamp(num(c.electronicBrake),0,1);if(c.manualBrakeBroken)t.manualPressure=0;
++ const start=t.manualPressure,rate=requested>start?24:30;t.manualPressure=approach(start,requested,rate*dt);const ramp=Math.min(dt,Math.abs(requested-start)/rate),average=(start+t.manualPressure)*.5*ramp/dt+requested*(1-ramp/dt);t.brakeAmount=Math.max(t.manualPressure,electronic);
++ const hand=c.handbrake?1:0;t.drift=approach(t.drift,Math.abs(speed)>2?hand:0,(hand?5:2.2)*dt);
++ const grip=clamp(cfg.lateralGrip,3,18),brake=Math.max(Math.max(average,electronic)*Math.min(8.4,grip*.96),hand*5.2),broken=c.axleBroken===true,side=broken?clamp(num(c.axleSide),-1,1):0;
++ let power=cfg.power*(broken?.18:1);if(num(c.condition,100)<=0||num(c.battery,100)<=0)power=0; // no phantom 5% EV propulsion at zero energy
++ let drive=brake<=.001?throttle*power:0;const planar=new V(b.velocity.x,0,b.velocity.z),ps=planar.length();let resistance=.14*Math.tanh(2*ps)+.0004*ps*ps+(broken?1.6*Math.tanh(2*ps):0);
++ if(airState?.mode==='road'&&up.y>.65)resistance+=(airState.wing??0)*ps*ps*(Math.max(num(c.manualBrake),electronic)>.15?.0008:.00012);
++ if(drive){const direction=Math.sign(drive),max=broken?3:direction>0?cfg.maxSpeed:9,drag=resistance*(ps?planar.clone().normalize().dot(f):0)*direction;drive=direction*Math.min(Math.abs(drive),Math.max(0,(max-speed*direction)*4+drag));}
++ const wb=cfg.wheelBase??2.9,track=cfg.track??1.65,available=Math.sqrt(Math.max(.25,grip*grip-Math.min(grip,brake)**2)),steerLimit=Math.min(cfg.maxSteer??.55,Math.atan(available*wb/Math.max(1,speed*speed))),target=clamp(num(c.steer)*(broken?.45:1),-steerLimit,steerLimit);t.steer=approach(t.steer,target,(Math.abs(target)<.005||Math.sign(target)!==Math.sign(t.steer)?2.6:1.65)*dt);
++ const force=new V(),torque=new V(),apply=(v,r)=>{force.add(v);torque.add(r.clone().cross(v));},velocityAt=r=>b.velocity.clone().add(b.angularVelocity.clone().cross(r));
++ t.supportCount=0;t.contacts.fill(false);t.slipRatios.fill(0);t.normalLoads.fill(0);t.tcsActive.fill(false);t.compressions.fill(0);t.forces=t.forces.map(()=>[0,0]);const tcs=c.roadsterTcs!==false;
++ for(let i=0;i<4;i++){
++  const axle=i<2?-1:1; // native order front left,right;rear left,right
++  const wheelSide=i%2===0?-1:1,mount=new V(wheelSide*track*.5,.1,axle*wb*.5).applyQuaternion(q),origin=b.position.clone().add(mount),geometry=cfg.wheelOffsets?.[i];
++  let hit=surface.raycast(origin,up.clone().negate(),.9);
++  if(hit&&geometry?.length>=5&&up.y>.5){const compression=1-origin.distanceTo(hit.position),center=origin.clone().addScaledVector(up,geometry[4]-.82+compression-.18),foot=surface.raycast(new V(center.x,origin.y,center.z),new V(0,-1,0),.9/up.y);if(foot&&foot.normal.dot(up)>=.3&&foot.position.y>hit.position.y+.0001)hit=foot;}
++  if(!hit||hit.normal.dot(up)<.3)continue;const compression=Math.max(0,1-origin.clone().sub(hit.position).dot(up));if(compression<=0)continue;
++  t.supportCount++;t.compressions[i]=compression;const normal=hit.normal.clone().normalize(),compressionSpeed=-velocityAt(mount).dot(normal),stop=Math.max(0,compression-.225),support=clamp((9.81*.25+(compression-.18)*32+compressionSpeed*3.8+stop*200+Math.min(1,stop/.02)*Math.max(0,compressionSpeed)*2)*m,0,m*9.81*.8);apply(normal.clone().multiplyScalar(support),mount);
++  const damaged=broken&&axle<0&&wheelSide===clamp(num(c.axleSide),-1,1),angle=(axle<0?t.steer:0)+(damaged?wheelSide*.24:0),tf=f.clone().applyAxisAngle(up,angle);tf.addScaledVector(normal,-tf.dot(normal)).normalize();const tr=tf.clone().cross(normal),offset=new V(wheelSide*track*.5,-.15,axle*wb*.5).applyQuaternion(q),vel=velocityAt(offset),long=vel.dot(tf),lat=vel.dot(tr),tireLimit=support*grip*(1-(axle>0?.82:.15)*t.drift)/9.81*(damaged?.3:1),brakeForce=Math.min(m*brake*.25,Math.abs(long)*m*.25/dt),combined=contact(t,i,long,-lat*m*2.3,m*drive*.25,brakeForce,support,tireLimit,grip,m*.25,dt,tcs);apply(tf.multiplyScalar(combined[0]).addScaledVector(tr,combined[1]),offset);
++ }
++ for(let i=0;i<4;i++)if(!t.contacts[i]){const old=t.angularSpeeds[i],r=t.radii[i],torque=(tcs?0:m*drive*.25*r)*clamp((t.freeSpeed-Math.abs(old*r))/10,0,1);t.angularSpeeds[i]=approach(old+torque/2*dt,0,m*brake*.25*r/2*dt);t.angles[i]+=(old+t.angularSpeeds[i])*.5*dt;t.tcsActive[i]=tcs&&Math.abs(m*drive*.25)>.01;}
++ if(ps>.001)force.addScaledVector(planar.normalize(),-m*Math.min(resistance,ps/dt));
++ if(t.supportCount&&up.y>.65&&airState?.mode==='road'){let down=Math.min(2,ps*ps*.0014)*(airState.wing??0);if(airState.trim==='performance'&&num(c.condition,100)>0&&num(c.battery,100)>0&&ps>4)down+=.45;force.y-=m*down;}
++ return{force,torque};
++}
+--- a/source/runtime-candidate/sunset-coast/play/candidate-entry.js
++++ b/source/runtime-candidate/sunset-coast/play/candidate-entry.js
+@@ -12,6 +12,6 @@
+   if(COMMON_PBR){const THREE=await import('./vendor/three.module.js');const {createPBRMaterialPack}=await import('../../../materials/pbr-material-pack.js');setCommonMaterialPack(await createPBRMaterialPack(THREE,{tier:'low',maxAnisotropy:1}));}
+   if(new URLSearchParams(location.search).get('asphalt')!=='procedural'){const THREE=await import('./vendor/three.module.js');const {createOwnedAsphaltPack}=await import('../../../materials/owned-asphalt-pack.js');setCommonMaterialPack(await createOwnedAsphaltPack(THREE,{fallback:commonMaterialPack}));}
+   const deliveryMode=production||new URLSearchParams(location.search).get('delivery')==='1';let deliveryLease=null,config=null;if(production){const id=estuarySlotFromSearch(location.search);deliveryLease=await acquireEstuaryLease(id);const {validateSave}=await import('./save-validation.js');const entry=await readEstuarySlot(localStorage,id,validateSave);config=entry.config;}else if(deliveryMode){const {acquireDeliveryLease}=await import('./delivery-store.js');deliveryLease=await acquireDeliveryLease();}
+-  await import('./mobile-ui.js');if(!window.game)throw Error('Game instance unavailable');if(deliveryMode){const {installDeliveryRuntime}=await import('./delivery-runtime.js');installDeliveryRuntime(window.game,{lease:deliveryLease,config});}commonMaterialPack?.configureRenderer?.(window.game.renderer);window.addEventListener('pagehide',()=>commonMaterialPack?.dispose(),{once:true});if(new URLSearchParams(location.search).get('physics')==='browser'){const qa=document.createElement('pre');qa.id='browser-backend-evidence';qa.style.cssText='position:fixed;top:58px;right:6px;z-index:9999;background:#10232de6;color:#fff;font:11px monospace;padding:8px;pointer-events:none;white-space:pre-wrap;max-width:350px';document.body.append(qa);setInterval(()=>{const g=window.game;const forbidden=performance.getEntriesByType('resource').filter(r=>/godot|\.wasm|\.pck/i.test(r.name));qa.textContent='LOCAL EXPERIMENT — NOT FULL RELEASE\n'+JSON.stringify({backend:g.physics.backend,tick:g.physics.lastTick,time:g.time,paused:g.paused,mode:g.inCar?'car':'walk',pos:[g.position.x,g.position.z].map(n=>+n.toFixed(2)),speed:+g.vehicle.speed.toFixed(2),contacts:g.physics.metrics.contacts,delivery:!!g.delivery,saveRevision:JSON.parse(localStorage.getItem('sunrise:browser-physics:20261030:delivery')??'null')?.saveRevision??null,godotRequests:forbidden.length,unsupported:'motorcycle,flight,3D suspension,detached wheels'},null,1);},500);}document.documentElement.dataset.betaUiReady='2';if(!production&&new URLSearchParams(location.search).get('collisionQA')==='1'){const qa=await import('./wheel-game-qa.js?v=attached-contact-skin-7');qa.mountWheelGameQA(window.game);}let frames=0,stamp=performance.now(),samples=[];setInterval(()=>{const g=window.game;const now=performance.now(),fps=((g?.frameCount??0)-frames)*1000/(now-stamp);samples.push({frames:(g?.frameCount??0)-frames,ms:now-stamp});if(samples.length>20)samples.shift();const avg=samples.reduce((a,b)=>a+b.frames,0)*1000/samples.reduce((a,b)=>a+b.ms,0);frames=g?.frameCount??0;stamp=now;if(g?.position&&g?.world)banner.textContent=production?'ESTUARY 新地图测试版 · 独立存档 · 旧城进度保留':`共享地图候选 · ${g.inCar?'驾驶':'步行'} · ${Math.round(g.position.x)}, ${Math.round(g.position.z)} · ${fps.toFixed(1)} FPS实测 / ${avg.toFixed(1)}均值 · ${g.physics?.backend??'物理未就绪'} · ${g.world.stats.loadedChunks}区块 · ${production?'独立新地图存档 · 旧城进度保留':'隔离QA存档'}`;},500);
++  await import('./mobile-ui.js');if(!window.game)throw Error('Game instance unavailable');if(deliveryMode){const {installDeliveryRuntime,prepareDeliveryRestore}=await import('./delivery-runtime.js');await prepareDeliveryRestore(window.game,{config});installDeliveryRuntime(window.game,{lease:deliveryLease,config});}commonMaterialPack?.configureRenderer?.(window.game.renderer);window.addEventListener('pagehide',()=>commonMaterialPack?.dispose(),{once:true});if(new URLSearchParams(location.search).get('physics')==='browser'){const qa=document.createElement('pre');qa.id='browser-backend-evidence';qa.style.cssText='position:fixed;top:58px;right:6px;z-index:9999;background:#10232de6;color:#fff;font:11px monospace;padding:8px;pointer-events:none;white-space:pre-wrap;max-width:350px';document.body.append(qa);setInterval(()=>{const g=window.game;const forbidden=performance.getEntriesByType('resource').filter(r=>/godot|\.wasm|\.pck/i.test(r.name));qa.textContent='LOCAL EXPERIMENT — NOT FULL RELEASE\n'+JSON.stringify({backend:g.physics.backend,tick:g.physics.lastTick,time:g.time,paused:g.paused,mode:g.inCar?'car':'walk',pos:[g.position.x,g.position.z].map(n=>+n.toFixed(2)),speed:+g.vehicle.speed.toFixed(2),contacts:g.physics.metrics.contacts,delivery:!!g.delivery,saveRevision:JSON.parse(localStorage.getItem('sunrise:browser-physics:20261030:delivery')??'null')?.saveRevision??null,godotRequests:forbidden.length,unsupported:'motorcycle,flight,3D suspension,detached wheels'},null,1);},500);}document.documentElement.dataset.betaUiReady='2';if(!production&&new URLSearchParams(location.search).get('collisionQA')==='1'){const qa=await import('./wheel-game-qa.js?v=attached-contact-skin-7');qa.mountWheelGameQA(window.game);}let frames=0,stamp=performance.now(),samples=[];setInterval(()=>{const g=window.game;const now=performance.now(),fps=((g?.frameCount??0)-frames)*1000/(now-stamp);samples.push({frames:(g?.frameCount??0)-frames,ms:now-stamp});if(samples.length>20)samples.shift();const avg=samples.reduce((a,b)=>a+b.frames,0)*1000/samples.reduce((a,b)=>a+b.ms,0);frames=g?.frameCount??0;stamp=now;if(g?.position&&g?.world)banner.textContent=production?'ESTUARY 新地图测试版 · 独立存档 · 旧城进度保留':`共享地图候选 · ${g.inCar?'驾驶':'步行'} · ${Math.round(g.position.x)}, ${Math.round(g.position.z)} · ${fps.toFixed(1)} FPS实测 / ${avg.toFixed(1)}均值 · ${g.physics?.backend??'物理未就绪'} · ${g.world.stats.loadedChunks}区块 · ${production?'独立新地图存档 · 旧城进度保留':'隔离QA存档'}`;},500);
+  }catch(e){if(window.game){window.game.paused=true;window.game.resetControls?.();window.game.save=()=>false;}const label=document.getElementById('load-text');if(label)label.textContent='候选启动已停止：'+e.message+'。原存档未覆盖，请关闭冲突页面后重载。';banner.textContent='共享地图候选启动失败：'+e.message;if(new URLSearchParams(location.search).get('physics')==='browser'){const pre=document.createElement('pre');pre.style.cssText='position:fixed;inset:100px 10px auto;z-index:100001;background:white;color:black;font:12px monospace;white-space:pre-wrap';pre.textContent=e.stack;document.getElementById('loading').append(pre);}console.error(e);}
+ }
+--- a/source/runtime-candidate/sunset-coast/play/delivery-runtime.js
++++ b/source/runtime-candidate/sunset-coast/play/delivery-runtime.js
+@@ -1,9 +1,19 @@
++import {ensureVehicleAsset} from './vehicle-asset-registry.js';
+ import {createDeliveryCareer} from './delivery-career.mjs';
+ import {ESTUARY_DELIVERY_OFFERS} from './delivery-offers.js';
+ import {createDeliveryStore,DELIVERY_SAVE_KEY,validateDeliveryHost,mergeCompleteSnapshot} from './delivery-store.js';
+ import {requestedEstuary} from './estuary-save-slots.js';
+ import {mountDeliveryUI} from './delivery-ui.js';
+ export function deliveryRequested(search=globalThis.location?.search??'') {const p=new URLSearchParams(search);return p.get('runtime')==='browser'&&p.get('world')==='estuary'||requestedEstuary(search)||p.get('preview')==='1'&&p.get('map')==='estuary'&&p.get('delivery')==='1';}
++// Cold optional GLBs must finish before synchronous Game.load restores the host.
++// Reads and validates only; failure never creates/replaces a save.
++export async function prepareDeliveryRestore(g,{storage=globalThis.localStorage,config=null,ensureAsset=ensureVehicleAsset}={}) {
++ const raw=storage.getItem(config?.key??DELIVERY_SAVE_KEY);
++ if(raw===null)return true;
++ const saved=validateDeliveryHost(JSON.parse(raw),s=>g.validateSave(s),config?.schema);
++ if(!await ensureAsset(saved.vehicle.model))throw Error('存档车型资源尚未载入；原存档保留');
++ return true;
++}
+ export function installDeliveryRuntime(g,{lease,storage=globalThis.localStorage,document=globalThis.document,mountUI=mountDeliveryUI,config=null}={}) {
+  if(!deliveryRequested()||g.delivery)return;
+  const base=Object.fromEntries(['snapshot','load','save','setDestination','clearDestination','acceptJob','addMoney','buyCar','spawnCar','repair','cheat','respawn','teleportTo','physicsTick','animateEntry'].filter(k=>typeof g[k]==='function').map(k=>[k,g[k].bind(g)]));
+--- a/source/runtime-candidate/sunset-coast/play/index.html
++++ b/source/runtime-candidate/sunset-coast/play/index.html
+@@ -118,7 +118,7 @@
+     "./render-motion.js": "./render-motion.js?v=8fa85a605d3f",
+     "./roadster-aero.js": "./roadster-aero.js?v=653b974cbfc8",
+     "./roadster-asset.js": "./roadster-asset.js?v=4a6b2c4687f4",
+-    "./roadster-controls.js": "./roadster-controls.js?v=818458049b69",
++    "./roadster-controls.js": "./roadster-controls.js?v=a3fd386aeb1a",
+     "./roadster-displays.js": "./roadster-displays.js?v=5b62863120a2",
+     "./roadster-jets.js": "./roadster-jets.js?v=f9547163539d",
+     "./roadster-ui.js": "./roadster-ui.js?v=d9950892512a",
+@@ -150,7 +150,7 @@
+     "./vehicle-instruments.js": "./vehicle-instruments.js?v=cb3b2939ee7d",
+     "./vehicle-lights.js": "./vehicle-lights.js?v=2a32f7a113c6",
+     "./vehicle-panel-layouts.js": "./vehicle-panel-layouts.js?v=b4090fd35f87",
+-    "./vehicle-physics.js": "./vehicle-physics.js?v=4d6d2a619cf6",
++    "./vehicle-physics.js": "./vehicle-physics.js?v=4ac5271de7db",
+     "./vendor/BufferGeometryUtils.js": "./vendor/BufferGeometryUtils.js?v=248b3e8420bd",
+     "./vendor/GLTFLoader.js": "./vendor/GLTFLoader.js?v=2904f2823e23",
+     "./vendor/three.core.js": "./vendor/three.core.js?v=eb077d2417f6",
+@@ -162,7 +162,7 @@
+     "./hidden-cheat-entry.js": "./hidden-cheat-entry.js?v=8d2805a9866f",
+     "./semi-trailer.js": "./semi-trailer.js?v=7be0818d4b39",
+     "./panel-drag.js": "./panel-drag.js?v=99e858db44aa",
+-    "./roadster-tire-telemetry.js": "./roadster-tire-telemetry.js?v=c68bd872de43",
++    "./roadster-tire-telemetry.js": "./roadster-tire-telemetry.js?v=b1d181a65f87",
+     "./roadster-air-display.js": "./roadster-air-display.js?v=0b84ec9872d3",
+     "./roadster-air-ledger.js": "./roadster-air-ledger.js?v=f232a3031664",
+     "../../../vendor/three.module.js": "./vendor/three.module.js?v=c8211c69345d",
+@@ -181,8 +181,8 @@
+     "./structural-wheels.js": "./structural-wheels.js?v=3621f2bb27f2",
+     "./structural-damage-adapter.js": "./structural-damage-adapter.js?v=25d13c5d5fb5",
+     "./blender-s-displays.js": "./blender-s-displays.js?v=1e174c1ff004",
+-    "./physics-backend.js": "./physics-backend.js?v=6584cd2a8011",
+-    "./browser-physics.js": "./browser-physics.js?v=0b27d1eaca84",
++    "./physics-backend.js": "./physics-backend.js?v=7ef2bb97cc0d",
++    "./browser-physics.js": "./browser-physics.js?v=b803df7d8ddd",
+     "./fixed-step-clock.mjs": "./fixed-step-clock.mjs?v=c01da1b83f79",
+     "./walking-camera.js": "./walking-camera.js?v=e7fc5a593c90",
+     "./photo-mode.js": "./photo-mode.js?v=4ddc7019ce66",
+@@ -200,7 +200,16 @@
+     "./browser-world-slots.js": "./browser-world-slots.js?v=79cbaa073c86",
+     "./browser-canonical-entry.js": "./browser-canonical-entry.js?v=8eba64b57886",
+     "./browser-world-lifecycle.js": "./browser-world-lifecycle.js?v=6a713adc770b",
+-    "./browser-world-boot-storage.js": "./browser-world-boot-storage.js?v=79ace756deac"
++    "./browser-world-boot-storage.js": "./browser-world-boot-storage.js?v=79ace756deac",
++    "./browser-roadster-air.js": "./browser-roadster-air.js?v=a0e3864bc90d",
++    "./browser-air-rigidbody.js": "./browser-air-rigidbody.js?v=a5d7bcfac19b",
++    "./browser-roadster-controls.js": "./browser-roadster-controls.js?v=7cb671066c92",
++    "./browser-roadster-wheels.js": "./browser-roadster-wheels.js?v=455187e8692b",
++    "./browser-roadster-surface.js": "./browser-roadster-surface.js?v=fc3795ee142f",
++    "./browser-roadster-adapter.js": "./browser-roadster-adapter.js?v=23e3521ba74b",
++    "./browser-motorcycle-adapter.js": "./browser-motorcycle-adapter.js?v=f71d903243bc",
++    "./browser-motorcycle-surface.js": "./browser-motorcycle-surface.js?v=65e68b01ec4e",
++    "./browser-rigidbody-contacts.js": "./browser-rigidbody-contacts.js?v=a73f21e2f09c"
+   }
+ }</script>
+ <script type="module" src="./browser-canonical-entry.js?v=8eba64b57886" onerror="document.getElementById('load-text').textContent='1.0 界面加载失败，请刷新重试。存档未修改。'"></script>
+--- a/source/runtime-candidate/sunset-coast/play/physics-backend.js
++++ b/source/runtime-candidate/sunset-coast/play/physics-backend.js
+@@ -6,9 +6,11 @@
+  if(worldRequest){const {BrowserPhysicsSystem}=await import('./browser-physics.js');return {PhysicsSystem:BrowserPhysicsSystem,preloadPhysics:async()=>{}};}
+  if(browserPhysicsRequested){
+   const q=new URLSearchParams(location.search);
+-  if([...q.keys()].some(k=>!['physics','preview','map','delivery','asphalt','pbr'].includes(k)))throw Error('浏览器实验不支持结构损坏、原生诊断或额外参数');
++  if([...q.keys()].some(k=>!['physics','preview','map','delivery','asphalt','pbr','air','moto'].includes(k)))throw Error('浏览器实验不支持结构损坏、原生诊断或额外参数');
+   if(!['localhost','127.0.0.1','[::1]'].includes(location.hostname)||q.get('preview')!=='1'||!['estuary','crescent'].includes(q.get('map'))||q.has('world')||q.has('slot')||q.has('collisionQA'))throw Error('浏览器物理仅限本机隔离预览，禁止正式存档或原生 QA');
++  for(const key of ['air','moto'])if(q.has(key)&&(q.getAll(key).length!==1||q.get(key)!=='1'))throw Error('浏览器实验选项必须唯一且为 1');
+   const {BrowserPhysicsSystem}=await import('./browser-physics.js');
++  if(q.get('air')==='1'||q.get('moto')==='1')return {PhysicsSystem:class extends BrowserPhysicsSystem{constructor(game){super(game,{roadsters:q.get('air')==='1',motorcycles:q.get('moto')==='1'});this.backend='Browser local rigid-body experiment';}},preloadPhysics:async()=>{}};
+   return {PhysicsSystem:BrowserPhysicsSystem,preloadPhysics:async()=>{}};
+  }
+  const {GodotPhysicsSystem,prepareGodotEngine,shouldPreloadEngine}=await import('./godot-physics.js');
+--- a/source/runtime-candidate/sunset-coast/play/roadster-controls.js
++++ b/source/runtime-candidate/sunset-coast/play/roadster-controls.js
+@@ -25,7 +25,7 @@
+   roadsterRefillSerial:Math.max(0,Math.floor(finite(v.roadsterRefillSerial)))};
+ }
+ export function requestRoadsterManeuver(game,action){
+- const v=game.vehicle;if(roadsterTrim(v)!=='rocket')return{ok:false,reason:'智能空中特技仅限 Rocket（游戏设定）'};
++ const v=game.vehicle;if(game.physics?.capabilities?.roadsterManeuvers===false)return{ok:false,reason:'浏览器本地实验尚未迁移智能特技'};if(roadsterTrim(v)!=='rocket')return{ok:false,reason:'智能空中特技仅限 Rocket（游戏设定）'};
+  if(!['vault','vault_spin','spin','cancel'].includes(action))return{ok:false,reason:'未知动作'};
+  if(v.parkingBrakeEngaged&&action!=='cancel')return{ok:false,reason:'P 驻车中，请先挂 N / R / D 再执行特技'};
+  if(!game.inCar||game.transition||game.paused||game.aircraft?.active||game.flight?.active||game.autonomyTest?.active||game.ui?.isPhoneOpen?.()||globalThis.document?.body?.classList.contains('mobile-drawer-open'))return{ok:false,reason:'请先结束当前操作并进入 Rocket'};
+--- a/source/runtime-candidate/sunset-coast/play/roadster-tire-telemetry.js
++++ b/source/runtime-candidate/sunset-coast/play/roadster-tire-telemetry.js
+@@ -7,7 +7,7 @@
+  vehicle.roadsterTires=Object.fromEntries(Object.entries(tires).map(([key,value])=>[key,Array.isArray(value)?value.map(v=>Array.isArray(v)?v.slice():v):value]));
+ }
+ export function nativeRoadsterWheelAngle(vehicle,wheel){
+- if(!vehicle.godotPhysics||!vehicle.roadsterTires)return null;
++ if((!vehicle.godotPhysics&&!vehicle.browserRoadsterBody)||!vehicle.roadsterTires)return null;
+  const index=(wheel.front?0:2)+(wheel.side>0?1:0);
+  const angle=vehicle.roadsterTires.angles[index];
+  return Number.isFinite(angle)?-angle:null;
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/tests/browser-air-entry-policy.test.mjs
+@@ -0,0 +1,50 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {BrowserPhysicsSystem} from '../browser-physics.js';
++import {assertBrowserSnapshotCapability} from '../browser-world-policy.js';
++
++let revision=0;
++async function factory(search,hostname='localhost') {
++ globalThis.location={search,hostname,reload(){}};
++ return import('../physics-backend.js?air-policy-test='+revision++);
++}
++const game=()=>({vehicle:{kind:'car',model:{id:'s'}},ui:{toast(){}},world:{colliders:[]}});
++const query='?physics=browser&preview=1&map=estuary';
++
++test('production browser worlds retain planar capabilities and deny unsupported save content',async()=>{
++ for(const world of ['estuary','crescent']){
++  const backend=await factory('?runtime=browser&world='+world+'&browserSlot=b-test','example.com');
++  const {PhysicsSystem}=await backend.loadPhysicsBackend(),physics=new PhysicsSystem(game());
++  assert.equal(physics.roadsters,null);assert.equal(physics.motorcycles,null);
++  assert.equal(physics.capabilities.roadsterManualFlight,false);assert.equal(physics.capabilities.roadsterFlight,false);
++  assert.equal(physics.supportsVehicle({kind:'car',model:{id:'roadster_rocket'}}),false);
++  assert.throws(()=>assertBrowserSnapshotCapability({vehicle:{model:'roadster_rocket'}},world),/尚未完成迁移/);
++ }
++});
++test('explicit local air and motorcycle options select only the requested adapters',async()=>{
++ for(const [options,air,moto]of [['',false,false],['&air=1',true,false],['&moto=1',false,true],['&air=1&moto=1',true,true]]){
++  const {loadPhysicsBackend}=await factory(query+options),{PhysicsSystem}=await loadPhysicsBackend(),p=new PhysicsSystem(game());
++  assert.equal(!!p.roadsters,air);assert.equal(!!p.motorcycles,moto);
++  assert.equal(p.capabilities.roadsterManualFlight,air);assert.equal(p.capabilities.roadsterFlight,false);
++  assert.equal(p.capabilities.roadsterManeuvers,false);assert.equal(p.capabilities.aircraft,false);
++ }
++});
++test('public hosts, ambiguous options and production-slot air injection fail closed',async()=>{
++ const remote=await factory(query+'&air=1','example.com');await assert.rejects(remote.loadPhysicsBackend(),/本机隔离预览/);
++ for(const option of ['air=0','air=true','air=1&air=1','moto=0','moto=1&moto=1']){
++  const f=await factory(query+'&'+option);await assert.rejects(f.loadPhysicsBackend(),/必须唯一/);
++ }
++ await assert.rejects(factory('?runtime=browser&world=estuary&browserSlot=b-test&air=1'),/不接受实验/);
++ const missingPreview=await factory('?physics=browser&map=estuary&air=1');await assert.rejects(missingPreview.loadPhysicsBackend(),/本机隔离预览/);
++});
++test('formal lifecycle remains the sole BFCache reload owner, local previews reload once',async()=>{
++ for(const formal of [true,false]){
++  const w=new EventTarget(),d=new EventTarget();let reloads=0;
++  globalThis.window=w;globalThis.document=d;globalThis.location={reload:()=>reloads++};
++  const g=game();if(formal){g.browserWorldLifecycle={};w.addEventListener('pageshow',e=>{if(e.persisted)location.reload();});}
++  const p=new BrowserPhysicsSystem(g,{roadsters:true});await p.start();
++  const e=new Event('pageshow');Object.defineProperty(e,'persisted',{value:true});w.dispatchEvent(e);
++  assert.equal(reloads,1);w.dispatchEvent(new Event('pagehide'));
++  delete globalThis.window;delete globalThis.document;delete globalThis.location;
++ }
++});
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/tests/browser-motorcycle-integration.test.mjs
+@@ -0,0 +1,48 @@
++import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';
++import * as T from '../vendor/three.module.js';import {GLTFLoader} from '../vendor/GLTFLoader.js';
++import {MOTORCYCLE_MODELS,prepareMotorcycleTemplate,instantiateMotorcycle} from '../motorcycle-asset.js';
++import {BrowserPhysicsSystem} from '../browser-physics.js';import {resetVehicleDynamics} from '../vehicle-physics.js';import {sampleVehiclePose} from '../render-motion.js';import {createDesignedCar} from '../vehicle-design.js';
++async function bike(model=MOTORCYCLE_MODELS[0]){const data=await readFile(new URL('../assets/motorcycle-'+model.assetKey+'.glb',import.meta.url));const gltf=await new GLTFLoader().parseAsync(data.buffer.slice(data.byteOffset,data.byteOffset+data.byteLength),'');const v=instantiateMotorcycle(prepareMotorcycleTemplate(gltf.scene,model.assetKey),model);Object.assign(v,{pos:new T.Vector3(0,.02,0),yaw:0,speed:0,steer:0,battery:98,condition:100});return v;}
++function game(v,others=[],world={}){const g={vehicle:v,inCar:true,paused:false,time:0,input:{throttle:0,steer:0,brake:0},world:{colliders:[],groundHeight:()=>0,update(){},...world},ui:{toast(){}},allVehicles:()=>[v,...others],beginVehicleStep(){for(const car of this.allVehicles())car.collisionPrevious={x:car.pos.x,z:car.pos.z,yaw:car.yaw};},physicsTick(dt){this.time+=dt;this.physics.submitVehicle(v,this.input,dt,true);for(const other of others)if(other.kind!=='motorcycle')this.physics.submitVehicle(other,{throttle:0,steer:0,brake:0},dt,false);},applyCollisionDamage(v,impact,other,contact){this.impacts.push({v,impact,other,contact});v.condition=Math.max(0,v.condition-impact);},impacts:[],spawnCar:id=>id};Object.defineProperty(g,'position',{get:()=>v.pos});g.physics=new BrowserPhysicsSystem(g,{motorcycles:true,hidden:()=>!!g.hidden});return g;}
++function drive(g,seconds,input){g.input=input;g.now??=0;if(!g.started){g.physics.advance(0);g.started=true;}for(let i=0;i<Math.round(seconds*60);i++){g.now+=1000/60;g.physics.advance(g.now);}}
++for(const model of MOTORCYCLE_MODELS)test(model.id+' actual GLB backend throttle/steer/brake + wheel and quaternion rendering',async()=>{const v=await bike(model),g=game(v);await g.physics.start();drive(g,5,{throttle:1,steer:0,brake:0});assert.ok(v.speed>7);assert.ok(v.pos.z< -15);assert.equal(v.wheelSupportCount,2);assert.equal(v.godotPhysics,undefined);assert.equal(v.browserMotorcycleBody,true);assert.ok(v.wheels.every(w=>Math.abs(w.spinAngle)>1));assert.ok(v.battery<98);drive(g,2,{throttle:.5,steer:.12,brake:0});assert.ok(Math.abs(v.pos.x)>1);assert.ok(v.physicsQuaternion.length()>.999);const pose=sampleVehiclePose(v,.5);assert.ok(pose.quaternion);drive(g,5,{throttle:0,steer:0,brake:1});assert.ok(Math.abs(v.speed)<.2);assert.ok(v.pos.y> -1);assert.equal(g.physics.lastTick,720);});
++test('production reset serial applies once then physics continues; pause and hidden preserve body',async()=>{const v=await bike(),g=game(v);await g.physics.start();drive(g,2,{throttle:1,steer:0});const old=g.physics.motorcycles.states.get(v).body;resetVehicleDynamics(v);drive(g,.1,{throttle:0,brake:1});assert.notEqual(g.physics.motorcycles.states.get(v).body,old);const next=g.physics.motorcycles.states.get(v).body;drive(g,.1,{throttle:0,brake:1});assert.equal(g.physics.motorcycles.states.get(v).body,next);const before=JSON.stringify(next);g.paused=true;drive(g,2,{throttle:1});assert.equal(JSON.stringify(next),before);g.paused=false;g.hidden=true;drive(g,2,{throttle:1});assert.equal(JSON.stringify(next),before);});
++test('actual acceleration hits thin finite 3D wall, damage reported, no through-wall travel',async()=>{const v=await bike(),g=game(v,[],{colliders:[{id:'wall',x:0,z:-18,w:5,d:.025,height:3,baseY:0}]});await g.physics.start();drive(g,8,{throttle:1,steer:0});assert.ok(g.impacts.length>0);assert.ok(v.pos.z> -18);assert.ok(v.condition<100);assert.ok(g.impacts.some(c=>c.impact>5));});
++test('height-separated overhead box does not block motorcycle below it',async()=>{const v=await bike(),g=game(v,[],{colliders:[{id:'overpass',x:0,z:-18,w:5,d:1,height:1,baseY:5}]});await g.physics.start();drive(g,6,{throttle:1,steer:0});assert.ok(v.pos.z< -25);assert.equal(g.impacts.length,0);});
++test('moving bike hits parked bike with reciprocal impulses and damage identities',async()=>{const a=await bike(),b=await bike(MOTORCYCLE_MODELS[1]);b.pos.z=-17;const g=game(a,[b]);await g.physics.start();drive(g,6,{throttle:1,steer:0});assert.ok(g.impacts.some(c=>c.v===a&&c.other));assert.ok(g.impacts.some(c=>c.v===b&&c.other));assert.ok(b.pos.z< -17);assert.ok(a.pos.z>b.pos.z-2);});
++test('moving bike couples with planar car without losing vertical collision separation',async()=>{const a=await bike(),b={...createDesignedCar('s',true),pos:new T.Vector3(0,.02,-18),yaw:0,speed:0,steer:0,battery:98,condition:100};const g=game(a,[b]);await g.physics.start();drive(g,6,{throttle:1,steer:0});assert.ok(g.impacts.some(c=>c.v===a&&c.other));assert.ok(b.pos.z< -18);assert.ok(Number.isFinite(a.speed)&&Number.isFinite(b.speed));});
++test('default backend stays gated and optional native capabilities remain blocked',async()=>{const v=await bike();const g=game(v);g.physics=new BrowserPhysicsSystem(g);await assert.rejects(g.physics.start(),/尚不支持/);assert.equal(g.physics.capabilities.motorcycle,false);assert.equal(g.physics.capabilities.aircraft,false);assert.equal(g.physics.capabilities.structuralWheelDetachment,false);});
++
++import {createPerson} from '../world.js';
++import {safeVehicleExit,createGroundContact,getActorGroundHeight,getActorFootOffset} from '../ground-contact.js';
++import {createEntryAnimation,sampleEntryAnimation} from '../entry-animation.js';
++import {cancelPendingVehicleAsset} from '../vehicle-asset-flow.js';
++import {roadsterFlightLocked,roadsterTrim} from '../roadster-controls.js';
++import {setVehicleInteriorView} from '../vehicle-instruments.js';
++import {resetVehiclePose} from '../render-motion.js';
++import {serializeVehicleDamage} from '../s-runtime.js';
++import {serializeAxleFault} from '../axle-fault.js';
++import {serializeBrakeFault} from '../brake-fault.js';
++import {rememberRoadsterAir,serializeRoadsterAirLedger} from '../roadster-air-ledger.js';
++import {createDeliveryStore,DELIVERY_SAVE_SCHEMA} from '../delivery-store.js';
++import {freshSave} from '../beta-save-slots.js';import {validateSave} from '../save-validation.js';
++const production=await readFile(new URL('../game.js',import.meta.url),'utf8');
++function method(start,end,deps){const code=production.slice(production.indexOf('\n '+start+'('),production.indexOf('\n '+end+'('));assert.ok(code.length>10&&code.length<12000);return new Function(...Object.keys(deps),'return ({'+code+'})')(...Object.values(deps));}
++const noop=()=>{},element={classList:{remove:noop}};
++function entryMethods(g){Object.assign(g,{scene:new T.Scene(),person:createPerson(),playerPos:new T.Vector3(-1.5,0,0),playerYaw:0,character:'alex',cameraMode:0,traffic:[],resetControls:noop,nearestCar:g.vehicle,rememberBrakeFault:noop});g.ui.updateAll=noop;g.ui.updatePilot=noop;g.scene.add(g.vehicle.root,g.person.root);
++ const deps={cancelPendingVehicleAsset,roadsterFlightLocked,dist:(a,b)=>Math.hypot(a.x-b.x,a.z-b.z),safeVehicleExit,setVehicleInteriorView,resetVehicleDynamics,resetVehiclePose,createEntryAnimation,getActorFootOffset,sampleEntryAnimation,$:()=>element,setVehicleDoorAngle:()=>assert.fail('motorcycles have no doors')};
++ Object.assign(g,method('toggleEntry','animateEntry',deps),method('animateEntry','collision',deps),method('cancelEntry','toggleEntry',deps),method('walkingHeight','animateWalkingPerson',{CRESCENT_MAP:false,createGroundContact,getActorGroundHeight,getActorFootOffset}));return g;
++}
++test('actual Game.toggleEntry/animateEntry use safe exit and one reset; fast dismount rejected',async()=>{const v=await bike(),g=entryMethods(game(v));await g.physics.start();drive(g,3,{throttle:1,steer:0});const serial=v.physicsResetSerial??0;g.toggleEntry();assert.equal(g.transition,undefined);assert.equal(v.physicsResetSerial??0,serial);drive(g,3,{throttle:0,brake:1});g.toggleEntry();assert.ok(g.transition&&!g.transition.entering);const after=v.physicsResetSerial;assert.equal(after,serial+1);while(g.transition)g.animateEntry(1/60);assert.equal(g.inCar,false);assert.ok(g.playerPos.distanceTo(v.pos)<5);assert.ok(g.person.root.position.y+getActorFootOffset(g.person,{posed:true})>=-.001);drive(g,.1,{throttle:0,brake:1});const resetBody=g.physics.motorcycles.states.get(v).body;g.toggleEntry();assert.ok(g.transition?.entering);while(g.transition)g.animateEntry(1/60);assert.equal(g.inCar,true);drive(g,.1,{throttle:0,brake:1});assert.notEqual(g.physics.motorcycles.states.get(v).body,resetBody);});
++for(const model of MOTORCYCLE_MODELS)test(model.id+' real Game snapshot → isolated delivery save → fresh body, no refill or foreign writes',async()=>{const v=await bike(model),g=game(v);await g.physics.start();drive(g,3,{throttle:1,steer:0});const base=JSON.parse(freshSave('2026-10-30T00:00:00Z'));for(const key of ['money','health','armor','wanted','owned','jobsCompleted','clockMinutes','transactions','character','god','ammo'])g[key]=base[key];g.owned=['s',model.id];g.vehicleStates={};g.vehicleFaults={};g.playerPos=v.pos.clone();g.playerYaw=v.yaw;g.assistSettings={};g.quality='medium';g.weather='clear';g.job=null;g.destination=null;
++ const deps={rememberRoadsterAir,serializeRoadsterAirLedger,roadsterTrim,serializeVehicleDamage,serializeAxleFault,serializeBrakeFault,regionAt:()=>({id:'coast'})};
++ Object.assign(g,method('isGarageCar','captureGarageVehicle',deps),method('captureGarageVehicle','removeVehicle',deps),method('rememberBrakeFault','handleAxleFault',deps),method('snapshot','validateSave',deps));
++ const data=new Map([['sunrise:formal:existing','untouched']]),storage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)},opts={storage,key:'sunrise:browser-physics:20261030:delivery',capture:()=>g.snapshot(),publish:noop,validateHost:validateSave,ownsLock:()=>true,schema:DELIVERY_SAVE_SCHEMA};const store=createDeliveryStore(opts);store.initialize();assert.equal(store.save(),true);const restored=createDeliveryStore(opts).initialize();assert.equal(restored.vehicle.model,model.id);assert.equal(restored.vehicle.x,v.pos.x);assert.equal(restored.vehicle.z,v.pos.z);assert.equal(restored.vehicle.battery,v.battery);assert.equal(restored.inCar,true);assert.equal(data.get('sunrise:formal:existing'),'untouched');
++ const fresh=await bike(model);fresh.pos.set(restored.vehicle.x,0,restored.vehicle.z);fresh.yaw=restored.vehicle.yaw;fresh.battery=restored.vehicle.battery;fresh.condition=restored.vehicle.condition;const resumed=game(fresh);await resumed.physics.start();drive(resumed,.1,{throttle:0,brake:1});assert.ok(Math.abs(fresh.pos.z-restored.vehicle.z)<.01);assert.equal(fresh.battery,restored.vehicle.battery);assert.equal(fresh.wheelSupportCount,2);
++});
++import {collideBodies,snapshotBody,staticBox} from '../browser-rigidbody-contacts.js';
++test('t=0 touching thin wall still catches inward swept motion',()=>{const a={config:{mass:100,size:[1,1,2]},position:new T.Vector3(0,1,1.025),orientation:new T.Quaternion(),velocity:new T.Vector3(0,0,-240),angularVelocity:new T.Vector3(),inertia:new T.Vector3(100,100,100)},previous=snapshotBody(a);a.position.z=-3;assert.ok(collideBodies(a,staticBox({x:0,z:0,w:5,d:.025,height:3,baseY:0}),previous));assert.ok(a.position.z>=1.02);});
++test('finite overhead surface cannot teleport motorcycle to upper floor',async()=>{for(const h of [1,1.2,2,3]){const v=await bike(),group=new T.Group();group.userData.surfaces=[-10,h,-10,0,h,10,10,h,-10];const g=game(v,[],{chunks:new Map([['deck',{group}]])});await g.physics.start();drive(g,1/60,{});assert.ok(v.pos.y<.1,'No upper-floor projection at '+h);assert.equal(g.physics.failed,false);}});
++test('malformed world collider stops before partial physical state and time commit',async()=>{const v=await bike(),g=game(v);await g.physics.start();drive(g,.1,{throttle:1});const b=g.physics.motorcycles.states.get(v).body,before=JSON.stringify(b),position=v.pos.clone(),tick=g.physics.lastTick,time=g.time;g.world.colliders=[{x:v.pos.x,z:v.pos.z,w:1,d:1,height:NaN}];drive(g,1/60,{throttle:1});assert.equal(JSON.stringify(b),before);assert.ok(v.pos.equals(position));assert.equal(g.physics.lastTick,tick);assert.equal(g.time,time);assert.equal(g.physics.failed,true);assert.equal(g.paused,true);});
++test('high relative motion broadphase retains swept pair, not just endpoint distance',async()=>{const a=await bike(),b=await bike();a.pos.z=20;b.pos.z=-20;a.speed=3000;b.speed=-3000;const g=game(a,[b]);await g.physics.start();drive(g,1/60,{});assert.ok(g.physics.metrics.contacts>0);assert.ok(a.pos.z>b.pos.z);assert.equal(g.physics.failed,false);});
++test('authored finite ramp: actual drive climbs, leaves edge airborne, lands back on terrain',async()=>{const v=await bike(),group=new T.Group();group.userData.surfaces=[-5,0,-10,5,0,-10,-5,3,-40,5,0,-10,5,3,-40,-5,3,-40];const g=game(v,[],{chunks:new Map([['ramp',{group}]])});await g.physics.start();drive(g,4,{throttle:1,steer:0});assert.ok(v.pos.y>1.5&&v.pos.z< -25);assert.equal(v.wheelSupportCount,2);drive(g,1,{throttle:1,steer:0});assert.equal(v.wheelSupportCount,0);assert.ok(v.pos.z< -40);drive(g,3,{throttle:1,steer:0});assert.equal(v.wheelSupportCount,2);assert.ok(v.pos.y<.1);assert.equal(g.physics.failed,false);});
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/tests/browser-roadster-air.test.mjs
+@@ -0,0 +1,30 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {Vector3 as V,Quaternion as Q} from '../vendor/three.module.js';
++import {AirReserve,createRoadsterAirController as controller,resetRoadsterAirController,stepRoadsterAir,commitRoadsterAirTelemetry,AIR_CAPABILITIES} from '../browser-roadster-air.js';
++import {integrateAirWrench} from '../browser-air-rigidbody.js';
++import {resolveMotorcyclePlane} from '../browser-motorcycle-rigidbody.js';
++const dt=1/60,near=(a,b,t=1e-7)=>assert.ok(Math.abs(a-b)<t,`${a} != ${b}`);
++const body=()=>({config:{mass:1940,size:[2,1.2,4.5],collisionOffset:[0,0,0]},inertia:new V(3506,3920,879),position:new V(0,.6,0),orientation:new Q(),velocity:new V(),angularVelocity:new V()});
++const make=(more={})=>controller({modelId:'roadster_rocket',instanceId:'owner-rocket-1',...more});
++const step=(s,b,c={})=>stepRoadsterAir(s,b,c,dt,{grounded:b.position.y<=.6001,altitude:Math.max(0,b.position.y-.6)});
++test('reserve exact high/low pressure integral and timestep partition invariance',()=>{for(const units of [2400,365,360,5,0]){let a=new AirReserve(units),b=new AirReserve(units);const scale=a.consume(300,.1);for(let i=0;i<10;i++)b.consume(300,.01);near(a.units,b.units,1e-9);near(units-a.units,scale*30,1e-9);assert.ok(a.units>=0);}});
++test('malformed saves never grant full tank; compressor only parked upright',()=>{for(const x of [NaN,Infinity,'2400',null])near(new AirReserve(x).units,0);const s=new AirReserve(10);for(const props of [{grounded:false},{upright:false},{speed:.25},{angularSpeed:.2},{spraying:true}]){s.refill(.1,{grounded:true,upright:true,speed:0,angularSpeed:0,spraying:false,...props});near(s.units,10);}s.refill(.1,{grounded:true,upright:true,speed:0,angularSpeed:0,spraying:false});near(s.units,10.8);});
++test('three stable IDs keep distinct flight and ground-boost permissions',()=>{for(const id of ['roadster','roadster_thrust','roadster_rocket']){const s=make({modelId:id}),b=body(),r=step(s,b,{roadsterAir:true});assert.equal(s.mode,id==='roadster_rocket'?'air':'road');assert.equal(r.force.y>0,id==='roadster_rocket');}for(const id of ['roadster','roadster_thrust']){const r=step(make({modelId:id}),body(),{roadsterBoost:true,throttle:1});near(r.force.z,id==='roadster'?0:-1940*19);}});
++test('force-only controller never mutates body; boost brake veto and fade',()=>{const b=body(),before=JSON.stringify(b),s=make();step(s,b,{roadsterAir:true});assert.equal(JSON.stringify(b),before);for(const c of [{manualBrake:1},{electronicBrake:1},{handbrake:true}])near(step(make(),body(),{roadsterBoost:true,throttle:1,...c}).force.length(),0);b.velocity.z=-80;near(step(make(),b,{roadsterBoost:true,throttle:1}).force.length(),0);});
++test('real integrated launch, hover, lateral control, brake and landing on plane',()=>{const b=body(),s=make();let grounded=true,peak=0;for(let i=0;i<900;i++){const c={roadsterAir:i<480,roadsterForward:i>=180&&i<300?1:0,roadsterAirBrake:i>=300};const r=stepRoadsterAir(s,b,c,dt,{grounded,altitude:Math.max(0,b.position.y-.6)});integrateAirWrench(b,r,dt);const hit=resolveMotorcyclePlane(b,{normal:new V(0,1,0),offset:0,friction:.6});grounded=!!hit;peak=Math.max(peak,b.position.y);assert.ok(b.position.y>=.5999);assert.ok(b.position.toArray().every(Number.isFinite));}assert.ok(peak>2.5);assert.ok(b.position.z<-1);assert.equal(s.mode,'road');assert.ok(b.position.y<.61);assert.ok(s.reserve.units<2400);});
++test('empty battery enters unpowered; empty air cannot generate wrench',()=>{const b=body();b.position.y=5;const s=make();step(s,b,{roadsterAir:true});const r=step(s,b,{roadsterAir:true,battery:0});assert.equal(s.mode,'unpowered');near(r.force.length(),0);const t=make({airUnits:0}),r2=step(t,b,{roadsterAir:true});near(r2.force.length(),0);near(r2.torque.length(),0);});
++test('repair/reset does not refill or relaunch held toggle and is idempotent',()=>{const s=make({airUnits:72});step(s,body(),{roadsterAir:true});const units=s.reserve.units;assert.equal(resetRoadsterAirController(s,1),true);assert.equal(resetRoadsterAirController(s,1),false);near(s.reserve.units,units);step(s,body(),{roadsterAir:true});assert.equal(s.mode,'road');step(s,body(),{roadsterAir:false});step(s,body(),{roadsterAir:true});assert.equal(s.mode,'air');});
++test('browser telemetry preserves identity/reset/fuel; mismatches refuse',()=>{const s=make({airUnits:120}),b=body(),r=step(s,b,{roadsterAir:true}),v={instanceId:s.instanceId,model:{id:s.modelId},fuel:32,battery:100,physicsResetSerial:9};commitRoadsterAirTelemetry(v,s,r);near(v.fuel,32);near(v.physicsResetSerial,9);near(v.roadsterAirUnits,s.reserve.units);assert.ok(v.battery<100);assert.throws(()=>commitRoadsterAirTelemetry({...v,instanceId:'other'},s,r));});
++test('invalid dt/terrain and unsupported maneuver reject before controller mutation',()=>{const b=body(),s=make(),before=JSON.stringify(s);assert.throws(()=>stepRoadsterAir(s,b,{},.5,{grounded:true,altitude:0}));assert.throws(()=>stepRoadsterAir(s,b,{},dt,{grounded:true,altitude:NaN}));assert.throws(()=>step(s,b,{roadsterAction:'vault_spin'}));assert.equal(JSON.stringify(s),before);assert.equal(AIR_CAPABILITIES.gameplayReady,false);});
++test('released attitude stabilizes over 20s without numerical energy explosion',()=>{const b=body(),s=make();b.position.y=10;b.orientation.setFromAxisAngle(new V(0,0,1),.5);for(let i=0;i<1200;i++){const r=step(s,b,{roadsterAir:true});integrateAirWrench(b,r,dt);assert.ok(b.angularVelocity.length()<10);assert.ok(b.orientation.toArray().every(Number.isFinite));}assert.ok(new V(0,1,0).applyQuaternion(b.orientation).y>.999);assert.ok(b.angularVelocity.length()<.01);});
++test('invalid force overflow leaves live controller and rigid body untouched',()=>{const b=body(),s=make();b.config.mass=1e308;const before=JSON.stringify(s);assert.throws(()=>step(s,b,{roadsterAir:true}));assert.equal(JSON.stringify(s),before);const good=body(),saved=JSON.stringify(good);assert.throws(()=>integrateAirWrench(good,{force:new V(Infinity,0,0),torque:new V()},dt));assert.equal(JSON.stringify(good),saved);});
++test('jets use delivered local wrench, not held controls at empty pressure',()=>{const b=body(),s=make({airUnits:0}),r=step(s,b,{roadsterAir:true,roadsterForward:1});assert.ok(Object.values(r.telemetry.jets).every(x=>x===0));});
++test('high downward velocity delivers actual ground collision impulse',()=>{const b=body();b.position.y=.61;b.velocity.y=-20;integrateAirWrench(b,{force:new V(),torque:new V()},dt);const hit=resolveMotorcyclePlane(b,{normal:new V(0,1,0),offset:0});assert.ok(hit.impactSpeed>20);assert.ok(hit.impulse>1940*20);assert.ok(b.position.y>=.6);near(b.velocity.y,0);});
++test('legacy air ledger serialize/restore preserves live amount without refill',async()=>{const {rememberRoadsterAir,serializeRoadsterAirLedger,loadRoadsterAirLedger,restoreRoadsterAir}=await import('../roadster-air-ledger.js');const s=make({airUnits:71}),b=body(),v={model:{id:s.modelId},instanceId:s.instanceId,battery:100,grounded:false};commitRoadsterAirTelemetry(v,s,step(s,b,{roadsterAir:true}));const game={allVehicles:()=>[v]};rememberRoadsterAir(game,v);const saved=JSON.parse(JSON.stringify(serializeRoadsterAirLedger(game))),other={};loadRoadsterAirLedger(other,saved);const restored={model:{id:s.modelId},instanceId:s.instanceId};restoreRoadsterAir(other,restored,{});near(restored.roadsterAirUnits,v.roadsterAirUnits);const recreated=make({airUnits:restored.roadsterAirUnits});near(recreated.reserve.units,s.reserve.units);});
++test('prototype model IDs, invalid serials and invalid instance identities rejected',()=>{for(const modelId of ['constructor','__proto__','nc11'])assert.throws(()=>make({modelId}));for(const instanceId of ['', '__proto__','x'.repeat(97)])assert.throws(()=>make({instanceId}));assert.throws(()=>make({resetSerial:NaN}));});
++test('high-rate free air body stays finite with low-pressure controller',()=>{const b=body(),s=make({airUnits:50});b.position.y=100;b.angularVelocity.set(50,50,50);let energy=Infinity;for(let i=0;i<3600;i++){const r=stepRoadsterAir(s,b,{roadsterAir:true},dt,{grounded:false,altitude:Math.max(0,b.position.y-.6)});integrateAirWrench(b,r,dt);assert.ok(b.angularVelocity.length()<100);const e=b.angularVelocity.clone().applyQuaternion(b.orientation.clone().invert()).multiply(b.inertia).dot(b.angularVelocity.clone().applyQuaternion(b.orientation.clone().invert()));assert.ok(Number.isFinite(e));energy=e;}assert.ok(s.reserve.units<50);assert.ok(energy<1);});
++
++test('old repair serial cannot reset current air epoch',()=>{const s=make({resetSerial:5});s.mode='air';assert.equal(resetRoadsterAirController(s,4),false);assert.equal(s.resetSerial,5);assert.equal(s.mode,'air');});
++
++test('browser unpowered telemetry clears flight toggle like existing state bridge',()=>{const s=make(),b=body();b.position.y=5;step(s,b,{roadsterAir:true});const r=step(s,b,{roadsterAir:true,battery:0}),v={instanceId:s.instanceId,model:{id:s.modelId},battery:0,roadsterRequest:{air:true,wingMode:'raised'}};commitRoadsterAirTelemetry(v,s,r);assert.equal(v.roadsterRequest.air,false);assert.equal(v.roadsterRequest.wingMode,'raised');});
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/tests/browser-roadster-integration.test.mjs
+@@ -0,0 +1,31 @@
++import test from 'node:test';import assert from 'node:assert/strict';import {readFile} from 'node:fs/promises';import {fileURLToPath} from 'node:url';
++import * as T from '../vendor/three.module.js';
++import {loadRoadsterAsset,createRoadsterCar} from '../roadster-asset.js';
++import {BrowserPhysicsSystem} from '../browser-physics.js';
++import {resetVehicleDynamics} from '../vehicle-physics.js';
++import {toggleRoadsterAir,requestRoadsterManeuver} from '../roadster-controls.js';
++import {sampleVehiclePose} from '../render-motion.js';
++const originalFetch=globalThis.fetch;globalThis.self=globalThis;globalThis.createImageBitmap=async()=>({width:1200,height:760,close(){}});globalThis.ProgressEvent=class{constructor(t,p){this.type=t;Object.assign(this,p);}};
++globalThis.fetch=async input=>{const u=new URL(typeof input==='string'?input:input.url);if(u.protocol==='blob:')return originalFetch(input);assert.equal(u.protocol,'file:');const buf=await readFile(fileURLToPath(u));return new Response(buf,{headers:{'Content-Type':'model/gltf-binary','Content-Length':String(buf.length)}});};assert.equal(await loadRoadsterAsset(),true);globalThis.fetch=originalFetch;
++let serial=0;function car(id='roadster_rocket'){const v=createRoadsterCar(id);Object.assign(v,{pos:new T.Vector3(0,.02,0),yaw:0,speed:0,steer:0,battery:100,condition:100,instanceId:'roadster-test-'+(++serial),roadsterAirUnits:2400,roadsterCharge:100});return v;}
++function game(v,world={},others=[]){const g={vehicle:v,inCar:true,paused:false,time:0,input:{throttle:0,steer:0,brake:0},keys:{},roadsterTouch:{},world:{colliders:[],groundHeight:()=>0,update(){},...world},ui:{toast(){}},allVehicles:()=>[v,...others],beginVehicleStep(){for(const c of this.allVehicles())c.collisionPrevious={x:c.pos.x,z:c.pos.z,yaw:c.yaw};},physicsTick(dt){this.time+=dt;this.physics.submitVehicle(v,this.input,dt,true);},applyCollisionDamage(v,impact,other,contact){this.impacts.push({v,impact,other,contact});v.condition=Math.max(0,v.condition-impact);},impacts:[],spawnCar:id=>id};Object.defineProperty(g,'position',{get:()=>v.pos});g.physics=new BrowserPhysicsSystem(g,{roadsters:true,hidden:()=>!!g.hidden});return g;}
++function drive(g,seconds,input){g.input=input;g.now??=0;if(!g.started){g.physics.advance(0);g.started=true;}for(let i=0;i<Math.round(seconds*60);i++){g.now+=1000/60;g.physics.advance(g.now);if(g.physics.failed)throw g.physics.error;}}
++for(const id of ['roadster','roadster_thrust','roadster_rocket'])test(id+' actual GLB four-wheel drive, brake, tire telemetry and browser-owned pose',async()=>{const v=car(id),g=game(v);await g.physics.start();drive(g,4,{throttle:1,steer:0});assert.ok(v.speed>5,'speed '+v.speed);assert.ok(v.pos.z<-10);assert.equal(v.wheelSupportCount,4);assert.equal(v.godotPhysics,undefined);assert.equal(v.browserRoadsterBody,true);assert.ok(v.roadsterTires.angles.some(x=>Math.abs(x)>1));assert.ok(v.wheels.some(w=>Math.abs(w.spinAngle)>1));assert.ok(sampleVehiclePose(v,.5).quaternion);drive(g,5,{throttle:0,brake:1,steer:0});assert.ok(Math.abs(v.speed)<.15,'stopped '+v.speed);assert.ok(v.pos.y>-.1);});
++test('real Rocket toggle input → integrated takeoff → local jets → landing on terrain',async()=>{const v=car(),g=game(v);await g.physics.start();drive(g,.5,{brake:1});assert.equal(toggleRoadsterAir(g).ok,true);drive(g,3,{roadsterAir:v.roadsterRequest.air,roadsterForward:.4});assert.ok(v.pos.y>1.5,'alt '+v.pos.y);assert.equal(v.grounded,false);assert.ok(v.roadsterState.jets.up>0);assert.ok(v.roadsterAirUnits<2400);assert.equal(requestRoadsterManeuver(g,'vault_spin').ok,false);assert.equal(toggleRoadsterAir(g).ok,true);drive(g,10,{roadsterAir:false});assert.equal(v.roadsterState.mode,'road');assert.equal(v.grounded,true);assert.ok(v.pos.y<.1);});
++test('flight finite thin wall collision gives real impact and no pass-through',async()=>{const v=car(),g=game(v,{colliders:[{id:'wall',x:0,z:-12,w:10,d:.025,height:12,baseY:0}]});await g.physics.start();drive(g,.5,{brake:1});drive(g,8,{roadsterAir:true,roadsterForward:1});assert.ok(g.impacts.some(h=>h.impact>1));assert.ok(v.pos.z>-12);});
++test('pause/hidden and repair serial preserve air, old serial cannot force reset',async()=>{const v=car(),g=game(v);await g.physics.start();drive(g,2,{roadsterAir:true});const e=g.physics.roadsters.states.get(v),before=JSON.stringify(e.body),air=v.roadsterAirUnits;g.paused=true;drive(g,2,{roadsterAir:true});assert.equal(JSON.stringify(e.body),before);assert.equal(v.roadsterAirUnits,air);g.paused=false;resetVehicleDynamics(v);const serial=v.physicsResetSerial;drive(g,.1,{roadsterAir:true});const current=g.physics.roadsters.states.get(v);assert.notEqual(current.body,e.body);assert.equal(current.air.mode,'road');assert.ok(v.roadsterAirUnits<=air);v.physicsResetSerial=serial-1;drive(g,.1,{roadsterAir:false});assert.equal(g.physics.roadsters.states.get(v).body,current.body);});
++test('finite overhead deck does not teleport road car onto upper surface',async()=>{const v=car(),group=new T.Group();group.userData.surfaces=[-10,2,-10,0,2,10,10,2,-10];const g=game(v,{chunks:new Map([['deck',{group}]])});await g.physics.start();drive(g,.1,{brake:1});assert.ok(v.pos.y<.1);});
++import {roadsterPlayerInput,roadsterTrim,roadsterFlightLocked} from '../roadster-controls.js';
++import {serializeVehicleDamage} from '../s-runtime.js';import {serializeAxleFault} from '../axle-fault.js';import {serializeBrakeFault} from '../brake-fault.js';
++import {rememberRoadsterAir,serializeRoadsterAirLedger,loadRoadsterAirLedger,restoreRoadsterAir} from '../roadster-air-ledger.js';
++import {createDeliveryStore,DELIVERY_SAVE_SCHEMA} from '../delivery-store.js';import {freshSave} from '../beta-save-slots.js';import {validateSave} from '../save-validation.js';
++const production=await readFile(new URL('../game.js',import.meta.url),'utf8');
++function method(start,end,deps){const code=production.slice(production.indexOf('\n '+start+'('),production.indexOf('\n '+end+'('));assert.ok(code.length>10&&code.length<12000);return new Function(...Object.keys(deps),'return ({'+code+'\n})')(...Object.values(deps));}
++test('actual Game snapshot isolated save/load retains model, instance, air ledger and energy',async()=>{const v=car(),g=game(v);await g.physics.start();drive(g,2,{roadsterAir:true,roadsterForward:.2});const base=JSON.parse(freshSave('2026-10-30T00:00:00Z'));for(const k of ['money','health','armor','wanted','owned','jobsCompleted','clockMinutes','transactions','character','god','ammo'])g[k]=base[k];g.owned=['s',v.model.id];Object.assign(g,{vehicleStates:{},vehicleFaults:{},playerPos:v.pos.clone(),playerYaw:v.yaw,assistSettings:{},quality:'medium',weather:'clear',job:null,destination:null});const deps={rememberRoadsterAir,serializeRoadsterAirLedger,roadsterTrim,serializeVehicleDamage,serializeAxleFault,serializeBrakeFault,regionAt:()=>({id:'coast'})};Object.assign(g,method('isGarageCar','captureGarageVehicle',deps),method('captureGarageVehicle','removeVehicle',deps),method('rememberBrakeFault','handleAxleFault',deps),method('snapshot','validateSave',deps));const data=new Map([['sunrise:formal:existing','untouched']]),storage={getItem:k=>data.get(k)??null,setItem:(k,v)=>data.set(k,v)},options={storage,key:'sunrise:browser-air:20261030:delivery',capture:()=>g.snapshot(),publish(){},validateHost:validateSave,ownsLock:()=>true,schema:DELIVERY_SAVE_SCHEMA};const store=createDeliveryStore(options);store.initialize();assert.equal(store.save(),true);const restored=createDeliveryStore(options).initialize();assert.equal(restored.vehicle.model,v.model.id);assert.equal(restored.vehicle.instanceId,v.instanceId);assert.equal(restored.vehicle.roadsterAirUnits,v.roadsterAirUnits);assert.equal(restored.vehicle.battery,v.battery);assert.equal(data.get('sunrise:formal:existing'),'untouched');const fresh=car(restored.vehicle.model);fresh.instanceId=restored.vehicle.instanceId;fresh.pos.set(restored.vehicle.x,.02,restored.vehicle.z);fresh.yaw=restored.vehicle.yaw;fresh.battery=restored.vehicle.battery;fresh.condition=restored.vehicle.condition;const resumed=game(fresh);loadRoadsterAirLedger(resumed,restored.roadsterAirLedger);restoreRoadsterAir(resumed,fresh,restored.vehicle);await resumed.physics.start();resumed.physics.roadsters.state(fresh);assert.equal(fresh.roadsterAirUnits,v.roadsterAirUnits);assert.equal(resumed.physics.roadsters.states.get(fresh).air.reserve.units,v.roadsterAirUnits);assert.equal(fresh.battery,v.battery);assert.equal(resumed.physics.roadsters.states.get(fresh).air.mode,'road');});
++test('real Game.updatePlayer input chain reaches browser flight, blocks midair exit state',async()=>{const v=car(),g=game(v);g.checkJob=()=>{};g.health=100;g.audio={update(){}};g.controls=()=>({throttle:0,brake:0,steer:0});g.integrate=(v,c,dt,player)=>g.physics.submitVehicle(v,c,dt,player);g.ui.isPhoneOpen=()=>false;g.touch={};const deps={roadsterPlayerInput,roadsterFlightLocked,evaluateDrivingAssist:(g,c)=>c};Object.assign(g,method('updatePlayer','placePlayerOnFoot',deps));g.physicsTick=function(dt){this.time+=dt;this.updatePlayer(dt);};await g.physics.start();drive(g,.5,{});assert.equal(toggleRoadsterAir(g).ok,true);g.keys.KeyW=true;drive(g,3,{});assert.ok(v.pos.y>1.5);assert.ok(v.pos.z<-.5);assert.equal(roadsterFlightLocked(v),true);g.keys={};assert.equal(toggleRoadsterAir(g).ok,true);drive(g,8,{});assert.equal(v.roadsterState.mode,'road');assert.equal(roadsterFlightLocked(v),false);});
++test('one failed late physics tick rolls back live tank, ledger, pose and time',async()=>{const v=car(),g=game(v);await g.physics.start();drive(g,.2,{roadsterAir:true});const air=v.roadsterAirUnits,ledger=JSON.stringify(g.roadsterAirLedger),position=v.pos.clone(),time=g.time,body=JSON.stringify(g.physics.roadsters.states.get(v).body);g.physics.resolveContacts=()=>{throw Error('injected late contact failure');};g.now+=1000/60;g.physics.advance(g.now);assert.equal(g.physics.failed,true);assert.equal(v.roadsterAirUnits,air);assert.equal(JSON.stringify(g.roadsterAirLedger),ledger);assert.equal(g.time,time);assert.ok(v.pos.equals(position));assert.equal(JSON.stringify(g.physics.roadsters.states.get(v).body),body);});
++test('parked live tank recharges once, dormant ledger recharges independently',async()=>{const v=car(),g=game(v);v.roadsterAirUnits=100;g.roadsterAirLedger={'world:dormant':{model:'roadster',airUnits:100,parked:true}};await g.physics.start();drive(g,2,{brake:1});const before=v.roadsterAirUnits,dormant=g.roadsterAirLedger['world:dormant'].airUnits;drive(g,1,{brake:1});assert.ok(Math.abs(v.roadsterAirUnits-before-8)<.01);assert.ok(Math.abs(g.roadsterAirLedger['world:dormant'].airUnits-dormant-8)<.01);});
++import {BrowserRoadsterSurface} from '../browser-roadster-surface.js';
++test('box-only roof real downward probe enables lift-off; below roof is not projected above',async()=>{const roof={id:'roof',x:0,z:0,w:10,d:10,baseY:0,height:5},surface=new BrowserRoadsterSurface({colliders:[roof],groundHeight:()=>0});surface.refresh();const top=surface.raycast(new T.Vector3(0,6,0),new T.Vector3(0,-1,0),100);assert.ok(Math.abs(top.position.y-5)<1e-8);const below=surface.raycast(new T.Vector3(0,4,0),new T.Vector3(0,-1,0),100);assert.ok(below.position.y<=0);const v=car();v.pos.y=5.02;const g=game(v,{colliders:[roof]});await g.physics.start();drive(g,1,{brake:1});assert.equal(v.wheelSupportCount,4);assert.ok(Math.abs(v.pos.y-5)<.1);drive(g,3,{roadsterAir:true});assert.ok(v.pos.y>6.5);assert.equal(v.grounded,false);drive(g,8,{roadsterAir:false});assert.equal(v.roadsterState.mode,'road');assert.ok(Math.abs(v.pos.y-5)<.1);});
++
++test('fast swept Roadster crossing retains finite wall despite far endpoint',async()=>{const v=car();v.pos.z=20;v.speed=3000;const g=game(v,{colliders:[{id:'fast-wall',x:0,z:0,w:10,d:.025,height:3,baseY:0}]});await g.physics.start();drive(g,1/60,{throttle:0});assert.ok(g.impacts.length>0);assert.ok(v.pos.z>0);});
+--- /dev/null
++++ b/source/runtime-candidate/sunset-coast/play/tests/delivery-cold-asset-restore.test.mjs
+@@ -0,0 +1,11 @@
++import test from 'node:test';import assert from 'node:assert/strict';
++import {prepareDeliveryRestore} from '../delivery-runtime.js';
++import {freshSave} from '../beta-save-slots.js';import {validateSave} from '../save-validation.js';
++import {DELIVERY_SAVE_SCHEMA} from '../delivery-store.js';
++for(const model of ['mica_scooter','ember_street','ridge_dual','roadster','roadster_thrust','roadster_rocket'])test('cold restore awaits active '+model+' asset without storage writes',async()=>{
++ const s=JSON.parse(freshSave());s.vehicle.model=model;s.owned.push(model);s.deliveryHost=structuredClone(DELIVERY_SAVE_SCHEMA);s.saveRevision=7;
++ let resolve,loaded=false,calls=[];const storage={getItem:()=>JSON.stringify(s),setItem:()=>assert.fail('read only')};
++ const promise=prepareDeliveryRestore({validateSave},{storage,ensureAsset:id=>{calls.push(id);return new Promise(r=>resolve=r);}}).then(()=>loaded=true);
++ await Promise.resolve();assert.equal(loaded,false);assert.deepEqual(calls,[model]);resolve(true);await promise;assert.equal(loaded,true);
++});
++test('asset failure never substitutes defaults or overwrites durable data',async()=>{const s=JSON.parse(freshSave());s.deliveryHost=structuredClone(DELIVERY_SAVE_SCHEMA);s.saveRevision=1;const raw=JSON.stringify(s);await assert.rejects(prepareDeliveryRestore({validateSave},{storage:{getItem:()=>raw,setItem:()=>assert.fail('write')},ensureAsset:async()=>false}),/原存档保留/);});
+--- a/source/runtime-candidate/sunset-coast/play/vehicle-physics.js
++++ b/source/runtime-candidate/sunset-coast/play/vehicle-physics.js
+@@ -141,9 +141,9 @@
+ export function updateVehicleVisuals(v, dt) {
+   if(v.kind==='motorcycle'){updateMotorcycleVisuals(v,dt);return;}
+   updateRoadsterVisuals(v,dt);
+-  if(!v.godotPhysics){v.root.rotation.set(0, v.yaw, 0);v.root.position.y=.02;}
++  if(!v.godotPhysics&&!v.browserRoadsterBody){v.root.rotation.set(0, v.yaw, 0);v.root.position.y=.02;}
+   else if(v.physicsQuaternion)v.root.quaternion.copy(v.physicsQuaternion);
+-  const targetRoll = v.godotPhysics?0:-clamp(v.speed * v.yawRate * .004, -.045, .045);
++  const targetRoll = (v.godotPhysics||v.browserRoadsterBody)?0:-clamp(v.speed * v.yawRate * .004, -.045, .045);
+   v.bodyRoll = (v.bodyRoll ?? 0) + (targetRoll - (v.bodyRoll ?? 0)) * (1 - Math.exp(-9 * dt));
+   v.chassis.rotation.z = v.bodyRoll;
+ 
+@@ -169,7 +169,7 @@
+     wheel.spin.rotation.x = wrap(wheel.spinAngle);
+   }
+   updateAxleFaultVisuals(v);
+-  if(v.godotPhysics&&Array.isArray(v.wheelCompressions))for(const wheel of v.wheels){
++  if((v.godotPhysics||v.browserRoadsterBody)&&Array.isArray(v.wheelCompressions))for(const wheel of v.wheels){
+     if(wheel.pivot.userData.structuralDetached)continue;
+     // Native order is front-left, front-right, rear-left, rear-right. Render
+     // rigs have different array orders; identity, never array index, maps them.
+--- /dev/null
++++ b/tests/native-reserve-differential.test.mjs
+@@ -0,0 +1,5 @@
++import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';
++import {AirReserve} from '../source/runtime-candidate/sunset-coast/play/browser-roadster-air.js';
++const evidence=readFileSync(new URL('../evidence/native-reserve-reference.txt',import.meta.url),'utf8');assert.match(evidence,/Godot Engine v4\.6\.3\.stable\.official/);
++const cases=JSON.parse(evidence.split('\n').find(l=>l.startsWith('AIR_REFERENCE_JSON=')).slice('AIR_REFERENCE_JSON='.length));
++test('24 original Godot air reserve outputs match browser analytical port',()=>{assert.equal(cases.length,24);for(const c of cases){const r=new AirReserve(c.initial),scale=r.consume(c.demand,1/60);for(const [name,value]of Object.entries({units:r.units,pressure:r.pressure(),scale}))assert.ok(Math.abs(value-c[name])<1e-8,JSON.stringify({case:c,name,value}));}});
+--- /dev/null
++++ b/evidence/native-reserve-reference.txt
+@@ -0,0 +1,3 @@
++Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org
++
++AIR_REFERENCE_JSON=[{"demand":0.0,"initial":0.0,"pressure":0.0,"scale":0.0,"units":0.0},{"demand":1.0,"initial":0.0,"pressure":0.0,"scale":0.0,"units":0.0},{"demand":19.0,"initial":0.0,"pressure":0.0,"scale":0.0,"units":0.0},{"demand":10000.0,"initial":0.0,"pressure":0.0,"scale":0.0,"units":0.0},{"demand":0.0,"initial":5.0,"pressure":0.0138888888888889,"scale":0.0,"units":5.0},{"demand":1.0,"initial":5.0,"pressure":0.0138882458996578,"scale":0.0138885673917777,"units":4.9997685238768},{"demand":19.0,"initial":5.0,"pressure":0.0138766771823764,"scale":0.0138827821404849,"units":4.99560378565551},{"demand":10000.0,"initial":5.0,"pressure":0.00874188810802905,"scale":0.0111175216866573,"units":3.14707971889046},{"demand":0.0,"initial":359.0,"pressure":0.997222222222222,"scale":0.0,"units":359.0},{"demand":1.0,"initial":359.0,"pressure":0.997176055595429,"scale":0.997199138729457,"units":358.983380014355},{"demand":19.0,"initial":359.0,"pressure":0.996345421694627,"scale":0.996783757686839,"units":358.684351810066},{"demand":10000.0,"initial":359.0,"pressure":0.627667566156486,"scale":0.798238057101991,"units":225.960323816335},{"demand":0.0,"initial":360.0,"pressure":1.0,"scale":0.0,"units":360.0},{"demand":1.0,"initial":360.0,"pressure":0.999953704775361,"scale":0.99997685220842,"units":359.98333371913},{"demand":19.0,"initial":360.0,"pressure":0.999120757131103,"scale":0.999560314114959,"units":359.683472567197},{"demand":10000.0,"initial":360.0,"pressure":0.629415943778092,"scale":0.800461561439322,"units":226.589739760113},{"demand":0.0,"initial":361.0,"pressure":1.0,"scale":0.0,"units":361.0},{"demand":1.0,"initial":361.0,"pressure":1.0,"scale":0.999999999999091,"units":360.983333333333},{"demand":19.0,"initial":361.0,"pressure":1.0,"scale":0.999999999999988,"units":360.683333333333},{"demand":10000.0,"initial":361.0,"pressure":0.63116675195194,"scale":0.80267981578381,"units":227.220030702698},{"demand":0.0,"initial":2400.0,"pressure":1.0,"scale":0.0,"units":2400.0},{"demand":1.0,"initial":2400.0,"pressure":1.0,"scale":1.0,"units":2399.98333333333},{"demand":19.0,"initial":2400.0,"pressure":1.0,"scale":0.999999999999809,"units":2399.68333333333},{"demand":10000.0,"initial":2400.0,"pressure":1.0,"scale":0.999999999999999,"units":2233.33333333333}]

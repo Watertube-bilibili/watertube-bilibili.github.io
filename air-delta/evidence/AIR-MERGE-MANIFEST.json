@@ -1,0 +1,146 @@
+[
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-air-rigidbody.js",
+    "base_sha256": null,
+    "sha256": "a5d7bcfac19b12ef6399e00cd7bfc6c6e8d2b51d58625ca6249d7670c202bb3d",
+    "bytes": 2561
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-motorcycle-adapter.js",
+    "base_sha256": null,
+    "sha256": "f71d903243bcd2fb712d06a57fab940c583565145b494db7772550a0e330385b",
+    "bytes": 8290
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-motorcycle-surface.js",
+    "base_sha256": null,
+    "sha256": "65e68b01ec4ecf88f01f88c47ca26784693e7ac2b90c85b952dc0474128d9ea2",
+    "bytes": 3910
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-physics.js",
+    "base_sha256": "0b27d1eaca84c9495dfbbee12b3c977110b97f5ef1a29bede9e18c4726343015",
+    "sha256": "b803df7d8ddd056b0d7fd159df9a674b45aa512ae50109bd05948e24c2748b94",
+    "bytes": 9201
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-rigidbody-contacts.js",
+    "base_sha256": null,
+    "sha256": "a73f21e2f09c65ce21203695213816254a52c22f0d9f84f1229d83b3908f4fa9",
+    "bytes": 11552
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-roadster-adapter.js",
+    "base_sha256": null,
+    "sha256": "23e3521ba74bd0cda7adbef9d5b1af60b510096c18992a6f541456eece89b157",
+    "bytes": 9014
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-roadster-air.js",
+    "base_sha256": null,
+    "sha256": "a0e3864bc90d82b5a24692b7d8a9a3f3f0cb450ff449163f2a08a6ab7b753578",
+    "bytes": 11377
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-roadster-controls.js",
+    "base_sha256": null,
+    "sha256": "7cb671066c924ec2eec97b63949578bd593b8de118aaa4db5c55603e4abd9161",
+    "bytes": 1526
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-roadster-surface.js",
+    "base_sha256": null,
+    "sha256": "fc3795ee142fdcb80fe7a30995b5397b75c9fd8cb06cbfc3a014201291a25ae6",
+    "bytes": 1619
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/browser-roadster-wheels.js",
+    "base_sha256": null,
+    "sha256": "455187e8692b65022bdf2fb5408d3863a20b92687d6bd479a1e964dc8cd0996b",
+    "bytes": 7317
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/candidate-entry.js",
+    "base_sha256": "333cd0518adaa0ad6f9e9fe4757aa2a3721708811e2c6651ce4394ee5d1a71f9",
+    "sha256": "688d8be0e1582b8902ec7e0d0e7eaad4a2daa2b889f3255f0687d3714192b32a",
+    "bytes": 5758
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/delivery-runtime.js",
+    "base_sha256": "f34af227c3c80113d15c229b0ec1497849dddd24121ff34d9fb368b3296aef53",
+    "sha256": "5d42d848c7e2097fa4c2f9833aa80c1570d44f247be42c83f685642edfb64830",
+    "bytes": 10620
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/index.html",
+    "base_sha256": "642baf2b196f152491801d27366f4bc279f25ed4a2c86865fd7144876e4455cf",
+    "sha256": "7556452c2966c38557a55fcb1f97687c15ab24ad77a1cf3c5eec8ff42ccea5ae",
+    "bytes": 20852
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/physics-backend.js",
+    "base_sha256": "6584cd2a801145538cb8c18bb1c3193c285297ab7e5c46b54a17d4ccb71b5215",
+    "sha256": "7ef2bb97cc0db562eded6aba9885f606bf87b1455490324500b920f373e68f32",
+    "bytes": 1867
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/roadster-controls.js",
+    "base_sha256": "818458049b69e739442b87c1f87a442a370e527890e1d7f66c914c9da7c2f811",
+    "sha256": "a3fd386aeb1a62350389093ad0652061b2ca9fdff42ee12777ccaed2c279d0c3",
+    "bytes": 14414
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/roadster-tire-telemetry.js",
+    "base_sha256": "c68bd872de434e95fc35906708c5171def4a923f7bee3af2f676008aa6a7cf8f",
+    "sha256": "b1d181a65f879b82140ff39a25550356e31bd32ac39dfeb6be73e9064af6b1e3",
+    "bytes": 1184
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/tests/browser-air-entry-policy.test.mjs",
+    "base_sha256": null,
+    "sha256": "90a34aadacc38b60db3dc8e978a66971483943638c4ede6ea120610992b839d2",
+    "bytes": 3367
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/tests/browser-motorcycle-integration.test.mjs",
+    "base_sha256": null,
+    "sha256": "05da5930a39807c4d3055415ec30409cf58318d7c708ca2e448a9759bfe28f65",
+    "bytes": 13438
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/tests/browser-roadster-air.test.mjs",
+    "base_sha256": null,
+    "sha256": "28a9911c80c300fed76ceffc852204ce1060ae4fe7a4f3f353a7c9d57e99e40c",
+    "bytes": 9117
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/tests/browser-roadster-integration.test.mjs",
+    "base_sha256": null,
+    "sha256": "e55a5fb8a022f4d8579afd9cf9390c07933c2d59ef50298f84c1b37c97bb18d3",
+    "bytes": 11878
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/tests/delivery-cold-asset-restore.test.mjs",
+    "base_sha256": null,
+    "sha256": "2dbf7251512adb825531fbbe347210d741ceda27b7c044c12f388c65aad76886",
+    "bytes": 1435
+  },
+  {
+    "path": "source/runtime-candidate/sunset-coast/play/vehicle-physics.js",
+    "base_sha256": "4d6d2a619cf66618158926823e55a785d803c7a602b3a5eb70da3284a6b926b8",
+    "sha256": "4ac5271de7db2dbc480b210225f983c5cc8c26b05677c376364e146f42d7059b",
+    "bytes": 10919
+  },
+  {
+    "path": "tests/native-reserve-differential.test.mjs",
+    "base_sha256": null,
+    "sha256": "13fa1e04d016043b9f47eef1fc30604bc6a5b02abf6097a456af5567f90cf972",
+    "bytes": 865
+  },
+  {
+    "path": "evidence/native-reserve-reference.txt",
+    "base_sha256": null,
+    "sha256": "931f6c4b9349b003da80f2852ec76b81b7f713676c683aae716cddf1ef2d3579",
+    "bytes": 2363
+  }
+]

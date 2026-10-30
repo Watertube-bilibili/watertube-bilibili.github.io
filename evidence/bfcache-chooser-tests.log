@@ -1,0 +1,13 @@
+✔ BFCache Back rereads a newly created slot and restores an enabled create button (23.47393ms)
+✔ overlapping renders ignore a stale list response rather than appending an old slot (0.578878ms)
+✔ late create completion after departure cannot redirect the restored hub (2.436243ms)
+✔ late list or create errors cannot overwrite a newer UI status (0.906537ms)
+✔ current create failure restores the button; repeated clicks do not duplicate requests (0.414799ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 358.009176

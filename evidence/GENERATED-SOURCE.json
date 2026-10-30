@@ -1,0 +1,14 @@
+{
+  "generatedFile": "source/runtime-candidate/sunset-coast/play/physics/neon-physics.wasm",
+  "tracked": false,
+  "bytes": 37700666,
+  "sha256": "26b61ce95247012ab3dca3ff51e96d1cdbff44ee91a8c20a83e150afca83f1b6",
+  "sourceFile": "source/runtime-candidate/sunset-coast/play/physics/neon-physics.wasm.gz",
+  "sourceBytes": 9382282,
+  "sourceSHA256": "9352825a316f4449b81d326706e78be95ed5a81c0e797f35879ef8b39bc505bd",
+  "regenerationTest": "passed; missing raw recreated from gzip, exact hash matched; generated raw then removed from upload tree",
+  "automaticCallers": [
+    "run-tests.sh",
+    "build-preview.py"
+  ]
+}

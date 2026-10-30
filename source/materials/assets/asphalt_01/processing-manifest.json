@@ -1,0 +1,96 @@
+{
+  "asset": "asphalt_01",
+  "source": "https://polyhaven.com/a/asphalt_01",
+  "license": "CC0-1.0 (parent-provided provenance)",
+  "tile_metres": 2.1,
+  "local_verification": "Input bytes/hash now matched against the parent audit; no independent remote provenance claim.",
+  "inputs": [
+    {
+      "file": "asphalt_01_diff_1k.jpg",
+      "bytes": 739513,
+      "sha256": "99b6f6bdfbd09279f3f550ac9593336df541aa2319537566eeb3e737d8512010",
+      "kind": "color",
+      "path": "coast-asphalt-candidate-20261029/originals/asphalt_01/asphalt_01_diff_1k.jpg",
+      "local_sha256_verified": "99b6f6bdfbd09279f3f550ac9593336df541aa2319537566eeb3e737d8512010"
+    },
+    {
+      "file": "asphalt_01_arm_1k.png",
+      "bytes": 4351643,
+      "sha256": "72fe639edef780e1f342af539342a80fd677dfff16d755316fe2845e620ad81b",
+      "kind": "arm",
+      "path": "coast-asphalt-candidate-20261029/originals/asphalt_01/asphalt_01_arm_1k.png",
+      "local_sha256_verified": "72fe639edef780e1f342af539342a80fd677dfff16d755316fe2845e620ad81b"
+    }
+  ],
+  "arm_decode": {
+    "width": 1024,
+    "height": 1024,
+    "bit_depth": 16,
+    "color_type": 2,
+    "raw_endian": "MSB",
+    "decode": "existing ImageMagick Q16; no gamma/color transform"
+  },
+  "channels": "R AO retained but unused; G roughness; B zero and unused",
+  "arm_conversion": "16-bit linear RGB -> linear BOX downsample -> round once to 8-bit RGB -> lossless WebP encoding",
+  "color_conversion": "sRGB -> linear-light resize -> sRGB; lossy WebP quality84",
+  "normal_or_height_generated": false,
+  "derivatives": [
+    {
+      "file": "asphalt_01_color_512.webp",
+      "kind": "color",
+      "pixels": [
+        512,
+        512
+      ],
+      "bytes": 25676,
+      "sha256": "357d5aab059ab58567c207261d402aea3a73ea78b9a34d87d95de21dd362bfef",
+      "encoding": {
+        "quality": 84,
+        "method": 6
+      }
+    },
+    {
+      "file": "asphalt_01_arm_512.webp",
+      "kind": "arm",
+      "pixels": [
+        512,
+        512
+      ],
+      "bytes": 279392,
+      "sha256": "f16ace7e0cb3adea51730dcc6b4a4de4b77c0c56581b54c230c77782d7758c52",
+      "encoding": {
+        "lossless": true,
+        "method": 6
+      }
+    },
+    {
+      "file": "asphalt_01_color_1024.webp",
+      "kind": "color",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "bytes": 146220,
+      "sha256": "d6218c4c94bc01d1551d26d52b4fb59f0ec72578dfa3288402e7afd4dcccc4b3",
+      "encoding": {
+        "quality": 84,
+        "method": 6
+      }
+    },
+    {
+      "file": "asphalt_01_arm_1024.webp",
+      "kind": "arm",
+      "pixels": [
+        1024,
+        1024
+      ],
+      "bytes": 1217538,
+      "sha256": "2708f2a3808e510aa85bcda80249857e9872e106bc73c92b247bb7af3d0a6093",
+      "encoding": {
+        "lossless": true,
+        "method": 6
+      }
+    }
+  ],
+  "gpu_note": "WebP affects transfer bytes; RGBA8 GPU memory with mips approximately 2.67MiB at512 or10.67MiB at1024 for two maps."
+}

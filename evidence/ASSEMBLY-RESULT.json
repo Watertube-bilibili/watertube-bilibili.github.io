@@ -1,0 +1,61 @@
+{
+  "sourceRecovery": {
+    "v4.1VolumesVerifiedFiles": 363,
+    "v4.2SourceHashMatches": 344,
+    "v4.3SourceHashMatches": 344,
+    "v5SourceHashMatches": 349
+  },
+  "currentSourceFiles": 351,
+  "currentChangesFromV5": [
+    "crescent/tests/export-vehicle.mjs",
+    "runtime-candidate/sunset-coast/browser-worlds.html",
+    "runtime-candidate/sunset-coast/index.html",
+    "runtime-candidate/sunset-coast/play/browser-world-chooser.js",
+    "runtime-candidate/sunset-coast/play/browser-world-entry.js",
+    "runtime-candidate/sunset-coast/play/control-size.js",
+    "runtime-candidate/sunset-coast/play/delivery-runtime.js",
+    "runtime-candidate/sunset-coast/play/game.js",
+    "runtime-candidate/sunset-coast/play/index.html",
+    "runtime-candidate/sunset-coast/play/tests/browser-world-chooser.test.mjs",
+    "runtime-candidate/sunset-coast/play/tests/browser-world-entry-lifecycle.test.mjs",
+    "runtime-candidate/sunset-coast/play/tests/browser-world-game-startup.test.mjs",
+    "runtime-candidate/sunset-coast/play/tests/control-size.test.mjs",
+    "runtime-candidate/sunset-coast/release-info.json"
+  ],
+  "deployment": {
+    "path": "deploy/sunrise-browser-preview",
+    "manifestSHA256": "1c9d3a6ab2f841d9384de569cd2bdf9840e62acb241157f54691d4fd287cf015",
+    "files": 247,
+    "bytes": 41420853,
+    "allRelativeModuleImportsResolve": true
+  },
+  "tests": {
+    "command": "bash run-tests.sh",
+    "total": 437,
+    "passed": 434,
+    "failed": 0,
+    "skipped": 3,
+    "scope": "Node logic, module, assets and geometry; native executable tests skipped"
+  },
+  "verificationLimits": {
+    "webGLGameplay": false,
+    "realDevices": false,
+    "publicDeployment": false,
+    "fullFeatureIntegration": false
+  },
+  "air": {
+    "mergedIntoPublicPreview": false,
+    "sourceExperiment": "air-delta",
+    "reason": "Keep public independent-slot capability gate until full migration and browser validation"
+  },
+  "packagingChanges": [
+    "crescent/tests/export-vehicle.mjs now uses import.meta.url-relative native source and creates its output directories; no public runtime change"
+  ],
+  "followupTargetedTests": {
+    "suite": "BFCache chooser",
+    "pass": 5,
+    "fail": 0,
+    "skip": 0,
+    "fullSuiteRerun": false
+  }
+}

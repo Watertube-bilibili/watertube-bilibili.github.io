@@ -1,0 +1,7 @@
+import fs from 'node:fs';
+import * as THREE from '../vendor/three.module.js';
+import {createUltraWorld} from '../src/ultra-map-world.js';
+import {REVIEW_VIEWS} from '../src/ultra-map-layout.js';
+const scene=new THREE.Scene(),world=createUltraWorld(scene,{nearDistance:2200,farDistance:2400});world.update({x:0,z:-200},true);scene.updateMatrixWorld(true);const meshes=[],lights=[];
+scene.traverse(o=>{if(o.isPointLight){lights.push({position:o.getWorldPosition(new THREE.Vector3()).toArray(),intensity:o.intensity,color:o.color.toArray()});return;}if(!o.isMesh)return;for(let i=0;i<(o.isInstancedMesh?o.count:1);i++){let matrix=o.matrixWorld;if(o.isInstancedMesh){const local=new THREE.Matrix4();o.getMatrixAt(i,local);matrix=o.matrixWorld.clone().multiply(local);}const g=o.geometry.clone().applyMatrix4(matrix),m=o.material;meshes.push({name:o.name||'mesh',vertices:Array.from(g.attributes.position.array),indices:g.index?Array.from(g.index.array):null,normals:Array.from(g.attributes.normal.array),colors:g.attributes.color?Array.from(g.attributes.color.array):null,material:{color:m.color.toArray(),roughness:m.roughness,metallic:m.metalness,alpha:m.opacity,emission:[0,0,0],emissionStrength:0}});g.dispose();}});
+fs.writeFileSync(new URL('../evidence/geometry-source.json',import.meta.url),JSON.stringify({meshes,lights,presets:REVIEW_VIEWS,source:'Exact rendered Three.js geometry, not concept art',stats:world.stats()}));console.log(JSON.stringify(world.stats()));world.dispose();

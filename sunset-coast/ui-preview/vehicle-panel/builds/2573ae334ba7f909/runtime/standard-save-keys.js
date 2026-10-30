@@ -1,5 +1,0 @@
-// Read-only source identities for explicit, validated standard-to-beta copies.
-export const LEGACY_STANDARD_SAVE_KEY='neon-coast-save-v1';
-export const STANDARD_ACTIVE_KEY='neon-coast-candidate-1.5.0:active-save-key';
-export const STANDARD_DEFAULT_SAVE_KEY='neon-coast-candidate-1.5.0:save-v1';
-export const isStandardSaveKey=value=>typeof value==='string'&&(value===LEGACY_STANDARD_SAVE_KEY||value===STANDARD_DEFAULT_SAVE_KEY||/^neon-coast-candidate-1\.5\.0:slot-s-[a-z0-9][a-z0-9-]{0,95}:save-v1$/.test(value));

@@ -1,0 +1,1136 @@
+TAP version 13
+# Subtest: 60 Hz clock deterministic across render cadence
+ok 1 - 60 Hz clock deterministic across render cadence
+  ---
+  duration_ms: 6.71444
+  type: 'test'
+  ...
+# Subtest: pause/hidden resets pending time, resume never catches up
+ok 2 - pause/hidden resets pending time, resume never catches up
+  ---
+  duration_ms: 0.244323
+  type: 'test'
+  ...
+# Subtest: bounded long-frame step and dropped-time telemetry
+ok 3 - bounded long-frame step and dropped-time telemetry
+  ---
+  duration_ms: 0.120542
+  type: 'test'
+  ...
+# Subtest: real JS car throttle/brake and non-null authoritative ticks
+ok 4 - real JS car throttle/brake and non-null authoritative ticks
+  ---
+  duration_ms: 153.043188
+  type: 'test'
+  ...
+# Subtest: backend pause and background visibility freeze car and game time
+ok 5 - backend pause and background visibility freeze car and game time
+  ---
+  duration_ms: 11.179834
+  type: 'test'
+  ...
+# Subtest: unsupported motorcycle and native commands are explicit
+ok 6 - unsupported motorcycle and native commands are explicit
+  ---
+  duration_ms: 9.129557
+  type: 'test'
+  ...
+# Subtest: real planar swept collision stops car at static wall
+ok 7 - real planar swept collision stops car at static wall
+  ---
+  duration_ms: 22.678437
+  type: 'test'
+  ...
+# Subtest: isolated delivery store persists real fixture movement and retains foreign save
+ok 8 - isolated delivery store persists real fixture movement and retains foreign save
+  ---
+  duration_ms: 47.663382
+  type: 'test'
+  ...
+# Subtest: lifecycle suspension without hidden RAF discards all elapsed time
+ok 9 - lifecycle suspension without hidden RAF discards all elapsed time
+  ---
+  duration_ms: 0.234027
+  type: 'test'
+  ...
+# Subtest: delivery-style pause inside physicsTick stops contacts and remaining substeps
+ok 10 - delivery-style pause inside physicsTick stops contacts and remaining substeps
+  ---
+  duration_ms: 9.845643
+  type: 'test'
+  ...
+# Subtest: estuary waits for runtime restore before marking the entry ready
+ok 11 - estuary waits for runtime restore before marking the entry ready
+  ---
+  duration_ms: 29.952956
+  type: 'test'
+  ...
+# Subtest: crescent waits for runtime restore before marking the entry ready
+ok 12 - crescent waits for runtime restore before marking the entry ready
+  ---
+  duration_ms: 18.014592
+  type: 'test'
+  ...
+# Subtest: leaving while acquiring a slot releases a late lease without importing Game
+ok 13 - leaving while acquiring a slot releases a late lease without importing Game
+  ---
+  duration_ms: 14.375461
+  type: 'test'
+  ...
+# Subtest: leaving while textures load disposes the late pack and never constructs Game
+ok 14 - leaving while textures load disposes the late pack and never constructs Game
+  ---
+  duration_ms: 32.982416
+  type: 'test'
+  ...
+# Subtest: a Game created by an already pending import is stopped before installing a writer
+ok 15 - a Game created by an already pending import is stopped before installing a writer
+  ---
+  duration_ms: 28.946663
+  type: 'test'
+  ...
+# 日出启动清理失败 Error: release cleanup rejected
+#     at TestContext.<anonymous> (file:///workspace/scratch/9c6acae15f30/air-isolated-candidate/source/runtime-candidate/sunset-coast/play/tests/browser-world-entry-lifecycle.test.mjs:78:54)
+#     at async Test.run (node:internal/test_runner/test:1409:7)
+#     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+# Subtest: failed restore disables writes before cleanup and preserves the original error
+ok 16 - failed restore disables writes before cleanup and preserves the original error
+  ---
+  duration_ms: 19.702844
+  type: 'test'
+  ...
+# Subtest: losing the lease during async restore prevents readiness and the installed writer
+ok 17 - losing the lease during async restore prevents readiness and the installed writer
+  ---
+  duration_ms: 22.273382
+  type: 'test'
+  ...
+# Subtest: leaving during async restore blocks a writer installed after pagehide
+ok 18 - leaving during async restore blocks a writer installed after pagehide
+  ---
+  duration_ms: 17.411031
+  type: 'test'
+  ...
+# Subtest: an async restore rejected after departure does not append a stale startup alert
+ok 19 - an async restore rejected after departure does not append a stale startup alert
+  ---
+  duration_ms: 16.83305
+  type: 'test'
+  ...
+# Subtest: a second boot in the same document cannot acquire another lease or stop the first Game
+ok 20 - a second boot in the same document cannot acquire another lease or stop the first Game
+  ---
+  duration_ms: 19.291049
+  type: 'test'
+  ...
+# Subtest: entry and actual lease cancel a pending lock immediately, without waiting for its late callback
+ok 21 - entry and actual lease cancel a pending lock immediately, without waiting for its late callback
+  ---
+  duration_ms: 22.935058
+  type: 'test'
+  ...
+# Subtest: entry and actual lease use one BFCache reload and permanently close the old writer
+ok 22 - entry and actual lease use one BFCache reload and permanently close the old writer
+  ---
+  duration_ms: 20.176855
+  type: 'test'
+  ...
+# Subtest: estuary waits for actual physics readiness before restoring or opening writes
+ok 23 - estuary waits for actual physics readiness before restoring or opening writes
+  ---
+  duration_ms: 18.39337
+  type: 'test'
+  ...
+# Subtest: crescent waits for actual physics readiness before restoring or opening writes
+ok 24 - crescent waits for actual physics readiness before restoring or opening writes
+  ---
+  duration_ms: 15.123491
+  type: 'test'
+  ...
+# Subtest: physics startup failure during entry releases ownership and never restores or marks ready
+ok 25 - physics startup failure during entry releases ownership and never restores or marks ready
+  ---
+  duration_ms: 23.983935
+  type: 'test'
+  ...
+# Subtest: real constructor WebGL failure propagates in independent browser world
+ok 26 - real constructor WebGL failure propagates in independent browser world
+  ---
+  duration_ms: 3.176155
+  type: 'test'
+  ...
+# Subtest: real constructor WebGL failure retains native retry UI
+ok 27 - real constructor WebGL failure retains native retry UI
+  ---
+  duration_ms: 2.582464
+  type: 'test'
+  ...
+# Subtest: real asynchronous physics start rejection closes writes, pauses game and releases lease
+ok 28 - real asynchronous physics start rejection closes writes, pauses game and releases lease
+  ---
+  duration_ms: 1.497889
+  type: 'test'
+  ...
+# Subtest: real browser physics readiness succeeds without native UI and delayed hide obeys departure
+ok 29 - real browser physics readiness succeeds without native UI and delayed hide obeys departure
+  ---
+  duration_ms: 1.445311
+  type: 'test'
+  ...
+# Subtest: native physics start rejection keeps existing logging behavior without browser lifecycle
+ok 30 - native physics start rejection keeps existing logging behavior without browser lifecycle
+  ---
+  duration_ms: 0.382742
+  type: 'test'
+  ...
+# Subtest: lease uses the exact slot key and holds the lock callback until idempotent release
+ok 31 - lease uses the exact slot key and holds the lock callback until idempotent release
+  ---
+  duration_ms: 7.49103
+  type: 'test'
+  ...
+# Subtest: leaving before acquisition rejects immediately and a late callback never owns the slot
+ok 32 - leaving before acquisition rejects immediately and a late callback never owns the slot
+  ---
+  duration_ms: 1.003809
+  type: 'test'
+  ...
+# Subtest: already aborted acquisition never requests a lock or leaves page listeners
+ok 33 - already aborted acquisition never requests a lock or leaves page listeners
+  ---
+  duration_ms: 0.421717
+  type: 'test'
+  ...
+# Subtest: aborting a pending acquisition rejects ready and safely finishes a late callback
+ok 34 - aborting a pending acquisition rejects ready and safely finishes a late callback
+  ---
+  duration_ms: 0.334713
+  type: 'test'
+  ...
+# Subtest: aborting an acquired lease invalidates ownership synchronously and releases its callback
+ok 35 - aborting an acquired lease invalidates ownership synchronously and releases its callback
+  ---
+  duration_ms: 0.294398
+  type: 'test'
+  ...
+# Subtest: signal abort and release can reenter without retaining the lock or throwing
+ok 36 - signal abort and release can reenter without retaining the lock or throwing
+  ---
+  duration_ms: 0.418506
+  type: 'test'
+  ...
+# Subtest: caller-managed lifecycle installs no page handlers and does not duplicate BFCache reload
+ok 37 - caller-managed lifecycle installs no page handlers and does not duplicate BFCache reload
+  ---
+  duration_ms: 0.280078
+  type: 'test'
+  ...
+# Subtest: default lifecycle releases ownership on pagehide and reloads only after a persisted return
+ok 38 - default lifecycle releases ownership on pagehide and reloads only after a persisted return
+  ---
+  duration_ms: 0.370021
+  type: 'test'
+  ...
+# Subtest: a competing tab receives an error and no orphaned lifecycle listeners
+ok 39 - a competing tab receives an error and no orphaned lifecycle listeners
+  ---
+  duration_ms: 0.686416
+  type: 'test'
+  ...
+# Subtest: synchronous request failure preserves the original error and cleans listeners
+ok 40 - synchronous request failure preserves the original error and cleans listeners
+  ---
+  duration_ms: 0.34147
+  type: 'test'
+  ...
+# Subtest: asynchronous request failure rejects ready and cleans listeners
+ok 41 - asynchronous request failure rejects ready and cleans listeners
+  ---
+  duration_ms: 0.41189
+  type: 'test'
+  ...
+# Subtest: request failure after granting invalidates the returned lease
+ok 42 - request failure after granting invalidates the returned lease
+  ---
+  duration_ms: 3.267942
+  type: 'test'
+  ...
+# Subtest: release remains synchronous and nonthrowing if listener cleanup throws
+ok 43 - release remains synchronous and nonthrowing if listener cleanup throws
+  ---
+  duration_ms: 0.455553
+  type: 'test'
+  ...
+# Subtest: same-map same-slot locks exclude each other while a different map remains independent
+ok 44 - same-map same-slot locks exclude each other while a different map remains independent
+  ---
+  duration_ms: 2.50334
+  type: 'test'
+  ...
+# Subtest: an acquired lease permits protected writes and explicit readiness
+ok 45 - an acquired lease permits protected writes and explicit readiness
+  ---
+  duration_ms: 2.686745
+  type: 'test'
+  ...
+# Subtest: pagehide closes current and retained save guards before releasing resources
+ok 46 - pagehide closes current and retained save guards before releasing resources
+  ---
+  duration_ms: 2.580115
+  type: 'test'
+  ...
+# Subtest: pagehide while lease or material work is pending cleans late results once
+ok 47 - pagehide while lease or material work is pending cleans late results once
+  ---
+  duration_ms: 1.884812
+  type: 'test'
+  ...
+# Subtest: a game created after departure is guarded and paused at the next checkpoint
+ok 48 - a game created after departure is guarded and paused at the next checkpoint
+  ---
+  duration_ms: 0.668284
+  type: 'test'
+  ...
+# Subtest: late trackGame also disables a game not exposed through getGame
+ok 49 - late trackGame also disables a game not exposed through getGame
+  ---
+  duration_ms: 0.438769
+  type: 'test'
+  ...
+# Subtest: cleanup failures do not mask the original failure or skip other resources
+ok 50 - cleanup failures do not mask the original failure or skip other resources
+  ---
+  duration_ms: 1.307307
+  type: 'test'
+  ...
+# Subtest: BFCache return reloads once and keeps the old runtime unable to write
+ok 51 - BFCache return reloads once and keeps the old runtime unable to write
+  ---
+  duration_ms: 0.556039
+  type: 'test'
+  ...
+# Subtest: lost ownership prevents writes and closes the runtime
+ok 52 - lost ownership prevents writes and closes the runtime
+  ---
+  duration_ms: 0.368891
+  type: 'test'
+  ...
+# Subtest: an ownership check that throws fails closed and preserves that error
+ok 53 - an ownership check that throws fails closed and preserves that error
+  ---
+  duration_ms: 1.099245
+  type: 'test'
+  ...
+# Subtest: writer replacement preserves wrappers without recursion or retained-writer bypass
+ok 54 - writer replacement preserves wrappers without recursion or retained-writer bypass
+  ---
+  duration_ms: 0.579429
+  type: 'test'
+  ...
+# Subtest: protected writes are disabled before ownership and readiness requires a lease
+ok 55 - protected writes are disabled before ownership and readiness requires a lease
+  ---
+  duration_ms: 0.414637
+  type: 'test'
+  ...
+# Subtest: an already-invalid late lease stops the boot instead of enabling a writer
+ok 56 - an already-invalid late lease stops the boot instead of enabling a writer
+  ---
+  duration_ms: 0.150306
+  type: 'test'
+  ...
+# Subtest: failure identity is preserved for errors from another realm
+ok 57 - failure identity is preserved for errors from another realm
+  ---
+  duration_ms: 2.08789
+  type: 'test'
+  ...
+# Subtest: throwing control reset does not skip lease or material cleanup
+ok 58 - throwing control reset does not skip lease or material cleanup
+  ---
+  duration_ms: 0.548886
+  type: 'test'
+  ...
+# Subtest: cleanup remains safe if releasing the lease reenters stop
+ok 59 - cleanup remains safe if releasing the lease reenters stop
+  ---
+  duration_ms: 0.217175
+  type: 'test'
+  ...
+# Subtest: the write gate blocks old and replacement writers until explicitly enabled
+ok 60 - the write gate blocks old and replacement writers until explicitly enabled
+  ---
+  duration_ms: 0.232919
+  type: 'test'
+  ...
+# Subtest: enabling writes requires the current game to be tracked and a valid lease
+ok 61 - enabling writes requires the current game to be tracked and a valid lease
+  ---
+  duration_ms: 0.192527
+  type: 'test'
+  ...
+# Subtest: stop aborts its signal after pausing controls and before resource release
+ok 62 - stop aborts its signal after pausing controls and before resource release
+  ---
+  duration_ms: 0.266852
+  type: 'test'
+  ...
+# Subtest: a pending signal-aware acquisition is cancelled on departure
+ok 63 - a pending signal-aware acquisition is cancelled on departure
+  ---
+  duration_ms: 0.433897
+  type: 'test'
+  ...
+# Subtest: abort callbacks may reenter stop without repeating abort or cleanup
+ok 64 - abort callbacks may reenter stop without repeating abort or cleanup
+  ---
+  duration_ms: 0.208771
+  type: 'test'
+  ...
+# Subtest: an injected abort failure cannot skip resource cleanup
+ok 65 - an injected abort failure cannot skip resource cleanup
+  ---
+  duration_ms: 0.279058
+  type: 'test'
+  ...
+# Subtest: a different second lease is released and cannot authorize the old slot writer
+ok 66 - a different second lease is released and cannot authorize the old slot writer
+  ---
+  duration_ms: 0.213918
+  type: 'test'
+  ...
+# Subtest: tracking the same lease again is idempotent and does not unlock a closed gate
+ok 67 - tracking the same lease again is idempotent and does not unlock a closed gate
+  ---
+  duration_ms: 0.115597
+  type: 'test'
+  ...
+# Subtest: bounded preference, invalid input and responsive upper limit
+ok 68 - bounded preference, invalid input and responsive upper limit
+  ---
+  duration_ms: 2.381137
+  type: 'test'
+  ...
+# Subtest: preference save and default reset never touch game saves
+ok 69 - preference save and default reset never touch game saves
+  ---
+  duration_ms: 2.23637
+  type: 'test'
+  ...
+# Subtest: legacy layout ignored without editing chrome or storage mutation
+ok 70 - legacy layout ignored without editing chrome or storage mutation
+  ---
+  duration_ms: 0.469655
+  type: 'test'
+  ...
+# Subtest: browser world control preference isolates both maps from the legacy preference key
+ok 71 - browser world control preference isolates both maps from the legacy preference key
+  ---
+  duration_ms: 1.377518
+  type: 'test'
+  ...
+# Subtest: combined action is one native request, preserves serial and reaches native snapshots
+ok 72 - combined action is one native request, preserves serial and reaches native snapshots
+  ---
+  duration_ms: 2.672425
+  type: 'test'
+  ...
+# Subtest: active combo cannot be replaced by another action, but T/cancel and fresh manual input remain available
+ok 73 - active combo cannot be replaced by another action, but T/cancel and fresh manual input remain available
+  ---
+  duration_ms: 0.727901
+  type: 'test'
+  ...
+# Subtest: P, other trims, aircraft, modal and unavailable native physics still reject combined maneuver
+ok 74 - P, other trims, aircraft, modal and unavailable native physics still reject combined maneuver
+  ---
+  duration_ms: 0.416155
+  type: 'test'
+  ...
+# Subtest: native wheel angles preserve independent wheelspin and axle mapping
+ok 75 - native wheel angles preserve independent wheelspin and axle mapping
+  ---
+  duration_ms: 1.280453
+  type: 'test'
+  ...
+# Subtest: bad native telemetry clears stale state and ordinary vehicles retain old rolling visuals
+ok 76 - bad native telemetry clears stale state and ordinary vehicles retain old rolling visuals
+  ---
+  duration_ms: 0.507507
+  type: 'test'
+  ...
+# Subtest: normal valid world works on non-local production host
+ok 77 - normal valid world works on non-local production host
+  ---
+  duration_ms: 1.328663
+  type: 'test'
+  ...
+# Subtest: missing/malformed/old/public-preview route never loads runtime: 
+ok 78 - missing/malformed/old/public-preview route never loads runtime: 
+  ---
+  duration_ms: 0.620614
+  type: 'test'
+  ...
+# Subtest: missing/malformed/old/public-preview route never loads runtime: ?world=estuary&estuarySlot=e-old
+ok 79 - missing/malformed/old/public-preview route never loads runtime: ?world=estuary&estuarySlot=e-old
+  ---
+  duration_ms: 0.15859
+  type: 'test'
+  ...
+# Subtest: missing/malformed/old/public-preview route never loads runtime: ?slot=s-old
+ok 80 - missing/malformed/old/public-preview route never loads runtime: ?slot=s-old
+  ---
+  duration_ms: 0.151781
+  type: 'test'
+  ...
+# Subtest: missing/malformed/old/public-preview route never loads runtime: ?runtime=browser&world=crescent
+ok 81 - missing/malformed/old/public-preview route never loads runtime: ?runtime=browser&world=crescent
+  ---
+  duration_ms: 0.215432
+  type: 'test'
+  ...
+# Subtest: missing/malformed/old/public-preview route never loads runtime: ?runtime=browser&world=estuary&browserSlot=b-a&damage=structure
+ok 82 - missing/malformed/old/public-preview route never loads runtime: ?runtime=browser&world=estuary&browserSlot=b-a&damage=structure
+  ---
+  duration_ms: 0.287071
+  type: 'test'
+  ...
+# Subtest: missing/malformed/old/public-preview route never loads runtime: ?map=estuary&preview=1&physics=browser
+ok 83 - missing/malformed/old/public-preview route never loads runtime: ?map=estuary&preview=1&physics=browser
+  ---
+  duration_ms: 0.121532
+  type: 'test'
+  ...
+# Subtest: known localhost browser-only QA remains available, never native preview
+ok 84 - known localhost browser-only QA remains available, never native preview
+  ---
+  duration_ms: 0.130675
+  type: 'test'
+  ...
+# Subtest: init writes are only staged until commit; failed boot leaves original bytes
+ok 85 - init writes are only staged until commit; failed boot leaves original bytes
+  ---
+  duration_ms: 2.304579
+  type: 'test'
+  ...
+# Subtest: one CAS publishes staged init then normal authorized writes work
+ok 86 - one CAS publishes staged init then normal authorized writes work
+  ---
+  duration_ms: 0.286522
+  type: 'test'
+  ...
+# Subtest: full raw CAS rejects even same-revision concurrent change without rollback
+ok 87 - full raw CAS rejects even same-revision concurrent change without rollback
+  ---
+  duration_ms: 0.33163
+  type: 'test'
+  ...
+# Subtest: foreign keys cannot be read or written
+ok 88 - foreign keys cannot be read or written
+  ---
+  duration_ms: 1.07743
+  type: 'test'
+  ...
+# Subtest: stop before commit and after activation prevents writes
+ok 89 - stop before commit and after activation prevents writes
+  ---
+  duration_ms: 0.506804
+  type: 'test'
+  ...
+# Subtest: lose before commit and after activation prevents writes
+ok 90 - lose before commit and after activation prevents writes
+  ---
+  duration_ms: 0.331087
+  type: 'test'
+  ...
+# Subtest: write-then-throw is success only when exact pending bytes read back
+ok 91 - write-then-throw is success only when exact pending bytes read back
+  ---
+  duration_ms: 0.320092
+  type: 'test'
+  ...
+# Subtest: throw-before-write leaves original and no falsely committed state
+ok 92 - throw-before-write leaves original and no falsely committed state
+  ---
+  duration_ms: 0.21224
+  type: 'test'
+  ...
+# Subtest: real Game.load + CRESCENT full store retains height/wallet/inventory/time; car=false
+ok 93 - real Game.load + CRESCENT full store retains height/wallet/inventory/time; car=false
+  ---
+  duration_ms: 21.915607
+  type: 'test'
+  ...
+# Subtest: real Game.load + CRESCENT full store retains height/wallet/inventory/time; car=true
+ok 94 - real Game.load + CRESCENT full store retains height/wallet/inventory/time; car=true
+  ---
+  duration_ms: 7.486975
+  type: 'test'
+  ...
+# Subtest: restore geometric conflict does not write or rebuild stored snapshot
+ok 95 - restore geometric conflict does not write or rebuild stored snapshot
+  ---
+  duration_ms: 2.545102
+  type: 'test'
+  ...
+# Subtest: lost lease prevents full store saves and leaves bytes unchanged
+ok 96 - lost lease prevents full store saves and leaves bytes unchanged
+  ---
+  duration_ms: 2.153275
+  type: 'test'
+  ...
+# Subtest: ESTUARY new browser identity restores through actual delivery runtime and saves a full wallet snapshot
+ok 97 - ESTUARY new browser identity restores through actual delivery runtime and saves a full wallet snapshot
+  ---
+  duration_ms: 13.890989
+  type: 'test'
+  ...
+# Subtest: ESTUARY collider-array and CRESCENT blocked APIs both validate restore without assuming same interface
+ok 98 - ESTUARY collider-array and CRESCENT blocked APIs both validate restore without assuming same interface
+  ---
+  duration_ms: 0.669949
+  type: 'test'
+  ...
+# Subtest: actual Game.snapshot CRESCENT region survives complete-store save and reload
+ok 99 - actual Game.snapshot CRESCENT region survives complete-store save and reload
+  ---
+  duration_ms: 10.226365
+  type: 'test'
+  ...
+# Subtest: ESTUARY browser old-career click is rejected before mutation and does not freeze or corrupt the slot
+ok 100 - ESTUARY browser old-career click is rejected before mutation and does not freeze or corrupt the slot
+  ---
+  duration_ms: 5.988365
+  type: 'test'
+  ...
+# Subtest: estuary full new snapshot and exact backup roundtrip
+ok 101 - estuary full new snapshot and exact backup roundtrip
+  ---
+  duration_ms: 11.945792
+  type: 'test'
+  ...
+# Subtest: crescent full new snapshot and exact backup roundtrip
+ok 102 - crescent full new snapshot and exact backup roundtrip
+  ---
+  duration_ms: 5.41879
+  type: 'test'
+  ...
+# Subtest: corruption / absent / unsupported / cross-map preserve raw bytes
+ok 103 - corruption / absent / unsupported / cross-map preserve raw bytes
+  ---
+  duration_ms: 5.431708
+  type: 'test'
+  ...
+# Subtest: same id collision never overwrites existing slot or initial backup
+ok 104 - same id collision never overwrites existing slot or initial backup
+  ---
+  duration_ms: 1.778656
+  type: 'test'
+  ...
+# Subtest: backup partial-write failure does not create playable snapshot
+ok 105 - backup partial-write failure does not create playable snapshot
+  ---
+  duration_ms: 1.054943
+  type: 'test'
+  ...
+# Subtest: new route strict identity never accepts QA or old slot aliases
+ok 106 - new route strict identity never accepts QA or old slot aliases
+  ---
+  duration_ms: 0.6155
+  type: 'test'
+  ...
+# Subtest: complete store keeps wallet inventory clock unknown extension and refuses revision conflicts
+ok 107 - complete store keeps wallet inventory clock unknown extension and refuses revision conflicts
+  ---
+  duration_ms: 4.398147
+  type: 'test'
+  ...
+# Subtest: crescent rejects old career coordinates without truncating the career
+ok 108 - crescent rejects old career coordinates without truncating the career
+  ---
+  duration_ms: 0.39391
+  type: 'test'
+  ...
+# Subtest: no-save constructor starts as a visible person and grounds before the first render
+ok 109 - no-save constructor starts as a visible person and grounds before the first render
+  ---
+  duration_ms: 271.347486
+  type: 'test'
+  ...
+# Subtest: walking C and R recenter behind player at heading 0
+ok 110 - walking C and R recenter behind player at heading 0
+  ---
+  duration_ms: 14.832797
+  type: 'test'
+  ...
+# Subtest: walking C and R recenter behind player at heading 0.7
+ok 111 - walking C and R recenter behind player at heading 0.7
+  ---
+  duration_ms: 17.137285
+  type: 'test'
+  ...
+# Subtest: walking C and R recenter behind player at heading -1.2
+ok 112 - walking C and R recenter behind player at heading -1.2
+  ---
+  duration_ms: 20.766752
+  type: 'test'
+  ...
+# Subtest: driving C still cycles all three existing views
+ok 113 - driving C still cycles all three existing views
+  ---
+  duration_ms: 16.327652
+  type: 'test'
+  ...
+# Subtest: existing save inCar=true retains stored mode and exact horizontal position
+ok 114 - existing save inCar=true retains stored mode and exact horizontal position
+  ---
+  duration_ms: 29.735038
+  type: 'test'
+  ...
+# Subtest: existing save inCar=false retains stored mode and exact horizontal position
+ok 115 - existing save inCar=false retains stored mode and exact horizontal position
+  ---
+  duration_ms: 21.079686
+  type: 'test'
+  ...
+# Subtest: death recovery returns alex safely on foot
+ok 116 - death recovery returns alex safely on foot
+  ---
+  duration_ms: 21.159274
+  type: 'test'
+  ...
+# Subtest: death recovery returns mochi safely on foot
+ok 117 - death recovery returns mochi safely on foot
+  ---
+  duration_ms: 21.919534
+  type: 'test'
+  ...
+# Subtest: arrest recovery returns alex safely on foot
+ok 118 - arrest recovery returns alex safely on foot
+  ---
+  duration_ms: 17.684837
+  type: 'test'
+  ...
+# Subtest: arrest recovery returns mochi safely on foot
+ok 119 - arrest recovery returns mochi safely on foot
+  ---
+  duration_ms: 14.260504
+  type: 'test'
+  ...
+# Subtest: desktop walking hints replace car controls while touch and aircraft modes remain available
+ok 120 - desktop walking hints replace car controls while touch and aircraft modes remain available
+  ---
+  duration_ms: 1.538044
+  type: 'test'
+  ...
+# Subtest: fresh beta slots create a walking save; existing and imported/copied saves retain mode
+ok 121 - fresh beta slots create a walking save; existing and imported/copied saves retain mode
+  ---
+  duration_ms: 33.379302
+  type: 'test'
+  ...
+# Subtest: desktop vehicle screen defaults off on foot, restores driving preference, allows manual walking access
+ok 122 - desktop vehicle screen defaults off on foot, restores driving preference, allows manual walking access
+  ---
+  duration_ms: 0.590731
+  type: 'test'
+  ...
+# Subtest: real Game.load→removeVehicle→makeVehicle→newVehicleInstanceId preserves world ID and air ledger
+ok 123 - real Game.load→removeVehicle→makeVehicle→newVehicleInstanceId preserves world ID and air ledger
+  ---
+  duration_ms: 2.826007
+  type: 'test'
+  ...
+# Subtest: genuinely occupied ID refuses before removing active objects or rewriting ledger
+ok 124 - genuinely occupied ID refuses before removing active objects or rewriting ledger
+  ---
+  duration_ms: 0.366219
+  type: 'test'
+  ...
+# Subtest: garage fixed identity remains stable while unrelated active world IDs remain reserved
+ok 125 - garage fixed identity remains stable while unrelated active world IDs remain reserved
+  ---
+  duration_ms: 0.419053
+  type: 'test'
+  ...
+# Subtest: mica_scooter actual GLB finite front beam, no powertrain/pose mutation
+ok 126 - mica_scooter actual GLB finite front beam, no powertrain/pose mutation
+  ---
+  duration_ms: 47.87897
+  type: 'test'
+  ...
+# Subtest: ember_street actual GLB finite front beam, no powertrain/pose mutation
+ok 127 - ember_street actual GLB finite front beam, no powertrain/pose mutation
+  ---
+  duration_ms: 14.309045
+  type: 'test'
+  ...
+# Subtest: ridge_dual actual GLB finite front beam, no powertrain/pose mutation
+ok 128 - ridge_dual actual GLB finite front beam, no powertrain/pose mutation
+  ---
+  duration_ms: 16.759749
+  type: 'test'
+  ...
+# Subtest: 24 original Godot air reserve outputs match browser analytical port
+ok 129 - 24 original Godot air reserve outputs match browser analytical port
+  ---
+  duration_ms: 1.738064
+  type: 'test'
+  ...
+# Subtest: night switch is continuous, has full day off and full night on
+ok 130 - night switch is continuous, has full day off and full night on
+  ---
+  duration_ms: 9.071554
+  type: 'test'
+  ...
+# Subtest: strict bounded light budget and mobile always uses no additional shadows
+ok 131 - strict bounded light budget and mobile always uses no additional shadows
+  ---
+  duration_ms: 1.099326
+  type: 'test'
+  ...
+# Subtest: pool follows world transforms, switches vehicle and exits without leaking lights
+ok 132 - pool follows world transforms, switches vehicle and exits without leaking lights
+  ---
+  duration_ms: 6.986456
+  type: 'test'
+  ...
+# Subtest: traffic lights are shared pool slots and release parked, hidden and dormant cars
+ok 133 - traffic lights are shared pool slots and release parked, hidden and dormant cars
+  ---
+  duration_ms: 13.029193
+  type: 'test'
+  ...
+# Subtest: nearby street lights use loaded chunks only and disappear after eviction
+ok 134 - nearby street lights use loaded chunks only and disappear after eviction
+  ---
+  duration_ms: 2.239682
+  type: 'test'
+  ...
+# Subtest: window emission is masked, shares facade UV scale, disposes its own texture
+ok 135 - window emission is masked, shares facade UV scale, disposes its own texture
+  ---
+  duration_ms: 1.180526
+  type: 'test'
+  ...
+# Subtest: day/night controls bulbs and daytime bad-weather beams without new clocks
+ok 136 - day/night controls bulbs and daytime bad-weather beams without new clocks
+  ---
+  duration_ms: 3.396661
+  type: 'test'
+  ...
+# Subtest: brakes/indicators remain actuator-driven and do not repaint semantic objects
+ok 137 - brakes/indicators remain actuator-driven and do not repaint semantic objects
+  ---
+  duration_ms: 0.769426
+  type: 'test'
+  ...
+# Subtest: render uses one existing loop and no decorative objects contaminate sensor layer 0
+ok 138 - render uses one existing loop and no decorative objects contaminate sensor layer 0
+  ---
+  duration_ms: 6.235427
+  type: 'test'
+  ...
+# Subtest: photo enter freezes gameplay; render independent camera; close restores renderer/pause/clock
+ok 139 - photo enter freezes gameplay; render independent camera; close restores renderer/pause/clock
+  ---
+  duration_ms: 4.407082
+  type: 'test'
+  ...
+# Subtest: photo rejects transition and loading, preserves preexisting pause
+ok 140 - photo rejects transition and loading, preserves preexisting pause
+  ---
+  duration_ms: 0.522198
+  type: 'test'
+  ...
+# Subtest: photo visibility and history exit restore original pause
+ok 141 - photo visibility and history exit restore original pause
+  ---
+  duration_ms: 0.569289
+  type: 'test'
+  ...
+# Subtest: photo exports actual renderer blob and rejects stale async capture
+ok 142 - photo exports actual renderer blob and rejects stale async capture
+  ---
+  duration_ms: 1.133919
+  type: 'test'
+  ...
+# Subtest: photo bounded quality caps mobile pixels and texture dimensions
+ok 143 - photo bounded quality caps mobile pixels and texture dimensions
+  ---
+  duration_ms: 0.170572
+  type: 'test'
+  ...
+# Subtest: reverse camera dismissal lasts until next R, switches cars reset
+ok 144 - reverse camera dismissal lasts until next R, switches cars reset
+  ---
+  duration_ms: 0.233115
+  type: 'test'
+  ...
+# Subtest: camera suspended by phone/photo/loading and excludes aircraft
+ok 145 - camera suspended by phone/photo/loading and excludes aircraft
+  ---
+  duration_ms: 2.608951
+  type: 'test'
+  ...
+# Subtest: keyboard brake is not reverse until stopped; touch selection respected
+ok 146 - keyboard brake is not reverse until stopped; touch selection respected
+  ---
+  duration_ms: 0.229929
+  type: 'test'
+  ...
+# Subtest: camera render budget limited; reverse guide finite and steering-sensitive
+ok 147 - camera render budget limited; reverse guide finite and steering-sensitive
+  ---
+  duration_ms: 0.340133
+  type: 'test'
+  ...
+# Subtest: rear and surround camera use authored vehicle geometry without moving main camera
+ok 148 - rear and surround camera use authored vehicle geometry without moving main camera
+  ---
+  duration_ms: 3.795104
+  type: 'test'
+  ...
+# Subtest: real subview render copies scene canvas and restores renderer state after capture
+ok 149 - real subview render copies scene canvas and restores renderer state after capture
+  ---
+  duration_ms: 1.72076
+  type: 'test'
+  ...
+# Subtest: solar trajectory is periodic, finite and travels from east to west
+ok 150 - solar trajectory is periodic, finite and travels from east to west
+  ---
+  duration_ms: 12.168241
+  type: 'test'
+  ...
+# Subtest: night has no direct sunlight and sunrise is continuous
+ok 151 - night has no direct sunlight and sunrise is continuous
+  ---
+  duration_ms: 7.767525
+  type: 'test'
+  ...
+# Subtest: quality reduces expensive effects without disabling the day/night cycle
+ok 152 - quality reduces expensive effects without disabling the day/night cycle
+  ---
+  duration_ms: 1.29747
+  type: 'test'
+  ...
+# Subtest: main camera and sensor remain isolated, Godot and saved clock contracts are kept
+ok 153 - main camera and sensor remain isolated, Godot and saved clock contracts are kept
+  ---
+  duration_ms: 2.167083
+  type: 'test'
+  ...
+# Subtest: clock crosses sunset/sunrise with exact durations and never advances on pause delta
+ok 154 - clock crosses sunset/sunrise with exact durations and never advances on pause delta
+  ---
+  duration_ms: 0.280927
+  type: 'test'
+  ...
+# Subtest: night/rain/fog preserve finite bounded sun state
+ok 155 - night/rain/fog preserve finite bounded sun state
+  ---
+  duration_ms: 0.59861
+  type: 'test'
+  ...
+# Subtest: wall shortens ordinary camera without mutating desired/look
+ok 156 - wall shortens ordinary camera without mutating desired/look
+  ---
+  duration_ms: 2.940583
+  type: 'test'
+  ...
+# Subtest: ceiling and finite-height obstacles use authored baseY
+ok 157 - ceiling and finite-height obstacles use authored baseY
+  ---
+  duration_ms: 0.260833
+  type: 'test'
+  ...
+# Subtest: rotated, malformed, penetrating anchors and no blockers
+ok 158 - rotated, malformed, penetrating anchors and no blockers
+  ---
+  duration_ms: 0.426269
+  type: 'test'
+  ...
+# Subtest: actual SUNRISE Game camera clips wall, clears on repeat, never moves actor
+ok 159 - actual SUNRISE Game camera clips wall, clears on repeat, never moves actor
+  ---
+  duration_ms: 5.46992
+  type: 'test'
+  ...
+# Subtest: actual SUNRISE driving camera 0 unchanged
+ok 160 - actual SUNRISE driving camera 0 unchanged
+  ---
+  duration_ms: 1.967604
+  type: 'test'
+  ...
+# Subtest: actual SUNRISE driving camera 1 unchanged
+ok 161 - actual SUNRISE driving camera 1 unchanged
+  ---
+  duration_ms: 0.90799
+  type: 'test'
+  ...
+# Subtest: actual SUNRISE driving camera 2 unchanged
+ok 162 - actual SUNRISE driving camera 2 unchanged
+  ---
+  duration_ms: 0.568281
+  type: 'test'
+  ...
+# Subtest: actual SUNRISE aircraft camera exempt
+ok 163 - actual SUNRISE aircraft camera exempt
+  ---
+  duration_ms: 0.351505
+  type: 'test'
+  ...
+# Subtest: actual SUNRISE photoMode camera exempt
+ok 164 - actual SUNRISE photoMode camera exempt
+  ---
+  duration_ms: 19.664381
+  type: 'test'
+  ...
+# Subtest: actual SUNRISE flight camera exempt
+ok 165 - actual SUNRISE flight camera exempt
+  ---
+  duration_ms: 0.701457
+  type: 'test'
+  ...
+# Subtest: entry transition retains authored camera and does not clip
+ok 166 - entry transition retains authored camera and does not clip
+  ---
+  duration_ms: 3.977619
+  type: 'test'
+  ...
+# Subtest: ray respects finite rotated wall and floors before targets
+ok 167 - ray respects finite rotated wall and floors before targets
+  ---
+  duration_ms: 5.315346
+  type: 'test'
+  ...
+# Subtest: terrain ridge blocks ray, missing NPCs do not spawn fake targets
+ok 168 - terrain ridge blocks ray, missing NPCs do not spawn fake targets
+  ---
+  duration_ms: 0.601647
+  type: 'test'
+  ...
+# Subtest: vehicle is cover only and hidden/dormant vehicles are excluded
+ok 169 - vehicle is cover only and hidden/dormant vehicles are excluded
+  ---
+  duration_ms: 2.524394
+  type: 'test'
+  ...
+# Subtest: head-to-muzzle cover prevents shooting through thin wall
+ok 170 - head-to-muzzle cover prevents shooting through thin wall
+  ---
+  duration_ms: 0.569911
+  type: 'test'
+  ...
+# Subtest: actual WeaponSystem shoots exactly once, applies one ammo decrement and cooldown
+ok 171 - actual WeaponSystem shoots exactly once, applies one ammo decrement and cooldown
+  ---
+  duration_ms: 17.097384
+  type: 'test'
+  ...
+# Subtest: wall-covered target never receives damage but a fired shot consumes ammo
+ok 172 - wall-covered target never receives damage but a fired shot consumes ammo
+  ---
+  duration_ms: 5.563722
+  type: 'test'
+  ...
+# Subtest: cannot fire in paused
+ok 173 - cannot fire in paused
+  ---
+  duration_ms: 0.740999
+  type: 'test'
+  ...
+# Subtest: cannot fire in photo
+ok 174 - cannot fire in photo
+  ---
+  duration_ms: 0.238526
+  type: 'test'
+  ...
+# Subtest: cannot fire in loading
+ok 175 - cannot fire in loading
+  ---
+  duration_ms: 0.52644
+  type: 'test'
+  ...
+# Subtest: cannot fire in failed
+ok 176 - cannot fire in failed
+  ---
+  duration_ms: 0.441025
+  type: 'test'
+  ...
+# Subtest: cannot fire in inCar
+ok 177 - cannot fire in inCar
+  ---
+  duration_ms: 0.243707
+  type: 'test'
+  ...
+# Subtest: cannot fire in cat
+ok 178 - cannot fire in cat
+  ---
+  duration_ms: 0.190042
+  type: 'test'
+  ...
+# Subtest: cannot fire in phone
+ok 179 - cannot fire in phone
+  ---
+  duration_ms: 0.128733
+  type: 'test'
+  ...
+# Subtest: cannot fire in transition
+ok 180 - cannot fire in transition
+  ---
+  duration_ms: 0.136104
+  type: 'test'
+  ...
+# Subtest: cannot fire in aircraft
+ok 181 - cannot fire in aircraft
+  ---
+  duration_ms: 0.114532
+  type: 'test'
+  ...
+# Subtest: cannot fire in empty
+ok 182 - cannot fire in empty
+  ---
+  duration_ms: 0.761145
+  type: 'test'
+  ...
+# Subtest: modal/drawer/hidden document blocks fire
+ok 183 - modal/drawer/hidden document blocks fire
+  ---
+  duration_ms: 0.39061
+  type: 'test'
+  ...
+# Subtest: first-person/third-person camera collision and gun fit retain game camera object
+ok 184 - first-person/third-person camera collision and gun fit retain game camera object
+  ---
+  duration_ms: 1.27987
+  type: 'test'
+  ...
+# Subtest: weapon switching/cat removes active HUD state, first-person actor restores for photo
+ok 185 - weapon switching/cat removes active HUD state, first-person actor restores for photo
+  ---
+  duration_ms: 2.609489
+  type: 'test'
+  ...
+# Subtest: production shoot and ensureWeapon delegate only once to the new implementation
+ok 186 - production shoot and ensureWeapon delegate only once to the new implementation
+  ---
+  duration_ms: 0.971889
+  type: 'test'
+  ...
+# Subtest: real snapshot and save preserve ammo, wallet, vehicle identity and inventory; malformed ammo is rejected
+ok 187 - real snapshot and save preserve ammo, wallet, vehicle identity and inventory; malformed ammo is rejected
+  ---
+  duration_ms: 129.393478
+  type: 'test'
+  ...
+1..187
+# tests 187
+# suites 0
+# pass 187
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 7430.960584

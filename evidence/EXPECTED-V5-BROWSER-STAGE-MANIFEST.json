@@ -1,0 +1,1237 @@
+[
+  {
+    "path": "ASSET-CREDITS.txt",
+    "bytes": 151,
+    "sha256": "c3a8a708d597dbb2af18cc1036c21eb71bb2d0fad3c2d77d064aab20e10cd5db"
+  },
+  {
+    "path": "crescent/ASSET_CREDITS.txt",
+    "bytes": 577,
+    "sha256": "f509a499dcbb0c5378544e056baef078031793c334ce29cc34326fa708d8c9e0"
+  },
+  {
+    "path": "crescent/src/ultra-amusement.js",
+    "bytes": 2752,
+    "sha256": "759bd56f2bee860b9c61082b10307be410b7d5b21800719fa164cc4858b5eb42"
+  },
+  {
+    "path": "crescent/src/ultra-map-geometry.js",
+    "bytes": 15782,
+    "sha256": "4ade7cc0cf174aeca6fdcbb5cc83ad2f3f53c487b04f0a8eeee7c96057bdfb42"
+  },
+  {
+    "path": "crescent/src/ultra-map-layout.js",
+    "bytes": 9620,
+    "sha256": "3fe26302b7e2c5a617b4ea0daff14b95191caaae39ba3e6cce4bba5f28d3bf56"
+  },
+  {
+    "path": "crescent/src/ultra-map-world.js",
+    "bytes": 5769,
+    "sha256": "c0aa92767955263d844dbba95f21080bdb6d54bcbb86392b124eda835951706c"
+  },
+  {
+    "path": "crescent/vendor/three-addons-LICENSE.txt",
+    "bytes": 1081,
+    "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+  },
+  {
+    "path": "crescent/vendor/three.module.js",
+    "bytes": 46,
+    "sha256": "5ab6153a9dd5b834395d927e039f0e50d140c2d63997c4668d1a89c909f5955f"
+  },
+  {
+    "path": "crescent-world-adapter.js",
+    "bytes": 4129,
+    "sha256": "0a587fc67597cfd6a3ed69e408ca68b449ed3993e924e4ccfd45b31794a6a92a"
+  },
+  {
+    "path": "game-world-adapter.js",
+    "bytes": 4255,
+    "sha256": "d973c5b88bffaeb607f7465c7ca89498399106d46256afb40beeda0777ae57eb"
+  },
+  {
+    "path": "geometry.js",
+    "bytes": 7588,
+    "sha256": "d667c04c15ba2366dec62df9cdb00135b77d8df2ab0a12e885696a74f203e601"
+  },
+  {
+    "path": "index.html",
+    "bytes": 335,
+    "sha256": "9a23e330607a4a7ab68070d95e6a7bae6049a3e8c8855b728c5436dcaa78aa65"
+  },
+  {
+    "path": "mall-detail.js",
+    "bytes": 5312,
+    "sha256": "b2465381e72898d2320a29da98a4ab513a85205718615f5d713bd265a62642fd"
+  },
+  {
+    "path": "map-data.js",
+    "bytes": 6776,
+    "sha256": "ec6c3fd1d868811d09874203854200117fc68d92d8a89592688b6c9c60eb5979"
+  },
+  {
+    "path": "material-adapter.js",
+    "bytes": 833,
+    "sha256": "11b4b86d2cc130d3da23b193d0b7409e958fe39a179436da80ef31721ad77794"
+  },
+  {
+    "path": "materials/asphalt-pbr.mjs",
+    "bytes": 6988,
+    "sha256": "61b03bebaf126d0558f6d2c4fd4eeba54dd702786a2e299cef27734615939c75"
+  },
+  {
+    "path": "materials/assets/asphalt-color-256.png",
+    "bytes": 89087,
+    "sha256": "6fa4edbc8592cd22bd26b8d92721053a2f857d77fd1aad3ff719a697eb97c00c"
+  },
+  {
+    "path": "materials/assets/asphalt-surface-256.png",
+    "bytes": 87849,
+    "sha256": "ee5cf4a077bc9a778a1ee5d7ea3526ee377bedfd13b379c2149bb08f75eca9a7"
+  },
+  {
+    "path": "materials/assets/asphalt_01/asphalt_01_arm_1024.webp",
+    "bytes": 1217538,
+    "sha256": "2708f2a3808e510aa85bcda80249857e9872e106bc73c92b247bb7af3d0a6093"
+  },
+  {
+    "path": "materials/assets/asphalt_01/asphalt_01_arm_512.webp",
+    "bytes": 279392,
+    "sha256": "f16ace7e0cb3adea51730dcc6b4a4de4b77c0c56581b54c230c77782d7758c52"
+  },
+  {
+    "path": "materials/assets/asphalt_01/asphalt_01_color_1024.webp",
+    "bytes": 146220,
+    "sha256": "d6218c4c94bc01d1551d26d52b4fb59f0ec72578dfa3288402e7afd4dcccc4b3"
+  },
+  {
+    "path": "materials/assets/asphalt_01/asphalt_01_color_512.webp",
+    "bytes": 25676,
+    "sha256": "357d5aab059ab58567c207261d402aea3a73ea78b9a34d87d95de21dd362bfef"
+  },
+  {
+    "path": "materials/assets/concrete-color-256.png",
+    "bytes": 80623,
+    "sha256": "a39c3f613e3a8d4e14ce5c93a342a9a37f79a959700f12e449aaccd06e43f39e"
+  },
+  {
+    "path": "materials/assets/concrete-surface-256.png",
+    "bytes": 89130,
+    "sha256": "33ca8b111e550764de76e3d20b173a1045b7006a666d0e171d927a85e928049e"
+  },
+  {
+    "path": "materials/owned-asphalt-pack.js",
+    "bytes": 2428,
+    "sha256": "e705d38877dbb2de022086cefba827e041d18daa9fb172c8bb33adf06997eea4"
+  },
+  {
+    "path": "materials/pbr-material-pack.js",
+    "bytes": 5049,
+    "sha256": "8184f8fb4a60ea255314b3430a9b90c168f4d03a1a2f2359732ba255c57e4d57"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/apple-touch-icon.png",
+    "bytes": 8234,
+    "sha256": "aa1e159903ad321d01b7a1cd7764fe308686561f64dd904547533ec2c01a9fbd"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/beta-launcher.css",
+    "bytes": 5392,
+    "sha256": "e41e31cc67ed8278efa1e35e8ccd3d9dd5e9eb9eed6cf21e1ad33a5fb5d74cbf"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/beta-launcher.js",
+    "bytes": 3558,
+    "sha256": "6dc23546197dd0c1f75f40dbc945ebb03fcb71470f165034bd57368f5b32ee41"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/browser-worlds.html",
+    "bytes": 1410,
+    "sha256": "66a4fe89240d18623dedf1dc1f1e7347f3a825618c444f6ec76d86d41cccc32a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/favicon.ico",
+    "bytes": 22382,
+    "sha256": "464eb02e1eba68907052a5a72f1eff459282b7405a7f8e1f889e863c75678773"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/index.html",
+    "bytes": 1410,
+    "sha256": "66a4fe89240d18623dedf1dc1f1e7347f3a825618c444f6ec76d86d41cccc32a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/manifest.webmanifest",
+    "bytes": 476,
+    "sha256": "d651e03c5bd4052a987a7bc31647c5a6a211ff21a2f3fc04deee5f0ab15b329c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/neon-2-0-icon-apple.png",
+    "bytes": 8234,
+    "sha256": "aa1e159903ad321d01b7a1cd7764fe308686561f64dd904547533ec2c01a9fbd"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/neon-2-0-icon.ico",
+    "bytes": 22382,
+    "sha256": "464eb02e1eba68907052a5a72f1eff459282b7405a7f8e1f889e863c75678773"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/neon-2-0-icon.png",
+    "bytes": 1313,
+    "sha256": "2fd8fed1b8cc5564e58848653eb7ef9dd1b801c194c7bc8eff3db26bac013689"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/neon-2-0-icon.svg",
+    "bytes": 551,
+    "sha256": "648e15bd548ef4eb5b22f0377fa7afbc5f721d3bb9b65f09db7dd90b8639d5c8"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/neon-icon-32.png",
+    "bytes": 1313,
+    "sha256": "2fd8fed1b8cc5564e58848653eb7ef9dd1b801c194c7bc8eff3db26bac013689"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/neon-icon.svg",
+    "bytes": 551,
+    "sha256": "648e15bd548ef4eb5b22f0377fa7afbc5f721d3bb9b65f09db7dd90b8639d5c8"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/ASSET_CREDITS.txt",
+    "bytes": 4321,
+    "sha256": "37bc0b2998526d7334adb735cc8474733f2dbf405811f4231f955ef52decf072"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/THIRD_PARTY_ASSETS.md",
+    "bytes": 4321,
+    "sha256": "37bc0b2998526d7334adb735cc8474733f2dbf405811f4231f955ef52decf072"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/aircraft-ui.js",
+    "bytes": 4203,
+    "sha256": "f43b76827ded6de74e253a504940fe77bf785f7b46a232e854de3b1b42d9441a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/apple-touch-icon.png",
+    "bytes": 8234,
+    "sha256": "aa1e159903ad321d01b7a1cd7764fe308686561f64dd904547533ec2c01a9fbd"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/asset-car.js",
+    "bytes": 8599,
+    "sha256": "bd1fe9908924d9fc29b776a7edb27bc06758d69671f65f42ba1bd680f4adec8e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/CC-BY-4.0.txt",
+    "bytes": 13034,
+    "sha256": "c8041334a99cb48852b2139253cbde5f8ac87e27f124aed51223e0d5bf0080eb"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/CarConcept-LICENSE.md",
+    "bytes": 943,
+    "sha256": "e11477f29eab33d1a5c9fc8534f931556faeb2e11a7fee9e4723d917fcfaee50"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/CarConcept-metadata.json",
+    "bytes": 1334,
+    "sha256": "89555a6cb9dc0a4f300abe3cc6476c2d8d77c6f3f2cbde9bf790c1bd320027ed"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/display-cluster.png",
+    "bytes": 16223,
+    "sha256": "0c4dbbe234f82cac9b62073883224f4f057493d6fdefa8a3c2414ea5eb6ce71f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/display-map.png",
+    "bytes": 14634,
+    "sha256": "abbcac9de311b2c786e042a9f197f110e880d6aaacd619bf21607212fc19d8a0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/display-media.png",
+    "bytes": 14324,
+    "sha256": "a8e4da669f4c497ccbc5173a4dcfe607ded476b27da79d479806adef49233819"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/g9-display-art.js",
+    "bytes": 2901,
+    "sha256": "b65bbb7ff7c713718d525de6a5475da98c2974977e4e8cc3190c83ebdb062a40"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/g9-materials.js",
+    "bytes": 1475,
+    "sha256": "c80772797a5b16fecf0296c21c5dd7466a55d6093e5c9dc4dd4239073dbe4fe3"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/g9-mesh-data.js",
+    "bytes": 1791318,
+    "sha256": "b9412bb4acd3a522d1e98b5dfe68a84ff9155e8f3b3de576df009b56fbb62772"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/metadata.json",
+    "bytes": 4927,
+    "sha256": "4a22d3e6b3782e46754615f73c84e82e25cd41eff985eeec29cda012d5c96635"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/preview.jpg",
+    "bytes": 13499,
+    "sha256": "44731ee16540aebc775923446c567921839e6be3e521e2efe0b5345f16f8300f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/xiangjie-g9-detailed.glb",
+    "bytes": 1791996,
+    "sha256": "1f0a619d45ded00c675e6f5031afb696c973d2d1b1f1815aac9c51e68526a1c7"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/g9/xiangjie-g9-simple.glb",
+    "bytes": 994100,
+    "sha256": "c0d3c2809f38587db656d5655b618f2518c7b16aa0f1cdb7756dde7e33a20605"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/lucent-preview.svg",
+    "bytes": 401,
+    "sha256": "6b8eb4ba72e5bb658500cbdb6891daf39bad63350e4fcaf441fcc60dcebe3986"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/lucent-vision.glb",
+    "bytes": 11758564,
+    "sha256": "2cf15ec58a0c51fa20def0e2e2b2d9197648c681dbf00afb18c86dbdcac24ab9"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/motorcycle-dual-review.png",
+    "bytes": 291215,
+    "sha256": "44db3b0ecdb4b804414ff4098e44b61f07723b46f5fb5b8d611dbd41031089c1"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/motorcycle-dual.glb",
+    "bytes": 1812732,
+    "sha256": "e8d51461115522d296b6605f4e8304304c5a3bd31bd09ee55ecfcb882ac007e0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/motorcycle-scooter-review.png",
+    "bytes": 246666,
+    "sha256": "d2ce4e1cd0fd685fe0292b50a1e7d6a74f6a8439c3d45523e33c3cbcbd7791c0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/motorcycle-scooter.glb",
+    "bytes": 1235652,
+    "sha256": "11d13175da613d25094d6bd4172ebf2cacd0f84686b45357946e91a47ea5cc24"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/motorcycle-street-review.png",
+    "bytes": 267058,
+    "sha256": "e9f794a0098877b4591831617a2ea6b5214489ee9093d5447e1dc54e8e0f76c8"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/motorcycle-street.glb",
+    "bytes": 1283044,
+    "sha256": "1c821e574c5f87ee59872b2e455037994cd7a35f75eb872ce46bc37f1741061f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/roadster-preview.jpg",
+    "bytes": 14216,
+    "sha256": "388db308d17406c10e845abb094408fe11f4113b27b040cce21e5de8f708426f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/roadster.glb",
+    "bytes": 1862108,
+    "sha256": "8dd82b6e02f96b26f67cb092f8f9ee55db5578c5d3a0998fce9498ed3a051424"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/semi-manifest.json",
+    "bytes": 455,
+    "sha256": "a5be5b1141e5e25df98c64c9a708c451f0bdd511de9ccdcb79a909742e186ebf"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/semi-preview.jpg",
+    "bytes": 32559,
+    "sha256": "c18da75c7c52fd19fee1f0dc6a52730b0baa058d8b5678573f928dd2b899f1ad"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/semi_detailed.glb",
+    "bytes": 5077376,
+    "sha256": "0d760315d724d5b63e8356420554cee06d716e4e8eda47f845261e64ec9e02c0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/semi_low.glb",
+    "bytes": 1373704,
+    "sha256": "2b8d4474c28c7e252b68802589c5c78fdff4f90e160095a2ce7c37aa85153f8f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/semi_medium.glb",
+    "bytes": 2364120,
+    "sha256": "4e7e8405e912d13e1a40cd57749166fc2bc93fc79043133b45092e7afb800ae4"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assets/volt-s-blender-v2.glb",
+    "bytes": 1179516,
+    "sha256": "0ff78aa0d66cfa3a4e9da22760280320b4fb28dae41b1bce1cc34f359df41fda"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assist-settings.js",
+    "bytes": 2931,
+    "sha256": "b280d1f2d3bffb8ad4d5524f4fd2af6f8208092d0cdb73beeb358ccbb652e23e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/assist-status.js",
+    "bytes": 1027,
+    "sha256": "ff81d9f9b131e518327562d1da5cbf6ce95b3c2234cd98bababb5cf9e4e98a4e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/audio.js",
+    "bytes": 1826,
+    "sha256": "d2a7c030ba795cce7099bb6792f9708e098715d7b17fc679e24d1dfef4e12653"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/autonomy-test-job.js",
+    "bytes": 19822,
+    "sha256": "05d7af68b2dc5409221cfd30ed3bc8033115dd2a0ec7b95b0b876f5a772de16f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/axle-fault.js",
+    "bytes": 3943,
+    "sha256": "1feb3541ffbeb9163a74bca92fb0c907d035bcbc3c6d01d3f4385d461bb0c2af"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/beta-interface.css",
+    "bytes": 182750,
+    "sha256": "aa5f32d20e5fb94d506dd36affa3a4c29a4846fef17c61a9a8b3d9a35969a563"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/beta-runtime-entry.js",
+    "bytes": 3185,
+    "sha256": "3b4b7440afa73e5dd0ddbb59f1e593dd848056161ebac0427b87c4995f0f40ae"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/beta-save-slots.js",
+    "bytes": 15512,
+    "sha256": "aee2122476345e9ab41de714aa10c383bdc7ba20128be9a4ce28bb9f0165b135"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/blender-s-displays.js",
+    "bytes": 3044,
+    "sha256": "1e174c1ff004785910e68f32fa3d217261c42944357570a4a296fe4a30c0c245"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/blender-s-preview.js",
+    "bytes": 7209,
+    "sha256": "32282dafa05f685649757f23be07192db47e8545792bd5887a845e9441be44fb"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/brake-closeup.js",
+    "bytes": 6405,
+    "sha256": "cc6b436eec7eb1f61bcd83ee9d1707c1563f74bcf34a172a46e0d978e6f3ad40"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/brake-fault.js",
+    "bytes": 3626,
+    "sha256": "790b31e9613a908ef62b33b1c4256b50032187ed793df2df4533690e0be0dcb4"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-canonical-entry.js",
+    "bytes": 1197,
+    "sha256": "e159f62e4dea31c1aeadab7206d4b1995a0ed63e8394bb0829a9f05851ff36a0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-physics.js",
+    "bytes": 5314,
+    "sha256": "0b27d1eaca84c9495dfbbee12b3c977110b97f5ef1a29bede9e18c4726343015"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-world-boot-storage.js",
+    "bytes": 1335,
+    "sha256": "79ace756deacb663973419afc45fffce34080d5193fd87e39728e0d5b3e891ff"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-world-chooser.js",
+    "bytes": 1307,
+    "sha256": "c1a3f6a5a004e33e2447e3c9f329176863da7c7fd96f4952748f705025522637"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-world-entry.js",
+    "bytes": 4831,
+    "sha256": "ab22946866402c75d3e84cf2c4f27481c26c378832157ed74531f9c9ee4d93b7"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-world-lifecycle.js",
+    "bytes": 5496,
+    "sha256": "6a713adc770be8e5b6888c9551fbca6ba464c708eb5532b2e3da0f654ad04760"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-world-policy.js",
+    "bytes": 1493,
+    "sha256": "d9297680f9186f661511d9f37bc2fdfc3418a3212b14aa0553015268839adecf"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-world-runtime.js",
+    "bytes": 4153,
+    "sha256": "3d4dcb2eab99f58e4650c8e702b70741a274bc0d122edbbbe9d362e2cc9efb84"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/browser-world-slots.js",
+    "bytes": 5682,
+    "sha256": "79cbaa073c86c293401cc1c4a29f65d0d082c5c1c0b829400de1e2355c9e805b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/camera-controls.js",
+    "bytes": 2772,
+    "sha256": "6d1a26684d24c8b654288b07bd4dd45fd84c7b23aaeacc26685b1819e50ebb9d"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/candidate-entry.js",
+    "bytes": 254,
+    "sha256": "8b806d020c8e76d6a235b2c9aea967426c5c17af16ac6f8763ef5f8d2d3567a0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/cargo-career.js",
+    "bytes": 8796,
+    "sha256": "80212f08dbb7ef43b8a86e1c3c460dd9fcd72bc9163d78da283e79787a5758db"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/cockpit-profiles.js",
+    "bytes": 1928,
+    "sha256": "5f13b6699f584e6076d5826bcf8d5de07b9ecedb263534e8dee7e1b29ef5a86b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/cockpit.js",
+    "bytes": 33463,
+    "sha256": "fd7041ab821f6eb2fe144c775a901875042387f058ed16ff00121d39246dee8f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/control-size.js",
+    "bytes": 1633,
+    "sha256": "560e11c54f9e3b44b26d785c74b8840e073230df6efe684239a18106f42cae77"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/delivery-career.mjs",
+    "bytes": 15797,
+    "sha256": "217f2a6f7a4bd2222034f436b32c2efb519ec7acb7661f331289468788b28e2f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/delivery-offers.js",
+    "bytes": 1114,
+    "sha256": "90026e2c5a5462bf04b46278de94a8762948ea10be6b6d70b9439d2e1960bc1b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/delivery-runtime.js",
+    "bytes": 9830,
+    "sha256": "0c38f91de819958923baf350286f315e58d1010d81bb52e29ae9e33434c6e416"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/delivery-store.js",
+    "bytes": 4711,
+    "sha256": "4605d0ef541541c910a11a0b75e63eb9518aec6ffb864aeef0fc66a9b99d09ed"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/delivery-ui.js",
+    "bytes": 6879,
+    "sha256": "10d5d92a2c6ac918ae57e1ff566663f60fb6fdbbd5b1448af9db42e0788f19b8"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/driving-assist.js",
+    "bytes": 13701,
+    "sha256": "5c4dd83780b417b6429b5b5cfe0ea2cf685455478b7f79c4dd226da647830d96"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/entry-animation.js",
+    "bytes": 12626,
+    "sha256": "c43382259b996b5363f13705847c24e3115f94063e615239c44b75b43534338a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/estuary-chooser.js",
+    "bytes": 1099,
+    "sha256": "63b0a7e23f663fe3a8123103ba792b0e843ab211051afc9cba65b14c882a5078"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/estuary-save-slots.js",
+    "bytes": 4397,
+    "sha256": "37389c3bc1684bcdef536f201bbb2d43813c968da197eda6cbfbdfe5cd5fcb76"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/favicon.ico",
+    "bytes": 22382,
+    "sha256": "464eb02e1eba68907052a5a72f1eff459282b7405a7f8e1f889e863c75678773"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/fixed-step-clock.mjs",
+    "bytes": 1031,
+    "sha256": "c01da1b83f79eb54abc14b0bcb09573bbb65e329061c360633e1621c65f07e7f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/flight-console.css",
+    "bytes": 7143,
+    "sha256": "d7dbc12266a1d5930d0ffa9c3820d4025870d4b43077abb5cf09677d14bd612c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/flight-travel.js",
+    "bytes": 4641,
+    "sha256": "9ec62b57456535227602489e0f78d0c63a3f4c8632f4d6a6fa919ebb7fa16aa6"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/flyable-aircraft.js",
+    "bytes": 31210,
+    "sha256": "c48fcce441126209ac871a515acaed7319d0b43d0e428acacf22720dc1e5165e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/fonts/CoastEditorial.woff",
+    "bytes": 18280,
+    "sha256": "b003a26a2a00eebf5e16617c522d675a142e4d36821c6c016aa9e3a510679dc0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/fonts/LICENSE-DejaVu.txt",
+    "bytes": 3859,
+    "sha256": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/g9-asset.js",
+    "bytes": 1494,
+    "sha256": "741d30d8d2fc0ddd37d330b78ab1fdab8c78666d612881061021552bd459530d"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/g9-displays.js",
+    "bytes": 1843,
+    "sha256": "fff950ef6fe11f4c55148c7f2611d234e978ea229c8aea669bb3a52e73598919"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/g9-navigation.js",
+    "bytes": 9018,
+    "sha256": "afbf87b69c5cf357740605adda83fbd211200d20be629b2f22439bf7c6769eac"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/g9-vehicle.js",
+    "bytes": 5985,
+    "sha256": "8b110233010630787be38346f22cf7d63a77860744e0b12f6213c7e62a057f0c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/game.js",
+    "bytes": 85090,
+    "sha256": "f30e795afd6354f726bcefb5e4ab452f366eefec097b53dfdfa2a5693c20a88b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/ground-contact.js",
+    "bytes": 13179,
+    "sha256": "f2d2b6013dd42073819076c403ac6f8119eea8998c610ff354dc99d05f42fee7"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/hidden-cheat-entry.js",
+    "bytes": 843,
+    "sha256": "8d2805a9866fc1d199ce1abcc09c5f064a193a09e10539332688e90d6e55c74b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/impact-damage.js",
+    "bytes": 4818,
+    "sha256": "224d327f56ff7f3188f85d4ac500f5013a5a0b08dadd2c874533710e857b2f50"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/index.html",
+    "bytes": 19870,
+    "sha256": "fd070778562f19d9dd4df00b012f3590896eae22da1807c2618f334fdecde8e7"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/interface-view.js",
+    "bytes": 6473,
+    "sha256": "c169d054d5873c252d8c6e605c94a91bfa03999071acfe1c4c27aedd9e10ab88"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/intersection-signals.js",
+    "bytes": 1905,
+    "sha256": "ee595e506d6063f15c3a2a001a8787f8f5b0a7de3b0bba88ad73a91caf20acf6"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/lane-change.js",
+    "bytes": 5057,
+    "sha256": "644e0b80a9198e958053335991e24ec194e6d4a8975037ebb34c15cd32017b5b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/loading-progress.js",
+    "bytes": 514,
+    "sha256": "97a7326e32aeb39c4b82e3bf217da411470e63191fbd7dfde05cd4acda73e0f3"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/location-beacons.js",
+    "bytes": 2893,
+    "sha256": "78d925d4084caa684ed23f3074b2eaa73f659894907ae02d229b34b8083895da"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/location-teleport.js",
+    "bytes": 9128,
+    "sha256": "d34b51aaf6dad281cf7a47bbc272bb927f581ca5999506c2154773ac9f6ac616"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/manifest.webmanifest",
+    "bytes": 476,
+    "sha256": "d651e03c5bd4052a987a7bc31647c5a6a211ff21a2f3fc04deee5f0ab15b329c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/map-feature.js",
+    "bytes": 523,
+    "sha256": "2b79fc026a5794d9274fa4cf69787daf62f1370dadd089cf727a8526a98ec28d"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/map-ui.js",
+    "bytes": 17951,
+    "sha256": "5854d1d6cd6c8cf81752722f630c77eb6faedf3b8ad479c5ea440c6a1d495f07"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/mobile-ui.js",
+    "bytes": 27089,
+    "sha256": "67a60a6805f506d4d15f31adef7c2c3f79bfaebb976287bdececcb63056f5ac9"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/motorcycle-asset.js",
+    "bytes": 6320,
+    "sha256": "a3986d532e84512a5a50527ba49e467b4efbceb65a5a648ec91776050a15bb01"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/motorcycle-manifests.js",
+    "bytes": 7843,
+    "sha256": "aaa5e85a6dacebe7ea617d7a77e8fa37e6b81959767af8878c1c49f1d3089a4b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/motorcycle-rider.js",
+    "bytes": 1597,
+    "sha256": "ad38f051bbbded3de308e050deeddc419c1f3c5453c49a4477558410f9f348b3"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/mountain-barriers.js",
+    "bytes": 1416,
+    "sha256": "dc826dcef12ab68db820a2d06459883aac903d44ecdc18abe5f8317464321795"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/navigation-guidance.js",
+    "bytes": 6095,
+    "sha256": "213bebd410e43156dc410a302c7682747a85154f4ba33aab6a6da5e6983153a0"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/navigation-ui.js",
+    "bytes": 5436,
+    "sha256": "b57025c637f2477e6b784cdd24876d8f432e99a25bb27fb6d3c1530160cae90a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/neon-2-0-icon-apple.png",
+    "bytes": 8234,
+    "sha256": "aa1e159903ad321d01b7a1cd7764fe308686561f64dd904547533ec2c01a9fbd"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/neon-2-0-icon.ico",
+    "bytes": 22382,
+    "sha256": "464eb02e1eba68907052a5a72f1eff459282b7405a7f8e1f889e863c75678773"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/neon-2-0-icon.png",
+    "bytes": 1313,
+    "sha256": "2fd8fed1b8cc5564e58848653eb7ef9dd1b801c194c7bc8eff3db26bac013689"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/neon-2-0-icon.svg",
+    "bytes": 551,
+    "sha256": "648e15bd548ef4eb5b22f0377fa7afbc5f721d3bb9b65f09db7dd90b8639d5c8"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/neon-icon-32.png",
+    "bytes": 1313,
+    "sha256": "2fd8fed1b8cc5564e58848653eb7ef9dd1b801c194c7bc8eff3db26bac013689"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/neon-icon.svg",
+    "bytes": 551,
+    "sha256": "648e15bd548ef4eb5b22f0377fa7afbc5f721d3bb9b65f09db7dd90b8639d5c8"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/night-lighting.js",
+    "bytes": 6734,
+    "sha256": "95d3dd847361b56402659fadb9574871c29e9d29a591a8aff859760eaf423d01"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/panel-drag.js",
+    "bytes": 4668,
+    "sha256": "99e858db44aaeff56f68dc2ba989db9ad4aaeecd740233c0ff19e8748dfc3b02"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/panel-layout.js",
+    "bytes": 878,
+    "sha256": "3cb4d7aa61a2b545fe18169ef5dcdcdbeacab9c3a88a4d6b753b1277666e6b91"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/performance-profile.js",
+    "bytes": 1845,
+    "sha256": "4d42625b1ef7801f7a8581bbf0f7fa5b3b7b3fdfd9fccfbd84a8056cc2c1257c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/photo-mode.css",
+    "bytes": 5060,
+    "sha256": "3ea06654698421554b0fc04ab6f6a077cabaad54866d87a14a36dd7a1d4f05df"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/photo-mode.js",
+    "bytes": 21291,
+    "sha256": "4ddc7019ce6622aa664399a7738990d666c2729440cf3038a4bd3ba258e57a31"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/physics-backend.js",
+    "bytes": 386,
+    "sha256": "413b7ba8778d5bcd5658581fa11b605112456a0eaa6a7ceaaebf6b0fbd6febce"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/physics-surfaces.js",
+    "bytes": 3371,
+    "sha256": "dd2908d2b5b24bba3f8abbfa5d02854016b191dccaf4182b29fa799a0db07691"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/pilot-detour.js",
+    "bytes": 2984,
+    "sha256": "b25ae1b72063da9cf1558d8c4d6cc2ac18a7e8ca1268525106432ac7d4fc59d9"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/pilot.js",
+    "bytes": 27121,
+    "sha256": "ee102c208fa9f1af1ca0374e41f626117e9f2b7c3e6652b77ea42d25e89277ac"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/police-response.js",
+    "bytes": 7397,
+    "sha256": "4a4d0395efb075aa8fea51af7c5e2212a252f389451a74e2aeedb7760c2de125"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/population-stream.js",
+    "bytes": 8955,
+    "sha256": "e677e18c2606c235b0ac3bc6cbb7d93b5a9d87ac33a340c55ae56b12377a0f37"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/preview-slots.js",
+    "bytes": 9899,
+    "sha256": "f3eb7fb5bc6a5ca0c3d3f797c39d31375fdc157ccd35e3ba9958e2db67a8f3d3"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/prnd-controls.css",
+    "bytes": 1106,
+    "sha256": "e5371607083fe848ae47d9fc0c554de2851a649044ac557e9a67646074a6c9d4"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/realistic-visuals.js",
+    "bytes": 5123,
+    "sha256": "9bcfbc6a4facd185999aa504dbdfa95aa5e520fe10fabdba91f450cffe849108"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/region-scenery.js",
+    "bytes": 9133,
+    "sha256": "cd10ed1fae717148eb83bc52ee1d32b1dd958def678b7d6fa526b12ea1bc2c1c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/regions.js",
+    "bytes": 10931,
+    "sha256": "ff765a68e4d68000032c538371978922f26364df3a3b87ff05761d892085e15d"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/release-notes.js",
+    "bytes": 10146,
+    "sha256": "23e0c1d6ca65f1b186769588ffe9a556e268118aeddfd6fddb37611cbba22846"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/release-ui.js",
+    "bytes": 2404,
+    "sha256": "315ef939ce3b1cafeea6d9efb563468e8e9522592cee32b0af145da8f1f2f545"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/render-motion.js",
+    "bytes": 3942,
+    "sha256": "8fa85a605d3fd4e1c965ddb7aee7fd3e5c507dc9ffe4deb9bbe8b292072911f4"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-aero.js",
+    "bytes": 4353,
+    "sha256": "653b974cbfc83a9879f81e5fbd2438fea780feb2c74e90ad15487c204d00885e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-air-display.js",
+    "bytes": 974,
+    "sha256": "0b84ec9872d31ca6d6bb84eb9c1395475fb0d6439ad229c0313d21db8e93d9a9"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-air-ledger.js",
+    "bytes": 2985,
+    "sha256": "f232a3031664bf439ff88ce9d3bfdc89966bafd1af7792db7663a5ed5600b949"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-asset.js",
+    "bytes": 7194,
+    "sha256": "4a6b2c4687f4a26ea366123523a1d2078ffe4ba5e990d61affaf60074cedf9f4"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-controls.js",
+    "bytes": 14285,
+    "sha256": "818458049b69e739442b87c1f87a442a370e527890e1d7f66c914c9da7c2f811"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-displays.js",
+    "bytes": 13152,
+    "sha256": "5b62863120a2a14fbbbda6389190b0ec42a55088522ae55d661576d7aea62a17"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-jets.js",
+    "bytes": 9394,
+    "sha256": "f9547163539d74e1e5c1a99068ef6b997129732ed96dd8eaeada9058ff32639a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-tire-telemetry.js",
+    "bytes": 1152,
+    "sha256": "c68bd872de434e95fc35906708c5171def4a923f7bee3af2f676008aa6a7cf8f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-ui.js",
+    "bytes": 14910,
+    "sha256": "d9950892512a82e6d20444287a56b790527cf0a1bb3b4894a0b598474bd8d995"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/roadster-vehicle.js",
+    "bytes": 1493,
+    "sha256": "8932d96570331547038af1e0906b2f56e188c60b71dfdcddc58150229504ca0f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/robotaxi.js",
+    "bytes": 21661,
+    "sha256": "b30fc358489278601294fcd36252e526fa371ed4b44d1265e9a4a065ab141cef"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/route-view.js",
+    "bytes": 1033,
+    "sha256": "d3d9acdb7d6157a0d474bf1b55c89fefffb02b464667eeb11db7698ff07630b6"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-audit-adapter.js",
+    "bytes": 8200,
+    "sha256": "78a7dd0276b33eb5672bf33a7a7b1480308662ccca3054cd4437f299096e675e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-damage-lifecycle.js",
+    "bytes": 1024,
+    "sha256": "fab59ea92bc4043400be0d5c01a4dbb28cf7dedd06757ab9fbacb0af665500bb"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-diagnostics-ui.js",
+    "bytes": 2800,
+    "sha256": "fe6f577be29da5fe0d2b0da2837dedbbf158dfd0aadb8003fe7f68ea4a4daa0b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-factory.js",
+    "bytes": 13577,
+    "sha256": "0bfa7dd9ee0cd8a7d6ae2acd9a8f6b77ff94ec54337e2a0099a0e8f791fe6b5c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-geometry-contract.js",
+    "bytes": 14396,
+    "sha256": "15deb933f11cc58d02a64e9015742a841c8bb5f902d85b7296a1483a5e095956"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-profile.js",
+    "bytes": 23456,
+    "sha256": "93d9b77aedb491196a2937bf2e12a072885492b282b5c2049bc265eb2f140804"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-repair-transaction.js",
+    "bytes": 4682,
+    "sha256": "ad9befe4451b48f9998f9e4a7f7fc857271f26b0c28c37b4f17e9110fc31d13e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-runtime.js",
+    "bytes": 4029,
+    "sha256": "f2425ebbb82e757284ab2136f4f0bf5651ea4d0750b370169c5fab164ba282e2"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/save-validation.js",
+    "bytes": 5945,
+    "sha256": "15cd075f49010f2aa3fa9714802e947ee18a48f4ff6bc0c31124e1ae1b78a548"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/semi-asset.js",
+    "bytes": 5214,
+    "sha256": "147ce23f2fc55f5ed9999f7b7f1f7b586c4dd690ffa061229be37fecb0736d8f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/semi-displays.js",
+    "bytes": 4393,
+    "sha256": "e823c5fe5a2dadc5172914c3f64a8aa659cae5ca4ab9188860006d6de7c93c5b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/semi-powertrain.js",
+    "bytes": 1391,
+    "sha256": "22a02bde51a298ecbd999f1bf498007cc01e2e1eb38d46e6198230e32ab09880"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/semi-trailer.js",
+    "bytes": 21896,
+    "sha256": "7be0818d4b3916aebb7f139e26bf21d7139cbc3050759ec52d4225246cc22903"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/semi-vehicle.js",
+    "bytes": 751,
+    "sha256": "698a1d2c73497049d8c4a474e3dfc1f8bb125b0e768f57edcda220a59ac81c4b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/sensor.js",
+    "bytes": 18625,
+    "sha256": "35d75d3c9af9fe654168cfb7260db14a0f6aa8d5b18596cae7be31d2d2b4f5c3"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/showroom.css",
+    "bytes": 10514,
+    "sha256": "47d43489f5aab0cc2556f67d0f898c96116b04cd4eba33fb6a50f40e9bcad2d4"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/showroom.html",
+    "bytes": 3756,
+    "sha256": "b8be5f29300dedee9c82cb0193ac4f17132ebfab6ddb89ef5f6870c416531a72"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/showroom.js",
+    "bytes": 12547,
+    "sha256": "e878400ef8ae2e138e231b762f125ab34c3427961124776e3864994ed1ced3a7"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/sky-cycle.js",
+    "bytes": 8922,
+    "sha256": "116bd818a60d41614ee410c885cae5015a201bb990990fbeb212b3adac6c3b30"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/standard-save-keys.js",
+    "bytes": 515,
+    "sha256": "6841b883df448fe54f63aff19cbe877f9c4f30b65db5b69f39a392d5609bb02f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/storage-keys.js",
+    "bytes": 3604,
+    "sha256": "6c437a36dc813379b7226fc115f8f271663e092d4fef1ab409ce27c563987472"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/streaming-world.js",
+    "bytes": 32459,
+    "sha256": "c410cbb07d5f0268ef1e3c8bf2b86ada2ec7702642e8723418b81e2a38c4e576"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/structural-clearance.js",
+    "bytes": 658,
+    "sha256": "e69f6adbc3174a28e2c3f62c7ea587773b44eeed61de32e73befc2791686b898"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/structural-core.js",
+    "bytes": 4709,
+    "sha256": "2d357a6a4050cb203c7e5b9d9fbb7dfdb7845a5fa69a89e3d10d4a951c9fbdc6"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/structural-damage-adapter.js",
+    "bytes": 5090,
+    "sha256": "25d13c5d5fb5f0b08800c99dae7b7847168cc6e90c24960dd67f5e19998cfdf1"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/structural-save.js",
+    "bytes": 1652,
+    "sha256": "45b57367f6922d7c47b77f70ab218f6a25e0c27877e81d4c5fe2475d5151776f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/structural-vehicle.js",
+    "bytes": 13271,
+    "sha256": "a2b4ad617403e5b17ef0e117ba654773e8ad7fdbb4f0690a06bc3d140a841f5c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/structural-wheels.js",
+    "bytes": 6601,
+    "sha256": "3621f2bb27f2f7eba2a1f400f1298b28ddab561cf74b3d6bdb6cc98005f1c18a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/sunset-icon-192.png",
+    "bytes": 7457,
+    "sha256": "57ee2b76175a51f01caf77fdca656acd4389bc616bcc4951a98b7d6ff49f206f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/sunset-icon-512.png",
+    "bytes": 14301,
+    "sha256": "a05d1f3cb23b3b8b9681ecb43c7107759a871ecfbd40807ffbc69db350f41628"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/surface-layout.js",
+    "bytes": 2647,
+    "sha256": "1ad1040d94fd7456f3196036802473d3d72cd38a99812ca8e495b5c37e88a57c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/touch-selection.js",
+    "bytes": 1245,
+    "sha256": "81d3c3721ce6a36348b5e01c9a7eb44049e2e826820c4660d0550bcb88904e0f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/touch-transmission.js",
+    "bytes": 3972,
+    "sha256": "c35f5e14e79c048977a606de90bf5fc17f17dbbc93b828afe93ab967f1041feb"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/traffic-controller.js",
+    "bytes": 4384,
+    "sha256": "978e349338058fe1afaa59cf4bba433a3ef593a38f111f8faedfb3743a82376a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/ui.js",
+    "bytes": 52095,
+    "sha256": "c8b19612b380aa8a445019a48ed12b86f850f2537de772e2859699c929f88d3f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-asset-flow.js",
+    "bytes": 1866,
+    "sha256": "e496d59be64cc15ea2e4098106dfa7d723ac9bf693440b82e4bf9a53460f403e"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-asset-registry.js",
+    "bytes": 2371,
+    "sha256": "527b7a6a93e224b02a92c949988277441080e519553b1938febb2a49fb96a400"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-camera-state.js",
+    "bytes": 3576,
+    "sha256": "c8fb67c63a18741a266f259b1b29fdd6b2a971972f56022c49bba538a320fae4"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-camera-views.css",
+    "bytes": 2600,
+    "sha256": "02d5fe2f66f70613835edd15daae885251bb91f18abf66897cf0cdbb93c4fe1a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-camera-views.js",
+    "bytes": 15435,
+    "sha256": "4149271da032f6c154cb590eed2d215a966452dcba501105380117df7c1a70c2"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-catalog.js",
+    "bytes": 6241,
+    "sha256": "6863e7d535be00f6ff9b80f9fed24060ef95e3884cac51250217687ddce1f433"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-damage.js",
+    "bytes": 30087,
+    "sha256": "5e102b2ae5e5d2bc92757ba34368db32fcecd5f75458b12fdb8ac7f977d5050a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-design.js",
+    "bytes": 63607,
+    "sha256": "410d5f09a99ec88e520f1cb3e7c87b89f7575b95912b4edd95cbc6880a6561eb"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-dynamics.js",
+    "bytes": 14795,
+    "sha256": "a5abb8dbd67325f89d31217f58b3fd4444faa46046d612689de916e2da456d2c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-environment.js",
+    "bytes": 1663,
+    "sha256": "bc76ba38ebbe0d1b19d7bbba97a38b3c0fbf4d3d40bf1889902eafc984a30caf"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-infotainment.js",
+    "bytes": 5823,
+    "sha256": "bf3217074a01560d7ea8020bc8c51e1155446fe3b644dedd3285deac064432b7"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-instruments.js",
+    "bytes": 8641,
+    "sha256": "cb3b2939ee7d3937ad752a8e6d40ffa59579d8d7bcceeb34d2ae12f1c305207a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-lights.js",
+    "bytes": 11512,
+    "sha256": "2a32f7a113c60d13725f162f8e04474c040e5e5d55d062836a4c94cb21c264cb"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-panel-layouts.js",
+    "bytes": 1154,
+    "sha256": "b4090fd35f87e3d516b7105225ea1371ce2be6a374467214e90745c1949b1b56"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vehicle-physics.js",
+    "bytes": 10845,
+    "sha256": "4d6d2a619cf66618158926823e55a785d803c7a602b3a5eb70da3284a6b926b8"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vendor/BufferGeometryUtils.js",
+    "bytes": 35551,
+    "sha256": "248b3e8420bd3de805ca01845c1b0cc62aa2766f3c56bdcead265e306f8e715c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vendor/GLTFLoader.js",
+    "bytes": 114744,
+    "sha256": "2904f2823e23d5bc1d64512bf4c0d777ac44d728d47c34a9e3d48ce8ef6b761d"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vendor/Lensflare.js",
+    "bytes": 11174,
+    "sha256": "5bd11cec8e4f0ef04de9f0f91406be648cd9f2ffc52da6c63000f06f4a7e0282"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vendor/Sky.js",
+    "bytes": 7321,
+    "sha256": "2de1f4b3d13373848a8a5008b1cdb135e11c434ec1d16046ce179b4d5e776d09"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vendor/three-addons-LICENSE.txt",
+    "bytes": 1081,
+    "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vendor/three.core.js",
+    "bytes": 1403455,
+    "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/vendor/three.module.js",
+    "bytes": 603113,
+    "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/walking-camera.js",
+    "bytes": 1829,
+    "sha256": "e7fc5a593c9089e90ce7ffa02c94e1d55067a44b9fcf01f156b26c2f8310ae3d"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/weapon-system.css",
+    "bytes": 4065,
+    "sha256": "61b47983b0f11c294c9046092581519f89efd8179a030e1be14d67af01b393a7"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/weapon-system.js",
+    "bytes": 18845,
+    "sha256": "51745172340409404612acdaf94841865016f16bdaaf944e917ee75bc87ff72d"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/world.js",
+    "bytes": 19132,
+    "sha256": "2122417648b05377a8bab872606b9aebb0beb337cf2abc3982629274019aac4c"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/release-info.json",
+    "bytes": 840,
+    "sha256": "1e0f3d115a7027b95ae868d4efbfbad683f9ea0f664f814d23f891fad38becab"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/sunset-icon-192.png",
+    "bytes": 7457,
+    "sha256": "57ee2b76175a51f01caf77fdca656acd4389bc616bcc4951a98b7d6ff49f206f"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/sunset-icon-512.png",
+    "bytes": 14301,
+    "sha256": "a05d1f3cb23b3b8b9681ecb43c7107759a871ecfbd40807ffbc69db350f41628"
+  },
+  {
+    "path": "selected-map-adapter.js",
+    "bytes": 983,
+    "sha256": "f4cf94b16603c7ee4b1363b171efe0a7638ce3006a73507aa7db4afce137d0a6"
+  },
+  {
+    "path": "shared-map-api.js",
+    "bytes": 1310,
+    "sha256": "94dfaca936634a2e924316f555e32a74e255c68cca91c16db0951bb170b94669"
+  },
+  {
+    "path": "vendor/three.core.js",
+    "bytes": 1403455,
+    "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20"
+  },
+  {
+    "path": "vendor/three.module.js",
+    "bytes": 603113,
+    "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+  }
+]

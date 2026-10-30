@@ -1,0 +1,21 @@
+WARNING: Multiple instances of Three.js being imported.
+MEASURED_DIAGNOSTICS {"before":{"bound":true,"profile":"volt-s-review-profile-v1","assetSHA256":"0ff78aa0d66cfa3a4e9da22760280320b4fb28dae41b1bce1cc34f359df41fda","adapterPanels":8,"adapterVertices":6428,"excludedMirrorVertices":276,"boundPanels":8,"boundVertices":6428,"maxDisplacement":0,"brokenBeams":0,"detachedParts":0,"revision":0,"repairRebindGeneration":"unknown","lastContact":{"impulseSource":"unknown","normalImpulse":"unknown","accepted":"unknown"}},"after":{"bound":true,"profile":"volt-s-review-profile-v1","assetSHA256":"0ff78aa0d66cfa3a4e9da22760280320b4fb28dae41b1bce1cc34f359df41fda","adapterPanels":8,"adapterVertices":6428,"excludedMirrorVertices":276,"boundPanels":8,"boundVertices":6428,"maxDisplacement":0.48249999999999993,"brokenBeams":4,"detachedParts":0,"revision":1,"repairRebindGeneration":"unknown","lastContact":{"impulseSource":"manifold-normal-speed-loss","normalImpulse":20000,"accepted":true}},"reset":{"bound":true,"profile":"volt-s-review-profile-v1","assetSHA256":"0ff78aa0d66cfa3a4e9da22760280320b4fb28dae41b1bce1cc34f359df41fda","adapterPanels":8,"adapterVertices":6428,"excludedMirrorVertices":276,"boundPanels":8,"boundVertices":6428,"maxDisplacement":0,"brokenBeams":0,"detachedParts":0,"revision":0,"repairRebindGeneration":"unknown","lastContact":{"impulseSource":"manifold-normal-speed-loss","normalImpulse":20000,"accepted":true}}}
+✔ actual startup source awaits audited preload before constructor; no constructor possible before preparation (554.723215ms)
+✔ actual Game imports compose synchronous construction, impact, repair charge, then second impact (1120.906094ms)
+✔ two actual Game-created cars independent; explicit removal disposes only owned target (707.751746ms)
+✔ all flags required and original legacy API used for non-issued objects (344.29477ms)
+✔ actual Godot receive adapter preserves normal into A/opposite B, swaps and rotation; no fabricated impulse (679.283012ms)
+✔ foreign identity sharing issued root is rejected, never routed through legacy damage (274.645924ms)
+✔ actual composed repair preserves failed virtual balance and retries failed save without recharging (612.66934ms)
+✔ all local runtime static module imports resolve and index hashes match current bytes (231.737948ms)
+✔ diagnostic five-flag gate is exact, gate-off mounts no DOM/timer and does not read state (10.695656ms)
+✔ real audited GLB/core impact changes actual mesh, diagnostics tracks structure, mirror and second instance untouched, repair resets (926.52687ms)
+✔ collapsible overlay uses bounded interval, no closed/hidden read, gate transition and pagehide dispose (4.739826ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7496.085824

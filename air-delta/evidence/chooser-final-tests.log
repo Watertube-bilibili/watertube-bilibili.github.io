@@ -1,0 +1,40 @@
+TAP version 13
+# Subtest: BFCache Back rereads a newly created slot and restores an enabled create button
+ok 1 - BFCache Back rereads a newly created slot and restores an enabled create button
+  ---
+  duration_ms: 25.283207
+  type: 'test'
+  ...
+# Subtest: overlapping renders ignore a stale list response rather than appending an old slot
+ok 2 - overlapping renders ignore a stale list response rather than appending an old slot
+  ---
+  duration_ms: 1.233638
+  type: 'test'
+  ...
+# Subtest: late create completion after departure cannot redirect the restored hub
+ok 3 - late create completion after departure cannot redirect the restored hub
+  ---
+  duration_ms: 4.292303
+  type: 'test'
+  ...
+# Subtest: late list or create errors cannot overwrite a newer UI status
+ok 4 - late list or create errors cannot overwrite a newer UI status
+  ---
+  duration_ms: 1.225124
+  type: 'test'
+  ...
+# Subtest: current create failure restores the button; repeated clicks do not duplicate requests
+ok 5 - current create failure restores the button; repeated clicks do not duplicate requests
+  ---
+  duration_ms: 0.687146
+  type: 'test'
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 5
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 401.341591

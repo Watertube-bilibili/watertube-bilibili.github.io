@@ -1,0 +1,42 @@
+[
+  {
+    "path": "integration.test.mjs",
+    "baselineSHA256": "c964ff9233f0ef1beb5b58d9cac0fac6fac16d28c2893f664f716b891fc6f29a",
+    "candidateSHA256": "9d5570c82bcdfd52c706dd4cf940f7a9abc47323f2bb9268f358da660bf191ed"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/game.js",
+    "baselineSHA256": "cd0a40900830105ec1bd07a97df35ef9e456a9409751b0badf7a00be22c71fa3",
+    "candidateSHA256": "1d75e05621e20e041078765a94049df780f154d6f6c22817ef887eda172fd112"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/index.html",
+    "baselineSHA256": "32f48b35260cbe649d0cee2f9d7a027ce6d9f582d51d53f820da16c5beae78c0",
+    "candidateSHA256": "d557b04ca887b243d90bc5571de26c4255a57f8fd96c8ed8341f72b251e3467b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-diagnostics-ui.js",
+    "baselineSHA256": null,
+    "candidateSHA256": "fe6f577be29da5fe0d2b0da2837dedbbf158dfd0aadb8003fe7f68ea4a4daa0b"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-factory.js",
+    "baselineSHA256": "5a168d8a30ce60f2231efce4e4dc7568c904f1f20704bbbb44fd205b4406d41b",
+    "candidateSHA256": "be21112b4d2b776c6e137325ad0047496a98616747479bfcae05a95a7804c365"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/s-runtime.js",
+    "baselineSHA256": "572de5c04cda89476ccb4b63b24fbede8d020fb7d82fef93526394de4330a7a9",
+    "candidateSHA256": "2cd3057f2330ae7e254da1981780bf5535b7db22c0c01eca57f351fb8e3be464"
+  },
+  {
+    "path": "runtime-candidate/sunset-coast/play/structural-vehicle.js",
+    "baselineSHA256": "30979c61492add574bf1b20ba9d6c01f320b1ab41f9bbffa3a6e21e34b43072f",
+    "candidateSHA256": "a2b4ad617403e5b17ef0e117ba654773e8ad7fdbb4f0690a06bc3d140a841f5c"
+  },
+  {
+    "path": "test-results.txt",
+    "baselineSHA256": "ae8613f19db653569f6ae7e3de1d77a88cfea0d6b9cffc7a7f952e05f6b6024b",
+    "candidateSHA256": "642e65f806bfd0ae5a7c532d4ec12c62b83884e15da13ebc7993f95215679095"
+  }
+]

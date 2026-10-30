@@ -1,0 +1,20 @@
+✔ bounded preference, invalid input and responsive upper limit (1.648497ms)
+✔ preference save and default reset never touch game saves (2.572132ms)
+✔ legacy layout ignored without editing chrome or storage mutation (0.642388ms)
+✔ browser world control preference isolates both maps from the legacy preference key (6.929586ms)
+✔ real Game.load + CRESCENT full store retains height/wallet/inventory/time; car=false (19.716019ms)
+✔ real Game.load + CRESCENT full store retains height/wallet/inventory/time; car=true (7.882058ms)
+✔ restore geometric conflict does not write or rebuild stored snapshot (4.530184ms)
+✔ lost lease prevents full store saves and leaves bytes unchanged (3.876878ms)
+✔ ESTUARY new browser identity restores through actual delivery runtime and saves a full wallet snapshot (12.64896ms)
+✔ ESTUARY collider-array and CRESCENT blocked APIs both validate restore without assuming same interface (1.176794ms)
+✔ actual Game.snapshot CRESCENT region survives complete-store save and reload (12.658417ms)
+✔ ESTUARY browser old-career click is rejected before mutation and does not freeze or corrupt the slot (4.690821ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 412.252485
