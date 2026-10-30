@@ -1,0 +1,63 @@
+// Original reduced, quasi-static node/beam DAMAGE surrogate, not a vehicle dynamics solver.
+// SI input: metres, kg, m/s, N*s. Forward is -Z. No randomness or condition-based dents.
+export const LIMITS=Object.freeze({maxDisplacement:.65,maxImpulse:90000,maxEvents:64,minimumSpeed:1.2});
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const vec=v=>Array.isArray(v)&&v.length===3&&Array.from(v).every(Number.isFinite);
+const distance=(a,b)=>Math.hypot(...a.map((v,i)=>v-b[i]));
+export function createStructure({min=[-1,.25,-2.4],max=[1,1.5,2.4],mass=1500}={}){
+ if(!vec(min)||!vec(max)||max.some((v,i)=>v<=min[i])||!Number.isFinite(mass)||mass<=0)throw Error('Invalid structure bounds/mass');
+ const size=[3,3,7],nodes=[],beams=[];
+ for(let z=0;z<size[2];z++)for(let y=0;y<size[1];y++)for(let x=0;x<size[0];x++){
+  const grid=[x,y,z],rest=grid.map((v,k)=>min[k]+(max[k]-min[k])*v/(size[k]-1));
+  nodes.push({grid,rest,p:[...rest]});
+ }
+ for(let a=0;a<nodes.length;a++)for(let b=a+1;b<nodes.length;b++){
+  const delta=nodes[a].grid.map((v,i)=>Math.abs(v-nodes[b].grid[i]));
+  if(Math.max(...delta)>1||delta.reduce((s,v)=>s+v,0)>2)continue;
+  const rest=distance(nodes[a].rest,nodes[b].rest);
+  beams.push({a,b,rest,plasticLength:rest,yieldStrain:.035,breakStrain:.22,broken:false});
+ }
+ return{min:[...min],max:[...max],size,mass,nodes,beams,events:new Map(),revision:0,energy:0};
+}
+export function applyStructuralImpact(s,{point,direction,normalSpeed,normalImpulse,eventId}={}){
+ if(!vec(point)||!vec(direction)||!Number.isFinite(normalSpeed)||normalSpeed<=LIMITS.minimumSpeed||!Number.isFinite(normalImpulse)||normalImpulse<=0)return{accepted:false,reason:'No valid energetic contact'};
+ const length=Math.hypot(...direction);if(length<1e-6)return{accepted:false,reason:'Zero force direction'};
+ const impulse=clamp(normalImpulse,0,LIMITS.maxImpulse),dv=Math.min(normalSpeed,impulse/s.mass);
+ if(dv<=LIMITS.minimumSpeed)return{accepted:false,reason:'Below plastic onset'};
+ const energy=.5*s.mass*(dv*dv-LIMITS.minimumSpeed**2),prior=eventId==null?0:s.events.get(eventId)??0;
+ if(energy<=prior)return{accepted:false,reason:'Repeated manifold peak'};
+ if(eventId!=null){s.events.set(eventId,energy);if(s.events.size>LIMITS.maxEvents)s.events.delete(s.events.keys().next().value);}
+ const deltaEnergy=energy-prior,unit=direction.map(v=>v/length);
+ // Point-local load, propagated through only intact neighboring beams.
+ let loads=s.nodes.map(n=>Math.exp(-(distance(n.rest,point)**2)/(2*.48**2)));
+ for(let pass=0;pass<3;pass++){
+  const next=loads.map(v=>v*.65),degree=new Uint16Array(loads.length);
+  for(const b of s.beams)if(!b.broken){degree[b.a]++;degree[b.b]++;}
+  for(const b of s.beams)if(!b.broken){next[b.a]+=.35*loads[b.b]/degree[b.b];next[b.b]+=.35*loads[b.a]/degree[b.a];}
+  loads=next;
+ }
+ const peak=Math.max(...loads);if(peak<1e-8)return{accepted:false,reason:'Contact outside shell'};
+ // Tuned crush work -> irreversible node displacement; no fake per-frame dents.
+ const crush=Math.min(.5,deltaEnergy/180000);
+ for(let i=0;i<s.nodes.length;i++){
+  const n=s.nodes[i],local=loads[i]/peak,plastic=Math.max(0,local-.035)*crush;
+  n.p=n.p.map((v,k)=>v+unit[k]*plastic);
+  const offset=n.p.map((v,k)=>v-n.rest[k]),d=Math.hypot(...offset);
+  if(d>LIMITS.maxDisplacement)n.p=n.rest.map((v,k)=>v+offset[k]*LIMITS.maxDisplacement/d);
+ }
+ let newlyBroken=0;
+ for(const b of s.beams){if(b.broken)continue;const length=distance(s.nodes[b.a].p,s.nodes[b.b].p),strain=Math.abs(length-b.plasticLength)/b.plasticLength;
+  if(Math.abs(length-b.rest)/b.rest>=b.breakStrain){b.broken=true;newlyBroken++;}
+  else if(strain>b.yieldStrain)b.plasticLength=length-Math.sign(length-b.plasticLength)*b.yieldStrain*b.plasticLength;
+ }
+ s.energy+=deltaEnergy;s.revision++;
+ return{accepted:true,energy:deltaEnergy,newlyBroken,crush};
+}
+// Eight-node trilinear influence, constant time per vertex; outside lattice clamps.
+export function nodeWeights(s,p){
+ const cell=p.map((v,k)=>clamp((v-s.min[k])/(s.max[k]-s.min[k])*(s.size[k]-1),0,s.size[k]-1));
+ const lo=cell.map((v,k)=>Math.min(s.size[k]-2,Math.floor(v))),f=cell.map((v,k)=>v-lo[k]),out=[];
+ for(let z=0;z<2;z++)for(let y=0;y<2;y++)for(let x=0;x<2;x++)out.push({id:(lo[2]+z)*9+(lo[1]+y)*3+lo[0]+x,w:(x?f[0]:1-f[0])*(y?f[1]:1-f[1])*(z?f[2]:1-f[2])});return out;
+}
+export function displacement(s,weights){const out=[0,0,0];for(const {id,w}of weights){const n=s.nodes[id];for(let k=0;k<3;k++)out[k]+=(n.p[k]-n.rest[k])*w;}return out;}
+export function structureStats(s){return{nodes:s.nodes.length,beams:s.beams.length,broken:s.beams.filter(b=>b.broken).length,maxDisplacement:Math.max(...s.nodes.map(n=>distance(n.p,n.rest))),energy:s.energy,revision:s.revision};}

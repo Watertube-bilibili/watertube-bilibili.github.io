@@ -1,0 +1,19 @@
+// Extend shared terrain/triangle query with actual finite static-box faces.
+// Necessary for native-equivalent downward ground probes on collider-only roofs.
+import {Vector3 as V,Ray,Box3} from './vendor/three.module.js';
+import {BrowserMotorcycleSurface} from './browser-motorcycle-surface.js';
+import {staticBox} from './browser-rigidbody-contacts.js';
+export class BrowserRoadsterSurface extends BrowserMotorcycleSurface {
+ raycast(origin,direction,maxDistance){
+  let best=super.raycast(origin,direction,maxDistance);
+  for(const c of this.world.colliders??[]){
+   if(Math.hypot(c.x-origin.x,c.z-origin.z)>Math.hypot(c.w,c.d)+maxDistance*Math.hypot(direction.x,direction.z))continue;
+   const b=staticBox(c),inv=b.orientation.clone().invert(),o=origin.clone().sub(b.position).applyQuaternion(inv),d=direction.clone().applyQuaternion(inv),half=new V(...b.config.size).multiplyScalar(.5);
+   const local=new Ray(o,d).intersectBox(new Box3(half.clone().negate(),half),new V());if(!local)continue;
+   const normal=new V();let face=0,error=Infinity;for(let i=0;i<3;i++){const e=Math.abs(Math.abs(local.getComponent(i))-half.getComponent(i));if(e<error){error=e;face=i;}}normal.setComponent(face,Math.sign(local.getComponent(face)));normal.applyQuaternion(b.orientation);
+   // Exit intersections from an origin inside a box cannot masquerade as support.
+   if(normal.dot(direction)>=-1e-8)continue;
+   const position=local.applyQuaternion(b.orientation).add(b.position),distance=position.distanceTo(origin);if(distance<=maxDistance&&(!best||distance<best.distance))best={position,normal,distance};
+  }return best;
+ }
+}

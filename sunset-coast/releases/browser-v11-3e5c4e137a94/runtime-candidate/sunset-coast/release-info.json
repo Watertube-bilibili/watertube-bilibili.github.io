@@ -1,0 +1,20 @@
+{
+  "product": "SUNRISE COAST",
+  "version": "日出正式更新 · 2026.10.30",
+  "release": "sunrise-browser-20261030",
+  "entry": "/sunset-coast/",
+  "saveNamespace": "sunrise-coast:browser-world:v2",
+  "previousProjectPreserved": true,
+  "localNormalEntryAcceptance": true,
+  "publicDeploymentVerified": false,
+  "acceptanceScope": "Local normal-slot GUI: retained slots, actual GLB/PBR, three motorcycles and Rocket manual branch; MICA save/reload/entry, immutable upgrade/back/forward. No real-device performance or all-model extreme collision claim.",
+  "unavailable": [
+    "aircraft",
+    "airport gameplay",
+    "automatic flight tricks",
+    "structural wheel-detachment enhancement",
+    "autonomous driving",
+    "CRESCENT careers",
+    "all-model redesign"
+  ]
+}
