@@ -1,0 +1,12 @@
+import * as estuary from './game-world-adapter.js';
+import {groundHeight as estuaryHeight} from './map-data.js';
+import {crescentProvider as crescent} from './crescent-world-adapter.js';
+const q=new URLSearchParams(globalThis.location?.search??'');
+export const selectedCrescent=(q.get('map')==='crescent'&&q.get('preview')==='1'||q.get('runtime')==='browser'&&q.get('world')==='crescent');
+export const COMMON_SPAWN=selectedCrescent?crescent.spawn:estuary.COMMON_SPAWN;
+export const COMMON_PLACES=selectedCrescent?crescent.places:estuary.COMMON_PLACES;
+export const createGameWorld=selectedCrescent?crescent.createWorld:estuary.createGameWorld;
+export const commonRoute=selectedCrescent?crescent.route:estuary.commonRoute;
+export const commonNearest=selectedCrescent?crescent.nearest:estuary.commonNearest;
+export const commonRoadInfo=selectedCrescent?crescent.roadInfo:estuary.commonRoadInfo;
+export const selectedGroundHeight=selectedCrescent?crescent.groundHeight:estuaryHeight;

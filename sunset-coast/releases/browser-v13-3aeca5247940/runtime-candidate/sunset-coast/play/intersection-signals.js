@@ -1,0 +1,28 @@
+// 2.0 Beta. One authority for visible lamps and road-controller permissions.
+export const SIGNAL_TIMING=Object.freeze({green:12,amber:3,allRed:2,half:17,cycle:34});
+const mod=(n,d)=>(n%d+d)%d;
+export function signalState(time,i,j,axis='ns'){
+ const offset=mod(i+j,2)*SIGNAL_TIMING.half,phase=mod(time+offset,SIGNAL_TIMING.cycle);
+ const local=mod(phase-(axis==='ew'?SIGNAL_TIMING.half:0),SIGNAL_TIMING.cycle);
+ return local<SIGNAL_TIMING.green?'green':local<SIGNAL_TIMING.green+SIGNAL_TIMING.amber?'amber':'red';
+}
+export function approachAxis(event,vehicle){
+ if(event.axis==='ns'||event.axis==='ew')return event.axis;
+ if(vehicle?.pos){const dx=Math.abs(event.x-vehicle.pos.x),dz=Math.abs(event.z-vehicle.pos.z);if(Math.max(dx,dz)>18)return dx>dz?'ew':'ns';}
+ return Math.abs(Math.sin(vehicle?.yaw??0))>Math.abs(Math.cos(vehicle?.yaw??0))?'ew':'ns';
+}
+export function signalLensColor(state,lens){return state===lens?({red:0xff493c,amber:0xffc033,green:0x39e882}[lens]):0x17232a;}
+/** NPC engine geometry only, not synthetic camera observations for player ADAS.
+ * A green approach waits for vehicles still clearing the perpendicular stream.
+ * Vehicles already inside are allowed to clear, preventing all-red deadlocks. */
+export function crossingOccupied(game,vehicle,event){
+ if(Math.max(Math.abs(vehicle.pos.x-event.x),Math.abs(vehicle.pos.z-event.z))<18)return false;
+ const axis=approachAxis(event,vehicle),actors=new Set([game.vehicle,...(game.traffic??[]),...(game.police??[])]);
+ for(const other of actors){
+  if(!other||other===vehicle||other.populationDormant||other.root?.visible===false||!other.pos)continue;
+  if(Math.abs(other.pos.x-event.x)>15||Math.abs(other.pos.z-event.z)>15||Math.abs((other.pos.y??0)-(vehicle.pos.y??0))>4)continue;
+  const otherAxis=Math.abs(Math.sin(other.yaw??0))>Math.abs(Math.cos(other.yaw??0))?'ew':'ns';
+  if(otherAxis!==axis)return true;
+ }
+ return false;
+}

@@ -1,0 +1,4 @@
+All new map geometry, terrain layout, roads, architecture and facility geometry are original procedural code authored in this project.
+Three.js is copied unchanged from the read-only recovery v4 vendor files; its original MIT license header is retained.
+No third-party AI service, externally generated concept image, new cloud task, paid asset or external asset download was used.
+Native test fixtures copy the authorized game's original Godot body/tire/force scripts unchanged only for offline verification; hashes are supplied. These are not a new PCK or runtime deployment.
