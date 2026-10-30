@@ -1,0 +1,8 @@
+// Authored map anchors, not the standalone module's old-city demo coordinates.
+// Pickup is the existing TIDELINE shop's outdoor collection point at its open entrance.
+export const ESTUARY_DELIVERY_CATALOG='estuary-galleria-v1';
+export const ESTUARY_DELIVERY_OFFERS=Object.freeze([
+ Object.freeze({id:'galleria-junction',title:'TIDELINE 商户 · 路口配送',pickup:{id:'galleria-entrance',name:'TIDELINE 正门外带取餐点',x:1290,z:166},dropoff:{id:'junction-customer',name:'Grand Estuary Junction 东侧顾客',x:1222,z:540},reward:240,budgetMs:360000}),
+ Object.freeze({id:'galleria-parking',title:'TIDELINE 商户 · 停车区配送',pickup:{id:'galleria-entrance',name:'TIDELINE 正门外带取餐点',x:1290,z:166},dropoff:{id:'parking-customer',name:'停车区西侧出口顾客',x:1230,z:211},reward:100,budgetMs:180000}),
+ Object.freeze({id:'market-galleria',title:'市集南侧商户 · 商场配送',pickup:{id:'market-0-entrance',name:'市集西南店铺门外取餐点',x:550,z:703},dropoff:{id:'galleria-customer',name:'TIDELINE 正门外顾客',x:1290,z:166},reward:480,budgetMs:600000})
+]);

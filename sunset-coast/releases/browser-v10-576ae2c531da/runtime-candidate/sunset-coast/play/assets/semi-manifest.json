@@ -1,0 +1,17 @@
+{
+  "high": {
+    "file": "semi_detailed.glb",
+    "sha256": "0d760315d724d5b63e8356420554cee06d716e4e8eda47f845261e64ec9e02c0",
+    "bytes": 5077376
+  },
+  "medium": {
+    "file": "semi_medium.glb",
+    "sha256": "4e7e8405e912d13e1a40cd57749166fc2bc93fc79043133b45092e7afb800ae4",
+    "bytes": 2364120
+  },
+  "low": {
+    "file": "semi_low.glb",
+    "sha256": "2b8d4474c28c7e252b68802589c5c78fdff4f90e160095a2ce7c37aa85153f8f",
+    "bytes": 1373704
+  }
+}

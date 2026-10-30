@@ -1,0 +1,62 @@
+/** Product-neutral authored architecture. Geometry, not facade textures.
+ * Stair/lift meshes are review geometry; upper-floor traversal is not integrated. */
+export function buildMall(box,y=4){
+ const stone=0xe6d8bd,frame=0x334f54,glass=0x77aeb7,bronze=0xa4774c,white=0xf0eadb;
+ box('galleria-floor',1290,y+.08,125,96,.16,64,0xd9cdb7,false);
+ // Glazed three-storey frontage, recessed behind a substantial frame.
+ for(const x of [1243,1255,1267,1279,1301,1313,1325,1337])box('galleria-pier',x,y+8,157,1.1,16,1.6,stone);
+ for(const base of [0,5,10]){
+  box('galleria-spandrel',1290,y+base+4.6,157,96,.8,1.8,stone,false);
+  for(const [x,w]of [[1249,10],[1261,10],[1273,10],[1307,10],[1319,10],[1331,10]]){
+   box('galleria-glazing',x,y+base+2.3,156.35,w,4.1,.16,glass,true);
+   box('galleria-mullion',x,y+base+2.3,156.6,.14,4.2,.3,frame,false);
+   box('galleria-transom',x,y+base+3.3,156.6,w,.13,.3,frame,false);
+   box('galleria-recess-sill',x,y+base+.3,156.9,w,.25,.9,bronze,false);
+  }
+ }
+ // End walls rhythm and rear service enclosure.
+ for(const x of [1242,1338]){
+  box('galleria-side-plinth',x,y+.55,125,1.2,1.1,64,stone);
+  for(let z=98;z<=152;z+=9){box('galleria-side-frame',x,y+8,z,1.4,16,.7,stone);box('galleria-side-window',x,y+7.5,z+3.8,.18,13,6.9,glass);}
+  for(const h of[5,10,15])box('galleria-side-band',x,y+h,125,1.6,.5,64,stone,false);
+ }
+ box('galleria-back',1290,y+8,93,96,16,1,stone);
+ // Open entrance framed by paired canopy columns, deep roof and soffit.
+ for(const x of [1282,1298])box('galleria-entry-column',x,y+4.8,161,.8,9.6,.8,bronze);
+ box('galleria-canopy',1290,y+9.6,161,30,.8,12,stone,false);
+ box('galleria-canopy-soffit',1290,y+9.12,162,28,.12,10,frame,false);
+ for(const x of [1278,1284,1290,1296,1302])box('galleria-canopy-light',x,y+9.03,163,2,.08,.35,0xffd591,false);
+ box('galleria-sign-board',1290,y+11.1,158.1,40,2.6,.6,0x237d85,false);
+ // Physical lettering: a restrained monoline TIDELINE, 8 letters / 3D strokes.
+ const glyphs={T:[[0,2,2.2,.22],[1,1,.22,2]],I:[[1,1,.22,2]],D:[[0,1,.22,2],[1,2,2,.22],[1,0,2,.22],[2,1,.22,2]],E:[[0,1,.22,2],[1,2,2,.22],[.8,1,1.6,.22],[1,0,2,.22]],L:[[0,1,.22,2],[1,0,2,.22]],N:[[0,1,.22,2],[2,1,.22,2],[.7,1.35,.22,1.2],[1.3,.65,.22,1.2]]};
+ [...'TIDELINE'].forEach((c,i)=>{for(const[a,b,w,h]of glyphs[c])box('galleria-letter',1275+i*4+a,y+10.1+b,158.5,w,h,.15,white,false);});
+ // Actual gallery floor rings around the clear 22 m atrium. No fake window decals.
+ for(const h of [5,10]){
+  for(const x of [1258,1322])box('gallery-slab',x,y+h,125,31,.45,62,stone,false);
+  for(const z of [98,151])box('gallery-crossbridge',1290,y+h,z,34,.45,10,stone,false);
+  for(const x of [1274,1306]){box('gallery-guard-glass',x,y+h+1,125,.12,1.5,42,glass,false);box('gallery-top-rail',x,y+h+1.8,125,.18,.12,42,bronze,false);for(let z=105;z<=145;z+=5)box('gallery-baluster',x,y+h+.85,z,.12,1.7,.12,frame,false);}
+ }
+ // Roof wings and parapet have depth; central atrium remains genuinely open.
+ for(const x of [1258,1322])box('roof-wing',x,y+15.9,125,32,.55,64,0xb07a60,false);
+ for(const x of [1242,1338])box('roof-side-parapet',x,y+16.7,125,1.2,1.4,65,stone,false);
+ for(const z of [93,157])box('roof-front-parapet',1290,y+16.7,z,97,1.4,1.1,stone,false);
+ for(const x of [1274,1306])box('roof-atrium-curb',x,y+16.4,125,.8,1,64,bronze,false);
+ // Visible shopfronts and counters under both side galleries, actual inset doorways.
+ for(const x of [1272.5,1307.5])for(const z of [109,136]){
+  for(const dz of[-8,8])box('shop-door-jamb',x,y+2,z+dz,.5,4,.5,frame);
+  box('shop-sign',x,y+4.15,z,.5,.8,17,0xa76646,false);
+  for(const dz of[-5.5,5.5]){box('shop-glass',x,y+2,z+dz,.12,3.6,4.5,glass);box('shop-transom',x,y+3,z+dz,.25,.1,4.5,frame,false);}
+  const inside=x<1290?1260:1320;box('shop-counter',inside,y+1,z,14,2,2,0x739a98);
+  for(let n=0;n<4;n++)box('shop-shelf',inside-5+n*3.3,y+1.8,z-6,2.2,3.6,.6,0xbb9673);
+ }
+ // Twin flights visible inside the atrium; these do not claim elevator gameplay.
+ for(let floor=0;floor<2;floor++)for(let i=0;i<20;i++){const h=(i+1)*.25;box('display-stair',1280,y+floor*5+h/2,140-i*.65,5,h,.7,stone,true);for(const x of[1277.4,1282.6]){box('stair-baluster',x,y+floor*5+h+.8,140-i*.65,.12,1.2,.14,bronze,false);box('stair-handrail',x,y+floor*5+h+1.4,140-i*.65,.18,.12,.73,bronze,false);}}
+ for(const h of[5,10])box('stair-landing',1277,y+h,126,10,.45,4,stone,false);
+ box('lift-shaft',1299,y+7.6,99,7,15.2,5,frame);
+ for(const h of[0,5,10]){box('lift-door',1299,y+h+1.8,101.6,3.2,3.6,.15,0xb8c6c4,false);box('lift-door-seam',1299,y+h+1.8,101.72,.05,3.6,.05,frame,false);box('lift-button-panel',1301.2,y+h+1.4,101.8,.25,.7,.12,bronze,false);}
+ // Entry plaza: paving bands, bench legs/seats, planters, street lamps.
+ box('entry-plaza',1290,y+.12,171,110,.24,22,0xd5cab4,false);
+ for(let x=1240;x<=1340;x+=5)box('paving-joint',x,y+.25,171,.04,.015,22,0xb9ad96,false);
+ for(const x of[1251,1329]){box('planter',x,y+.8,171,9,1.6,3,stone);for(const dx of[-3,0,3])box('planter-foliage',x+dx,y+2,171,2.2,1.6,2.2,0x567d5e,false);for(const z of [166,177]){box('bench-seat',x,y+.55,z,7,.25,1.1,bronze);for(const dx of[-2.5,2.5])box('bench-leg',x+dx,y+.25,z,.18,.5,.8,frame);}}
+ for(const x of[1238,1268,1312,1342]){box('plaza-lamp',x,y+3,179,.22,6,.22,frame);box('plaza-lamp-head',x,y+6,179,1.6,.2,.7,white,false);}
+}

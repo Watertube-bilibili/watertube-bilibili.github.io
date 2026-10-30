@@ -1,0 +1,14 @@
+export class FixedStepClock {
+ constructor({step=1/60,maxSteps=6}={}){this.step=step;this.maxSteps=maxSteps;this.last=null;this.accumulator=0;this.tick=0;this.suspended=true;this.droppedSeconds=0;}
+ suspend(){this.last=null;this.accumulator=0;this.suspended=true;}
+ advance(now,paused,run){
+  if(!Number.isFinite(now))throw Error('Invalid physics timestamp');
+  if(paused){this.last=now;this.accumulator=0;this.suspended=true;return 0;}
+  if(this.last===null||this.suspended){this.last=now;this.suspended=false;return 0;}
+  const elapsed=Math.max(0,(now-this.last)/1000);this.last=now;
+  const accepted=Math.min(elapsed,this.step*this.maxSteps);this.droppedSeconds+=elapsed-accepted;this.accumulator+=accepted;
+  let count=0;while(this.accumulator+1e-9>=this.step&&count<this.maxSteps){this.accumulator=Math.max(0,this.accumulator-this.step);this.tick++;const keepGoing=run(this.step,this.tick);count++;if(keepGoing===false){this.suspend();break;}}
+  return count;
+ }
+ get alpha(){return Math.min(1,this.accumulator/this.step);}
+}
