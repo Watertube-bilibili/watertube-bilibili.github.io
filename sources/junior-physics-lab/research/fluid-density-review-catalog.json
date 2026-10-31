@@ -1,0 +1,326 @@
+{
+  "phy-mass-volume": {
+    "model": "density",
+    "modelParams": {
+      "scenario": "materialSeries",
+      "variant": "mass-volume"
+    },
+    "objective": "保持材料与状态相同，比较五块不同体积样品的质量，并与另一材料的m—V图线比较。",
+    "controls": [
+      {
+        "key": "material",
+        "label": "当前材料",
+        "options": [
+          {
+            "value": "aluminum",
+            "label": "铝样品"
+          },
+          {
+            "value": "iron",
+            "label": "铁样品"
+          },
+          {
+            "value": "wood",
+            "label": "题设木样"
+          }
+        ],
+        "value": "aluminum"
+      },
+      {
+        "key": "comparisonMaterial",
+        "label": "对照材料",
+        "options": [
+          {
+            "value": "aluminum",
+            "label": "铝样品"
+          },
+          {
+            "value": "iron",
+            "label": "铁样品"
+          },
+          {
+            "value": "wood",
+            "label": "题设木样"
+          }
+        ],
+        "value": "iron"
+      },
+      {
+        "key": "volumeStep",
+        "label": "相邻样品的体积差",
+        "unit": "cm³",
+        "min": 2,
+        "max": 20,
+        "step": 1,
+        "value": 10
+      },
+      {
+        "key": "sampleIndex",
+        "label": "选取样品",
+        "options": [
+          {
+            "value": 1,
+            "label": "1号样品"
+          },
+          {
+            "value": 2,
+            "label": "2号样品"
+          },
+          {
+            "value": 3,
+            "label": "3号样品"
+          },
+          {
+            "value": 4,
+            "label": "4号样品"
+          },
+          {
+            "value": 5,
+            "label": "5号样品"
+          }
+        ],
+        "value": 3,
+        "placement": "scene"
+      }
+    ],
+    "steps": [
+      "选定一种均匀材料，保持温度和物态相同。",
+      "依次选择1～5号样品，观察体积与相应质量，整理五组模型数据。",
+      "比较各组m/V，观察m—V数据是否位于过原点的直线上。",
+      "换成另一材料作对照，比较同体积样品的质量与图线斜率。"
+    ],
+    "observations": [
+      "同一材料的五组样品具有相同m/V比值。",
+      "改变样品大小不会改变同一种均匀材料的密度。",
+      "更换材料后，同体积质量和m—V图线斜率可改变。"
+    ],
+    "conclusion": "同种均匀物质在相同温度与物态下，质量与体积成正比；m—V图线斜率为密度。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "材料选择决定同一组样品的密度；五组体积与质量成套生成，支持选择样品、两材料曲线和计算后显示m/V。",
+      "limitation": "给定密度的理想模型数据，不冒充实物天平实测；题设木样密度不推广为所有木材。",
+      "evidence": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
+    },
+    "modelNote": "给定密度的理想均匀样品：铝2.7、铁7.9、题设木样0.6 g/cm³。木材密度依品种和含水量而异，此值只属于题设样品。数据由模型生成，不是实物天平测量结果；多组关系用于学习控制材料、作图和比较比值。",
+    "interaction": {
+      "mode": "live",
+      "reason": "改变条件后直接比较当前多组数据或稳态仪表；无需播放虚构的开始过程。"
+    }
+  },
+  "phy-liquid-pressure": {
+    "model": "pressure",
+    "modelParams": {
+      "scenario": "liquidProbe",
+      "variant": "liquid-pressure"
+    },
+    "controls": [
+      {
+        "key": "density",
+        "label": "被测液体密度",
+        "unit": "kg/m³",
+        "min": 500,
+        "max": 2000,
+        "step": 50,
+        "value": 1000
+      },
+      {
+        "key": "depth",
+        "label": "探头中心的竖直深度",
+        "unit": "m",
+        "min": 0,
+        "max": 0.5,
+        "step": 0.01,
+        "value": 0.3,
+        "placement": "scene"
+      },
+      {
+        "key": "probeDirection",
+        "label": "橡皮膜朝向",
+        "options": [
+          {
+            "value": "up",
+            "label": "向上"
+          },
+          {
+            "value": "down",
+            "label": "向下"
+          },
+          {
+            "value": "left",
+            "label": "向左"
+          },
+          {
+            "value": "right",
+            "label": "向右"
+          }
+        ],
+        "value": "right",
+        "placement": "scene"
+      },
+      {
+        "key": "manometerDensity",
+        "label": "U形管示压液密度",
+        "unit": "kg/m³",
+        "min": 800,
+        "max": 1400,
+        "step": 50,
+        "value": 1000
+      }
+    ],
+    "objective": "转动同深度的橡皮膜探头，再分别改变深度和被测液体密度，比较U形管差压读数。",
+    "steps": [
+      "深度设为0时检查U形管液面是否等高，右支通大气。",
+      "保持被测液体密度和探头中心深度不变，依次将膜朝上、下、左、右，比较液面差。",
+      "固定探头方向与液体密度，只改变竖直深度。",
+      "固定深度，只改变被测液体密度；U形管示压液保持不变。",
+      "再改变示压液密度，区分同一被测压强与不同液柱高度差。"
+    ],
+    "examPoints": [
+      "静止液体中同一位置向各方向的压强相同",
+      "深度是到自由液面的竖直距离",
+      "U形管接探头侧液面较低，另一侧通大气",
+      "被测液体密度与U形管示压液密度不是同一个条件"
+    ],
+    "pitfalls": [
+      "不能旋转探头时同时改变中心深度",
+      "不可用斜向距离代替深度",
+      "比较被测压强时应保持U形管示压液相同"
+    ],
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "探头四向可旋转且中心深度保持不变；p=ρgh和独立示压液密度给出真实模型液柱差，两侧液面对应压强方向。",
+      "limitation": "理想点状小膜片与气路传压，忽略膜张力、空气密度及气路容积变化；图示不是实物等比例尺。",
+      "evidence": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
+    },
+    "modelNote": "理想小膜片把被测表压传给封闭气路，忽略膜张力、气体密度与气路容积变化；右支通大气，U形管示压液密度独立给定。示意图的探头与液柱不是实物等比例尺。",
+    "interaction": {
+      "mode": "live",
+      "reason": "改变条件后直接比较当前多组数据或稳态仪表；无需播放虚构的开始过程。"
+    }
+  },
+  "phy-flow-pressure-sensors": {
+    "model": "pressure",
+    "modelParams": {
+      "scenario": "venturi",
+      "variant": "flow-pressure-sensors"
+    },
+    "title": "变截面管：流速与静压测量",
+    "apparatus": [
+      "水平变截面圆管",
+      "同高侧壁静压取压口",
+      "U形差压计",
+      "稳定气流源"
+    ],
+    "objective": "用同高取压口比较宽窄管内两处流动气体的静压，根据连续性和伯努利关系解释U形管差值。",
+    "controls": [
+      {
+        "key": "wideSpeed",
+        "label": "宽段气体流速",
+        "unit": "m/s",
+        "min": 0,
+        "max": 10,
+        "step": 0.5,
+        "value": 6
+      },
+      {
+        "key": "areaRatio",
+        "label": "宽段面积 / 窄段面积",
+        "unit": "",
+        "min": 1,
+        "max": 4,
+        "step": 0.25,
+        "value": 3,
+        "placement": "scene"
+      },
+      {
+        "key": "gasDensity",
+        "label": "管内气体密度",
+        "unit": "kg/m³",
+        "min": 0.8,
+        "max": 2,
+        "step": 0.1,
+        "value": 1.2
+      },
+      {
+        "key": "manometerDensity",
+        "label": "U形管示压液密度",
+        "unit": "kg/m³",
+        "min": 800,
+        "max": 1400,
+        "step": 50,
+        "value": 1000
+      }
+    ],
+    "steps": [
+      "保持两个侧壁静压取压口同高，先设宽段流速为0，检查液面等高。",
+      "设置宽段流速和截面积比，由连续性比较宽段与窄段流速。",
+      "观察窄段相对宽段的静压与U形管液面差，宽段是本图相对读数的0 Pa基准。",
+      "令截面积比等于1，检查有流动时两处压强差仍为0。",
+      "改变示压液密度，比较同一压差对应的液柱差，避免混用气体和液体密度。"
+    ],
+    "observations": [
+      "面积比增大时，给定宽段流速对应的窄段流速增大。",
+      "在同高理想稳态条件下，窄段静压低于宽段。",
+      "等截面或停止气流时，宽窄两处压强差为0。",
+      "U形管液面差依赖示压液与气体的密度差。"
+    ],
+    "conclusion": "先用A宽v宽=A窄v窄求两处流速，再用Δp=ρ气(v窄²−v宽²)/2比较静压；不能把宽段当作静止气体。",
+    "examPoints": [
+      "侧壁取压口用于测静压，不能朝向来流当作相同测量",
+      "连续性关系中的A是横截面积，不是直径",
+      "伯努利比较的两处都可能在流动",
+      "0 Pa比较基准不是绝对压强为0"
+    ],
+    "pitfalls": [
+      "不要把两流动位置的压差误写成ρv窄²/2",
+      "不能用空气密度直接把压差换算成示压液柱高度",
+      "真实管道存在黏性和局部损失，理想模型不等于精密标定"
+    ],
+    "workedExample": {
+      "title": "同高宽窄管的规范计算",
+      "given": "v宽=6 m/s，A宽/A窄=3，ρ气=1.2 kg/m³，ρ示=1000 kg/m³，g=9.8 N/kg。",
+      "steps": [
+        {
+          "title": "用连续性求窄段流速",
+          "text": "v窄=v宽×A宽/A窄=6×3=18 m/s。"
+        },
+        {
+          "title": "比较两处静压",
+          "text": "Δp=ρ气(v窄²−v宽²)/2=1.2×(18²−6²)/2=172.8 Pa。"
+        },
+        {
+          "title": "换算U形管高度差",
+          "text": "Δh=Δp/[(ρ示−ρ气)g]=172.8/[(1000−1.2)×9.8]≈0.01765 m=17.65 mm。"
+        },
+        {
+          "title": "说明方向与单位",
+          "text": "宽段静压高于窄段，接宽段的一侧液面较低；两液面高度差约17.65 mm。"
+        }
+      ],
+      "answer": "窄段流速18 m/s；宽段比窄段静压高172.8 Pa，U形管液面差约17.65 mm。"
+    },
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "截面积比改变真实管形和连续性流速；压差比较两个非零流速；U形差压计使用(ρ示−ρ气)gΔh且方向正确。",
+      "limitation": "水平稳态低速气流、不可压缩近似，忽略黏性和局部损失；显示相对静压，不预测绝对气压或真实传感器噪声。",
+      "evidence": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
+    },
+    "modelNote": "稳态、水平、低速气流的不可压缩伯努利模型，忽略黏性和局部损失。圆管直径比取面积比平方根。取压口位于同高侧壁，读取静压；图中宽段设为相对比较的0 Pa基准，不表示绝对压强为零。U形管按独立的液体密度求读数，不将气体速度头当成液柱高度。",
+    "interaction": {
+      "mode": "live",
+      "reason": "改变条件后直接比较当前多组数据或稳态仪表；无需播放虚构的开始过程。"
+    }
+  }
+}

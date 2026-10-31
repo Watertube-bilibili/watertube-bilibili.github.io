@@ -1,0 +1,1785 @@
+{
+  "scope": "真实Godot默认值和0/0.5/1三个SVG阶段；不等于完整实物流程验收",
+  "items": [
+    {
+      "id": "phy-cold-water-reboil",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-funnel-ball",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-pendulum-period",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-ruler-length",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-stopwatch-pulse-step",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-coin-size",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-paper-thickness",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-incline-speed",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-sensor-speed",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-walking-speed",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-rubber-vibration",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-vacuum-bell",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-water-wave-analogy",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-desk-sound",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-cup-telephone",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-ruler-pitch",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-amplitude-ball",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-timbre-waveform",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-bottle-xylophone",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-piston-flute",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-speaker-candle",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-noise-waveform",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-soundproof-room",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-temperature-sensation",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-homemade-thermometer",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-water-thermometer",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-bimetal-thermometer",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-ice-melting",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-melting-curves",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-freezing-mixture",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-alcohol-bag",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-boiling-water",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-paper-pot",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-evaporative-cooling",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-cold-bottle-condensation",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-iodine-sublimation",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-frost-can",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-kitchen-phase",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-light-straight",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-pinhole-image",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-hand-shadow",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-reflection-law",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-diffuse-reflection",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-retroreflector",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-plane-mirror",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-spoon-mirrors",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-periscope",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-refraction-law",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-gradient-saline-ray",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-prism-spectrum",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-rgb-mixture",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-infrared-heating",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-lens-rays",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-convex-imaging",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-bottle-lens",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-covered-lens",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-near-point",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-spectacle-power",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-hyperopia-correction",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-telescope",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-water-drop-microscope",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-balance-mass",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-paperclip-mass",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-mass-volume",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-classroom-air-mass",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-saltwater-density",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-stone-density",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-foil-thickness-density",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-deformation",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-magnet-ball",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-door-point",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-magnet-carts",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-spring-scale",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-glass-microdeform",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-gravity-mass",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-plumb-level",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-steel-ruler-force",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-resistance-motion",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-inertia-sheet",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-two-force-balance",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-sliding-friction",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-collinear-forces",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-sponge-pressure",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-shoe-pressure",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-liquid-pressure",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-communicating-vessels",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-suction-hole",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-inverted-water",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-torricelli",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-bottle-barometer",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-dropper-pressure",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-magdeburg",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-piston-pump",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-blow-strip",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-flow-pressure-sensors",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-straw-spray",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-buoyancy-weighing",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-buoyancy-factors",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-archimedes",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-egg-saltwater",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-clay-boat",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-micro-hydrometer",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-submarine-model",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-kinetic-energy",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-pendulum-lock",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-rolling-pendulum",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-returning-can",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-potential-height",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-lever-balance",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-steelyard",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-pulley-properties",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-pulley-efficiency",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-heat-capacity",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-heat-capacity-sensor",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-gas-diffusion",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-liquid-diffusion",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-diffusion-temperature",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-lead-attraction",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-compression-heating",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-expansion-cooling",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-friction-warming",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-solar-water",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-solar-fan",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-rubbing-paper",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-steam-work",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-simple-heat-engine",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-charge-interaction",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-electroscope",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-simple-circuit",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-led-direction",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-conductor-insulator",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-lamp-short",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-series-parallel-connect",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-ammeter",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-series-current",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-parallel-current",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-voltmeter",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-series-voltage",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-battery-pack",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-parallel-voltage",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-resistance-comparison",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-resistance-factors",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-rheostat",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-dimmer-project",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-ohm-voltage",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-ohm-resistance",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-measure-resistance",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-filament-resistance",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-digital-multimeter",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-lamp-power",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-home-energy-audit",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-joule-resistance",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-joule-current",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-fuse-comparison",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-home-circuit-design",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-magnetic-poles",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-compass-field",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-magnetic-field-map",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-oersted",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-solenoid-field",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-electromagnet-crane",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-electromagnetic-relay",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-magnetic-force-wire",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-coil-torque",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-dc-motor-project",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-electromagnetic-induction",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-hand-generator",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "phy-spark-radio",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-vacuum-phone",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-radio-tuning",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-emwave-transmission",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-water-light-guide",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-energy-saving-project",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-thermal-conductivity",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "phy-molecular-gap",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-buoyancy-cause",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-water-freezing",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-heat-mass-temperature",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "phy-myopia-correction",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "phy-heat-engine-cycle",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "phy-model-camera",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "phy-water-jet",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-changes",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-properties",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-candle",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-hazards",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-protection",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-measure",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-heating",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-airtight",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-washing",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-air-oxygen",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-oxygen",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-catalyst",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "chem-co2",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "chem-co2-water",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-distill",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-purification",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-salt-purify",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-dissolve-heat",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-dissolve",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-solution",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-metal-properties",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-rust",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-ph",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-indicator",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-acid-base",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-co2-naoh",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-soil",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-ammonia",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-diffusion",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-water-electrolysis",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-ethanol",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-neutralization",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "chem-metal-acid",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-combustion",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-conservation",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-carbon-oxygen",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-sulfur-oxygen",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-iron-oxygen",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-permanganate",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-limewater",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-co2-extinguish",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-co2-solubility",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-carbon-cuo",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-iron-smelting",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-metal-displacement",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-alloy",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-saturation",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-crystallization",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-emulsion",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-lime-heat",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-methane",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-carbonate-test",
+      "ok": true,
+      "readings": 5
+    },
+    {
+      "id": "chem-precipitation",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-dilution",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-hardness",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-copper-hydroxide-heat",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-air-station",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-atom-model",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "chem-water-filter-design",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-oxygen-design",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-carbon-budget",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-fuel-survey",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-recycling",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-sea-salt",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-aerospace",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-protein",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-plastic",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-hydrogen-burn",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-magnesium-mass",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "chem-reagent-taking",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-ethanol-water",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-copper-concentration",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "chem-acid-properties",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-sulfuric-dehydration",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-sulfuric-dilution",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-solution-conductivity",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-naoh-deliquescence",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-lime-milk",
+      "ok": true,
+      "readings": 1
+    },
+    {
+      "id": "chem-copper-oxidation",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-campus",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-microscope",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-plant-cell",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-animal-cell",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-cell-division",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-tissues",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-paramecium",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-cell-model",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-plants",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-seed-structure",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-animal-groups",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-bird",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-teeth",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-microbe-distribution",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-bacteria",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-fungi",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-fermentation",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-classification",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-resources",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "bio-yeast-compare",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-pickle",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "bio-yogurt",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-pond",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-germination",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-germination-rate",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-root",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-mineral",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-flower",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-stem-water",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-leaf",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-transpiration",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-photosynthesis-starch",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-photosynthesis-oxygen",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-photosynthesis-co2",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-seed-respiration",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-food-storage",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-plant-growth",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-human-reproduction",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-food-energy",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-digestion",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-diet",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "bio-lung",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-exhaled-co2",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-lung-capacity",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-blood-smear",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-fish-capillaries",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-heart",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-circulation",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-blood-pressure",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-kidney",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-body-model",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-kidney-slide",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-eye",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-reflex",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-reaction",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-muscle",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-hormone",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-daphnia",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "bio-infection",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-first-aid",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-smoke",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-woodlouse",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-vegetation",
+      "ok": true,
+      "readings": 7
+    },
+    {
+      "id": "bio-foodweb",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-ecosystem",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-acidrain",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-ecological-survey",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-aquarium",
+      "ok": true,
+      "readings": 6
+    },
+    {
+      "id": "bio-firstaid-procedure",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-drug-prevention",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-cutting",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-egg",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-animal-development",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-gene-transfer",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "bio-dominance",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "bio-sex",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-variation",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-selection",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-evolution",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-biodiversity",
+      "ok": true,
+      "readings": 4
+    },
+    {
+      "id": "bio-asexual",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-egg-pores",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-traits",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-genetic-material",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-karyotype",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-origin-evidence",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-human-comparison",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-species-register",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-invasive-species",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-sexual-comparison",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-transgene-evidence",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-breeding",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-sex-ratio-data",
+      "ok": true,
+      "readings": 3
+    },
+    {
+      "id": "bio-evidence-reasoning",
+      "ok": true,
+      "readings": 2
+    },
+    {
+      "id": "bio-cell-comparison",
+      "ok": true,
+      "readings": 2
+    }
+  ]
+}

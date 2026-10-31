@@ -1,0 +1,340 @@
+{
+  "phy-buoyancy-weighing": {
+    "model": "buoyancy",
+    "modelParams": {
+      "scenario": "weighingDepth",
+      "variant": "buoyancy-weighing"
+    },
+    "controls": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "unit": "g",
+        "min": 50,
+        "max": 600,
+        "step": 10,
+        "value": 270
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "unit": "cm³",
+        "min": 20,
+        "max": 200,
+        "step": 10,
+        "value": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "unit": "kg/m³",
+        "min": 500,
+        "max": 1500,
+        "step": 50,
+        "value": 1000
+      },
+      {
+        "key": "bottomDepth",
+        "label": "物块下表面距液面的深度",
+        "unit": "cm",
+        "min": -5,
+        "max": 35,
+        "step": 1,
+        "value": 15,
+        "placement": "scene"
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "升降物块即可比较两测力计；物块高10 cm，完全浸没后继续下移不改变排液体积。"
+    },
+    "modelNote": "Godot按F浮=ρ液gV排和静止受力平衡计算理想示数。刚性物块高10 cm，液体密度均匀，不触底不碰壁；下表面深度控制由空气、部分浸入到完全浸没的过程。浮力超过重力时上方细线无法保持指定位置，不伪造负拉力或有效称重差。",
+    "steps": [
+      "先把物块移到下表面深度0 cm或更浅，读取空气中测力计G。",
+      "缓慢增加下表面深度，记录部分浸入时的F拉，求F浮=G−F拉。",
+      "物块高10 cm：分别把下表面移至10、20、30 cm，保持质量、体积及液体密度相同，比较完全浸没后的示数。",
+      "排除碰底碰壁；若提示浮力超过重力，该位置不能用上方细线静止保持，应换用更重物体。"
+    ],
+    "implementationReview": {
+      "status": "implemented-pending-integration-test",
+      "scope": "可从空气逐步浸入并在完全浸没后独立改变位置深度，同时比较空气与液中示数。",
+      "limitation": "忽略液面升降、表面张力、水阻力和仪器误差；上悬不能保持的条件明确无有效读数。"
+    }
+  },
+  "phy-pulley-efficiency": {
+    "model": "pulley",
+    "modelParams": {
+      "scenario": "efficiencyMeasurement",
+      "variant": "pulley-efficiency",
+      "strands": 2
+    },
+    "controls": [
+      {
+        "key": "load",
+        "label": "实测物重 G",
+        "unit": "N",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "value": 20
+      },
+      {
+        "key": "pull",
+        "label": "匀速提升中的实测拉力 F",
+        "unit": "N",
+        "min": 0.5,
+        "max": 100,
+        "step": 0.5,
+        "value": 12.5
+      },
+      {
+        "key": "height",
+        "label": "实测重物上升距离 h",
+        "unit": "m",
+        "min": 0.1,
+        "max": 1,
+        "step": 0.01,
+        "value": 0.5,
+        "placement": "scene"
+      },
+      {
+        "key": "ropeDistance",
+        "label": "实测绳端移动距离 s",
+        "unit": "m",
+        "min": 0.1,
+        "max": 2,
+        "step": 0.01,
+        "value": 1,
+        "placement": "scene"
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "输入同一次提升的四项测量记录，直接计算有用功、总功和机械效率。"
+    },
+    "modelNote": "Godot从G、F、h、s测量记录计算η=Gh/(Fs)，不再输入效率反求拉力。图示为两承重绳段；s≈2h容差取2 cm或3%中的较大者。超过100%或位移不符时保留原始比值并提示核查，不输出有效效率。图示不模拟真实摩擦过程，损耗来自实测拉力。",
+    "steps": [
+      "用测力计测物重G，标记重物与绳端的起始位置。",
+      "缓慢匀速提升，在运动过程中读取F，并记录同一次提升的h、s。",
+      "把四项测量记录输入页面，计算W有=Gh、W总=Fs、η=W有/W总；核对两绳段装置s≈2h。",
+      "改变载荷后重新测量F、h、s再比较；不要把上一组拉力直接沿用。"
+    ],
+    "implementationReview": {
+      "status": "implemented-pending-integration-test",
+      "scope": "四项实测记录输入后求效率，明确区分记录与模型预测，并校验不可能结果。",
+      "limitation": "页面用于操作示意与数据分析，没有代替实体测力计、机械摩擦与误差实测。"
+    }
+  },
+  "phy-lead-attraction": {
+    "model": "molecular",
+    "modelParams": {
+      "scenario": "contactAttraction",
+      "variant": "lead-attraction"
+    },
+    "controls": [
+      {
+        "key": "surface",
+        "label": "接触表面",
+        "value": "fresh",
+        "options": [
+          {
+            "value": "fresh",
+            "label": "新鲜、清洁、平整"
+          },
+          {
+            "value": "rough",
+            "label": "粗糙表面"
+          },
+          {
+            "value": "oxidized",
+            "label": "有氧化层"
+          }
+        ]
+      },
+      {
+        "key": "separator",
+        "label": "两铅面之间",
+        "value": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "没有隔层"
+          },
+          {
+            "value": "paper",
+            "label": "隔一张纸"
+          }
+        ]
+      },
+      {
+        "key": "stage",
+        "label": "操作阶段",
+        "value": "released",
+        "options": [
+          {
+            "value": "apart",
+            "label": "接触前"
+          },
+          {
+            "value": "pressed",
+            "label": "用外力压紧"
+          },
+          {
+            "value": "released",
+            "label": "压紧后撤去外力"
+          }
+        ]
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "比较表面与隔纸条件，再切换压紧及撤力阶段；无需启动计时。"
+    },
+    "modelNote": "Godot条件模型比较典型铅表面接触：新鲜清洁平整、无纸层、压紧后可保持结合；粗糙、氧化、隔纸不显示同样结合。这里只验证宏观接触证据，不计算整块铅承载质量、真实黏着强度或分子间距数值。",
+    "steps": [
+      "先选新鲜清洁平整的两接触面，观察接触前状态。",
+      "使两柱压紧，再撤去压紧外力，观察是否仍保持结合。",
+      "单独改为粗糙面、氧化面或隔纸，重复同样阶段并比较。",
+      "用接触面能否达到足够小距离解释证据；压紧时靠在一起本身不能证明撤力后仍结合。"
+    ],
+    "implementationReview": {
+      "status": "implemented-pending-integration-test",
+      "scope": "比较新鲜平整、粗糙、氧化及隔纸条件，区别压紧中与撤力后的宏观结合证据。",
+      "limitation": "定性接触模型，不预测最大承载质量或真实表面黏着力；铅材料只作模拟。"
+    }
+  },
+  "phy-buoyancy-factors": {
+    "model": "buoyancy",
+    "modelParams": {
+      "scenario": "forceFactors",
+      "variant": "buoyancy-factors"
+    },
+    "controls": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "unit": "g",
+        "min": 50,
+        "max": 600,
+        "step": 10,
+        "value": 270
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "unit": "cm³",
+        "min": 20,
+        "max": 200,
+        "step": 10,
+        "value": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "unit": "kg/m³",
+        "min": 500,
+        "max": 1500,
+        "step": 50,
+        "value": 1000
+      },
+      {
+        "key": "fraction",
+        "label": "浸入比例",
+        "unit": "",
+        "min": 0,
+        "max": 1,
+        "step": 0.05,
+        "value": 1
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "只改一个条件，立即比较排液体积、液体密度和两测力计读数。"
+    },
+    "modelNote": "Godot按ρ液gV排计算浮力并检查静止上悬条件。默认270g/100cm³为沉物；浮力超过重力时上方细线不能保持指定位置，不把截成0的拉力当作有效测量。忽略表面张力、水阻力与液面变化。",
+    "implementationReview": {
+      "status": "implemented-pending-integration-test",
+      "scope": "可比较质量、体积、液体密度和浸入比例；同时显示重力、有效上悬读数和浮力，拒绝不可能静止条件。",
+      "limitation": "均匀液体和理想静止测力计；不模拟水阻力或测量误差。"
+    }
+  },
+  "phy-archimedes": {
+    "model": "buoyancy",
+    "modelParams": {
+      "scenario": "archimedesEvidence",
+      "variant": "archimedes"
+    },
+    "controls": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "unit": "g",
+        "min": 50,
+        "max": 600,
+        "step": 10,
+        "value": 270
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "unit": "cm³",
+        "min": 20,
+        "max": 200,
+        "step": 10,
+        "value": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "unit": "kg/m³",
+        "min": 500,
+        "max": 1500,
+        "step": 50,
+        "value": 1000
+      },
+      {
+        "key": "fraction",
+        "label": "浸入比例",
+        "unit": "",
+        "min": 0,
+        "max": 1,
+        "step": 0.05,
+        "value": 1
+      },
+      {
+        "key": "headroom",
+        "label": "实验前距溢水口还可容纳的水量",
+        "unit": "cm³",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "value": 0
+      },
+      {
+        "key": "lossPercent",
+        "label": "题设收集过程的漏接比例",
+        "unit": "%",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "value": 0
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "改变浸入和收集条件，比较称重法浮力与空杯、杯液差量求出的排液重力。"
+    },
+    "modelNote": "Godot分别给出空气重力、液中拉力、空接水杯重力和接水后总重力，再作两条测量差比较。默认物体270g/100cm³、空杯30g。缺水空量和漏接比例是指定操作情境，不是流量实测模型；F浮>G时拒绝上悬读数，装置不显示虚假0N平衡。",
+    "steps": [
+      "先称空接水杯重力，再称物体在空气中的重力G。",
+      "把溢水杯装至溢水口并待滴水停止；将物体静止浸入，读取F拉，完整收集溢出液体。",
+      "称接水杯与液体的总重力，用总重力减空杯重力得G收集，与G−F拉比较。",
+      "分别改变浸入体积和液体密度复测；用缺水空量或漏接情境检查操作错误为何使收集液重力偏小。"
+    ],
+    "implementationReview": {
+      "status": "implemented-pending-integration-test",
+      "scope": "四个独立仪器读数渠道及两次作差；可比较不满溢水杯、漏接和不能上悬的条件。",
+      "limitation": "数据由同一理想物理模型产生；不模拟真实传感器噪声、飞溅轨迹或连续溢流滞后。"
+    }
+  }
+}

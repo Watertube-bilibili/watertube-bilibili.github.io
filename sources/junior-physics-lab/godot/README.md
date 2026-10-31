@@ -31,16 +31,22 @@ Requires Godot 4.6.3.stable and its official Web single-thread release export
 template (web_nothreads_release.zip) installed in the normal export-template
 directory. From the repository root:
 
+    python research/compile-physics.py
+    python research/sync-engine-catalog-schema.py
     godot --headless --path godot --editor --import --quit
     godot --headless --path godot --export-release Web ../dist/engine/lab.html
     python godot/package_web.py
+    python research/stamp-assets.py
 
-The last step gzip-compresses the exported 36 MiB WebAssembly into a roughly 9 MiB
+The packaging step gzip-compresses the exported 36 MiB WebAssembly into a roughly 9 MiB
 lab.wasm.bin. This keeps every asset below static-host upload limits. It also
 patches one loader line in the generated lab.js so the engine uses the decompressed
 Response supplied by loader.js. No physics code changes during packaging.
 Generated standalone HTML/icon assets are removed because the main courseware
 page provides the accessible UI.
+
+Asset stamping versions the page scripts, styles, and the runtime's dependent
+downloads together so a browser does not combine an old catalog with a new pack.
 
 `dist/engine/loader.js` is hand-authored and retained across exports. The browser
 needs WebAssembly, WebGL 2 and the standard DecompressionStream API. Single-thread
@@ -101,6 +107,23 @@ The model families intentionally use two different kinds of computation:
   `PinJoint2D`. The engine records the angle and measures periods between
   successive crossings in the same direction. The small-angle formula is
   provided separately as an approximation; it does not generate the trajectory.
+* `apparatus_dynamics.gd` and `mechanics_review.gd`: actual rigid bodies for
+  paired carts, support removal, descending rolling pendulum, impact and friction,
+  elastic return, motor rotation, two-dimensional magnetic deflection, an ideal
+  solar motor and indentation against a given resisting force. The rolling
+  pendulum currently covers descent only; reverse winding is declared incomplete.
+* Dedicated review solvers implement cantilever shapes and frequencies, acoustic
+  source versus received signals, multi-surface optical rays, meter wiring and
+  ranges, elastic/plastic unloading, hydrostatic measurements and flow continuity.
+  Their stated constants and approximations are teaching inputs, not fabricated
+  measurements of real instruments.
+
+Phase results include `phaseStates` so a renderer can show changing solid/liquid
+fractions during a constant-temperature plateau. Rotating and vibrating scenes
+consume their dedicated trajectories rather than a generic progress animation.
+The browser's manual stopwatch measures actual elapsed wall-clock time and only
+submits a stopped reading to Godot for analysis. Web Audio consumes computed
+frequencies for quiet, user-initiated audition; Godot's audio driver stays disabled.
 
 All computations stay inside Godot; the browser only interpolates returned
 trajectories for presentation. No browser formula fallback is used.

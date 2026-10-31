@@ -58,7 +58,7 @@ with sync_playwright() as pw:
  assert page.locator('.experiment-card').count()==expected and expected>0
  page.locator('[data-subject="all"]').click()
  page.locator('#termSelect').select_option('all')
- representatives=page.evaluate("['physics','chemistry','biology'].map(s=>LAB_CATALOG.find(e=>e.subject===s&&(s!=='physics'||e.model==='incline'))?.id||LAB_CATALOG.find(e=>e.subject===s).id)")
+ representatives=page.evaluate("['physics','chemistry','biology'].map(s=>LAB_CATALOG.find(e=>e.subject===s&&e.interaction.mode==='playback'&&(s!=='physics'||e.model==='incline'))?.id||LAB_CATALOG.find(e=>e.subject===s).id)")
  for i,lab_id in enumerate(representatives):
   page.evaluate("id=>location.hash='lab='+encodeURIComponent(id)",lab_id)
   page.wait_for_function("document.querySelector('#simulationStatus').textContent==='准备就绪'",timeout=60000)

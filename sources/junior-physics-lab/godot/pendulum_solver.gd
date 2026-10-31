@@ -10,6 +10,7 @@ var crossings=[]
 var duration=6.0
 var length=1.0
 var mass=.2
+var gravity_strength=9.8
 var initial_angle=15.0
 var previous_angle=0.0
 var previous_time=0.0
@@ -23,8 +24,9 @@ var tick=0
 func evaluate(p: Dictionary) -> Dictionary:
 	length=clampf(float(p.get("length",1)),.05,3)
 	mass=clampf(float(p.get("mass",.2)),.01,5)
+	gravity_strength=clampf(float(p.get("gravity",9.8)),.1,30)
 	initial_angle=clampf(float(p.get("angle",15)),1,60)
-	duration=clampf(float(p.get("duration",maxf(6.0,2.5*TAU*sqrt(length/9.8)))),1,12)
+	duration=clampf(float(p.get("duration",maxf(6.0,2.5*TAU*sqrt(length/gravity_strength)))),1,120)
 	samples=[[0.0,initial_angle,0.0]]
 	crossings=[]
 	previous_angle=deg_to_rad(initial_angle)
@@ -52,7 +54,7 @@ func evaluate(p: Dictionary) -> Dictionary:
 	shape.shape=circle
 	bob.add_child(shape)
 	add_child(bob)
-	bob.constant_force=Vector2(0,mass*9800)
+	bob.constant_force=Vector2(0,mass*gravity_strength*1000)
 	bob.sampled.connect(_sample)
 	joint=PinJoint2D.new()
 	add_child(joint)
@@ -86,11 +88,11 @@ func _sample(time: float, pos: Vector2, vel: Vector2) -> void:
 		bob.active=false
 		bob.set_deferred("freeze",true)
 		var period=crossings[1]-crossings[0] if crossings.size()>1 else null
-		var small_period=TAU*sqrt(length/9.8)
-		var energy=mass*9.8*length*(1-cos(deg_to_rad(initial_angle)))
+		var small_period=TAU*sqrt(length/gravity_strength)
+		var energy=mass*gravity_strength*length*(1-cos(deg_to_rad(initial_angle)))
 		var graph=[]
 		for sample in samples:graph.append([sample[0],sample[1]])
-		pending={"model":"energy","solver":"Godot RigidBody2D + PinJoint2D","values":{"scenario":"pendulum","length":length,"angle":initial_angle,"mass":mass,"period":period,"approximatePeriod":small_period,"initialEnergy":energy,"duration":time},"trajectory":samples.duplicate(),"trajectoryKind":"pendulumAngle","readings":[{"label":"摆长","value":length,"unit":"m"},{"label":"初始摆角","value":initial_angle,"unit":"°"},{"label":"相邻同向过中点的周期","value":period,"unit":"s"},{"label":"小角度周期近似","value":small_period,"unit":"s"}],"process":[{"title":"选择比较方法","text":"控制初始摆角和释放方式相同，分别改变摆长或摆球质量；测量连续若干次摆动的总时间。"},{"title":"由重复运动求周期","text":"一次完整往返为一次全振动。若 n 次全振动的时间为 t，则 T=t/n；本图还记录相邻两次同向经过最低点的时间差。"},{"title":"对照模型结果","text":"当前摆长 %.4f m，同向过中点测得周期 %s s。小角度理想单摆的拓展公式 T≈2π√(L/g)，代入 g=9.8 m/s² 得 %.4f s。"%[length,str(period) if period!=null else "未记录足够周期",small_period]},{"title":"控制条件后下结论","text":"在摆角较小、忽略阻力的条件下，摆长越长，周期越大；周期与摆球质量无关。摆角较大时，小角度近似的误差会增大。"}],"conclusion":"摆动过程中动能与重力势能相互转化；理想模型中忽略空气阻力和支点摩擦。周期比较应统一摆长的测量端点：悬点到摆球重心。","assumptions":"运动由真实刚体和转动铰链约束求解，绳杆无质量、摆球为质点近似。数值约束可能有微小能量误差；不把小角度周期公式当成任意摆角的精确公式。","graph":{"xLabel":"时间 / s","yLabel":"摆角 / °","points":graph}}
+		pending={"model":"energy","solver":"Godot RigidBody2D + PinJoint2D","values":{"scenario":"pendulum","length":length,"angle":initial_angle,"mass":mass,"gravity":gravity_strength,"period":period,"approximatePeriod":small_period,"initialEnergy":energy,"duration":time},"trajectory":samples.duplicate(),"trajectoryKind":"pendulumAngle","readings":[{"label":"摆长","value":length,"unit":"m"},{"label":"初始摆角","value":initial_angle,"unit":"°"},{"label":"重力场强度","value":gravity_strength,"unit":"N/kg"},{"label":"相邻同向过中点的周期","value":period,"unit":"s"},{"label":"小角度周期近似","value":small_period,"unit":"s"}],"process":[{"title":"选择比较方法","text":"控制其他条件相同，分别改变摆长、摆球质量或重力场强度；测量连续若干次摆动的总时间。比较摆长时还应保持初始摆角和释放方式相同。"},{"title":"由重复运动求周期","text":"一次完整往返为一次全振动。若 n 次全振动的时间为 t，则 T=t/n；本图还记录相邻两次同向经过最低点的时间差。"},{"title":"对照模型结果","text":"当前摆长 %.4f m，同向过中点测得周期 %s s。小角度理想单摆的拓展公式 T≈2π√(L/g)，代入 g=%.4f m/s² 得 %.4f s。"%[length,str(period) if period!=null else "未记录足够周期",gravity_strength,small_period]},{"title":"控制条件后下结论","text":"在摆角较小、忽略阻力的条件下，摆长越长，周期越大；重力场强度越小，周期越大；周期与摆球质量无关。摆角较大时，小角度近似的误差会增大。"}],"conclusion":"摆动过程中动能与重力势能相互转化；理想模型中忽略空气阻力和支点摩擦。周期比较应统一摆长的测量端点：悬点到摆球重心。","assumptions":"运动由真实刚体和转动铰链约束求解，绳杆无质量、摆球为质点近似。数值约束可能有微小能量误差；不把小角度周期公式当成任意摆角的精确公式。","graph":{"xLabel":"时间 / s","yLabel":"摆角 / °","points":graph}}
 
 func _process(_delta: float) -> void:
 	if pending.is_empty():return

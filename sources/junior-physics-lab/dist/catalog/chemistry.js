@@ -163,5 +163,60 @@ const numericExamples={
  'sea-salt':['500 g题设NaCl盐水，质量分数3%，完全蒸去水。','理想无损失时NaCl质量守恒。','m(NaCl)=500×3%=15 g。','理论残留15 gNaCl；真实海水含其他盐。']
 };
 for(const [id,args] of Object.entries(numericExamples))byId(id).workedExample=calc(...args);
+// Interaction audit: a reading, condition comparison or design exercise is immediately usable.
+// Playback is reserved for a process whose apparatus actually changes through the stages.
+const playbackModels=new Set(['changes','gas-test','fuel','airtight','air-oxygen','oxygen','reaction','co2-water','purification','salt-purify','electrolysis','neutralization','metal-acid','conservation','burn-oxygen','permanganate','limewater','co2-physical','displacement','crystallization','copper-heat','diffusion','rust','acid-dehydration','deliquescence','sea-salt']);
+for(const e of list){
+ const mode=playbackModels.has(e.model)?'playback':'live';
+ e.interaction={mode,...(mode==='playback'?{actionLabel:['purification','salt-purify','airtight','diffusion','rust','crystallization','sea-salt'].includes(e.model)?'演示过程':'演示反应'}:{}),reason:mode==='playback'?'观察装置中物质、颜色或操作阶段随过程发生的变化。':'直接改变条件、观察读数或比较资料，不需要启动计时。'};
+}
+const revise=(id,fields)=>Object.assign(byId(id),fields);
+revise('candle',{title:'蜡烛与乙醇燃烧：产物和物态变化',objective:'选择燃料与观察方法，比较水、二氧化碳及燃料物态的证据。'});
+revise('heating',{title:'试管液体加热的操作判断',kind:'操作练习',modelNote:'直接比较装液量、预热方式和管口方向；不模拟真实温度和玻璃破裂。'});
+revise('hazards',{kind:'操作练习'});revise('protection',{title:'实验室防护与应急情境判断',kind:'操作练习'});
+revise('washing',{kind:'操作练习'});revise('reagent-taking',{kind:'操作练习'});
+revise('air-station',{title:'空气检测样本的比较与采样设计',kind:'资料分析',modelNote:'手动输入教学样本并比较；没有连接空气传感器，不能代替检测站搭建或现场采样。'});
+revise('water-filter-design',{title:'净水模块选择与处理边界',kind:'设计练习',interaction:{mode:'live',reason:'选择模块后立即比较处理前后的杂质；这里不搭建完整净水器。'},modelNote:'支持单个净水模块与指定杂质的匹配，不模拟多层净水器的流量、吸附容量、微生物去除或实测水质。'});
+revise('carbon-budget',{title:'用电排放估算与节电方案比较',kind:'资料分析'});
+revise('fuel-survey',{title:'家庭能源方案的热效率计算',kind:'资料分析'});
+revise('recycling',{title:'回收物的材料识别与初步分选',kind:'设计练习'});
+revise('aerospace',{title:'航天材料与能源：需求匹配练习',kind:'资料分析',modelNote:'按材料资料比较用途与局限；不模拟航天器、强度测试或耐热实验。'});
+revise('protein',{title:'常见纤维的外观与燃烧现象对照',kind:'资料分析'});
+revise('plastic',{title:'塑料受热表现的资料比较',kind:'资料分析'});
+revise('alloy',{title:'合金与纯金属的典型性质对照',kind:'资料分析',modelNote:'比较常见样品的定性资料，未指定成分的合金不输出硬度或熔点数值，不视为完成划痕和熔融实测。'});
+revise('soil',{kind:'设计练习',modelNote:'比较pH检测与缺素对照设计；叶片仅是症状资料示意，不是模拟生长结果，也不替代持续培养。'});
+revise('ph',{title:'pH试纸与指示剂：读色及操作比较',kind:'操作练习',modelNote:'pH由题设给定，选择检测工具观察典型颜色；湿试纸仅提示结果受稀释影响，不伪造偏差大小。'});
+revise('lime-heat',{title:'生石灰与水反应：计量与放热现象',modelNote:'按反应方程式计算生成量；热效应只显示放热方向，不计算未经热量资料支持的温升。'});
+// The air composition is a model parameter, not a user-adjustable measurement answer.
+byId('air-oxygen').controls=byId('air-oxygen').controls.filter(c=>c.key!=='fraction');
+byId('air-oxygen').modelParams={fraction:21};
+byId('air-oxygen').modelNote='以含氧体积分数21%的理想空气为已知模型；通过瓶内刻度和进水量练习计算，不是测量真实环境空气。';
+// Give the supply-planning task the missing inverse calculation instead of cloning the gas generator.
+revise('oxygen-design',{model:'oxygen-design',title:'供氧量与过氧化氢用量的设计计算',kind:'设计练习',controls:[num('target','希望收集的氧气质量','g',.01,2,.01,.32),num('percent','过氧化氢质量分数','%',1,10,.1,3.4),num('collection','题设收集率','%',50,100,5,100)],interaction:{mode:'live',reason:'由目标氧气量和题设收集率直接反推试剂用量。'},modelNote:'仅完成产量与用量计算，不声称实现供氧器制造、流量控制或纯度测试；不用于医疗或救生供氧。'});
+// Recovered mass and reuse are evidence to inspect, not values conjured by a reaction animation.
+byId('catalyst').controls=[num('solution','每组过氧化氢溶液质量','g',1,100,1,20),num('percent','每组过氧化氢质量分数','%',1,10,.1,3.4),num('recovered','洗涤干燥后回收MnO₂的题设质量','g',.5,1.2,.01,1),yes('reuse','回收物再次加入H₂O₂仍明显加快反应')];
+byId('catalyst').modelParams={catalyst:'yes'};
+byId('catalyst').modelNote='左右同时比较有无MnO₂；进度仅示意先后，不是速率实测。加入MnO₂为1.00 g，回收质量与复用现象是可调题设记录，需结合损失、潮湿及测量误差判断证据。';
+byId('catalyst').apparatus.push('漏斗与滤纸','洗涤与干燥装置','天平','新的过氧化氢溶液');
+byId('hardness').controls.find(c=>c.key==='soap').min=0;
+byId('sea-salt').controls.find(c=>c.key==='evaporated').value=480;
+byId('co2-naoh').title='CO₂与NaOH：产物组成与检验证据';
+byId('co2-naoh').controls.push(yes('test','加入足量稀盐酸检验反应后溶液'));
+byId('co2-naoh').modelNote='直接比较设定通气量下的产物组成与酸检验；不把瓶子形变作为排除物理溶解的充分证据。';
+byId('properties').interaction={mode:'live',reason:'选择气体和检验方法后，立即显示相应观察结果。'};
+byId('properties').observations[2]='适量二氧化碳使澄清石灰水变浑浊；持续过量通入另见石灰水实验。';
+byId('oxygen').controls=[...byId('oxygen').controls,pick('test','观察环节',[['collect','排水收集'],['glowing','收集后用带火星木条检验']])];
+byId('co2').controls.push(pick('test','观察环节',[['collect','向上排空气收集'],['lime','通入澄清石灰水检验'],['full','燃着木条置瓶口验满']]));
+byId('co2').modelNote+='检验与验满分别显示，气体颜色是位置标记，并非CO₂真实颜色。';
+byId('oxygen-design').steps=['输入希望收集的氧气质量、过氧化氢浓度和题设收集率。','用收集质量÷收集率求理论生成量，再按方程式反推纯H₂O₂及溶液质量。','检查模型边界：计算不包含供氧速度、设备气密性、气体纯度及实际制造。'];
+byId('fuel-survey').steps=['选择燃气或电热作为资料比较情境。','设定相同有效热量需求和给定效率。','计算输入能量及非有效部分；来源、成本与排放需另作调查，页面不声称已完成调查。'];
+byId('air-station').steps=['使用课堂提供或自行记录的两组PM₂.₅样本，明确来源与单位。','标明时段和仪器是否一致，直接输入两地数值。','比较差值与可比条件；再提出重复采样方案，不能把题设输入当作实时检测。'];
+byId('alloy').steps=['选择给定的纯金属与合金资料。','切换刻痕或熔化比较，阅读适用成分与条件。','说明该资料能支持的结论，并列出需要另作实测的指标。'];
+byId('solution').title='氯化钠溶液：配制用量与质量分数';
+byId('solution').modelNote+='本页完成配制用量与溶解结果比较，天平称量、量取、装瓶需结合文字步骤和真实操作。';
+byId('methane').title='甲烷完全燃烧：水的检验与产物计算';
+byId('methane').modelNote+='场景显示燃烧与水滴；CO₂的检验步骤以资料说明，不宣称已经完整模拟该操作。';
+byId('reagent-taking').title='试剂规范取用：固体转移与滴加';
+byId('reagent-taking').steps[2]='倾倒操作参考（本页未逐步模拟）：瓶塞倒放、标签朝向手心，瓶口靠近试管口；少量液体用滴管。';
 window.LAB_CATALOG=window.LAB_CATALOG||[]; window.LAB_CATALOG.push(...list);
 })();

@@ -54,7 +54,7 @@ window.LAB_CATALOG.push(...[
       "power": 0,
       "time": 0
     },
-    "modelNote": "不再输入热量，比较既有热水在降压后的相平衡状态；压强降低可能使水重新沸腾。未模拟冷水流动、瓶内蒸汽凝结速度和后续散热，热玻璃操作仅由教师演示。",
+    "modelNote": "气压由题设改变；没有联立求解瓶内凝结、冷水传热和压力随时间变化。",
     "controls": [
       {
         "key": "initial",
@@ -97,6 +97,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "冷却使部分水蒸气液化，瓶内压强降低，水的沸点随之下降。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "在倒置热烧瓶中改变给定气压，对照水温与沸点，沸腾条件满足时出现气泡。",
+      "limitation": "气压由题设改变；没有联立求解瓶内凝结、冷水传热和压力随时间变化。"
     }
   },
   {
@@ -145,27 +154,35 @@ window.LAB_CATALOG.push(...[
     "model": "pressure",
     "modelParams": {
       "scenario": "flow",
-      "variant": "funnel-ball"
+      "variant": "funnel-ball",
+      "density": 1.2
     },
-    "modelNote": "用理想流体伯努利关系比较流速和静压；空气密度取近似值。忽略黏性和湍流，喷雾、托球等现象还受实际流场和阻力影响，不能仅用一个静压公式预测完整轨迹。",
+    "modelNote": "只支持定性路径与压差分析，未复现完整漏斗流场和稳定托球，不能用向上吹气的轴向阻力模型替代。 本项操作范围：只支持定性路径与压差分析，未复现完整漏斗流场和稳定托球，不能用向上吹气的轴向阻力模型替代。",
     "controls": [
       {
-        "key": "speed",
-        "label": "流速",
-        "unit": "m/s",
-        "min": 0,
-        "max": 10,
-        "step": 0.1,
-        "value": 2
+        "key": "blowing",
+        "label": "吹气状态",
+        "options": [
+          {
+            "value": "on",
+            "label": "向下吹气"
+          },
+          {
+            "value": "off",
+            "label": "停止吹气"
+          }
+        ],
+        "value": "off",
+        "placement": "scene"
       },
       {
-        "key": "density",
-        "label": "流体密度",
-        "unit": "kg/m³",
-        "min": 1,
-        "max": 1000,
-        "step": 0.1,
-        "value": 1.2
+        "key": "speed",
+        "label": "气流参考速度",
+        "unit": "m/s",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "value": 8
       }
     ],
     "workedExample": {
@@ -190,6 +207,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，重力仍向下，向上的气动力在稳定状态下与其平衡。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "needs-implementation",
+      "scope": "可选择停吹/向下吹气，观察倒置漏斗与球间气流路径；球由支架定位。",
+      "limitation": "只支持定性路径与压差分析，未复现完整漏斗流场和稳定托球，不能用向上吹气的轴向阻力模型替代。"
     }
   },
   {
@@ -261,6 +287,24 @@ window.LAB_CATALOG.push(...[
         "max": 10,
         "step": 0.1,
         "value": 9.8
+      },
+      {
+        "key": "mass",
+        "label": "摆球质量",
+        "unit": "kg",
+        "min": 0.05,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.1
+      },
+      {
+        "key": "angle",
+        "label": "释放角度",
+        "unit": "°",
+        "min": 2,
+        "max": 45,
+        "step": 1,
+        "value": 10
       }
     ],
     "workedExample": {
@@ -285,6 +329,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "单次周期2.00 s。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放摆球"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "摆球位置由刚体与铰链轨迹提供；逐项核对摆长、重力和周期。",
+      "limitation": "小角度周期公式用于对照；真实大振幅周期应读轨迹，尚未完成所有参数浏览器实测。"
     }
   },
   {
@@ -390,6 +444,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "长度5.25 cm。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "调整物长、分度值和零点，观察刻度与修正读数。",
+      "limitation": "已知长度驱动画面是读数训练，不等于独立未知物体测量；还缺视差操作。"
     }
   },
   {
@@ -437,35 +500,20 @@ window.LAB_CATALOG.push(...[
     "model": "measurement",
     "modelParams": {
       "scenario": "time",
-      "variant": "stopwatch-pulse-step"
+      "variant": "stopwatch-pulse-step",
+      "value": 0,
+      "zero": 0,
+      "division": 0.01
     },
-    "modelNote": "读数按给定分度值取整并示范零点修正；估读能力、视差和真实测量误差需结合器材训练。",
+    "modelNote": "使用performance.now计时；手动反应时间仍属于用户操作误差。默认计数0，不把示例次数当实测脉搏。",
     "controls": [
       {
-        "key": "value",
-        "label": "计时时间",
-        "unit": "s",
+        "key": "count",
+        "label": "实际数到的次数，未计数填0",
+        "unit": "次",
         "min": 0,
-        "max": 120,
-        "step": 0.01,
-        "value": 30.28
-      },
-      {
-        "key": "division",
-        "label": "分度值",
-        "unit": "s",
-        "min": 0.01,
-        "max": 1,
-        "step": 0.01,
-        "value": 0.01
-      },
-      {
-        "key": "zero",
-        "label": "零点偏移",
-        "unit": "s",
-        "min": -5,
-        "max": 5,
-        "step": 0.1,
+        "max": 200,
+        "step": 1,
         "value": 0
       }
     ],
@@ -491,6 +539,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "平均间隔0.800 s。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "手动开始、暂停、继续、记录停止和清零，真实经过时间与实际计数传给引擎。",
+      "limitation": "使用performance.now计时；手动反应时间仍属于用户操作误差。默认计数0，不把示例次数当实测脉搏。"
     }
   },
   {
@@ -541,37 +598,65 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "measurement",
     "modelParams": {
-      "scenario": "length",
+      "scenario": "caliper",
       "variant": "coin-size"
     },
-    "modelNote": "读数按给定分度值取整并示范零点修正；估读能力、视差和真实测量误差需结合器材训练。",
+    "modelNote": "硬币理想圆，滚动不打滑；刻度是模拟器读数，不能用屏幕物理尺寸替代测量。",
     "controls": [
       {
-        "key": "value",
-        "label": "待测量",
+        "key": "diameter",
+        "label": "待测圆形样品直径（教师设定）",
+        "unit": "cm",
+        "min": 1,
+        "max": 4,
+        "step": 0.1,
+        "value": 2.5
+      },
+      {
+        "key": "method",
+        "label": "测量方法",
+        "options": [
+          {
+            "value": "clamp",
+            "label": "辅助夹测直径"
+          },
+          {
+            "value": "rolling",
+            "label": "滚一周测周长"
+          }
+        ],
+        "value": "clamp",
+        "placement": "scene"
+      },
+      {
+        "key": "left",
+        "label": "左夹板位置",
         "unit": "cm",
         "min": 0,
-        "max": 200,
-        "step": 0.01,
-        "value": 12.34
-      },
-      {
-        "key": "division",
-        "label": "分度值",
-        "unit": "cm",
-        "min": 0.01,
         "max": 10,
-        "step": 0.01,
-        "value": 0.1
+        "step": 0.05,
+        "value": 4.5,
+        "placement": "scene"
       },
       {
-        "key": "zero",
-        "label": "零点偏移",
+        "key": "right",
+        "label": "右夹板位置",
         "unit": "cm",
-        "min": -5,
-        "max": 5,
-        "step": 0.1,
-        "value": 0
+        "min": 0,
+        "max": 10,
+        "step": 0.05,
+        "value": 8,
+        "placement": "scene"
+      },
+      {
+        "key": "rollTurns",
+        "label": "无滑动滚动圈数",
+        "unit": "圈",
+        "min": 0,
+        "max": 1,
+        "step": 0.05,
+        "value": 0,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -596,6 +681,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "挡板能把圆形边缘转化为两条易对齐刻度的边线，降低定位困难。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "左右夹板独立移动，只有相切才接受直径；另有无滑动滚一周测周长。",
+      "limitation": "硬币理想圆，滚动不打滑；刻度是模拟器读数，不能用屏幕物理尺寸替代测量。"
     }
   },
   {
@@ -675,6 +769,16 @@ window.LAB_CATALOG.push(...[
         "max": 5,
         "step": 0.1,
         "value": 0
+      },
+      {
+        "key": "count",
+        "label": "纸张数",
+        "unit": "张",
+        "min": 1,
+        "max": 200,
+        "step": 1,
+        "value": 100,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -699,6 +803,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "单张约0.080 mm。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "用整叠厚度和纸张数求单张平均厚度。",
+      "limitation": "应压紧并保持纸张同类；显示为理想读数，不模拟压缩导致的厚度误差。"
     }
   },
   {
@@ -805,6 +918,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "平均速度0.40 m/s。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放小车"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "右高左低小车从A经过B到C，长度、坡角和质量进入刚体求解。",
+      "limitation": "光滑斜面理想模型；真实轮轴摩擦、手动反应时间未模拟。"
     }
   },
   {
@@ -900,6 +1023,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "平均速度1.2 m/s。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "播放运动"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "采样轨迹的位置随时间变化，可比较位移与用时。",
+      "limitation": "匀速速度是给定条件，不模拟传感器采样噪声与真实数据导入。"
     }
   },
   {
@@ -994,6 +1127,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "平均速度1.2 m/s。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始行走"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "行人在轨道上按轨迹回放并给出平均速率。",
+      "limitation": "当前输入速度和时长，缺少先量路线再手动计时的测量流程。"
     }
   },
   {
@@ -1087,6 +1230,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "把鼓面不易直接看清的振动，转换成颗粒可见的运动。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "拨动橡皮筋"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "拨动橡皮筋后观察振幅变化，零振幅必须静止。",
+      "limitation": "相对振幅与慢放振动不代表实际长度或真实时间比例。"
     }
   },
   {
@@ -1205,6 +1358,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "排除声源停止发声的原因，才能研究空气对声音传播的作用。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "接通电铃"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "比较钟罩内有介质与真空，分清声源振动和声音传播。",
+      "limitation": "介质是离散状态；未模拟逐渐抽气的气压—响度关系。"
     }
   },
   {
@@ -1253,51 +1416,37 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "sound",
     "modelParams": {
-      "scenario": "medium",
+      "scenario": "surfaceWave",
       "variant": "water-wave-analogy"
     },
-    "modelNote": "波形与振幅为教学示意，振幅没有分贝单位；介质声速取常温近似值，图中速度不代表真实声传播画面。",
+    "modelNote": "相速为题设，忽略色散、反射和圆形波幅衰减；不能把水面波方向直接套用于空气声波。",
     "controls": [
       {
-        "key": "medium",
-        "label": "介质",
-        "options": [
-          {
-            "value": "air",
-            "label": "空气"
-          },
-          {
-            "value": "water",
-            "label": "水"
-          },
-          {
-            "value": "steel",
-            "label": "钢"
-          },
-          {
-            "value": "vacuum",
-            "label": "真空"
-          }
-        ],
-        "value": "air"
-      },
-      {
         "key": "frequency",
-        "label": "频率",
+        "label": "波源频率",
         "unit": "Hz",
-        "min": 20,
-        "max": 2000,
-        "step": 10,
-        "value": 440
+        "min": 0.2,
+        "max": 2,
+        "step": 0.1,
+        "value": 1
       },
       {
-        "key": "distance",
-        "label": "传播距离",
-        "unit": "m",
-        "min": 1,
-        "max": 500,
-        "step": 1,
-        "value": 34
+        "key": "amplitude_mm",
+        "label": "浮标振动幅度",
+        "unit": "mm",
+        "min": 0,
+        "max": 5,
+        "step": 0.5,
+        "value": 3
+      },
+      {
+        "key": "speed",
+        "label": "水面波相速（题设）",
+        "unit": "m/s",
+        "min": 0.1,
+        "max": 0.5,
+        "step": 0.05,
+        "value": 0.2
       }
     ],
     "workedExample": {
@@ -1322,6 +1471,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，主要是扰动传到远处，而水在平衡位置附近运动。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "扰动水面"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "圆形波前传播与固定位置浮标上下振动来自引擎时间状态。",
+      "limitation": "相速为题设，忽略色散、反射和圆形波幅衰减；不能把水面波方向直接套用于空气声波。"
     }
   },
   {
@@ -1437,6 +1596,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "振动通过桌面传到耳部，增加了固体传声路径。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "比较固体和空气传声的声速与路径。",
+      "limitation": "钢不是木桌的材料常数；未模拟贴耳/离耳及环境噪声差异。"
     }
   },
   {
@@ -1485,51 +1653,53 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "sound",
     "modelParams": {
-      "scenario": "medium",
+      "scenario": "telephone",
       "variant": "cup-telephone"
     },
-    "modelNote": "纸杯和拉紧棉线传递机械振动；介质声速数值为参照材料示例，不是棉线电话的实测速度。松紧、阻尼与纸杯共振未定量模拟。",
+    "modelNote": "声速参数不能代替真实棉线张力；传播强弱只可作定性比较。",
     "controls": [
       {
-        "key": "medium",
-        "label": "介质",
+        "key": "stringState",
+        "label": "棉线状态",
         "options": [
           {
-            "value": "air",
-            "label": "空气"
+            "value": "tight",
+            "label": "绷紧"
           },
           {
-            "value": "water",
-            "label": "水"
+            "value": "slack",
+            "label": "松弛"
           },
           {
-            "value": "steel",
-            "label": "钢"
+            "value": "pinched",
+            "label": "捏住"
           },
           {
-            "value": "vacuum",
-            "label": "真空"
+            "value": "broken",
+            "label": "断开"
           }
         ],
-        "value": "steel"
+        "value": "tight",
+        "placement": "scene"
       },
       {
         "key": "frequency",
-        "label": "频率",
+        "label": "声源频率",
         "unit": "Hz",
-        "min": 20,
-        "max": 2000,
+        "min": 100,
+        "max": 1500,
         "step": 10,
         "value": 440
       },
       {
-        "key": "distance",
-        "label": "传播距离",
-        "unit": "m",
-        "min": 1,
-        "max": 500,
-        "step": 1,
-        "value": 34
+        "key": "amplitude",
+        "label": "拨动/振动幅度（相对量）",
+        "unit": "",
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "value": 2,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -1554,6 +1724,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "握住线会抑制振动并增加能量损耗，使传到另一杯的振动减弱。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "比较棉线绷紧、松弛和被捏住时的传声条件。",
+      "limitation": "声速参数不能代替真实棉线张力；传播强弱只可作定性比较。"
     }
   },
   {
@@ -1576,19 +1755,24 @@ window.LAB_CATALOG.push(...[
       "桌子"
     ],
     "steps": [
-      "固定钢尺一端，先保持较长伸出长度。",
-      "用相近幅度拨动，再缩短伸出长度。",
-      "比较振动快慢、声音与同时间尺度波形。"
+      "用固定夹把同一把钢尺压紧在桌边。",
+      "在装置下方先设置伸出长度和拨动幅度，再拨动钢尺观察。",
+      "保持拨动幅度相同，改变伸出长度，比较相同时间窗中的振动次数与试听音调。",
+      "固定伸出长度，仅改变拨动幅度，比较振幅；不要把响度变化当成音调变化。"
     ],
     "observations": [
       "伸出长度缩短时，振动通常更快、音调更高。"
     ],
     "conclusion": "音调由频率决定，频率越高，音调越高。",
     "examPoints": [
-      "同时间内振动次数与频率关联"
+      "控制钢尺材料、厚度、夹持方式和拨动幅度相同，只改变伸出长度。",
+      "同时间内振动次数越多，频率越高，音调越高。",
+      "研究音调与研究响度时，控制变量不同。"
     ],
     "pitfalls": [
-      "大力拨动主要改变振幅，不能直接作为提高音调的方法"
+      "不能直接把频率作为自变量，声称测出了长度对频率的影响。",
+      "比较频率时图像的时间横轴必须相同，不能每幅图都自动塞入相同周期数。",
+      "过长钢尺的基频可能低于通常可听范围；听不到基频不等于钢尺没有振动。"
     ],
     "questions": [
       {
@@ -1597,57 +1781,70 @@ window.LAB_CATALOG.push(...[
       }
     ],
     "safety": [
-      "使用对应教学器材，涉及加热、玻璃或光源时由教师指导。"
+      "固定夹夹紧，轻拨尺端；避免钢尺弹起碰到眼睛。"
     ],
     "model": "sound",
     "modelParams": {
-      "scenario": "pitch",
+      "scenario": "ruler",
       "variant": "ruler-pitch"
     },
-    "modelNote": "波形与振幅为教学示意，振幅没有分贝单位；介质声速取常温近似值，图中速度不代表真实声传播画面。",
+    "modelNote": "同一均匀钢尺，厚0.7 mm、宽20 mm，理想夹持与小挠度近似。伸出长度决定一阶固有频率；画面把50 ms按100倍慢放。试听使用模型基频合成，未还原实物音色；频率不作为输入条件。",
     "controls": [
       {
-        "key": "frequency",
-        "label": "频率",
-        "unit": "Hz",
-        "min": 20,
-        "max": 2000,
-        "step": 10,
-        "value": 440
+        "key": "length",
+        "label": "伸出桌面的长度",
+        "unit": "cm",
+        "min": 4,
+        "max": 20,
+        "step": 0.5,
+        "value": 8,
+        "placement": "scene"
       },
       {
         "key": "amplitude",
-        "label": "振幅（相对量）",
-        "unit": "",
+        "label": "拨动幅度",
+        "unit": "mm",
         "min": 0,
-        "max": 10,
-        "step": 0.1,
-        "value": 2
+        "max": 4,
+        "step": 0.5,
+        "value": 2,
+        "placement": "scene"
       }
     ],
     "workedExample": {
-      "title": "规范作答",
-      "given": "两个波形时间范围相同，振动次数多者音调如何？",
+      "title": "由振动次数比较音调",
+      "given": "在相同的0.20 s内，甲振动16次，乙振动40次；使用同一钢尺且拨动幅度相同。",
       "steps": [
         {
-          "title": "明确要比较的条件",
-          "text": "改变悬臂长度比较振动快慢与音调。"
+          "title": "写出频率定义",
+          "text": "频率表示每秒振动的次数，f=N/t，单位为Hz。"
         },
         {
-          "title": "指出观察证据",
-          "text": "伸出长度缩短时，振动通常更快、音调更高。"
+          "title": "分别代入",
+          "text": "f甲=16/0.20=80 Hz；f乙=40/0.20=200 Hz。"
         },
         {
-          "title": "解释现象",
-          "text": "音调由频率决定，频率越高，音调越高。"
+          "title": "比较音调",
+          "text": "200 Hz>80 Hz，所以乙的音调较高。"
         },
         {
-          "title": "完整回答",
-          "text": "频率较高，音调较高。"
+          "title": "联系控制变量",
+          "text": "同一钢尺的较短伸出段振动更快；在题设条件下，乙对应较短的伸出长度。"
         }
       ],
-      "answer": "频率较高，音调较高。"
-    }
+      "answer": "甲为80 Hz，乙为200 Hz；乙的音调较高，伸出长度较短。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "actionLabel": "拨动钢尺",
+      "reason": "展示钢尺真实频率对应的慢放振动；长度与拨动幅度分别控制不同条件。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "固定端后调伸出长度，拨动钢尺；位移、弯曲形状和频率来自专用引擎。",
+      "limitation": "均匀弹性悬臂梁近似，忽略夹持柔度与空气阻尼；真实音效与慢放画面时间尺度分开。"
+    },
+    "playSeconds": 5
   },
   {
     "id": "phy-amplitude-ball",
@@ -1742,6 +1939,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "响度受距离影响，固定位置便于比较振幅改变的作用。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "敲击音叉"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "音叉振幅改变时小球偏离幅度应跟随变化。",
+      "limitation": "小球用于放大观察，摆幅并非准确声压或响度计。"
     }
   },
   {
@@ -1853,6 +2060,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "它们的振动组成和波形不同，形成不同音色。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变基频、二次和三次谐波，直接比较波形。",
+      "limitation": "不重建真实乐器频谱，谐波系数是题设；无需启动才显示曲线。"
     }
   },
   {
@@ -1902,28 +2118,30 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "sound",
     "modelParams": {
-      "scenario": "pitch",
+      "scenario": "bottleStrike",
       "variant": "bottle-xylophone"
     },
-    "modelNote": "波形与振幅为教学示意，振幅没有分贝单位；介质声速取常温近似值，图中速度不代表真实声传播画面。",
+    "modelNote": "敲瓶与吹瓶机制不同；瓶体、水体耦合只采用明确的相对经验模型，不能套用空气柱公式。",
     "controls": [
       {
-        "key": "frequency",
-        "label": "频率",
-        "unit": "Hz",
-        "min": 20,
-        "max": 2000,
-        "step": 10,
-        "value": 440
+        "key": "waterLevel",
+        "label": "同一瓶子的加水量",
+        "unit": "%",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "value": 40,
+        "placement": "scene"
       },
       {
         "key": "amplitude",
-        "label": "振幅（相对量）",
+        "label": "拨动/振动幅度（相对量）",
         "unit": "",
         "min": 0,
         "max": 10,
         "step": 0.1,
-        "value": 2
+        "value": 2,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -1948,6 +2166,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "两种方式的主要振动系统不同，水量对音调的影响规律可能相反。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "敲击瓶子"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "改变水量后比较敲击同一瓶子的音调。",
+      "limitation": "敲瓶与吹瓶机制不同；瓶体、水体耦合只采用明确的相对经验模型，不能套用空气柱公式。"
     }
   },
   {
@@ -1995,28 +2223,30 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "sound",
     "modelParams": {
-      "scenario": "pitch",
+      "scenario": "airColumn",
       "variant": "piston-flute"
     },
-    "modelNote": "波形与振幅为教学示意，振幅没有分贝单位；介质声速取常温近似值，图中速度不代表真实声传播画面。",
+    "modelNote": "采用一端闭合空气柱近似，忽略端部修正与真实哨口激励。",
     "controls": [
       {
-        "key": "frequency",
-        "label": "频率",
-        "unit": "Hz",
-        "min": 20,
-        "max": 2000,
-        "step": 10,
-        "value": 440
+        "key": "length_cm",
+        "label": "空气柱长度",
+        "unit": "cm",
+        "min": 5,
+        "max": 50,
+        "step": 0.5,
+        "value": 20,
+        "placement": "scene"
       },
       {
         "key": "amplitude",
-        "label": "振幅（相对量）",
+        "label": "拨动/振动幅度（相对量）",
         "unit": "",
         "min": 0,
         "max": 10,
         "step": 0.1,
-        "value": 2
+        "value": 2,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -2041,6 +2271,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "通常升高，因为对应的主要共振频率增大。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "吹响活塞哨"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "推拉活塞改变空气柱长度，读基频并播放慢放振动。",
+      "limitation": "采用一端闭合空气柱近似，忽略端部修正与真实哨口激励。"
     }
   },
   {
@@ -2135,6 +2375,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "振动通过空气传递，声波把能量传给指示物。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "接通扬声器"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "扬声器振幅改变时振膜和烛焰跟随变化，振幅为零时静止。",
+      "limitation": "烛焰偏转是定性响应，不是声压、火焰温度或能量的定量测量。"
     }
   },
   {
@@ -2230,6 +2480,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不一定，若妨碍休息学习，也可构成环境噪声。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "比较给定噪声波形的非规则性与振幅。",
+      "limitation": "合成波形不是环境录音；波形复杂本身不能判定声音是否有害。"
     }
   },
   {
@@ -2281,28 +2540,39 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "sound",
     "modelParams": {
-      "scenario": "noise",
+      "scenario": "insulation",
       "variant": "soundproof-room"
     },
-    "modelNote": "通过相对振幅和波形观察噪声变化；声学隔音性能、吸声系数与分贝不在模型中定量计算。降低相对振幅表示减弱声音，不等同于固定分贝差。",
+    "modelNote": "材料的透射比例必须标明为给定示例，不能虚构实测隔声系数。",
     "controls": [
       {
+        "key": "attenuation",
+        "label": "振幅减弱系数（题设）",
+        "unit": "",
+        "min": 0,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.3,
+        "placement": "scene"
+      },
+      {
+        "key": "frequency",
+        "label": "声源频率",
+        "unit": "Hz",
+        "min": 100,
+        "max": 1500,
+        "step": 10,
+        "value": 440
+      },
+      {
         "key": "amplitude",
-        "label": "振幅（相对量）",
+        "label": "拨动/振动幅度（相对量）",
         "unit": "",
         "min": 0,
         "max": 10,
         "step": 0.1,
-        "value": 2
-      },
-      {
-        "key": "frequency",
-        "label": "频率",
-        "unit": "Hz",
-        "min": 20,
-        "max": 2000,
-        "step": 10,
-        "value": 440
+        "value": 2,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -2327,6 +2597,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "保持声源、房间尺寸、开口和接收位置相同，只更换材料并重复测量。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "在声源与测点不变条件下比较隔声前后信号。",
+      "limitation": "材料的透射比例必须标明为给定示例，不能虚构实测隔声系数。"
     }
   },
   {
@@ -2377,36 +2656,28 @@ window.LAB_CATALOG.push(...[
     "model": "measurement",
     "modelParams": {
       "scenario": "temperature",
-      "variant": "temperature-sensation"
+      "variant": "temperature-sensation",
+      "value": 30,
+      "division": 1,
+      "zero": 0
     },
-    "modelNote": "读数按给定分度值取整并示范零点修正；估读能力、视差和真实测量误差需结合器材训练。",
+    "modelNote": "是定性温觉适应演示，不预测个人感觉强度或具体温差阈值。",
     "controls": [
       {
-        "key": "value",
-        "label": "待测量",
-        "unit": "℃",
-        "min": -10,
-        "max": 100,
-        "step": 0.1,
-        "value": 35
-      },
-      {
-        "key": "division",
-        "label": "分度值",
-        "unit": "℃",
-        "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
-      },
-      {
-        "key": "zero",
-        "label": "零点偏移",
-        "unit": "℃",
-        "min": -5,
-        "max": 5,
-        "step": 0.1,
-        "value": 0
+        "key": "stage",
+        "label": "双手观察阶段",
+        "options": [
+          {
+            "value": "adapt",
+            "label": "分别适应冷水和温热水"
+          },
+          {
+            "value": "compare",
+            "label": "两手同时放入同一盆温水"
+          }
+        ],
+        "value": "adapt",
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -2431,6 +2702,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不矛盾，水温相同；两只手先前温度和适应状态不同。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "切换适应阶段与双手放入同一温水阶段，比较两手的不同感觉。",
+      "limitation": "是定性温觉适应演示，不预测个人感觉强度或具体温差阈值。"
     }
   },
   {
@@ -2479,39 +2759,49 @@ window.LAB_CATALOG.push(...[
     "safety": [
       "使用对应教学器材，涉及加热、玻璃或光源时由教师指导。"
     ],
-    "model": "measurement",
+    "model": "thermal",
     "modelParams": {
-      "scenario": "temperature",
+      "scenario": "liquidExpansion",
       "variant": "homemade-thermometer"
     },
-    "modelNote": "读数按给定分度值取整并示范零点修正；估读能力、视差和真实测量误差需结合器材训练。",
+    "modelNote": "体膨胀系数为指定温区题设，忽略瓶管自身热膨胀；自制装置仍需标准温度点标定。",
     "controls": [
       {
-        "key": "value",
-        "label": "待测量",
+        "key": "volume",
+        "label": "瓶中液体初始体积",
+        "unit": "mL",
+        "min": 5,
+        "max": 30,
+        "step": 1,
+        "value": 10
+      },
+      {
+        "key": "deltaT",
+        "label": "温度变化",
         "unit": "℃",
         "min": -10,
-        "max": 100,
-        "step": 0.1,
-        "value": 35
+        "max": 30,
+        "step": 1,
+        "value": 20
       },
       {
-        "key": "division",
-        "label": "分度值",
-        "unit": "℃",
-        "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
+        "key": "tubeArea",
+        "label": "细管横截面积",
+        "unit": "mm²",
+        "min": 1,
+        "max": 10,
+        "step": 0.5,
+        "value": 2,
+        "placement": "scene"
       },
       {
-        "key": "zero",
-        "label": "零点偏移",
-        "unit": "℃",
-        "min": -5,
-        "max": 5,
-        "step": 0.1,
-        "value": 0
+        "key": "beta",
+        "label": "体膨胀系数（题设）",
+        "unit": "1/℃",
+        "min": 0.0002,
+        "max": 0.0012,
+        "step": 0.0001,
+        "value": 0.0011
       }
     ],
     "workedExample": {
@@ -2536,6 +2826,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "相同体积变化对应更大液面高度变化，便于观察。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "Godot按液体体膨胀和细管截面积计算液面位移；管越细，位移越大。",
+      "limitation": "体膨胀系数为指定温区题设，忽略瓶管自身热膨胀；自制装置仍需标准温度点标定。"
     }
   },
   {
@@ -2584,37 +2883,78 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "measurement",
     "modelParams": {
-      "scenario": "temperature",
+      "scenario": "thermometerPractice",
       "variant": "water-thermometer"
     },
-    "modelNote": "读数按给定分度值取整并示范零点修正；估读能力、视差和真实测量误差需结合器材训练。",
+    "modelNote": "不虚构错误操作的固定偏高/偏低数值，未计算玻璃泡热惯性或杯壁温度分布。",
     "controls": [
       {
-        "key": "value",
-        "label": "待测量",
+        "key": "temperature",
+        "label": "待测液体温度",
         "unit": "℃",
         "min": -10,
         "max": 100,
-        "step": 0.1,
+        "step": 1,
         "value": 35
       },
       {
-        "key": "division",
-        "label": "分度值",
-        "unit": "℃",
-        "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
+        "key": "immersion",
+        "label": "玻璃泡位置",
+        "options": [
+          {
+            "value": "proper",
+            "label": "浸入，不碰壁底"
+          },
+          {
+            "value": "wall",
+            "label": "碰到杯壁"
+          },
+          {
+            "value": "bottom",
+            "label": "碰到杯底"
+          },
+          {
+            "value": "outside",
+            "label": "离开液体"
+          }
+        ],
+        "value": "proper",
+        "placement": "scene"
       },
       {
-        "key": "zero",
-        "label": "零点偏移",
-        "unit": "℃",
-        "min": -5,
-        "max": 5,
-        "step": 0.1,
-        "value": 0
+        "key": "eyeLevel",
+        "label": "视线位置",
+        "options": [
+          {
+            "value": "high",
+            "label": "高于液柱上端"
+          },
+          {
+            "value": "level",
+            "label": "与液柱上端相平"
+          },
+          {
+            "value": "low",
+            "label": "低于液柱上端"
+          }
+        ],
+        "value": "level",
+        "placement": "scene"
+      },
+      {
+        "key": "stable",
+        "label": "示数状态",
+        "options": [
+          {
+            "value": true,
+            "label": "已经稳定"
+          },
+          {
+            "value": false,
+            "label": "尚未稳定"
+          }
+        ],
+        "value": true
       }
     ],
     "workedExample": {
@@ -2639,6 +2979,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "温度计需要与被测物体达到近似热平衡，过早读数会有响应误差。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "可改变浸入位置、视线和稳定状态；错误操作不允许生成有效温度记录。",
+      "limitation": "不虚构错误操作的固定偏高/偏低数值，未计算玻璃泡热惯性或杯壁温度分布。"
     }
   },
   {
@@ -2751,6 +3100,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "它们膨胀量不同却结合在一起，受到相互约束而形成弯曲。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "比较两材料自由伸长量与弯曲方向。",
+      "limitation": "方向示意不等于双层梁曲率计算，不能将指针位置当作校准温度。"
     }
   },
   {
@@ -2866,6 +3224,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，吸收的热量用于物态变化。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始加热"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "温度与冰水比例随加热时间推进，保持0℃平台。",
+      "limitation": "理想纯水焓模型，不计容器吸热与散热；相变平台须同时改变固液比例。"
     }
   },
   {
@@ -2997,6 +3365,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "观察固液共存并持续吸热时是否存在稳定温度平台，同时排除实验条件变化。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始加热"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "选择冰、海波或石蜡，比较温度曲线与状态。",
+      "limitation": "海波和石蜡采用教学近似，不将混合物平台当精确材料相图。"
     }
   },
   {
@@ -3006,7 +3384,7 @@ window.LAB_CATALOG.push(...[
     "chapter": "第三章 物态变化",
     "section": "3.2",
     "title": "水与酒精混合液的低温现象",
-    "kind": "小实验",
+    "kind": "资料分析",
     "tags": [
       "练习与应用"
     ],
@@ -3045,43 +3423,26 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "phase",
     "modelParams": {
-      "scenario": "mixture",
+      "scenario": "mixtureObservation",
       "variant": "freezing-mixture"
     },
-    "modelNote": "定性比较纯水与水酒精混合液的凝固行为，不由浓度计算未经核验的精确凝固点；状态判断还取决于温度，进度只表示观察过程。",
+    "modelNote": "资料分析情境，不是任意酒精浓度的相图预测；没有捏造精确凝固点或凝固时间。",
     "controls": [
       {
-        "key": "concentration",
-        "label": "乙醇质量分数（题设）",
-        "unit": "%",
-        "min": 0,
-        "max": 30,
-        "step": 1,
-        "value": 10
-      },
-      {
-        "key": "action",
-        "label": "变化过程",
+        "key": "stage",
+        "label": "查看题设观察",
         "options": [
           {
-            "value": "warming",
-            "label": "温热"
+            "value": "before",
+            "label": "进入冷浴前"
           },
           {
-            "value": "cooling",
-            "label": "冷却"
+            "value": "cooled",
+            "label": "同一冷浴中的观察"
           }
         ],
-        "value": "cooling"
-      },
-      {
-        "key": "progress",
-        "label": "观察进度",
-        "unit": "",
-        "min": 0,
-        "max": 1,
-        "step": 0.05,
-        "value": 0.5
+        "value": "before",
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -3106,6 +3467,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不一定，它可能不是纯水，或者存在其他影响凝固的条件。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "查看同室温与同冷浴两阶段：题设中纯水出现冰、给定含酒精样品仍流动。",
+      "limitation": "资料分析情境，不是任意酒精浓度的相图预测；没有捏造精确凝固点或凝固时间。"
     }
   },
   {
@@ -3206,6 +3576,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "部分蒸气液化，气体物质的量减少，外界压力使软袋收缩。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "手动改变温热/冷却和观察阶段，软袋鼓缩。",
+      "limitation": "只呈现汽化液化方向，不计算真实压力、质量或体积变化。"
     }
   },
   {
@@ -3330,6 +3709,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "输入能量主要用于汽化，而不是继续提高液体温度。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始加热"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "按引擎时间序列更新温度、气泡和物态。",
+      "limitation": "气泡外形只作现象示意，不模拟气泡成核；气压与沸点关系有范围限制。"
     }
   },
   {
@@ -3451,6 +3840,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，关键是有水时纸的温度可能未达到燃点。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始加热"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "水温随受热时间变化，沸腾阶段保留平台。",
+      "limitation": "不含纸张燃烧、干锅后着火与热传导模型，不可据画面证明纸锅一定安全。"
     }
   },
   {
@@ -3503,7 +3902,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "evaporation",
       "variant": "evaporative-cooling"
     },
-    "modelNote": "数值曲线采用给定物质的理想热量与状态关系；忽略散热、过冷和加热器惯性，平台表示相变中仍在吸热或放热。",
+    "modelNote": "液柱仅作降温方向示意，无精确温差刻度；引擎未求真实失水量与冷却温度。",
     "controls": [
       {
         "key": "initial",
@@ -3531,6 +3930,38 @@ window.LAB_CATALOG.push(...[
         "max": 5,
         "step": 0.1,
         "value": 1
+      },
+      {
+        "key": "wet",
+        "label": "表面条件",
+        "options": [
+          {
+            "value": true,
+            "label": "湿润表面"
+          },
+          {
+            "value": false,
+            "label": "干燥对照"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
+      },
+      {
+        "key": "stage",
+        "label": "观察阶段",
+        "options": [
+          {
+            "value": "before",
+            "label": "蒸发前"
+          },
+          {
+            "value": "after",
+            "label": "蒸发后"
+          }
+        ],
+        "value": "before",
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -3555,6 +3986,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "水蒸发吸热，通风带走附近水蒸气，有助于持续蒸发。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "干湿对照与蒸发前后阶段改变温度计相对液柱，风速等条件影响蒸发趋势。",
+      "limitation": "液柱仅作降温方向示意，无精确温差刻度；引擎未求真实失水量与冷却温度。"
     }
   },
   {
@@ -3657,6 +4097,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "通常来自周围空气中的水蒸气，在冷瓶表面液化。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "瓶壁温度低于给定露点时出现外壁水滴。",
+      "limitation": "露点为给定条件；没有由相对湿度求露点或计算水滴长大。"
     }
   },
   {
@@ -3758,6 +4207,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "气态碘直接转为固态，属于凝华。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "温热/冷却及阶段控件即时切换固体和紫色蒸气示意。",
+      "limitation": "不计算升华速率；粒子数是观察阶段示意而非物质的量。"
     }
   },
   {
@@ -3845,6 +4303,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，通常由空气中的水蒸气在冷表面形成冰晶。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "按表面温度条件辨认结霜与结露。",
+      "limitation": "缺空气水蒸气含量条件；低于0℃并不保证实际结霜。"
     }
   },
   {
@@ -3891,57 +4358,93 @@ window.LAB_CATALOG.push(...[
     "safety": [
       "网页仅模拟；真实厨房活动由成人指导，注意蒸汽烫伤。"
     ],
-    "model": "phase",
+    "model": "thermal",
     "modelParams": {
-      "scenario": "boiling",
+      "scenario": "kitchenHeat",
       "variant": "kitchen-phase"
     },
-    "modelNote": "数值曲线采用给定物质的理想热量与状态关系；忽略散热、过冷和加热器惯性，平台表示相变中仍在吸热或放热。",
+    "modelNote": "总热导是题设；不含锅体热容、冷却时蒸发与冷凝量。水耗尽即停止液态水计算。",
     "controls": [
       {
+        "key": "activity",
+        "label": "观察内容",
+        "options": [
+          {
+            "value": "heating",
+            "label": "加热水"
+          },
+          {
+            "value": "lid",
+            "label": "锅盖液化"
+          },
+          {
+            "value": "cooling",
+            "label": "关火冷却"
+          }
+        ],
+        "value": "heating",
+        "placement": "scene"
+      },
+      {
+        "key": "covered",
+        "label": "锅盖状态",
+        "options": [
+          {
+            "value": true,
+            "label": "加盖"
+          },
+          {
+            "value": false,
+            "label": "敞口"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
+      },
+      {
         "key": "mass",
-        "label": "样品质量",
+        "label": "水质量",
         "unit": "kg",
-        "min": 0.05,
+        "min": 0.1,
         "max": 1,
-        "step": 0.05,
-        "value": 0.1
-      },
-      {
-        "key": "power",
-        "label": "加热/放热功率",
-        "unit": "W",
-        "min": 10,
-        "max": 200,
-        "step": 10,
-        "value": 100
-      },
-      {
-        "key": "time",
-        "label": "时间",
-        "unit": "s",
-        "min": 0,
-        "max": 500,
-        "step": 10,
-        "value": 500
+        "step": 0.1,
+        "value": 0.3
       },
       {
         "key": "initial",
-        "label": "初温",
+        "label": "初始水温",
         "unit": "℃",
-        "min": -20,
-        "max": 90,
+        "min": 20,
+        "max": 95,
         "step": 1,
-        "value": 20
+        "value": 80
       },
       {
-        "key": "pressure",
-        "label": "外界压强",
-        "unit": "kPa",
-        "min": 60,
-        "max": 110,
-        "step": 0.1,
-        "value": 101.3
+        "key": "power",
+        "label": "加热功率",
+        "unit": "W",
+        "min": 0,
+        "max": 500,
+        "step": 10,
+        "value": 300
+      },
+      {
+        "key": "time",
+        "label": "观察时间",
+        "unit": "s",
+        "min": 0,
+        "max": 600,
+        "step": 10,
+        "value": 300
+      },
+      {
+        "key": "ambient",
+        "label": "环境温度",
+        "unit": "℃",
+        "min": 10,
+        "max": 30,
+        "step": 1,
+        "value": 20
       }
     ],
     "workedExample": {
@@ -3966,6 +4469,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "水蒸气遇到较冷锅盖变成液态水，属于液化。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "观察温度与物态"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "加盖/敞口与加热/冷却操作进入Godot时步热量守恒，温度、汽化质量和锅盖水滴联动。",
+      "limitation": "总热导是题设；不含锅体热容、冷却时蒸发与冷凝量。水耗尽即停止液态水计算。"
     }
   },
   {
@@ -4052,6 +4565,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，主光束向前传播，少量散射光进入眼睛使路径可见。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变入射方向后均匀介质内光束沿直线变化。",
+      "limitation": "只展示均匀介质中的路径，不在这个模型求玻璃边界折射。"
     }
   },
   {
@@ -4155,6 +4677,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "得到约4 cm高的倒立实像。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变物距、屏距与物高，几何光路直接更新倒立像。",
+      "limitation": "忽略孔径、衍射与清晰度；屏幕承接的是小孔投影。"
     }
   },
   {
@@ -4258,6 +4789,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "在光源和屏位置不变时，影子通常变大。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "调整物距、屏距和物高比较影子大小。",
+      "limitation": "简化点光源与遮挡物，不含手形调整或半影。"
     }
   },
   {
@@ -4321,6 +4861,22 @@ window.LAB_CATALOG.push(...[
         "max": 85,
         "step": 1,
         "value": 30
+      },
+      {
+        "key": "folded",
+        "label": "右半纸板状态",
+        "options": [
+          {
+            "value": false,
+            "label": "展开，共面"
+          },
+          {
+            "value": true,
+            "label": "向后折转"
+          }
+        ],
+        "value": false,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -4345,6 +4901,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "反射角60°。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "调入射角并折转右半纸板，比较反射角及共面条件。",
+      "limitation": "折板后看不见反射线不表示光线消失；镜面和光源保持不动。"
     }
   },
   {
@@ -4361,16 +4926,16 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "改变观察方向比较明暗。",
+    "objective": "改变入射光与表面倾斜程度，逐处检查漫反射仍遵守反射定律。",
     "apparatus": [
       "镜子",
       "白纸",
       "光源"
     ],
     "steps": [
-      "把光照到平面镜与白纸。",
-      "从不同方向观察明暗。",
-      "用微小面元解释粗糙表面反射。"
+      "保持各处入射光平行，观察六个小表面的局部法线。",
+      "改变表面倾斜幅度，逐处比较入射角和反射角。",
+      "将倾斜幅度调为0，比较平整表面与粗糙表面的反射方向。"
     ],
     "observations": [
       "镜面反射较集中；粗糙表面可把光反射向多个方向。"
@@ -4393,19 +4958,29 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "optics",
     "modelParams": {
-      "scenario": "reflection",
+      "scenario": "diffuse",
       "variant": "diffuse-reflection"
     },
-    "modelNote": "每个局部表面仍满足反射定律；入射角滑杆控制一条局部光线，粗糙表面不同法线造成向多个方向反射，不模拟真实粗糙度统计。",
+    "modelNote": "六个独立小表面的几何光学示意，不计算表面之间的遮挡和多次反射。入射角和反射角始终相对局部法线测量。",
     "controls": [
       {
         "key": "angle",
-        "label": "入射角",
+        "label": "光束入射方向",
         "unit": "°",
         "min": 0,
-        "max": 85,
+        "max": 60,
         "step": 1,
         "value": 30
+      },
+      {
+        "key": "roughness",
+        "label": "局部法线起伏幅度",
+        "unit": "°",
+        "min": 0,
+        "max": 25,
+        "step": 1,
+        "value": 15,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -4430,6 +5005,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "纸面微观粗糙，各小面的反射方向不同，使不同方向的人都能接收到光。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "入射方向、六处局部法线和反射方向由Godot逐一计算；倾斜幅度为0时退化为镜面反射。",
+      "limitation": "六个独立小表面示意，不计算表面间遮挡、多次反射或实际亮度。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -4525,6 +5114,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "它把外来车灯光较集中地反射回附近观察方向。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "手动切换入射、一次反射与二次反射光路。",
+      "limitation": "二维直角双镜不等同于任意空间方向均回返的三镜角反射器。"
     }
   },
   {
@@ -4541,7 +5139,7 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "用等大物替代定位，再尝试用屏承接。",
+    "objective": "独立移动等大的替代蜡烛定位虚像，改变观察高度，并用光屏检验。",
     "apparatus": [
       "玻璃板",
       "等大物体",
@@ -4549,9 +5147,10 @@ window.LAB_CATALOG.push(...[
       "光屏"
     ],
     "steps": [
-      "竖直放置薄玻璃板。",
-      "用等大物体在板后移动，寻找与像重合的位置。",
-      "比较物像距离并用屏尝试承接。"
+      "保持薄玻璃板竖直，设置镜前物距和物高。",
+      "调节镜后替代蜡烛的位置，直到与虚像重合。",
+      "改变观察高度，检查像的位置和重合判断是否改变。",
+      "放置镜后光屏，观察它不能承接平面镜虚像，再比较像距和物距。"
     ],
     "observations": [
       "像与物等大，关于镜面对称；光屏不能承接该像。"
@@ -4575,28 +5174,63 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "optics",
     "modelParams": {
-      "scenario": "mirror",
+      "scenario": "mirrorCompare",
       "variant": "plane-mirror"
     },
-    "modelNote": "采用几何光学光线，角度从法线量起；忽略衍射、光束宽度和实际装置像差。",
+    "modelNote": "理想薄玻璃板的前表面反射，忽略厚玻璃板产生的重影。光线由Godot按对称关系求交；替代蜡烛滑块是位置操作，±0.5 cm仅为屏幕判断容差。",
     "controls": [
       {
         "key": "distance",
-        "label": "物距",
+        "label": "物体到镜面距离",
         "unit": "cm",
-        "min": 1,
-        "max": 100,
+        "min": 10,
+        "max": 60,
         "step": 1,
         "value": 30
       },
       {
         "key": "height",
-        "label": "物高",
+        "label": "物体高度",
         "unit": "cm",
-        "min": 1,
-        "max": 20,
-        "step": 1,
+        "min": 2,
+        "max": 10,
+        "step": 0.5,
         "value": 5
+      },
+      {
+        "key": "secondDistance",
+        "label": "替代蜡烛到镜面距离",
+        "unit": "cm",
+        "min": 10,
+        "max": 60,
+        "step": 1,
+        "value": 25,
+        "placement": "scene"
+      },
+      {
+        "key": "screen",
+        "label": "是否放光屏",
+        "options": [
+          {
+            "value": false,
+            "label": "移开光屏"
+          },
+          {
+            "value": true,
+            "label": "放入光屏"
+          }
+        ],
+        "value": false,
+        "placement": "scene"
+      },
+      {
+        "key": "eyeHeight",
+        "label": "观察点高度",
+        "unit": "cm",
+        "min": 2,
+        "max": 30,
+        "step": 1,
+        "value": 15
       }
     ],
     "workedExample": {
@@ -4621,6 +5255,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "人与像相距3.0 m。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "替代蜡烛距离、观察高度和光屏均可独立操作，反射光线与虚像延长线实时更新。",
+      "limitation": "理想薄玻璃板，忽略厚度重影；位置重合采用±0.5 cm屏幕操作容差。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -4713,6 +5361,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "两面的曲率方向不同，反射光束会聚或发散的情况不同。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "正负焦距切换凹/凸曲面镜，比较近轴成像。",
+      "limitation": "勺面不是精密球面镜；零焦距无意义，需排除或显示无有效成像。"
     }
   },
   {
@@ -4808,6 +5465,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "普通双平面镜潜望镜主要靠两次反射。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "按阶段显示两块平行镜面的两次反射。",
+      "limitation": "不模拟镜面有限尺寸造成的视场；无须再加自动开始。"
     }
   },
   {
@@ -4913,6 +5579,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "未发生全反射时，通常比入射角大。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "调入射角和两侧折射率，观察折射、反射及全反射。",
+      "limitation": "几何光学理想界面，忽略光强分配和实际光束宽度。"
     }
   },
   {
@@ -5026,6 +5701,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "搅匀减小折射率的空间差异，使介质更接近均匀。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变上下折射率后使用引擎逐层光线坐标。",
+      "limitation": "折射率剖面是给定条件，不由实际盐水浓度求解。"
     }
   },
   {
@@ -5042,16 +5726,17 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "观察色带与不同色光偏折差异。",
+    "objective": "追踪不同色光通过三棱镜各界面的路径，比较色散和全反射条件。",
     "apparatus": [
       "白光源",
       "三棱镜",
       "白屏"
     ],
     "steps": [
-      "用窄白光照射三棱镜。",
-      "在屏上观察光带。",
-      "比较各色光的偏折与组合光。"
+      "设置白光的入射角与棱镜顶角。",
+      "观察各色光第一次和第二次折射后的传播方向。",
+      "比较题设不同折射率对应的偏向角。",
+      "改变角度，若发生全反射，观察后续路径，不能继续套直接出射公式。"
     ],
     "observations": [
       "白光经过棱镜后可分成不同颜色的光带。"
@@ -5075,19 +5760,28 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "optics",
     "modelParams": {
-      "scenario": "dispersion",
+      "scenario": "prism",
       "variant": "prism-spectrum"
     },
-    "modelNote": "采用几何光学光线，角度从法线量起；忽略衍射、光束宽度和实际装置像差。",
+    "modelNote": "二维几何光学、空气折射率1、题设均匀三棱镜。颜色是离散示意，不是连续光谱。没有把单界面偏折当作完整棱镜偏向角；全反射后不再套用直接出射的偏向角公式。",
     "controls": [
       {
-        "key": "angle",
-        "label": "入射角",
+        "key": "incidence",
+        "label": "棱镜入射角",
         "unit": "°",
-        "min": 0,
-        "max": 85,
+        "min": 30,
+        "max": 65,
         "step": 1,
-        "value": 30
+        "value": 50
+      },
+      {
+        "key": "apex",
+        "label": "棱镜顶角",
+        "unit": "°",
+        "min": 50,
+        "max": 65,
+        "step": 1,
+        "value": 60
       }
     ],
     "workedExample": {
@@ -5112,6 +5806,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不同色光的折射程度不同，出射方向分离。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "六个题设折射率分别进行棱镜界面追迹，包含两次折射以及必要的全反射和后续出射。",
+      "limitation": "离散色光与题设折射率，不是实测玻璃的连续光谱；未建模光强和吸收。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -5214,6 +5922,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "可呈黄色；这是色光叠加的结果。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "红绿蓝通道即时混合，零值和满值均有明确颜色变化。",
+      "limitation": "通道值不是实测光功率，屏幕色彩受显示设备影响。"
     }
   },
   {
@@ -5262,50 +5979,68 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "thermal",
     "modelParams": {
-      "scenario": "heating",
+      "scenario": "infraredCompare",
       "variant": "infrared-heating"
     },
-    "modelNote": "用吸收的有效功率计算温升，不计算太阳光谱或探测器响应；真实太阳光色散实验中温升还受波段强度、位置和散热影响。",
+    "modelNote": "有效吸收功率是题设而非实测光谱；按能量关系求温升，忽略散热。",
     "controls": [
       {
-        "key": "mass",
-        "label": "质量",
-        "unit": "kg",
-        "min": 0.2,
-        "max": 1,
-        "step": 0.1,
-        "value": 0.4
+        "key": "position",
+        "label": "实验温度计位置",
+        "options": [
+          {
+            "value": "red",
+            "label": "红光区"
+          },
+          {
+            "value": "outsideRed",
+            "label": "红光外侧"
+          },
+          {
+            "value": "shade",
+            "label": "移入阴影"
+          }
+        ],
+        "value": "outsideRed",
+        "placement": "scene"
       },
       {
-        "key": "capacity",
-        "label": "比热容",
-        "unit": "J/(kg·℃)",
-        "min": 2000,
-        "max": 4500,
-        "step": 100,
-        "value": 4200
+        "key": "blocked",
+        "label": "额外遮光片",
+        "options": [
+          {
+            "value": false,
+            "label": "移开"
+          },
+          {
+            "value": true,
+            "label": "放入"
+          }
+        ],
+        "value": false,
+        "placement": "scene"
       },
       {
-        "key": "power",
-        "label": "有效吸收功率",
+        "key": "absorbedPower",
+        "label": "红外区有效吸收功率（题设）",
         "unit": "W",
-        "min": 10,
-        "max": 100,
-        "step": 10,
-        "value": 30
+        "min": 0,
+        "max": 0.1,
+        "step": 0.005,
+        "value": 0.06
       },
       {
         "key": "time",
-        "label": "加热时间",
+        "label": "照射时长",
         "unit": "s",
         "min": 0,
-        "max": 120,
+        "max": 180,
         "step": 5,
-        "value": 60
+        "value": 120
       },
       {
         "key": "initial",
-        "label": "初温",
+        "label": "两个探测器初温",
         "unit": "℃",
         "min": 10,
         "max": 30,
@@ -5335,6 +6070,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "说明可见红光之外仍有能够携带能量的辐射。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始照射"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "移动温度计到红光、红光外侧或阴影，并加遮光片，与同初温遮光对照比较。",
+      "limitation": "有效吸收功率是题设而非实测光谱；按能量关系求温升，忽略散热。"
     }
   },
   {
@@ -5415,6 +6160,22 @@ window.LAB_CATALOG.push(...[
         "max": 10,
         "step": 0.5,
         "value": 3
+      },
+      {
+        "key": "scenario",
+        "label": "透镜类型",
+        "options": [
+          {
+            "value": "convex",
+            "label": "凸透镜"
+          },
+          {
+            "value": "concave",
+            "label": "凹透镜"
+          }
+        ],
+        "value": "convex",
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -5439,6 +6200,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "与主光轴平行的近轴光线，经理想凸透镜后通过像方焦点。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "凸/凹透镜选项改变会聚与发散光路。",
+      "limitation": "理想薄透镜，不含像差；需确保凹透镜选项实际传入引擎。"
     }
   },
   {
@@ -5455,7 +6225,7 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "分区改变物距，记录像的虚实、大小、方向与像距。",
+    "objective": "独立改变物距和屏距，寻找清晰像，分区比较凸透镜成像规律。",
     "apparatus": [
       "光具座",
       "LED物体",
@@ -5463,9 +6233,10 @@ window.LAB_CATALOG.push(...[
       "光屏"
     ],
     "steps": [
-      "先使物体、光心和光屏中心近似同高。",
-      "分区改变物距并寻找清晰像。",
-      "记录像距、大小、方向与能否用屏承接。"
+      "设置焦距、物距与物高，保持示意装置光心同高。",
+      "独立调节光屏距离，观察光源顶端的光线能否在屏上会聚。",
+      "在找到清晰像时记录屏距与像的大小、方向。",
+      "比较物距大于二倍焦距、位于一倍与二倍焦距间、等于焦距和小于焦距的情形。"
     ],
     "observations": [
       "物距跨过焦距和二倍焦距时，像的性质发生变化。"
@@ -5488,10 +6259,10 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "lens",
     "modelParams": {
-      "scenario": "convex",
+      "scenario": "imagingBench",
       "variant": "convex-imaging"
     },
-    "modelNote": "采用理想薄透镜模型，忽略像差；焦点处无有限像距。画面与实物装置比例不同，不能据示意图直接量出真实焦距。",
+    "modelNote": "理想薄凸透镜、近轴光线；光源顶端三条示意光线通过透镜不同高度。光屏在理论像距±0.5 cm内判为清晰，这是操作容差。图外光线被视口裁切，不改变理论像距。",
     "controls": [
       {
         "key": "focal",
@@ -5519,6 +6290,16 @@ window.LAB_CATALOG.push(...[
         "max": 10,
         "step": 0.5,
         "value": 3
+      },
+      {
+        "key": "screenDistance",
+        "label": "光屏到透镜距离",
+        "unit": "cm",
+        "min": 2,
+        "max": 120,
+        "step": 1,
+        "value": 25,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -5543,6 +6324,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "像位于f与2f之间，是倒立缩小实像。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "物体、透镜和光屏位置独立，三条近轴光线由Godot计算；光屏对焦与虚像不能承接均可操作检验。",
+      "limitation": "理想近轴薄透镜，采用±0.5 cm操作容差；图外光线裁切不改变实际计算像距。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -5559,16 +6354,17 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "移动笔比较圆柱透镜在横向的成像变化。",
+    "objective": "改变文字与圆柱水瓶的距离，比较横向成像变化与竖直方向。",
     "apparatus": [
-      "透明圆柱瓶",
-      "水",
-      "笔"
+      "透明圆柱水瓶",
+      "文字卡",
+      "刻度尺"
     ],
     "steps": [
-      "通过盛水的透明圆柱瓶观察笔。",
-      "移动笔与瓶子的距离。",
-      "比较水平方向与竖直方向的变形。"
+      "观察原文字的宽度与高度。",
+      "改变文字与瓶的距离，并比较不同题设水平焦距。",
+      "观察瓶中视野内的横向放大、缩小或反向，竖直高度保持不变。",
+      "当物在焦点处时，记录没有有限距离清晰像，不能填写虚构放大率。"
     ],
     "observations": [
       "圆柱形水体主要在一个方向产生明显会聚作用。"
@@ -5591,37 +6387,28 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "lens",
     "modelParams": {
-      "scenario": "convex",
+      "scenario": "cylinder",
       "variant": "bottle-lens"
     },
-    "modelNote": "瓶中水的局部凸曲面以薄凸透镜近似；真实瓶壁通常有柱面像差，不是所有方向都有相同焦距。",
+    "modelNote": "用题设焦距的理想薄柱透镜解释圆柱瓶现象，忽略厚壁、像差和瓶底曲面。焦点处没有有限距离的清晰像；瓶内窗口裁切超出视野的文字，不伪造有限放大率。",
     "controls": [
       {
         "key": "focal",
-        "label": "焦距大小",
+        "label": "水瓶水平等效焦距",
         "unit": "cm",
-        "min": 5,
-        "max": 30,
-        "step": 1,
-        "value": 10
+        "min": 4,
+        "max": 15,
+        "step": 0.5,
+        "value": 8
       },
       {
         "key": "distance",
-        "label": "物距",
+        "label": "文字到水瓶距离",
         "unit": "cm",
-        "min": 1,
-        "max": 80,
-        "step": 1,
-        "value": 30
-      },
-      {
-        "key": "height",
-        "label": "物高",
-        "unit": "cm",
-        "min": 1,
-        "max": 10,
+        "min": 2,
+        "max": 20,
         "step": 0.5,
-        "value": 3
+        "value": 4
       }
     ],
     "workedExample": {
@@ -5646,6 +6433,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "圆柱曲面在不同方向的曲率不同，对光线会聚的作用也不同。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "Godot计算薄柱透镜的水平像距和放大率，SVG仅横向缩放文字，竖向倍率恒为1。",
+      "limitation": "理想薄柱透镜解释圆柱瓶，忽略厚壁与像差；超出视野的像按窗口裁切。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -5724,6 +6525,16 @@ window.LAB_CATALOG.push(...[
         "max": 10,
         "step": 0.5,
         "value": 3
+      },
+      {
+        "key": "cover",
+        "label": "不透光纸片遮挡比例",
+        "unit": "%",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "value": 40,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -5748,6 +6559,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "通常不会，完整像仍可形成，但亮度降低。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "遮挡比例独立控制透镜通光部分，完整像随通光减少变暗。",
+      "limitation": "亮度只是按通光比例的相对示意，不计算衍射或真实照度。"
     }
   },
   {
@@ -5764,15 +6584,16 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "记录个体能清楚观察文字的最近距离。",
+    "objective": "记录本人用文字与刻度尺测得的近点，整理三次观察结果。",
     "apparatus": [
       "文字",
       "刻度尺"
     ],
     "steps": [
-      "选择清晰文字作为目标。",
-      "缓慢改变观察距离。",
-      "记录可以看清的最近距离并比较重复观察。"
+      "用实际文字和刻度尺测量，寻找最近仍能清楚观察的位置。",
+      "把第一次距离填入网页，并标记本次清楚或模糊。",
+      "若本次仍模糊，重新寻找最近的清晰位置，不把该距离作为近点。",
+      "填写另两次清晰近点记录，计算平均值并比较一致性。"
     ],
     "observations": [
       "不同观察者的清晰观察范围可能不同。"
@@ -5794,39 +6615,56 @@ window.LAB_CATALOG.push(...[
     "safety": [
       "使用对应教学器材，涉及加热、玻璃或光源时由教师指导。"
     ],
-    "model": "lens",
+    "model": "measurement",
     "modelParams": {
-      "scenario": "eye",
+      "scenario": "nearPoint",
       "variant": "near-point"
     },
-    "modelNote": "薄透镜计算仅表示简化镜片成像关系，眼睛近点需由本人清晰观察范围实际测定；不根据焦距滑杆诊断视力或预测个人近点。",
+    "modelNote": "个人观察记录工具，不建立人的清晰/模糊阈值模型；网页示意距离不是屏幕到眼睛的实际距离。",
     "controls": [
       {
-        "key": "focal",
-        "label": "焦距大小",
+        "key": "observedDistance",
+        "label": "第一次清晰观察距离",
         "unit": "cm",
         "min": 5,
-        "max": 30,
+        "max": 50,
         "step": 1,
-        "value": 10
+        "value": 15,
+        "placement": "scene"
       },
       {
-        "key": "distance",
-        "label": "物距",
-        "unit": "cm",
-        "min": 1,
-        "max": 80,
-        "step": 1,
-        "value": 30
+        "key": "clarity",
+        "label": "本人观察文字是否清楚",
+        "options": [
+          {
+            "value": "clear",
+            "label": "清楚，可记录"
+          },
+          {
+            "value": "blurred",
+            "label": "模糊，需移远"
+          }
+        ],
+        "value": "clear",
+        "placement": "scene"
       },
       {
-        "key": "height",
-        "label": "物高",
+        "key": "trial2",
+        "label": "第二次记录",
         "unit": "cm",
-        "min": 1,
-        "max": 10,
-        "step": 0.5,
-        "value": 3
+        "min": 5,
+        "max": 50,
+        "step": 1,
+        "value": 15
+      },
+      {
+        "key": "trial3",
+        "label": "第三次记录",
+        "unit": "cm",
+        "min": 5,
+        "max": 50,
+        "step": 1,
+        "value": 16
       }
     ],
     "workedExample": {
@@ -5851,6 +6689,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能，课堂观察只涉及一项功能，不能替代专业检查。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "示意纸卡位置随输入距离移动；记录主观清楚/模糊与三次测量，只对本人确认的清晰记录求平均。",
+      "limitation": "观察记录工具，不模拟个人视觉阈值；网页距离不是屏幕到眼的真实距离，不用于诊断。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -5955,6 +6807,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "约+200度；仅作光学示例。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "焦距输入后比较透镜类型与屈光能力。",
+      "limitation": "处方验光不等同于单片理想透镜计算；真实镜片厚度与像差忽略。"
     }
   },
   {
@@ -5971,7 +6832,7 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "调整屏位置模拟视网膜，再加凸透镜恢复清晰像。",
+    "objective": "比较题设远视模型中像在视网膜后与加入适当凸透镜后的光路。",
     "apparatus": [
       "凸透镜",
       "可移动屏",
@@ -5979,9 +6840,10 @@ window.LAB_CATALOG.push(...[
       "物体"
     ],
     "steps": [
-      "用透镜和固定光屏模拟眼睛。",
-      "使像位于屏后，模拟远视成像偏差。",
-      "在前方加入适当凸透镜使像回到屏上。"
+      "先取下矫正镜，观察近物的会聚点相对固定视网膜的位置。",
+      "戴上矫正镜，从正屈光度开始调节。",
+      "观察两透镜共同作用后的会聚点能否回到视网膜附近。",
+      "改变题设条件，比较镜片单独成像与完整眼球系统的区别。"
     ],
     "observations": [
       "加合适凸透镜后光线会聚能力增强，可使清晰像回到视网膜位置。"
@@ -6005,52 +6867,94 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "lens",
     "modelParams": {
-      "scenario": "hyperopia",
-      "variant": "hyperopia-correction"
+      "scenario": "correctedEye",
+      "variant": "hyperopia-correction",
+      "type": "hyperopia",
+      "retinaDistance": 0.017
     },
-    "modelNote": "数值输出为凸透镜单独成像参数；眼球与矫正光路只作定性示意，不能用于视力诊断或配镜。远视矫正镜使入眼光先适当会聚。",
+    "modelNote": "两个薄透镜的近轴模型，参数均为题设，不代表人的完整眼球和调节功能。显示的理想对焦屈光度仅用于本题，不是个人验光或配镜处方。±0.15 mm为画面判断容差。",
     "controls": [
       {
-        "key": "focal",
-        "label": "焦距大小",
-        "unit": "cm",
-        "min": 5,
-        "max": 30,
-        "step": 1,
-        "value": 10
+        "key": "objectDistance",
+        "label": "物体到眼镜距离",
+        "unit": "m",
+        "min": 0.25,
+        "max": 5,
+        "step": 0.25,
+        "value": 0.25
       },
       {
-        "key": "distance",
-        "label": "物距",
-        "unit": "cm",
-        "min": 1,
-        "max": 80,
-        "step": 1,
-        "value": 30
+        "key": "correctionPower",
+        "label": "矫正镜屈光度（题设）",
+        "unit": "D",
+        "min": -10,
+        "max": 10,
+        "step": 0.25,
+        "value": 0,
+        "placement": "scene"
+      },
+      {
+        "key": "withLens",
+        "label": "是否戴矫正镜",
+        "options": [
+          {
+            "value": false,
+            "label": "不戴镜"
+          },
+          {
+            "value": true,
+            "label": "戴镜"
+          }
+        ],
+        "value": false,
+        "placement": "scene"
+      },
+      {
+        "key": "eyePower",
+        "label": "眼球等效屈光度（题设）",
+        "unit": "D",
+        "min": 50,
+        "max": 66,
+        "step": 0.5,
+        "value": 56
       }
     ],
     "workedExample": {
       "title": "规范作答",
-      "given": "远视模型应加凸透镜还是凹透镜？",
+      "given": "题设远视模型观察近物时，光线在视网膜后会聚。",
       "steps": [
         {
-          "title": "明确要比较的条件",
-          "text": "调整屏位置模拟视网膜，再加凸透镜恢复清晰像。"
+          "title": "指出问题",
+          "text": "本题在当前物距下会聚不足，不能在视网膜上形成清晰像。"
         },
         {
-          "title": "指出观察证据",
-          "text": "加合适凸透镜后光线会聚能力增强，可使清晰像回到视网膜位置。"
+          "title": "选择镜片",
+          "text": "加入适当凸透镜，使进入眼内的光线先会聚。"
         },
         {
-          "title": "解释现象",
-          "text": "远视通常用凸透镜矫正；近视通常用凹透镜矫正。"
+          "title": "观察完整光路",
+          "text": "光线先经过矫正镜，再经过眼内透镜；两者共同使像向前移。"
         },
         {
-          "title": "完整回答",
-          "text": "加入适当凸透镜，使光束提前会聚。"
+          "title": "判断是否矫正",
+          "text": "以最终像回到视网膜位置附近为依据，不能只看矫正镜单独成像。"
         }
       ],
-      "answer": "加入适当凸透镜，使光束提前会聚。"
+      "answer": "加入合适凸透镜，使光线经过整个光学系统后在视网膜附近会聚。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "眼前矫正镜与眼内透镜分段计算，屏上显示实际模型焦点和视网膜散焦，不再使用固定会聚箭头。",
+      "limitation": "题设近轴双透镜模型，视网膜距眼内透镜17 mm；不模拟实际人的调节和诊断。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -6146,6 +7050,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "这种组合可获得较大的角放大作用，理想模型角放大率与两焦距之比有关。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "比较物镜/目镜焦距与角放大率、镜筒长度。",
+      "limitation": "结构图不按实际比例，不含视场和像差；角放大率不是像高比。"
     }
   },
   {
@@ -6251,6 +7164,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "弯曲水面使光折射，形状适合时可产生会聚作用。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "调水滴等效焦距、物距及目镜焦距比较两级放大。",
+      "limitation": "水滴形状和折射像差未求解；图像必须提示当前参数可能不形成有效中间实像。"
     }
   },
   {
@@ -6302,35 +7224,46 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "measurement",
     "modelParams": {
-      "scenario": "balance",
+      "scenario": "balancePractice",
       "variant": "balance-mass"
     },
-    "modelNote": "读数按给定分度值取整并示范零点修正；估读能力、视差和真实测量误差需结合器材训练。",
+    "modelNote": "指针偏角为方向示意，不是天平灵敏度标定；零点偏移需要单独修正。",
     "controls": [
       {
-        "key": "value",
-        "label": "待测量",
+        "key": "objectMass",
+        "label": "物体质量（教师设定）",
         "unit": "g",
         "min": 0,
-        "max": 200,
-        "step": 0.01,
-        "value": 12.34
+        "max": 100,
+        "step": 0.1,
+        "value": 37.6
       },
       {
-        "key": "division",
-        "label": "分度值",
+        "key": "weights",
+        "label": "右盘砝码总质量",
         "unit": "g",
-        "min": 0.01,
-        "max": 10,
-        "step": 0.01,
-        "value": 0.1
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "value": 35,
+        "placement": "scene"
+      },
+      {
+        "key": "rider",
+        "label": "游码读数",
+        "unit": "g",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "value": 0,
+        "placement": "scene"
       },
       {
         "key": "zero",
-        "label": "零点偏移",
+        "label": "空盘零点偏移",
         "unit": "g",
-        "min": -5,
-        "max": 5,
+        "min": -2,
+        "max": 2,
         "step": 0.1,
         "value": 0
       }
@@ -6357,6 +7290,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "质量为52.4 g。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "独立增加砝码和移动游码，指针随左右质量差改变；仅平衡时接受示数。",
+      "limitation": "指针偏角为方向示意，不是天平灵敏度标定；零点偏移需要单独修正。"
     }
   },
   {
@@ -6436,6 +7378,16 @@ window.LAB_CATALOG.push(...[
         "max": 5,
         "step": 0.1,
         "value": 0
+      },
+      {
+        "key": "count",
+        "label": "回形针个数",
+        "unit": "个",
+        "min": 1,
+        "max": 200,
+        "step": 1,
+        "value": 20,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -6460,6 +7412,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "单枚约0.40 g。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "将多个回形针总质量除以个数，比较累积法。",
+      "limitation": "个体质量可能不完全相同，结果是平均值；不模拟天平真实灵敏度。"
     }
   },
   {
@@ -6476,21 +7437,24 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8a-textbook"
     ],
-    "objective": "测若干规则样品并作质量—体积图像。",
+    "objective": "保持材料与状态相同，比较五块不同体积样品的质量，并与另一材料的m—V图线比较。",
     "apparatus": [
       "天平",
       "规则样品",
       "刻度尺"
     ],
     "steps": [
-      "测量同一种材料若干样品的质量和体积。",
-      "绘制质量—体积图像。",
-      "与另一种材料的图像比较。"
+      "选定一种均匀材料，保持温度和物态相同。",
+      "依次选择1～5号样品，观察体积与相应质量，整理五组模型数据。",
+      "比较各组m/V，观察m—V数据是否位于过原点的直线上。",
+      "换成另一材料作对照，比较同体积样品的质量与图线斜率。"
     ],
     "observations": [
-      "同种均匀材料的质量与体积近似成正比，不同材料图线斜率可不同。"
+      "同一材料的五组样品具有相同m/V比值。",
+      "改变样品大小不会改变同一种均匀材料的密度。",
+      "更换材料后，同体积质量和m—V图线斜率可改变。"
     ],
-    "conclusion": "密度是单位体积的质量，ρ=m/V。",
+    "conclusion": "同种均匀物质在相同温度与物态下，质量与体积成正比；m—V图线斜率为密度。",
     "examPoints": [
       "m—V图斜率为密度",
       "同种物质需考虑温度与状态"
@@ -6509,28 +7473,85 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "density",
     "modelParams": {
-      "scenario": "solid",
+      "scenario": "materialSeries",
       "variant": "mass-volume"
     },
-    "modelNote": "根据模型质量和体积计算密度；默认材料均匀、无吸水、无气泡，排水量按完全浸入的体积计算。",
+    "modelNote": "给定密度的理想均匀样品：铝2.7、铁7.9、题设木样0.6 g/cm³。木材密度依品种和含水量而异，此值只属于题设样品。数据由模型生成，不是实物天平测量结果；多组关系用于学习控制材料、作图和比较比值。",
     "controls": [
       {
-        "key": "mass",
-        "label": "质量",
-        "unit": "g",
-        "min": 1,
-        "max": 500,
-        "step": 1,
-        "value": 54
+        "key": "material",
+        "label": "当前材料",
+        "options": [
+          {
+            "value": "aluminum",
+            "label": "铝样品"
+          },
+          {
+            "value": "iron",
+            "label": "铁样品"
+          },
+          {
+            "value": "wood",
+            "label": "题设木样"
+          }
+        ],
+        "value": "aluminum"
       },
       {
-        "key": "volume",
-        "label": "体积",
+        "key": "comparisonMaterial",
+        "label": "对照材料",
+        "options": [
+          {
+            "value": "aluminum",
+            "label": "铝样品"
+          },
+          {
+            "value": "iron",
+            "label": "铁样品"
+          },
+          {
+            "value": "wood",
+            "label": "题设木样"
+          }
+        ],
+        "value": "iron"
+      },
+      {
+        "key": "volumeStep",
+        "label": "相邻样品的体积差",
         "unit": "cm³",
-        "min": 1,
-        "max": 200,
+        "min": 2,
+        "max": 20,
         "step": 1,
-        "value": 20
+        "value": 10
+      },
+      {
+        "key": "sampleIndex",
+        "label": "选取样品",
+        "options": [
+          {
+            "value": 1,
+            "label": "1号样品"
+          },
+          {
+            "value": 2,
+            "label": "2号样品"
+          },
+          {
+            "value": 3,
+            "label": "3号样品"
+          },
+          {
+            "value": 4,
+            "label": "4号样品"
+          },
+          {
+            "value": 5,
+            "label": "5号样品"
+          }
+        ],
+        "value": 3,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -6555,6 +7576,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "密度为2700 kg/m³。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改变条件后直接比较当前多组数据或稳态仪表；无需播放虚构的开始过程。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "材料选择决定同一组样品的密度；五组体积与质量成套生成，支持选择样品、两材料曲线和计算后显示m/V。",
+      "limitation": "给定密度的理想模型数据，不冒充实物天平实测；题设木样密度不推广为所有木材。",
+      "evidence": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
     }
   },
   {
@@ -6667,6 +7702,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "空气质量约180 kg。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "长宽高确定房间体积，再由空气密度估算质量。",
+      "limitation": "未扣除家具占据体积；密度随温度、压强、湿度变化。"
     }
   },
   {
@@ -6720,7 +7764,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "liquid",
       "variant": "saltwater-density"
     },
-    "modelNote": "根据模型质量和体积计算密度；默认材料均匀、无吸水、无气泡，排水量按完全浸入的体积计算。",
+    "modelNote": "根据模型质量和体积计算密度；默认材料均匀、无吸水、无气泡，排水量按完全浸入的体积计算。 本项操作范围：尚缺烧杯前后差量称重操作与残留液体误差检验。",
     "controls": [
       {
         "key": "mass",
@@ -6763,6 +7807,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "密度1100 kg/m³。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "needs-implementation",
+      "scope": "同一样品质量与体积用于计算密度。",
+      "limitation": "尚缺烧杯前后差量称重操作与残留液体误差检验。"
     }
   },
   {
@@ -6868,6 +7921,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "密度2.7 g/cm³。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "排水前后液位与石块质量对应密度计算。",
+      "limitation": "给定石块体积驱动画面；不含吸水、气泡和量筒凹液面视差。"
     }
   },
   {
@@ -6972,6 +8034,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "厚度约0.010 mm。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "质量、面积与材料密度共同决定平均厚度。",
+      "limitation": "要求材料均匀、平展、无孔，不能替代对实际密度的独立测量。"
     }
   },
   {
@@ -6996,9 +8067,10 @@ window.LAB_CATALOG.push(...[
       "橡皮筋"
     ],
     "steps": [
-      "分别压橡皮泥、拉伸弹簧。",
-      "撤去作用力观察能否恢复。",
-      "比较形状改变与材料弹性。"
+      "最大加载力设为0，观察试样初始形状。",
+      "设定本次试验的最大加载力，表示全新试样从零单调加载到该值。",
+      "保持最大加载力记录不变，切换到卸载后，观察能否恢复。",
+      "改变最大加载力或换用另一种试样时，从全新试样重新比较，不把滑块操作累计成塑性加载历史。"
     ],
     "observations": [
       "力可改变物体形状；有些形变撤力后恢复，有些不能完全恢复。"
@@ -7021,19 +8093,48 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "force",
     "modelParams": {
-      "scenario": "deformation",
-      "variant": "deformation"
+      "scenario": "deformation"
     },
-    "modelNote": "展示指定方向的力与合力；静态受力结果不等于物体实际运动轨迹。",
+    "modelNote": "一维弹性/塑性教学模型：每组最大力表示全新试样从零单调加载至该值，再观察最大加载时或完全卸载后，不累计滑块历史。初长或初高50 mm，弹性系数500 N/m，软材料屈服阈值2 N、硬化参数500 N/m为题设；横向两个尺寸同比例展宽并近似保持体积。用于区分弹性恢复和塑性残余，不是实际橡皮泥标定。",
     "controls": [
       {
+        "key": "material",
+        "label": "试样",
+        "options": [
+          {
+            "value": "spring",
+            "label": "理想弹簧"
+          },
+          {
+            "value": "clay",
+            "label": "有屈服阈值的软材料"
+          }
+        ],
+        "value": "spring"
+      },
+      {
         "key": "force",
-        "label": "向右力",
+        "label": "本次试验最大加载力",
         "unit": "N",
         "min": 0,
-        "max": 50,
+        "max": 8,
         "step": 0.5,
-        "value": 10
+        "value": 4
+      },
+      {
+        "key": "stage",
+        "label": "观察阶段",
+        "options": [
+          {
+            "value": "loaded",
+            "label": "加载时"
+          },
+          {
+            "value": "unloaded",
+            "label": "卸载后"
+          }
+        ],
+        "value": "loaded"
       }
     ],
     "workedExample": {
@@ -7058,6 +8159,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "两者都发生形变，但恢复性质不同；弹簧在弹性范围内能恢复。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "最大加载力规定全新试样的一次加载历史；直接选择最大加载时或完全卸载后比较。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "按压橡皮泥，拉压弹簧，比较外形变化。 操作步骤：最大加载力设为0，观察试样初始形状。；设定本次试验的最大加载力，表示全新试样从零单调加载到该值。；保持最大加载力记录不变，切换到卸载后，观察能否恢复。；改变最大加载力或换用另一种试样时，从全新试样重新比较，不把滑块操作累计成塑性加载历史。",
+      "limitation": "一维弹性/塑性教学模型：每组最大力表示全新试样从零单调加载至该值，再观察最大加载时或完全卸载后，不累计滑块历史。初长或初高50 mm，弹性系数500 N/m，软材料屈服阈值2 N、硬化参数500 N/m为题设；横向两个尺寸同比例展宽并近似保持体积。用于区分弹性恢复和塑性残余，不是实际橡皮泥标定。"
     }
   },
   {
@@ -7106,46 +8216,66 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "motion",
     "modelParams": {
-      "scenario": "force",
+      "scenario": "magnetDeflection",
       "variant": "magnet-ball"
     },
-    "modelNote": "当前动力学计算展示沿选定方向的外力使速度变化；磁力大小作为给定量，未按磁铁位置计算二维弯曲轨迹。磁体在旁侧使运动方向改变的实物观察见实验步骤。",
+    "modelNote": "软化吸力场为题设，不代表真实磁铁定量规律；轨迹由Godot积分。",
     "controls": [
       {
         "key": "mass",
-        "label": "质量",
+        "label": "小球质量",
         "unit": "kg",
-        "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
+        "min": 0.02,
+        "max": 0.2,
+        "step": 0.01,
+        "value": 0.05
       },
       {
         "key": "velocity",
-        "label": "初速度",
+        "label": "水平初速度",
         "unit": "m/s",
         "min": 0,
-        "max": 5,
+        "max": 1,
         "step": 0.1,
-        "value": 1
+        "value": 0.5
       },
       {
-        "key": "force",
-        "label": "拉力",
+        "key": "placement",
+        "label": "磁体位置",
+        "options": [
+          {
+            "value": "none",
+            "label": "移开磁体"
+          },
+          {
+            "value": "front",
+            "label": "放在前方"
+          },
+          {
+            "value": "side",
+            "label": "放在旁侧"
+          }
+        ],
+        "value": "side",
+        "placement": "scene"
+      },
+      {
+        "key": "strength",
+        "label": "吸力场强度（题设）",
         "unit": "N",
         "min": 0,
-        "max": 20,
-        "step": 0.1,
-        "value": 2
+        "max": 0.2,
+        "step": 0.01,
+        "value": 0.04
       },
       {
         "key": "duration",
         "label": "观察时长",
         "unit": "s",
         "min": 0.2,
-        "max": 5,
+        "max": 2,
         "step": 0.1,
-        "value": 2
+        "value": 1.2
       }
     ],
     "workedExample": {
@@ -7170,6 +8300,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "运动状态改变，合力不为零。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放小球"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "移开、前置、旁置磁体时实际二维刚体轨迹改变，旁置吸力使运动方向弯曲。",
+      "limitation": "软化吸力场为题设，不代表真实磁铁定量规律；轨迹由Godot积分。"
     }
   },
   {
@@ -7282,6 +8422,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "通常力臂较长，取得同样转动效果需要的力较小。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变作用点和垂直力臂后比较推门力矩。",
+      "limitation": "以杠杆为等效模型；缺不同施力方向对有效力臂的比较。"
     }
   },
   {
@@ -7333,16 +8482,43 @@ window.LAB_CATALOG.push(...[
       "scenario": "interaction",
       "variant": "magnet-carts"
     },
-    "modelNote": "展示指定方向的力与合力；静态受力结果不等于物体实际运动轨迹。",
+    "modelNote": "相互作用力给定且恒定，不按真实磁铁距离求磁力；力相等不代表加速度相等。",
     "controls": [
       {
+        "key": "mass1",
+        "label": "左车质量",
+        "unit": "kg",
+        "min": 0.1,
+        "max": 2,
+        "step": 0.1,
+        "value": 0.5
+      },
+      {
+        "key": "mass2",
+        "label": "右车质量",
+        "unit": "kg",
+        "min": 0.1,
+        "max": 2,
+        "step": 0.1,
+        "value": 0.5
+      },
+      {
         "key": "force",
-        "label": "向右力",
+        "label": "相互作用力（题设恒力）",
         "unit": "N",
         "min": 0,
-        "max": 50,
-        "step": 0.5,
-        "value": 10
+        "max": 2,
+        "step": 0.05,
+        "value": 0.5
+      },
+      {
+        "key": "duration",
+        "label": "观察时长",
+        "unit": "s",
+        "min": 0.2,
+        "max": 2,
+        "step": 0.1,
+        "value": 1
       }
     ],
     "workedExample": {
@@ -7367,6 +8543,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能。人对墙施力，墙也对人施力，使人运动状态改变。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "同时释放两车"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "两车在等大反向题设恒力下同时释放，实际位移和加速度随质量改变。",
+      "limitation": "相互作用力给定且恒定，不按真实磁铁距离求磁力；力相等不代表加速度相等。"
     }
   },
   {
@@ -7471,6 +8657,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "力为2.3 N。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "给定拉力使弹簧伸长，超弹性范围停止线性外推。",
+      "limitation": "缺调零、选量程和估读流程；不能按屏幕尺寸读真实弹簧长。"
     }
   },
   {
@@ -7575,6 +8770,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "把瓶体很小的体积变化转成较明显的液面高度变化。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "挤压作用与细管面积改变时液面放大位移变化。",
+      "limitation": "体积柔度为给定等效参数，不能反推真实玻璃应力或破裂极限。"
     }
   },
   {
@@ -7670,6 +8874,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "重力1.96 N，方向竖直向下。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "质量和重力场强度改变时重力读数与箭头更新。",
+      "limitation": "理想G=mg；真实弹簧测量误差未模拟。"
     }
   },
   {
@@ -7740,6 +8953,16 @@ window.LAB_CATALOG.push(...[
         "max": 10,
         "step": 0.1,
         "value": 9.8
+      },
+      {
+        "key": "tilt",
+        "label": "待测支架倾角",
+        "unit": "°",
+        "min": -25,
+        "max": 25,
+        "step": 1,
+        "value": 0,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -7764,6 +8987,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "静止悬线仍近似沿竖直方向，不随桌面倾斜。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "改变待测支架倾角，比较铅垂线与支架方向。",
+      "limitation": "重力一直竖直向下；原质量控件不足以完成水平/竖直判断。"
     }
   },
   {
@@ -7787,9 +9019,10 @@ window.LAB_CATALOG.push(...[
       "固定夹"
     ],
     "steps": [
-      "固定钢尺一端。",
-      "每次只改变拉力大小、方向或作用点中的一个。",
-      "比较弯曲程度和方向。"
+      "固定同一把钢尺，保持伸出长度为20 cm。",
+      "固定方向和作用点，改变拉力大小，比较弯曲程度。",
+      "固定大小和作用点，切换拉力方向，观察弯曲方向。",
+      "固定大小和方向，移动作用点，比较弯曲程度。"
     ],
     "observations": [
       "不同大小、方向或作用点的力可产生不同弯曲效果。"
@@ -7808,23 +9041,50 @@ window.LAB_CATALOG.push(...[
       }
     ],
     "safety": [
-      "使用低风险教学器材，在教师指导下操作；重物要防止坠落。"
+      "仅在弹性限度内轻拉钢尺；实验图显示的是理想弹性形变。"
     ],
     "model": "force",
     "modelParams": {
-      "scenario": "deformation",
+      "scenario": "ruler",
       "variant": "steel-ruler-force"
     },
-    "modelNote": "展示指定方向的力与合力；静态受力结果不等于物体实际运动轨迹。",
+    "modelNote": "同一钢尺伸出20 cm。使用理想弹性梁的小挠度模型，图中形变作固定倍率放大；改动条件立即显示静态形状。初中重点是三要素和控制变量，挠度公式仅供模型计算。",
     "controls": [
       {
         "key": "force",
-        "label": "向右力",
+        "label": "拉力大小",
         "unit": "N",
         "min": 0,
-        "max": 50,
-        "step": 0.5,
-        "value": 10
+        "max": 0.5,
+        "step": 0.05,
+        "value": 0.2,
+        "placement": "scene"
+      },
+      {
+        "key": "position",
+        "label": "作用点距桌边",
+        "unit": "cm",
+        "min": 2,
+        "max": 20,
+        "step": 1,
+        "value": 15,
+        "placement": "scene"
+      },
+      {
+        "key": "direction",
+        "label": "拉力方向",
+        "value": 1,
+        "options": [
+          {
+            "value": 1,
+            "label": "竖直向下"
+          },
+          {
+            "value": -1,
+            "label": "竖直向上"
+          }
+        ],
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -7849,6 +9109,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "应保持力的大小、方向以及钢尺固定方式等相同。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "逐项改变力的大小、方向或作用点，直接比较静态弯曲，不需要播放定时动画。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "固定20cm钢尺，调力、方向和作用位置观察弯曲。",
+      "limitation": "小挠度弹性梁；超过适用条件不描述塑性变形，受力方向与变形方向要对应。"
     }
   },
   {
@@ -7964,6 +9233,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "尽量保证进入水平面时初速度相同，便于比较阻力差异。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放小车"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "同初速度在不同摩擦条件下的运动轨迹与停止距离。",
+      "limitation": "初速度直接给定，相当于控制相同释放条件；无摩擦时不会自行停下。"
     }
   },
   {
@@ -8013,46 +9292,28 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "motion",
     "modelParams": {
-      "scenario": "inertia",
+      "scenario": "supportRemoval",
       "variant": "inertia-sheet"
     },
-    "modelNote": "由 Godot 刚体引擎计算运动；采用理想水平面和给定摩擦系数，不包含空气阻力或实物轮轴细节。",
+    "modelNote": "没有模拟慢抽时纸片摩擦带动小球；不引入不存在的惯性力。",
     "controls": [
       {
         "key": "mass",
-        "label": "质量",
+        "label": "小球质量",
         "unit": "kg",
-        "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
-      },
-      {
-        "key": "velocity",
-        "label": "初速度",
-        "unit": "m/s",
-        "min": 0,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
-      },
-      {
-        "key": "duration",
-        "label": "观察时长",
-        "unit": "s",
-        "min": 0.2,
-        "max": 5,
-        "step": 0.1,
-        "value": 2
-      },
-      {
-        "key": "friction",
-        "label": "动摩擦因数",
-        "unit": "",
-        "min": 0,
+        "min": 0.02,
         "max": 1,
         "step": 0.01,
         "value": 0.1
+      },
+      {
+        "key": "height",
+        "label": "球落到杯底的高度",
+        "unit": "m",
+        "min": 0.05,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.3
       }
     ],
     "workedExample": {
@@ -8077,6 +9338,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "小球原来近似静止，水平方向来不及获得较大速度，同时受重力下落。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "快速抽片"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "快速抽板完成后，小球从零水平速度开始沿真实自由落体轨迹落下。",
+      "limitation": "没有模拟慢抽时纸片摩擦带动小球；不引入不存在的惯性力。"
     }
   },
   {
@@ -8149,6 +9420,32 @@ window.LAB_CATALOG.push(...[
         "max": 50,
         "step": 0.5,
         "value": 10
+      },
+      {
+        "key": "offset",
+        "label": "两力作用线间距",
+        "unit": "cm",
+        "min": 0,
+        "max": 5,
+        "step": 0.5,
+        "value": 0,
+        "placement": "scene"
+      },
+      {
+        "key": "direction",
+        "label": "两力方向",
+        "options": [
+          {
+            "value": -1,
+            "label": "反向"
+          },
+          {
+            "value": 1,
+            "label": "同向"
+          }
+        ],
+        "value": -1,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -8173,6 +9470,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "合力0 N，运动状态保持。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "比较两力大小、方向及是否共线的静力状态。",
+      "limitation": "非共线等反向力可能形成力偶，不能仅以合力零宣布平衡。"
     }
   },
   {
@@ -8288,6 +9594,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "让水平方向合力为零，从而拉力大小等于摩擦力。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "匀速拉动"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "水平匀速拉动物体，测力计显示等于μmg的拉力。",
+      "limitation": "没有静摩擦启动或速度相关摩擦模型；只适用于匀速条件。"
     }
   },
   {
@@ -8398,6 +9714,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "合力向右3 N。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "同向/反向切换并按大小更新两个力箭头与合力。",
+      "limitation": "箭头长度只作比例示意；未模拟橡皮筋的非线性位移。"
     }
   },
   {
@@ -8493,6 +9818,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "压强5.0×10⁴ Pa。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "压力与面积变化影响压强及海绵压陷示意。",
+      "limitation": "海绵凹陷不是材料应力应变计算，不能量出真实凹陷深度。"
     }
   },
   {
@@ -8545,7 +9879,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "solid",
       "variant": "shoe-pressure"
     },
-    "modelNote": "固体使用p=F/S，静止液体使用p=ρgh；未包含容器材料形变，流动模型需另看具体说明。",
+    "modelNote": "固体使用p=F/S，静止液体使用p=ρgh；未包含容器材料形变，流动模型需另看具体说明。 本项操作范围：鞋印是面积估测示意，不等同于真实足底压力分布。",
     "controls": [
       {
         "key": "force",
@@ -8588,6 +9922,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "其他条件相同，单脚站受力面积更小，平均压强更大。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "needs-implementation",
+      "scope": "给定压力和总接触面积计算压强，并表示面积比较。",
+      "limitation": "鞋印是面积估测示意，不等同于真实足底压力分布。"
     }
   },
   {
@@ -8604,7 +9947,7 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8b-textbook"
     ],
-    "objective": "用橡皮膜探头和U形管分别考察方向、深度、密度。",
+    "objective": "转动同深度的橡皮膜探头，再分别改变深度和被测液体密度，比较U形管差压读数。",
     "apparatus": [
       "橡皮膜探头",
       "U形管",
@@ -8612,20 +9955,26 @@ window.LAB_CATALOG.push(...[
       "盐水"
     ],
     "steps": [
-      "保持深度不变，改变探头朝向。",
-      "同种液体中改变深度。",
-      "相同深度换不同密度液体。"
+      "深度设为0时检查U形管液面是否等高，右支通大气。",
+      "保持被测液体密度和探头中心深度不变，依次将膜朝上、下、左、右，比较液面差。",
+      "固定探头方向与液体密度，只改变竖直深度。",
+      "固定深度，只改变被测液体密度；U形管示压液保持不变。",
+      "再改变示压液密度，区分同一被测压强与不同液柱高度差。"
     ],
     "observations": [
       "同深度不同方向压强近似相同；深度或液体密度增加，压强增大。"
     ],
     "conclusion": "液体内部压强与深度、密度有关，p=ρgh。",
     "examPoints": [
-      "深度是距自由液面的竖直距离",
-      "U形管是差压指示"
+      "静止液体中同一位置向各方向的压强相同",
+      "深度是到自由液面的竖直距离",
+      "U形管接探头侧液面较低，另一侧通大气",
+      "被测液体密度与U形管示压液密度不是同一个条件"
     ],
     "pitfalls": [
-      "不可用斜向路径长度代替深度"
+      "不能旋转探头时同时改变中心深度",
+      "不可用斜向距离代替深度",
+      "比较被测压强时应保持U形管示压液相同"
     ],
     "questions": [
       {
@@ -8638,14 +9987,14 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "pressure",
     "modelParams": {
-      "scenario": "liquid",
+      "scenario": "liquidProbe",
       "variant": "liquid-pressure"
     },
-    "modelNote": "固体使用p=F/S，静止液体使用p=ρgh；未包含容器材料形变，流动模型需另看具体说明。",
+    "modelNote": "理想小膜片把被测表压传给封闭气路，忽略膜张力、气体密度与气路容积变化；右支通大气，U形管示压液密度独立给定。示意图的探头与液柱不是实物等比例尺。",
     "controls": [
       {
         "key": "density",
-        "label": "液体密度",
+        "label": "被测液体密度",
         "unit": "kg/m³",
         "min": 500,
         "max": 2000,
@@ -8654,12 +10003,46 @@ window.LAB_CATALOG.push(...[
       },
       {
         "key": "depth",
-        "label": "深度",
+        "label": "探头中心的竖直深度",
         "unit": "m",
         "min": 0,
-        "max": 1,
+        "max": 0.5,
         "step": 0.01,
-        "value": 0.3
+        "value": 0.3,
+        "placement": "scene"
+      },
+      {
+        "key": "probeDirection",
+        "label": "橡皮膜朝向",
+        "options": [
+          {
+            "value": "up",
+            "label": "向上"
+          },
+          {
+            "value": "down",
+            "label": "向下"
+          },
+          {
+            "value": "left",
+            "label": "向左"
+          },
+          {
+            "value": "right",
+            "label": "向右"
+          }
+        ],
+        "value": "right",
+        "placement": "scene"
+      },
+      {
+        "key": "manometerDensity",
+        "label": "U形管示压液密度",
+        "unit": "kg/m³",
+        "min": 800,
+        "max": 1400,
+        "step": 50,
+        "value": 1000
       }
     ],
     "workedExample": {
@@ -8684,6 +10067,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "水产生的表压4900 Pa。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改变条件后直接比较当前多组数据或稳态仪表；无需播放虚构的开始过程。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "探头四向可旋转且中心深度保持不变；p=ρgh和独立示压液密度给出真实模型液柱差，两侧液面对应压强方向。",
+      "limitation": "理想点状小膜片与气路传压，忽略膜张力、空气密度及气路容积变化；图示不是实物等比例尺。",
+      "evidence": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
     }
   },
   {
@@ -8778,6 +10175,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "两端开口的同种静止水面处于同一水平面，可作为高度基准。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "共同液面高度改变时各支管保持相平。",
+      "limitation": "只适用于同种静止液体和等外压；不含毛细或灌注过程。"
     }
   },
   {
@@ -8840,6 +10246,22 @@ window.LAB_CATALOG.push(...[
         "max": 5000,
         "step": 100,
         "value": 0
+      },
+      {
+        "key": "sealed",
+        "label": "内部是否与外界通气",
+        "options": [
+          {
+            "value": true,
+            "label": "密封并已排出部分气体"
+          },
+          {
+            "value": false,
+            "label": "通气，气压趋于相等"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -8864,6 +10286,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "空气进入使内外压强接近，维持附着的压差减小。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "切换密封/通气，比较内外压强差的作用。",
+      "limitation": "没有吸盘形变和漏气速率模型，吸力需要接触面积和内部气压条件。"
     }
   },
   {
@@ -8926,6 +10357,22 @@ window.LAB_CATALOG.push(...[
         "max": 5000,
         "step": 100,
         "value": 0
+      },
+      {
+        "key": "sealed",
+        "label": "内部是否与外界通气",
+        "options": [
+          {
+            "value": true,
+            "label": "密封并已排出部分气体"
+          },
+          {
+            "value": false,
+            "label": "通气，气压趋于相等"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -8950,6 +10397,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "内部压强条件改变，纸片下方大气压力不再足以平衡上方作用。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "切换是否允许空气进入，比较纸片支持条件。",
+      "limitation": "水柱高度和纸片润湿也影响稳定性；只有海拔输入不能完成覆杯判断。"
     }
   },
   {
@@ -9036,6 +10492,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，是管内外水银面的竖直高度差。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "气压变化后汞柱竖直高度随之变化。",
+      "limitation": "标准大气近似；汞仅屏幕演示，不模拟管倾斜、真空残余气体和温度。"
     }
   },
   {
@@ -9088,7 +10553,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "atmosphere",
       "variant": "bottle-barometer"
     },
-    "modelNote": "固体使用p=F/S，静止液体使用p=ρgh；未包含容器材料形变，流动模型需另看具体说明。",
+    "modelNote": "液柱未随条件联动；尚缺密封气体体积、温度和内外压差共同决定液位的模型，不能作为完成的气压计观察操作。 本项操作范围：液柱未随条件联动；尚缺密封气体体积、温度和内外压差共同决定液位的模型，不能作为完成的气压计观察操作。",
     "controls": [
       {
         "key": "height",
@@ -9122,6 +10587,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能，手温也可能使瓶内气体升温，改变液面。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "needs-implementation",
+      "scope": "能根据海拔比较给定标准大气压，瓶与细管目前仍是结构图。",
+      "limitation": "液柱未随条件联动；尚缺密封气体体积、温度和内外压差共同决定液位的模型，不能作为完成的气压计观察操作。"
     }
   },
   {
@@ -9184,6 +10658,22 @@ window.LAB_CATALOG.push(...[
         "max": 5000,
         "step": 100,
         "value": 0
+      },
+      {
+        "key": "stage",
+        "label": "胶头动作",
+        "options": [
+          {
+            "value": "squeeze",
+            "label": "挤压排气"
+          },
+          {
+            "value": "release",
+            "label": "松手吸液"
+          }
+        ],
+        "value": "release",
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -9208,6 +10698,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "外界大气压作用于水面，推动水进入较低压的滴管。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "手动切换挤压与松手，显示排气和液体上升。",
+      "limitation": "动作阶段为教学示意；没有胶头容积或液体黏性模型。"
     }
   },
   {
@@ -9269,6 +10768,22 @@ window.LAB_CATALOG.push(...[
         "max": 5000,
         "step": 100,
         "value": 0
+      },
+      {
+        "key": "sealed",
+        "label": "内部是否与外界通气",
+        "options": [
+          {
+            "value": true,
+            "label": "密封并已排出部分气体"
+          },
+          {
+            "value": false,
+            "label": "通气，气压趋于相等"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -9293,6 +10808,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "内外压差减小，压紧它们的合力相应减小。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "切换抽气与通气，比较内外压强差的受力方向。",
+      "limitation": "真实分离力需内压与半球截面积；大气压读数本身不是分离力。"
     }
   },
   {
@@ -9386,6 +10910,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "水会随活塞来回流动，难形成稳定的单向输送。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "选择上提/下压时活塞位置和阀门开闭同步改变。",
+      "limitation": "理想阀门阶段；未模拟连续流量、漏气和实际扬程。"
     }
   },
   {
@@ -9437,7 +10970,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "flow",
       "variant": "blow-strip"
     },
-    "modelNote": "用理想流体伯努利关系比较流速和静压；空气密度取近似值。忽略黏性和湍流，喷雾、托球等现象还受实际流场和阻力影响，不能仅用一个静压公式预测完整轨迹。",
+    "modelNote": "两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。 本项操作范围：两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。",
     "controls": [
       {
         "key": "speed",
@@ -9480,6 +11013,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "中间流速增大并形成较低静压，外侧压力推动纸片相向。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "needs-implementation",
+      "scope": "能比较气流速度与静压的题设数值，显示纸条受气流前后两种形状。",
+      "limitation": "两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。"
     }
   },
   {
@@ -9488,7 +11030,7 @@ window.LAB_CATALOG.push(...[
     "term": "8下",
     "chapter": "第九章 压强",
     "section": "9.5",
-    "title": "变截面管气压传感器实验",
+    "title": "变截面管：流速与静压测量",
     "kind": "拓展探究",
     "tags": [
       "拓展实验"
@@ -9496,26 +11038,37 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g8b-textbook"
     ],
-    "objective": "抽气时测量不同截面的静压并比较流速。",
+    "objective": "用同高取压口比较宽窄管内两处流动气体的静压，根据连续性和伯努利关系解释U形管差值。",
     "apparatus": [
-      "变截面管",
-      "压力传感器",
-      "气流源"
+      "水平变截面圆管",
+      "同高侧壁静压取压口",
+      "U形差压计",
+      "稳定气流源"
     ],
     "steps": [
-      "连接不同截面的静压测点。",
-      "使气流稳定通过。",
-      "比较宽窄处流速与压力示数。"
+      "保持两个侧壁静压取压口同高，先设宽段流速为0，检查液面等高。",
+      "设置宽段流速和截面积比，由连续性比较宽段与窄段流速。",
+      "观察窄段相对宽段的静压与U形管液面差，宽段是本图相对读数的0 Pa基准。",
+      "令截面积比等于1，检查有流动时两处压强差仍为0。",
+      "改变示压液密度，比较同一压差对应的液柱差，避免混用气体和液体密度。"
     ],
     "observations": [
-      "在简化稳定流动中，较窄处流速较大、静压较低。"
+      "面积比增大时，给定宽段流速对应的窄段流速增大。",
+      "在同高理想稳态条件下，窄段静压低于宽段。",
+      "等截面或停止气流时，宽窄两处压强差为0。",
+      "U形管液面差依赖示压液与气体的密度差。"
     ],
-    "conclusion": "连续流与压强差共同决定管内流动，传感器可直接比较静压。",
+    "conclusion": "先用A宽v宽=A窄v窄求两处流速，再用Δp=ρ气(v窄²−v宽²)/2比较静压；不能把宽段当作静止气体。",
     "examPoints": [
-      "传感器探头位置影响所测静压或动压"
+      "侧壁取压口用于测静压，不能朝向来流当作相同测量",
+      "连续性关系中的A是横截面积，不是直径",
+      "伯努利比较的两处都可能在流动",
+      "0 Pa比较基准不是绝对压强为0"
     ],
     "pitfalls": [
-      "不能忽略高度差与黏性损耗而做任意精确预测"
+      "不要把两流动位置的压差误写成ρv窄²/2",
+      "不能用空气密度直接把压差换算成示压液柱高度",
+      "真实管道存在黏性和局部损失，理想模型不等于精密标定"
     ],
     "questions": [
       {
@@ -9528,52 +11081,85 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "pressure",
     "modelParams": {
-      "scenario": "flow",
+      "scenario": "venturi",
       "variant": "flow-pressure-sensors"
     },
-    "modelNote": "用理想流体伯努利关系比较流速和静压；空气密度取近似值。忽略黏性和湍流，喷雾、托球等现象还受实际流场和阻力影响，不能仅用一个静压公式预测完整轨迹。",
+    "modelNote": "稳态、水平、低速气流的不可压缩伯努利模型，忽略黏性和局部损失。圆管直径比取面积比平方根。取压口位于同高侧壁，读取静压；图中宽段设为相对比较的0 Pa基准，不表示绝对压强为零。U形管按独立的液体密度求读数，不将气体速度头当成液柱高度。",
     "controls": [
       {
-        "key": "speed",
-        "label": "流速",
+        "key": "wideSpeed",
+        "label": "宽段气体流速",
         "unit": "m/s",
         "min": 0,
         "max": 10,
-        "step": 0.1,
-        "value": 2
+        "step": 0.5,
+        "value": 6
       },
       {
-        "key": "density",
-        "label": "流体密度",
-        "unit": "kg/m³",
+        "key": "areaRatio",
+        "label": "宽段面积 / 窄段面积",
+        "unit": "",
         "min": 1,
-        "max": 1000,
+        "max": 4,
+        "step": 0.25,
+        "value": 3,
+        "placement": "scene"
+      },
+      {
+        "key": "gasDensity",
+        "label": "管内气体密度",
+        "unit": "kg/m³",
+        "min": 0.8,
+        "max": 2,
         "step": 0.1,
         "value": 1.2
+      },
+      {
+        "key": "manometerDensity",
+        "label": "U形管示压液密度",
+        "unit": "kg/m³",
+        "min": 800,
+        "max": 1400,
+        "step": 50,
+        "value": 1000
       }
     ],
     "workedExample": {
-      "title": "规范作答",
-      "given": "为什么比较时应等待气流稳定？",
+      "title": "同高宽窄管的规范计算",
+      "given": "v宽=6 m/s，A宽/A窄=3，ρ气=1.2 kg/m³，ρ示=1000 kg/m³，g=9.8 N/kg。",
       "steps": [
         {
-          "title": "确定实验对象",
-          "text": "抽气时测量不同截面的静压并比较流速。"
+          "title": "用连续性求窄段流速",
+          "text": "v窄=v宽×A宽/A窄=6×3=18 m/s。"
         },
         {
-          "title": "引用观察",
-          "text": "在简化稳定流动中，较窄处流速较大、静压较低。"
+          "title": "比较两处静压",
+          "text": "Δp=ρ气(v窄²−v宽²)/2=1.2×(18²−6²)/2=172.8 Pa。"
         },
         {
-          "title": "建立解释",
-          "text": "连续流与压强差共同决定管内流动，传感器可直接比较静压。"
+          "title": "换算U形管高度差",
+          "text": "Δh=Δp/[(ρ示−ρ气)g]=172.8/[(1000−1.2)×9.8]≈0.01765 m=17.65 mm。"
         },
         {
-          "title": "完整回答",
-          "text": "避免瞬态波动混入，才能研究固定流动条件下截面对压强的影响。"
+          "title": "说明方向与单位",
+          "text": "宽段静压高于窄段，接宽段的一侧液面较低；两液面高度差约17.65 mm。"
         }
       ],
-      "answer": "避免瞬态波动混入，才能研究固定流动条件下截面对压强的影响。"
+      "answer": "窄段流速18 m/s；宽段比窄段静压高172.8 Pa，U形管液面差约17.65 mm。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改变条件后直接比较当前多组数据或稳态仪表；无需播放虚构的开始过程。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "截面积比改变真实管形和连续性流速；压差比较两个非零流速；U形差压计使用(ρ示−ρ气)gΔh且方向正确。",
+      "limitation": "水平稳态低速气流、不可压缩近似，忽略黏性和局部损失；显示相对静压，不预测绝对气压或真实传感器噪声。",
+      "evidence": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
     }
   },
   {
@@ -9625,7 +11211,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "flow",
       "variant": "straw-spray"
     },
-    "modelNote": "用理想流体伯努利关系比较流速和静压；空气密度取近似值。忽略黏性和湍流，喷雾、托球等现象还受实际流场和阻力影响，不能仅用一个静压公式预测完整轨迹。",
+    "modelNote": "未计算液柱吸起阈值、真实吸液高度、黏性和雾滴粒径，示意水雾不能用于量取流量。",
     "controls": [
       {
         "key": "speed",
@@ -9668,6 +11254,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "气流建立压差，外界压力推动水上升；吹气装置提供能量。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "停止吹气时不再显示液体上升箭头或水雾；有气流时显示喷雾原理示意。",
+      "limitation": "未计算液柱吸起阈值、真实吸液高度、黏性和雾滴粒径，示意水雾不能用于量取流量。"
     }
   },
   {
@@ -9691,9 +11286,10 @@ window.LAB_CATALOG.push(...[
       "水槽"
     ],
     "steps": [
-      "测物体在空气中的重力。",
-      "使其部分到完全浸入液体，记录拉力。",
-      "完全浸没后改变深度比较。"
+      "先把物块移到下表面深度0 cm或更浅，读取空气中测力计G。",
+      "缓慢增加下表面深度，记录部分浸入时的F拉，求F浮=G−F拉。",
+      "物块高10 cm：分别把下表面移至10、20、30 cm，保持质量、体积及液体密度相同，比较完全浸没后的示数。",
+      "排除碰底碰壁；若提示浮力超过重力，该位置不能用上方细线静止保持，应换用更重物体。"
     ],
     "observations": [
       "浸入时示数减小；完全浸没后同种液体中示数通常不随深度继续改变。"
@@ -9717,26 +11313,26 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "buoyancy",
     "modelParams": {
-      "scenario": "submerged",
+      "scenario": "weighingDepth",
       "variant": "buoyancy-weighing"
     },
-    "modelNote": "使用阿基米德原理，液体密度均匀、物体不吸水；浸没比例决定排液体积，漂浮平衡时需满足浮力等于重力。",
+    "modelNote": "Godot按F浮=ρ液gV排和静止受力平衡计算理想示数。刚性物块高10 cm，液体密度均匀，不触底不碰壁；下表面深度控制由空气、部分浸入到完全浸没的过程。浮力超过重力时上方细线无法保持指定位置，不伪造负拉力或有效称重差。",
     "controls": [
       {
         "key": "mass",
         "label": "物体质量",
         "unit": "g",
-        "min": 10,
-        "max": 500,
+        "min": 50,
+        "max": 600,
         "step": 10,
-        "value": 200
+        "value": 270
       },
       {
         "key": "volume",
         "label": "物体体积",
         "unit": "cm³",
-        "min": 10,
-        "max": 500,
+        "min": 20,
+        "max": 200,
         "step": 10,
         "value": 100
       },
@@ -9750,13 +11346,14 @@ window.LAB_CATALOG.push(...[
         "value": 1000
       },
       {
-        "key": "fraction",
-        "label": "浸入比例",
-        "unit": "",
-        "min": 0,
-        "max": 1,
-        "step": 0.05,
-        "value": 1
+        "key": "bottomDepth",
+        "label": "物块下表面距液面的深度",
+        "unit": "cm",
+        "min": -5,
+        "max": 35,
+        "step": 1,
+        "value": 15,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -9781,6 +11378,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "浮力1 N，方向竖直向上。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "升降物块即可比较两测力计；物块高10 cm，完全浸没后继续下移不改变排液体积。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "可从空气逐步浸入并在完全浸没后独立改变位置深度，同时比较空气与液中示数。",
+      "limitation": "忽略液面升降、表面张力、水阻力和仪器误差；上悬不能保持的条件明确无有效读数。"
     }
   },
   {
@@ -9830,26 +11436,26 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "buoyancy",
     "modelParams": {
-      "scenario": "archimedes",
+      "scenario": "forceFactors",
       "variant": "buoyancy-factors"
     },
-    "modelNote": "使用阿基米德原理，液体密度均匀、物体不吸水；浸没比例决定排液体积，漂浮平衡时需满足浮力等于重力。",
+    "modelNote": "Godot按ρ液gV排计算浮力并检查静止上悬条件。默认270g/100cm³为沉物；浮力超过重力时上方细线不能保持指定位置，不把截成0的拉力当作有效测量。忽略表面张力、水阻力与液面变化。",
     "controls": [
       {
         "key": "mass",
         "label": "物体质量",
         "unit": "g",
-        "min": 10,
-        "max": 500,
+        "min": 50,
+        "max": 600,
         "step": 10,
-        "value": 80
+        "value": 270
       },
       {
         "key": "volume",
         "label": "物体体积",
         "unit": "cm³",
-        "min": 10,
-        "max": 500,
+        "min": 20,
+        "max": 200,
         "step": 10,
         "value": 100
       },
@@ -9894,6 +11500,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "排开水的体积增大，浮力增大，需要更大的向下作用维持。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "只改一个条件，立即比较排液体积、液体密度和两测力计读数。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "可比较质量、体积、液体密度和浸入比例；同时显示重力、有效上悬读数和浮力，拒绝不可能静止条件。",
+      "limitation": "均匀液体和理想静止测力计；不模拟水阻力或测量误差。"
     }
   },
   {
@@ -9918,9 +11533,10 @@ window.LAB_CATALOG.push(...[
       "弹簧测力计"
     ],
     "steps": [
-      "用称重法测出物体浮力。",
-      "收集完全浸入过程排出的液体。",
-      "测排液重力并与浮力比较。"
+      "先称空接水杯重力，再称物体在空气中的重力G。",
+      "把溢水杯装至溢水口并待滴水停止；将物体静止浸入，读取F拉，完整收集溢出液体。",
+      "称接水杯与液体的总重力，用总重力减空杯重力得G收集，与G−F拉比较。",
+      "分别改变浸入体积和液体密度复测；用缺水空量或漏接情境检查操作错误为何使收集液重力偏小。"
     ],
     "observations": [
       "物体所受浮力与排开液体重力在误差范围内接近。"
@@ -9944,26 +11560,26 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "buoyancy",
     "modelParams": {
-      "scenario": "archimedes",
+      "scenario": "archimedesEvidence",
       "variant": "archimedes"
     },
-    "modelNote": "使用阿基米德原理，液体密度均匀、物体不吸水；浸没比例决定排液体积，漂浮平衡时需满足浮力等于重力。",
+    "modelNote": "Godot分别给出空气重力、液中拉力、空接水杯重力和接水后总重力，再作两条测量差比较。默认物体270g/100cm³、空杯30g。缺水空量和漏接比例是指定操作情境，不是流量实测模型；F浮>G时拒绝上悬读数，装置不显示虚假0N平衡。",
     "controls": [
       {
         "key": "mass",
         "label": "物体质量",
         "unit": "g",
-        "min": 10,
-        "max": 500,
+        "min": 50,
+        "max": 600,
         "step": 10,
-        "value": 80
+        "value": 270
       },
       {
         "key": "volume",
         "label": "物体体积",
         "unit": "cm³",
-        "min": 10,
-        "max": 500,
+        "min": 20,
+        "max": 200,
         "step": 10,
         "value": 100
       },
@@ -9984,6 +11600,24 @@ window.LAB_CATALOG.push(...[
         "max": 1,
         "step": 0.05,
         "value": 1
+      },
+      {
+        "key": "headroom",
+        "label": "实验前距溢水口还可容纳的水量",
+        "unit": "cm³",
+        "min": 0,
+        "max": 100,
+        "step": 10,
+        "value": 0
+      },
+      {
+        "key": "lossPercent",
+        "label": "题设收集过程的漏接比例",
+        "unit": "%",
+        "min": 0,
+        "max": 50,
+        "step": 5,
+        "value": 0
       }
     ],
     "workedExample": {
@@ -10008,6 +11642,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "浮力0.98 N。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改变浸入和收集条件，比较称重法浮力与空杯、杯液差量求出的排液重力。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "四个独立仪器读数渠道及两次作差；可比较不满溢水杯、漏接和不能上悬的条件。",
+      "limitation": "数据由同一理想物理模型产生；不模拟真实传感器噪声、飞溅轨迹或连续溢流滞后。"
     }
   },
   {
@@ -10112,6 +11755,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，稳定漂浮时浮力等于重力。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "密度改变后观察鸡蛋浸入比例和浮沉平衡。",
+      "limitation": "显示平衡状态，不是上浮/下沉运动轨迹；不求盐的溶解与配比。"
     }
   },
   {
@@ -10216,6 +11868,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "改变了整体外形和可排开水的体积，使浮力可平衡总重力。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "通过排水体积与质量判断船形能否漂浮。",
+      "limitation": "形状变化以最大排液体积参数代替，没有橡皮泥三维捏塑。"
     }
   },
   {
@@ -10269,7 +11930,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "densitymeter",
       "variant": "micro-hydrometer"
     },
-    "modelNote": "理想密度计漂浮，重力保持不变，液体密度改变时排液体积改变；未模拟真实细管刻度和表面张力。",
+    "modelNote": "理想密度计漂浮，重力保持不变，液体密度改变时排液体积改变；未模拟真实细管刻度和表面张力。 本项操作范围：刻度为示意，未按实际球泡细管几何标定密度刻线。",
     "controls": [
       {
         "key": "mass",
@@ -10321,6 +11982,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "盐水密度更大，只需较小排液体积就能平衡其重力。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "needs-implementation",
+      "scope": "液体密度改变时密度计浸入深度改变。",
+      "limitation": "刻度为示意，未按实际球泡细管几何标定密度刻线。"
     }
   },
   {
@@ -10424,6 +12094,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "浮力近似不变，而总重力增加，可能大于浮力。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变总质量比较重力与最大浮力，显示浮沉趋势。",
+      "limitation": "总质量代表压载水变化，未模拟充排水流量与真实升沉轨迹。"
     }
   },
   {
@@ -10474,28 +12153,46 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "energy",
     "modelParams": {
-      "scenario": "kinetic",
+      "scenario": "kineticImpact",
       "variant": "kinetic-energy"
     },
-    "modelNote": "数值用理想能量公式计算；动能表达式属于定量拓展，初中实验重点是控制变量后比较做功能力。",
+    "modelNote": "完全非弹性碰撞与恒滑动摩擦题设；碰撞机械能不守恒，不代替真实弹跳细节。",
     "controls": [
       {
         "key": "mass",
-        "label": "质量",
+        "label": "球质量",
         "unit": "kg",
-        "min": 0.1,
-        "max": 5,
+        "min": 0.02,
+        "max": 0.2,
+        "step": 0.01,
+        "value": 0.05
+      },
+      {
+        "key": "blockMass",
+        "label": "木块质量",
+        "unit": "kg",
+        "min": 0.05,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.2
+      },
+      {
+        "key": "velocity",
+        "label": "球的初速度",
+        "unit": "m/s",
+        "min": 0.2,
+        "max": 2,
         "step": 0.1,
         "value": 1
       },
       {
-        "key": "velocity",
-        "label": "速度",
-        "unit": "m/s",
-        "min": 0,
-        "max": 10,
-        "step": 0.1,
-        "value": 2
+        "key": "friction",
+        "label": "地面滑动摩擦系数",
+        "unit": "",
+        "min": 0.1,
+        "max": 0.6,
+        "step": 0.05,
+        "value": 0.2
       }
     ],
     "workedExample": {
@@ -10520,6 +12217,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "让木块受阻力条件尽量相同，移动距离才具有可比性。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放小球"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "两个实际刚体碰撞后以共同速度滑动，改变球质量/速度比较木块滑移。",
+      "limitation": "完全非弹性碰撞与恒滑动摩擦题设；碰撞机械能不守恒，不代替真实弹跳细节。"
     }
   },
   {
@@ -10569,37 +12276,38 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "energy",
     "modelParams": {
-      "scenario": "conservation",
-      "variant": "pendulum-lock"
+      "scenario": "pendulum",
+      "variant": "pendulum-lock",
+      "gravity": 9.8
     },
-    "modelNote": "用机械能总量说明无额外推力时不能回到高于释放点的位置；当前高度与速度可独立设定，是能量状态比较，不自动构造真实摆动全过程。真实装置有耗散。",
+    "modelNote": "理想摆忽略真实耗散；没有额外推力，不能在释放时人为推动。",
     "controls": [
       {
-        "key": "mass",
-        "label": "质量",
-        "unit": "kg",
-        "min": 0.1,
-        "max": 5,
-        "step": 0.1,
+        "key": "length",
+        "label": "摆长",
+        "unit": "m",
+        "min": 0.3,
+        "max": 2,
+        "step": 0.05,
         "value": 1
       },
       {
-        "key": "height",
-        "label": "高度",
-        "unit": "m",
-        "min": 0,
-        "max": 10,
+        "key": "mass",
+        "label": "摆球质量",
+        "unit": "kg",
+        "min": 0.1,
+        "max": 2,
         "step": 0.1,
-        "value": 2
+        "value": 0.5
       },
       {
-        "key": "velocity",
-        "label": "速度",
-        "unit": "m/s",
-        "min": 0,
-        "max": 10,
-        "step": 0.1,
-        "value": 2
+        "key": "angle",
+        "label": "无初速释放角",
+        "unit": "°",
+        "min": 2,
+        "max": 45,
+        "step": 1,
+        "value": 25
       }
     ],
     "workedExample": {
@@ -10624,6 +12332,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能，推力输入额外能量，可能达到更高位置。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "无推力释放"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "从给定释放角无初速释放，铰链约束下摆动并比较所达高度。",
+      "limitation": "理想摆忽略真实耗散；没有额外推力，不能在释放时人为推动。"
     }
   },
   {
@@ -10632,7 +12350,7 @@ window.LAB_CATALOG.push(...[
     "term": "8下",
     "chapter": "第十一章 功和机械能",
     "section": "11.4",
-    "title": "滚摆的动能与势能转换",
+    "title": "滚摆下降：平动与转动能量",
     "kind": "小实验",
     "tags": [
       "想想做做1"
@@ -10673,37 +12391,46 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "energy",
     "modelParams": {
-      "scenario": "conversion",
+      "scenario": "rollingPendulum",
       "variant": "rolling-pendulum"
     },
-    "modelNote": "展示动能与重力势能间转化；当前简化数值只计质心平动能，不含轮轴转动惯量，因此不能直接作为麦克斯韦滚摆的精确周期或速度。",
+    "modelNote": "已实现下降，但尚未模拟反卷上升；这部分不能计为完整往返滚摆实验。 本项操作范围：已实现下降，但尚未模拟反卷上升；这部分不能计为完整往返滚摆实验。",
     "controls": [
       {
         "key": "mass",
-        "label": "质量",
+        "label": "滚摆质量",
         "unit": "kg",
         "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
+        "max": 1,
+        "step": 0.05,
+        "value": 0.3
+      },
+      {
+        "key": "radius",
+        "label": "绕线轴半径",
+        "unit": "m",
+        "min": 0.003,
+        "max": 0.015,
+        "step": 0.001,
+        "value": 0.006
+      },
+      {
+        "key": "inertia",
+        "label": "绕轴转动惯量（题设）",
+        "unit": "kg·m²",
+        "min": 2e-05,
+        "max": 0.001,
+        "step": 1e-05,
+        "value": 0.0002
       },
       {
         "key": "height",
-        "label": "高度",
+        "label": "观察下降高度",
         "unit": "m",
-        "min": 0,
-        "max": 10,
-        "step": 0.1,
-        "value": 2
-      },
-      {
-        "key": "velocity",
-        "label": "速度",
-        "unit": "m/s",
-        "min": 0,
-        "max": 10,
-        "step": 0.1,
-        "value": 2
+        "min": 0.1,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.5
       }
     ],
     "workedExample": {
@@ -10728,6 +12455,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不违背，一部分机械能转化为内能等其他形式。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放滚摆"
+    },
+    "implementationReview": {
+      "status": "needs-implementation",
+      "scope": "滚摆的下降位移、转角、平动能与转动能来自刚体及绕线约束。",
+      "limitation": "已实现下降，但尚未模拟反卷上升；这部分不能计为完整往返滚摆实验。"
     }
   },
   {
@@ -10776,28 +12513,37 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "energy",
     "modelParams": {
-      "scenario": "elastic",
+      "scenario": "elasticReturn",
       "variant": "returning-can"
     },
-    "modelNote": "数值用理想能量公式计算；动能表达式属于定量拓展，初中实验重点是控制变量后比较做功能力。",
+    "modelNote": "回滚机制采用线性等效模型，不预测任意罐体内部结构或橡皮筋非线性。",
     "controls": [
       {
-        "key": "stiffness",
-        "label": "劲度系数",
-        "unit": "N/m",
-        "min": 10,
-        "max": 500,
-        "step": 10,
-        "value": 100
+        "key": "mass",
+        "label": "等效运动质量",
+        "unit": "kg",
+        "min": 0.1,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.3
       },
       {
-        "key": "extension",
-        "label": "弹性形变",
-        "unit": "m",
-        "min": 0,
-        "max": 0.2,
-        "step": 0.01,
-        "value": 0.1
+        "key": "spring",
+        "label": "等效弹性系数",
+        "unit": "N/m",
+        "min": 0.2,
+        "max": 4,
+        "step": 0.1,
+        "value": 1
+      },
+      {
+        "key": "velocity",
+        "label": "从平衡位置释放的初速度",
+        "unit": "m/s",
+        "min": 0.1,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.5
       }
     ],
     "workedExample": {
@@ -10822,6 +12568,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "先前运动使橡皮筋储存弹性势能，释放后驱动罐体反向运动。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "推动后松手"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "一维等效弹簧—质量刚体系统实际减速、反向并返回。",
+      "limitation": "回滚机制采用线性等效模型，不预测任意罐体内部结构或橡皮筋非线性。"
     }
   },
   {
@@ -10871,28 +12627,37 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "energy",
     "modelParams": {
-      "scenario": "potential",
+      "scenario": "indentation",
       "variant": "potential-height"
     },
-    "modelNote": "数值用理想能量公式计算；动能表达式属于定量拓展，初中实验重点是控制变量后比较做功能力。",
+    "modelNote": "材料阻力采用恒力题设，不是橡皮泥真实塑性本构。",
     "controls": [
       {
         "key": "mass",
-        "label": "质量",
+        "label": "落下物体质量",
         "unit": "kg",
-        "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
+        "min": 0.02,
+        "max": 0.2,
+        "step": 0.01,
+        "value": 0.05
       },
       {
         "key": "height",
-        "label": "高度",
+        "label": "释放高度",
         "unit": "m",
-        "min": 0,
-        "max": 10,
-        "step": 0.1,
-        "value": 2
+        "min": 0.05,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.3
+      },
+      {
+        "key": "resistance",
+        "label": "材料阻力（题设恒力）",
+        "unit": "N",
+        "min": 5,
+        "max": 30,
+        "step": 1,
+        "value": 10
       }
     ],
     "workedExample": {
@@ -10917,6 +12682,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "重力势能增加29.4 J。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放物体"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "物体实际下落，进入材料后受给定阻力减速，比较最终压入深度。",
+      "limitation": "材料阻力采用恒力题设，不是橡皮泥真实塑性本构。"
     }
   },
   {
@@ -11031,6 +12806,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "动力为2 N。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "力和力臂决定平衡，非平衡倾斜只表示力矩方向。",
+      "limitation": "没有实际动力学角度；轻杆、固定支点，力臂不是任意杆长。"
     }
   },
   {
@@ -11144,6 +12928,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "空秤自身也产生转动效果，先标零才能把后续变化对应到载荷。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "秤砣作用点随力臂设置移动，比较是否平衡。",
+      "limitation": "零点和刻度仍需秤盘及秤杆自重标定，原模型忽略这些重量。"
     }
   },
   {
@@ -11258,6 +13051,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "拉力10 N。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "切换承重绳段数，比较拉力与绳端位移。",
+      "limitation": "结构与稳态数据比较无需自动开始；绳子无伸长，轮轴无摩擦的理想情况须明确。"
     }
   },
   {
@@ -11282,9 +13084,10 @@ window.LAB_CATALOG.push(...[
       "刻度尺"
     ],
     "steps": [
-      "缓慢匀速提升重物。",
-      "测G、F、h与绳端位移s。",
-      "计算有用功、总功和效率，并改变载荷比较。"
+      "用测力计测物重G，标记重物与绳端的起始位置。",
+      "缓慢匀速提升，在运动过程中读取F，并记录同一次提升的h、s。",
+      "把四项测量记录输入页面，计算W有=Gh、W总=Fs、η=W有/W总；核对两绳段装置s≈2h。",
+      "改变载荷后重新测量F、h、s再比较；不要把上一组拉力直接沿用。"
     ],
     "observations": [
       "实际拉力做功大于仅提升重物所需的有用功。"
@@ -11308,14 +13111,15 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "pulley",
     "modelParams": {
-      "scenario": "block",
-      "variant": "pulley-efficiency"
+      "scenario": "efficiencyMeasurement",
+      "variant": "pulley-efficiency",
+      "strands": 2
     },
-    "modelNote": "定滑轮与动滑轮采用无重无摩擦模型；滑轮组按给定机械效率计算，绳子不可伸长。",
+    "modelNote": "Godot从G、F、h、s测量记录计算η=Gh/(Fs)，不再输入效率反求拉力。图示为两承重绳段；s≈2h容差取2 cm或3%中的较大者。超过100%或位移不符时保留原始比值并提示核查，不输出有效效率。图示不模拟真实摩擦过程，损耗来自实测拉力。",
     "controls": [
       {
         "key": "load",
-        "label": "物重",
+        "label": "实测物重 G",
         "unit": "N",
         "min": 1,
         "max": 100,
@@ -11323,31 +13127,33 @@ window.LAB_CATALOG.push(...[
         "value": 20
       },
       {
-        "key": "strands",
-        "label": "承重绳段数",
-        "unit": "",
-        "min": 1,
-        "max": 4,
-        "step": 1,
-        "value": 2
+        "key": "pull",
+        "label": "匀速提升中的实测拉力 F",
+        "unit": "N",
+        "min": 0.5,
+        "max": 100,
+        "step": 0.5,
+        "value": 12.5
       },
       {
         "key": "height",
-        "label": "提升高度",
+        "label": "实测重物上升距离 h",
         "unit": "m",
         "min": 0.1,
-        "max": 5,
-        "step": 0.1,
-        "value": 1
+        "max": 1,
+        "step": 0.01,
+        "value": 0.5,
+        "placement": "scene"
       },
       {
-        "key": "efficiency",
-        "label": "机械效率",
-        "unit": "%",
-        "min": 20,
-        "max": 100,
-        "step": 1,
-        "value": 80
+        "key": "ropeDistance",
+        "label": "实测绳端移动距离 s",
+        "unit": "m",
+        "min": 0.1,
+        "max": 2,
+        "step": 0.01,
+        "value": 1,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -11372,6 +13178,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "机械效率80%。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "输入同一次提升的四项测量记录，直接计算有用功、总功和机械效率。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "四项实测记录输入后求效率，明确区分记录与模型预测，并校验不可能结果。",
+      "limitation": "页面用于操作示意与数据分析，没有代替实体测力计、机械摩擦与误差实测。"
     }
   },
   {
@@ -11492,6 +13307,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "水吸收8400 J热量。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始等功率加热"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "两组等质量同功率加热曲线和温度同步变化。",
+      "limitation": "油比热容是代表值，忽略散热与相变；比较前应保持相同初温。"
     }
   },
   {
@@ -11610,6 +13435,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能。应比较各自的温升，并核对质量与加热条件。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始等功率加热"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "用传感器曲线显示两种液体等条件下的温升。",
+      "limitation": "与普通温度计版本共用物理模型，是观察方式变式而不是新增独立物理原理。"
     }
   },
   {
@@ -11705,6 +13540,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "分子持续无规则运动，能向上越过原来的分界面并逐渐混合。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "移开隔板"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "两种颜色粒子随观察时间混合，温度影响混合趋势。",
+      "limitation": "示意粒子运动不是分子动力学，不能读作真实扩散系数。"
     }
   },
   {
@@ -11800,6 +13645,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "搅动会造成明显的整体流动，妨碍判断由分子运动造成的扩散。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "观察扩散"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "两层粒子随时间逐渐混合。",
+      "limitation": "不包含重力对流、浓差和真实扩散系数；加快演示时间须说明。"
     }
   },
   {
@@ -11896,6 +13751,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "在尽量控制整体流动的条件下，支持温度较高时分子运动较剧烈的解释。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "观察扩散"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "在相同时段改变温度比较混合趋势。",
+      "limitation": "混合指数为教学趋势，不是经材料实验校准的定量速率。"
     }
   },
   {
@@ -11920,9 +13785,10 @@ window.LAB_CATALOG.push(...[
       "载荷"
     ],
     "steps": [
-      "比较粗糙面与清洁平整面。",
-      "使两平面紧密接触。",
-      "观察模型在较小载荷下的结合情况。"
+      "先选新鲜清洁平整的两接触面，观察接触前状态。",
+      "使两柱压紧，再撤去压紧外力，观察是否仍保持结合。",
+      "单独改为粗糙面、氧化面或隔纸，重复同样阶段并比较。",
+      "用接触面能否达到足够小距离解释证据；压紧时靠在一起本身不能证明撤力后仍结合。"
     ],
     "observations": [
       "清洁平整的接触面压紧后更容易结合。"
@@ -11946,19 +13812,63 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "molecular",
     "modelParams": {
-      "scenario": "attraction",
-      "variant": "attraction"
+      "scenario": "contactAttraction",
+      "variant": "lead-attraction"
     },
-    "modelNote": "粒子大小、间距、扩散速度与受力曲线为定性示意，不能读作真实分子尺度或实测扩散系数。",
+    "modelNote": "Godot条件模型比较典型铅表面接触：新鲜清洁平整、无纸层、压紧后可保持结合；粗糙、氧化、隔纸不显示同样结合。这里只验证宏观接触证据，不计算整块铅承载质量、真实黏着强度或分子间距数值。",
     "controls": [
       {
-        "key": "distance",
-        "label": "分子间距（相对量）",
-        "unit": "",
-        "min": 0.8,
-        "max": 3,
-        "step": 0.05,
-        "value": 1.2
+        "key": "surface",
+        "label": "接触表面",
+        "value": "fresh",
+        "options": [
+          {
+            "value": "fresh",
+            "label": "新鲜、清洁、平整"
+          },
+          {
+            "value": "rough",
+            "label": "粗糙表面"
+          },
+          {
+            "value": "oxidized",
+            "label": "有氧化层"
+          }
+        ]
+      },
+      {
+        "key": "separator",
+        "label": "两铅面之间",
+        "value": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "没有隔层"
+          },
+          {
+            "value": "paper",
+            "label": "隔一张纸"
+          }
+        ]
+      },
+      {
+        "key": "stage",
+        "label": "操作阶段",
+        "value": "released",
+        "options": [
+          {
+            "value": "apart",
+            "label": "接触前"
+          },
+          {
+            "value": "pressed",
+            "label": "用外力压紧"
+          },
+          {
+            "value": "released",
+            "label": "压紧后撤去外力"
+          }
+        ]
       }
     ],
     "workedExample": {
@@ -11983,6 +13893,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "平整清洁使更多部位达到足够小的分子间距，分子间作用才明显。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "比较表面与隔纸条件，再切换压紧及撤力阶段；无需启动计时。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "比较新鲜平整、粗糙、氧化及隔纸条件，区别压紧中与撤力后的宏观结合证据。",
+      "limitation": "定性接触模型，不预测最大承载质量或真实表面黏着力；铅材料只作模拟。"
     }
   },
   {
@@ -12082,6 +14001,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "外力推动活塞对气体做功，将机械能转化为气体内能。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "压缩气体"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "压缩比改变末温，活塞随过程从初态移到终态。",
+      "limitation": "理想气体绝热模型，忽略漏气、散热和硝化棉点燃细节。"
     }
   },
   {
@@ -12182,6 +14111,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "气体膨胀做功降温，部分水蒸气液化成小水滴，形成可见白雾。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "释放气体"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "膨胀过程活塞位置与气体状态对应。",
+      "limitation": "理想气体绝热近似；白雾凝结条件未计算。"
     }
   },
   {
@@ -12276,6 +14215,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "主要是通过做功改变内能，机械能转化为内能。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "相对滑动路程与摩擦力用于计算转成系统内能的功。",
+      "limitation": "不是摩擦温度测量，未分配两物体吸热，也没有实时温升曲线。"
     }
   },
   {
@@ -12284,7 +14232,7 @@ window.LAB_CATALOG.push(...[
     "term": "9上",
     "chapter": "第十四章 内能的利用",
     "section": "14.1",
-    "title": "黑色容器中的水吸收太阳能",
+    "title": "太阳能热水装置：吸热、温升与沸腾",
     "kind": "小实验",
     "tags": [
       "小实验",
@@ -12293,7 +14241,7 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g9-textbook"
     ],
-    "objective": "观察太阳辐射使水温升高。",
+    "objective": "由题设功率和吸收效率计算水的吸热，观察升温、沸腾与水耗尽的不同阶段。",
     "apparatus": [
       "黑色水袋模型",
       "水",
@@ -12301,9 +14249,11 @@ window.LAB_CATALOG.push(...[
       "光照源"
     ],
     "steps": [
-      "记录初温、水量和光照条件。",
-      "照射相同时间并记录温度。",
-      "比较遮光和受光时的变化。"
+      "固定照射功率与吸收效率，设置水量、初温和时间。",
+      "播放受热过程，观察温度计与水量。",
+      "只改变水的质量，比较相同吸收热量下的温升。",
+      "按Q=ηPt、Q=mcΔT分步计算，检查是否发生沸腾。",
+      "水完全汽化后停止液态水温预测，不能继续把全部输入能量记为液态水吸热。"
     ],
     "observations": [
       "受光时水温逐渐升高。"
@@ -12326,14 +14276,13 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "energy",
     "modelParams": {
-      "scenario": "solarWater",
-      "variant": "solar-water"
+      "scenario": "solarWater"
     },
-    "modelNote": "以输入功率、时间和给定整体效率估算有效能量；不把光功率直接等同于转速或温升，不模拟装置细节和实际散热。",
+    "modelNote": "按给定整体吸收效率计算Q=ηPt，再由水的质量、比热容和初温求温升。常压达到100 ℃后计汽化吸热；忽略额外散热和容器热容，不输出超过沸点的液态水温。 水全部汽化后不显示虚构液态水温，水吸热统计止于升温加汽化总能量；其后可输入能量另列为未建模部分。 容器水量刻度固定，液面随实际模型剩余质量变化；图中管路仅表示热量传递关系，未求解循环流动。",
     "controls": [
       {
         "key": "power",
-        "label": "输入功率",
+        "label": "照射输入功率",
         "unit": "W",
         "min": 0,
         "max": 2000,
@@ -12342,7 +14291,7 @@ window.LAB_CATALOG.push(...[
       },
       {
         "key": "efficiency",
-        "label": "转换效率",
+        "label": "整体吸收效率",
         "unit": "%",
         "min": 0,
         "max": 100,
@@ -12350,8 +14299,26 @@ window.LAB_CATALOG.push(...[
         "value": 20
       },
       {
+        "key": "mass",
+        "label": "水的质量",
+        "unit": "kg",
+        "min": 0.1,
+        "max": 2,
+        "step": 0.1,
+        "value": 0.5
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "unit": "℃",
+        "min": 0,
+        "max": 90,
+        "step": 1,
+        "value": 20
+      },
+      {
         "key": "time",
-        "label": "时间",
+        "label": "照射时间",
         "unit": "s",
         "min": 0,
         "max": 600,
@@ -12360,28 +14327,35 @@ window.LAB_CATALOG.push(...[
       }
     ],
     "workedExample": {
-      "title": "规范作答",
-      "given": "这个装置把什么能转化为什么能？",
+      "title": "计算太阳能加热温升",
+      "given": "输入功率500 W，整体吸收效率20%，照射120 s；水0.5 kg，初温20 ℃，c=4200 J/(kg·℃)，不计额外散热。",
       "steps": [
         {
-          "title": "指出观察对象",
-          "text": "观察太阳辐射使水温升高。"
+          "title": "求吸收热量",
+          "text": "Q=ηPt=0.20×500×120=12000 J。"
         },
         {
-          "title": "选择实验证据",
-          "text": "受光时水温逐渐升高。"
+          "title": "求温升",
+          "text": "ΔT=Q/(mc)=12000/(0.5×4200)≈5.71 ℃。"
         },
         {
-          "title": "建立解释",
-          "text": "吸收的太阳辐射能可以转化为水与容器的内能。"
-        },
-        {
-          "title": "完整作答",
-          "text": "主要把太阳辐射能转化为内能。"
+          "title": "求末温",
+          "text": "T=20+5.71=25.71 ℃，低于100 ℃，可使用液态升温关系。"
         }
       ],
-      "answer": "主要把太阳辐射能转化为内能。"
-    }
+      "answer": "模型末温约25.7 ℃。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "显示按题设吸收功率计算的温升与液态水状态。",
+      "actionLabel": "观察过程"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "由题设功率和吸收效率计算水的吸热，观察升温、沸腾与水耗尽的不同阶段。 操作步骤：固定照射功率与吸收效率，设置水量、初温和时间。；播放受热过程，观察温度计与水量。；只改变水的质量，比较相同吸收热量下的温升。；按Q=ηPt、Q=mcΔT分步计算，检查是否发生沸腾。；水完全汽化后停止液态水温预测，不能继续把全部输入能量记为液态水吸热。",
+      "limitation": "按给定整体吸收效率计算Q=ηPt，再由水的质量、比热容和初温求温升。常压达到100 ℃后计汽化吸热；忽略额外散热和容器热容，不输出超过沸点的液态水温。 水全部汽化后不显示虚构液态水温，水吸热统计止于升温加汽化总能量；其后可输入能量另列为未建模部分。 容器水量刻度固定，液面随实际模型剩余质量变化；图中管路仅表示热量传递关系，未求解循环流动。"
+    },
+    "playSeconds": 5
   },
   {
     "id": "phy-solar-fan",
@@ -12434,34 +14408,35 @@ window.LAB_CATALOG.push(...[
       "scenario": "solarFan",
       "variant": "solar-fan"
     },
-    "modelNote": "以输入功率、时间和给定整体效率估算有效能量；不把光功率直接等同于转速或温升，不模拟装置细节和实际散热。",
+    "modelNote": "使用给定电机与负载近似，不把光功率直接当转速，也不预测任意自制风扇。",
     "controls": [
       {
         "key": "power",
-        "label": "输入功率",
+        "label": "照到电池板的光功率",
         "unit": "W",
         "min": 0,
-        "max": 2000,
-        "step": 10,
-        "value": 500
+        "max": 5,
+        "step": 0.1,
+        "value": 2
       },
       {
         "key": "efficiency",
-        "label": "转换效率",
+        "label": "光电转换效率",
         "unit": "%",
         "min": 0,
-        "max": 100,
+        "max": 40,
         "step": 1,
         "value": 20
       },
       {
-        "key": "time",
-        "label": "时间",
-        "unit": "s",
+        "key": "coverage",
+        "label": "电池板受光比例",
+        "unit": "%",
         "min": 0,
-        "max": 600,
-        "step": 10,
-        "value": 120
+        "max": 100,
+        "step": 5,
+        "value": 100,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -12486,6 +14461,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电池板可提供的电功率减小，可能不足以维持电动机转动。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "照亮电池板"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "受光比例、功率和效率进入电机转子动力学，遮光或零功率时没有光电驱动。",
+      "limitation": "使用给定电机与负载近似，不把光功率直接当转速，也不预测任意自制风扇。"
     }
   },
   {
@@ -12538,7 +14523,7 @@ window.LAB_CATALOG.push(...[
       "scenario": "rubbing",
       "variant": "rubbing"
     },
-    "modelNote": "电荷与静电作用均为相对量；验电器张角不能直接当作准确电量，吸引轻小物体还涉及极化。",
+    "modelNote": "相对电荷与极化为定性示意，不能由吸引轻小物体辨认电荷正负。",
     "controls": [
       {
         "key": "charge1",
@@ -12572,6 +14557,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能。带电体也能吸引原先整体不带电的轻小物体。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "观察吸引"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "按声称的单个摩擦带电物体电荷判断吸引；charge1为0时纸屑静止，正负均能吸引。",
+      "limitation": "相对电荷与极化为定性示意，不能由吸引轻小物体辨认电荷正负。"
     }
   },
   {
@@ -12677,6 +14672,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "来自气体减少的内能；气体先通过热传递获得能量。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "观察做功过程"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "活塞运动表现气体对外做功，并计算给定效率的能量。",
+      "limitation": "没有汽化压强、阀门和缸内热力学循环，当前仅原理示意。"
     }
   },
   {
@@ -12783,6 +14788,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "效率25%，其余能量主要散失或随废气排出。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "观察做功过程"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "比较给定输入与有效输出能量，活塞动作说明热机功能。",
+      "limitation": "与蒸汽做功为同模型变式，不是已搭建可预测性能的完整热机。"
     }
   },
   {
@@ -12888,6 +14903,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "两物体都带电，且带同种电荷。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变两电荷正负、大小和距离，更新相互作用方向。",
+      "limitation": "静态力箭头不代表小球真实运动；电荷为相对量。"
     }
   },
   {
@@ -12974,6 +14998,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "接触转移的电荷使两片箔带同种电荷，产生相互排斥。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "电荷符号与大小改变时箔片张角变化。",
+      "limitation": "张角不能准确测电量，也不能仅凭张开辨认正负。"
     }
   },
   {
@@ -13088,6 +15121,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "先断开开关，检查电路是否闭合、接触是否可靠及器材是否匹配。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "开关立即改变导通状态、灯亮及读数。",
+      "limitation": "理想直流低压电路；不允许靠开始键才闭合开关。"
     }
   },
   {
@@ -13200,6 +15242,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能；LED反向截止即可导致不亮，应结合连接方向排查。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变LED方向与电压，比较是否达到正向导通条件。",
+      "limitation": "固定正向压降近似，不模拟击穿及真实I-U曲线。"
     }
   },
   {
@@ -13323,6 +15374,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能。电流可能太小，低于灯泡可见发光的条件。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "更换材料，比较通断与电流大小。",
+      "limitation": "材料值为教学代表，绝缘性取决于条件；不能推广到高压击穿。"
     }
   },
   {
@@ -13420,6 +15480,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "其两端被低电阻导线连接，电压接近零，流经灯丝的电流很小。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "短接灯泡后该灯无电压，保留串联负载。",
+      "limitation": "灯泡短路与电源短路不同；应清楚显示被短接支路与剩余电阻。"
     }
   },
   {
@@ -13540,6 +15609,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "它控制干路通断，因此控制全部支路是否接入电源。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "直接切换串联/并联拓扑，更新电流与电压。",
+      "limitation": "尚非自由拖线搭建；缺错误接线识别和各灯独立开关。"
     }
   },
   {
@@ -13565,9 +15643,10 @@ window.LAB_CATALOG.push(...[
       "开关"
     ],
     "steps": [
-      "估计电流并选量程。",
-      "把电流表串联接入待测支路。",
-      "正进负出，通电后按量程读数。"
+      "先选大量程，确认电源与负载条件。",
+      "电流表串联、电压表并联；正接线柱接较高电势一侧。",
+      "调整量程并读取示数，观察反接或超量程时的异常。",
+      "每次只改变一个条件，说明操作是否规范。"
     ],
     "observations": [
       "换量程后同一电流对应的指针位置改变。"
@@ -13591,10 +15670,10 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "circuit",
     "modelParams": {
-      "scenario": "ammeter",
-      "variant": "ammeter"
+      "scenario": "ammeterPractice",
+      "mode": "I"
     },
-    "modelNote": "采用理想直流电源、导线与仪表；电阻默认为欧姆元件，灯丝和二极管按各自专门近似模型处理。",
+    "modelNote": "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。",
     "controls": [
       {
         "key": "voltage",
@@ -13607,21 +15686,61 @@ window.LAB_CATALOG.push(...[
       },
       {
         "key": "resistance",
-        "label": "电阻 R1",
-        "unit": "Ω",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "value": 10
-      },
-      {
-        "key": "resistance2",
-        "label": "电阻 R2",
+        "label": "负载电阻",
         "unit": "Ω",
         "min": 1,
         "max": 100,
         "step": 1,
         "value": 20
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "options": [
+          {
+            "value": "series",
+            "label": "串联"
+          },
+          {
+            "value": "parallel",
+            "label": "并联"
+          }
+        ],
+        "value": "series"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "options": [
+          {
+            "value": "correct",
+            "label": "正接"
+          },
+          {
+            "value": "reversed",
+            "label": "反接"
+          },
+          {
+            "value": "open",
+            "label": "未接通"
+          }
+        ],
+        "value": "correct"
+      },
+      {
+        "key": "range",
+        "label": "量程",
+        "options": [
+          {
+            "value": 0.6,
+            "label": "0～0.6 A"
+          },
+          {
+            "value": 3,
+            "label": "0～3 A"
+          }
+        ],
+        "value": 3
       }
     ],
     "workedExample": {
@@ -13646,6 +15765,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电流为0.36 A。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "接法、极性和量程改变后即时检查示数，无需播放计时。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "掌握电流表串联、极性、量程和读数。 操作步骤：先选大量程，确认电源与负载条件。；电流表串联、电压表并联；正接线柱接较高电势一侧。；调整量程并读取示数，观察反接或超量程时的异常。；每次只改变一个条件，说明操作是否规范。",
+      "limitation": "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。"
     }
   },
   {
@@ -13752,6 +15880,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电流相同；亮度差异与两灯实际功率、灯丝特性等有关。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变串联电阻和电压，比较各处同一电流。",
+      "limitation": "须显示至少两处读数；理想仪表无内阻。"
     }
   },
   {
@@ -13858,6 +15995,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "另一支路电流0.32 A。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变各支路电阻，比较干路电流等于各支路之和。",
+      "limitation": "至少显示支路和干路读数；当前元件均为理想欧姆负载。"
     }
   },
   {
@@ -13883,9 +16029,10 @@ window.LAB_CATALOG.push(...[
       "开关"
     ],
     "steps": [
-      "先判断被测的两个节点。",
-      "将电压表并联接入并检查正负极。",
-      "按所接量程确定分度值并读数。"
+      "先选大量程，确认电源与负载条件。",
+      "电流表串联、电压表并联；正接线柱接较高电势一侧。",
+      "调整量程并读取示数，观察反接或超量程时的异常。",
+      "每次只改变一个条件，说明操作是否规范。"
     ],
     "observations": [
       "电压表跨接不同节点可读出不同电压。"
@@ -13908,10 +16055,10 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "circuit",
     "modelParams": {
-      "scenario": "voltmeter",
-      "variant": "voltmeter"
+      "scenario": "voltmeterPractice",
+      "mode": "V"
     },
-    "modelNote": "采用理想直流电源、导线与仪表；电阻默认为欧姆元件，灯丝和二极管按各自专门近似模型处理。",
+    "modelNote": "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。",
     "controls": [
       {
         "key": "voltage",
@@ -13924,21 +16071,61 @@ window.LAB_CATALOG.push(...[
       },
       {
         "key": "resistance",
-        "label": "电阻 R1",
-        "unit": "Ω",
-        "min": 1,
-        "max": 100,
-        "step": 1,
-        "value": 10
-      },
-      {
-        "key": "resistance2",
-        "label": "电阻 R2",
+        "label": "负载电阻",
         "unit": "Ω",
         "min": 1,
         "max": 100,
         "step": 1,
         "value": 20
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "options": [
+          {
+            "value": "series",
+            "label": "串联"
+          },
+          {
+            "value": "parallel",
+            "label": "并联"
+          }
+        ],
+        "value": "parallel"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "options": [
+          {
+            "value": "correct",
+            "label": "正接"
+          },
+          {
+            "value": "reversed",
+            "label": "反接"
+          },
+          {
+            "value": "open",
+            "label": "未接通"
+          }
+        ],
+        "value": "correct"
+      },
+      {
+        "key": "range",
+        "label": "量程",
+        "options": [
+          {
+            "value": 3,
+            "label": "0～3 V"
+          },
+          {
+            "value": 15,
+            "label": "0～15 V"
+          }
+        ],
+        "value": 15
       }
     ],
     "workedExample": {
@@ -13963,6 +16150,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "被测两端电压2.4 V。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "接法、极性和量程改变后即时检查示数，无需播放计时。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "正确选择量程并测量元件两端电压。 操作步骤：先选大量程，确认电源与负载条件。；电流表串联、电压表并联；正接线柱接较高电势一侧。；调整量程并读取示数，观察反接或超量程时的异常。；每次只改变一个条件，说明操作是否规范。",
+      "limitation": "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。"
     }
   },
   {
@@ -14068,6 +16264,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "另一部分两端电压4 V。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "串联两电阻电压随阻值变化，比较总电压之和。",
+      "limitation": "电源与导线理想；不能用相同灯泡特例推断所有串联电压相等。"
     }
   },
   {
@@ -14187,6 +16392,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "空载电压约2.96 V。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "电池数、单节电压和方向改变总电动势。",
+      "limitation": "忽略内阻，不模拟电池化学、短路温升及混用电池风险。"
     }
   },
   {
@@ -14291,6 +16505,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "若两支路直接接在同一对节点上，另一支路也是3 V。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "并联两支路端电压与电源电压保持相等。",
+      "limitation": "导线理想、忽略内阻；相同电压不推出支路电流相等。"
     }
   },
   {
@@ -14430,6 +16653,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "因为两种导体的长度与横截面积也可能不同，尚未控制这些因素。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "选择材料及尺寸比较导体电阻与电流。",
+      "limitation": "数值是代表性材料常数，实际合金、温度和接触电阻会有差异。"
     }
   },
   {
@@ -14567,6 +16799,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "新电阻10 Ω。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "一次只改变长度、横截面积、材料或温度，比较R。",
+      "limitation": "与上一条为同装置控制变量变式，不能用多变量同时改变得单因果结论。"
     }
   },
   {
@@ -14683,6 +16924,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "用于限制初始电流，保护电源、仪表和用电器。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "滑片位置立即改变接入电阻与电流。",
+      "limitation": "接线已固定为有效接法，缺同上/同下错误接线和端点选择。"
     }
   },
   {
@@ -14799,6 +17049,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电流流过电阻会产生焦耳热，部分电能转化为内能。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "在安全低压模型中滑片位置改变灯功率示意。",
+      "limitation": "用理想负载近似，不是市电调光器设计。"
     }
   },
   {
@@ -14888,6 +17147,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电流0.40 A，是2 V时的2倍。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "固定10Ω改变电压，直接更新电流和关系图。",
+      "limitation": "0V点不能以0/0求电阻；理想定温欧姆元件。"
     }
   },
   {
@@ -14977,6 +17245,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电阻加倍，电流减半。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "固定3V改变电阻，比较反比电流。",
+      "limitation": "实际换电阻需调变阻器保持被测电阻两端电压一致，模型自动满足这一前提。"
     }
   },
   {
@@ -15075,6 +17352,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "待测电阻12 Ω。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "读取U和I后分步代入R=U/I并记录多组。",
+      "limitation": "被测R仍作为题设输入，需与结果遮蔽练习区分；尚无真实未知电阻或误差。"
     }
   },
   {
@@ -15181,6 +17467,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "各次温度不同，对应阻值本来就不同，平均会掩盖真实变化。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变电压后显示灯丝阻值与电流的非线性趋势。",
+      "limitation": "热电阻曲线为近似模型，不能作为真实灯泡标定数据。"
     }
   },
   {
@@ -15189,7 +17484,7 @@ window.LAB_CATALOG.push(...[
     "term": "9上",
     "chapter": "第十七章 欧姆定律",
     "section": "17.3",
-    "title": "用数字多用表测量电阻",
+    "title": "数字多用表：直流电压、电流与电阻测量",
     "kind": "拓展探究",
     "tags": [
       "拓展探究",
@@ -15198,19 +17493,21 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-g9-textbook"
     ],
-    "objective": "学习在断电条件下直接测量电阻。",
+    "objective": "根据测量对象选择挡位、接法、极性和量程，识别带电测电阻及未接通等错误。",
     "apparatus": [
       "数字多用表",
       "断电电阻",
       "小灯泡"
     ],
     "steps": [
-      "检查表笔插孔和电阻挡。",
-      "使被测元件脱离带电电路。",
-      "选择合适量程并读取单位。"
+      "明确测量对象，选择直流电压、电流或电阻挡。",
+      "选择相应的接法和足够大的量程。",
+      "电阻挡先断开外部电源；检查表笔接触。",
+      "比较正接、反接、未接通和超量程的显示。"
     ],
     "observations": [
-      "低温灯丝阻值通常小于发光时的U/I。"
+      "直流表笔反接显示负号；独立电阻换向后阻值不变。",
+      "电阻挡未接通或量程不足显示OL；带电电阻测量被禁止。"
     ],
     "conclusion": "欧姆挡测量需要断电；显示单位和量程决定读数含义。",
     "examPoints": [
@@ -15231,20 +17528,104 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "circuit",
     "modelParams": {
-      "scenario": "ohm",
-      "variant": "multimeter",
-      "voltage": 1
+      "scenario": "multimeterPractice"
     },
-    "modelNote": "以表内参考电源测得的理想电流推算电阻，画面为电阻挡示意；真实电阻测量须断电并隔离元件，不能对带电电路使用欧姆挡。",
+    "modelNote": "简化多用电表操作训练：只讨论直流电压、电流和独立元件电阻。量程单位随挡位改变，电阻挡先断开外部电源；不模拟实际产品的自动量程和所有功能。",
     "controls": [
       {
+        "key": "voltage",
+        "label": "电源电压",
+        "unit": "V",
+        "min": 0,
+        "max": 12,
+        "step": 0.5,
+        "value": 3
+      },
+      {
         "key": "resistance",
-        "label": "电阻 R1",
+        "label": "负载电阻",
         "unit": "Ω",
         "min": 1,
         "max": 100,
         "step": 1,
-        "value": 10
+        "value": 20
+      },
+      {
+        "key": "mode",
+        "label": "测量挡位",
+        "options": [
+          {
+            "value": "V",
+            "label": "直流电压"
+          },
+          {
+            "value": "I",
+            "label": "直流电流"
+          },
+          {
+            "value": "R",
+            "label": "电阻"
+          }
+        ],
+        "value": "V"
+      },
+      {
+        "key": "energized",
+        "label": "外部电源",
+        "options": [
+          {
+            "value": true,
+            "label": "接通"
+          },
+          {
+            "value": false,
+            "label": "断开"
+          }
+        ],
+        "value": true
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "options": [
+          {
+            "value": "series",
+            "label": "串联"
+          },
+          {
+            "value": "parallel",
+            "label": "并联"
+          }
+        ],
+        "value": "parallel"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "options": [
+          {
+            "value": "correct",
+            "label": "正接"
+          },
+          {
+            "value": "reversed",
+            "label": "反接"
+          },
+          {
+            "value": "open",
+            "label": "未接通"
+          }
+        ],
+        "value": "correct"
+      },
+      {
+        "key": "range",
+        "label": "当前挡位量程",
+        "unit": "",
+        "min": 0.1,
+        "max": 1000,
+        "step": 0.1,
+        "value": 20
       }
     ],
     "workedExample": {
@@ -15269,6 +17650,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电阻为1250 Ω。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "选择挡位、接法与表笔后直接读表。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "根据测量对象选择挡位、接法、极性和量程，识别带电测电阻及未接通等错误。 操作步骤：明确测量对象，选择直流电压、电流或电阻挡。；选择相应的接法和足够大的量程。；电阻挡先断开外部电源；检查表笔接触。；比较正接、反接、未接通和超量程的显示。",
+      "limitation": "简化多用电表操作训练：只讨论直流电压、电流和独立元件电阻。量程单位随挡位改变，电阻挡先断开外部电源；不模拟实际产品的自动量程和所有功能。"
     }
   },
   {
@@ -15376,6 +17766,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "额定功率0.75 W。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "读取工作电压和电流，分步计算实际功率。",
+      "limitation": "额定值与实际值须区分；模型亮度不代表光通量。"
     }
   },
   {
@@ -15472,6 +17871,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "一个月约节约1.2 kW·h。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "用铭牌功率与使用时间估算电能。",
+      "limitation": "并非电能表现场读数，启停与待机功率未包含。"
     }
   },
   {
@@ -15579,6 +17987,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电阻产生50 J热量。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始通电加热"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "等电流等时间比较不同电阻累积热量。",
+      "limitation": "气柱显示热量趋势，不是实际温升；需要随播放时间变化才适用加热回放。"
     }
   },
   {
@@ -15685,6 +18103,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电热变为原来的4倍。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始通电加热"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "等电阻等时间比较不同电流累积热量。",
+      "limitation": "详细分流电路未求解；液面高度不作为温度或热量的标定刻度。"
     }
   },
   {
@@ -15710,9 +18138,10 @@ window.LAB_CATALOG.push(...[
       "电流读数"
     ],
     "steps": [
-      "在模拟中缓慢增大电流。",
-      "比较不同材料的发热和熔断状态。",
-      "说明熔断对电路的作用。"
+      "固定细丝长度、直径与电流，选择第一种材料。",
+      "观察温度上升、达到熔点后的熔化吸热平台；全部熔化后断丝，电流归零。",
+      "保持其他条件不变，更换材料比较。",
+      "结合电阻率、热容量和熔点解释差异，不能只比较熔点。"
     ],
     "observations": [
       "合适的保险丝在过流后熔断，切断电路。"
@@ -15736,62 +18165,91 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "household",
     "modelParams": {
-      "scenario": "overload",
-      "variant": "fuse"
+      "scenario": "fuseCompare"
     },
-    "modelNote": "根据总功率、电压和设定额定电流判断过流；未计算保险丝和铜丝的熔点、直径与散热，不把阈值判断当作真实熔断时间预测。",
+    "modelNote": "长10 cm细丝采用题设电阻率、密度、比热容、熔点与熔化潜热。合金/铜/铁的L分别取25000/205000/247000 J/kg。假设均匀受热、绝热、断前定电流，全部熔化后断开；断后电流为零、焦耳热停止，忽略冷却与电弧。不能据此估算实际保险丝额定值。",
     "controls": [
       {
-        "key": "power",
-        "label": "用电器总功率",
-        "unit": "W",
-        "min": 0,
-        "max": 10000,
-        "step": 100,
-        "value": 2200
+        "key": "material",
+        "label": "题设细丝材料",
+        "options": [
+          {
+            "value": "alloy",
+            "label": "低熔点合金"
+          },
+          {
+            "value": "copper",
+            "label": "铜"
+          },
+          {
+            "value": "iron",
+            "label": "铁"
+          }
+        ],
+        "value": "alloy"
       },
       {
-        "key": "voltage",
-        "label": "家庭电压",
-        "unit": "V",
-        "min": 110,
-        "max": 240,
-        "step": 10,
-        "value": 220
-      },
-      {
-        "key": "limit",
-        "label": "额定电流",
+        "key": "current",
+        "label": "通电电流",
         "unit": "A",
-        "min": 5,
-        "max": 40,
-        "step": 1,
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "value": 2
+      },
+      {
+        "key": "diameter",
+        "label": "细丝直径",
+        "unit": "mm",
+        "min": 0.2,
+        "max": 0.8,
+        "step": 0.05,
+        "value": 0.3
+      },
+      {
+        "key": "time",
+        "label": "通电时间",
+        "unit": "s",
+        "min": 0,
+        "max": 30,
+        "step": 0.5,
         "value": 10
       }
     ],
     "workedExample": {
-      "title": "规范作答",
-      "given": "用铜丝代替保险丝为什么危险？",
+      "title": "从升温与熔化吸热求断开时间",
+      "given": "题设细丝R=0.20 Ω，m=0.00010 kg，c=200 J/(kg·℃)，I=1 A，初温20 ℃，熔点70 ℃，熔化潜热L=25000 J/kg。忽略散热，按全部熔化后断开，求断开时间。",
       "steps": [
         {
-          "title": "指出观察对象",
-          "text": "理解过流保护器件的作用与材料要求。"
+          "title": "求升温吸热",
+          "text": "Q₁=mcΔT=0.00010×200×(70−20)=1.0 J。"
         },
         {
-          "title": "选择实验证据",
-          "text": "合适的保险丝在过流后熔断，切断电路。"
+          "title": "求熔化吸热",
+          "text": "Q₂=mL=0.00010×25000=2.5 J；此阶段温度保持70 ℃，不能继续用Q=mcΔT。"
         },
         {
-          "title": "建立解释",
-          "text": "保险丝利用电流热效应保护电路，不能用普通铜丝替代。"
+          "title": "求电功率与总时间",
+          "text": "P=I²R=1²×0.20=0.20 W。t=(Q₁+Q₂)/P=(1.0+2.5)/0.20=17.5 s。"
         },
         {
-          "title": "完整作答",
-          "text": "铜丝可能在危险电流下仍不断开，使导线或电器持续过热。"
+          "title": "区分到熔点与熔断",
+          "text": "升到熔点仅需Q₁/P=5.0 s，此时尚未完成熔化。再吸热12.5 s后才按题设断开；断后I=0，焦耳热不再增加。"
         }
       ],
-      "answer": "铜丝可能在危险电流下仍不断开，使导线或电器持续过热。"
-    }
+      "answer": "题设断开时间17.5 s；达到熔点的5.0 s并非断开时间。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "播放升温、吸收熔化潜热、断丝和断后电流归零四个阶段，温度平台不等于立即熔断。",
+      "actionLabel": "观察过程"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "理解过流保护器件的作用与材料要求。 操作步骤：固定细丝长度、直径与电流，选择第一种材料。；观察温度上升、达到熔点后的熔化吸热平台；全部熔化后断丝，电流归零。；保持其他条件不变，更换材料比较。；结合电阻率、热容量和熔点解释差异，不能只比较熔点。",
+      "limitation": "长10 cm细丝采用题设电阻率、密度、比热容、熔点与熔化潜热。合金/铜/铁的L分别取25000/205000/247000 J/kg。假设均匀受热、绝热、断前定电流，全部熔化后断开；断后电流为零、焦耳热停止，忽略冷却与电弧。不能据此估算实际保险丝额定值。"
+    },
+    "playSeconds": 5
   },
   {
     "id": "phy-home-circuit-design",
@@ -15928,6 +18386,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "工作电流约10 A；不能只凭这一计算自行选线施工。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "两支路开关分别控制负载，观察并联结构。",
+      "limitation": "仅低压模拟；接地与漏电保护为图示而非实际市电接线。"
     }
   },
   {
@@ -16036,6 +18503,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不能。铁、钴、镍等及某些合金容易被吸引，铜铝通常不会明显被普通磁体吸引。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "两相对磁极立即改变吸引/排斥箭头。",
+      "limitation": "方向示意不计算磁力大小或磁铁移动轨迹。"
     }
   },
   {
@@ -16059,9 +18535,10 @@ window.LAB_CATALOG.push(...[
       "多个小磁针"
     ],
     "steps": [
-      "选定磁体附近一个位置。",
-      "先后放入不同小磁针。",
-      "记录其静止N极指向。"
+      "把小磁针移到磁体外部一个位置，记录红色N端方向。",
+      "逐个改变横、纵坐标，比较不同点的指向。",
+      "调换磁极，观察同一位置方向是否反转。",
+      "根据多处磁针指向描述磁场方向，不能只凭一处判断全场。"
     ],
     "observations": [
       "同一点处不同小磁针的N极指向一致。"
@@ -16084,14 +18561,31 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "magnet",
     "modelParams": {
-      "scenario": "compass",
-      "variant": "compass"
+      "scenario": "compassMap"
     },
-    "modelNote": "磁场线和相对场强用于表示方向及变化趋势，不能当作实测磁感应强度或吸力。",
+    "modelNote": "条形磁铁外部的磁偶极近似。小磁针N端沿模型计算的局部磁场方向，中心附近不在此近似范围内；画面坐标是相对位置。",
     "controls": [
       {
+        "key": "x",
+        "label": "小磁针横向位置",
+        "unit": "",
+        "min": -3,
+        "max": 3,
+        "step": 0.1,
+        "value": 1.5
+      },
+      {
+        "key": "y",
+        "label": "小磁针纵向位置",
+        "unit": "",
+        "min": -2,
+        "max": 2,
+        "step": 0.1,
+        "value": 1
+      },
+      {
         "key": "pole",
-        "label": "所观察磁极",
+        "label": "磁体右端磁极",
         "options": [
           {
             "value": "N",
@@ -16127,6 +18621,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "在小磁针不明显扰动原磁场的近似下，不改变。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "在不同位置放置小磁针，直接观察N端方向。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "把静止小磁针N极指向作为磁场方向。 操作步骤：把小磁针移到磁体外部一个位置，记录红色N端方向。；逐个改变横、纵坐标，比较不同点的指向。；调换磁极，观察同一位置方向是否反转。；根据多处磁针指向描述磁场方向，不能只凭一处判断全场。",
+      "limitation": "条形磁铁外部的磁偶极近似。小磁针N端沿模型计算的局部磁场方向，中心附近不在此近似范围内；画面坐标是相对位置。"
     }
   },
   {
@@ -16221,6 +18724,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "铁屑排列显示分布形态，却不标明N到S的箭头方向。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "磁场线表示方向，并随磁极选择变化。",
+      "limitation": "场线是表示法，不是实际存在的曲线；没有模拟铁屑相互作用。"
     }
   },
   {
@@ -16309,6 +18821,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "说明通电导线产生的磁场方向随电流方向改变。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "电流方向和断电状态改变磁针偏向。",
+      "limitation": "相对方向示意，不按距离和地磁场求真实偏转角。"
     }
   },
   {
@@ -16420,6 +18941,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "N、S极交换。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变电流、匝数与铁芯比较磁性趋势。",
+      "limitation": "相对场强不是实测磁感应强度，铁芯增强系数为教学近似。"
     }
   },
   {
@@ -16428,7 +18958,7 @@ window.LAB_CATALOG.push(...[
     "term": "9下",
     "chapter": "第二十章 电与磁",
     "section": "20.3",
-    "title": "制作电磁起重机并比较磁性强弱",
+    "title": "电磁起重装置：比较吸力与载荷",
     "kind": "小实验",
     "tags": [
       "小实验",
@@ -16445,9 +18975,10 @@ window.LAB_CATALOG.push(...[
       "曲别针"
     ],
     "steps": [
-      "固定匝数，改变电流比较吸起能力。",
-      "固定电流，改变线圈匝数。",
-      "比较有铁芯与无铁芯的情形。"
+      "固定匝数、铁芯和载荷，改变电流比较能否托住。",
+      "保持电流相同，分别比较匝数和有无铁芯。",
+      "增加载荷，比较吸力与重力。",
+      "电流置零观察释放；反向电流改变磁极，但仍吸引软铁。"
     ],
     "observations": [
       "其他条件相同时，电流或匝数增大通常使磁性增强；铁芯可增强磁场。"
@@ -16470,26 +19001,25 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "magnet",
     "modelParams": {
-      "scenario": "electromagnet",
-      "variant": "electromagnet"
+      "scenario": "craneLoad"
     },
-    "modelNote": "磁场线和相对场强用于表示方向及变化趋势，不能当作实测磁感应强度或吸力。",
+    "modelNote": "给定磁路的理想吸力比较：气隙3 mm、面积1 cm²、磁路长10 cm、铁芯相对磁导率500，忽略漏磁与饱和。用于比较变量，不能作为实际起重机载荷计算。 本页比较已给装置的受力，不提供器材组装；线圈绕向固定，正电流左极为N，反向只改变磁极。画出的每匝代表10个实际匝数。",
     "controls": [
       {
         "key": "current",
         "label": "电流",
         "unit": "A",
-        "min": -3,
-        "max": 3,
+        "min": -2,
+        "max": 2,
         "step": 0.1,
         "value": 1
       },
       {
         "key": "turns",
-        "label": "线圈匝数",
+        "label": "匝数",
         "unit": "",
-        "min": 10,
-        "max": 300,
+        "min": 20,
+        "max": 200,
         "step": 10,
         "value": 100
       },
@@ -16498,15 +19028,24 @@ window.LAB_CATALOG.push(...[
         "label": "铁芯",
         "options": [
           {
-            "value": "air",
-            "label": "无铁芯"
-          },
-          {
             "value": "iron",
             "label": "有铁芯"
+          },
+          {
+            "value": "air",
+            "label": "无铁芯"
           }
         ],
         "value": "iron"
+      },
+      {
+        "key": "load",
+        "label": "载荷质量",
+        "unit": "g",
+        "min": 5,
+        "max": 100,
+        "step": 5,
+        "value": 20
       }
     ],
     "workedExample": {
@@ -16531,6 +19070,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "否则磁性差异同时含电流和匝数两个因素，不能单独归因匝数。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改变线圈条件与载荷，比较题设吸力能否托住载荷。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "比较电流、匝数和铁芯对电磁铁的影响。 操作步骤：固定匝数、铁芯和载荷，改变电流比较能否托住。；保持电流相同，分别比较匝数和有无铁芯。；增加载荷，比较吸力与重力。；电流置零观察释放；反向电流改变磁极，但仍吸引软铁。",
+      "limitation": "给定磁路的理想吸力比较：气隙3 mm、面积1 cm²、磁路长10 cm、铁芯相对磁导率500，忽略漏磁与饱和。用于比较变量，不能作为实际起重机载荷计算。 本页比较已给装置的受力，不提供器材组装；线圈绕向固定，正电流左极为N，反向只改变磁极。画出的每匝代表10个实际匝数。"
     }
   },
   {
@@ -16642,6 +19190,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电磁吸引作用减弱，弹簧使衔铁返回原位。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "通电、断电时衔铁接点与受控电路同步切换。",
+      "limitation": "开闭阈值只作示意，不含线圈电感、弹簧力、磁滞与接点弹跳。"
     }
   },
   {
@@ -16757,6 +19314,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不会，两次反向作用抵消，受力方向保持不变。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "电流或磁场反向时力箭头反向，零电流无磁力。",
+      "limitation": "只比较受力，未求导线实际加速度或位移；角度应从电流方向与磁场夹角计。"
     }
   },
   {
@@ -16861,6 +19427,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "电流方向未改变，磁力矩转为阻碍原转动方向，使线圈返回平衡附近。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "手动改变角度比较线圈力矩方向与大小。",
+      "limitation": "静态角度分析无需开始；相对力矩不等于已求出线圈转速。"
     }
   },
   {
@@ -16919,42 +19494,33 @@ window.LAB_CATALOG.push(...[
     "controls": [
       {
         "key": "current",
-        "label": "电流",
+        "label": "线圈电流",
         "unit": "A",
-        "min": -3,
-        "max": 3,
+        "min": -2,
+        "max": 2,
         "step": 0.1,
         "value": 1
       },
       {
         "key": "turns",
         "label": "线圈匝数",
-        "unit": "",
-        "min": 10,
-        "max": 300,
+        "unit": "匝",
+        "min": 20,
+        "max": 200,
         "step": 10,
         "value": 100
-      },
-      {
-        "key": "angle",
-        "label": "线圈法线与磁场夹角",
-        "unit": "°",
-        "min": 0,
-        "max": 180,
-        "step": 5,
-        "value": 45
       },
       {
         "key": "core",
         "label": "铁芯",
         "options": [
           {
-            "value": "air",
-            "label": "无铁芯"
-          },
-          {
             "value": "iron",
             "label": "有铁芯"
+          },
+          {
+            "value": "air",
+            "label": "无铁芯"
           }
         ],
         "value": "iron"
@@ -16982,6 +19548,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "主要把电能转化为机械能，同时有电阻发热等损耗。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "接通电动机"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "通电线圈应在磁场内连续转动并说明换向器作用。",
+      "limitation": "原版仅当前角度静态图；连续运动需惯量、阻尼和换向条件，不能拿任意旋转冒充引擎结果。"
     }
   },
   {
@@ -17073,6 +19649,22 @@ window.LAB_CATALOG.push(...[
         "max": 180,
         "step": 5,
         "value": 90
+      },
+      {
+        "key": "closed",
+        "label": "回路开关",
+        "options": [
+          {
+            "value": true,
+            "label": "闭合"
+          },
+          {
+            "value": false,
+            "label": "断开"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -17097,6 +19689,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "在磁场稳定的本实验中不会，因为没有产生持续感应电流所需的变化。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "移动导体"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "导线运动、磁场和速度方向决定感应电动势。",
+      "limitation": "开路也可有电动势，只有闭合回路才有持续电流；原来固定导线没有运动。"
     }
   },
   {
@@ -17188,6 +19790,22 @@ window.LAB_CATALOG.push(...[
         "max": 10,
         "step": 0.5,
         "value": 2
+      },
+      {
+        "key": "rotationDirection",
+        "label": "手柄转动方向",
+        "options": [
+          {
+            "value": 1,
+            "label": "正转"
+          },
+          {
+            "value": -1,
+            "label": "反转"
+          }
+        ],
+        "value": 1,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -17212,6 +19830,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "它们分别在相反方向电流流过时导通，便于观察电流方向交替。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "转动手柄"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "转动线圈角度与感应电动势曲线同步变化。",
+      "limitation": "理想匀速外力驱动，不计负载反作用、内阻和能量损耗。"
     }
   },
   {
@@ -17262,19 +19890,42 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "emwave",
     "modelParams": {
-      "scenario": "emission",
+      "scenario": "sparkCompare",
       "variant": "emission"
     },
-    "modelNote": "使用真空光速与波长频率关系；接收强弱是相对示意，未模拟真实天线、干扰和复杂传播损耗。",
+    "modelNote": "包络为相对示意，火花不能等同于单一MHz正弦；未输出精确噪声级或场强。",
     "controls": [
       {
-        "key": "frequency",
-        "label": "频率",
-        "unit": "MHz",
-        "min": 1,
-        "max": 3000,
-        "step": 1,
-        "value": 100
+        "key": "mode",
+        "label": "发射电路状态",
+        "options": [
+          {
+            "value": "steady",
+            "label": "稳恒电流"
+          },
+          {
+            "value": "switching",
+            "label": "迅速通断"
+          }
+        ],
+        "value": "switching",
+        "placement": "scene"
+      },
+      {
+        "key": "receiverOn",
+        "label": "接收机",
+        "options": [
+          {
+            "value": true,
+            "label": "接通"
+          },
+          {
+            "value": false,
+            "label": "关闭"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -17299,6 +19950,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "由收音机接收电磁信号后，经电路处理带动扬声器发出。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "操作发射电路"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "稳恒电流/迅速通断与接收机开关形成对照，瞬态响应按慢放包络显示。",
+      "limitation": "包络为相对示意，火花不能等同于单一MHz正弦；未输出精确噪声级或场强。"
     }
   },
   {
@@ -17348,19 +20009,57 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "emwave",
     "modelParams": {
-      "scenario": "vacuum",
+      "scenario": "vacuumCompare",
       "variant": "vacuum"
     },
-    "modelNote": "使用真空光速与波长频率关系；接收强弱是相对示意，未模拟真实天线、干扰和复杂传播损耗。",
+    "modelNote": "理想对照忽略固体支架传声与罩体屏蔽；不模拟手机协议和实际声压。",
     "controls": [
       {
-        "key": "frequency",
-        "label": "频率",
-        "unit": "MHz",
-        "min": 1,
-        "max": 3000,
-        "step": 1,
-        "value": 100
+        "key": "medium",
+        "label": "罩内介质",
+        "options": [
+          {
+            "value": "air",
+            "label": "空气"
+          },
+          {
+            "value": "vacuum",
+            "label": "理想真空"
+          }
+        ],
+        "value": "air",
+        "placement": "scene"
+      },
+      {
+        "key": "sourceOn",
+        "label": "外部发射信号",
+        "options": [
+          {
+            "value": true,
+            "label": "开启"
+          },
+          {
+            "value": false,
+            "label": "关闭"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
+      },
+      {
+        "key": "phoneSoundOn",
+        "label": "手机铃声",
+        "options": [
+          {
+            "value": true,
+            "label": "开启"
+          },
+          {
+            "value": false,
+            "label": "静音"
+          }
+        ],
+        "value": true
       }
     ],
     "workedExample": {
@@ -17385,6 +20084,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，通信使用电磁波传递信息，接收端再把电信号转换成声音。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "空气/真空可切换；罩内手机接收信号、扬声器振动和罩外听声三种状态分别显示。",
+      "limitation": "理想对照忽略固体支架传声与罩体屏蔽；不模拟手机协议和实际声压。"
     }
   },
   {
@@ -17490,6 +20198,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "波长约3 m。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "接收频率偏离发射频率时，相对接收强度随带宽变化。",
+      "limitation": "中心完全重合时改变带宽应保持峰值，不能把该情况误报惰性控件；单峰相对模型。"
     }
   },
   {
@@ -17541,19 +20258,51 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "emwave",
     "modelParams": {
-      "scenario": "transmission",
+      "scenario": "radioTransmission",
       "variant": "transmission"
     },
-    "modelNote": "使用真空光速与波长频率关系；接收强弱是相对示意，未模拟真实天线、干扰和复杂传播损耗。",
+    "modelNote": "无屏蔽、匹配接收的工作原理示意，不计算真实无线覆盖距离或干扰。",
     "controls": [
       {
         "key": "frequency",
-        "label": "频率",
+        "label": "发射频率",
         "unit": "MHz",
         "min": 1,
-        "max": 3000,
+        "max": 1000,
         "step": 1,
         "value": 100
+      },
+      {
+        "key": "sourceOn",
+        "label": "发射端",
+        "options": [
+          {
+            "value": true,
+            "label": "开启"
+          },
+          {
+            "value": false,
+            "label": "关闭"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
+      },
+      {
+        "key": "receiverOn",
+        "label": "接收端",
+        "options": [
+          {
+            "value": true,
+            "label": "开启"
+          },
+          {
+            "value": false,
+            "label": "关闭"
+          }
+        ],
+        "value": true,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -17578,6 +20327,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "接收器感应到的变化电磁信号与发射器设定相关，再经采集显示。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "发射/接收开关直接改变信号状态，频率由引擎换算真空波长。",
+      "limitation": "无屏蔽、匹配接收的工作原理示意，不计算真实无线覆盖距离或干扰。"
     }
   },
   {
@@ -17684,6 +20442,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不违反。光在各段均匀介质内近似直线传播，并在边界反复反射。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "比较界面角度与临界条件，满足全反射时标示导光。",
+      "limitation": "原固定弯曲光路在不满足全反射时也显示导光，必须联动状态；不求实际弯曲水流损耗。"
     }
   },
   {
@@ -17782,6 +20549,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "还需比较相同任务下的工作时间、实际负荷和效率，必要时测量耗电量。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "比较用电功率与时间方案的电能结果。",
+      "limitation": "与家庭能耗估算为任务变式；尚无多设备清单或现实节能验证。"
     }
   },
   {
@@ -17885,6 +20661,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "传播距离不同也影响响应时间，只有距离等条件相同才便于比较材料导热性。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变两端温度和材料导热能力，比较热流方向与强弱。",
+      "limitation": "无瞬态温度分布和蜡滴脱落时刻，不应把静态比较包装为加热播放。"
     }
   },
   {
@@ -17988,6 +20773,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "不是，封闭且无损失条件下总质量不变，体积改变源于微观排列等因素。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "给定两液体体积及收缩比例，展示混合后体积不简单相加。",
+      "limitation": "收缩比例是题设，不能预测任意液体混合结果；质量守恒仍成立。"
     }
   },
   {
@@ -18101,6 +20895,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "上下表面压力都增大，但两者之差由物体高度和面积决定，可保持不变。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "上下表面深度、面积和液体密度决定压力差。",
+      "limitation": "完全浸没且底面接触液体；不含贴底密封的特殊情况。"
     }
   },
   {
@@ -18214,6 +21017,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "仍在放热，能量变化主要对应凝固而不是降温。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始冷却"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "随放热时间更新温度与冰水比例，0℃平台后继续降温。",
+      "limitation": "纯水理想焓模型，忽略过冷和容器散热细节。"
     }
   },
   {
@@ -18328,6 +21141,16 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "在相同状态且忽略比热容随温度变化时，约为两倍。"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "该任务需要观察随时间演变的器材或物态；图形须使用模型过程。",
+      "actionLabel": "开始加热"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "固定水比热容，改变质量和输入热量比较温升。",
+      "limitation": "仅在无相变且忽略散热的范围适用；不能无限升温而当液态水。"
     }
   },
   {
@@ -18343,16 +21166,17 @@ window.LAB_CATALOG.push(...[
     "sourceIds": [
       "physics-ncet-2023"
     ],
-    "objective": "比较像在视网膜前与加入矫正镜后的光路。",
+    "objective": "比较题设近视模型的过早会聚与戴上凹透镜后的视网膜成像。",
     "apparatus": [
       "眼球光学模型",
       "固定视网膜屏",
       "凹透镜"
     ],
     "steps": [
-      "用远物入射光模拟近视时过早会聚。",
-      "在眼前加适当凹透镜。",
-      "观察光线最终是否在视网膜上会聚。"
+      "先取下矫正镜，观察远物的会聚点相对视网膜的位置。",
+      "戴上矫正镜，从负屈光度开始调节。",
+      "比较光线经矫正镜、传播到眼内透镜、再到视网膜的完整路径。",
+      "改变物距或题设眼球屈光力，再寻找本题合适的矫正条件。"
     ],
     "observations": [
       "合适凹透镜使入眼光先发散，经过眼的会聚后在视网膜成像。"
@@ -18376,28 +21200,56 @@ window.LAB_CATALOG.push(...[
     ],
     "model": "lens",
     "modelParams": {
-      "scenario": "myopia",
-      "variant": "myopia-correction"
+      "scenario": "correctedEye",
+      "variant": "myopia-correction",
+      "type": "myopia",
+      "retinaDistance": 0.017
     },
-    "modelNote": "数值输出为凹透镜单独成像参数；眼球与矫正光路只作定性示意，不能当作完整眼模型或配镜度数。近视矫正的关键是使入眼光先适当发散。",
+    "modelNote": "两个薄透镜的近轴模型，参数均为题设，不代表人的完整眼球和调节功能。显示的理想对焦屈光度仅用于本题，不是个人验光或配镜处方。±0.15 mm为画面判断容差。",
     "controls": [
       {
-        "key": "focal",
-        "label": "焦距大小",
-        "unit": "cm",
-        "min": 5,
-        "max": 30,
-        "step": 1,
-        "value": 10
+        "key": "objectDistance",
+        "label": "物体到眼镜距离",
+        "unit": "m",
+        "min": 0.25,
+        "max": 5,
+        "step": 0.25,
+        "value": 5
       },
       {
-        "key": "distance",
-        "label": "物距",
-        "unit": "cm",
-        "min": 1,
-        "max": 80,
-        "step": 1,
-        "value": 30
+        "key": "correctionPower",
+        "label": "矫正镜屈光度（题设）",
+        "unit": "D",
+        "min": -10,
+        "max": 10,
+        "step": 0.25,
+        "value": 0,
+        "placement": "scene"
+      },
+      {
+        "key": "withLens",
+        "label": "是否戴矫正镜",
+        "options": [
+          {
+            "value": false,
+            "label": "不戴镜"
+          },
+          {
+            "value": true,
+            "label": "戴镜"
+          }
+        ],
+        "value": false,
+        "placement": "scene"
+      },
+      {
+        "key": "eyePower",
+        "label": "眼球等效屈光度（题设）",
+        "unit": "D",
+        "min": 50,
+        "max": 66,
+        "step": 0.5,
+        "value": 62
       }
     ],
     "workedExample": {
@@ -18422,6 +21274,20 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "先使入射光适当发散，降低整个系统的过强会聚作用，使像后移到视网膜。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "verified-in-isolation-and-browser-smoke-checked",
+      "scope": "两薄透镜相距12 mm，按近轴传播逐段求光路；屈光度、物距与眼内透镜屈光力共同影响视网膜散焦。",
+      "limitation": "题设两透镜模型，不模拟真实眼球调节；模型对焦屈光度不用于个人验光配镜。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
     }
   },
   {
@@ -18523,6 +21389,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "曲轴转两周，完成一次做功冲程。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "选择冲程时气门开闭、活塞位置与做功方向联动。",
+      "limitation": "手动分阶段观察，无须统一自动开始；未求燃烧化学与缸压曲线。"
     }
   },
   {
@@ -18603,6 +21478,16 @@ window.LAB_CATALOG.push(...[
         "max": 10,
         "step": 0.5,
         "value": 3
+      },
+      {
+        "key": "screenDistance",
+        "label": "镜头到感光面距离",
+        "unit": "cm",
+        "min": 2,
+        "max": 120,
+        "step": 1,
+        "value": 30,
+        "placement": "scene"
       }
     ],
     "workedExample": {
@@ -18627,6 +21512,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "物体仍在焦距外时，物距减小通常使像距增大。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "fixed-browser-smoke-checked",
+      "scope": "调整物距和感光面位置，比较像距及是否对焦。",
+      "limitation": "薄透镜近似；实际清晰度还与孔径、像差和景深有关。"
     }
   },
   {
@@ -18722,6 +21616,15 @@ window.LAB_CATALOG.push(...[
         }
       ],
       "answer": "孔上方液体深度减小，产生的静压降低。"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
+    },
+    "implementationReview": {
+      "status": "code-reviewed-browser-smoke-checked",
+      "scope": "改变液深后侧孔压力与水流示意改变。",
+      "limitation": "数值只给静压，水柱射程还与孔高和出流速度有关，未求射程。"
     }
   }
 ]);

@@ -262,6 +262,10 @@ sources=[
  {'id':'physics-standard-2022','title':'教育部2022年义务教育课程方案和课程标准发布通知','url':'https://www.moe.gov.cn/srcsite/A26/s8001/202204/t20220420_619921.html','publisher':'教育部','edition':'2022年版','scope':'标准发布时间与官方附件入口，实验逐项实现以已核对教材和基本目录映射为依据。'},
  {'id':'physics-standard-2025','title':'义务教育物理课程标准日常修订版（2022年版2025年修订）公布页','url':'https://fxzx.qpedu.cn/jhzx/kcjs/kcbz/511641.htm','publisher':'上海市青浦区凤溪中学教育网站','edition':'2022年版2025年修订，2026年3月公布页','scope':'已核验2025日常修订版存在及名称；未逐字审校修订课标全本，不据此宣称覆盖全部修订差异。'}]
 for source in sources:source['checked']='2026-10-31'
+# Keep the activity-by-activity review separate from legacy model defaults.
+import runpy
+review=runpy.run_path(str(R/'physics-quality.py'))['apply_quality'](records,P)
+review_by_id={item['id']:item for item in review}
 sourceids={x['id'] for x in sources}
 assert len(byid)==len(records)
 for r in records:
@@ -286,8 +290,13 @@ for book,f in [('八上','g8a-coverage.json'),('八下','g8b-coverage.json'),('�
   if a.get('activityId') in ['phy-model-camera','phy-water-jet']:
    a['implementationId']=a['activityId'];a['implementationRelation']='primary'
   assert a['implementationId'] in byid,(book,a)
+  implementation_review=review_by_id[a['implementationId']]
+  a['implementationReview']={k:implementation_review[k] for k in ['status','sceneBehavior','limitations']}
   activities.append(a)
 coverage={'checked':'2026-10-31','editionScope':'八上2024修订、八下2025春启用、九全2025修订；网站将九全分到9上/9下浏览。无独立人教版七年级物理。','standardScope':'确认2022年版2025年日常修订课标存在；未逐字审校全本修订差异。','method':'已核对活动文字和页码，重复操作与课后变式合并；实施映射不表示每一装置都进行了完整物理复现，具体数值边界见modelNote。','catalogCount':len(records),'textbookActivities':activities,'supplementIds':[r['id'] for r in records if r['sourceIds'][0]=='physics-ncet-2023'],'ncetMappingFile':'physics-ncet-mapping.json','baseline':json.loads((R/'physics-ncet-mapping.json').read_text()),'unverifiedTextbookAssignments':[]}
+coverage['implementationAuditFile']='docs/review/physics.json'
+coverage['implementationAuditStatus']='182项已逐项源码复核；此数为目录映射数，不是完整实验验收通过数。浏览器过程验收与尚缺操作逐项列明。'
+coverage['needsImplementation']=[item['id'] for item in review if item['status']=='needs-implementation']
 (R/'physics-coverage.json').write_text(json.dumps(coverage,ensure_ascii=False,indent=2))
 (R/'physics-final-records.json').write_text(json.dumps(records,ensure_ascii=False,indent=2))
 D.mkdir(exist_ok=True)

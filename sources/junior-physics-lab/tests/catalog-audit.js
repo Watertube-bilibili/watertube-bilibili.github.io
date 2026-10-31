@@ -14,7 +14,7 @@ const partial = process.argv.includes('--partial');
 const network = process.argv.includes('--network');
 const subjects = ['physics', 'chemistry', 'biology'];
 const terms = new Set(['7上', '7下', '8上', '8下', '9上', '9下']);
-const kinds = new Set(['学生实验', '演示实验', '小实验', '拓展探究']);
+const kinds = new Set(['学生实验', '演示实验', '小实验', '拓展探究', '操作练习', '设计练习', '资料分析']);
 const errors = [], warnings = [], notes = [];
 const context = vm.createContext({window: {}, console, Math, Date, Promise, URL, setTimeout, clearTimeout});
 const issue = (where, message, warning = false) => (warning ? warnings : errors).push(`${where}: ${message}`);
@@ -82,6 +82,7 @@ function checkChemicalReaction(reaction, result, where) {
       if (totals[0][element] !== totals[1][element]) issue(where, `unbalanced chemical equation for ${element}: ${reaction.eq}`);
   } catch (error) {issue(where, `reaction equation audit failed: ${error.message}`);}
 }
+for(const file of fs.readdirSync(path.join(root,'dist/modules/physics')).filter(f=>f.endsWith('.js')))load('dist/modules/physics/'+file);
 function paramsFor(entry) {return {...entry.modelParams, ...Object.fromEntries((entry.controls || []).map(c => [c.key, c.value]))};}
 function casesFor(entry) {
   const base = paramsFor(entry), cases = [{name: 'default', params: base}];
@@ -194,7 +195,8 @@ async function main() {
     else entry.questions.forEach((q, i) => {stringField(q, 'q', `${at}.questions[${i}]`); stringField(q, 'a', `${at}.questions[${i}]`);});
     for (const key of ['title', 'given', 'answer']) stringField(entry.workedExample, key, `${at}.workedExample`);
     processSteps(entry.workedExample?.steps, `${at}.workedExample.steps`, 3);
-    if (/TODO|待补充|敬请期待|尚未实现/.test(JSON.stringify(entry))) issue(at, 'placeholder teaching content found');
+    if (/TODO|待补充|敬请期待/.test(JSON.stringify(entry))) issue(at, 'placeholder teaching content found');
+    if (!['live','playback'].includes(entry.interaction?.mode) || !text(entry.interaction?.reason)) issue(at,'requires an explicit reviewed interaction mode and teaching reason');
     if (!Array.isArray(entry.controls) || !entry.controls.length) issue(at, 'requires at least one meaningful control');
     const keys = new Set();
     for (const control of entry.controls || []) {

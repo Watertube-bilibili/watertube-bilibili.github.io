@@ -24,9 +24,9 @@
         "implementationIds": [
           "chem-changes"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "新物质仍需结合检验证据，不能只看动画的颜色或气泡"
       },
       {
         "number": 2,
@@ -34,9 +34,9 @@
         "implementationIds": [
           "chem-properties"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "短时适量CO₂检验，不处理过量造成沉淀溶解"
       },
       {
         "number": 3,
@@ -44,9 +44,9 @@
         "implementationIds": [
           "chem-candle"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "仅比较燃烧阶段，不再声称完整包含熄灭后烟的探究"
       },
       {
         "number": 4,
@@ -54,9 +54,9 @@
         "implementationIds": [
           "chem-hazards"
         ],
-        "status": "implemented-design-and-evidence-training",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "场景辨识和处置依据练习，不能替代实物设施操作训练。"
+        "boundary": "玻璃锐器图是提示，不是GHS标准危险图标"
       },
       {
         "number": 5,
@@ -64,9 +64,9 @@
         "implementationIds": [
           "chem-protection"
         ],
-        "status": "implemented-design-and-evidence-training",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "场景辨识和处置依据练习，不能替代实物设施操作训练。"
+        "boundary": "这是应急判断练习，不是事故处理训练的替代"
       },
       {
         "number": 6,
@@ -75,9 +75,9 @@
           "chem-measure",
           "chem-reagent-taking"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "视差只说明方向，不编造读数误差数值；倾倒细部仍只在步骤说明，未建完整操作评分器"
       },
       {
         "number": 7,
@@ -85,9 +85,9 @@
         "implementationIds": [
           "chem-heating"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "仅作操作判断，不模拟玻璃破裂或给定加热温度"
       },
       {
         "number": 8,
@@ -95,9 +95,9 @@
         "implementationIds": [
           "chem-airtight"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "定性热胀冷缩示意，没有泄漏率或温度计算"
       },
       {
         "number": 9,
@@ -105,9 +105,9 @@
         "implementationIds": [
           "chem-washing"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "污物类型是概括，真实清洗试剂需按物质选择"
       },
       {
         "number": 10,
@@ -115,9 +115,9 @@
         "implementationIds": [
           "chem-air-oxygen"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "理想21%空气，不是现场测量；无效条件不伪造误差数值"
       },
       {
         "number": 11,
@@ -130,9 +130,9 @@
           "chem-iron-oxygen",
           "chem-permanganate"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "不输出真实制气速率、压力或气体体积；短时适量CO₂检验，不处理过量造成沉淀溶解；供氧足量为假定，不用有限气瓶体积计算氧耗；颜色示意不等于光谱；教师排风演示；忽略真实温度与铁氧化物复杂组成，采用Fe₃O₄课堂模型；只计算完全分解理论量，不输出真实分解温度或速率"
       },
       {
         "number": 12,
@@ -140,9 +140,9 @@
         "implementationIds": [
           "chem-catalyst"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "气泡和柱形只示意快慢；回收质量是题设记录，非虚构称量"
       },
       {
         "number": 13,
@@ -153,9 +153,9 @@
           "chem-co2-extinguish",
           "chem-co2-solubility"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "体积颜色只作位置示意；制气不代替全部CO₂性质探究；理想分步计量，忽略平衡与混合速率；气体积聚只作定性示意，不解流体输运；只作定性现象；没有真实瓶刚度、压强或气液平衡计算"
       },
       {
         "number": 14,
@@ -163,9 +163,9 @@
         "implementationIds": [
           "chem-co2-water"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "变色为典型示意，不计碳酸平衡或实际加热时间"
       },
       {
         "number": 15,
@@ -173,9 +173,9 @@
         "implementationIds": [
           "chem-distill"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "只适用于不挥发杂质；未建冷却水流量或污染物共沸模型"
       },
       {
         "number": 16,
@@ -183,9 +183,9 @@
         "implementationIds": [
           "chem-purification"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "不是消毒或饮用水评价；吸附没有容量和突破曲线"
       },
       {
         "number": 17,
@@ -193,9 +193,9 @@
         "implementationIds": [
           "chem-salt-purify"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "仅去难溶杂质；真实粗盐可溶杂质不被过滤除尽"
       },
       {
         "number": 18,
@@ -203,9 +203,9 @@
         "implementationIds": [
           "chem-dissolve-heat"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "定性方向；不以无依据数字冒充温度实测"
       },
       {
         "number": 19,
@@ -213,9 +213,9 @@
         "implementationIds": [
           "chem-dissolve"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "未输入精确用量与温度，不给溶解度或浓度；汽油混合物仅资料比较"
       },
       {
         "number": 20,
@@ -223,9 +223,9 @@
         "implementationIds": [
           "chem-solution"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "只完成用量和溶解结果计算，未模拟天平称量、装瓶全过程"
       },
       {
         "number": 21,
@@ -236,9 +236,9 @@
           "chem-metal-displacement",
           "chem-alloy"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "导电只作定性指示；铝表面氧化膜造成延迟不量化；未模拟金属表面积或氧化膜引起的速率差；铝假定氧化膜已处理；未建真实反应速率；未指定合金组成，不能给统一硬度、熔点或声称完成测试"
       },
       {
         "number": 22,
@@ -246,9 +246,9 @@
         "implementationIds": [
           "chem-rust"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "没有真实天数、腐蚀率；锈为混合物"
       },
       {
         "number": 23,
@@ -256,9 +256,9 @@
         "implementationIds": [
           "chem-ph"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "pH是题设已知值；湿试纸不编造精确偏差"
       },
       {
         "number": 24,
@@ -266,9 +266,9 @@
         "implementationIds": [
           "chem-indicator"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "仅同批天然色素示意，没有精确pH标定或自制实测"
       },
       {
         "number": 25,
@@ -281,9 +281,9 @@
           "chem-limewater",
           "chem-precipitation"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "只覆盖所列三组合，不代表所有酸碱性质；pH是题设已知值；湿试纸不编造精确偏差；仅同批天然色素示意，没有精确pH标定或自制实测；pH按25℃平衡；温升用绝热近似，忽略散热与容器吸热；理想分步计量，忽略平衡与混合速率；只覆盖列出的反应，颜色不能单独鉴别沉淀成分"
       },
       {
         "number": 26,
@@ -291,9 +291,9 @@
         "implementationIds": [
           "chem-co2-naoh"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "未模拟压强；酸放气仍需排除已溶CO₂的影响"
       },
       {
         "number": 27,
@@ -301,9 +301,9 @@
         "implementationIds": [
           "chem-soil"
         ],
-        "status": "implemented-design-and-evidence-training",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "含pH和N/P/K单变量设计、缺素线索及重复要求；不伪造长期植物生长数据。"
+        "boundary": "没有真实植物生长、株高、产量或培养时长"
       },
       {
         "number": 28,
@@ -311,9 +311,9 @@
         "implementationIds": [
           "chem-ammonia"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "粒子轨迹非真实测量；未罩盖只说明证据较弱"
       },
       {
         "number": 29,
@@ -321,9 +321,9 @@
         "implementationIds": [
           "chem-diffusion"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "真实还可能有对流；不输出扩散系数或实际耗时"
       },
       {
         "number": 30,
@@ -332,9 +332,9 @@
           "chem-water-electrolysis",
           "chem-hydrogen-burn"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "给定的是已分解水质量；无电流、电压、法拉第效率模型；假定已验纯；不提供混合气体点火或真实燃烧参数"
       },
       {
         "number": 31,
@@ -343,9 +343,9 @@
           "chem-candle",
           "chem-ethanol"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "仅比较燃烧阶段，不再声称完整包含熄灭后烟的探究；只模型化充分燃烧；没有真实燃烧动力学"
       },
       {
         "number": 32,
@@ -353,9 +353,9 @@
         "implementationIds": [
           "chem-neutralization"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "pH按25℃平衡；温升用绝热近似，忽略散热与容器吸热"
       },
       {
         "number": 33,
@@ -364,9 +364,9 @@
           "chem-metal-acid",
           "chem-metal-displacement"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "未模拟金属表面积或氧化膜引起的速率差；铝假定氧化膜已处理；未建真实反应速率"
       },
       {
         "number": 34,
@@ -374,9 +374,9 @@
         "implementationIds": [
           "chem-combustion"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "着火阈值是课堂示例，受形态环境影响；非精确着火测试"
       },
       {
         "number": 35,
@@ -386,9 +386,9 @@
           "chem-magnesium-mass",
           "chem-metal-displacement"
         ],
-        "status": "implemented-teaching-model",
+        "status": "teaching-model-scope-reviewed",
         "verification": "official-directory-title-verified",
-        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+        "boundary": "读数仅溶质反应部分，容器和溶剂恒定量省略；纯氧理想MgO，真实空气氮化物及烟尘损失不纳入；铝假定氧化膜已处理；未建真实反应速率"
       }
     ]
   },
@@ -401,7 +401,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "不输出真实制气速率、压力或气体体积",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 2,
@@ -411,7 +413,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "给定的是已分解水质量；无电流、电压、法拉第效率模型",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 3,
@@ -421,7 +425,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "体积颜色只作位置示意；制气不代替全部CO₂性质探究",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 4,
@@ -431,7 +437,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "着火阈值是课堂示例，受形态环境影响；非精确着火测试",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 5,
@@ -441,7 +449,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "导电只作定性指示；铝表面氧化膜造成延迟不量化",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 6,
@@ -451,7 +461,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "只完成用量和溶解结果计算，未模拟天平称量、装瓶全过程",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 7,
@@ -461,7 +473,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "仅去难溶杂质；真实粗盐可溶杂质不被过滤除尽",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 8,
@@ -471,7 +485,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-teaching-model"
+      "status": "teaching-model-scope-reviewed",
+      "boundary": "只覆盖所列三组合，不代表所有酸碱性质",
+      "reviewFile": "docs/review/chemistry.json"
     }
   ],
   "pepCrossDisciplinary": [
@@ -483,8 +499,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "没有实时传感器、检测站组装或AQI换算",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 2,
@@ -494,8 +511,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供分子模型制作与计数；科学史资料搜集和成果展示需在课堂完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "颜色尺寸非真实；甲烷为立体结构的平面示意",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 3,
@@ -505,8 +523,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "未建完整净水器、流量、吸附容量、微生物检测",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 4,
@@ -516,8 +535,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "没有医疗供氧、制造、流量控制或纯度验证",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 5,
@@ -527,8 +547,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "因子为题设，不是实时全国值；非全生命周期碳中和",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 6,
@@ -538,8 +559,9 @@
       ],
       "sourceId": "chem-pep-upper-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "没做真实燃料历史调查、成本和全生命周期排放",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 7,
@@ -549,8 +571,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "不是工业回收流程、回收率或地方垃圾规则数据库",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 8,
@@ -560,8 +583,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "仅NaCl-水，不是海洋资源综合利用或工业多盐分离",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 9,
@@ -571,8 +595,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "没有真实植物生长、株高、产量或培养时长",
+      "reviewFile": "docs/review/chemistry.json"
     },
     {
       "number": 10,
@@ -582,8 +607,9 @@
       ],
       "sourceId": "chem-pep-lower-2024",
       "verification": "current-third-party-toc-verified",
-      "status": "implemented-project-support",
-      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+      "status": "partial-project-support-reviewed",
+      "boundary": "没有航天器性能模拟或完成资料调查",
+      "reviewFile": "docs/review/chemistry.json"
     }
   ],
   "experiments": [
@@ -601,7 +627,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-properties",
@@ -617,11 +649,16 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "选择气体和检验方法后，立即显示相应观察结果。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-candle",
-      "title": "观察蜡烛燃烧并检验产物",
+      "title": "蜡烛与乙醇燃烧：产物和物态变化",
       "term": "9上",
       "model": "fuel",
       "directoryNumbers": [
@@ -634,7 +671,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-hazards",
@@ -649,11 +692,16 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-protection",
-      "title": "认识安全防护设施的使用",
+      "title": "实验室防护与应急情境判断",
       "term": "9上",
       "model": "safety",
       "directoryNumbers": [
@@ -664,7 +712,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-measure",
@@ -680,11 +733,16 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-heating",
-      "title": "试管中液体的加热",
+      "title": "试管液体加热的操作判断",
       "term": "9上",
       "model": "heating",
       "directoryNumbers": [
@@ -696,7 +754,12 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-airtight",
@@ -711,7 +774,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-washing",
@@ -727,7 +796,12 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-air-oxygen",
@@ -742,7 +816,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-oxygen",
@@ -757,7 +837,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-catalyst",
@@ -772,7 +858,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-co2",
@@ -787,7 +879,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-co2-water",
@@ -803,7 +901,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-distill",
@@ -819,7 +923,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-purification",
@@ -835,7 +945,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-salt-purify",
@@ -851,7 +967,13 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-solubility-data"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-dissolve-heat",
@@ -866,7 +988,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-dissolve",
@@ -882,11 +1009,16 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-solution",
-      "title": "配制一定溶质质量分数的氯化钠溶液",
+      "title": "氯化钠溶液：配制用量与质量分数",
       "term": "9下",
       "model": "solution",
       "directoryNumbers": [
@@ -898,7 +1030,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-solubility-data"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-metal-properties",
@@ -913,7 +1050,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-rust",
@@ -928,11 +1070,17 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-ph",
-      "title": "使用pH试纸检验溶液酸碱性",
+      "title": "pH试纸与指示剂：读色及操作比较",
       "term": "9下",
       "model": "ph",
       "directoryNumbers": [
@@ -943,7 +1091,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-indicator",
@@ -958,7 +1111,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-acid-base",
@@ -973,11 +1131,17 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-co2-naoh",
-      "title": "二氧化碳与氢氧化钠溶液的反应",
+      "title": "CO₂与NaOH：产物组成与检验证据",
       "term": "9下",
       "model": "co2-base",
       "directoryNumbers": [
@@ -988,7 +1152,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-soil",
@@ -1003,7 +1172,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-ammonia",
@@ -1018,7 +1192,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-diffusion",
@@ -1034,7 +1214,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-water-electrolysis",
@@ -1049,7 +1235,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-ethanol",
@@ -1064,7 +1256,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-neutralization",
@@ -1083,7 +1281,13 @@
       ],
       "requiresPhysics": true,
       "physicsEngine": "Godot",
-      "physicsScenario": "thermal/heat-input"
+      "physicsScenario": "thermal/heat-input",
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-metal-acid",
@@ -1098,7 +1302,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-combustion",
@@ -1113,7 +1323,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-conservation",
@@ -1129,7 +1344,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-carbon-oxygen",
@@ -1143,7 +1364,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-sulfur-oxygen",
@@ -1157,7 +1384,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-iron-oxygen",
@@ -1171,7 +1404,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-permanganate",
@@ -1185,7 +1424,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-limewater",
@@ -1198,7 +1443,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-co2-extinguish",
@@ -1212,7 +1463,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-co2-solubility",
@@ -1226,7 +1483,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-carbon-cuo",
@@ -1240,7 +1503,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-iron-smelting",
@@ -1253,7 +1522,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-metal-displacement",
@@ -1269,11 +1544,17 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-alloy",
-      "title": "比较合金与纯金属的性质",
+      "title": "合金与纯金属的典型性质对照",
       "term": "9下",
       "model": "alloy",
       "directoryNumbers": [],
@@ -1282,7 +1563,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-saturation",
@@ -1296,7 +1582,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-solubility-data"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-crystallization",
@@ -1310,7 +1601,13 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-solubility-data"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-emulsion",
@@ -1323,11 +1620,16 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-lime-heat",
-      "title": "生石灰与水反应的放热",
+      "title": "生石灰与水反应：计量与放热现象",
       "term": "9上",
       "model": "reaction",
       "directoryNumbers": [],
@@ -1337,11 +1639,17 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-methane",
-      "title": "甲烷燃烧产物的检验",
+      "title": "甲烷完全燃烧：水的检验与产物计算",
       "term": "9上",
       "model": "reaction",
       "directoryNumbers": [],
@@ -1351,7 +1659,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-carbonate-test",
@@ -1364,7 +1678,13 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-precipitation",
@@ -1378,7 +1698,13 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-dilution",
@@ -1391,7 +1717,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-hardness",
@@ -1404,7 +1735,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-copper-hydroxide-heat",
@@ -1418,11 +1754,17 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-air-station",
-      "title": "微型空气质量检测站：采样与比较",
+      "title": "空气检测样本的比较与采样设计",
       "term": "9上",
       "model": "air-station",
       "directoryNumbers": [],
@@ -1431,7 +1773,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-atom-model",
@@ -1444,11 +1791,16 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-water-filter-design",
-      "title": "设计净水器并判断处理边界",
+      "title": "净水模块选择与处理边界",
       "term": "9上",
       "model": "purification",
       "directoryNumbers": [],
@@ -1457,24 +1809,34 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "选择模块后立即比较处理前后的杂质；这里不搭建完整净水器。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-oxygen-design",
-      "title": "按需求设计简易供氧器的理论用量",
+      "title": "供氧量与过氧化氢用量的设计计算",
       "term": "9上",
-      "model": "oxygen",
+      "model": "oxygen-design",
       "directoryNumbers": [],
       "currentEditionStatus": "named-activity-toc-verified",
       "evidence": "现行目录跨学科实践活动4",
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "由目标氧气量和题设收集率直接反推试剂用量。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-carbon-budget",
-      "title": "基于碳中和理念比较低碳方案",
+      "title": "用电排放估算与节电方案比较",
       "term": "9上",
       "model": "carbon-budget",
       "directoryNumbers": [],
@@ -1483,11 +1845,16 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-upper-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-fuel-survey",
-      "title": "比较家庭燃料的使用方案",
+      "title": "家庭能源方案的热效率计算",
       "term": "9上",
       "model": "fuel-survey",
       "directoryNumbers": [],
@@ -1499,11 +1866,16 @@
       ],
       "requiresPhysics": true,
       "physicsEngine": "Godot",
-      "physicsScenario": "thermal/efficiency-input"
+      "physicsScenario": "thermal/efficiency-input",
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-recycling",
-      "title": "垃圾分类与金属回收设计",
+      "title": "回收物的材料识别与初步分选",
       "term": "9下",
       "model": "recycling",
       "directoryNumbers": [],
@@ -1512,7 +1884,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-sea-salt",
@@ -1526,11 +1903,17 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-solubility-data"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示过程",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-aerospace",
-      "title": "航天材料与能源的证据比较",
+      "title": "航天材料与能源：需求匹配练习",
       "term": "9下",
       "model": "materials",
       "directoryNumbers": [],
@@ -1539,11 +1922,16 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-protein",
-      "title": "区分常见纤维的组成与现象",
+      "title": "常见纤维的外观与燃烧现象对照",
       "term": "9下",
       "model": "materials",
       "directoryNumbers": [],
@@ -1552,11 +1940,16 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-plastic",
-      "title": "认识塑料的受热变化",
+      "title": "塑料受热表现的资料比较",
       "term": "9下",
       "model": "materials",
       "directoryNumbers": [],
@@ -1565,7 +1958,12 @@
       "sourceIds": [
         "chem-directory-2023",
         "chem-pep-lower-2024"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-hydrogen-burn",
@@ -1579,7 +1977,13 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-magnesium-mass",
@@ -1595,11 +1999,17 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-reagent-taking",
-      "title": "固体药品与液体药品的规范取用",
+      "title": "试剂规范取用：固体转移与滴加",
       "term": "9上",
       "model": "reagent-taking",
       "directoryNumbers": [
@@ -1611,7 +2021,12 @@
         "chem-directory-2023",
         "chem-pep-upper-2024",
         "chem-pep-upper-scan"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-with-limited-scope"
     },
     {
       "id": "chem-ethanol-water",
@@ -1625,7 +2040,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-copper-concentration",
@@ -1639,7 +2059,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-acid-properties",
@@ -1653,7 +2078,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-sulfuric-dehydration",
@@ -1667,7 +2097,13 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-sulfuric-dilution",
@@ -1681,7 +2117,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-solution-conductivity",
@@ -1695,7 +2136,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-naoh-deliquescence",
@@ -1709,7 +2155,13 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-lime-milk",
@@ -1723,7 +2175,12 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "live",
+        "reason": "直接改变条件、观察读数或比较资料，不需要启动计时。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     },
     {
       "id": "chem-copper-oxidation",
@@ -1737,7 +2194,13 @@
         "chem-directory-2023",
         "chem-pep-lower-2024",
         "chem-pep-lower-text"
-      ]
+      ],
+      "interaction": {
+        "mode": "playback",
+        "actionLabel": "演示反应",
+        "reason": "观察装置中物质、颜色或操作阶段随过程发生的变化。"
+      },
+      "reviewStatus": "reviewed-teaching-model"
     }
   ],
   "limitations": [
@@ -1746,7 +2209,8 @@
     "已交叉核对上册所列实验及下册编号实验8-1、9-1至9-8、10-1至10-13；仍未获得出版社官方完整逐页校验，不声称所有边栏、家庭活动已穷尽。",
     "个别原实验试剂组合为安全教学目的采用原创替代对照，来源表和模型说明标明范围。",
     "动画进度为阶段或反应程度；不输出未经测定的反应时间、植物长势、健康等级或医学供氧能力。",
-    "体积与热量的高级数值用明确假设计算；课堂化学方程式计算按初中相对原子质量近似。"
+    "体积与热量的高级数值用明确假设计算；课堂化学方程式计算按初中相对原子质量近似。",
+    "2026-10-31逐项交互审查：跨学科十项目全部明确为部分支持；不以79个目录条目宣称79项完整动手实验或全教材全文覆盖。"
   ],
   "lowerNumberedExperiments": [
     {
@@ -1957,5 +2421,13 @@
     ],
     "rule": "物理温升与效率逆算直接由Godot求解；化学反应计量/pH及明确相对定性现象保留化学模型。",
     "simulationContract": "simulate公开接口求完整条件终态；render单独接收播放进度。"
+  },
+  "interactionAudit": {
+    "file": "docs/review/chemistry.json",
+    "counts": {
+      "live": 37,
+      "playback": 42
+    },
+    "doesNotClaimFullHandsOnCoverage": true
   }
 }

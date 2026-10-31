@@ -4,7 +4,7 @@ const fs=require('node:fs');
 const vm=require('node:vm');
 const path=require('node:path');
 const source=fs.readFileSync(path.join(__dirname,'../dist/modules/physics.js'),'utf8');
-const window={};vm.runInNewContext(source,{window});
+const window={};for(const file of fs.readdirSync(path.join(__dirname,'../dist/modules/physics')).filter(f=>f.endsWith('.js')))vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../dist/modules/physics',file),'utf8'),{window});vm.runInNewContext(source,{window});
 const mod=window.LAB_MODULES.physics;
 (async()=>{
  await assert.rejects(mod.simulate({model:'incline'},{}),/引擎尚未就绪/);

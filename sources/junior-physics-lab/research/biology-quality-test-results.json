@@ -1,0 +1,25 @@
+{
+  "nonphysicsActivities": 92,
+  "variants": 686,
+  "checks": [
+    "bio-paramecium default playback changes apparatus geometry",
+    "bio-germination default playback changes apparatus geometry",
+    "bio-photosynthesis-oxygen default playback changes apparatus geometry",
+    "bio-seed-respiration default playback changes apparatus geometry",
+    "bio-fish-capillaries default playback changes apparatus geometry",
+    "bio-circulation default playback changes apparatus geometry",
+    "bio-reflex default playback changes apparatus geometry",
+    "bio-selection default playback changes apparatus geometry",
+    "division separates chromosomes rather than only relabeling",
+    "wet-soil bag acknowledges evaporation confound",
+    "bag boundary changes for wet-soil condition",
+    "sampling label does not fabricate colony counts",
+    "Punnett grid cells agree with maternal/paternal row and column labels",
+    "corn groups share initial geometry at day zero",
+    "zero-degree elbow is straight",
+    "medicine uses a label-checking scene",
+    "zero-count Daphnia has no independent heartbeat animation",
+    "normal glucose fate is explicit",
+    "urea exit is explicit"
+  ]
+}

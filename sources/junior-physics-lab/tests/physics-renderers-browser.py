@@ -14,7 +14,7 @@ with sync_playwright() as pw:
  assert page.evaluate('document.characterSet')=='UTF-8'
  page.set_content('<meta charset="utf-8"><body style="margin:0;background:#dae4eb"><div id="scenes" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px"></div></body>')
  page.add_script_tag(url=base+'/engine/loader.js')
- page.add_script_tag(url=base+'/modules/physics.js')
+ [page.add_script_tag(url=base+'/modules/physics/'+scene.name) for scene in sorted((root/'dist/modules/physics').glob('*.js'))];page.add_script_tag(url=base+'/modules/physics.js')
  page.wait_for_function('GodotLab.ready',timeout=60000)
  total=0;seen=[]
  for model,item in schema['models'].items():

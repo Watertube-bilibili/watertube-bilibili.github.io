@@ -131,6 +131,9 @@ for r in R:
  fullpages={'bio-traits':[21,22],'bio-origin-evidence':[52,53],'bio-human-comparison':[71,72],'bio-breeding':[46,47],'bio-invasive-species':[85,86,87]}
  if r['id'] in fullpages:r['evidencePages']=fullpages[r['id']]
  r['evidenceTitles']=[t for title in r['evidenceTitles'] for t in title.split('|')]
+# Semantic quality review is authoritative and survives every catalog rebuild.
+import runpy
+R=runpy.run_path(str(ROOT/'research/biology-quality-review.py'))['apply_quality'](R)
 termorder={'7上':0,'7下':1,'8上':2,'8下':3}
 R.sort(key=lambda r:termorder[r['term']])
 assert len({r['id'] for r in R})==len(R)

@@ -37,11 +37,7 @@ func solve(model: String, p: Dictionary) -> Dictionary:
 		var gravity=maxf(n(p,"gravity",9.8),0)
 		var weight=mass*gravity
 		return out(model,{"mass":mass,"gravity":gravity,"weight":weight},[reading("质量",mass,"kg"),reading("重力",weight,"N")],"重力与质量的关系 G=mg。质量用千克，g 的单位为 N/kg，重力单位为牛。","G=%.4f kg×%.4f N/kg=%.4f N。"%[mass,gravity,weight],"同一地点重力与质量成正比；重力方向竖直向下，质量与重力不能混为同一物理量。","给定 g 的大小，忽略不同高度等小变化；水平仪器的竖直基准来自重力方向。")
-	if model=="force" and s=="balance":
-		var f=n(p,"force",5)
-		var f2=n(p,"force2",5)
-		var net=f-f2
-		return out(model,{"force":f,"force2":f2,"netForce":net,"balanced":absf(net)<.000001},[reading("向右的力",f,"N"),reading("向左的力",f2,"N"),reading("合力（向右为正）",net,"N")],"两个力平衡须同时满足：作用在同一物体上、同一直线上、大小相等、方向相反。","本模型已固定同物体、同直线、反方向；F合=%.4f−%.4f=%.4f N。"%[f,f2,net],"当前两力平衡。物体可能静止，也可能匀速直线运动。" if absf(net)<.000001 else "当前两力大小不相等，因此不平衡。若只受这两个力，物体运动状态会改变。","只比较指定的两共线力，不以静止图像表示物体实际正在静止。")
+
 	if model=="charge" and s=="rubbing":
 		var charge=n(p,"charge1",5)
 		var charged=absf(charge)>.000001

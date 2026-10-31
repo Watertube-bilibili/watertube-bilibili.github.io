@@ -2,6 +2,24 @@ extends Node
 
 const ExtraSolvers = preload("res://extra_solvers.gd")
 var extra_solver = ExtraSolvers.new()
+const RulerSolver = preload("res://ruler_solver.gd")
+var ruler_solver = RulerSolver.new()
+const SoundSolver = preload("res://sound_solver.gd")
+var sound_solver = SoundSolver.new()
+const InductionSolver = preload("res://induction_solver.gd")
+var induction_solver = InductionSolver.new()
+const ElectricalReview = preload("res://electrical_review.gd")
+var electrical_review = ElectricalReview.new()
+const ClassroomReview = preload("res://classroom_review.gd")
+var classroom_review = ClassroomReview.new()
+const OpticsReview = preload("res://optics_review.gd")
+var optics_review = OpticsReview.new()
+const DeformationReview = preload("res://deformation_review.gd")
+var deformation_review = DeformationReview.new()
+const MeasurementReview = preload("res://physics_measurement_review.gd")
+var measurement_review = MeasurementReview.new()
+const FluidDensityReview = preload("res://fluid_density_review.gd")
+var fluid_density_review = FluidDensityReview.new()
 
 const G = 9.8
 
@@ -19,12 +37,25 @@ func graph(xlabel: String, ylabel: String, points: Array) -> Dictionary:
 	return {"xLabel": xlabel, "yLabel": ylabel, "points": points}
 
 func solve(model: String, p: Dictionary) -> Dictionary:
+	var fluid_result=fluid_density_review.solve(model,p)
+	if not fluid_result.is_empty():return fluid_result
+	var measured_result=measurement_review.solve(model,p)
+	if not measured_result.is_empty():return measured_result
+	if model=="force" and str(p.get("scenario",""))=="deformation":return deformation_review.solve(p)
+	var optical_result=optics_review.solve(model,p)
+	if not optical_result.is_empty():return optical_result
+	if classroom_review.can_handle(model,str(p.get("scenario",""))):
+		return classroom_review.evaluate(model,p)
+	if electrical_review.can_handle(model,str(p.get("scenario",""))):
+		return electrical_review.evaluate(model,p)
+	if model in ["sound","force"] and p.get("scenario","")=="ruler":
+		return ruler_solver.solve(model,p)
 	var specific=extra_solver.solve(model,p)
 	if not specific.is_empty():return specific
 	var scenario = str(p.get("scenario", ""))
 	match model:
 		"measurement": return measurement(p, scenario)
-		"sound": return sound(p, scenario)
+		"sound": return sound_solver.solve(p, scenario)
 		"thermal": return thermal(p, scenario)
 		"phase": return phase(p, scenario)
 		"density": return density(p, scenario)
@@ -39,7 +70,8 @@ func solve(model: String, p: Dictionary) -> Dictionary:
 		"circuit": return circuit(p, scenario)
 		"joule": return joule(p, scenario)
 		"household": return household(p, scenario)
-		"magnet", "induction", "emwave": return electromagnetism(p, scenario, model)
+		"induction": return induction_solver.solve(p,scenario)
+		"magnet", "emwave": return electromagnetism(p, scenario, model)
 	return {"error": "未知物理模型：" + model}
 
 func measurement(p: Dictionary, scenario: String) -> Dictionary:
@@ -50,26 +82,20 @@ func measurement(p: Dictionary, scenario: String) -> Dictionary:
 	var corrected = indicated - zero
 	var units = {"length": "cm", "time": "s", "volume": "mL", "temperature": "℃", "balance": "g"}
 	var unit = units.get(scenario, "cm")
-	return result("measurement", {"actual": value, "division": division, "indicated": indicated, "corrected": corrected, "zero": zero}, [reading("仪表示数", indicated, unit), reading("修正值", corrected, unit), reading("分度值", division, unit)], "分度值由相邻标线差值确定；修正值＝示数－零点偏移。", "%s − %s = %s %s" % [indicated, zero, corrected, unit], "先认清量程和分度值，再读数；存在零点偏移时应修正。", "示数取至分度值；实际模拟刻度不代表随机测量误差。估读要求以具体仪器为准。")
+	var response = result("measurement", {"actual": value, "division": division, "indicated": indicated, "corrected": corrected, "zero": zero}, [reading("仪表示数", indicated, unit), reading("修正值", corrected, unit), reading("分度值", division, unit)], "分度值由相邻标线差值确定；修正值＝示数－零点偏移。", "%s − %s = %s %s" % [indicated, zero, corrected, unit], "先认清量程和分度值，再读数；存在零点偏移时应修正。", "示数取至分度值；实际模拟刻度不代表随机测量误差。估读要求以具体仪器为准。")
 
-func sound(p: Dictionary, scenario: String) -> Dictionary:
-	var frequency = maxf(number(p, "frequency", 440), 0.001)
-	var amplitude = maxf(number(p, "amplitude", 2), 0)
-	var distance = maxf(number(p, "distance", 34), 0)
-	var medium = str(p.get("medium", "vacuum" if scenario == "vacuum" else "air"))
-	var speed = {"air": 340.0, "water": 1500.0, "steel": 5200.0, "vacuum": 0.0}.get(medium, 340.0)
-	var wavelength = speed / frequency
-	var time = distance / speed if speed > 0 else null
-	var echo_time = time * 2 if time != null else null
-	var points = []
-	for i in range(81):
-		var t = float(i) / 80.0 * 3.0 / frequency
-		points.append([t * 1000, amplitude * sin(TAU * frequency * t) if speed > 0 else 0.0])
-	var conclusion = "频率越高，音调越高；振幅越大，响度通常越大。"
-	if medium == "vacuum": conclusion = "真空不能传播声音，传播时间没有定义。"
-	elif scenario == "echo": conclusion = "回声往返路程为单程距离的两倍，t＝2s/v。"
-	elif scenario == "noise": conclusion = "在声源处、传播过程中或人耳处减弱噪声；相对振幅不是实测分贝。"
-	return result("sound", {"frequency": frequency, "amplitude": amplitude, "speed": speed, "wavelength": wavelength, "travelTime": time, "echoTime": echo_time, "medium": medium, "audible": frequency >= 20 and frequency <= 20000 and speed > 0}, [reading("频率", frequency, "Hz"), reading("声速", speed, "m/s"), reading("回声时间" if scenario == "echo" else "传播时间", echo_time if scenario == "echo" else time, "s")], "v＝λf；传播时间 t＝s/v；回声时间 t＝2s/v。", "介质：%s，频率 %s Hz，单程距离 %s m。" % [medium, frequency, distance], conclusion, "常温声速近似值。振幅为相对量，正弦波为示意，不作为实测声压。", graph("时间 / ms", "相对振幅", points))
+	var count = int(number(p,"count",0))
+	if count>0:
+		var average = corrected/count
+		response.values["count"]=count
+		response.values["average"]=average
+		response.readings.append(reading("累积法平均值",average,unit))
+		response.process.append({"title":"用累积法求平均值","text":"将修正后的总量除以个数：%s %s ÷ %s＝%s %s。该值为单个平均量，不能当作每个样本完全相同。"%[corrected,unit,count,average,unit]})
+		if scenario=="time" and corrected>0:
+			response.values["perMinute"]=60.0*count/corrected
+			response.readings.append(reading("折合每分钟次数",response.values.perMinute,"次/min"))
+			response.process.append({"title":"统一为每分钟次数","text":"一分钟为60 s，每分钟次数＝60N/t＝60×%s/%s≈%.2f次/min。须与实际计数N配对，不能把未计数的默认值当测量。"%[count,corrected,response.values.perMinute]})
+	return response
 
 func thermal(p: Dictionary, scenario: String) -> Dictionary:
 	if scenario in ["compression", "expansion"]:
@@ -142,10 +168,15 @@ func phase(p: Dictionary, scenario: String) -> Dictionary:
 	var energy = initial_energy+direction*power*time
 	var state = water_state(energy,mass,boiling)
 	var points=[]
+	var phase_states=[]
 	for i in range(61):
 		var t=time*i/60.0
-		points.append([t,water_state(initial_energy+direction*power*t,mass,boiling).temperature])
-	return result("phase",{"temperature":state.temperature,"phase":state.phase,"fraction":state.fraction,"heat":power*time,"boilingPoint":boiling,"pressure":pressure},[reading("温度",state.temperature,"℃"),reading("物态",state.phase),reading("吸收/放出热量",power*time,"J")],"升温或降温时 Q＝cmΔt；晶体相变阶段吸放热而温度保持不变。","功率 %s W，时间 %s s；水的沸点约 %s ℃。" %[power,time,snappedf(boiling,.1)],"当前状态：%s。相变过程中的平台不表示没有吸收或放出热量。" %state.phase,"水/冰理想焓模型，不计容器吸热和散热。熔化热、汽化热取近似常数，沸点按水蒸气压关系估算。",graph("时间 / s","温度 / ℃",points))
+		var current_state=water_state(initial_energy+direction*power*t,mass,boiling)
+		points.append([t,current_state.temperature])
+		phase_states.append({"time":t,"temperature":current_state.temperature,"phase":current_state.phase,"fraction":current_state.fraction})
+	var response=result("phase",{"temperature":state.temperature,"phase":state.phase,"fraction":state.fraction,"heat":power*time,"boilingPoint":boiling,"pressure":pressure},[reading("温度",state.temperature,"℃"),reading("物态",state.phase),reading("吸收/放出热量",power*time,"J")],"升温或降温时 Q＝cmΔt；晶体相变阶段吸放热而温度保持不变。","功率 %s W，时间 %s s；水的沸点约 %s ℃。" %[power,time,snappedf(boiling,.1)],"当前状态：%s。相变过程中的平台不表示没有吸收或放出热量。" %state.phase,"水/冰理想焓模型，不计容器吸热和散热。熔化热、汽化热取近似常数，沸点按水蒸气压关系估算。",graph("时间 / s","温度 / ℃",points))
+	response["phaseStates"]=phase_states
+	return response
 
 func density(p: Dictionary, scenario: String) -> Dictionary:
 	var mass=maxf(number(p,"mass",54),0)
@@ -223,7 +254,16 @@ func lens(p: Dictionary, scenario: String) -> Dictionary:
 	for i in range(1,81):
 		var obj=float(i)
 		if abs(1/f-1/obj)>.002: points.append([obj,1/(1/f-1/obj)])
-	return result("lens",{"focal":f,"objectDistance":u,"imageDistance":v,"magnification":magnification,"imageHeight":image_height,"atFocus":at_focus,"real":v!=null and v>0,"nature":nature},[reading("物距",u,"cm"),reading("像距",v,"cm"),reading("放大率",magnification)],"薄透镜公式 1/f＝1/u＋1/v；放大率 m＝−v/u。","f＝%s cm，u＝%s cm。" %[f,u],nature+"。","理想薄透镜；v<0表示虚像位于物体同侧，负放大率表示倒立。矫正镜只示意会聚/发散作用。",graph("物距 / cm","像距 / cm",points))
+	var response = result("lens",{"focal":f,"objectDistance":u,"imageDistance":v,"magnification":magnification,"imageHeight":image_height,"atFocus":at_focus,"real":v!=null and v>0,"nature":nature},[reading("物距",u,"cm"),reading("像距",v,"cm"),reading("放大率",magnification)],"薄透镜公式 1/f＝1/u＋1/v；放大率 m＝−v/u。","f＝%s cm，u＝%s cm。" %[f,u],nature+"。","理想薄透镜；v<0表示虚像位于物体同侧，负放大率表示倒立。矫正镜只示意会聚/发散作用。",graph("物距 / cm","像距 / cm",points))
+
+	response.values["relativeTransmission"]=1.0-clampf(number(p,"cover",0),0,100)/100.0
+	if p.has("screenDistance"):
+		var screen = number(p,"screenDistance",15)
+		response.values["screenDistance"]=screen
+		response.values["focused"]=v!=null and v>0 and absf(v-screen)<=0.5
+		response.readings.append(reading("光屏位置",screen,"cm"))
+		response.readings.append(reading("光屏观察","在示意容差内清晰成像" if response.values.focused else "未在光屏上清晰成像"))
+	return response
 
 func force(p: Dictionary, scenario: String, model: String) -> Dictionary:
 	var mass=maxf(number(p,"mass",1),0)
@@ -239,8 +279,11 @@ func force(p: Dictionary, scenario: String, model: String) -> Dictionary:
 		return result("spring",{"force":f,"stiffness":k,"extension":extension,"valid":valid,"limit":limit},[reading("拉力",f,"N"),reading("伸长量",extension*100 if valid else null,"cm")],"在弹性限度内，弹簧伸长量与所受拉力成正比：F＝kx。","F＝%s N，k＝%s N/m。" %[f,k],"仍在弹性限度内，可用胡克定律。" if valid else "超过给定弹性限度，不能继续用 F＝kx 推算形变。","忽略弹簧自重；弹性限度由模型给定。",graph("拉力 / N","伸长量 / cm",points))
 	var gravity=number(p,"gravity",G)
 	var weight=mass*gravity
-	var net=f-f2
-	return result("force",{"mass":mass,"weight":weight,"force":f,"force2":f2,"netForce":net,"balanced":abs(net)<.000001},[reading("重力",weight,"N"),reading("合力",net,"N")],"G＝mg；同一直线上方向相反的两力，合力为二者之差。","G＝%s × %s＝%s N；F合＝%s−%s＝%s N。" %[mass,gravity,weight,f,f2,net],"两力平衡还要求作用在同一物体、同一直线上，且大小相等方向相反。" if scenario=="balance" else "力的作用是相互的；作用力与反作用力作用在两个不同物体上。" if scenario=="interaction" else "重力方向竖直向下，质量与重力是不同物理量。","静态受力模型，不据此虚构物体的实际运动轨迹。")
+	var direction = -1.0 if number(p,"direction",-1)<0 else 1.0
+	var offset = maxf(number(p,"offset",0),0)
+	var net=f+direction*f2
+	var torque = -direction*f2*offset/100.0
+	return result("force",{"mass":mass,"weight":weight,"force":f,"force2":f2,"netForce":net,"offset":offset,"direction":direction,"netTorque":torque,"balanced":abs(net)<.000001 and abs(torque)<.000001},[reading("重力",weight,"N"),reading("合力",net,"N"),reading("对第一作用线的力矩",torque,"N·m")],"G＝mg；两个力使物体平衡，须同时满足合力为零且合力矩为零。","G＝%s × %s＝%s N；F合＝%s＋(%s)×%s＝%s N；两作用线间距为%s cm。" %[mass,gravity,weight,f,direction,f2,net,offset],"两力平衡还要求作用在同一物体、同一直线上，且大小相等方向相反。" if scenario=="balance" else "力的作用是相互的；作用力与反作用力作用在两个不同物体上。" if scenario=="interaction" else "重力方向竖直向下，质量与重力是不同物理量。","静态受力模型，不据此虚构物体的实际运动轨迹。")
 
 func pressure(p: Dictionary, scenario: String) -> Dictionary:
 	var f=maxf(number(p,"force",100),0)
@@ -253,7 +296,7 @@ func pressure(p: Dictionary, scenario: String) -> Dictionary:
 	var liquid=rho*G*depth
 	var atmosphere=101325*pow(maxf(1-2.25577e-5*altitude,.01),5.25588)
 	var difference=.5*rho*speed*speed
-	var values={"solidPressure":solid,"liquidPressure":liquid,"atmosphere":atmosphere,"pressureDrop":difference,"areaSI":area*.0001,"density":rho,"depth":depth,"speed":speed}
+	var values={"solidPressure":solid,"liquidPressure":liquid,"atmosphere":atmosphere,"mercuryHeight":atmosphere/(13600*G),"maxWaterHeight":atmosphere/(1000*G),"pressureDrop":difference,"areaSI":area*.0001,"density":rho,"depth":depth,"speed":speed}
 	var measured=solid
 	var formula="p＝F/S；面积 cm² 换算为 m² 时乘 10⁻⁴。"
 	var conclusion="压力相同时，受力面积越小，压强越大。"
@@ -523,21 +566,7 @@ func electromagnetism(p: Dictionary, scenario: String, model: String) -> Diction
 		for i in range(61):points.append([i/60.0*3,sin(TAU*i/20.0)])
 		return result(model,{"frequencyMHz":frequency,"frequencyHz":frequency*1000000,"wavelength":wavelength,"speed":299792458.0,"receiverFrequency":receiver_frequency,"receptionIndex":reception},[reading("频率",frequency,"MHz"),reading("波长",wavelength,"m"),reading("真空波速",299792458.0,"m/s")],"电磁波在真空中能传播，c＝λf；MHz 换算 Hz 乘10⁶。","λ＝299792458 ÷ (%s×10⁶)＝%s m。" %[frequency,wavelength],"电磁波频率越高，真空中的波长越短；声音不能在真空传播。","真空理想电磁波，正弦曲线只表示相对场强。",graph("相对位置","相对场强",points))
 	var angle=number(p,"angle",90 if model=="induction" else 45)
-	if model=="induction":
-		var field=number(p,"field",.2)
-		var length=maxf(number(p,"length",.5),0)
-		var velocity=number(p,"velocity",2)
-		var turns=maxf(number(p,"turns",20),1)
-		var emf=field*length*velocity*sin(deg_to_rad(angle))
-		var points=[]
-		if scenario in ["generator","coil"]:
-			var area=maxf(number(p,"area",.02),0)
-			var frequency=maxf(number(p,"frequency",2),0)
-			var peak=turns*field*area*TAU*frequency
-			emf=peak*sin(deg_to_rad(angle))
-			for i in range(61):points.append([i/60.0,peak*sin(TAU*frequency*i/60.0)])
-			return result(model,{"emf":emf,"peak":peak,"field":field,"turns":turns,"frequency":frequency,"angle":angle},[reading("瞬时感应电动势",emf,"V"),reading("峰值",peak,"V")],"线圈磁通量变化产生感应电动势；均匀转动线圈给出正弦变化。","ε峰＝NBSω，ε＝ε峰sinθ。","发电机把机械能转化为电能；改变转动方向可改变感应电流方向。","理想均匀磁场线圈，属于现象的数值拓展；初中侧重电磁感应条件与方向。",graph("时间 / s","感应电动势 / V",points))
-		return result(model,{"emf":emf,"field":field,"length":length,"velocity":velocity,"angle":angle},[reading("感应电动势",emf,"V"),reading("切割速度",velocity,"m/s")],"导体在磁场中切割磁感线，ε＝Blv sinθ。","%s×%s×%s×sin(%s°)＝%s V。" %[field,length,velocity,angle,emf],"闭合电路中，导体的一部分切割磁感线时可以产生感应电流。","理想均匀磁场导体模型；有感应电动势不等于开路时也有持续电流。")
+
 	var current=number(p,"current",1)
 	if scenario in ["wireForce","wire-force"]:
 		var field=number(p,"field",.2)

@@ -1,0 +1,247 @@
+{
+  "subject": "physics-independent-targeted-review",
+  "checked": "2026-10-31",
+  "notAFullPass": true,
+  "scope": "针对电磁波、静电、密度、压强、浮力及机械效率的定向独立复审；未宣称182项全部独立通过。以既有逐项审核目录为入口，核对教学目标、控件、Godot计算和SVG分支。",
+  "evidenceLevels": {
+    "native-and-svg-tested": "实际原生Godot科学断言 + Chromium读取这些真实结果后的装置图检查；不自动等于已部署页面验证。",
+    "source-confirmed": "明确可复现的源码条件或缺少控件；保留具体反例与预期。",
+    "reasonable-model": "已识别教学目的可由该简化模型支持，但不假称完成人体诊断、真实无线协议等目标外工作。"
+  },
+  "newImplementation": {
+    "files": [
+      "godot/physics_measurement_review.gd",
+      "dist/modules/physics/measurement-review.js",
+      "research/physics-measurement-review-catalog.json"
+    ],
+    "tests": [
+      "tests/godot_physics_measurement_review.gd",
+      "tests/physics-measurement-review-browser.py"
+    ],
+    "nativeAssertions": 24,
+    "browserStates": 14,
+    "geometryComparisons": 6,
+    "textOverflow": 0,
+    "resultFile": "research/physics-measurement-review-results.json",
+    "note": "5项目录合入、根路由和Web引擎导出由root/physics_quality负责，报告不越权声称已集成发布。"
+  },
+  "items": [
+    {
+      "id": "phy-buoyancy-weighing",
+      "status": "implemented-native-and-svg-tested-pending-web-integration",
+      "teachingGoal": "完全浸没后改变深度，比较称重法浮力。",
+      "evidence": "原控件只有fraction，不能改变浸没后的深度；新增weighingDepth场景和bottomDepth控件。Godot测试10、30cm示数均1.666N，空气G=2.646N。",
+      "expectedBehavior": "深度从空气到部分浸入时浮力增加；10cm以下完全浸没继续下移不改变浮力。浮力超过重力不给虚假0N上悬读数。",
+      "reasonableLimitations": [
+        "理想静止测力计，不模拟液面升降、水阻力或噪声。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    },
+    {
+      "id": "phy-pulley-efficiency",
+      "status": "implemented-native-and-svg-tested-pending-web-integration",
+      "teachingGoal": "测G、F、h、s后求机械效率。",
+      "evidence": "原来把efficiency当输入反求拉力，缺测量过程的方向。新增efficiencyMeasurement，输入实测G/F/h/s，默认得80%。",
+      "expectedBehavior": "输入不可能的200%保留原比值但不报有效效率；两绳段装置位移应符合s≈2h。",
+      "reasonableLimitations": [
+        "输入属于测量记录；不要求从头模拟摩擦微观过程或实体测力计。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    },
+    {
+      "id": "phy-lead-attraction",
+      "status": "implemented-native-and-svg-tested-pending-web-integration",
+      "teachingGoal": "比较新鲜平整、粗糙、氧化与隔纸接触后的结合证据。",
+      "evidence": "原来只有相对分子间距控件，不能做表面对照。新增contactAttraction，分开、压紧、撤力三阶段。",
+      "expectedBehavior": "只有压紧过程的靠近不是充分证据；新鲜平整无隔层撤力后仍结合，隔纸或不良表面不显示相同结合。",
+      "reasonableLimitations": [
+        "不要求预测整块铅的承载质量；不虚构真实分子尺度、接触强度。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    },
+    {
+      "id": "phy-buoyancy-factors",
+      "status": "implemented-native-and-svg-tested-pending-web-integration",
+      "teachingGoal": "控制排液体积和液体密度，比较浮力。",
+      "evidence": "原默认80g/100cm³水中全浸没时F浮=.98N>G=.784N，却用上悬绳并将拉力夹为0。新增forceFactors，默认270g沉物，保留无效条件检查。",
+      "expectedBehavior": "F浮>G时上方细线不能保持指定位置；给出无有效上悬读数。固定V排和ρ液时改变质量不改变浮力。",
+      "reasonableLimitations": [
+        "均匀静止液体的阿基米德原理足以实现教学，不需要流体湍流引擎。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    },
+    {
+      "id": "phy-archimedes",
+      "status": "implemented-native-and-svg-tested-pending-web-integration",
+      "teachingGoal": "分别由称重法和排液称重得到两条证据。",
+      "evidence": "原默认浮物不能上悬，且接水杯固定水量、缺独立空杯/总杯读数。新增archimedesEvidence，四读数和两次作差；空杯.294N，杯液1.274N，差为.98N。",
+      "expectedBehavior": "正确条件两差相等；未装满空量50cm³使收到液体重力=.49N；漏接20%使其=.784N，不能据此否定原理。",
+      "reasonableLimitations": [
+        "收集损失是明确题设，不冒充真实飞溅率或连续流量。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    },
+    {
+      "id": "phy-vacuum-phone",
+      "status": "specific-gap-handed-off",
+      "teachingGoal": "比较电磁信号接收与声音对介质的要求。",
+      "evidence": "审核时仅frequency控件，emwave统一渲染发射塔与收音机，无介质或接收/听声对照。",
+      "expectedBehavior": "至少能切换空气与真空：电磁接收仍可发生，而空气传声消失；画出罩内外与对应指示。",
+      "reasonableLimitations": [
+        "不需要真实手机通信协议、真实通话或蜂窝网络接入；这些不是缺口。"
+      ],
+      "followUpOwner": "physics_quality"
+    },
+    {
+      "id": "phy-spark-radio",
+      "status": "specific-gap-handed-off",
+      "teachingGoal": "把迅速变化电流与收音机杂音对应。",
+      "evidence": "审核时只有frequency并算c/f，正弦波长计算不能代替通断变化与杂音。",
+      "expectedBehavior": "比较断路、稳恒导通、迅速通断时是否有干扰现象；不是必须产生真实火花或宽带接收器。",
+      "reasonableLimitations": [
+        "可用Godot定性状态与示意干扰信号；无需完整电磁场数值求解。"
+      ],
+      "followUpOwner": "physics_quality"
+    },
+    {
+      "id": "phy-emwave-transmission",
+      "status": "limited-scope-not-full-experiment",
+      "teachingGoal": "比较发射频率改变时的接收信号。",
+      "evidence": "现有通用模型仅显示频率/波长，未提供独立发射开关或接收状态操作；receiverFrequency缺省自动等于frequency。",
+      "expectedBehavior": "至少有发射有无或接收调谐等可操作比较；单独c=λf计算不能声称完成接收实验。",
+      "reasonableLimitations": [
+        "不要求真实天线辐射、屏蔽或射频协议；缺的是真正可比较的接收条件。"
+      ],
+      "followUpOwner": "physics_quality"
+    },
+    {
+      "id": "phy-mass-volume",
+      "status": "specific-gap-handed-off",
+      "teachingGoal": "同种物质多组m与V，作图检验正比。",
+      "evidence": "原来mass和volume可任意独立改变，不保证同种物质；density模型没有多组m-V证据。",
+      "expectedBehavior": "固定材料和状态，改变样品体积获得多组质量；或输入成组测量记录再比较密度与图像。",
+      "reasonableLimitations": [
+        "可以是理想称量与样品模型，不必有真实传感器噪声。"
+      ],
+      "followUpOwner": "optics agent"
+    },
+    {
+      "id": "phy-saltwater-density",
+      "status": "existing-gap-confirmed",
+      "teachingGoal": "差量称出倒入量筒的同一份盐水质量，再测体积。",
+      "evidence": "目录已经needs-implementation；只有单一mass/volume输入，缺前后烧杯质量。",
+      "expectedBehavior": "至少提供杯液倒出前、倒出后和量筒体积三读数，按两质量差求同一份液体密度。",
+      "reasonableLimitations": [
+        "不要求完整盐浓度—密度物性数据库或真实倾倒流体模拟。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    },
+    {
+      "id": "phy-liquid-pressure",
+      "status": "specific-gap-handed-off",
+      "teachingGoal": "比较深度、液体密度和探头方向。",
+      "evidence": "原目标明确包含方向，审核时只有density/depth控制，无探头方向。",
+      "expectedBehavior": "固定深度与密度改变探头朝向，压强不变；另分别改变深度、密度观察压差。",
+      "reasonableLimitations": [
+        "理想静水压模型足够，不需要真实橡皮膜材料响应。"
+      ],
+      "followUpOwner": "optics agent"
+    },
+    {
+      "id": "phy-flow-pressure-sensors",
+      "status": "scientific-inconsistency-handed-off",
+      "teachingGoal": "在变截面管中比较两处流速和静压。",
+      "evidence": "原solver使用Δp=.5ρv²，却绘制宽窄两处均流动；没有宽窄流速和连续性关系。",
+      "expectedBehavior": "两截面流速满足连续性；同高理想管应比较Δp=.5ρ(v窄²−v宽²)。单一v必须明确与近静止处比较，否则式子和器材不一致。",
+      "reasonableLimitations": [
+        "稳态、不可压缩、无黏近似是合理简化，不要求真实传感器接入。"
+      ],
+      "followUpOwner": "optics agent"
+    },
+    {
+      "id": "phy-rubbing-paper",
+      "status": "source-fix-independently-confirmed",
+      "teachingGoal": "带电棒吸引中性轻小纸屑，正负两种电荷均可。",
+      "evidence": "原渲染用totalCharge，隐藏charge2默认3，导致charge1=0仍吸、charge1=-3不吸；已观察源码修正为Math.abs(v.charge1)>0。",
+      "expectedBehavior": "零棒电荷无此吸引示意，正负等量电荷均有；不能由吸引现象判断符号。",
+      "reasonableLimitations": [
+        "纸屑轨迹和极化可定性示意，不强求真实静电有限元。"
+      ],
+      "followUpOwner": "physics_quality"
+    },
+    {
+      "id": "phy-charge-interaction",
+      "status": "zero-case-finding-handed-off",
+      "teachingGoal": "同种相斥、异种相吸。",
+      "evidence": "检查时rep=q1*q2>0的else无条件画吸引箭头，两者都0仍显示相向箭头，而Godot已写未给出净电荷间作用。已通知physics_quality。",
+      "expectedBehavior": "净电荷模型只有q1*q2非0才画此成对库仑作用箭头；两者均0不能画吸引。",
+      "reasonableLimitations": [
+        "中性物体感应吸引属于另一机制，不能借此替本分支零电荷箭头辩护。"
+      ],
+      "followUpOwner": "physics_quality"
+    },
+    {
+      "id": "phy-radio-tuning",
+      "status": "reasonable-qualitative-model",
+      "teachingGoal": "调谐频率偏离发射频率时接收减弱。",
+      "evidence": "引擎给出1/[1+(Δf/带宽)²]相对接收指标，偏离峰值时带宽影响响应。",
+      "expectedBehavior": "中心重合时不同带宽都达到峰值，不应以该点不变判控件无效。",
+      "reasonableLimitations": [
+        "单峰定性响应，不是实际收音机的频谱选择性测量。"
+      ]
+    },
+    {
+      "id": "phy-electroscope",
+      "status": "reasonable-qualitative-model",
+      "teachingGoal": "利用箔片张开判断带电状态。",
+      "evidence": "引擎角度依赖abs(charge1)，零电荷闭合，正负同量同角。",
+      "expectedBehavior": "不得只凭张角辨别正负，也不得把示意角度当标定电量。",
+      "reasonableLimitations": [
+        "不要求每个验电器都有完整金属表面电荷场求解。"
+      ]
+    },
+    {
+      "id": "phy-stone-density",
+      "status": "calculation-and-apparatus-model-only",
+      "teachingGoal": "用排水前后体积差及质量求不吸水固体密度。",
+      "evidence": "画面有前后水量，给定样品体积驱动差值；可用来解释V物=V后−V前及ρ=m/V。",
+      "expectedBehavior": "若宣称完整测量训练，需要实际刻度读数/未知样品操作；现有边界应写明是理想排水演示和计算。",
+      "reasonableLimitations": [
+        "样品体积作为模拟真值本身不是科学错误；无吸水、气泡与视差是合理简化。"
+      ]
+    },
+    {
+      "id": "phy-classroom-air-mass",
+      "status": "reasonable-estimation-model",
+      "teachingGoal": "长宽高与空气密度估算教室空气质量。",
+      "evidence": "当前控件与m=ρLWH目标一致，单位采用m、kg/m³与kg。",
+      "expectedBehavior": "结果应注明未扣家具体积、密度取题设值。",
+      "reasonableLimitations": [
+        "无需真实房间扫描、天气API或传感器才能完成估算教学。"
+      ]
+    },
+    {
+      "id": "phy-micro-hydrometer",
+      "status": "scope-gap-remains",
+      "teachingGoal": "微型密度计设计与刻度标定。",
+      "evidence": "只有总质量/体积/液体密度，细杆直径和球泡几何缺席，图上均匀刻线不是ρ=m/V关系导出的标定。",
+      "expectedBehavior": "若保留设计与标定目标，应提供几何/配重参数与至少两种标准液体的刻线证据。",
+      "reasonableLimitations": [
+        "无需真实玻璃加工；但标定不是可被一句模型说明省掉的关键教学操作。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    },
+    {
+      "id": "phy-shoe-pressure",
+      "status": "scope-gap-remains",
+      "teachingGoal": "在方格纸上估测鞋印面积，再求压强。",
+      "evidence": "审核源码画鞋印与底板，只有force/area输入；并无实际方格、计格或面积估测行为。",
+      "expectedBehavior": "可提供方格与计数输入求面积，再求p；仅给面积做除法不等于完成鞋印面积估测。",
+      "reasonableLimitations": [
+        "不要求足底压力分布或个人医学诊断。"
+      ],
+      "followUpOwner": "root / physics_quality"
+    }
+  ],
+  "handoff": "根任务明确要求冻结前优先补实际科学错误；发现已分别通知root及physics_quality，质量体积/液体压强/流速压强交optics agent。新增浮力、效率和接触五项已实现；剩余项状态以各负责人后续复测为准。"
+}

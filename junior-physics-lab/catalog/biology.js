@@ -48,7 +48,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：植物和动物输入用于样方密度与记录图；修改面积立即重新计算 限制：只统计输入的单一样方；不提供野外调查或自动物种鉴定",
     "controls": [
       {
         "key": "plants",
@@ -102,7 +102,15 @@ window.LAB_CATALOG.push(...[
       "观察校园、公园或林地中的生物",
       "生物和非生物"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：植物和动物输入用于样方密度与记录图；修改面积立即重新计算"
+    },
+    "implementationScope": {
+      "supported": "植物和动物输入用于样方密度与记录图；修改面积立即重新计算",
+      "limitations": "只统计输入的单一样方；不提供野外调查或自动物种鉴定"
+    }
   },
   {
     "id": "bio-microscope",
@@ -153,7 +161,7 @@ window.LAB_CATALOG.push(...[
       "取放显微镜一手握镜臂一手托镜座；不用直射阳光作光源。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：字母倒像，玻片位移方向相反；倍数按乘积改变图像比例，细调改变清晰度 限制：光路、照明和粗准焦操作由步骤说明，网页不模拟真实机械装调",
     "controls": [
       {
         "key": "eyepiece",
@@ -230,6 +238,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "specimen": "letter"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：字母倒像，玻片位移方向相反；倍数按乘积改变图像比例，细调改变清晰度"
+    },
+    "implementationScope": {
+      "supported": "字母倒像，玻片位移方向相反；倍数按乘积改变图像比例，细调改变清晰度",
+      "limitations": "光路、照明和粗准焦操作由步骤说明，网页不模拟真实机械装调"
     }
   },
   {
@@ -282,7 +298,7 @@ window.LAB_CATALOG.push(...[
       "碘液不可入口；玻片破损及时交教师处理。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：切换洋葱/黑藻、染色、目物镜与调焦；叶绿体仅在黑藻材料显示 限制：支持材料结构对照，不支持亲手撕取、展平、盖片与排气泡",
     "controls": [
       {
         "key": "eyepiece",
@@ -377,7 +393,15 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "制作并观察植物细胞临时装片"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：切换洋葱/黑藻、染色、目物镜与调焦；叶绿体仅在黑藻材料显示"
+    },
+    "implementationScope": {
+      "supported": "切换洋葱/黑藻、染色、目物镜与调焦；叶绿体仅在黑藻材料显示",
+      "limitations": "支持材料结构对照，不支持亲手撕取、展平、盖片与排气泡"
+    }
   },
   {
     "id": "bio-animal-cell",
@@ -429,7 +453,7 @@ window.LAB_CATALOG.push(...[
       "口腔取材仅按教师卫生要求使用个人一次性用品；不共用取材工具。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：口腔细胞无壁，染色改变核的显著程度；放大和调焦立即响应 限制：典型结构拼图，不是口腔采样或真实显微照片",
     "controls": [
       {
         "key": "eyepiece",
@@ -513,6 +537,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "specimen": "cheek"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：口腔细胞无壁，染色改变核的显著程度；放大和调焦立即响应"
+    },
+    "implementationScope": {
+      "supported": "口腔细胞无壁，染色改变核的显著程度；放大和调焦立即响应",
+      "limitations": "典型结构拼图，不是口腔采样或真实显微照片"
     }
   },
   {
@@ -564,7 +596,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：分裂前核、中期排列、分离期两组移动位置和两个新核/细胞板分别绘制；分裂次数计算2的幂 限制：分裂次数是理论推算，不能把固定视野的12个示意框当实测细胞数",
     "controls": [
       {
         "key": "phase",
@@ -627,6 +659,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "specimen": "division"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：分裂前核、中期排列、分离期两组移动位置和两个新核/细胞板分别绘制；分裂次数计算2的幂"
+    },
+    "implementationScope": {
+      "supported": "分裂前核、中期排列、分离期两组移动位置和两个新核/细胞板分别绘制；分裂次数计算2的幂",
+      "limitations": "分裂次数是理论推算，不能把固定视野的12个示意框当实测细胞数"
     }
   },
   {
@@ -678,7 +718,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：上皮紧密排列、肌纤维、神经突起、结缔纤维和植物细胞分别显示 限制：番茄组织示意简化，未完成取材制片；示意放大不是显微镜校准",
     "controls": [
       {
         "key": "tissue",
@@ -743,7 +783,15 @@ window.LAB_CATALOG.push(...[
       "人体的基本组织",
       "胃的组织构成与功能"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：上皮紧密排列、肌纤维、神经突起、结缔纤维和植物细胞分别显示"
+    },
+    "implementationScope": {
+      "supported": "上皮紧密排列、肌纤维、神经突起、结缔纤维和植物细胞分别显示",
+      "limitations": "番茄组织示意简化，未完成取材制片；示意放大不是显微镜校准"
+    }
   },
   {
     "id": "bio-paramecium",
@@ -795,7 +843,7 @@ window.LAB_CATALOG.push(...[
       "培养液不可入口；用后按教师要求处置，不倒入饮水容器。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：刺激在右侧；草履虫随过程向食物或避盐方向移动，无刺激不定向迁移 限制：仅定性趋性模型；不预测真实分布，不是反射；棉纤维与取样操作由步骤说明",
     "controls": [
       {
         "key": "stimulus",
@@ -855,6 +903,15 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "specimen": "paramecium"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "刺激位置与草履虫位置随观察过程变化；无刺激对照不强制发生定向迁移。",
+      "actionLabel": "观察过程"
+    },
+    "implementationScope": {
+      "supported": "刺激在右侧；草履虫随过程向食物或避盐方向移动，无刺激不定向迁移",
+      "limitations": "仅定性趋性模型；不预测真实分布，不是反射；棉纤维与取样操作由步骤说明"
     }
   },
   {
@@ -906,7 +963,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：动物/植物细胞结构切换，遗传信息重点圈选相应细胞核 限制：观察现成模型与设计依据，不提供拖拽组装或真实模型材料制作",
     "controls": [
       {
         "key": "type",
@@ -964,7 +1021,15 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "制作细胞模型"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：动物/植物细胞结构切换，遗传信息重点圈选相应细胞核"
+    },
+    "implementationScope": {
+      "supported": "动物/植物细胞结构切换，遗传信息重点圈选相应细胞核",
+      "limitations": "观察现成模型与设计依据，不提供拖拽组装或真实模型材料制作"
+    }
   },
   {
     "id": "bio-plants",
@@ -1015,7 +1080,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：藻体、苔藓、蕨类孢子囊群、松球果类别和花果结构区别显示 限制：外形和关键繁殖结构示意，不能用于实际野外鉴定",
     "controls": [
       {
         "key": "organism",
@@ -1071,7 +1136,15 @@ window.LAB_CATALOG.push(...[
       "几种苔藓植物和蕨类植物",
       "种子的着生位置"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：藻体、苔藓、蕨类孢子囊群、松球果类别和花果结构区别显示"
+    },
+    "implementationScope": {
+      "supported": "藻体、苔藓、蕨类孢子囊群、松球果类别和花果结构区别显示",
+      "limitations": "外形和关键繁殖结构示意，不能用于实际野外鉴定"
+    }
   },
   {
     "id": "bio-seed-structure",
@@ -1123,7 +1196,7 @@ window.LAB_CATALOG.push(...[
       "剖切仅由教师指导，刀口避开手指；碘液不可入口。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：菜豆子叶与玉米胚乳形态不同；剖面重点圈出胚 限制：没有真实剖切操作；胚芽、胚轴和胚根未逐件可选，只作为整体胚示意",
     "controls": [
       {
         "key": "seed",
@@ -1181,7 +1254,15 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "观察种子的结构"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：菜豆子叶与玉米胚乳形态不同；剖面重点圈出胚"
+    },
+    "implementationScope": {
+      "supported": "菜豆子叶与玉米胚乳形态不同；剖面重点圈出胚",
+      "limitations": "没有真实剖切操作；胚芽、胚轴和胚根未逐件可选，只作为整体胚示意"
+    }
   },
   {
     "id": "bio-animal-groups",
@@ -1232,7 +1313,7 @@ window.LAB_CATALOG.push(...[
       "使用合法教学标本或影像；不捕捉受保护动物，不进行伤害动物的验证。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：蚯蚓分节、缢蛏贝壳、蝗虫附肢、鱼鳍、蛙及兔形态分别显示 限制：外部形态比较；未逐类展示内部呼吸器官，不等同完整解剖",
     "controls": [
       {
         "key": "animal",
@@ -1292,7 +1373,15 @@ window.LAB_CATALOG.push(...[
       "鱼的形态、结构和运动",
       "蛙的形态"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：蚯蚓分节、缢蛏贝壳、蝗虫附肢、鱼鳍、蛙及兔形态分别显示"
+    },
+    "implementationScope": {
+      "supported": "蚯蚓分节、缢蛏贝壳、蝗虫附肢、鱼鳍、蛙及兔形态分别显示",
+      "limitations": "外部形态比较；未逐类展示内部呼吸器官，不等同完整解剖"
+    }
   },
   {
     "id": "bio-bird",
@@ -1343,7 +1432,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：翼外形、放大羽毛、中空长骨和肺气囊重点分别显示 限制：是结构与功能识图，不模拟飞行动力学；气囊图为位置关系",
     "controls": [
       {
         "key": "feature",
@@ -1394,7 +1483,15 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "鸟适于飞行的形态结构特点"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：翼外形、放大羽毛、中空长骨和肺气囊重点分别显示"
+    },
+    "implementationScope": {
+      "supported": "翼外形、放大羽毛、中空长骨和肺气囊重点分别显示",
+      "limitations": "是结构与功能识图，不模拟飞行动力学；气囊图为位置关系"
+    }
   },
   {
     "id": "bio-teeth",
@@ -1440,7 +1537,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：兔门齿/臼齿与狼犬齿轮廓区别显示 限制：侧面牙列简图，不按真实齿式、牙数或咬合比例制作",
     "controls": [
       {
         "key": "animal",
@@ -1481,15 +1578,23 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "兔和狼的牙齿"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：兔门齿/臼齿与狼犬齿轮廓区别显示"
+    },
+    "implementationScope": {
+      "supported": "兔门齿/臼齿与狼犬齿轮廓区别显示",
+      "limitations": "侧面牙列简图，不按真实齿式、牙数或咬合比例制作"
+    }
   },
   {
     "id": "bio-microbe-distribution",
     "subject": "biology",
     "term": "7上",
     "chapter": "第二单元 第三章 微生物",
-    "title": "检测环境中的细菌和真菌",
-    "kind": "学生实验",
+    "title": "环境细菌和真菌检测：培养记录分析",
+    "kind": "拓展探究",
     "tags": [
       "教材实践",
       "基本目录"
@@ -1532,7 +1637,7 @@ window.LAB_CATALOG.push(...[
       "仅教师监督的学校实验；培养后始终密封，由教师统一灭菌处置。"
     ],
     "model": "microbe",
-    "modelNote": "只在屏幕中模拟密闭培养或食品发酵的条件与现象。菌落图案不是实测菌落数，也不能用于鉴定病原体或判定食品安全。",
+    "modelNote": "只在屏幕中模拟密闭培养或食品发酵的条件与现象。菌落图案不是实测菌落数，也不能用于鉴定病原体或判定食品安全。 本页实际支持：取样来源与观察日作记录标签；菌落图按用户输入记录绘制 限制：不根据洗手与否预设菌落数量；没有真实培养、鉴定或安全检测",
     "controls": [
       {
         "key": "sample",
@@ -1565,6 +1670,15 @@ window.LAB_CATALOG.push(...[
         "value": 2,
         "step": 1,
         "unit": ""
+      },
+      {
+        "key": "colonies",
+        "label": "记录的菌落数量",
+        "min": 0,
+        "max": 50,
+        "value": 12,
+        "step": 1,
+        "unit": "个"
       }
     ],
     "workedExample": {
@@ -1592,7 +1706,16 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "检测环境中的细菌和真菌"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：取样来源与观察日作记录标签；菌落图按用户输入记录绘制"
+    },
+    "implementationScope": {
+      "supported": "取样来源与观察日作记录标签；菌落图按用户输入记录绘制",
+      "limitations": "不根据洗手与否预设菌落数量；没有真实培养、鉴定或安全检测"
+    },
+    "originalActivityTitle": "检测环境中的细菌和真菌"
   },
   {
     "id": "bio-bacteria",
@@ -1639,7 +1762,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：球、杆、螺旋形与无成形细胞核的DNA区域区别；重点圈选遗传区域 限制：典型基本结构，不给所有细菌画上共有鞭毛/荚膜，也不鉴定菌种",
     "controls": [
       {
         "key": "shape",
@@ -1699,7 +1822,15 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "细菌的基本结构"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：球、杆、螺旋形与无成形细胞核的DNA区域区别；重点圈选遗传区域"
+    },
+    "implementationScope": {
+      "supported": "球、杆、螺旋形与无成形细胞核的DNA区域区别；重点圈选遗传区域",
+      "limitations": "典型基本结构，不给所有细菌画上共有鞭毛/荚膜，也不鉴定菌种"
+    }
   },
   {
     "id": "bio-fungi",
@@ -1749,7 +1880,7 @@ window.LAB_CATALOG.push(...[
       "使用教师准备材料；不培养、打开或吸入未知霉菌孢子。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：酵母细胞与出芽、霉菌菌丝分支分别显示，倍数与调焦即时变化 限制：霉菌图为菌丝/产孢结构概括，不对应所有真菌属的显微特征",
     "controls": [
       {
         "key": "eyepiece",
@@ -1829,14 +1960,22 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "观察酵母菌和霉菌"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：酵母细胞与出芽、霉菌菌丝分支分别显示，倍数与调焦即时变化"
+    },
+    "implementationScope": {
+      "supported": "酵母细胞与出芽、霉菌菌丝分支分别显示，倍数与调焦即时变化",
+      "limitations": "霉菌图为菌丝/产孢结构概括，不对应所有真菌属的显微特征"
+    }
   },
   {
     "id": "bio-fermentation",
     "subject": "biology",
     "term": "7上",
     "chapter": "第二单元 第三章 微生物",
-    "title": "利用细菌或真菌制作发酵食品",
+    "title": "比较发酵食品的制作条件",
     "kind": "拓展探究",
     "tags": [
       "教材实践",
@@ -1880,7 +2019,7 @@ window.LAB_CATALOG.push(...[
       "页面仅作方案模拟；实物食品制作由教师或家长按卫生规范指导，实验培养物不得食用。"
     ],
     "model": "microbe",
-    "modelNote": "只在屏幕中模拟密闭培养或食品发酵的条件与现象。菌落图案不是实测菌落数，也不能用于鉴定病原体或判定食品安全。",
+    "modelNote": "只在屏幕中模拟密闭培养或食品发酵的条件与现象。菌落图案不是实测菌落数，也不能用于鉴定病原体或判定食品安全。 本页实际支持：面包、酸奶、泡菜材料切换；菌种和温度条件用于过程定性判断 限制：食品制作条件比较；没有真实培养或可食用成品，也不从外观判断安全",
     "controls": [
       {
         "key": "product",
@@ -1959,7 +2098,16 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "利用细菌或真菌制作发酵食品"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：面包、酸奶、泡菜材料切换；菌种和温度条件用于过程定性判断"
+    },
+    "implementationScope": {
+      "supported": "面包、酸奶、泡菜材料切换；菌种和温度条件用于过程定性判断",
+      "limitations": "食品制作条件比较；没有真实培养或可食用成品，也不从外观判断安全"
+    },
+    "originalActivityTitle": "利用细菌或真菌制作发酵食品"
   },
   {
     "id": "bio-classification",
@@ -2006,7 +2154,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：植物按种子、动物按脊柱作第一层检索；按生境时显示容易混类的实例 限制：支持分类依据比较，不提供全界检索表或完整物种分类树",
     "controls": [
       {
         "key": "group",
@@ -2063,7 +2211,15 @@ window.LAB_CATALOG.push(...[
       "对植物进行分类",
       "对动物进行分类"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：植物按种子、动物按脊柱作第一层检索；按生境时显示容易混类的实例"
+    },
+    "implementationScope": {
+      "supported": "植物按种子、动物按脊柱作第一层检索；按生境时显示容易混类的实例",
+      "limitations": "支持分类依据比较，不提供全界检索表或完整物种分类树"
+    }
   },
   {
     "id": "bio-resources",
@@ -2112,7 +2268,7 @@ window.LAB_CATALOG.push(...[
       "野外调查结伴并遵守边界；不采食野生菌或未知植物。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：记录已确认、未定名类型和计划样方数，显示记录整理要求 限制：记录设计与统计；没有现场调查、自动标牌生成或分类鉴定",
     "controls": [
       {
         "key": "identified",
@@ -2167,7 +2323,15 @@ window.LAB_CATALOG.push(...[
       "给校园内的植物挂牌",
       "调查当地食用菌的种类及生产情况"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：记录已确认、未定名类型和计划样方数，显示记录整理要求"
+    },
+    "implementationScope": {
+      "supported": "记录已确认、未定名类型和计划样方数，显示记录整理要求",
+      "limitations": "记录设计与统计；没有现场调查、自动标牌生成或分类鉴定"
+    }
   },
   {
     "id": "bio-yeast-compare",
@@ -2227,7 +2391,7 @@ window.LAB_CATALOG.push(...[
       "产气装置不能刚性密闭积压，按教师的低压实验规范操作。"
     ],
     "model": "microbe",
-    "modelNote": "六个体积由用户录入，初始0表示待填写，非实测或预测。程序只计算两个算术平均数和差值，不生成产气数据；控制条件不一致时不作来源导致差异的推断。",
+    "modelNote": "六个体积由用户录入，初始0表示待填写，非实测或预测。程序只计算两个算术平均数和差值，不生成产气数据；控制条件不一致时不作来源导致差异的推断。 本页实际支持：输入A/B各三次气体量，计算各组均值、差值和可比条件 限制：数据需用户记录或题设；未从温度和菌种预测实测发酵量",
     "controls": [
       {
         "key": "a1",
@@ -2329,6 +2493,14 @@ window.LAB_CATALOG.push(...[
       "variant": "yeast-compare",
       "dataMode": "entered-records",
       "replicates": 3
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：输入A/B各三次气体量，计算各组均值、差值和可比条件"
+    },
+    "implementationScope": {
+      "supported": "输入A/B各三次气体量，计算各组均值、差值和可比条件",
+      "limitations": "数据需用户记录或题设；未从温度和菌种预测实测发酵量"
     }
   },
   {
@@ -2388,7 +2560,7 @@ window.LAB_CATALOG.push(...[
       "化学检测试剂、取样和废液由教师或专业人员按规程处理；不在家自行配制试剂。"
     ],
     "model": "microbe",
-    "modelNote": "t1/t2/t3与c1/c2/c3分别是第1、3、5天处理组和对照组的输入记录。程序仅显示输入点及同日差值；选择盐度、温度或供氧不会自动产生浓度。初始0为待填写值，不是检测结论；不输出食用安全判断。",
+    "modelNote": "t1/t2/t3与c1/c2/c3分别是第1、3、5天处理组和对照组的输入记录。程序仅显示输入点及同日差值；选择盐度、温度或供氧不会自动产生浓度。初始0为待填写值，不是检测结论；不输出食用安全判断。 本页实际支持：输入第1/3/5日处理和对照浓度；表格与折线、同日差值即时更新 限制：不预测亚硝酸盐曲线，不提供检测化学操作或食用安全判断",
     "controls": [
       {
         "key": "day",
@@ -2518,6 +2690,14 @@ window.LAB_CATALOG.push(...[
       ],
       "dataMode": "entered-records",
       "concentrationUnit": "mg/kg"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：输入第1/3/5日处理和对照浓度；表格与折线、同日差值即时更新"
+    },
+    "implementationScope": {
+      "supported": "输入第1/3/5日处理和对照浓度；表格与折线、同日差值即时更新",
+      "limitations": "不预测亚硝酸盐曲线，不提供检测化学操作或食用安全判断"
     }
   },
   {
@@ -2577,7 +2757,7 @@ window.LAB_CATALOG.push(...[
       "加热、保温电器及清洁消毒操作由教师监督；乳过敏者不接触相关样品。"
     ],
     "model": "microbe",
-    "modelNote": "凝乳画面是定性条件示意；pH来自用户输入，不根据温度或接种自动预测。默认pH6.5只是可编辑练习初值。卫生与对照选项改变证据评价，不生成“可食用”或“无菌”判断。",
+    "modelNote": "凝乳画面是定性条件示意；pH来自用户输入，不根据温度或接种自动预测。默认pH6.5只是可编辑练习初值。卫生与对照选项改变证据评价，不生成“可食用”或“无菌”判断。 本页实际支持：选择菌种、温度、对照、卫生和pH记录，解释凝乳与酸化条件 限制：pH输入不是检测；凝乳图不等于成功、安全或可食用",
     "controls": [
       {
         "key": "culture",
@@ -2682,6 +2862,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "variant": "yogurt",
       "dataMode": "qualitative-with-entered-ph"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：选择菌种、温度、对照、卫生和pH记录，解释凝乳与酸化条件"
+    },
+    "implementationScope": {
+      "supported": "选择菌种、温度、对照、卫生和pH记录，解释凝乳与酸化条件",
+      "limitations": "pH输入不是检测；凝乳图不等于成功、安全或可食用"
     }
   },
   {
@@ -2736,7 +2924,7 @@ window.LAB_CATALOG.push(...[
       "不自行进入水体取样；培养液不入口、不接触伤口，废液按教师要求处理。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：四种典型微小生物的形态分别显示；取样层只是记录来源，非物种预测 限制：不是池塘水真实采样、活体录像或自动分类",
     "controls": [
       {
         "key": "eyepiece",
@@ -2840,6 +3028,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "2023基本目录已核对；本网站学期归类",
     "config": {
       "specimen": "pond"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：四种典型微小生物的形态分别显示；取样层只是记录来源，非物种预测"
+    },
+    "implementationScope": {
+      "supported": "四种典型微小生物的形态分别显示；取样层只是记录来源，非物种预测",
+      "limitations": "不是池塘水真实采样、活体录像或自动分类"
     }
   },
   {
@@ -2893,7 +3089,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "germination",
-    "modelNote": "采用条件逻辑说明种子萌发，不给出适用于所有种类的温度阈值或真实生长速度；动画时间不是萌发所需天数。",
+    "modelNote": "采用条件逻辑说明种子萌发，不给出适用于所有种类的温度阈值或真实生长速度；动画时间不是萌发所需天数。 本页实际支持：适宜条件下15个种子符号随进度伸出胚根；不适宜条件保持未萌发。 限制：所有符号同时萌发仅为条件示意，不能读取为实际发芽率；完整分组、重复与真实时间尚需实物实验。",
     "controls": [
       {
         "key": "moisture",
@@ -2981,6 +3177,15 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "conditions"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "在具备条件的情景中依次显现胚根生长；缺必要条件时保留未萌发状态。",
+      "actionLabel": "观察过程"
+    },
+    "implementationScope": {
+      "supported": "适宜条件下15个种子符号随进度伸出胚根；不适宜条件保持未萌发。",
+      "limitations": "所有符号同时萌发仅为条件示意，不能读取为实际发芽率；完整分组、重复与真实时间尚需实物实验。"
     }
   },
   {
@@ -2988,7 +3193,7 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "7下",
     "chapter": "第三单元 第一章 被子植物的一生",
-    "title": "测定种子发芽率",
+    "title": "计算种子发芽率并分析检测记录",
     "kind": "拓展探究",
     "tags": [
       "教材实践"
@@ -3032,7 +3237,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：40个固定种子符号表示比例，结果明确来自用户记录。 限制：40符号不是逐粒计数；不提供抽样过程和重复试验。",
     "controls": [
       {
         "key": "total",
@@ -3080,7 +3285,16 @@ window.LAB_CATALOG.push(...[
     "config": {
       "variant": "germination-rate",
       "synthetic": true
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：40个固定种子符号表示比例，结果明确来自用户记录。"
+    },
+    "implementationScope": {
+      "supported": "40个固定种子符号表示比例，结果明确来自用户记录。",
+      "limitations": "40符号不是逐粒计数；不提供抽样过程和重复试验。"
+    },
+    "originalActivityTitle": "测定种子发芽率"
   },
   {
     "id": "bio-root",
@@ -3132,7 +3346,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：成熟区根毛、伸长区长细胞、分生区小密细胞和根冠可切选，底部给区域功能。 限制：不是显微照片；细胞形态与大小仅区分区域特征，不能定量估计分裂率或生长速度。",
     "controls": [
       {
         "key": "eyepiece",
@@ -3224,6 +3438,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "root",
       "variant": "root"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：成熟区根毛、伸长区长细胞、分生区小密细胞和根冠可切选，底部给区域功能。"
+    },
+    "implementationScope": {
+      "supported": "成熟区根毛、伸长区长细胞、分生区小密细胞和根冠可切选，底部给区域功能。",
+      "limitations": "不是显微照片；细胞形态与大小仅区分区域特征，不能定量估计分裂率或生长速度。"
     }
   },
   {
@@ -3277,7 +3499,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "plant",
-    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。",
+    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。 本页实际支持：玉米长条叶和须根；第0天各条件同初始大小，随后日序选择的大小只是定性情景。 限制：单株切选不是同步对照；没有真实株高和发育速率。",
     "controls": [
       {
         "key": "solution",
@@ -3351,6 +3573,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "mineral"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：玉米长条叶和须根；第0天各条件同初始大小，随后日序选择的大小只是定性情景。"
+    },
+    "implementationScope": {
+      "supported": "玉米长条叶和须根；第0天各条件同初始大小，随后日序选择的大小只是定性情景。",
+      "limitations": "单株切选不是同步对照；没有真实株高和发育速率。"
     }
   },
   {
@@ -3404,7 +3634,7 @@ window.LAB_CATALOG.push(...[
       "使用镊子和解剖工具时由教师指导；不采摘保护植物或未知有毒植物。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：选择雄蕊、雌蕊、子房时圈出相应结构；卵形胚珠在子房内部。 限制：不能替代真实拆分；比例简化。",
     "controls": [
       {
         "key": "part",
@@ -3459,6 +3689,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "flower",
       "variant": "flower"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：选择雄蕊、雌蕊、子房时圈出相应结构；卵形胚珠在子房内部。"
+    },
+    "implementationScope": {
+      "supported": "选择雄蕊、雌蕊、子房时圈出相应结构；卵形胚珠在子房内部。",
+      "limitations": "不能替代真实拆分；比例简化。"
     }
   },
   {
@@ -3509,7 +3747,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "plant",
-    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。",
+    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。 本页实际支持：切面新增圆形导管分布或纵向管道，条件变化立即可见。 限制：无染料上升时间或速度模型；不是所有植物茎的维管束分布均相同。 横切导管环状分布采用典型双子叶植物茎示意，不能推广到所有植物茎。",
     "controls": [
       {
         "key": "cut",
@@ -3572,6 +3810,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "stem"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：切面新增圆形导管分布或纵向管道，条件变化立即可见。"
+    },
+    "implementationScope": {
+      "supported": "切面新增圆形导管分布或纵向管道，条件变化立即可见。",
+      "limitations": "无染料上升时间或速度模型；不是所有植物茎的维管束分布均相同。"
     }
   },
   {
@@ -3624,7 +3870,7 @@ window.LAB_CATALOG.push(...[
       "徒手切片必须由教师指导，刀片不对手指；优先使用预制装片。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：横切区分上表皮、栅栏/海绵叶肉、下表皮；两种视图均显示气孔开闭。 限制：横切与表皮是概略组织图；叶脉和气孔位置不按具体物种真实数量或比例。",
     "controls": [
       {
         "key": "eyepiece",
@@ -3723,6 +3969,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "leaf",
       "variant": "leaf"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：横切区分上表皮、栅栏/海绵叶肉、下表皮；两种视图均显示气孔开闭。"
+    },
+    "implementationScope": {
+      "supported": "横切区分上表皮、栅栏/海绵叶肉、下表皮；两种视图均显示气孔开闭。",
+      "limitations": "横切与表皮是概略组织图；叶脉和气孔位置不按具体物种真实数量或比例。"
     }
   },
   {
@@ -3773,7 +4027,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "plant",
-    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。",
+    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。 本页实际支持：两种袋边界分别只罩枝条/连同湿土；湿土组可有蒸发水，不能单独归因蒸腾。 限制：水滴不能量化蒸腾速率；实际需初始干燥袋与相同条件。",
     "controls": [
       {
         "key": "cover",
@@ -3832,6 +4086,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "transpiration"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：两种袋边界分别只罩枝条/连同湿土；湿土组可有蒸发水，不能单独归因蒸腾。"
+    },
+    "implementationScope": {
+      "supported": "两种袋边界分别只罩枝条/连同湿土；湿土组可有蒸发水，不能单独归因蒸腾。",
+      "limitations": "水滴不能量化蒸腾速率；实际需初始干燥袋与相同条件。"
     }
   },
   {
@@ -3885,7 +4147,7 @@ window.LAB_CATALOG.push(...[
       "酒精易燃，水浴脱色和加热仅由教师规范操作；不可直接加热酒精。"
     ],
     "model": "photosynthesis",
-    "modelNote": "采用有无必要条件的定性模型；光合和呼吸同时存在，实际反应强度受多因素影响。颜色是处理后的检验结果示意。",
+    "modelNote": "采用有无必要条件的定性模型；光合和呼吸同时存在，实际反应强度受多因素影响。颜色是处理后的检验结果示意。 本页实际支持：图示是处理后的显色终点；局部遮光和未遮光区颜色可比较。 限制：处理后的理想检验示意；暗处理不足时只能说明原有淀粉干扰，不能唯一预测显色。",
     "controls": [
       {
         "key": "dark",
@@ -3961,6 +4223,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "starch"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：图示是处理后的显色终点；局部遮光和未遮光区颜色可比较。"
+    },
+    "implementationScope": {
+      "supported": "图示是处理后的显色终点；局部遮光和未遮光区颜色可比较。",
+      "limitations": "处理后的理想检验示意；暗处理不足时只能说明原有淀粉干扰，不能唯一预测显色。"
     }
   },
   {
@@ -4013,7 +4283,7 @@ window.LAB_CATALOG.push(...[
       "气体检验涉及火源，仅由教师演示；不在密闭受压容器中持续收集气体。"
     ],
     "model": "photosynthesis",
-    "modelNote": "采用有无必要条件的定性模型；光合和呼吸同时存在，实际反应强度受多因素影响。颜色是处理后的检验结果示意。",
+    "modelNote": "采用有无必要条件的定性模型；光合和呼吸同时存在，实际反应强度受多因素影响。颜色是处理后的检验结果示意。 本页实际支持：有光有CO2时气泡上升；无必要条件时停气。 限制：仅演示极端必要条件模型的放气；尚无气体鉴定操作、浓度或真实产气速率。",
     "controls": [
       {
         "key": "light",
@@ -4041,7 +4311,7 @@ window.LAB_CATALOG.push(...[
           },
           {
             "value": "no",
-            "label": "受限"
+            "label": "缺乏（极端模型）"
           }
         ]
       }
@@ -4074,6 +4344,15 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "oxygen"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "演示金鱼藻气泡向收集装置运动；仅是放气过程，不自动完成气体鉴定。",
+      "actionLabel": "观察过程"
+    },
+    "implementationScope": {
+      "supported": "有光有CO2时气泡上升；无必要条件时停气。",
+      "limitations": "仅演示极端必要条件模型的放气；尚无气体鉴定操作、浓度或真实产气速率。"
     }
   },
   {
@@ -4128,7 +4407,7 @@ window.LAB_CATALOG.push(...[
       "吸收剂可能具有腐蚀性，装置由教师管理；学生不直接接触或配制。"
     ],
     "model": "photosynthesis",
-    "modelNote": "采用有无必要条件的定性模型；光合和呼吸同时存在，实际反应强度受多因素影响。颜色是处理后的检验结果示意。",
+    "modelNote": "采用有无必要条件的定性模型；光合和呼吸同时存在，实际反应强度受多因素影响。颜色是处理后的检验结果示意。 本页实际支持：同一个罩内叶片呈不同碘液终点颜色。 限制：密闭去CO2与对照的题设比较；不提供试剂操作、实时光合速率或唯一显色预测。",
     "controls": [
       {
         "key": "co2",
@@ -4204,6 +4483,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "co2"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：同一个罩内叶片呈不同碘液终点颜色。"
+    },
+    "implementationScope": {
+      "supported": "同一个罩内叶片呈不同碘液终点颜色。",
+      "limitations": "密闭去CO2与对照的题设比较；不提供试剂操作、实时光合速率或唯一显色预测。"
     }
   },
   {
@@ -4255,7 +4542,7 @@ window.LAB_CATALOG.push(...[
       "热处理、火源及检验试剂由教师操作；密闭装置不加热加压。"
     ],
     "model": "respiration",
-    "modelNote": "活种子与对照的定性现象示意，不能从动画强弱读出实测氧耗量或热量。",
+    "modelNote": "活种子与对照的定性现象示意，不能从动画强弱读出实测氧耗量或热量。 本页实际支持：活种子条件可播放温柱上升、CO2通气浑浊加深、木条移向瓶口检验；煮熟对照无同样变化。 限制：仅定性现象；没有定量氧耗、发热量。 种子释放的气体经导管检验；木条画面只示意耗氧条件，真实点火由教师完成。",
     "controls": [
       {
         "key": "test",
@@ -4319,6 +4606,15 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "seeds"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "显示温柱上升、气体通入并浑浊或木条检验的过程；对照不发生同样生命活动。",
+      "actionLabel": "观察过程"
+    },
+    "implementationScope": {
+      "supported": "活种子条件可播放温柱上升、CO2通气浑浊加深、木条移向瓶口检验；煮熟对照无同样变化。",
+      "limitations": "仅定性现象；没有定量氧耗、发热量。"
     }
   },
   {
@@ -4326,7 +4622,7 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "7下",
     "chapter": "第三单元 第二章 植物体内的物质与能量变化",
-    "title": "调查利用呼吸作用原理保存食物的方法",
+    "title": "利用呼吸作用原理比较食物保存方案",
     "kind": "拓展探究",
     "tags": [
       "课标拓展",
@@ -4369,7 +4665,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "respiration",
-    "modelNote": "活种子与对照的定性现象示意，不能从动画强弱读出实测氧耗量或热量。",
+    "modelNote": "保存方案的定性比较，不预测保存天数；呼吸、微生物和水分变化需分别考虑。 本页实际支持：食品类型与低温、干燥、密封、常规保存的方案卡及对应局限即时更新。 限制：这是方案解释，不能预测保存天数；没有真实微生物和水分模型。",
     "controls": [
       {
         "key": "food",
@@ -4436,7 +4732,16 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "2023基本目录已核对；本网站学期归类",
     "config": {
       "variant": "storage"
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：食品类型与低温、干燥、密封、常规保存的方案卡及对应局限即时更新。"
+    },
+    "implementationScope": {
+      "supported": "食品类型与低温、干燥、密封、常规保存的方案卡及对应局限即时更新。",
+      "limitations": "这是方案解释，不能预测保存天数；没有真实微生物和水分模型。"
+    },
+    "originalActivityTitle": "调查利用呼吸作用原理保存食物的方法"
   },
   {
     "id": "bio-plant-growth",
@@ -4489,7 +4794,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "plant",
-    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。",
+    "modelNote": "表示植物运输、生长和气孔开闭的机制，不预测真实株高、蒸腾量或个体产量。 本页实际支持：当前已补种子、幼苗、开花、结果具体分支；阶段选择立即变化。 限制：条件只给统一受限色，未建真实发育速度/产量，不能声称完成栽培。",
     "controls": [
       {
         "key": "condition",
@@ -4565,6 +4870,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "growth"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：当前已补种子、幼苗、开花、结果具体分支；阶段选择立即变化。"
+    },
+    "implementationScope": {
+      "supported": "当前已补种子、幼苗、开花、结果具体分支；阶段选择立即变化。",
+      "limitations": "条件只给统一受限色，未建真实发育速度/产量，不能声称完成栽培。"
     }
   },
   {
@@ -4614,7 +4927,7 @@ window.LAB_CATALOG.push(...[
       "仅使用正规教学模型与科学术语，尊重身体隐私及个体发育差异。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：有两类系统位置图，细节仅圈卵巢/睾丸。 限制：当前仅支持器官关系与生殖细胞产生部位，不能演示受精、胚胎或分娩完整路径。",
     "controls": [
       {
         "key": "system",
@@ -4642,7 +4955,7 @@ window.LAB_CATALOG.push(...[
           },
           {
             "value": "detail",
-            "label": "生殖细胞与发育路径"
+            "label": "生殖细胞产生部位"
           }
         ]
       }
@@ -4674,6 +4987,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "human-reproduction",
       "variant": "human-reproduction"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：有两类系统位置图，细节仅圈卵巢/睾丸。"
+    },
+    "implementationScope": {
+      "supported": "有两类系统位置图，细节仅圈卵巢/睾丸。",
+      "limitations": "当前仅支持器官关系与生殖细胞产生部位，不能演示受精、胚胎或分娩完整路径。"
     }
   },
   {
@@ -4681,8 +5002,8 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "7下",
     "chapter": "第四单元 第二章 人体的营养",
-    "title": "测定几种食物中的能量",
-    "kind": "学生实验",
+    "title": "分析食物燃烧记录并计算水吸收的热量",
+    "kind": "拓展探究",
     "tags": [
       "教材实践",
       "基本目录"
@@ -4728,7 +5049,7 @@ window.LAB_CATALOG.push(...[
       "点燃食物和高温器材仅在教师监督下使用；防烫、防火，注意食物过敏风险。"
     ],
     "model": "calorimetry",
-    "modelNote": "使用用户输入的水质量、温升与燃烧质量计算水吸收的热量；不假定热效率100%，结果不等同食品标签总能量。 相关物理量由Godot引擎求解；生物解释与真实实验误差另作分析。",
+    "modelNote": "使用用户输入的水质量、温升与燃烧质量计算水吸收的热量；不假定热效率100%，结果不等同食品标签总能量。 相关物理量由Godot引擎求解；生物解释与真实实验误差另作分析。 本页实际支持：量热装置温度计按输入温升变化，计算Q和Q/m。 限制：只输入记录并做量热计算，没有燃烧、温度采集或热效率测量；Godot负责相关热学量求解。",
     "controls": [
       {
         "key": "waterMass",
@@ -4787,7 +5108,16 @@ window.LAB_CATALOG.push(...[
     "config": {
       "variant": "food-energy"
     },
-    "requiresPhysics": true
+    "requiresPhysics": true,
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：量热装置温度计按输入温升变化，计算Q和Q/m。"
+    },
+    "implementationScope": {
+      "supported": "量热装置温度计按输入温升变化，计算Q和Q/m。",
+      "limitations": "只输入记录并做量热计算，没有燃烧、温度采集或热效率测量；Godot负责相关热学量求解。"
+    },
+    "originalActivityTitle": "测定几种食物中的能量"
   },
   {
     "id": "bio-digestion",
@@ -4841,7 +5171,7 @@ window.LAB_CATALOG.push(...[
       "优先使用教学酶制剂；不共用唾液材料，不品尝实验食物，水浴防烫。"
     ],
     "model": "digestion",
-    "modelNote": "用淀粉是否残留解释碘液显色。模型只比较适宜、低温和高温处理，不把消化程度写成实测浓度。",
+    "modelNote": "用淀粉是否残留解释碘液显色。模型只比较适宜、低温和高温处理，不把消化程度写成实测浓度。 本页实际支持：酶条件区分低温减慢、高温失活和无唾液酶；淀粉显色是足够处理条件下的理想比较。 限制：低温不是酶失活；整块也会部分消化；网页只定性示意残余是否足够显色。",
     "controls": [
       {
         "key": "saliva",
@@ -4921,6 +5251,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "starch"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：酶条件区分低温减慢、高温失活和无唾液酶；淀粉显色是足够处理条件下的理想比较。"
+    },
+    "implementationScope": {
+      "supported": "酶条件区分低温减慢、高温失活和无唾液酶；淀粉显色是足够处理条件下的理想比较。",
+      "limitations": "低温不是酶失活；整块也会部分消化；网页只定性示意残余是否足够显色。"
     }
   },
   {
@@ -4973,7 +5311,7 @@ window.LAB_CATALOG.push(...[
       "饮食建议仅用于教材学习；个体疾病、过敏及特殊营养需求应由专业人员指导。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：多样、单一和零食替代正餐显示不同餐盘；食品信息/过期状态同时显示。 限制：这是菜单与标签判断，不能据通用图定个人份量。",
     "controls": [
       {
         "key": "plan",
@@ -5042,6 +5380,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "diet"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：多样、单一和零食替代正餐显示不同餐盘；食品信息/过期状态同时显示。"
+    },
+    "implementationScope": {
+      "supported": "多样、单一和零食替代正餐显示不同餐盘；食品信息/过期状态同时显示。",
+      "limitations": "这是菜单与标签判断，不能据通用图定个人份量。"
     }
   },
   {
@@ -5094,7 +5440,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "lung",
-    "modelNote": "气球和橡皮膜模拟肺及膈，不能代表胸廓全部结构和生理压力。膜位移仅用于展示通气方向。",
+    "modelNote": "气球和橡皮膜模拟肺及膈，不能代表胸廓全部结构和生理压力。膜位移仅用于展示通气方向。 本页实际支持：滑块直接拉膜，气球同步变化，播放无额外过程。 限制：无真实压力数值，未含肋间肌和完整胸廓。",
     "controls": [
       {
         "key": "diaphragm",
@@ -5149,6 +5495,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "diaphragm"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：滑块直接拉膜，气球同步变化，播放无额外过程。"
+    },
+    "implementationScope": {
+      "supported": "滑块直接拉膜，气球同步变化，播放无额外过程。",
+      "limitations": "无真实压力数值，未含肋间肌和完整胸廓。"
     }
   },
   {
@@ -5201,7 +5555,7 @@ window.LAB_CATALOG.push(...[
       "优先采用传感器与独立接口；禁止吸入液体，不共用吹气口，装置防倒吸。"
     ],
     "model": "lung",
-    "modelNote": "气球和橡皮膜模拟肺及膈，不能代表胸廓全部结构和生理压力。膜位移仅用于展示通气方向。",
+    "modelNote": "等量空气和呼出气体通入澄清石灰水的定性结果比较；不计算真实气体组成或反应速率。 直接比较等体积气体的定性检验情景；不模拟气液反应速率，也不由气泡数计算CO2浓度。",
     "controls": [
       {
         "key": "gas",
@@ -5256,6 +5610,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "exhaled-co2"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：气泡随进度上升，但浑浊填色从开始即为终态。"
+    },
+    "implementationScope": {
+      "supported": "气泡随进度上升，但浑浊填色从开始即为终态。",
+      "limitations": "直接比较等体积气体的定性检验情景；不模拟气液反应速率，也不由气泡数计算CO2浓度。"
     }
   },
   {
@@ -5263,7 +5625,7 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "7下",
     "chapter": "第四单元 第三章 人体的呼吸",
-    "title": "测定肺活量",
+    "title": "气球体积估算与肺活量测量方法",
     "kind": "拓展探究",
     "tags": [
       "教材实践"
@@ -5305,7 +5667,7 @@ window.LAB_CATALOG.push(...[
       "不强迫长时间屏气或反复用力吹气；不适时立即停止，遵守教师指导及个人卫生。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：球/椭圆示意与输入体积估算。 限制：只由输入周长估算近球形气球体积；不测肺活量，非球形时公式不适用。",
     "controls": [
       {
         "key": "circumference",
@@ -5358,7 +5720,16 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "lung-capacity"
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：球/椭圆示意与输入体积估算。"
+    },
+    "implementationScope": {
+      "supported": "球/椭圆示意与输入体积估算。",
+      "limitations": "只由输入周长估算近球形气球体积；不测肺活量，非球形时公式不适用。"
+    },
+    "originalActivityTitle": "测定肺活量"
   },
   {
     "id": "bio-blood-smear",
@@ -5410,7 +5781,7 @@ window.LAB_CATALOG.push(...[
       "只使用正规永久装片，不自行采血或接触来源不明的血液。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：红细胞中央浅区、白细胞核、血小板小片可辨认。 限制：所有成分比例是教学拼图，不是实际血细胞比例或计数；血小板需合理高倍观察。 成分切换只是教学突出，不是用真实玻片过滤掉其他血细胞。",
     "controls": [
       {
         "key": "eyepiece",
@@ -5502,6 +5873,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "blood",
       "variant": "blood"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：红细胞中央浅区、白细胞核、血小板小片可辨认。"
+    },
+    "implementationScope": {
+      "supported": "红细胞中央浅区、白细胞核、血小板小片可辨认。",
+      "limitations": "所有成分比例是教学拼图，不是实际血细胞比例或计数；血小板需合理高倍观察。"
     }
   },
   {
@@ -5553,7 +5932,7 @@ window.LAB_CATALOG.push(...[
       "优先使用录像；实物观察时间尽量短并保持呼吸条件，结束后及时放回适宜水中。"
     ],
     "model": "circulation",
-    "modelNote": "血液及血管比例为示意，红蓝表示含氧相对高低，并非人体内血液呈蓝色。流动方向遵循心脏与循环路径。",
+    "modelNote": "血液及血管比例为示意，红蓝表示含氧相对高低，并非人体内血液呈蓝色。流动方向遵循心脏与循环路径。 本页实际支持：红细胞沿小动脉分支、毛细血管与小静脉汇合的连续线路运动，可慢放。 限制：不是活鱼显微影像；速度仅播放比例。",
     "controls": [
       {
         "key": "vessel",
@@ -5612,6 +5991,15 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "fish"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "红细胞沿小动脉分支、毛细血管与小静脉汇合的连续线路运动，可慢放。",
+      "actionLabel": "观察过程"
+    },
+    "implementationScope": {
+      "supported": "红细胞沿小动脉分支、毛细血管与小静脉汇合的连续线路运动，可慢放。",
+      "limitations": "不是活鱼显微影像；速度仅播放比例。"
     }
   },
   {
@@ -5664,7 +6052,7 @@ window.LAB_CATALOG.push(...[
       "优先使用模型；生物标本由教师管理，接触后按实验卫生要求清洁。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：四腔关系图，腔静脉/肺静脉进入心房，肺动脉/主动脉从心室发出，房室箭头与瓣膜重点。 限制：支持四腔与主要血管连接、瓣膜方向的关系识图；不是实物解剖形状或心搏动力学模型。",
     "controls": [
       {
         "key": "part",
@@ -5719,6 +6107,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "heart",
       "variant": "heart"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：四腔关系图，腔静脉/肺静脉进入心房，肺动脉/主动脉从心室发出，房室箭头与瓣膜重点。"
+    },
+    "implementationScope": {
+      "supported": "四腔关系图，腔静脉/肺静脉进入心房，肺动脉/主动脉从心室发出，房室箭头与瓣膜重点。",
+      "limitations": "支持四腔与主要血管连接、瓣膜方向的关系识图；不是实物解剖形状或心搏动力学模型。"
     }
   },
   {
@@ -5768,7 +6164,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "circulation",
-    "modelNote": "血液及血管比例为示意，红蓝表示含氧相对高低，并非人体内血液呈蓝色。流动方向遵循心脏与循环路径。",
+    "modelNote": "血液及血管比例为示意，红蓝表示含氧相对高低，并非人体内血液呈蓝色。流动方向遵循心脏与循环路径。 本页实际支持：血流标记沿连接四个心腔的两条循环运动，肺和组织处改变所追踪气体的相对含量。 限制：支持四腔路径和肺/组织处气体交换方向；血流量、血压、时序和比例均未定量建模。",
     "controls": [
       {
         "key": "circuit",
@@ -5831,6 +6227,15 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "circuits"
+    },
+    "interaction": {
+      "mode": "playback",
+      "reason": "血流标记沿连接四个心腔的两条循环运动，肺和组织处改变所追踪气体的相对含量。",
+      "actionLabel": "观察过程"
+    },
+    "implementationScope": {
+      "supported": "血流标记沿连接四个心腔的两条循环运动，肺和组织处改变所追踪气体的相对含量。",
+      "limitations": "支持四腔路径和肺/组织处气体交换方向；血流量、血压、时序和比例均未定量建模。"
     }
   },
   {
@@ -5838,7 +6243,7 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "7下",
     "chapter": "第四单元 第四章 人体内物质的运输",
-    "title": "为他人测量血压",
+    "title": "血压记录与测量姿势分析",
     "kind": "拓展探究",
     "tags": [
       "教材实践"
@@ -5881,7 +6286,7 @@ window.LAB_CATALOG.push(...[
       "测量需征得同意并保护隐私；个体读数及疾病问题由专业人员解释。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：袖带按正常/低于心脏位置移动，活动状态有干扰提示；读数完全来自输入。 限制：不是血压计、不实际测量；中学生需按年龄等专业标准解释。",
     "controls": [
       {
         "key": "systolic",
@@ -5947,7 +6352,16 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "blood-pressure"
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：袖带按正常/低于心脏位置移动，活动状态有干扰提示；读数完全来自输入。"
+    },
+    "implementationScope": {
+      "supported": "袖带按正常/低于心脏位置移动，活动状态有干扰提示；读数完全来自输入。",
+      "limitations": "不是血压计、不实际测量；中学生需按年龄等专业标准解释。"
+    },
+    "originalActivityTitle": "为他人测量血压"
   },
   {
     "id": "bio-kidney",
@@ -6000,7 +6414,7 @@ window.LAB_CATALOG.push(...[
       "仅使用教学标本或模型；不自行检测并解释个人尿液，不据本页诊断肾病。"
     ],
     "model": "kidney",
-    "modelNote": "过滤、重吸收用成分去向表示，未建模实际肾小球滤过率；结果不能用于判断个人肾功能。",
+    "modelNote": "过滤、重吸收用成分去向表示，未建模实际肾小球滤过率；结果不能用于判断个人肾功能。 本页实际支持：结构尺度直接切换；肾单位以分支箭头区分留血、滤过、正常葡萄糖返血、水分流及尿素排出。 限制：支持结构和成分去向识图；没有完整动态滤过路径、滤过率或个人肾功能判断。",
     "controls": [
       {
         "key": "view",
@@ -6079,6 +6493,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "kidney"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：结构尺度直接切换；肾单位以分支箭头区分留血、滤过、正常葡萄糖返血、水分流及尿素排出。"
+    },
+    "implementationScope": {
+      "supported": "结构尺度直接切换；肾单位以分支箭头区分留血、滤过、正常葡萄糖返血、水分流及尿素排出。",
+      "limitations": "支持结构和成分去向识图；没有完整动态滤过路径、滤过率或个人肾功能判断。"
     }
   },
   {
@@ -6129,7 +6551,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：系统图形不同，但detail并无完整物质路径。 限制：只显示器官位置与系统关系，不支持拖拽制作或连续物质运输。",
     "controls": [
       {
         "key": "system",
@@ -6165,7 +6587,7 @@ window.LAB_CATALOG.push(...[
           },
           {
             "value": "detail",
-            "label": "物质经过的路径"
+            "label": "器官位置重点"
           }
         ]
       }
@@ -6197,6 +6619,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "body-model",
       "variant": "body-model"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：系统图形不同，但detail并无完整物质路径。"
+    },
+    "implementationScope": {
+      "supported": "系统图形不同，但detail并无完整物质路径。",
+      "limitations": "只显示器官位置与系统关系，不支持拖拽制作或连续物质运输。"
     }
   },
   {
@@ -6250,7 +6680,7 @@ window.LAB_CATALOG.push(...[
       "只用已制好的教学永久装片；破损玻片交教师处理，不自行取动物肾组织。"
     ],
     "model": "microscope",
-    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。",
+    "modelNote": "显微图为原创结构示意，不是显微照片。放大倍数为目镜×物镜；焦距滑块仅示意调焦，不是实际镜筒位移。视野大小采用同一目镜的比例关系。 本页实际支持：皮质团状肾小球与管断面、髓质平行管道有实质区别。 限制：原创概略显微图，不可当真实小鼠装片定量、着色诊断。",
     "controls": [
       {
         "key": "eyepiece",
@@ -6331,6 +6761,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "2023基本目录已核对；本网站学期归类",
     "config": {
       "specimen": "kidney-slide"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：皮质团状肾小球与管断面、髓质平行管道有实质区别。"
+    },
+    "implementationScope": {
+      "supported": "皮质团状肾小球与管断面、髓质平行管道有实质区别。",
+      "limitations": "原创概略显微图，不可当真实小鼠装片定量、着色诊断。"
     }
   },
   {
@@ -6383,7 +6821,7 @@ window.LAB_CATALOG.push(...[
       "只用人工低强度光源和模型；不直视太阳或将强光对准眼睛。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 相关物理量由Godot引擎求解；生物解释与真实实验误差另作分析。 等效眼薄透镜使用任意教学尺度与固定屈光偏差，不能换算个人验光度数；近物情景包含示意调节。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 相关物理量由Godot引擎求解；生物解释与真实实验误差另作分析。 等效眼薄透镜使用任意教学尺度与固定屈光偏差，不能换算个人验光度数；近物情景包含示意调节。 本页实际支持：近物发散光与较厚等效屈光结构、远物近平行光、前置矫正镜改变光线方向；焦点由Godot求解。 限制：使用任意教学尺度的等效薄透镜和示意光路；近物包含调节，不换算个人屈光度或完整角膜/晶状体机制。",
     "controls": [
       {
         "key": "eye",
@@ -6466,7 +6904,15 @@ window.LAB_CATALOG.push(...[
     "config": {
       "specimen": "eye"
     },
-    "requiresPhysics": true
+    "requiresPhysics": true,
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：近物发散光与较厚等效屈光结构、远物近平行光、前置矫正镜改变光线方向；焦点由Godot求解。"
+    },
+    "implementationScope": {
+      "supported": "近物发散光与较厚等效屈光结构、远物近平行光、前置矫正镜改变光线方向；焦点由Godot求解。",
+      "limitations": "使用任意教学尺度的等效薄透镜和示意光路；近物包含调节，不换算个人屈光度或完整角膜/晶状体机制。"
+    }
   },
   {
     "id": "bio-reflex",
@@ -6517,7 +6963,7 @@ window.LAB_CATALOG.push(...[
       "只作轻柔、规范的课堂演示；有伤病者不参与，禁止疼痛、电击等刺激。"
     ],
     "model": "reflex",
-    "modelNote": "反射弧信号传播为示意，动画速度不代表真实潜伏期，不能用本页进行神经功能诊断。",
+    "modelNote": "反射弧信号传播为示意，动画速度不代表真实潜伏期，不能用本页进行神经功能诊断。 本页实际支持：刺激信号先沿反射弧到达效应器，再发生腿部运动；中断只传播至相应断点。 限制：信号速度不等于潜伏期；未画上行至大脑的感觉通路。",
     "controls": [
       {
         "key": "stimulus",
@@ -6579,14 +7025,23 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "膝跳反射"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "playback",
+      "reason": "刺激信号先沿反射弧到达效应器，再发生腿部运动；中断只传播至相应断点。",
+      "actionLabel": "观察信号传递"
+    },
+    "implementationScope": {
+      "supported": "刺激信号先沿反射弧到达效应器，再发生腿部运动；中断只传播至相应断点。",
+      "limitations": "信号速度不等于潜伏期；未画上行至大脑的感觉通路。"
+    }
   },
   {
     "id": "bio-reaction",
     "subject": "biology",
     "term": "8上",
     "chapter": "第四单元 第六章 人体生命活动的调节",
-    "title": "测定反应速度",
+    "title": "由落尺距离换算反应时间",
     "kind": "学生实验",
     "tags": [
       "教材实践"
@@ -6628,7 +7083,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "reaction",
-    "modelNote": "反应时间由尺下落的距离按自由落体公式换算，包含感知、神经传导及动作时间，不能直接等同神经传导速度。 相关物理量由Godot引擎求解；生物解释与真实实验误差另作分析。 模型时间从Godot自由下落轨迹按输入距离插值，可能与理想公式值有微小积分差。",
+    "modelNote": "反应时间由尺下落的距离按自由落体公式换算，包含感知、神经传导及动作时间，不能直接等同神经传导速度。 相关物理量由Godot引擎求解；生物解释与真实实验误差另作分析。 模型时间从Godot自由下落轨迹按输入距离插值，可能与理想公式值有微小积分差。 本页实际支持：尺按Godot自由下落轨迹移动，接尺手保持固定参考高度；结束距离来自输入记录。 限制：输入一个距离后用Godot轨迹换算；记录编号不是多次测量，未提供真实用户反应计时测试。",
     "controls": [
       {
         "key": "distance",
@@ -6641,7 +7096,7 @@ window.LAB_CATALOG.push(...[
       },
       {
         "key": "trial",
-        "label": "重复次数",
+        "label": "记录编号",
         "min": 1,
         "max": 10,
         "value": 3,
@@ -6676,7 +7131,17 @@ window.LAB_CATALOG.push(...[
     "config": {
       "variant": "ruler"
     },
-    "requiresPhysics": true
+    "requiresPhysics": true,
+    "interaction": {
+      "mode": "playback",
+      "reason": "尺按Godot自由下落轨迹移动，接尺手保持固定参考高度；结束距离来自输入记录。",
+      "actionLabel": "松手观察落尺"
+    },
+    "implementationScope": {
+      "supported": "尺按Godot自由下落轨迹移动，接尺手保持固定参考高度；结束距离来自输入记录。",
+      "limitations": "输入一个距离后用Godot轨迹换算；记录编号不是多次测量，未提供真实用户反应计时测试。"
+    },
+    "originalActivityTitle": "测定反应速度"
   },
   {
     "id": "bio-muscle",
@@ -6727,7 +7192,7 @@ window.LAB_CATALOG.push(...[
       "使用模型优先；标本解剖由教师指导，工具与生物材料规范消毒处置。"
     ],
     "model": "muscle",
-    "modelNote": "简化骨—关节—肌肉结构模型，强调拮抗肌协调；肌长和关节角度不是人体生物力学测量结果。",
+    "modelNote": "简化骨—关节—肌肉结构模型，强调拮抗肌协调；肌长和关节角度不是人体生物力学测量结果。 本页实际支持：0度伸直，角度增大前臂屈曲；动作选项高亮相应主要肌群，参数直接可观察。 限制：非人体定量生物力学；固定角可以讨论动作方向，但需明确等长/正在屈伸的情境。",
     "controls": [
       {
         "key": "angle",
@@ -6780,7 +7245,15 @@ window.LAB_CATALOG.push(...[
       "骨、关节和肌肉",
       "屈肘动作和伸肘动作"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：0度伸直，角度增大前臂屈曲；动作选项高亮相应主要肌群，参数直接可观察。"
+    },
+    "implementationScope": {
+      "supported": "0度伸直，角度增大前臂屈曲；动作选项高亮相应主要肌群，参数直接可观察。",
+      "limitations": "非人体定量生物力学；固定角可以讨论动作方向，但需明确等长/正在屈伸的情境。"
+    }
   },
   {
     "id": "bio-hormone",
@@ -6829,7 +7302,7 @@ window.LAB_CATALOG.push(...[
       "只作纸面与模型设计，不自行购买或给动物施用激素。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：两组方案卡显示激素条件、饲料是否同时改变和独立重复材料数量。 限制：题名已明确纸面方案，避免真实动物施药，属于合理范围限制。",
     "controls": [
       {
         "key": "factor",
@@ -6886,6 +7359,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "原创拓展；非已核教材活动标题",
     "config": {
       "variant": "hormone"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：两组方案卡显示激素条件、饲料是否同时改变和独立重复材料数量。"
+    },
+    "implementationScope": {
+      "supported": "两组方案卡显示激素条件、饲料是否同时改变和独立重复材料数量。",
+      "limitations": "题名已明确纸面方案，避免真实动物施药，属于合理范围限制。"
     }
   },
   {
@@ -6893,8 +7374,8 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "8上",
     "chapter": "第四单元 第七章 健康地生活",
-    "title": "探究酒精对水蚤心率的影响",
-    "kind": "学生实验",
+    "title": "酒精对水蚤心率影响：对照记录分析",
+    "kind": "拓展探究",
     "tags": [
       "教材实践",
       "基本目录"
@@ -6938,7 +7419,7 @@ window.LAB_CATALOG.push(...[
       "优先采用教学影像和本模拟；实物实验由教师审查伦理与处置，勿自行对动物施加有害处理。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：显示心脏位置和两组输入次数/时间/换算心率表，不播放与记录无关的心跳。 限制：两组单次输入比较和心率换算；未模拟活体受酒精影响，也不能仅两条记录作因果结论。",
     "controls": [
       {
         "key": "concentration",
@@ -6955,6 +7436,15 @@ window.LAB_CATALOG.push(...[
         "min": 0,
         "max": 100,
         "value": 30,
+        "step": 1,
+        "unit": "次"
+      },
+      {
+        "key": "controlBeats",
+        "label": "0%对照心搏记录",
+        "min": 0,
+        "max": 100,
+        "value": 32,
         "step": 1,
         "unit": "次"
       },
@@ -6996,7 +7486,16 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "daphnia"
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：显示心脏位置和两组输入次数/时间/换算心率表，不播放与记录无关的心跳。"
+    },
+    "implementationScope": {
+      "supported": "显示心脏位置和两组输入次数/时间/换算心率表，不播放与记录无关的心跳。",
+      "limitations": "两组单次输入比较和心率换算；未模拟活体受酒精影响，也不能仅两条记录作因果结论。"
+    },
+    "originalActivityTitle": "探究酒精对水蚤心率的影响"
   },
   {
     "id": "bio-infection",
@@ -7047,7 +7546,7 @@ window.LAB_CATALOG.push(...[
       "只用公开、匿名资料；不接触患者或采集病原样本。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：传播途径情景卡及传染源/途径/易感人群干预重点相配；不预测感染风险。 限制：不含当地真实疫情资料与海报编辑器，不能说完成调查/制作。",
     "controls": [
       {
         "key": "route",
@@ -7118,6 +7617,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "infection"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：传播途径情景卡及传染源/途径/易感人群干预重点相配；不预测感染风险。"
+    },
+    "implementationScope": {
+      "supported": "传播途径情景卡及传染源/途径/易感人群干预重点相配；不预测感染风险。",
+      "limitations": "不含当地真实疫情资料与海报编辑器，不能说完成调查/制作。"
     }
   },
   {
@@ -7125,7 +7632,7 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "8上",
     "chapter": "第四单元 第七章 健康地生活",
-    "title": "用药说明与急救模拟实践",
+    "title": "药品说明信息与急救行动辨析",
     "kind": "拓展探究",
     "tags": [
       "课标拓展",
@@ -7168,7 +7675,7 @@ window.LAB_CATALOG.push(...[
       "仅使用训练模型；真实紧急情况拨打120并遵循调度员指导，页面不代替急救培训。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：药品情景显示说明字段核对卡；倒地与止血情景显示人偶/敷料，行动作信息辨析。 限制：说明信息核对与情境选择；不对应某个真实药品剂量，也不代替正规的急救手法训练。",
     "controls": [
       {
         "key": "scenario",
@@ -7231,7 +7738,16 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "2023基本目录已核对；本网站学期归类",
     "config": {
       "variant": "firstaid"
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：药品情景显示说明字段核对卡；倒地与止血情景显示人偶/敷料，行动作信息辨析。"
+    },
+    "implementationScope": {
+      "supported": "药品情景显示说明字段核对卡；倒地与止血情景显示人偶/敷料，行动作信息辨析。",
+      "limitations": "说明信息核对与情境选择；不对应某个真实药品剂量，也不代替正规的急救手法训练。"
+    },
+    "originalActivityTitle": "用药说明与急救模拟实践"
   },
   {
     "id": "bio-smoke",
@@ -7282,7 +7798,7 @@ window.LAB_CATALOG.push(...[
       "使用屏幕模拟或已有教学影像，不点燃烟草、不让人吸入烟雾。"
     ],
     "model": "health",
-    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。",
+    "modelNote": "提供教材级结构、统计或防护原理练习；输入数字为样例或用户记录，不作诊断、处方或急救技能认证。 本页实际支持：滤材/肺图实际切换并变色；烟雾过滤时有颗粒移动，呼吸道视图静态。 限制：滤材颜色不能估计全部有害物质或人体肺损伤。",
     "controls": [
       {
         "key": "exposure",
@@ -7343,6 +7859,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "smoke"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：滤材/肺图实际切换并变色；烟雾过滤时有颗粒移动，呼吸道视图静态。"
+    },
+    "implementationScope": {
+      "supported": "滤材/肺图实际切换并变色；烟雾过滤时有颗粒移动，呼吸道视图静态。",
+      "limitations": "滤材颜色不能估计全部有害物质或人体肺损伤。"
     }
   },
   {
@@ -7350,8 +7874,8 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "8上",
     "chapter": "第五单元 第一章 生态系统",
-    "title": "探究非生物因素对某种动物的影响",
-    "kind": "学生实验",
+    "title": "非生物因素对动物影响：实验方案设计",
+    "kind": "拓展探究",
     "tags": [
       "教材实践",
       "基本目录"
@@ -7394,7 +7918,7 @@ window.LAB_CATALOG.push(...[
       "善待动物，避免极端温湿条件；结束后按教师要求放回适宜环境。"
     ],
     "model": "ecology",
-    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。",
+    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。 本页实际支持：起始左右等量布置，光/湿度条件可比较；没有自动生成趋性结果或越界移动。 限制：只审查起始等量与控制变量；最终两侧分布、重复与归纳须来自真实记录。",
     "controls": [
       {
         "key": "factor",
@@ -7461,7 +7985,16 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "非生物因素对某种动物的影响"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：起始左右等量布置，光/湿度条件可比较；没有自动生成趋性结果或越界移动。"
+    },
+    "implementationScope": {
+      "supported": "起始左右等量布置，光/湿度条件可比较；没有自动生成趋性结果或越界移动。",
+      "limitations": "只审查起始等量与控制变量；最终两侧分布、重复与归纳须来自真实记录。"
+    },
+    "originalActivityTitle": "探究非生物因素对某种动物的影响"
   },
   {
     "id": "bio-vegetation",
@@ -7512,8 +8045,26 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：裸地和植被地各输入气温、湿度，即时比较差值；重复次数仅为调查计划。 限制：两地温湿度输入比较；没有真实温湿度采集或每次独立重复记录，计划次数不生成均值。",
     "controls": [
+      {
+        "key": "openTemp",
+        "label": "裸地气温记录",
+        "min": -10,
+        "max": 45,
+        "value": 29,
+        "step": 0.5,
+        "unit": "℃"
+      },
+      {
+        "key": "plantTemp",
+        "label": "植被地气温记录",
+        "min": -10,
+        "max": 45,
+        "value": 27,
+        "step": 0.5,
+        "unit": "℃"
+      },
       {
         "key": "openHumidity",
         "label": "裸地相对湿度记录",
@@ -7534,7 +8085,7 @@ window.LAB_CATALOG.push(...[
       },
       {
         "key": "repeats",
-        "label": "重复测量次数",
+        "label": "计划重复次数",
         "min": 1,
         "max": 10,
         "value": 3,
@@ -7570,6 +8121,14 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "vegetation"
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：裸地和植被地各输入气温、湿度，即时比较差值；重复次数仅为调查计划。"
+    },
+    "implementationScope": {
+      "supported": "裸地和植被地各输入气温、湿度，即时比较差值；重复次数仅为调查计划。",
+      "limitations": "两地温湿度输入比较；没有真实温湿度采集或每次独立重复记录，计划次数不生成均值。"
     }
   },
   {
@@ -7621,7 +8180,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "ecology",
-    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。",
+    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。 本页实际支持：生产者连兔、蝗虫，后者连鸟与狐，形成交织关系；竞争和合作不是错误的捕食箭头。 限制：图示种间关系简化；合作情景中食物网扰动仅提示不适用，不推算合作或种群数变化。",
     "controls": [
       {
         "key": "relationship",
@@ -7689,7 +8248,15 @@ window.LAB_CATALOG.push(...[
       "草原生态系统的营养结构",
       "生态系统中的物质和能量变化"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：生产者连兔、蝗虫，后者连鸟与狐，形成交织关系；竞争和合作不是错误的捕食箭头。"
+    },
+    "implementationScope": {
+      "supported": "生产者连兔、蝗虫，后者连鸟与狐，形成交织关系；竞争和合作不是错误的捕食箭头。",
+      "limitations": "图示种间关系简化；合作情景中食物网扰动仅提示不适用，不推算合作或种群数变化。"
+    }
   },
   {
     "id": "bio-ecosystem",
@@ -7740,7 +8307,7 @@ window.LAB_CATALOG.push(...[
       "优先做模型设计；真实饲养须满足动物空间、供氧和福利要求，异常及时处理。"
     ],
     "model": "ecology",
-    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。",
+    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。 本页实际支持：显示组成与光照情景；不再按动物数大于植物数判断稳定，不认可空瓶是合理系统。 限制：相对数量不是生物量，不能凭animals>plants判断稳定；分解者等未建模。",
     "controls": [
       {
         "key": "plants",
@@ -7805,15 +8372,23 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "设计并制作生态瓶"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：显示组成与光照情景；不再按动物数大于植物数判断稳定，不认可空瓶是合理系统。"
+    },
+    "implementationScope": {
+      "supported": "显示组成与光照情景；不再按动物数大于植物数判断稳定，不认可空瓶是合理系统。",
+      "limitations": "相对数量不是生物量，不能凭animals>plants判断稳定；分解者等未建模。"
+    }
   },
   {
     "id": "bio-acidrain",
     "subject": "biology",
     "term": "8上",
     "chapter": "第五单元 第二章 生态安全",
-    "title": "探究酸雨对生物的影响",
-    "kind": "学生实验",
+    "title": "分析酸雨探究的条件与发芽记录",
+    "kind": "拓展探究",
     "tags": [
       "教材实践"
     ],
@@ -7855,7 +8430,7 @@ window.LAB_CATALOG.push(...[
       "处理液仅由教师准备；不使用浓酸，不把实验液排入自然水体。"
     ],
     "model": "ecology",
-    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。",
+    "modelNote": "情景或比率模型用于比较生物与环境关系，不预测真实种群数量。生态瓶不存在保证永久稳定的配方。 本页实际支持：两组种子图和发芽率/百分点差对应输入。 限制：pH不自动生成萌发数是正确的；没有真实培养与多重复数据。",
     "controls": [
       {
         "key": "ph",
@@ -7908,14 +8483,23 @@ window.LAB_CATALOG.push(...[
     "evidenceTitles": [
       "酸雨对生物的影响"
     ],
-    "evidenceStatus": "现行教材公开文本核对"
+    "evidenceStatus": "现行教材公开文本核对",
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：两组种子图和发芽率/百分点差对应输入。"
+    },
+    "implementationScope": {
+      "supported": "两组种子图和发芽率/百分点差对应输入。",
+      "limitations": "pH不自动生成萌发数是正确的；没有真实培养与多重复数据。"
+    },
+    "originalActivityTitle": "探究酸雨对生物的影响"
   },
   {
     "id": "bio-ecological-survey",
     "subject": "biology",
     "term": "8上",
     "chapter": "第五单元 第二章 生态安全",
-    "title": "调查生态环境并设计校园绿化方案",
+    "title": "生态调查记录与校园绿化方案分析",
     "kind": "拓展探究",
     "tags": [
       "教材实践",
@@ -7960,7 +8544,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：场地图绿色面积变化，选种只改变文字。 限制：没有真实校园地图、物种调查或完整规划；比值不等于生态质量。",
     "controls": [
       {
         "key": "totalArea",
@@ -8025,7 +8609,16 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "green-plan"
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：场地图绿色面积变化，选种只改变文字。"
+    },
+    "implementationScope": {
+      "supported": "场地图绿色面积变化，选种只改变文字。",
+      "limitations": "没有真实校园地图、物种调查或完整规划；比值不等于生态质量。"
+    },
+    "originalActivityTitle": "调查生态环境并设计校园绿化方案"
   },
   {
     "id": "bio-aquarium",
@@ -8082,7 +8675,7 @@ window.LAB_CATALOG.push(...[
       "水边电器由成人按说明操作；不擅自放生，不把实验水倒入自然水域。"
     ],
     "model": "ecology",
-    "modelNote": "水量和条数只计算名义条数密度；供氧、投饵、温度及维护选项用于审查计划，不产生真实溶氧值、氨浓度或成活概率。实际条件必须查明具体鱼种和成体大小。",
+    "modelNote": "水量和条数只计算名义条数密度；供氧、投饵、温度及维护选项用于审查计划，不产生真实溶氧值、氨浓度或成活概率。实际条件必须查明具体鱼种和成体大小。 本页实际支持：鱼数量变化和增氧示意，体积并不改变缸图；其余主要是计划卡。 限制：没有物种/成体体长、过滤成熟度或真实水质模型；每尾水量不是通用密度。",
     "controls": [
       {
         "key": "volume",
@@ -8209,6 +8802,14 @@ window.LAB_CATALOG.push(...[
     "config": {
       "variant": "aquarium",
       "speciesSpecific": true
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：鱼数量变化和增氧示意，体积并不改变缸图；其余主要是计划卡。"
+    },
+    "implementationScope": {
+      "supported": "鱼数量变化和增氧示意，体积并不改变缸图；其余主要是计划卡。",
+      "limitations": "没有物种/成体体长、过滤成熟度或真实水质模型；每尾水量不是通用密度。"
     }
   },
   {
@@ -8216,7 +8817,7 @@ window.LAB_CATALOG.push(...[
     "subject": "biology",
     "term": "8上",
     "chapter": "第四单元 人体生理与健康（二）",
-    "title": "成人心肺复苏与包扎止血流程模拟",
+    "title": "成人心肺复苏与止血：流程辨析",
     "kind": "拓展探究",
     "tags": [
       "课标拓展",
@@ -8274,7 +8875,7 @@ window.LAB_CATALOG.push(...[
       "这里的参数针对成人，不直接适用于婴儿和儿童；未培训者不被要求进行口对口通气。"
     ],
     "model": "health",
-    "modelNote": "分步卡片是成人急救训练流程，不预测复苏成功率，也不检测真实呼吸或脉搏。按压和人工通气练习仅使用训练人偶；真实急症立即呼叫120并按调度指导行动。",
+    "modelNote": "分步卡片是成人急救训练流程，不预测复苏成功率，也不检测真实呼吸或脉搏。按压和人工通气练习仅使用训练人偶；真实急症立即呼叫120并按调度指导行动。 本页实际支持：直接选择流程步骤，核对观察重点、电话/AED或敷料提示；按压手只在相应教学步骤显示。 限制：流程辨析与人偶示意；不评估真实手法、按压深度/质量，不替代正规训练。",
     "controls": [
       {
         "key": "scenario",
@@ -8346,14 +8947,23 @@ window.LAB_CATALOG.push(...[
         ]
       },
       "adultOnly": true
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：直接选择流程步骤，核对观察重点、电话/AED或敷料提示；按压手只在相应教学步骤显示。"
+    },
+    "implementationScope": {
+      "supported": "直接选择流程步骤，核对观察重点、电话/AED或敷料提示；按压手只在相应教学步骤显示。",
+      "limitations": "流程辨析与人偶示意；不评估真实手法、按压深度/质量，不替代正规训练。"
+    },
+    "originalActivityTitle": "成人心肺复苏与包扎止血流程模拟"
   },
   {
     "id": "bio-drug-prevention",
     "subject": "biology",
     "term": "8上",
     "chapter": "第四单元 人体生理与健康（二）",
-    "title": "参观禁毒展览或观看有关影像资料",
+    "title": "禁毒教育资料与情境判断",
     "kind": "拓展探究",
     "tags": [
       "教材实践"
@@ -8403,7 +9013,7 @@ window.LAB_CATALOG.push(...[
       "不公开当事人身份，不以羞辱方式开展教育。"
     ],
     "model": "health",
-    "modelNote": "场景仅用于资料评价与求助选择，不识别真实物品成分，不预测成瘾概率，不替代急救或专业支持。",
+    "modelNote": "场景仅用于资料评价与求助选择，不识别真实物品成分，不预测成瘾概率，不替代急救或专业支持。 本页实际支持：统一警示海报图，选择主要影响文字卡。 限制：资料与情景判断，未举办真实参观或播放具体展览影片。",
     "controls": [
       {
         "key": "source",
@@ -8466,7 +9076,16 @@ window.LAB_CATALOG.push(...[
     "evidenceStatus": "现行教材公开文本核对",
     "config": {
       "variant": "drug-prevention"
-    }
+    },
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：统一警示海报图，选择主要影响文字卡。"
+    },
+    "implementationScope": {
+      "supported": "统一警示海报图，选择主要影响文字卡。",
+      "limitations": "资料与情景判断，未举办真实参观或播放具体展览影片。"
+    },
+    "originalActivityTitle": "参观禁毒展览或观看有关影像资料"
   },
   {
     "id": "bio-cutting",
@@ -8519,7 +9138,7 @@ window.LAB_CATALOG.push(...[
       "剪切工具由教师指导使用；不对受保护植物取材。"
     ],
     "model": "reproduction",
-    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。",
+    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。 本页实际支持：扦插/嫁接方案切换，嫁接口贴合与失水状态可比较 限制：没有成活计时或实际接口愈合；无效的扦插形成层条件需按适用范围解释",
     "controls": [
       {
         "key": "method",
@@ -8585,7 +9204,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       8,
       9
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：扦插/嫁接方案切换，嫁接口贴合与失水状态可比较"
+    },
+    "implementationScope": {
+      "supported": "扦插/嫁接方案切换，嫁接口贴合与失水状态可比较",
+      "limitations": "没有成活计时或实际接口愈合；无效的扦插形成层条件需按适用范围解释"
+    }
   },
   {
     "id": "bio-egg",
@@ -8638,7 +9265,7 @@ window.LAB_CATALOG.push(...[
       "生鸡蛋按食品卫生要求处理，观察后洗手；实验材料不得生食。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：圈选壳、卵白、卵黄/胚盘、钝端气室并给功能说明 限制：结构剖面识图，未模拟打开鸡卵或实际孵化",
     "controls": [
       {
         "key": "part",
@@ -8695,7 +9322,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       14
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：圈选壳、卵白、卵黄/胚盘、钝端气室并给功能说明"
+    },
+    "implementationScope": {
+      "supported": "圈选壳、卵白、卵黄/胚盘、钝端气室并给功能说明",
+      "limitations": "结构剖面识图，未模拟打开鸡卵或实际孵化"
+    }
   },
   {
     "id": "bio-animal-development",
@@ -8747,7 +9382,7 @@ window.LAB_CATALOG.push(...[
       "饲养仅在教师允许且能保证动物福利时进行；不擅自放生外来物种。"
     ],
     "model": "reproduction",
-    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。",
+    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。 本页实际支持：家蚕、蝗虫、蛙的阶段形态分别绘制，选阶段突出对应状态 限制：饲养装置方案见文字，未提供真实饲养环境或跨日生长预测",
     "controls": [
       {
         "key": "animal",
@@ -8807,7 +9442,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       18,
       19
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：家蚕、蝗虫、蛙的阶段形态分别绘制，选阶段突出对应状态"
+    },
+    "implementationScope": {
+      "supported": "家蚕、蝗虫、蛙的阶段形态分别绘制，选阶段突出对应状态",
+      "limitations": "饲养装置方案见文字，未提供真实饲养环境或跨日生长预测"
+    }
   },
   {
     "id": "bio-gene-transfer",
@@ -8857,7 +9500,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "genetics",
-    "modelNote": "按单基因、完全显性、配子等概率且随机结合的假设计算理论概率；比例不是每一小批后代的必然实测结果。",
+    "modelNote": "按单基因、完全显性、配子等概率且随机结合的假设计算理论概率；比例不是每一小批后代的必然实测结果。 本页实际支持：双亲基因分离到配子并形成四格组合；按行列标签正确计算子代基因型 限制：只演示一对等位基因传递，未模拟完整减数分裂与多染色体独立分配",
     "controls": [
       {
         "key": "parent1",
@@ -8927,7 +9570,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       29
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：双亲基因分离到配子并形成四格组合；按行列标签正确计算子代基因型"
+    },
+    "implementationScope": {
+      "supported": "双亲基因分离到配子并形成四格组合；按行列标签正确计算子代基因型",
+      "limitations": "只演示一对等位基因传递，未模拟完整减数分裂与多染色体独立分配"
+    }
   },
   {
     "id": "bio-dominance",
@@ -8979,7 +9630,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "genetics",
-    "modelNote": "按单基因、完全显性、配子等概率且随机结合的假设计算理论概率；比例不是每一小批后代的必然实测结果。",
+    "modelNote": "按单基因、完全显性、配子等概率且随机结合的假设计算理论概率；比例不是每一小批后代的必然实测结果。 本页实际支持：双亲基因型直接更新组合方格和显隐性概率 限制：完全显性单基因假设，不能推广至多基因性状或真实小样本固定比例",
     "controls": [
       {
         "key": "parent1",
@@ -9052,7 +9703,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       32,
       33
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：双亲基因型直接更新组合方格和显隐性概率"
+    },
+    "implementationScope": {
+      "supported": "双亲基因型直接更新组合方格和显隐性概率",
+      "limitations": "完全显性单基因假设，不能推广至多基因性状或真实小样本固定比例"
+    }
   },
   {
     "id": "bio-sex",
@@ -9104,7 +9763,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "genetics",
-    "modelNote": "典型XX/XY配子随机结合模型；两类精子在模型中等概率，有限次合成样本不保证恰好1:1。模型不概括少见染色体组成或全部性发育情况，不代表实测人口统计。",
+    "modelNote": "典型XX/XY配子随机结合模型；两类精子在模型中等概率，有限次合成样本不保证恰好1:1。模型不概括少见染色体组成或全部性发育情况，不代表实测人口统计。 本页实际支持：次数与序列编号产生可复现的独立抽样记录；理论概率和合成频数分列 限制：不是实际生育或人口统计；有限样本不保证1:1",
     "controls": [
       {
         "key": "trials",
@@ -9156,7 +9815,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       40
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：次数与序列编号产生可复现的独立抽样记录；理论概率和合成频数分列"
+    },
+    "implementationScope": {
+      "supported": "次数与序列编号产生可复现的独立抽样记录；理论概率和合成频数分列",
+      "limitations": "不是实际生育或人口统计；有限样本不保证1:1"
+    }
   },
   {
     "id": "bio-variation",
@@ -9212,7 +9879,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "variation",
-    "modelNote": "数据为可编辑的合成教学样本，展示抽样、平均数与分布；不能只由外观差异确定遗传或环境原因。",
+    "modelNote": "数据为可编辑的合成教学样本，展示抽样、平均数与分布；不能只由外观差异确定遗传或环境原因。 本页实际支持：改变中心、分散度和样本量后显示合成逐项数据、均值和重叠散点 限制：不是随机收集的真实花生；不能由外观或均值断定全部遗传原因",
     "controls": [
       {
         "key": "meanA",
@@ -9280,7 +9947,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       44,
       45
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：改变中心、分散度和样本量后显示合成逐项数据、均值和重叠散点"
+    },
+    "implementationScope": {
+      "supported": "改变中心、分散度和样本量后显示合成逐项数据、均值和重叠散点",
+      "limitations": "不是随机收集的真实花生；不能由外观或均值断定全部遗传原因"
+    }
   },
   {
     "id": "bio-selection",
@@ -9332,7 +10007,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "selection",
-    "modelNote": "模型中的不同存活概率是人为设定的捕食情景，用于说明自然选择，不代表自然种群的实际选择系数。",
+    "modelNote": "模型中的不同存活概率是人为设定的捕食情景，用于说明自然选择，不代表自然种群的实际选择系数。 本页实际支持：播放按选择轮次替换群体构成，改变背景会改变既有颜色的存活权重 限制：每一轮代表新群体，不是原个体变色；权重人为给定，未模拟真实捕食行为",
     "controls": [
       {
         "key": "initial",
@@ -9398,7 +10073,16 @@ window.LAB_CATALOG.push(...[
       64,
       65,
       66
-    ]
+    ],
+    "interaction": {
+      "mode": "playback",
+      "reason": "逐轮呈现由假定存活权重计算的新群体组成，不把个体主动变色作为自然选择。",
+      "actionLabel": "观察逐代选择"
+    },
+    "implementationScope": {
+      "supported": "播放按选择轮次替换群体构成，改变背景会改变既有颜色的存活权重",
+      "limitations": "每一轮代表新群体，不是原个体变色；权重人为给定，未模拟真实捕食行为"
+    }
   },
   {
     "id": "bio-evolution",
@@ -9451,7 +10135,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "化石、同源结构与分子比较为原创证据示意。地层图只表示未明显扰动情况下的相对先后，类群A/B/C不对应特定时代，不能推算绝对年龄或完整祖先关系。",
+    "modelNote": "化石、同源结构与分子比较为原创证据示意。地层图只表示未明显扰动情况下的相对先后，类群A/B/C不对应特定时代，不能推算绝对年龄或完整祖先关系。 本页实际支持：化石跨地层分布、前肢对应骨骼和分子比对示意切换 限制：证据示意并非特定真实类群年代；分子序列为教学符号，不足推断完整谱系",
     "controls": [
       {
         "key": "evidence",
@@ -9503,7 +10187,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       57,
       58
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：化石跨地层分布、前肢对应骨骼和分子比对示意切换"
+    },
+    "implementationScope": {
+      "supported": "化石跨地层分布、前肢对应骨骼和分子比对示意切换",
+      "limitations": "证据示意并非特定真实类群年代；分子序列为教学符号，不足推断完整谱系"
+    }
   },
   {
     "id": "bio-biodiversity",
@@ -9553,7 +10245,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：输入记录物种/生境数并比较保护原生境与有限个体保存 限制：只作方案评价，不把数量总和当作完整多样性指数",
     "controls": [
       {
         "key": "species",
@@ -9619,7 +10311,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       86,
       87
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：输入记录物种/生境数并比较保护原生境与有限个体保存"
+    },
+    "implementationScope": {
+      "supported": "输入记录物种/生境数并比较保护原生境与有限个体保存",
+      "limitations": "只作方案评价，不把数量总和当作完整多样性指数"
+    }
   },
   {
     "id": "bio-asexual",
@@ -9669,7 +10369,7 @@ window.LAB_CATALOG.push(...[
       "使用图卡或教学模型；实物观察不擅自采集野生动物。"
     ],
     "model": "reproduction",
-    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。",
+    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。 本页实际支持：叶生新株、草履虫分裂、水螅出芽各阶段可选；末阶段新个体分离 限制：阶段手选，不预测速度、成活率或保证后代完全不变异",
     "controls": [
       {
         "key": "organism",
@@ -9729,7 +10429,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       3
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：叶生新株、草履虫分裂、水螅出芽各阶段可选；末阶段新个体分离"
+    },
+    "implementationScope": {
+      "supported": "叶生新株、草履虫分裂、水螅出芽各阶段可选；末阶段新个体分离",
+      "limitations": "阶段手选，不预测速度、成活率或保证后代完全不变异"
+    }
   },
   {
     "id": "bio-egg-pores",
@@ -9781,7 +10489,7 @@ window.LAB_CATALOG.push(...[
       "水温由教师控制，避免烫伤；不用沸水和密闭加压装置，实验材料不食用。"
     ],
     "model": "anatomy",
-    "modelNote": "气泡现象由观察选项输入；不预测实测气泡数或气孔数。装置仅说明比较方案，温水与室温需在教师指导下控制。",
+    "modelNote": "气泡现象由观察选项输入；不预测实测气泡数或气孔数。装置仅说明比较方案，温水与室温需在教师指导下控制。 本页实际支持：水温比较条件和已观察气泡记录分别输入并图示 限制：气泡现象由用户输入，不是网页测量；不能用气泡数当气孔数",
     "controls": [
       {
         "key": "water",
@@ -9843,7 +10551,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       15
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：水温比较条件和已观察气泡记录分别输入并图示"
+    },
+    "implementationScope": {
+      "supported": "水温比较条件和已观察气泡记录分别输入并图示",
+      "limitations": "气泡现象由用户输入，不是网页测量；不能用气泡数当气孔数"
+    }
   },
   {
     "id": "bio-traits",
@@ -9894,7 +10610,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "genetics",
-    "modelNote": "性状分类与证据辨析模型，不按人类外貌推断简单单基因遗传、基因型或亲子关系。",
+    "modelNote": "性状分类与证据辨析模型，不按人类外貌推断简单单基因遗传、基因型或亲子关系。 本页实际支持：比较同物种同一性状与跨性状反例，并检查判断依据 限制：人的眼睑只作外观比较，不据此推断简单显隐性、亲缘或基因型",
     "controls": [
       {
         "key": "pair",
@@ -9965,7 +10681,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       21,
       22
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：比较同物种同一性状与跨性状反例，并检查判断依据"
+    },
+    "implementationScope": {
+      "supported": "比较同物种同一性状与跨性状反例，并检查判断依据",
+      "limitations": "人的眼睑只作外观比较，不据此推断简单显隐性、亲缘或基因型"
+    }
   },
   {
     "id": "bio-genetic-material",
@@ -10017,7 +10741,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "genetics",
-    "modelNote": "原创层级结构模型；染色体对数是任意简化物种的教学设定，不是人体核型；图形比例和DNA区段均为示意。",
+    "modelNote": "原创层级结构模型；染色体对数是任意简化物种的教学设定，不是人体核型；图形比例和DNA区段均为示意。 本页实际支持：细胞核、成对染色体、DNA双链和高亮基因片段逐级切换；对数与条数一致 限制：任意简化物种的结构图，不是人体核型；DNA层只放大一条代表DNA",
     "controls": [
       {
         "key": "level",
@@ -10081,7 +10805,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       27
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：细胞核、成对染色体、DNA双链和高亮基因片段逐级切换；对数与条数一致"
+    },
+    "implementationScope": {
+      "supported": "细胞核、成对染色体、DNA双链和高亮基因片段逐级切换；对数与条数一致",
+      "limitations": "任意简化物种的结构图，不是人体核型；DNA层只放大一条代表DNA"
+    }
   },
   {
     "id": "bio-karyotype",
@@ -10133,7 +10865,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "genetics",
-    "modelNote": "典型正常二倍体人类染色体组成示意，不是临床核型图，不概括所有染色体及性发育差异。",
+    "modelNote": "典型正常二倍体人类染色体组成示意，不是临床核型图，不概括所有染色体及性发育差异。 本页实际支持：典型XX/XY与体细胞/配子条数对应，来源不符的Y配子明确报矛盾 限制：只表示典型组成，不进行临床核型或性发育判断",
     "controls": [
       {
         "key": "combination",
@@ -10210,7 +10942,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       39
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：典型XX/XY与体细胞/配子条数对应，来源不符的Y配子明确报矛盾"
+    },
+    "implementationScope": {
+      "supported": "典型XX/XY与体细胞/配子条数对应，来源不符的Y配子明确报矛盾",
+      "limitations": "只表示典型组成，不进行临床核型或性发育判断"
+    }
   },
   {
     "id": "bio-origin-evidence",
@@ -10263,7 +11003,7 @@ window.LAB_CATALOG.push(...[
       "只做装置与证据模型阅读；不搭建高压放电或可燃气体装置。"
     ],
     "model": "anatomy",
-    "modelNote": "原创证据与推理模型。资料句为课堂情景，不声称呈现全部最新研究；示意装置、轮廓和关系图不按实物比例，结论不得超出所给证据。",
+    "modelNote": "原创证据与推理模型。资料句为课堂情景，不声称呈现全部最新研究；示意装置、轮廓和关系图不按实物比例，结论不得超出所给证据。 本页实际支持：选择装置环节定位，区分产生简单有机物、制造生命和唯一路线三种断言 限制：证据阅读模型；装置并非可运行放电实验，也不还原唯一地球历史",
     "controls": [
       {
         "key": "part",
@@ -10338,7 +11078,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       52,
       53
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：选择装置环节定位，区分产生简单有机物、制造生命和唯一路线三种断言"
+    },
+    "implementationScope": {
+      "supported": "选择装置环节定位，区分产生简单有机物、制造生命和唯一路线三种断言",
+      "limitations": "证据阅读模型；装置并非可运行放电实验，也不还原唯一地球历史"
+    }
   },
   {
     "id": "bio-human-comparison",
@@ -10390,7 +11138,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "原创证据与推理模型。资料句为课堂情景，不声称呈现全部最新研究；示意装置、轮廓和关系图不按实物比例，结论不得超出所给证据。",
+    "modelNote": "原创证据与推理模型。资料句为课堂情景，不声称呈现全部最新研究；示意装置、轮廓和关系图不按实物比例，结论不得超出所给证据。 本页实际支持：运动、颅骨、交流学习维度分别比较，并显示共同祖先分支关系 限制：概括图不能据外貌判价值、完整谱系或现代猿到现代人的直线关系",
     "controls": [
       {
         "key": "feature",
@@ -10457,7 +11205,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       71,
       72
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：运动、颅骨、交流学习维度分别比较，并显示共同祖先分支关系"
+    },
+    "implementationScope": {
+      "supported": "运动、颅骨、交流学习维度分别比较，并显示共同祖先分支关系",
+      "limitations": "概括图不能据外貌判价值、完整谱系或现代猿到现代人的直线关系"
+    }
   },
   {
     "id": "bio-species-register",
@@ -10509,7 +11265,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：两年度输入柱图、差值和统计口径检查 限制：名录增加不等于野外个体增长，也不证明保护已全部成功",
     "controls": [
       {
         "key": "earlier",
@@ -10589,7 +11345,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       79
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：两年度输入柱图、差值和统计口径检查"
+    },
+    "implementationScope": {
+      "supported": "两年度输入柱图、差值和统计口径检查",
+      "limitations": "名录增加不等于野外个体增长，也不证明保护已全部成功"
+    }
   },
   {
     "id": "bio-invasive-species",
@@ -10642,7 +11406,7 @@ window.LAB_CATALOG.push(...[
       "只调查和记录，不徒手接触未知生物，不自行捕杀、采集或放生。"
     ],
     "model": "ecology",
-    "modelNote": "基于来源和危害证据的方案评价，不预测生态后果或授权野外处理。",
+    "modelNote": "基于来源和危害证据的方案评价，不预测生态后果或授权野外处理。 本页实际支持：原生、外来、已证危害分别识别；传播方式和措施单独评价 限制：不由模型判断某真实物种是否入侵，不授权放生、采集或治理",
     "controls": [
       {
         "key": "status",
@@ -10734,7 +11498,15 @@ window.LAB_CATALOG.push(...[
       85,
       86,
       87
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：原生、外来、已证危害分别识别；传播方式和措施单独评价"
+    },
+    "implementationScope": {
+      "supported": "原生、外来、已证危害分别识别；传播方式和措施单独评价",
+      "limitations": "不由模型判断某真实物种是否入侵，不授权放生、采集或治理"
+    }
   },
   {
     "id": "bio-sexual-comparison",
@@ -10784,7 +11556,7 @@ window.LAB_CATALOG.push(...[
       "使用资料与模型，不干扰动物繁殖或采集野生鸟卵。"
     ],
     "model": "reproduction",
-    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。",
+    "modelNote": "表示生殖发育的阶段与必要条件，不预测发育天数或成活率；动物饲养需要满足物种的真实环境要求。 本页实际支持：按物种切换典型体内/外环境，精卵分开、结合和受精卵三阶段有不同结构 限制：不模拟真实受精动力学；所选典型材料不能概括所有鱼类等类群",
     "controls": [
       {
         "key": "animal",
@@ -10858,7 +11630,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       12
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：按物种切换典型体内/外环境，精卵分开、结合和受精卵三阶段有不同结构"
+    },
+    "implementationScope": {
+      "supported": "按物种切换典型体内/外环境，精卵分开、结合和受精卵三阶段有不同结构",
+      "limitations": "不模拟真实受精动力学；所选典型材料不能概括所有鱼类等类群"
+    }
   },
   {
     "id": "bio-transgene-evidence",
@@ -10909,7 +11689,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "genetics",
-    "modelNote": "仅重现教材给定材料的定性对照逻辑；不预测任意基因的作用，不提供真实基因改造操作，也不把图示当实测。",
+    "modelNote": "仅重现教材给定材料的定性对照逻辑；不预测任意基因的作用，不提供真实基因改造操作，也不把图示当实测。 本页实际支持：教材情景的普通/导入基因材料和低温处理改变定性植株状态，混杂条件提示不可归因 限制：题设分析，非任意基因功能预测、真实转基因操作或实测图",
     "controls": [
       {
         "key": "group",
@@ -10986,7 +11766,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       23
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：教材情景的普通/导入基因材料和低温处理改变定性植株状态，混杂条件提示不可归因"
+    },
+    "implementationScope": {
+      "supported": "教材情景的普通/导入基因材料和低温处理改变定性植株状态，混杂条件提示不可归因",
+      "limitations": "题设分析，非任意基因功能预测、真实转基因操作或实测图"
+    }
   },
   {
     "id": "bio-breeding",
@@ -11038,7 +11826,7 @@ window.LAB_CATALOG.push(...[
       "仅比较公开育种原理，不进行辐射、化学诱变或转基因操作。"
     ],
     "model": "genetics",
-    "modelNote": "比较育种思路、变异与人工选择的概念模型，不模拟成功率或具体操作过程；诱变不因人的需要而定向发生。",
+    "modelNote": "比较育种思路、变异与人工选择的概念模型，不模拟成功率或具体操作过程；诱变不因人的需要而定向发生。 本页实际支持：选择、杂交、诱变、转基因四种方法呈现不同方案步骤，并评价定向变异误解 限制：方案比较，不模拟任何方法成功率或实际育种操作",
     "controls": [
       {
         "key": "method",
@@ -11109,7 +11897,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       46,
       47
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：选择、杂交、诱变、转基因四种方法呈现不同方案步骤，并评价定向变异误解"
+    },
+    "implementationScope": {
+      "supported": "选择、杂交、诱变、转基因四种方法呈现不同方案步骤，并评价定向变异误解",
+      "limitations": "方案比较，不模拟任何方法成功率或实际育种操作"
+    }
   },
   {
     "id": "bio-sex-ratio-data",
@@ -11161,7 +11957,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "survey",
-    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。",
+    "modelNote": "场景中的数量为可编辑的教学样本；统计结论只适用于该样本，不能冒充校园、地区或人群的实测结果。 本页实际支持：输入男女人数换算每100名女性对应男性数，区分人口与出生统计口径 限制：不能当受精时XY概率或实际官方统计；分母零不生成虚假比值",
     "controls": [
       {
         "key": "male",
@@ -11226,7 +12022,15 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       42
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：输入男女人数换算每100名女性对应男性数，区分人口与出生统计口径"
+    },
+    "implementationScope": {
+      "supported": "输入男女人数换算每100名女性对应男性数，区分人口与出生统计口径",
+      "limitations": "不能当受精时XY概率或实际官方统计；分母零不生成虚假比值"
+    }
   },
   {
     "id": "bio-evidence-reasoning",
@@ -11278,7 +12082,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "原创证据与推理模型。资料句为课堂情景，不声称呈现全部最新研究；示意装置、轮廓和关系图不按实物比例，结论不得超出所给证据。",
+    "modelNote": "原创证据与推理模型。资料句为课堂情景，不声称呈现全部最新研究；示意装置、轮廓和关系图不按实物比例，结论不得超出所给证据。 本页实际支持：资料句按观察、解释、过度断言分别呈现并评价证据限度 限制：原创课堂资料句，未引用最新科研实证或单一灭绝/迁徙答案",
     "controls": [
       {
         "key": "case",
@@ -11346,7 +12150,15 @@ window.LAB_CATALOG.push(...[
     "evidencePages": [
       61,
       74
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：资料句按观察、解释、过度断言分别呈现并评价证据限度"
+    },
+    "implementationScope": {
+      "supported": "资料句按观察、解释、过度断言分别呈现并评价证据限度",
+      "limitations": "原创课堂资料句，未引用最新科研实证或单一灭绝/迁徙答案"
+    }
   },
   {
     "id": "bio-cell-comparison",
@@ -11399,7 +12211,7 @@ window.LAB_CATALOG.push(...[
       "实物操作遵守教师指导；不接触未知生物，不将实验材料放入口中。"
     ],
     "model": "anatomy",
-    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。",
+    "modelNote": "结构与位置为教学示意，比例及颜色经过简化；切换结构只改变观察重点，不代表对真实生物进行切割。 本页实际支持：典型细菌、真菌、叶肉、动物细胞切换；膜、核、细胞壁重点标示 限制：典型模型不概括无核或其他特化细胞；真菌不按植物分类",
     "controls": [
       {
         "key": "group",
@@ -11473,6 +12285,14 @@ window.LAB_CATALOG.push(...[
     },
     "evidencePages": [
       89
-    ]
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "直接操作控件即可观察：典型细菌、真菌、叶肉、动物细胞切换；膜、核、细胞壁重点标示"
+    },
+    "implementationScope": {
+      "supported": "典型细菌、真菌、叶肉、动物细胞切换；膜、核、细胞壁重点标示",
+      "limitations": "典型模型不概括无核或其他特化细胞；真菌不按植物分类"
+    }
   }
 ]);

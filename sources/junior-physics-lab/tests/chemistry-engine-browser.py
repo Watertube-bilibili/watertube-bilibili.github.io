@@ -30,10 +30,14 @@ with sync_playwright() as pw:
  # Test the same page-controller entry point used when users open an experiment.
  for id in ['chem-neutralization','chem-fuel-survey','chem-co2']:
   page.evaluate('id=>location.hash="lab="+id',id)
-  page.wait_for_function('document.querySelector("#simulationStatus").textContent==="准备就绪"',timeout=60000)
-  assert page.locator('#runBtn').is_enabled(),id
-  page.locator('#runBtn').click()
-  page.wait_for_function('document.querySelector("#simulationStatus").textContent==="实验完成"',timeout=15000)
+  live=page.evaluate('id=>LAB_CATALOG.find(e=>e.id===id).interaction.mode==="live"',id)
+  page.wait_for_function('live=>document.querySelector("#simulationStatus").textContent===(live?"可调整条件":"准备就绪")',arg=live,timeout=60000)
+  if live:
+   assert page.locator('#runBtn').is_hidden(),id
+  else:
+   assert page.locator('#runBtn').is_enabled(),id
+   page.locator('#runBtn').click()
+   page.wait_for_function('document.querySelector("#simulationStatus").textContent==="实验完成"',timeout=15000)
   text=page.locator('#readings').inner_text()
   assert 'NaN' not in text and len(text)>10
   if id=='chem-neutralization':assert '0.685' in text and '25.685' in text,text

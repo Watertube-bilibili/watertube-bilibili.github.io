@@ -1,0 +1,602 @@
+[
+  {
+    "id": "phy-pendulum-period",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-incline-speed",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-sensor-speed",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-walking-speed",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-rubber-vibration",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-vacuum-bell",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-water-wave-analogy",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-ruler-pitch",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-amplitude-ball",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-bottle-xylophone",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-piston-flute",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-speaker-candle",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-ice-melting",
+    "subject": "physics",
+    "distinctApparatusStates": 4,
+    "ok": true
+  },
+  {
+    "id": "phy-melting-curves",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-boiling-water",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-paper-pot",
+    "subject": "physics",
+    "distinctApparatusStates": 4,
+    "ok": true
+  },
+  {
+    "id": "phy-kitchen-phase",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-infrared-heating",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-magnet-ball",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-magnet-carts",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-resistance-motion",
+    "subject": "physics",
+    "distinctApparatusStates": 4,
+    "ok": true
+  },
+  {
+    "id": "phy-inertia-sheet",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-sliding-friction",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-kinetic-energy",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-pendulum-lock",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-rolling-pendulum",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-returning-can",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-potential-height",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-heat-capacity",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-heat-capacity-sensor",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-gas-diffusion",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-liquid-diffusion",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-diffusion-temperature",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-compression-heating",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-expansion-cooling",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-solar-water",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-solar-fan",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-rubbing-paper",
+    "subject": "physics",
+    "distinctApparatusStates": 4,
+    "ok": true
+  },
+  {
+    "id": "phy-steam-work",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-simple-heat-engine",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-joule-resistance",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-joule-current",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-fuse-comparison",
+    "subject": "physics",
+    "distinctApparatusStates": 3,
+    "ok": true
+  },
+  {
+    "id": "phy-dc-motor-project",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-electromagnetic-induction",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-hand-generator",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-spark-radio",
+    "subject": "physics",
+    "distinctApparatusStates": 4,
+    "ok": true
+  },
+  {
+    "id": "phy-water-freezing",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "phy-heat-mass-temperature",
+    "subject": "physics",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-changes",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-candle",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-airtight",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-air-oxygen",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-oxygen",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-catalyst",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-co2",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-co2-water",
+    "subject": "chemistry",
+    "distinctApparatusStates": 4,
+    "ok": true
+  },
+  {
+    "id": "chem-distill",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-purification",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-salt-purify",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-rust",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-acid-base",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-ammonia",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-diffusion",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-water-electrolysis",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-ethanol",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-neutralization",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-metal-acid",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-conservation",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-carbon-oxygen",
+    "subject": "chemistry",
+    "distinctApparatusStates": 2,
+    "ok": true
+  },
+  {
+    "id": "chem-sulfur-oxygen",
+    "subject": "chemistry",
+    "distinctApparatusStates": 2,
+    "ok": true
+  },
+  {
+    "id": "chem-iron-oxygen",
+    "subject": "chemistry",
+    "distinctApparatusStates": 2,
+    "ok": true
+  },
+  {
+    "id": "chem-permanganate",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-limewater",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-co2-extinguish",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-co2-solubility",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-carbon-cuo",
+    "subject": "chemistry",
+    "distinctApparatusStates": 3,
+    "ok": true
+  },
+  {
+    "id": "chem-iron-smelting",
+    "subject": "chemistry",
+    "distinctApparatusStates": 3,
+    "ok": true
+  },
+  {
+    "id": "chem-metal-displacement",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-crystallization",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-lime-heat",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-methane",
+    "subject": "chemistry",
+    "distinctApparatusStates": 2,
+    "ok": true
+  },
+  {
+    "id": "chem-carbonate-test",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-precipitation",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-copper-hydroxide-heat",
+    "subject": "chemistry",
+    "distinctApparatusStates": 4,
+    "ok": true
+  },
+  {
+    "id": "chem-sea-salt",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-hydrogen-burn",
+    "subject": "chemistry",
+    "distinctApparatusStates": 2,
+    "ok": true
+  },
+  {
+    "id": "chem-magnesium-mass",
+    "subject": "chemistry",
+    "distinctApparatusStates": 2,
+    "ok": true
+  },
+  {
+    "id": "chem-sulfuric-dehydration",
+    "subject": "chemistry",
+    "distinctApparatusStates": 2,
+    "ok": true
+  },
+  {
+    "id": "chem-naoh-deliquescence",
+    "subject": "chemistry",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "chem-copper-oxidation",
+    "subject": "chemistry",
+    "distinctApparatusStates": 3,
+    "ok": true
+  },
+  {
+    "id": "bio-paramecium",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-germination",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-photosynthesis-oxygen",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-seed-respiration",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-fish-capillaries",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-circulation",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-reflex",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-reaction",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  },
+  {
+    "id": "bio-selection",
+    "subject": "biology",
+    "distinctApparatusStates": 5,
+    "ok": true
+  }
+]

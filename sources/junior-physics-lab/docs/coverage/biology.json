@@ -3190,5 +3190,581 @@
     "图示数值为公式理论值、明确合成样本或用户输入记录，不是网页测得的真实生物数据。",
     "NCET 2023条目先于新教材重排，部分学期标签为本网站教学归类。",
     "8下完整第三方学生书图像核对覆盖26项命名栏目；未核版权页印次，不能宣称出版社原本认证。"
-  ]
+  ],
+  "implementationReview": {
+    "reviewFile": "docs/review/biology.json",
+    "method": "逐项目标/控件/场景/讲解语义审查；非实物实验完成证明",
+    "items": [
+      {
+        "id": "bio-campus",
+        "mode": "live",
+        "supported": "植物和动物输入用于样方密度与记录图；修改面积立即重新计算",
+        "limitations": "只统计输入的单一样方；不提供野外调查或自动物种鉴定"
+      },
+      {
+        "id": "bio-microscope",
+        "mode": "live",
+        "supported": "字母倒像，玻片位移方向相反；倍数按乘积改变图像比例，细调改变清晰度",
+        "limitations": "光路、照明和粗准焦操作由步骤说明，网页不模拟真实机械装调"
+      },
+      {
+        "id": "bio-plant-cell",
+        "mode": "live",
+        "supported": "切换洋葱/黑藻、染色、目物镜与调焦；叶绿体仅在黑藻材料显示",
+        "limitations": "支持材料结构对照，不支持亲手撕取、展平、盖片与排气泡"
+      },
+      {
+        "id": "bio-animal-cell",
+        "mode": "live",
+        "supported": "口腔细胞无壁，染色改变核的显著程度；放大和调焦立即响应",
+        "limitations": "典型结构拼图，不是口腔采样或真实显微照片"
+      },
+      {
+        "id": "bio-cell-division",
+        "mode": "live",
+        "supported": "分裂前核、中期排列、分离期两组移动位置和两个新核/细胞板分别绘制；分裂次数计算2的幂",
+        "limitations": "分裂次数是理论推算，不能把固定视野的12个示意框当实测细胞数"
+      },
+      {
+        "id": "bio-tissues",
+        "mode": "live",
+        "supported": "上皮紧密排列、肌纤维、神经突起、结缔纤维和植物细胞分别显示",
+        "limitations": "番茄组织示意简化，未完成取材制片；示意放大不是显微镜校准"
+      },
+      {
+        "id": "bio-paramecium",
+        "mode": "playback",
+        "supported": "刺激在右侧；草履虫随过程向食物或避盐方向移动，无刺激不定向迁移",
+        "limitations": "仅定性趋性模型；不预测真实分布，不是反射；棉纤维与取样操作由步骤说明"
+      },
+      {
+        "id": "bio-cell-model",
+        "mode": "live",
+        "supported": "动物/植物细胞结构切换，遗传信息重点圈选相应细胞核",
+        "limitations": "观察现成模型与设计依据，不提供拖拽组装或真实模型材料制作"
+      },
+      {
+        "id": "bio-plants",
+        "mode": "live",
+        "supported": "藻体、苔藓、蕨类孢子囊群、松球果类别和花果结构区别显示",
+        "limitations": "外形和关键繁殖结构示意，不能用于实际野外鉴定"
+      },
+      {
+        "id": "bio-seed-structure",
+        "mode": "live",
+        "supported": "菜豆子叶与玉米胚乳形态不同；剖面重点圈出胚",
+        "limitations": "没有真实剖切操作；胚芽、胚轴和胚根未逐件可选，只作为整体胚示意"
+      },
+      {
+        "id": "bio-animal-groups",
+        "mode": "live",
+        "supported": "蚯蚓分节、缢蛏贝壳、蝗虫附肢、鱼鳍、蛙及兔形态分别显示",
+        "limitations": "外部形态比较；未逐类展示内部呼吸器官，不等同完整解剖"
+      },
+      {
+        "id": "bio-bird",
+        "mode": "live",
+        "supported": "翼外形、放大羽毛、中空长骨和肺气囊重点分别显示",
+        "limitations": "是结构与功能识图，不模拟飞行动力学；气囊图为位置关系"
+      },
+      {
+        "id": "bio-teeth",
+        "mode": "live",
+        "supported": "兔门齿/臼齿与狼犬齿轮廓区别显示",
+        "limitations": "侧面牙列简图，不按真实齿式、牙数或咬合比例制作"
+      },
+      {
+        "id": "bio-microbe-distribution",
+        "mode": "live",
+        "supported": "取样来源与观察日作记录标签；菌落图按用户输入记录绘制",
+        "limitations": "不根据洗手与否预设菌落数量；没有真实培养、鉴定或安全检测"
+      },
+      {
+        "id": "bio-bacteria",
+        "mode": "live",
+        "supported": "球、杆、螺旋形与无成形细胞核的DNA区域区别；重点圈选遗传区域",
+        "limitations": "典型基本结构，不给所有细菌画上共有鞭毛/荚膜，也不鉴定菌种"
+      },
+      {
+        "id": "bio-fungi",
+        "mode": "live",
+        "supported": "酵母细胞与出芽、霉菌菌丝分支分别显示，倍数与调焦即时变化",
+        "limitations": "霉菌图为菌丝/产孢结构概括，不对应所有真菌属的显微特征"
+      },
+      {
+        "id": "bio-fermentation",
+        "mode": "live",
+        "supported": "面包、酸奶、泡菜材料切换；菌种和温度条件用于过程定性判断",
+        "limitations": "食品制作条件比较；没有真实培养或可食用成品，也不从外观判断安全"
+      },
+      {
+        "id": "bio-classification",
+        "mode": "live",
+        "supported": "植物按种子、动物按脊柱作第一层检索；按生境时显示容易混类的实例",
+        "limitations": "支持分类依据比较，不提供全界检索表或完整物种分类树"
+      },
+      {
+        "id": "bio-resources",
+        "mode": "live",
+        "supported": "记录已确认、未定名类型和计划样方数，显示记录整理要求",
+        "limitations": "记录设计与统计；没有现场调查、自动标牌生成或分类鉴定"
+      },
+      {
+        "id": "bio-eye",
+        "mode": "live",
+        "supported": "近物发散光与较厚等效屈光结构、远物近平行光、前置矫正镜改变光线方向；焦点由Godot求解。",
+        "limitations": "使用任意教学尺度的等效薄透镜和示意光路；近物包含调节，不换算个人屈光度或完整角膜/晶状体机制。"
+      },
+      {
+        "id": "bio-reflex",
+        "mode": "playback",
+        "supported": "刺激信号先沿反射弧到达效应器，再发生腿部运动；中断只传播至相应断点。",
+        "limitations": "信号速度不等于潜伏期；未画上行至大脑的感觉通路。"
+      },
+      {
+        "id": "bio-reaction",
+        "mode": "playback",
+        "supported": "尺按Godot自由下落轨迹移动，接尺手保持固定参考高度；结束距离来自输入记录。",
+        "limitations": "输入一个距离后用Godot轨迹换算；记录编号不是多次测量，未提供真实用户反应计时测试。"
+      },
+      {
+        "id": "bio-muscle",
+        "mode": "live",
+        "supported": "0度伸直，角度增大前臂屈曲；动作选项高亮相应主要肌群，参数直接可观察。",
+        "limitations": "非人体定量生物力学；固定角可以讨论动作方向，但需明确等长/正在屈伸的情境。"
+      },
+      {
+        "id": "bio-hormone",
+        "mode": "live",
+        "supported": "两组方案卡显示激素条件、饲料是否同时改变和独立重复材料数量。",
+        "limitations": "题名已明确纸面方案，避免真实动物施药，属于合理范围限制。"
+      },
+      {
+        "id": "bio-daphnia",
+        "mode": "live",
+        "supported": "显示心脏位置和两组输入次数/时间/换算心率表，不播放与记录无关的心跳。",
+        "limitations": "两组单次输入比较和心率换算；未模拟活体受酒精影响，也不能仅两条记录作因果结论。"
+      },
+      {
+        "id": "bio-infection",
+        "mode": "live",
+        "supported": "传播途径情景卡及传染源/途径/易感人群干预重点相配；不预测感染风险。",
+        "limitations": "不含当地真实疫情资料与海报编辑器，不能说完成调查/制作。"
+      },
+      {
+        "id": "bio-first-aid",
+        "mode": "live",
+        "supported": "药品情景显示说明字段核对卡；倒地与止血情景显示人偶/敷料，行动作信息辨析。",
+        "limitations": "说明信息核对与情境选择；不对应某个真实药品剂量，也不代替正规的急救手法训练。"
+      },
+      {
+        "id": "bio-smoke",
+        "mode": "live",
+        "supported": "滤材/肺图实际切换并变色；烟雾过滤时有颗粒移动，呼吸道视图静态。",
+        "limitations": "滤材颜色不能估计全部有害物质或人体肺损伤。"
+      },
+      {
+        "id": "bio-woodlouse",
+        "mode": "live",
+        "supported": "起始左右等量布置，光/湿度条件可比较；没有自动生成趋性结果或越界移动。",
+        "limitations": "只审查起始等量与控制变量；最终两侧分布、重复与归纳须来自真实记录。"
+      },
+      {
+        "id": "bio-vegetation",
+        "mode": "live",
+        "supported": "裸地和植被地各输入气温、湿度，即时比较差值；重复次数仅为调查计划。",
+        "limitations": "两地温湿度输入比较；没有真实温湿度采集或每次独立重复记录，计划次数不生成均值。"
+      },
+      {
+        "id": "bio-foodweb",
+        "mode": "live",
+        "supported": "生产者连兔、蝗虫，后者连鸟与狐，形成交织关系；竞争和合作不是错误的捕食箭头。",
+        "limitations": "图示种间关系简化；合作情景中食物网扰动仅提示不适用，不推算合作或种群数变化。"
+      },
+      {
+        "id": "bio-ecosystem",
+        "mode": "live",
+        "supported": "显示组成与光照情景；不再按动物数大于植物数判断稳定，不认可空瓶是合理系统。",
+        "limitations": "相对数量不是生物量，不能凭animals>plants判断稳定；分解者等未建模。"
+      },
+      {
+        "id": "bio-acidrain",
+        "mode": "live",
+        "supported": "两组种子图和发芽率/百分点差对应输入。",
+        "limitations": "pH不自动生成萌发数是正确的；没有真实培养与多重复数据。"
+      },
+      {
+        "id": "bio-ecological-survey",
+        "mode": "live",
+        "supported": "场地图绿色面积变化，选种只改变文字。",
+        "limitations": "没有真实校园地图、物种调查或完整规划；比值不等于生态质量。"
+      },
+      {
+        "id": "bio-cutting",
+        "mode": "live",
+        "supported": "扦插/嫁接方案切换，嫁接口贴合与失水状态可比较",
+        "limitations": "没有成活计时或实际接口愈合；无效的扦插形成层条件需按适用范围解释"
+      },
+      {
+        "id": "bio-egg",
+        "mode": "live",
+        "supported": "圈选壳、卵白、卵黄/胚盘、钝端气室并给功能说明",
+        "limitations": "结构剖面识图，未模拟打开鸡卵或实际孵化"
+      },
+      {
+        "id": "bio-animal-development",
+        "mode": "live",
+        "supported": "家蚕、蝗虫、蛙的阶段形态分别绘制，选阶段突出对应状态",
+        "limitations": "饲养装置方案见文字，未提供真实饲养环境或跨日生长预测"
+      },
+      {
+        "id": "bio-gene-transfer",
+        "mode": "live",
+        "supported": "双亲基因分离到配子并形成四格组合；按行列标签正确计算子代基因型",
+        "limitations": "只演示一对等位基因传递，未模拟完整减数分裂与多染色体独立分配"
+      },
+      {
+        "id": "bio-dominance",
+        "mode": "live",
+        "supported": "双亲基因型直接更新组合方格和显隐性概率",
+        "limitations": "完全显性单基因假设，不能推广至多基因性状或真实小样本固定比例"
+      },
+      {
+        "id": "bio-sex",
+        "mode": "live",
+        "supported": "次数与序列编号产生可复现的独立抽样记录；理论概率和合成频数分列",
+        "limitations": "不是实际生育或人口统计；有限样本不保证1:1"
+      },
+      {
+        "id": "bio-variation",
+        "mode": "live",
+        "supported": "改变中心、分散度和样本量后显示合成逐项数据、均值和重叠散点",
+        "limitations": "不是随机收集的真实花生；不能由外观或均值断定全部遗传原因"
+      },
+      {
+        "id": "bio-selection",
+        "mode": "playback",
+        "supported": "播放按选择轮次替换群体构成，改变背景会改变既有颜色的存活权重",
+        "limitations": "每一轮代表新群体，不是原个体变色；权重人为给定，未模拟真实捕食行为"
+      },
+      {
+        "id": "bio-evolution",
+        "mode": "live",
+        "supported": "化石跨地层分布、前肢对应骨骼和分子比对示意切换",
+        "limitations": "证据示意并非特定真实类群年代；分子序列为教学符号，不足推断完整谱系"
+      },
+      {
+        "id": "bio-biodiversity",
+        "mode": "live",
+        "supported": "输入记录物种/生境数并比较保护原生境与有限个体保存",
+        "limitations": "只作方案评价，不把数量总和当作完整多样性指数"
+      },
+      {
+        "id": "bio-germination",
+        "mode": "playback",
+        "supported": "适宜条件下15个种子符号随进度伸出胚根；不适宜条件保持未萌发。",
+        "limitations": "所有符号同时萌发仅为条件示意，不能读取为实际发芽率；完整分组、重复与真实时间尚需实物实验。"
+      },
+      {
+        "id": "bio-germination-rate",
+        "mode": "live",
+        "supported": "40个固定种子符号表示比例，结果明确来自用户记录。",
+        "limitations": "40符号不是逐粒计数；不提供抽样过程和重复试验。"
+      },
+      {
+        "id": "bio-root",
+        "mode": "live",
+        "supported": "成熟区根毛、伸长区长细胞、分生区小密细胞和根冠可切选，底部给区域功能。",
+        "limitations": "不是显微照片；细胞形态与大小仅区分区域特征，不能定量估计分裂率或生长速度。"
+      },
+      {
+        "id": "bio-mineral",
+        "mode": "live",
+        "supported": "玉米长条叶和须根；第0天各条件同初始大小，随后日序选择的大小只是定性情景。",
+        "limitations": "单株切选不是同步对照；没有真实株高和发育速率。"
+      },
+      {
+        "id": "bio-flower",
+        "mode": "live",
+        "supported": "选择雄蕊、雌蕊、子房时圈出相应结构；卵形胚珠在子房内部。",
+        "limitations": "不能替代真实拆分；比例简化。"
+      },
+      {
+        "id": "bio-stem-water",
+        "mode": "live",
+        "supported": "切面新增圆形导管分布或纵向管道，条件变化立即可见。",
+        "limitations": "无染料上升时间或速度模型；不是所有植物茎的维管束分布均相同。"
+      },
+      {
+        "id": "bio-leaf",
+        "mode": "live",
+        "supported": "横切区分上表皮、栅栏/海绵叶肉、下表皮；两种视图均显示气孔开闭。",
+        "limitations": "横切与表皮是概略组织图；叶脉和气孔位置不按具体物种真实数量或比例。"
+      },
+      {
+        "id": "bio-transpiration",
+        "mode": "live",
+        "supported": "两种袋边界分别只罩枝条/连同湿土；湿土组可有蒸发水，不能单独归因蒸腾。",
+        "limitations": "水滴不能量化蒸腾速率；实际需初始干燥袋与相同条件。"
+      },
+      {
+        "id": "bio-photosynthesis-starch",
+        "mode": "live",
+        "supported": "图示是处理后的显色终点；局部遮光和未遮光区颜色可比较。",
+        "limitations": "处理后的理想检验示意；暗处理不足时只能说明原有淀粉干扰，不能唯一预测显色。"
+      },
+      {
+        "id": "bio-photosynthesis-oxygen",
+        "mode": "playback",
+        "supported": "有光有CO2时气泡上升；无必要条件时停气。",
+        "limitations": "仅演示极端必要条件模型的放气；尚无气体鉴定操作、浓度或真实产气速率。"
+      },
+      {
+        "id": "bio-photosynthesis-co2",
+        "mode": "live",
+        "supported": "同一个罩内叶片呈不同碘液终点颜色。",
+        "limitations": "密闭去CO2与对照的题设比较；不提供试剂操作、实时光合速率或唯一显色预测。"
+      },
+      {
+        "id": "bio-seed-respiration",
+        "mode": "playback",
+        "supported": "活种子条件可播放温柱上升、CO2通气浑浊加深、木条移向瓶口检验；煮熟对照无同样变化。",
+        "limitations": "仅定性现象；没有定量氧耗、发热量。"
+      },
+      {
+        "id": "bio-food-storage",
+        "mode": "live",
+        "supported": "食品类型与低温、干燥、密封、常规保存的方案卡及对应局限即时更新。",
+        "limitations": "这是方案解释，不能预测保存天数；没有真实微生物和水分模型。"
+      },
+      {
+        "id": "bio-plant-growth",
+        "mode": "live",
+        "supported": "当前已补种子、幼苗、开花、结果具体分支；阶段选择立即变化。",
+        "limitations": "条件只给统一受限色，未建真实发育速度/产量，不能声称完成栽培。"
+      },
+      {
+        "id": "bio-human-reproduction",
+        "mode": "live",
+        "supported": "有两类系统位置图，细节仅圈卵巢/睾丸。",
+        "limitations": "当前仅支持器官关系与生殖细胞产生部位，不能演示受精、胚胎或分娩完整路径。"
+      },
+      {
+        "id": "bio-food-energy",
+        "mode": "live",
+        "supported": "量热装置温度计按输入温升变化，计算Q和Q/m。",
+        "limitations": "只输入记录并做量热计算，没有燃烧、温度采集或热效率测量；Godot负责相关热学量求解。"
+      },
+      {
+        "id": "bio-digestion",
+        "mode": "live",
+        "supported": "酶条件区分低温减慢、高温失活和无唾液酶；淀粉显色是足够处理条件下的理想比较。",
+        "limitations": "低温不是酶失活；整块也会部分消化；网页只定性示意残余是否足够显色。"
+      },
+      {
+        "id": "bio-diet",
+        "mode": "live",
+        "supported": "多样、单一和零食替代正餐显示不同餐盘；食品信息/过期状态同时显示。",
+        "limitations": "这是菜单与标签判断，不能据通用图定个人份量。"
+      },
+      {
+        "id": "bio-lung",
+        "mode": "live",
+        "supported": "滑块直接拉膜，气球同步变化，播放无额外过程。",
+        "limitations": "无真实压力数值，未含肋间肌和完整胸廓。"
+      },
+      {
+        "id": "bio-exhaled-co2",
+        "mode": "live",
+        "supported": "气泡随进度上升，但浑浊填色从开始即为终态。",
+        "limitations": "直接比较等体积气体的定性检验情景；不模拟气液反应速率，也不由气泡数计算CO2浓度。"
+      },
+      {
+        "id": "bio-lung-capacity",
+        "mode": "live",
+        "supported": "球/椭圆示意与输入体积估算。",
+        "limitations": "只由输入周长估算近球形气球体积；不测肺活量，非球形时公式不适用。"
+      },
+      {
+        "id": "bio-blood-smear",
+        "mode": "live",
+        "supported": "红细胞中央浅区、白细胞核、血小板小片可辨认。",
+        "limitations": "所有成分比例是教学拼图，不是实际血细胞比例或计数；血小板需合理高倍观察。"
+      },
+      {
+        "id": "bio-fish-capillaries",
+        "mode": "playback",
+        "supported": "红细胞沿小动脉分支、毛细血管与小静脉汇合的连续线路运动，可慢放。",
+        "limitations": "不是活鱼显微影像；速度仅播放比例。"
+      },
+      {
+        "id": "bio-heart",
+        "mode": "live",
+        "supported": "四腔关系图，腔静脉/肺静脉进入心房，肺动脉/主动脉从心室发出，房室箭头与瓣膜重点。",
+        "limitations": "支持四腔与主要血管连接、瓣膜方向的关系识图；不是实物解剖形状或心搏动力学模型。"
+      },
+      {
+        "id": "bio-circulation",
+        "mode": "playback",
+        "supported": "血流标记沿连接四个心腔的两条循环运动，肺和组织处改变所追踪气体的相对含量。",
+        "limitations": "支持四腔路径和肺/组织处气体交换方向；血流量、血压、时序和比例均未定量建模。"
+      },
+      {
+        "id": "bio-blood-pressure",
+        "mode": "live",
+        "supported": "袖带按正常/低于心脏位置移动，活动状态有干扰提示；读数完全来自输入。",
+        "limitations": "不是血压计、不实际测量；中学生需按年龄等专业标准解释。"
+      },
+      {
+        "id": "bio-kidney",
+        "mode": "live",
+        "supported": "结构尺度直接切换；肾单位以分支箭头区分留血、滤过、正常葡萄糖返血、水分流及尿素排出。",
+        "limitations": "支持结构和成分去向识图；没有完整动态滤过路径、滤过率或个人肾功能判断。"
+      },
+      {
+        "id": "bio-body-model",
+        "mode": "live",
+        "supported": "系统图形不同，但detail并无完整物质路径。",
+        "limitations": "只显示器官位置与系统关系，不支持拖拽制作或连续物质运输。"
+      },
+      {
+        "id": "bio-aquarium",
+        "mode": "live",
+        "supported": "鱼数量变化和增氧示意，体积并不改变缸图；其余主要是计划卡。",
+        "limitations": "没有物种/成体体长、过滤成熟度或真实水质模型；每尾水量不是通用密度。"
+      },
+      {
+        "id": "bio-yeast-compare",
+        "mode": "live",
+        "supported": "输入A/B各三次气体量，计算各组均值、差值和可比条件",
+        "limitations": "数据需用户记录或题设；未从温度和菌种预测实测发酵量"
+      },
+      {
+        "id": "bio-pickle",
+        "mode": "live",
+        "supported": "输入第1/3/5日处理和对照浓度；表格与折线、同日差值即时更新",
+        "limitations": "不预测亚硝酸盐曲线，不提供检测化学操作或食用安全判断"
+      },
+      {
+        "id": "bio-yogurt",
+        "mode": "live",
+        "supported": "选择菌种、温度、对照、卫生和pH记录，解释凝乳与酸化条件",
+        "limitations": "pH输入不是检测；凝乳图不等于成功、安全或可食用"
+      },
+      {
+        "id": "bio-firstaid-procedure",
+        "mode": "live",
+        "supported": "直接选择流程步骤，核对观察重点、电话/AED或敷料提示；按压手只在相应教学步骤显示。",
+        "limitations": "流程辨析与人偶示意；不评估真实手法、按压深度/质量，不替代正规训练。"
+      },
+      {
+        "id": "bio-drug-prevention",
+        "mode": "live",
+        "supported": "统一警示海报图，选择主要影响文字卡。",
+        "limitations": "资料与情景判断，未举办真实参观或播放具体展览影片。"
+      },
+      {
+        "id": "bio-pond",
+        "mode": "live",
+        "supported": "四种典型微小生物的形态分别显示；取样层只是记录来源，非物种预测",
+        "limitations": "不是池塘水真实采样、活体录像或自动分类"
+      },
+      {
+        "id": "bio-kidney-slide",
+        "mode": "live",
+        "supported": "皮质团状肾小球与管断面、髓质平行管道有实质区别。",
+        "limitations": "原创概略显微图，不可当真实小鼠装片定量、着色诊断。"
+      },
+      {
+        "id": "bio-asexual",
+        "mode": "live",
+        "supported": "叶生新株、草履虫分裂、水螅出芽各阶段可选；末阶段新个体分离",
+        "limitations": "阶段手选，不预测速度、成活率或保证后代完全不变异"
+      },
+      {
+        "id": "bio-egg-pores",
+        "mode": "live",
+        "supported": "水温比较条件和已观察气泡记录分别输入并图示",
+        "limitations": "气泡现象由用户输入，不是网页测量；不能用气泡数当气孔数"
+      },
+      {
+        "id": "bio-traits",
+        "mode": "live",
+        "supported": "比较同物种同一性状与跨性状反例，并检查判断依据",
+        "limitations": "人的眼睑只作外观比较，不据此推断简单显隐性、亲缘或基因型"
+      },
+      {
+        "id": "bio-genetic-material",
+        "mode": "live",
+        "supported": "细胞核、成对染色体、DNA双链和高亮基因片段逐级切换；对数与条数一致",
+        "limitations": "任意简化物种的结构图，不是人体核型；DNA层只放大一条代表DNA"
+      },
+      {
+        "id": "bio-karyotype",
+        "mode": "live",
+        "supported": "典型XX/XY与体细胞/配子条数对应，来源不符的Y配子明确报矛盾",
+        "limitations": "只表示典型组成，不进行临床核型或性发育判断"
+      },
+      {
+        "id": "bio-origin-evidence",
+        "mode": "live",
+        "supported": "选择装置环节定位，区分产生简单有机物、制造生命和唯一路线三种断言",
+        "limitations": "证据阅读模型；装置并非可运行放电实验，也不还原唯一地球历史"
+      },
+      {
+        "id": "bio-human-comparison",
+        "mode": "live",
+        "supported": "运动、颅骨、交流学习维度分别比较，并显示共同祖先分支关系",
+        "limitations": "概括图不能据外貌判价值、完整谱系或现代猿到现代人的直线关系"
+      },
+      {
+        "id": "bio-species-register",
+        "mode": "live",
+        "supported": "两年度输入柱图、差值和统计口径检查",
+        "limitations": "名录增加不等于野外个体增长，也不证明保护已全部成功"
+      },
+      {
+        "id": "bio-invasive-species",
+        "mode": "live",
+        "supported": "原生、外来、已证危害分别识别；传播方式和措施单独评价",
+        "limitations": "不由模型判断某真实物种是否入侵，不授权放生、采集或治理"
+      },
+      {
+        "id": "bio-sexual-comparison",
+        "mode": "live",
+        "supported": "按物种切换典型体内/外环境，精卵分开、结合和受精卵三阶段有不同结构",
+        "limitations": "不模拟真实受精动力学；所选典型材料不能概括所有鱼类等类群"
+      },
+      {
+        "id": "bio-transgene-evidence",
+        "mode": "live",
+        "supported": "教材情景的普通/导入基因材料和低温处理改变定性植株状态，混杂条件提示不可归因",
+        "limitations": "题设分析，非任意基因功能预测、真实转基因操作或实测图"
+      },
+      {
+        "id": "bio-breeding",
+        "mode": "live",
+        "supported": "选择、杂交、诱变、转基因四种方法呈现不同方案步骤，并评价定向变异误解",
+        "limitations": "方案比较，不模拟任何方法成功率或实际育种操作"
+      },
+      {
+        "id": "bio-sex-ratio-data",
+        "mode": "live",
+        "supported": "输入男女人数换算每100名女性对应男性数，区分人口与出生统计口径",
+        "limitations": "不能当受精时XY概率或实际官方统计；分母零不生成虚假比值"
+      },
+      {
+        "id": "bio-evidence-reasoning",
+        "mode": "live",
+        "supported": "资料句按观察、解释、过度断言分别呈现并评价证据限度",
+        "limitations": "原创课堂资料句，未引用最新科研实证或单一灭绝/迁徙答案"
+      },
+      {
+        "id": "bio-cell-comparison",
+        "mode": "live",
+        "supported": "典型细菌、真菌、叶肉、动物细胞切换；膜、核、细胞壁重点标示",
+        "limitations": "典型模型不概括无核或其他特化细胞；真菌不按植物分类"
+      }
+    ]
+  }
 }

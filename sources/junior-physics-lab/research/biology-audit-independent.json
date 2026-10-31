@@ -1,0 +1,798 @@
+[
+  {
+    "id": "bio-germination",
+    "mode": "playback",
+    "purpose": "比较水分、温度、胚活力与休眠条件，分清外因和内因。",
+    "controlsReviewed": [
+      "moisture 改变干燥/适湿/浸没背景与可萌发判断",
+      "temperature 冷热阻止模型萌发",
+      "viable 区分失活与休眠"
+    ],
+    "sceneBehavior": "适宜条件下15个种子符号随进度伸出胚根；不适宜条件保持未萌发。",
+    "limitations": "所有符号同时萌发仅为条件示意，不能读取为实际发芽率；完整分组、重复与真实时间尚需实物实验。",
+    "needed": [],
+    "status": "supported-with-limits",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-germination-rate",
+    "mode": "live",
+    "purpose": "依据样本总数和萌发数计算发芽率。",
+    "controlsReviewed": [
+      "total 与 sprouted 进入百分率；超总数提示复核"
+    ],
+    "sceneBehavior": "40个固定种子符号表示比例，结果明确来自用户记录。",
+    "limitations": "40符号不是逐粒计数；不提供抽样过程和重复试验。",
+    "needed": [
+      "题名或种类明确为发芽率记录计算，不能称网页测得真实发芽率。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-root",
+    "mode": "live",
+    "purpose": "辨认根冠、分生区、伸长区与成熟区。",
+    "controlsReviewed": [
+      "eyepiece/objective 改变视野尺寸",
+      "focus 显示模糊程度",
+      "region 高亮四区"
+    ],
+    "sceneBehavior": "四段位置次序和成熟区根毛可辨认；所有区域主体均为简单矩形框。",
+    "limitations": "不是显微照片；分生区小细胞与伸长区细胞纵向伸长的特征未表达。",
+    "needed": [
+      "补选中区域名称和功能，建议加小而密/纵向伸长的细胞差异，避免仅凭色块认结构。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-mineral",
+    "mode": "live",
+    "purpose": "比较无机盐及供氧对幼苗长期生长的影响。",
+    "controlsReviewed": [
+      "solution 切换培养液并改变植株颜色/大小",
+      "air 改供氧提示与气泡",
+      "day 改示意植株大小"
+    ],
+    "sceneBehavior": "生长变化由日序滑块决定，播放时只有供氧气泡移动。",
+    "limitations": "单株切选不是同步对照；没有真实株高和发育速率。",
+    "needed": [
+      "日序0各组应保持同一初始大小，不能蒸馏水组立即缩小。",
+      "玉米需长条叶与须根等合理图形，现用宽叶双子叶模板。",
+      "日序是选取阶段，应live，不能以气泡装饰充当生长过程。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核日序0各条件初始大小和颜色一致，已改长条叶/须根；气泡改静态，适合live情景比较。"
+  },
+  {
+    "id": "bio-flower",
+    "mode": "live",
+    "purpose": "在解剖图上辨认雄蕊、雌蕊、子房与胚珠。",
+    "controlsReviewed": [
+      "part 可选四个重点，但原图仅底部说明变化"
+    ],
+    "sceneBehavior": "有花瓣、花丝/花药、柱头/花柱、子房和胚珠的基础几何。",
+    "limitations": "不能替代真实拆分；比例简化。",
+    "needed": [
+      "part 必须高亮对应结构或放大子房/胚珠，并给引线名称；现只改一句话不足支撑结构选择。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核新增按雄蕊/雌蕊/子房对应坐标的圈选，part不再只改文字。"
+  },
+  {
+    "id": "bio-stem-water",
+    "mode": "live",
+    "purpose": "由染色切面辨认导管运输水的通路。",
+    "controlsReviewed": [
+      "cut 切整体/横切/纵切",
+      "dye 改染液与导管颜色"
+    ],
+    "sceneBehavior": "切面新增圆形导管分布或纵向管道，条件变化立即可见。",
+    "limitations": "无染料上升时间或速度模型；不是所有植物茎的维管束分布均相同。",
+    "needed": [
+      "标明采用哪类茎的结构示意；保持live观察切面即可。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-leaf",
+    "mode": "live",
+    "purpose": "观察叶横切与表皮，识别组织和气孔。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus 控制视野",
+      "view 切横切片/表皮",
+      "stomata 只在表皮图有开闭形状"
+    ],
+    "sceneBehavior": "表皮图保卫细胞与孔宽改变；横切图中气孔控件仅换文字。",
+    "limitations": "横切图细胞排列较概括，需明确上/下表皮、叶肉、叶脉。",
+    "needed": [
+      "横切视图禁用/注明气孔控件范围或绘制下表皮气孔剖面。",
+      "加组织名称与更明确栅栏/海绵叶肉，不能只用三排矩形代替结构辨认。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-transpiration",
+    "mode": "playback",
+    "purpose": "排除土壤蒸发干扰，观察叶片散失水后凝结。",
+    "controlsReviewed": [
+      "cover 目录soil表示连湿土一起罩住",
+      "leaves 比较保留叶片/去叶"
+    ],
+    "sceneBehavior": "叶片袋内水滴数量随进度增加，去叶组不增加。",
+    "limitations": "水滴不能量化蒸腾速率；实际需初始干燥袋与相同条件。",
+    "needed": [
+      "严重错配：soil选项在代码中被解释和绘制为覆盖土面、减少蒸发，与目录连湿土罩住的意义相反。",
+      "应画两种包袋边界并正确提示湿土组有蒸发干扰。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核soil绘成连湿土一起罩住，并明确蒸发干扰；当前水滴固定，应采用live终态对照。"
+  },
+  {
+    "id": "bio-photosynthesis-starch",
+    "mode": "live",
+    "purpose": "比较光照、暗处理、局部遮光后的碘液检验。",
+    "controlsReviewed": [
+      "dark 控制原有淀粉干扰",
+      "light 控制条件",
+      "mask 显示同叶遮光区"
+    ],
+    "sceneBehavior": "图示是处理后的显色终点；局部遮光和未遮光区颜色可比较。",
+    "limitations": "未模拟暗处理、酒精脱色、水洗、滴碘的真实操作；未暗处理也不保证必然呈蓝色，只能说可能干扰。",
+    "needed": [
+      "把未暗处理的蓝色定义为一种可能结果，不要确定预测所有叶片。",
+      "保持live条件与结果推理，操作步骤在讲解中明确。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-photosynthesis-oxygen",
+    "mode": "playback",
+    "purpose": "观察光下绿色水生植物放气，区分气泡与鉴定。",
+    "controlsReviewed": [
+      "light/co2 决定是否出现光合放气示意"
+    ],
+    "sceneBehavior": "有光有CO2时气泡上升；无必要条件时停气。",
+    "limitations": "气泡数量不量化；尚未实际展示氧气检验，放气不能单独证明氧气。",
+    "needed": [
+      "co2选项“受限”与代码完全无光合产氧不完全等义：改为去除/缺乏必要条件，或明确仅为极端模型。",
+      "装置可补收集气体和相应检验阶段，但当前只能声称放气观察。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-photosynthesis-co2",
+    "mode": "live",
+    "purpose": "在去除/保留CO2组比较光合作用后的淀粉证据。",
+    "controlsReviewed": [
+      "co2 决定显色",
+      "light 控制条件",
+      "dark 标记归因是否受原有淀粉干扰"
+    ],
+    "sceneBehavior": "同一个罩内叶片呈不同碘液终点颜色。",
+    "limitations": "未绘制清水与吸收液的对应处理，也未显示并排对照；不能仅凭一个蓝叶图复现整项实验。",
+    "needed": [
+      "显示去CO2处理与清水对照的装置标识，给出气密/等条件说明。",
+      "未暗处理结果应表述可能干扰，不能固定保证显蓝。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-seed-respiration",
+    "mode": "playback",
+    "purpose": "比较活种子与煮熟对照的放热、CO2和耗氧证据。",
+    "controlsReviewed": [
+      "test 切换温度计/石灰水/燃烧检验",
+      "seeds 控制活性"
+    ],
+    "sceneBehavior": "热模式液柱上升；CO2模式冒泡；耗氧模式火焰颜色变化。",
+    "limitations": "仅定性现象；没有定量氧耗、发热量。",
+    "needed": [
+      "耗氧检验燃烧木条画在瓶外且没有插入瓶内过程，需改到瓶口/瓶内或明确取样检验。",
+      "CO2模式浑浊在进度开始前即为终态，应随通气逐渐改变浑浊。",
+      "把种子产生CO2写为释放，避免“呼出气体”套用人体措辞。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-food-storage",
+    "mode": "live",
+    "purpose": "评价低温、干燥、密封等保存策略。",
+    "controlsReviewed": [
+      "food 区分谷物/果蔬",
+      "storage 改措施说明"
+    ],
+    "sceneBehavior": "食物形态切换；不同保存方式仍是相同箱体，仅文字变化。",
+    "limitations": "这是方案解释，不能预测保存天数；没有真实微生物和水分模型。",
+    "needed": [
+      "标题/种类明确为保存措施比较；场景至少展示温度、干燥、密封状态或对应方案卡，避免所有处理都看似同一冰箱。",
+      "modelNote沿用活种子对照模板，应改为食物保存方案的边界。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-plant-growth",
+    "mode": "live",
+    "purpose": "设计长期观察，比较环境因素与生命周期阶段。",
+    "controlsReviewed": [
+      "condition 选择光/水/无机盐的研究变量",
+      "level 比较适宜/受限",
+      "stage 切生命周期"
+    ],
+    "sceneBehavior": "当前已补种子、幼苗、开花、结果具体分支；阶段选择立即变化。",
+    "limitations": "条件只给统一受限色，未建真实发育速度/产量，不能声称完成栽培。",
+    "needed": [
+      "我早前报告缺种子花果基于被更新前片段；完整函数已有分支，撤销该问题。",
+      "保留为条件方案与阶段识图；光/水/矿质应显示相应实验装置或说明其仅为题设。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-human-reproduction",
+    "mode": "live",
+    "purpose": "识别男女生殖系统主要器官及功能。",
+    "controlsReviewed": [
+      "system 换男女系统图",
+      "view detail 高亮性腺"
+    ],
+    "sceneBehavior": "有两类系统位置图，细节仅圈卵巢/睾丸。",
+    "limitations": "不是规范精确解剖比例；尚不展示精卵移动/受精发育路径。",
+    "needed": [
+      "detail标签“生殖细胞与发育路径”超出实际：补路径及器官引线，或缩为“生殖细胞产生部位”。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-food-energy",
+    "mode": "live",
+    "purpose": "由水质量、温升和燃烧食物质量求表观单位热量。",
+    "controlsReviewed": [
+      "waterMass/rise/foodMass 进入Godot热学计算"
+    ],
+    "sceneBehavior": "量热装置温度计按输入温升变化，计算Q和Q/m。",
+    "limitations": "输入温升不是模型实测；不含不完全燃烧、散热、容器吸热。",
+    "needed": [
+      "题名注明输入记录计算/简易量热分析，避免固定燃烧动画暗示实测。",
+      "计算分步显示g→kg、Q=cmΔT、J/g与kJ/g换算。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-digestion",
+    "mode": "live",
+    "purpose": "比较酶、温度、弄碎搅拌处理后的淀粉残留。",
+    "controlsReviewed": [
+      "saliva 选淀粉酶溶液/水",
+      "temperature 适宜/低温/失活",
+      "crush 碎末/大块"
+    ],
+    "sceneBehavior": "两支试管显色随条件变换；当前为检验终点，不包含反应时间过程。",
+    "limitations": "低温不是酶失活；整块也会部分消化；网页只定性示意残余是否足够显色。",
+    "needed": [
+      "读数应区分低温反应慢与高温失活，不能笼统让学生认为都无活性。",
+      "标明充分时间、量和检验阈值假设，不把固定二值显色称真实消化程度。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-diet",
+    "mode": "live",
+    "purpose": "根据多样性与食品标签评价膳食方案。",
+    "controlsReviewed": [
+      "plan 选择多样/单一/零食",
+      "label 选择完整/过期/不明"
+    ],
+    "sceneBehavior": "所有选择都绘制相同均衡餐盘，只改变评价文字。",
+    "limitations": "这是菜单与标签判断，不能据通用图定个人份量。",
+    "needed": [
+      "图应对应选择：单一食物/零食场景不能仍显示均衡四分餐盘；标签应有明确状态卡。",
+      "范围明确为方案评价，不声称完成个性化膳食制定。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-lung",
+    "mode": "live",
+    "purpose": "用膜位置和密封条件解释胸腔容积与通气。",
+    "controlsReviewed": [
+      "diaphragm -1到1实际改膜位置和气球大小",
+      "seal 漏气时维持小气球并改变解释"
+    ],
+    "sceneBehavior": "滑块直接拉膜，气球同步变化，播放无额外过程。",
+    "limitations": "无真实压力数值，未含肋间肌和完整胸廓。",
+    "needed": [
+      "live即可；增加气流箭头方向，0位移应显示本次无位移驱动气流。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-exhaled-co2",
+    "mode": "playback",
+    "purpose": "等体积通气比较空气和呼气的石灰水现象。",
+    "controlsReviewed": [
+      "gas 选气源",
+      "volume 控制示意气泡数"
+    ],
+    "sceneBehavior": "气泡随进度上升，但浑浊填色从开始即为终态。",
+    "limitations": "气泡个数不是mL；比较应同体积、同浓度同量石灰水，不代表呼气为纯CO2。",
+    "needed": [
+      "浑浊需随进度出现，优先并排空气/呼气；避免仅气泡动画。",
+      "modelNote错用膈肌气球模板，应改为气体检验模型。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-lung-capacity",
+    "mode": "live",
+    "purpose": "由气球周长估算近球形体积，认识测量误差。",
+    "controlsReviewed": [
+      "circumference 控制气球尺寸与C³/(6π²)",
+      "shape 非球形时拒用球公式"
+    ],
+    "sceneBehavior": "球/椭圆示意与输入体积估算。",
+    "limitations": "不是真正肺活量测量，气球弹性阻力、漏气和非球形使估计不等于肺活量仪。",
+    "needed": [
+      "题名缩为“气球体积估算与肺活量测量方法”，种类明确计算活动；保留cm³=mL单位步骤。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-blood-smear",
+    "mode": "live",
+    "purpose": "辨认红细胞、白细胞、血小板的形态。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus 改视野",
+      "component 过滤/展示对应成分"
+    ],
+    "sceneBehavior": "红细胞中央浅区、白细胞核、血小板小片可辨认。",
+    "limitations": "所有成分比例是教学拼图，不是实际血细胞比例或计数；血小板需合理高倍观察。",
+    "needed": [
+      "说明component为教学突出，不是真实过滤玻片；可补主要功能的选中反馈。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-fish-capillaries",
+    "mode": "playback",
+    "purpose": "按分支汇合流向和单行通过辨认血管。",
+    "controlsReviewed": [
+      "vessel 选动脉/毛细/静脉",
+      "speed 调示意移动速度"
+    ],
+    "sceneBehavior": "旧图有弯曲主干及竖向毛细支，细胞却沿固定y水平移动。",
+    "limitations": "不是活鱼显微影像；速度仅播放比例。",
+    "needed": [
+      "红细胞轨迹必须贴合所选血管，并展示动脉分流→毛细单行→静脉汇流；旧版毛细细胞不在竖支内，动静脉同方向且无分流证据，未通过本项目目的审核。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核细胞沿实际分支—毛细—汇合折线路径运动，血管选择高亮位置有效；主要目的现可支撑。"
+  },
+  {
+    "id": "bio-heart",
+    "mode": "live",
+    "purpose": "识别心腔、相连大血管和瓣膜。",
+    "controlsReviewed": [
+      "part 高亮四腔/瓣膜/大血管"
+    ],
+    "sceneBehavior": "四腔名称可见，左室外壁较粗；大血管仅两条从上方进入心房的线，瓣膜仅短线。",
+    "limitations": "可用于四腔定位；尚不足按心脏内路线辨认出入血管和动脉瓣。",
+    "needed": [
+      "补主动脉/肺动脉自心室发出及腔静脉/肺静脉回心房，并标瓣膜方向；否则title缩为四腔位置识图。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-circulation",
+    "mode": "playback",
+    "purpose": "连接两条循环并追踪肺/组织处气体交换。",
+    "controlsReviewed": [
+      "circuit 高亮肺/体/两圈",
+      "substance 换整圈统一颜色与文字"
+    ],
+    "sceneBehavior": "旧版两圈、心脏圆形与固定箭头；进度不改变结构或流动。",
+    "limitations": "无四腔联接、血管命名与交换处含氧变化，无法支持教材要求的完整路径。",
+    "needed": [
+      "需真实沿路径流动的标记、四腔连接、肺和组织处交换箭头及对应颜色改变；若无法做则改live“循环路径示意”并缩窄目标，不能原样留播放。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核两路径连接对应四腔，细胞随进度运动并在肺/组织交换处分段变色，原静态空播已修。"
+  },
+  {
+    "id": "bio-blood-pressure",
+    "mode": "live",
+    "purpose": "核对输入血压记录与测量姿势。",
+    "controlsReviewed": [
+      "systolic/diastolic 是输入读数",
+      "position 给姿势解释但不改图"
+    ],
+    "sceneBehavior": "数字显示屏更新，袖带和手臂几何始终相同。",
+    "limitations": "不是血压计、不实际测量；中学生需按年龄等专业标准解释。",
+    "needed": [
+      "position应实际显示袖带与心脏高度、活动状态；题名注明记录与姿势分析。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-kidney",
+    "mode": "playback",
+    "purpose": "在肾单位中区分滤过与重吸收的物质去向。",
+    "controlsReviewed": [
+      "view 切泌尿系统/肾切面/肾单位",
+      "substance 选五类物质"
+    ],
+    "sceneBehavior": "旧版粒子仅横穿肾小球示意；水、葡萄糖、尿素同一图同一重吸收箭头。",
+    "limitations": "整体/纵切本应直接观察；真实滤过率未建模。",
+    "needed": [
+      "必须按物质显示留在血液/进入原尿/返血/排尿不同去向；葡萄糖正常全重吸收、水分流、尿素排尿，不应仅在说明里区分。",
+      "若一个条目统一playback，结构视图至少告知直接观察或条件性禁用播放，不能三种视图都空播。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核葡萄糖重吸收、水分流、尿素排尿箭头差异；粒子仍只在肾小球附近横移，live去向识图可支撑，不能据此标成完整滤过/重吸收播放。"
+  },
+  {
+    "id": "bio-body-model",
+    "mode": "live",
+    "purpose": "比较人体不同系统的器官位置与协作。",
+    "controlsReviewed": [
+      "system 实际换消化/呼吸/循环/泌尿示意",
+      "view detail 只圈相同腹部坐标"
+    ],
+    "sceneBehavior": "系统图形不同，但detail并无完整物质路径。",
+    "limitations": "循环图为树状线，不能当完整体肺循环；器官比例简化。",
+    "needed": [
+      "detail“物质经过的路径”与图不符：画对应系统箭头和部位名称，或改“器官位置重点”。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-kidney-slide",
+    "mode": "live",
+    "purpose": "比较肾皮质和髓质的显微结构。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus 改视野",
+      "region 切皮质肾小体/髓质平行管道"
+    ],
+    "sceneBehavior": "皮质团状肾小球与管断面、髓质平行管道有实质区别。",
+    "limitations": "原创概略显微图，不可当真实小鼠装片定量、着色诊断。",
+    "needed": [
+      "补肾小体/肾小管或集合管名称引线，使学生能确认目标而非仅识别区域。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-eye",
+    "mode": "live",
+    "purpose": "用等效眼成像解释近远视和矫正。",
+    "controlsReviewed": [
+      "eye/correction 改Godot计算的像距",
+      "distance 进入等效屈光力但被调节项抵消"
+    ],
+    "sceneBehavior": "近视/远视焦点位置和矫正镜形状变化；远/近物原图入射始终平行且晶状体形状一样。",
+    "limitations": "使用任意教学尺度，不是验光；Godot模型已经存在应保留。",
+    "needed": [
+      "distance要展示发散程度/物点与晶状体曲率调节，不能只有读数文字。",
+      "光线通过前置矫正镜亦应改变方向，不能加个镜片轮廓却照画原射线。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-reflex",
+    "mode": "playback",
+    "purpose": "理解反射弧完整性并区分反射与感觉。",
+    "controlsReviewed": [
+      "stimulus 有/无叩击",
+      "path 完整/传入/传出中断"
+    ],
+    "sceneBehavior": "完整有刺激时信号点移动、小腿偏转；中断时叉号且完全无信号。",
+    "limitations": "信号速度不等于潜伏期；未画上行至大脑的感觉通路。",
+    "needed": [
+      "传出中断时应保留传入至中枢的信号，说明可有感觉但无该反射运动；不能所有断点都让整条通路完全静默。",
+      "用阶段先后让腿在信号到达效应器后才动作，而非从t=0同时摆动。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核传入中断/传出中断分别传播到对应断点，腿仅在后0.25进度动作；仍不包含大脑感觉路径。"
+  },
+  {
+    "id": "bio-reaction",
+    "mode": "playback",
+    "purpose": "由落尺距离换算反应时间，理解重复测量。",
+    "controlsReviewed": [
+      "distance 经Godot轨迹插值",
+      "trial 只作为次数标记"
+    ],
+    "sceneBehavior": "原画尺子固定、手臂向下移动，和落尺情景相反。",
+    "limitations": "Godot轨迹为理想重力模型，不是网页测得人的真实反应；trial没有多次记录。",
+    "needed": [
+      "应尺下落、手相对固定并到终点夹住，使用Godot已有轨迹而非手线性位移。",
+      "移除无实际重复记录功能的trial或补可编辑多次距离及均值；题名明确距离换算。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核手固定，尺按r.trajectory时间插值下落；原手动尺静已修；图示明确记录编号不代替多次测量。"
+  },
+  {
+    "id": "bio-muscle",
+    "mode": "live",
+    "purpose": "观察骨骼肌牵拉骨绕关节，比较屈伸肌。",
+    "controlsReviewed": [
+      "angle 改前臂线段",
+      "action 改肱二/三头肌粗细颜色"
+    ],
+    "sceneBehavior": "角0前臂与上臂重叠向上，角增大反而张开，但标签为肘弯曲角。",
+    "limitations": "非人体定量生物力学；固定角可以讨论动作方向，但需明确等长/正在屈伸的情境。",
+    "needed": [
+      "统一角的定义与图：若弯曲角0为伸直则改几何；若表示两骨夹角需改名并说明。",
+      "观察模式应live，滑块已经提供直接运动，无需再等播放。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核0°伸直、角增大屈曲，图内有角定义；原几何反向已修。"
+  },
+  {
+    "id": "bio-hormone",
+    "mode": "live",
+    "purpose": "审查激素对照实验的单一变量与重复设置。",
+    "controlsReviewed": [
+      "factor 仅激素/同时饲料改变",
+      "replicate 多只重复/单只"
+    ],
+    "sceneBehavior": "两个容器内始终各一个无结构圆；控件仅改评价。",
+    "limitations": "题名已明确纸面方案，避免真实动物施药，属于合理范围限制。",
+    "needed": [
+      "至少用方案卡列出两组激素/饲料是否一致，并在replicate改变时显示相应独立个体/重复数；这是方案检查，不需要播放。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-daphnia",
+    "mode": "live",
+    "purpose": "由心搏次数与时长计算心率，比较对照记录。",
+    "controlsReviewed": [
+      "concentration 仅组别标记",
+      "beats/seconds 决定换算心率"
+    ],
+    "sceneBehavior": "旧心脏按sin(t*25)固定跳动，与输入心率无关；beats=0仍跳。",
+    "limitations": "不应依酒精浓度编造心率；当前没有多浓度重复数据，不能完成影响推断。",
+    "needed": [
+      "停止独立于数据的心跳计数动画，或明确按输入频率回放且0次时不跳。",
+      "题名注明水蚤心率记录换算/对照数据分析；若声称探究影响需输入对照与处理多次记录。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核删除与输入无关的心脏跳动，明示心脏位置图而非计数录像；宜live计算活动。"
+  },
+  {
+    "id": "bio-infection",
+    "mode": "live",
+    "purpose": "按具体疾病传播环节评价预防措施。",
+    "controlsReviewed": [
+      "route 选择传播途径",
+      "measure 高亮三个环节"
+    ],
+    "sceneBehavior": "传染源→途径→易感者圆图有措施高亮，route只在文字读数。",
+    "limitations": "不含当地真实疫情资料与海报编辑器，不能说完成调查/制作。",
+    "needed": [
+      "route应显示对应空气/食物/媒介情境或例证卡；题名缩为传播环节与海报方案分析。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-first-aid",
+    "mode": "live",
+    "purpose": "识别药品说明信息、急救求助及不凭印象处置。",
+    "controlsReviewed": [
+      "scenario 药品/倒地/出血",
+      "action 专业求助/凭印象"
+    ],
+    "sceneBehavior": "原medicine默认仍画按压人偶，只有bleeding换绷带；与用药任务错配。",
+    "limitations": "不是正规技能训练；文本提醒不能替代药品信息实例。",
+    "needed": [
+      "medicine必须显示模拟药品说明字段并核对，不要画CPR。",
+      "collapse和bleeding按情境给相应卡片；action解释具体缺项，避免所有情境一律泛泛“寻求帮助”。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits",
+    "postFixObserved": "已复核medicine独立分支显示药品说明核对卡，默认CPR错配已修。"
+  },
+  {
+    "id": "bio-smoke",
+    "mode": "live",
+    "purpose": "比较模型滤材颗粒沉积与人体效应证据边界。",
+    "controlsReviewed": [
+      "exposure 清洁/颗粒",
+      "barrier 滤材/呼吸道"
+    ],
+    "sceneBehavior": "滤材/肺图实际切换并变色；烟雾过滤时有颗粒移动，呼吸道视图静态。",
+    "limitations": "滤材颜色不能估计全部有害物质或人体肺损伤。",
+    "needed": [
+      "适合live条件比较；若保留playback应仅在滤材过程显示逐步沉积，不能固定终态滤材配漂动颗粒。",
+      "呼吸道变色应明确沉积示意，不暗示任意暴露立即使整肺变色。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-woodlouse",
+    "mode": "playback",
+    "purpose": "设计单变量光照/湿度对动物分布的观察。",
+    "controlsReviewed": [
+      "factor 改左右条件底色",
+      "contrast 同条件/对比",
+      "count 示意动物数"
+    ],
+    "sceneBehavior": "原版所有个体整体左平移，默认10只初始左6右4；首只末态出托盘。",
+    "limitations": "确定性趋向只能作假设示意，不能作为分布数据或已证明偏好。",
+    "needed": [
+      "改为初始两侧等数，轨迹约束在容器内；明确左暗/湿、右亮/干。",
+      "如题意只做设计则选live并去掉伪结果趋势；保留playback须把假设演示和真实重复计数严格区分。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-vegetation",
+    "mode": "live",
+    "purpose": "比较同条件裸地/植被地相对湿度记录。",
+    "controlsReviewed": [
+      "openHumidity/plantHumidity 改柱高与差值",
+      "repeats 只标计划次数"
+    ],
+    "sceneBehavior": "两地示意和湿度差值成立。",
+    "limitations": "没有温度输入、独立重复记录与均值；题名“温湿度”和“重复测量次数”超过实现。",
+    "needed": [
+      "题名缩为相对湿度记录比较，或补温度。",
+      "repeats改“计划重复次数”，不要暗示已平均多次观测；需要均值就提供真实每次记录。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-foodweb",
+    "mode": "live",
+    "purpose": "区分捕食链、竞争与合作关系及扰动。",
+    "controlsReviewed": [
+      "relationship 换捕食/竞争/合作图",
+      "disturbance 在捕食图遮淡草/狐"
+    ],
+    "sceneBehavior": "捕食为草→兔→狐单链；竞争加蝗虫；合作另画搬运蚂蚁。",
+    "limitations": "当前没有真正多链交织食物网与种群动态，不能称食物网完整探究。",
+    "needed": [
+      "标题缩为食物链与种间关系，或补真正交织网。",
+      "合作选项下disturbance完全无效，应禁用或换对应情境。",
+      "植物属于生产者、箭头方向应保留明确解释。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-ecosystem",
+    "mode": "live",
+    "purpose": "审查生态瓶植物、动物负荷和光照设计。",
+    "controlsReviewed": [
+      "plants/animals 改个数",
+      "light 黑暗加遮层，强光仅改提示"
+    ],
+    "sceneBehavior": "鱼游动只是装饰，未展示物质循环/供氧耗氧随时变化。",
+    "limitations": "相对数量不是生物量，不能凭animals>plants判断稳定；分解者等未建模。",
+    "needed": [
+      "不要按animals>plants输出“相对合理”；空瓶plants=0 animals=0也被认可，应检查必要组成而不保证稳定。",
+      "强光应显示直晒/热风险情境；用live方案评价，避免把游鱼作为生态稳定实验过程。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-acidrain",
+    "mode": "live",
+    "purpose": "统计不同酸度处理和对照的发芽记录。",
+    "controlsReviewed": [
+      "ph 题设标签",
+      "treated/control 两组20粒萌发数"
+    ],
+    "sceneBehavior": "两组种子图和发芽率/百分点差对应输入。",
+    "limitations": "pH不自动生成萌发数是正确的；没有真实培养与多重复数据。",
+    "needed": [
+      "title/kind明确酸雨实验记录分析；展示pH处理/对照标签，别误认为滑pH会自动发生实验。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-ecological-survey",
+    "mode": "live",
+    "purpose": "计算绿化面积比并评价选种依据。",
+    "controlsReviewed": [
+      "totalArea/greenArea 计算面积比",
+      "species 本地/未评估外来种给评价"
+    ],
+    "sceneBehavior": "场地图绿色面积变化，选种只改变文字。",
+    "limitations": "没有真实校园地图、物种调查或完整规划；比值不等于生态质量。",
+    "needed": [
+      "题名明确绿化方案指标分析；种类选择最好显示候选方案卡，不能把已画植被当真实选种。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-aquarium",
+    "mode": "live",
+    "purpose": "审查水量、鱼负荷、增氧、水温、投喂、相容与维护计划。",
+    "controlsReviewed": [
+      "volume/fish 求每尾名义水量",
+      "aeration 改气泡",
+      "temperature/feeding/compatibility/waterchange 改评价"
+    ],
+    "sceneBehavior": "鱼数量变化和增氧示意，体积并不改变缸图；其余主要是计划卡。",
+    "limitations": "没有物种/成体体长、过滤成熟度或真实水质模型；每尾水量不是通用密度。",
+    "needed": [
+      "作为设计审查保留live；显示水量刻度和各计划状态，避免用鱼游动画暗示长期成活。",
+      "temperature冷/热至少分别说明低于/高于需求，不只同一笼统文本。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-firstaid-procedure",
+    "mode": "live",
+    "purpose": "按情境选择成人复苏或直接压迫止血步骤。",
+    "controlsReviewed": [
+      "scenario 切人偶复苏/绷带",
+      "step 切六步文本，只有按压步有小幅手运动"
+    ],
+    "sceneBehavior": "可用分步文字卡，但多数步骤图相同，电话/AED/呼吸判断未呈现。",
+    "limitations": "只用训练模型，不能检测真实生命体征或认证技能；流程本身信息较完整。",
+    "needed": [
+      "live分步阅读，无需“开始”；每步至少高亮当前操作或绘相应电话/AED/敷料示意。",
+      "给按压手的往复不等于实现完整急救训练。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  },
+  {
+    "id": "bio-drug-prevention",
+    "mode": "live",
+    "purpose": "评价资料来源并练习拒绝、求助和紧急行动。",
+    "controlsReviewed": [
+      "source 改可信来源评价",
+      "scenario 改情境行动"
+    ],
+    "sceneBehavior": "统一警示海报图，选择主要影响文字卡。",
+    "limitations": "不含实际影像、展览或物品识别；这是资料判断练习，不是实验。",
+    "needed": [
+      "标题/种类改为禁毒教育资料与情境判断，保留原教材活动映射；选情境时显示具体对应卡。"
+    ],
+    "status": "needs-fix",
+    "auditBasis": "read-only catalog/simulate/render semantic inspection; findings refer to observed pre-fix code and may be superseded by owner edits"
+  }
+]

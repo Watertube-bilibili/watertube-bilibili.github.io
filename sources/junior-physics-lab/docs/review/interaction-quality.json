@@ -1,0 +1,15 @@
+{
+  "passed": [
+    "All experiments declare an interaction mode; exported engine is current",
+    "Static optics changes immediately and restores default conditions",
+    "Analysis progress waits, records once, and cancels cleanly on navigation",
+    "Manual timing records real elapsed time and sends only the stopped value to Godot",
+    "Ruler length sits under the apparatus and controls geometry, pitch and audition",
+    "Pausing freezes the apparatus and silence; zero amplitude remains still",
+    "Bottle, air-column, vacuum, telephone and insulation controls change the actual conditions",
+    "An unfinished engine request cannot overwrite a later experiment",
+    "Chemistry and biology honor their distinct interaction modes"
+  ],
+  "failures": [],
+  "pageErrors": []
+}

@@ -99,10 +99,12 @@ func thermal_transition(p: Dictionary, scenario: String, material: String) -> Di
 	var final_energy: float = initial_energy + direction*applied_energy/mass
 	var state: Dictionary = state_of(final_energy,d)
 	var points: Array = []
+	var phase_states: Array = []
 	for i in range(61):
 		var t: float = valid_time*float(i)/60.0
 		var curve_state: Dictionary = state_of(initial_energy+direction*power*t/mass,d)
 		points.append([t,curve_state.temperature])
+		phase_states.append({"time":t,"temperature":curve_state.temperature,"phase":curve_state.phase,"fraction":curve_state.fraction})
 	var assumptions: String = "恒定有效功率，不计容器吸热和散热；无过冷、过热或成分变化。质量kg、功率W、时间s，Q=Pt以J计。"
 	var transition_description: String
 	if material == "water":
@@ -124,7 +126,9 @@ func thermal_transition(p: Dictionary, scenario: String, material: String) -> Di
 	var conclusion: String = "当前为%s，模型温度 %.4f ℃。%s"%[state.phase,state.temperature,transition_description]
 	if domain_limited:
 		conclusion += "设定能量超过本页范围，曲线在适用边界截停；剩余能量不继续解释为已建模状态。"
-	return answer(values,readings,process,conclusion,assumptions,{"xLabel":"已建模时间 / s","yLabel":"模型温度 / ℃","points":points})
+	var response: Dictionary=answer(values,readings,process,conclusion,assumptions,{"xLabel":"已建模时间 / s","yLabel":"模型温度 / ℃","points":points})
+	response["phaseStates"]=phase_states
+	return response
 
 func alcohol_water(p: Dictionary) -> Dictionary:
 	var concentration: float = clampf(number(p,"concentration",10),0,100)

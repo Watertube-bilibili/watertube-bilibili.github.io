@@ -1,0 +1,2363 @@
+{
+  "subject": "chemistry",
+  "checked": "2026-10-31",
+  "count": 79,
+  "interactionCounts": {
+    "live": 37,
+    "playback": 42
+  },
+  "method": [
+    "逐条阅读79项的目标、器材、步骤、现象、题解、考点、控件和模型实现。",
+    "逐个反应核对配平、相对质量、限制试剂与反应范围；定性规则核对实际可作出的结论。",
+    "按任务选择即时交互或过程播放；逐模型检查原图与过程是否对应实验，不以字符串变化等同科学正确。",
+    "浏览器验证79项四个阶段共316帧，真实Godot负责两项定量热学；另作28条关键行为回归。"
+  ],
+  "tests": [
+    "tests/chemistry-models.cjs",
+    "tests/chemistry-interactions.cjs",
+    "tests/chemistry-review-browser.py"
+  ],
+  "uncompletedScope": [
+    "10项跨学科项目只覆盖题设计算、条件比较或设计环节，未完成实物制作、现场调查与长周期培养。",
+    "部分活动未实现逐件拖拽、误操作评分、真实仪器误差或真实反应动力学；逐项限制列在items中。",
+    "没有重新逐页核读全部官方教材正文，本次是对现有目录、科学内容及实现的逐项审核，来源验证范围沿用research/chemistry-coverage.json。"
+  ],
+  "items": [
+    {
+      "id": "chem-changes",
+      "title": "辨别物理变化和化学变化",
+      "mode": "playback",
+      "purpose": "用新物质证据区分两类变化。",
+      "controlsReviewed": {
+        "keys": [
+          "case"
+        ],
+        "scientificChecks": "逐个比较沸腾、研碎、沉淀、碳酸盐四种变化"
+      },
+      "sceneBehavior": "冷凝水滴、研碎颗粒、蓝色沉淀及气泡各有对应场景",
+      "limitations": [
+        "新物质仍需结合检验证据，不能只看动画的颜色或气泡"
+      ],
+      "fixes": [
+        "替换四种变化共用烧杯图，按进度显示物态和产物"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "发光、变色、放热不是单独充分的判据。"
+        ],
+        "pitfallsChecked": [
+          "不能把有气泡一律说成化学变化。"
+        ]
+      }
+    },
+    {
+      "id": "chem-properties",
+      "title": "观察物理性质与检验化学性质",
+      "mode": "live",
+      "purpose": "认识观察与化学检验提供的不同证据。",
+      "controlsReviewed": {
+        "keys": [
+          "gas",
+          "test"
+        ],
+        "scientificChecks": "气体与三种检验方式交叉核对，空气不应使木条复燃"
+      },
+      "sceneBehavior": "气瓶、木条复燃或石灰水浑浊随检验选择即时变化",
+      "limitations": [
+        "短时适量CO₂检验，不处理过量造成沉淀溶解"
+      ],
+      "fixes": [
+        "改即时观察，移除无动作播放，补检验器材"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "检验氧气与检验二氧化碳使用不同试剂。"
+        ],
+        "pitfallsChecked": [
+          "木条熄灭不能单独证明气体一定为二氧化碳。"
+        ]
+      }
+    },
+    {
+      "id": "chem-candle",
+      "title": "蜡烛与乙醇燃烧：产物和物态变化",
+      "mode": "playback",
+      "purpose": "选择燃料与观察方法，比较水、二氧化碳及燃料物态的证据。",
+      "controlsReviewed": {
+        "keys": [
+          "fuel",
+          "test"
+        ],
+        "scientificChecks": "蜡烛和乙醇有不同燃具；水、CO₂和物态三观察分别核对"
+      },
+      "sceneBehavior": "火焰后产生水滴或石灰水浑浊；蜡烛顶部出现熔融区域",
+      "limitations": [
+        "仅比较燃烧阶段，不再声称完整包含熄灭后烟的探究"
+      ],
+      "fixes": [
+        "修复乙醇仍画蜡烛，以及观察选择只改文字"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "由产物可推出原燃料含碳、氢；不能仅凭此确定燃料一定含氧。"
+        ],
+        "pitfallsChecked": [
+          "石蜡是混合物，不随意写成单一分子式。"
+        ]
+      }
+    },
+    {
+      "id": "chem-hazards",
+      "title": "识别实验安全标志",
+      "mode": "live",
+      "purpose": "将危险标志与正确操作建立联系。",
+      "controlsReviewed": {
+        "keys": [
+          "case",
+          "action"
+        ],
+        "scientificChecks": "四种标签及正确/错误操作分别核对"
+      },
+      "sceneBehavior": "原创危险标志与操作判断即时显示",
+      "limitations": [
+        "玻璃锐器图是提示，不是GHS标准危险图标"
+      ],
+      "fixes": [
+        "归类操作练习，取消无意义开始"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "实验室不得尝试剂，未知试剂不可擅自混合。"
+        ],
+        "pitfallsChecked": [
+          "没有气味不等于无危险。"
+        ]
+      }
+    },
+    {
+      "id": "chem-protection",
+      "title": "实验室防护与应急情境判断",
+      "mode": "live",
+      "purpose": "针对实验室情境选择对应设施。",
+      "controlsReviewed": {
+        "keys": [
+          "case",
+          "action"
+        ],
+        "scientificChecks": "溅眼、洒漏和酒精小火的处理不同，不允许自行中和"
+      },
+      "sceneBehavior": "洗眼水流、废物容器、湿布覆盖分别对应情境",
+      "limitations": [
+        "这是应急判断练习，不是事故处理训练的替代"
+      ],
+      "fixes": [
+        "绘制对应设施，修改资料范围与种类"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "眼睛接触试剂应立即冲洗并报告，必要时就医。"
+        ],
+        "pitfallsChecked": [
+          "不能在眼睛中加酸碱进行中和。"
+        ]
+      }
+    },
+    {
+      "id": "chem-measure",
+      "title": "取用试剂与量筒读数",
+      "mode": "live",
+      "purpose": "练习少量试剂取用与量筒读数。",
+      "controlsReviewed": {
+        "keys": [
+          "volume",
+          "eye",
+          "transfer"
+        ],
+        "scientificChecks": "1—10mL体积、三种视线、滴管接触条件逐一核对"
+      },
+      "sceneBehavior": "凹液面和视线移动；正确滴管悬空、错误滴管触壁",
+      "limitations": [
+        "视差只说明方向，不编造读数误差数值"
+      ],
+      "fixes": [
+        "滴管控件终于作用于图形；缩小滴管避免遮挡标题"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "量取指定体积时，错误读数与实际取液量的偏差方向需要区分。"
+        ],
+        "pitfallsChecked": [
+          "量筒不能加热，也不是配制溶液的反应容器。"
+        ]
+      }
+    },
+    {
+      "id": "chem-heating",
+      "title": "试管液体加热的操作判断",
+      "mode": "live",
+      "purpose": "判断试管加热操作是否符合规范。",
+      "controlsReviewed": {
+        "keys": [
+          "preheat",
+          "fill",
+          "opening"
+        ],
+        "scientificChecks": "装液量10—80%、均匀预热/局部加热、管口方向核对"
+      },
+      "sceneBehavior": "倾斜试管液量、预热移动方向和管口位置提示即时变化",
+      "limitations": [
+        "仅作操作判断，不模拟玻璃破裂或给定加热温度"
+      ],
+      "fixes": [
+        "替换通用烧杯，改操作练习和即时交互"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "液体一般不超过试管容积的1/3。"
+        ],
+        "pitfallsChecked": [
+          "热试管不能立即接触冷水。"
+        ]
+      }
+    },
+    {
+      "id": "chem-airtight",
+      "title": "连接装置并检查气密性",
+      "mode": "playback",
+      "purpose": "在装药前检查气路是否完整。",
+      "controlsReviewed": {
+        "keys": [
+          "sealed",
+          "warm",
+          "immersed"
+        ],
+        "scientificChecks": "接口、温热、末端浸水三条件均需满足"
+      },
+      "sceneBehavior": "温热阶段冒泡，撤热冷却阶段导管内形成水柱",
+      "limitations": [
+        "定性热胀冷缩示意，没有泄漏率或温度计算"
+      ],
+      "fixes": [
+        "去掉误用的制气装置，增加冷却水柱阶段"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "检查在加入试剂前完成；温差过小也可能看不出气泡。"
+        ],
+        "pitfallsChecked": [
+          "没有气泡不能在未检查操作的情况下直接断定漏气。"
+        ]
+      }
+    },
+    {
+      "id": "chem-washing",
+      "title": "玻璃仪器的洗涤与检查",
+      "mode": "live",
+      "purpose": "按污物性质选择清洗方法并判断洁净程度。",
+      "controlsReviewed": {
+        "keys": [
+          "residue",
+          "method"
+        ],
+        "scientificChecks": "残留物与冲洗、刷洗、洗涤剂组合逐项核对"
+      },
+      "sceneBehavior": "清洗前后分别显示均匀水膜或聚滴，工具随方法变化",
+      "limitations": [
+        "污物类型是概括，真实清洗试剂需按物质选择"
+      ],
+      "fixes": [
+        "新增试管、水膜、刷子场景；取消开始"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "试管刷用力适当，洗后倒放于试管架。"
+        ],
+        "pitfallsChecked": [
+          "用手摸内壁会重新污染仪器。"
+        ]
+      }
+    },
+    {
+      "id": "chem-air-oxygen",
+      "title": "测定空气中氧气的体积分数",
+      "mode": "playback",
+      "purpose": "用消耗氧气引起的体积减少估算氧气含量。",
+      "controlsReviewed": {
+        "keys": [
+          "volume",
+          "enough",
+          "sealed",
+          "cooled"
+        ],
+        "scientificChecks": "初始体积和足量、严密、冷却条件影响有效性；含氧比例固定为模型真值"
+      },
+      "sceneBehavior": "先燃烧白烟，再冷却，最后进水；默认250mL得到52.5mL",
+      "limitations": [
+        "理想21%空气，不是现场测量；无效条件不伪造误差数值"
+      ],
+      "fixes": [
+        "删除让用户调测量答案的比例控件，修复过早进水"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "体积分数=减少体积÷原气体体积。"
+        ],
+        "pitfallsChecked": [
+          "未冷却、漏气、红磷不足都可能破坏测量；剩余气体并非纯氮气。"
+        ]
+      }
+    },
+    {
+      "id": "chem-oxygen",
+      "title": "氧气的实验室制取与性质",
+      "mode": "playback",
+      "purpose": "从反应物、装置、收集与检验建立制气思路。",
+      "controlsReviewed": {
+        "keys": [
+          "solution",
+          "percent",
+          "catalyst",
+          "test"
+        ],
+        "scientificChecks": "质量×浓度求纯H₂O₂；催化不增最终产量；区分收集与木条检验"
+      },
+      "sceneBehavior": "气泡、排水收集、MnO₂颗粒和收集后复燃",
+      "limitations": [
+        "不输出真实制气速率、压力或气体体积"
+      ],
+      "fixes": [
+        "增加检验选择，零产气不填满集气瓶"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "2H₂O₂ → 2H₂O + O₂↑，条件为MnO₂。",
+          "制取、检验、验满分别说明。"
+        ],
+        "pitfallsChecked": [
+          "催化剂不增加同量过氧化氢完全反应的产氧总量。"
+        ]
+      }
+    },
+    {
+      "id": "chem-catalyst",
+      "title": "探究二氧化锰的催化作用",
+      "mode": "playback",
+      "purpose": "用有无催化剂的对照区分反应快慢与产物总量。",
+      "controlsReviewed": {
+        "keys": [
+          "solution",
+          "percent",
+          "recovered",
+          "reuse"
+        ],
+        "scientificChecks": "对照组同质量浓度；1g初始MnO₂与回收质量及复用现象共同判断"
+      },
+      "sceneBehavior": "两组同屏显示先后；最终理论O₂一致，回收/复用证据可修改",
+      "limitations": [
+        "气泡和柱形只示意快慢；回收质量是题设记录，非虚构称量"
+      ],
+      "fixes": [
+        "从单一制气复制改为双组对照，补完整催化证据判断"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "仅一次加快反应不足以证明催化剂质量和化学性质均不变。"
+        ],
+        "pitfallsChecked": [
+          "“催化剂不变”不表示物理状态始终不变。"
+        ]
+      }
+    },
+    {
+      "id": "chem-co2",
+      "title": "二氧化碳的实验室制取与性质",
+      "mode": "playback",
+      "purpose": "通过反应制取二氧化碳并检验其性质。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2",
+          "test"
+        ],
+        "scientificChecks": "CaCO₃与HCl限制试剂核算；收集、检验、验满分开"
+      },
+      "sceneBehavior": "固体减少、气泡、向上排空气；可切换石灰水和瓶口木条",
+      "limitations": [
+        "体积颜色只作位置示意；制气不代替全部CO₂性质探究"
+      ],
+      "fixes": [
+        "补检验与验满操作，初始不再显示已生成全部气体"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "石灰水用于检验；燃着木条放瓶口用于验满。"
+        ],
+        "pitfallsChecked": [
+          "一般不用稀硫酸替代稀盐酸，生成的微溶硫酸钙可覆盖固体。"
+        ]
+      }
+    },
+    {
+      "id": "chem-co2-water",
+      "title": "探究二氧化碳与水反应",
+      "mode": "playback",
+      "purpose": "用对照判断使石蕊变红的条件。",
+      "controlsReviewed": {
+        "keys": [
+          "water",
+          "co2",
+          "heat"
+        ],
+        "scientificChecks": "干/湿、通CO₂与否、变色后温热组合核对"
+      },
+      "sceneBehavior": "湿纸花先紫后红，温热再恢复紫色",
+      "limitations": [
+        "变色为典型示意，不计碳酸平衡或实际加热时间"
+      ],
+      "fixes": [
+        "修复选择温热后从未出现红色的过程错误"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "CO₂+H₂O ⇌ H₂CO₃，可用初中形式表述生成碳酸。"
+        ],
+        "pitfallsChecked": [
+          "不能写成二氧化碳直接使干燥石蕊变红。"
+        ]
+      }
+    },
+    {
+      "id": "chem-distill",
+      "title": "制取蒸馏水",
+      "mode": "playback",
+      "purpose": "根据挥发性差异理解蒸馏净水。",
+      "controlsReviewed": {
+        "keys": [
+          "method",
+          "impurity"
+        ],
+        "scientificChecks": "蒸馏与过滤对溶解盐、泥沙、非挥发色素的作用核对"
+      },
+      "sceneBehavior": "受热原水经冷凝管到接收器，馏出液逐渐增加",
+      "limitations": [
+        "只适用于不挥发杂质；未建冷却水流量或污染物共沸模型"
+      ],
+      "fixes": [
+        "重画蒸馏与接收过程，明确过滤不能去盐"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "沸石防暴沸；不能把蒸馏与过滤作用混淆。"
+        ],
+        "pitfallsChecked": [
+          "蒸馏并非对任意挥发性污染物都能完全去除。"
+        ]
+      }
+    },
+    {
+      "id": "chem-purification",
+      "title": "比较沉降、过滤与吸附的净水作用",
+      "mode": "playback",
+      "purpose": "按杂质特征选择净水步骤。",
+      "controlsReviewed": {
+        "keys": [
+          "method",
+          "impurity"
+        ],
+        "scientificChecks": "沉降/过滤/吸附/蒸馏逐项对应泥沙、色素、盐"
+      },
+      "sceneBehavior": "沉降颗粒下移；滤纸拦截；活性炭层去色；馏出液收集",
+      "limitations": [
+        "不是消毒或饮用水评价；吸附没有容量和突破曲线"
+      ],
+      "fixes": [
+        "修复沉降也画漏斗，给不同净水方法真实不同装置"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "澄清不等于纯净，去色不等于杀菌。"
+        ],
+        "pitfallsChecked": [
+          "不得把自制净水器的出水当作可直接饮用水。"
+        ]
+      }
+    },
+    {
+      "id": "chem-salt-purify",
+      "title": "粗盐中难溶性杂质的去除",
+      "mode": "playback",
+      "purpose": "按溶解、过滤、蒸发流程回收盐。",
+      "controlsReviewed": {
+        "keys": [
+          "mass",
+          "impurity",
+          "water",
+          "loss"
+        ],
+        "scientificChecks": "原盐、杂质率、水量与损失共同决定进入滤液和回收量"
+      },
+      "sceneBehavior": "溶解、过滤、蒸发结晶依次更换装置和物质状态",
+      "limitations": [
+        "仅去难溶杂质；真实粗盐可溶杂质不被过滤除尽"
+      ],
+      "fixes": [
+        "替换始终过滤的静态图，保留水不足导致盐损失的计算"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "玻璃棒在溶解、过滤、蒸发时作用分别不同。"
+        ],
+        "pitfallsChecked": [
+          "水不足会导致NaCl未全部溶解，产率降低。"
+        ]
+      }
+    },
+    {
+      "id": "chem-dissolve-heat",
+      "title": "比较溶解时的温度变化",
+      "mode": "live",
+      "purpose": "观察溶解过程可吸热或放热。",
+      "controlsReviewed": {
+        "keys": [
+          "solute",
+          "mass"
+        ],
+        "scientificChecks": "NaCl、NH₄NO₃、NaOH及零加入量分别核对温变方向"
+      },
+      "sceneBehavior": "显示所加溶质量与相对初温温度计方向",
+      "limitations": [
+        "定性方向；不以无依据数字冒充温度实测"
+      ],
+      "fixes": [
+        "零加入量不再变化，明确这是即时比较"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "控制水量、初温、溶质质量和测量方法。"
+        ],
+        "pitfallsChecked": [
+          "温度变化不能单独证明一定发生化学反应。"
+        ]
+      }
+    },
+    {
+      "id": "chem-dissolve",
+      "title": "比较不同溶质、溶剂的溶解性",
+      "mode": "live",
+      "purpose": "认识溶解性与溶质、溶剂种类有关。",
+      "controlsReviewed": {
+        "keys": [
+          "solute",
+          "solvent"
+        ],
+        "scientificChecks": "四种溶质与三种溶剂逐项判断溶解/少溶/禁用组合"
+      },
+      "sceneBehavior": "可溶形成均一体系，少溶保留固体，禁用组合不展示正常反应",
+      "limitations": [
+        "未输入精确用量与温度，不给溶解度或浓度；汽油混合物仅资料比较"
+      ],
+      "fixes": [
+        "修复所有溶剂组合都画有色溶液的错误"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "有色不等于不均一，溶液可以有颜色。"
+        ],
+        "pitfallsChecked": [
+          "本模型不把所有试剂组合都列为可操作实验。"
+        ]
+      }
+    },
+    {
+      "id": "chem-solution",
+      "title": "氯化钠溶液：配制用量与质量分数",
+      "mode": "live",
+      "purpose": "依据溶质和溶液质量计算并配制。",
+      "controlsReviewed": {
+        "keys": [
+          "salt",
+          "water"
+        ],
+        "scientificChecks": "盐量、水量和20℃36g/100g水饱和上限核对"
+      },
+      "sceneBehavior": "水量改变液位，超过溶解上限有未溶固体，质量分数更新",
+      "limitations": [
+        "只完成用量和溶解结果计算，未模拟天平称量、装瓶全过程"
+      ],
+      "fixes": [
+        "即时可用，固体和溶液质量分开"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "w=m(溶质)/m(溶液)×100%；未溶固体不计入溶液质量。"
+        ],
+        "pitfallsChecked": [
+          "不能用溶剂质量作分母；量筒不是溶解容器。"
+        ]
+      }
+    },
+    {
+      "id": "chem-metal-properties",
+      "title": "常见金属的物理性质和化学性质",
+      "mode": "live",
+      "purpose": "综合观察金属的共同性质与差异。",
+      "controlsReviewed": {
+        "keys": [
+          "metal",
+          "test"
+        ],
+        "scientificChecks": "铁、铜、铝在外观、磁性、导电、稀酸四项逐一核对"
+      },
+      "sceneBehavior": "样品色泽、磁吸箭头、低压电路及气泡各有对应器材",
+      "limitations": [
+        "导电只作定性指示；铝表面氧化膜造成延迟不量化"
+      ],
+      "fixes": [
+        "替换共用金属块静态图"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "铝表面氧化膜会影响初始现象。"
+        ],
+        "pitfallsChecked": [
+          "不是所有金属都能被磁铁吸引。"
+        ]
+      }
+    },
+    {
+      "id": "chem-rust",
+      "title": "探究铁钉生锈的条件与防护",
+      "mode": "playback",
+      "purpose": "通过对照判断锈蚀所需条件。",
+      "controlsReviewed": {
+        "keys": [
+          "water",
+          "oxygen",
+          "coating",
+          "salt"
+        ],
+        "scientificChecks": "水、氧气、完好/破损涂层、盐分条件分别核对"
+      },
+      "sceneBehavior": "干燥对照与处理组并列，锈迹逐步出现，盐仅示意加快",
+      "limitations": [
+        "没有真实天数、腐蚀率；锈为混合物"
+      ],
+      "fixes": [
+        "修复初始已锈，去掉三支完全相同试管的伪对照"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "防锈可隔绝水和氧气；破损处仍可能锈蚀。"
+        ],
+        "pitfallsChecked": [
+          "铁锈是混合物，不能把所有铁锈写成纯Fe₂O₃。"
+        ]
+      }
+    },
+    {
+      "id": "chem-ph",
+      "title": "pH试纸与指示剂：读色及操作比较",
+      "mode": "live",
+      "purpose": "规范测定酸碱性并正确比较pH。",
+      "controlsReviewed": {
+        "keys": [
+          "pH",
+          "indicator",
+          "wet"
+        ],
+        "scientificChecks": "pH、试纸/石蕊/酚酞、湿试纸组合核对变色范围"
+      },
+      "sceneBehavior": "试纸与加入指示剂的液体分开绘制，湿纸有明显提示",
+      "limitations": [
+        "pH是题设已知值；湿试纸不编造精确偏差"
+      ],
+      "fixes": [
+        "改读色操作练习，工具不再都画成一张纸"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "pH试纸不能直接浸入原液；检验时通常不预先润湿。"
+        ],
+        "pitfallsChecked": [
+          "用试纸不能报告虚假的多位小数精度。"
+        ]
+      }
+    },
+    {
+      "id": "chem-indicator",
+      "title": "自制酸碱指示剂的比较",
+      "mode": "live",
+      "purpose": "比较色素对不同酸碱性溶液的响应。",
+      "controlsReviewed": {
+        "keys": [
+          "pH",
+          "extract",
+          "filtered"
+        ],
+        "scientificChecks": "浸取、过滤、对照pH分别影响有效性与颜色"
+      },
+      "sceneBehavior": "原料、研碎和过滤装置；无提取不显色，未过滤保留碎屑",
+      "limitations": [
+        "仅同批天然色素示意，没有精确pH标定或自制实测"
+      ],
+      "fixes": [
+        "即时比较条件；保留颜色来自题设对照液的边界"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "色素种类、浓度、样液原色影响观察。"
+        ],
+        "pitfallsChecked": [
+          "无色酚酞不等于溶液一定呈酸性。"
+        ]
+      }
+    },
+    {
+      "id": "chem-acid-base",
+      "title": "常见酸、碱的化学性质",
+      "mode": "playback",
+      "purpose": "通过生成物变化归纳酸碱的主要化学性质。",
+      "controlsReviewed": {
+        "keys": [
+          "reaction",
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "CuO/Fe₂O₃与酸及CuSO₄与碱分别核对计量、颜色、剩余量"
+      },
+      "sceneBehavior": "氧化物逐渐减少，溶液变色；氢氧化铜沉淀逐渐出现",
+      "limitations": [
+        "只覆盖所列三组合，不代表所有酸碱性质"
+      ],
+      "fixes": [
+        "过程使用中间化学状态，修复初始已见最终沉淀"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "方程式须配平；沉淀应写化学式与颜色。"
+        ],
+        "pitfallsChecked": [
+          "铁锈去除实验不能无限延长，铁本身也会与酸反应。"
+        ]
+      }
+    },
+    {
+      "id": "chem-co2-naoh",
+      "title": "CO₂与NaOH：产物组成与检验证据",
+      "mode": "live",
+      "purpose": "借助对照与生成物证据探究无明显现象的反应。",
+      "controlsReviewed": {
+        "keys": [
+          "co2",
+          "base",
+          "test"
+        ],
+        "scientificChecks": "CO₂与NaOH计量包含碳酸盐/碳酸氢盐阶段，酸检验可选"
+      },
+      "sceneBehavior": "透明液中通气，取样后加入足量酸显示气泡与组成读数",
+      "limitations": [
+        "未模拟压强；酸放气仍需排除已溶CO₂的影响"
+      ],
+      "fixes": [
+        "题名收窄到组成与检验证据，补实际检验选择"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "CO₂+2NaOH → Na₂CO₃+H₂O。"
+        ],
+        "pitfallsChecked": [
+          "不能将瓶子变瘪完全归因于化学反应而忽略溶解。"
+        ]
+      }
+    },
+    {
+      "id": "chem-soil",
+      "title": "土壤酸碱性与植物生长的对照设计",
+      "mode": "live",
+      "purpose": "分别设置土壤酸碱性与营养元素供给的单变量对照，避免把pH和施肥效应混为一谈。",
+      "controlsReviewed": {
+        "keys": [
+          "pH",
+          "nutrient",
+          "controlled"
+        ],
+        "scientificChecks": "pH、N/P/K营养与其他环境可比性分别核对"
+      },
+      "sceneBehavior": "pH色条、完整营养对照和缺素症状资料显示",
+      "limitations": [
+        "没有真实植物生长、株高、产量或培养时长"
+      ],
+      "fixes": [
+        "归类设计练习，症状不冒充生长模拟"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "每次研究一个因素；pH与N、P、K供给分别设置对照。",
+          "完整营养组是缺素探究的对照，其他环境和取样方法保持一致。"
+        ],
+        "pitfallsChecked": [
+          "只观察一株不能排除个体差异，应设置重复。"
+        ]
+      }
+    },
+    {
+      "id": "chem-ammonia",
+      "title": "氨水挥发与分子运动",
+      "mode": "playback",
+      "purpose": "根据远处指示剂变色推断粒子的运动。",
+      "controlsReviewed": {
+        "keys": [
+          "source",
+          "cover"
+        ],
+        "scientificChecks": "有无氨水、罩盖与对照的证据边界核对"
+      },
+      "sceneBehavior": "两杯不接触；气相粒子示意移动，酚酞逐渐变红",
+      "limitations": [
+        "粒子轨迹非真实测量；未罩盖只说明证据较弱"
+      ],
+      "fixes": [
+        "改用中间状态，保留无来源不变色"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "运动的是氨分子，不是颜色或酚酞从一杯跳到另一杯。"
+        ],
+        "pitfallsChecked": [
+          "不能说肉眼直接看到了分子。"
+        ]
+      }
+    },
+    {
+      "id": "chem-diffusion",
+      "title": "比较冷、热水中的扩散",
+      "mode": "playback",
+      "purpose": "利用温度对照观察扩散快慢。",
+      "controlsReviewed": {
+        "keys": [
+          "temperature"
+        ],
+        "scientificChecks": "10—70℃与其余条件相同的比较核对"
+      },
+      "sceneBehavior": "品红由局部逐步散开，温度改变示意扩散进度",
+      "limitations": [
+        "真实还可能有对流；不输出扩散系数或实际耗时"
+      ],
+      "fixes": [
+        "按进度重新算分布，避免拿最终分布全程播放"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "比较时需保持水量、色素量和操作方式相同。"
+        ],
+        "pitfallsChecked": [
+          "真实实验中还可能伴随对流，不能把全部宏观运动都看作分子本身。"
+        ]
+      }
+    },
+    {
+      "id": "chem-water-electrolysis",
+      "title": "水的组成及变化的探究",
+      "mode": "playback",
+      "purpose": "把电极气体比例与元素组成联系。",
+      "controlsReviewed": {
+        "keys": [
+          "water",
+          "power"
+        ],
+        "scientificChecks": "通断电、理想分解质量分别影响H₂/O₂生成量"
+      },
+      "sceneBehavior": "两极分别冒泡，阴极与阳极集气高度2∶1",
+      "limitations": [
+        "给定的是已分解水质量；无电流、电压、法拉第效率模型"
+      ],
+      "fixes": [
+        "播放阶段与生成量同步，保持体积比与质量比区分"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "2H₂O → 2H₂↑+O₂↑；条件为通电。"
+        ],
+        "pitfallsChecked": [
+          "体积比2∶1不是质量比；氢氧质量比是1∶8。"
+        ]
+      }
+    },
+    {
+      "id": "chem-ethanol",
+      "title": "乙醇燃烧与元素组成的证据",
+      "mode": "playback",
+      "purpose": "用生成物检验与计量关系说明燃料组成。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "乙醇与氧气限制关系核对；缺氧明确拒绝完全燃烧预测"
+      },
+      "sceneBehavior": "点燃后显示酒精燃具与产物观察区域",
+      "limitations": [
+        "只模型化充分燃烧；没有真实燃烧动力学"
+      ],
+      "fixes": [
+        "修复阶段0已反应；保留缺氧模型失效提示"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "C₂H₅OH+3O₂ → 2CO₂+3H₂O，条件为点燃。"
+        ],
+        "pitfallsChecked": [
+          "氧气不足时不能套用完全燃烧的产物种类预测。"
+        ]
+      }
+    },
+    {
+      "id": "chem-neutralization",
+      "title": "中和反应中的pH与温度变化",
+      "mode": "playback",
+      "purpose": "用指示剂、温度和物质计量共同判断中和过程。",
+      "controlsReviewed": {
+        "keys": [
+          "acidVolume",
+          "baseVolume",
+          "temperature"
+        ],
+        "scientificChecks": "0.10mol/L酸碱体积、初温、pH与中和热核对"
+      },
+      "sceneBehavior": "逐渐加碱，pH与酚酞变色；完成后显示Godot末温",
+      "limitations": [
+        "pH按25℃平衡；温升用绝热近似，忽略散热与容器吸热"
+      ],
+      "fixes": [
+        "新增滴加场景，中间pH不再直接跳到终点；实际Godot求温升"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "无明显现象不代表未反应；过量试剂影响最终酸碱性。"
+        ],
+        "pitfallsChecked": [
+          "溶液呈中性不等于没有溶质，仍有NaCl。"
+        ]
+      }
+    },
+    {
+      "id": "chem-metal-acid",
+      "title": "金属与稀酸的反应及活动性",
+      "mode": "playback",
+      "purpose": "比较反应能否发生与氢气生成量。",
+      "controlsReviewed": {
+        "keys": [
+          "metal",
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "Mg/Zn/Fe/Al/Cu与HCl的配平及限制量核对"
+      },
+      "sceneBehavior": "金属减少、氢气气泡；铜不放氢，铁溶液呈浅绿",
+      "limitations": [
+        "未模拟金属表面积或氧化膜引起的速率差"
+      ],
+      "fixes": [
+        "金属和气泡代替泛用两烧杯，剩余量控制金属可见度"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "等质量不同金属生成氢气量不一定按活动性排序。"
+        ],
+        "pitfallsChecked": [
+          "铁与稀盐酸反应生成FeCl₂，不是FeCl₃。"
+        ]
+      }
+    },
+    {
+      "id": "chem-combustion",
+      "title": "燃烧条件的探究",
+      "mode": "live",
+      "purpose": "用控制变量识别燃烧的必要条件。",
+      "controlsReviewed": {
+        "keys": [
+          "material",
+          "temperature",
+          "oxygen"
+        ],
+        "scientificChecks": "可燃性、氧气接触、示例温度阈值三条件交叉核对"
+      },
+      "sceneBehavior": "材料、环境条件及能否燃烧即时显示",
+      "limitations": [
+        "着火阈值是课堂示例，受形态环境影响；非精确着火测试"
+      ],
+      "fixes": [
+        "删除高温仍画水浴的不合理装置，改条件比较"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "灭火可移走燃料、隔绝氧气或降温至着火点以下。"
+        ],
+        "pitfallsChecked": [
+          "灭火是降低温度，不是降低物质的着火点。"
+        ]
+      }
+    },
+    {
+      "id": "chem-conservation",
+      "title": "比较化学反应前后的质量",
+      "mode": "playback",
+      "purpose": "明确称量范围后检验质量守恒。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2",
+          "vessel"
+        ],
+        "scientificChecks": "开放与密闭称量范围、两反应物质量与CO₂逸出量核对"
+      },
+      "sceneBehavior": "封闭也可见内部反应；开放体系左盘因气体逸出变轻",
+      "limitations": [
+        "读数仅溶质反应部分，容器和溶剂恒定量省略"
+      ],
+      "fixes": [
+        "修复密闭模式完全静止和初始已完成反应"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "Na₂CO₃+2HCl → 2NaCl+H₂O+CO₂↑。"
+        ],
+        "pitfallsChecked": [
+          "不能把气体逸出造成的读数减少解释为质量守恒失效。"
+        ]
+      }
+    },
+    {
+      "id": "chem-carbon-oxygen",
+      "title": "木炭在空气和氧气中燃烧",
+      "mode": "playback",
+      "purpose": "比较C在不同氧含量环境下的现象。",
+      "controlsReviewed": {
+        "keys": [
+          "atmosphere",
+          "mass",
+          "ignited"
+        ],
+        "scientificChecks": "空气与氧气、引燃及碳质量对应充分燃烧产物"
+      },
+      "sceneBehavior": "燃烧匙及集气瓶，红热/发光与生成CO₂说明",
+      "limitations": [
+        "供氧足量为假定，不用有限气瓶体积计算氧耗"
+      ],
+      "fixes": [
+        "保留课堂燃烧范围，反应量改成随阶段增长"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "C+O₂ → CO₂，条件为点燃。"
+        ],
+        "pitfallsChecked": [
+          "氧气支持燃烧，并不说明氧气本身是燃料。"
+        ]
+      }
+    },
+    {
+      "id": "chem-sulfur-oxygen",
+      "title": "硫在空气和氧气中燃烧",
+      "mode": "playback",
+      "purpose": "比较S在不同氧含量环境下的现象。",
+      "controlsReviewed": {
+        "keys": [
+          "atmosphere",
+          "mass",
+          "ignited"
+        ],
+        "scientificChecks": "空气淡蓝与氧气蓝紫、引燃及硫质量核对"
+      },
+      "sceneBehavior": "燃烧匙及硫的火焰示意，产物SO₂计量",
+      "limitations": [
+        "颜色示意不等于光谱；教师排风演示"
+      ],
+      "fixes": [
+        "阶段产量不再初始跳到终值"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "S+O₂ → SO₂，条件为点燃。"
+        ],
+        "pitfallsChecked": [
+          "氧气支持燃烧，并不说明氧气本身是燃料。"
+        ]
+      }
+    },
+    {
+      "id": "chem-iron-oxygen",
+      "title": "铁丝在氧气中燃烧",
+      "mode": "playback",
+      "purpose": "比较Fe在不同氧含量环境下的现象。",
+      "controlsReviewed": {
+        "keys": [
+          "atmosphere",
+          "mass",
+          "ignited"
+        ],
+        "scientificChecks": "细铁丝在氧气中燃烧，空气下通常不持续；质量比168∶232核对"
+      },
+      "sceneBehavior": "螺旋铁丝、瓶底水与火星示意",
+      "limitations": [
+        "忽略真实温度与铁氧化物复杂组成，采用Fe₃O₄课堂模型"
+      ],
+      "fixes": [
+        "按进度形成产物，保留瓶底水的器材意义"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "3Fe+2O₂ → Fe₃O₄，条件为点燃。"
+        ],
+        "pitfallsChecked": [
+          "氧气支持燃烧，并不说明氧气本身是燃料。"
+        ]
+      }
+    },
+    {
+      "id": "chem-permanganate",
+      "title": "加热高锰酸钾制氧气",
+      "mode": "playback",
+      "purpose": "认识固体加热型制气装置及操作顺序。",
+      "controlsReviewed": {
+        "keys": [
+          "mass",
+          "heated",
+          "cotton"
+        ],
+        "scientificChecks": "KMnO₄质量、是否加热、是否放棉花分别核对"
+      },
+      "sceneBehavior": "管口略向下、棉花、加热及排水集气过程",
+      "limitations": [
+        "只计算完全分解理论量，不输出真实分解温度或速率"
+      ],
+      "fixes": [
+        "使用中间产量，未加热无产气"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "开始排出的气体混有装置内空气。"
+        ],
+        "pitfallsChecked": [
+          "先停热后移导管可能发生倒吸。"
+        ]
+      }
+    },
+    {
+      "id": "chem-limewater",
+      "title": "二氧化碳与澄清石灰水",
+      "mode": "playback",
+      "purpose": "观察二氧化碳少量与过量时的区别。",
+      "controlsReviewed": {
+        "keys": [
+          "co2",
+          "lime"
+        ],
+        "scientificChecks": "CO₂少量、等量、过量与Ca(OH)₂量交叉核对"
+      },
+      "sceneBehavior": "白色沉淀逐渐出现；继续过量会重新消失",
+      "limitations": [
+        "理想分步计量，忽略平衡与混合速率"
+      ],
+      "fixes": [
+        "修复只画最终状态；沉淀量控制杯底固体"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "CO₂+Ca(OH)₂ → CaCO₃↓+H₂O。",
+          "CaCO₃+CO₂+H₂O → Ca(HCO₃)₂。"
+        ],
+        "pitfallsChecked": [
+          "没有浑浊不能在任何条件下排除CO₂，需考虑试剂失效和气体过量。"
+        ]
+      }
+    },
+    {
+      "id": "chem-co2-extinguish",
+      "title": "倾倒二氧化碳与阶梯蜡烛",
+      "mode": "playback",
+      "purpose": "从先后熄灭顺序推断气体性质。",
+      "controlsReviewed": {
+        "keys": [
+          "gas"
+        ],
+        "scientificChecks": "CO₂与空气对照，不将CO₂结论外推到所有燃烧物"
+      },
+      "sceneBehavior": "低处蜡烛先熄灭，高处随后熄灭",
+      "limitations": [
+        "气体积聚只作定性示意，不解流体输运"
+      ],
+      "fixes": [
+        "保留有效阶段顺序，注明气体位置颜色是示意"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "结论要同时联系熄灭与先后顺序。"
+        ],
+        "pitfallsChecked": [
+          "CO₂并非不能支持任何物质的燃烧。"
+        ]
+      }
+    },
+    {
+      "id": "chem-co2-solubility",
+      "title": "二氧化碳的溶解与软瓶变化",
+      "mode": "playback",
+      "purpose": "分析气体被水吸收后瓶内外压强差的证据。",
+      "controlsReviewed": {
+        "keys": [
+          "gas",
+          "water"
+        ],
+        "scientificChecks": "CO₂/空气与有无水振荡条件核对"
+      },
+      "sceneBehavior": "满足条件后软瓶逐步变瘪",
+      "limitations": [
+        "只作定性现象；没有真实瓶刚度、压强或气液平衡计算"
+      ],
+      "fixes": [
+        "按实际条件显示形变，保留压差解释边界"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "瓶变瘪可说明气体减少，但不能仅凭此确定化学变化。"
+        ],
+        "pitfallsChecked": [
+          "不能说瓶子被内部“吸力”吸瘪。"
+        ]
+      }
+    },
+    {
+      "id": "chem-carbon-cuo",
+      "title": "木炭还原氧化铜",
+      "mode": "playback",
+      "purpose": "用颜色和气体检验判断还原反应。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "CuO与C限制量及铜/CO₂质量守恒核对"
+      },
+      "sceneBehavior": "黑色固体转红，气体进入石灰水",
+      "limitations": [
+        "高温教师演示；不量化反应速率或实际产率"
+      ],
+      "fixes": [
+        "过程状态与产物同步，区别固体颜色"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "2CuO+C → 2Cu+CO₂↑。"
+        ],
+        "pitfallsChecked": [
+          "应描述颜色变化，不以“生成铜”代替实验现象。"
+        ]
+      }
+    },
+    {
+      "id": "chem-iron-smelting",
+      "title": "一氧化碳还原氧化铁的模型",
+      "mode": "playback",
+      "purpose": "把冶炼中的氧转移与质量计算联系。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "Fe₂O₃与CO限制量、112/160理论铁量核对"
+      },
+      "sceneBehavior": "红棕固体逐步成为灰色产物，CO₂检验装置",
+      "limitations": [
+        "装置仍简化，尾气处理细部未完整交互；不能据图实施"
+      ],
+      "fixes": [
+        "修复氧化铁初始误画黑色；保留模型限定"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "计算矿石产铁需先扣除杂质。"
+        ],
+        "pitfallsChecked": [
+          "CO有毒，不把模型当作家庭操作指南。"
+        ]
+      }
+    },
+    {
+      "id": "chem-metal-displacement",
+      "title": "金属与盐溶液的置换",
+      "mode": "playback",
+      "purpose": "通过置换现象比较金属活动性。",
+      "controlsReviewed": {
+        "keys": [
+          "pair",
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "Fe-Cu、Cu-Ag、Al-Cu可反应及Cu-Fe、Cu-Al不反应逐项核对"
+      },
+      "sceneBehavior": "金属逐渐减少，铜/银在表面沉积，溶液颜色变化",
+      "limitations": [
+        "铝假定氧化膜已处理；未建真实反应速率"
+      ],
+      "fixes": [
+        "实现金属表面沉积，剩余量控制原金属显示"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "Fe+CuSO₄ → FeSO₄+Cu。",
+          "2Al+3CuSO₄ → Al₂(SO₄)₃+3Cu；铜不能置换硫酸铝中的铝。"
+        ],
+        "pitfallsChecked": [
+          "盐溶液颜色变浅不一定代表盐已完全消耗。"
+        ]
+      }
+    },
+    {
+      "id": "chem-alloy",
+      "title": "合金与纯金属的典型性质对照",
+      "mode": "live",
+      "purpose": "理解合金性质与组成有关。",
+      "controlsReviewed": {
+        "keys": [
+          "pair",
+          "test"
+        ],
+        "scientificChecks": "铜/黄铜、锡/焊锡与刻痕/熔化资料逐项审读"
+      },
+      "sceneBehavior": "典型刻痕与熔化结果即时比较",
+      "limitations": [
+        "未指定合金组成，不能给统一硬度、熔点或声称完成测试"
+      ],
+      "fixes": [
+        "改资料分析，保留有意义的适用范围"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "合金属于混合物；性能规律通常有适用范围。"
+        ],
+        "pitfallsChecked": [
+          "不可说所有合金的所有性能都优于纯金属。"
+        ]
+      }
+    },
+    {
+      "id": "chem-saturation",
+      "title": "饱和溶液与溶解度",
+      "mode": "live",
+      "purpose": "用温度和溶剂量判断能否继续溶解。",
+      "controlsReviewed": {
+        "keys": [
+          "solute",
+          "temperature",
+          "soluteMass",
+          "water"
+        ],
+        "scientificChecks": "溶质种类、温度、水量、加入量按S×水量/100核对"
+      },
+      "sceneBehavior": "饱和上限、已溶和剩余固体即时联动",
+      "limitations": [
+        "0—80℃表内线性插值；不模拟溶解速率"
+      ],
+      "fixes": [
+        "即时状态比较，未溶物由数量决定"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "S是一定温度下100 g溶剂达到饱和时溶解的质量。"
+        ],
+        "pitfallsChecked": [
+          "浓溶液不一定饱和；饱和溶液不一定很浓。"
+        ]
+      }
+    },
+    {
+      "id": "chem-crystallization",
+      "title": "冷却结晶与溶解度曲线",
+      "mode": "playback",
+      "purpose": "从两温度的溶解度差估算析晶量。",
+      "controlsReviewed": {
+        "keys": [
+          "solute",
+          "hot",
+          "cold",
+          "water"
+        ],
+        "scientificChecks": "KNO₃/NaCl、起末温、水量核对；升温不得产生负晶体"
+      },
+      "sceneBehavior": "温度改变，超出新溶解能力的晶体逐渐增加",
+      "limitations": [
+        "初始饱和、无蒸发；忽略过饱和与晶核形成"
+      ],
+      "fixes": [
+        "不再从进度0画出全部晶体"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "结晶后的母液通常仍含溶质。"
+        ],
+        "pitfallsChecked": [
+          "不能把冷却后的溶液当成纯水。"
+        ]
+      }
+    },
+    {
+      "id": "chem-emulsion",
+      "title": "乳化作用与溶解的区别",
+      "mode": "live",
+      "purpose": "区分暂时分散、乳化与真正溶解。",
+      "controlsReviewed": {
+        "keys": [
+          "detergent",
+          "shake",
+          "stage"
+        ],
+        "scientificChecks": "有无洗涤剂、是否振荡、静置前后组合核对"
+      },
+      "sceneBehavior": "分层与油滴分散即时切换，洗涤剂稳定分散",
+      "limitations": [
+        "只有定性状态，没有乳滴动力学或稳定时间"
+      ],
+      "fixes": [
+        "修复无洗涤剂刚振荡仍画分层，取消无效开始"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "洗涤剂去油污与汽油溶解油污原理不同。"
+        ],
+        "pitfallsChecked": [
+          "均匀看起来相同不代表体系都是溶液。"
+        ]
+      }
+    },
+    {
+      "id": "chem-lime-heat",
+      "title": "生石灰与水反应：计量与放热现象",
+      "mode": "playback",
+      "purpose": "观察化学变化与能量变化同时发生。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "CaO与水限制关系及产物质量核对"
+      },
+      "sceneBehavior": "反应中固体与液体变化，并用温度计标放热方向",
+      "limitations": [
+        "不计算无热量资料支持的真实温升"
+      ],
+      "fixes": [
+        "题名标明计量与放热现象，补定性热效应"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "化学反应伴随能量变化。"
+        ],
+        "pitfallsChecked": [
+          "生石灰、熟石灰、石灰石不是同一种物质。"
+        ]
+      }
+    },
+    {
+      "id": "chem-methane",
+      "title": "甲烷完全燃烧：水的检验与产物计算",
+      "mode": "playback",
+      "purpose": "从水与CO₂的检验分析天然气主要成分的燃烧。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "CH₄与氧气充分/不足及16∶44∶36质量关系核对"
+      },
+      "sceneBehavior": "气体燃烧及冷烧杯水滴，产物在计算中核对",
+      "limitations": [
+        "CO₂检验的操作细节未全程模拟，缺氧不预测真实混合产物"
+      ],
+      "fixes": [
+        "按阶段展示燃烧产物，保留完全燃烧适用边界"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "燃料不充分燃烧可能产生CO等有害物。"
+        ],
+        "pitfallsChecked": [
+          "产物检验先水后CO₂，避免石灰水带来的水影响判断。"
+        ]
+      }
+    },
+    {
+      "id": "chem-carbonate-test",
+      "title": "碳酸盐与稀酸的检验",
+      "mode": "playback",
+      "purpose": "通过气体及后续检验判断碳酸盐类。",
+      "controlsReviewed": {
+        "keys": [
+          "reaction",
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "Na₂CO₃/NaHCO₃/CaCO₃与盐酸质量关系及限制量核对"
+      },
+      "sceneBehavior": "带盖发生器经导管送气到石灰水，出现白色浑浊",
+      "limitations": [
+        "检验不能单独区分碳酸根与碳酸氢根"
+      ],
+      "fixes": [
+        "补第二步石灰水检验，避免只有制气图却宣称鉴别完成"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "不同碳酸盐生成相同质量CO₂所需样品量不同。"
+        ],
+        "pitfallsChecked": [
+          "该检验不能独自区分CO₃²⁻和HCO₃⁻。"
+        ]
+      }
+    },
+    {
+      "id": "chem-precipitation",
+      "title": "复分解反应与沉淀生成",
+      "mode": "playback",
+      "purpose": "联系离子组合、生成沉淀与可观察现象。",
+      "controlsReviewed": {
+        "keys": [
+          "reaction",
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "五组复分解反应配平、产物颜色、限制试剂核对"
+      },
+      "sceneBehavior": "由无沉淀到逐渐生成白色或蓝色固体",
+      "limitations": [
+        "只覆盖列出的反应，颜色不能单独鉴别沉淀成分"
+      ],
+      "fixes": [
+        "修复初始即终态，量与颜色按具体产物变化"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "Na₂CO₃+CaCl₂ → CaCO₃↓+2NaCl。",
+          "Na₂CO₃+Ca(OH)₂ → CaCO₃↓+2NaOH；BaCl₂+CuSO₄ → BaSO₄↓+CuCl₂。"
+        ],
+        "pitfallsChecked": [
+          "两种溶液混合不是必然反应。"
+        ]
+      }
+    },
+    {
+      "id": "chem-dilution",
+      "title": "溶液稀释与溶质守恒",
+      "mode": "live",
+      "purpose": "用溶质质量不变计算稀释结果。",
+      "controlsReviewed": {
+        "keys": [
+          "mass",
+          "percent",
+          "water"
+        ],
+        "scientificChecks": "原质量×原分数守恒，加水后总质量作分母"
+      },
+      "sceneBehavior": "即时加水液位与最终质量分数一起更新",
+      "limitations": [
+        "输入为质量，不假定溶液体积严格相加"
+      ],
+      "fixes": [
+        "改直接计算与条件比较，保留分步计算"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "m₁w₁=m₂w₂。"
+        ],
+        "pitfallsChecked": [
+          "不要将体积直接相加当作精确质量。"
+        ]
+      }
+    },
+    {
+      "id": "chem-hardness",
+      "title": "硬水与软水的比较",
+      "mode": "live",
+      "purpose": "用相同肥皂液观察硬度差异。",
+      "controlsReviewed": {
+        "keys": [
+          "water",
+          "soap"
+        ],
+        "scientificChecks": "三种水样、0—5份肥皂液交叉核对"
+      },
+      "sceneBehavior": "软水对照和处理水并列；泡沫/浮渣随水样与肥皂量变化",
+      "limitations": [
+        "泡沫只是定性，不能换算未经标定硬度"
+      ],
+      "fixes": [
+        "补真实泡沫和浮渣；零肥皂不再给比较结论"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "煮沸能降低部分硬度；蒸馏可进一步分离不挥发盐。"
+        ],
+        "pitfallsChecked": [
+          "不能认为所有硬度都能靠煮沸完全去除。"
+        ]
+      }
+    },
+    {
+      "id": "chem-copper-hydroxide-heat",
+      "title": "氢氧化铜沉淀的生成与受热变化",
+      "mode": "playback",
+      "purpose": "观察先沉淀后分解的连续变化。",
+      "controlsReviewed": {
+        "keys": [
+          "salt",
+          "heat"
+        ],
+        "scientificChecks": "CuSO₄量与是否加热两阶段计量核对"
+      },
+      "sceneBehavior": "先蓝色Cu(OH)₂沉淀，后加热变黑CuO",
+      "limitations": [
+        "NaOH假定足量，阶段不是实际耗时"
+      ],
+      "fixes": [
+        "修复最终黑色从一开始出现，增加先沉淀后加热"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "CuSO₄+2NaOH → Cu(OH)₂↓+Na₂SO₄；Cu(OH)₂ → CuO+H₂O。"
+        ],
+        "pitfallsChecked": [
+          "不是所有沉淀受热都以同样方式分解。"
+        ]
+      }
+    },
+    {
+      "id": "chem-air-station",
+      "title": "空气检测样本的比较与采样设计",
+      "mode": "live",
+      "purpose": "练习传感器采样方案与数据比较。",
+      "controlsReviewed": {
+        "keys": [
+          "sampleA",
+          "sampleB",
+          "sameTime"
+        ],
+        "scientificChecks": "A/B样本与同一时段仪器条件核对"
+      },
+      "sceneBehavior": "两组输入读数用条形即时比较，差值明确",
+      "limitations": [
+        "没有实时传感器、检测站组装或AQI换算"
+      ],
+      "fixes": [
+        "改题名、种类和步骤，明确资料分析"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "比较需记录地点、时间、仪器与重复样本。"
+        ],
+        "pitfallsChecked": [
+          "PM₂.₅单项数值不是综合AQI；不得自动给出未经标准换算的等级。"
+        ]
+      }
+    },
+    {
+      "id": "chem-atom-model",
+      "title": "制作模型理解分子、原子与元素",
+      "mode": "live",
+      "purpose": "从模型中区分原子数、分子数与元素种类。",
+      "controlsReviewed": {
+        "keys": [
+          "molecule",
+          "count"
+        ],
+        "scientificChecks": "H₂O/CO₂/O₂/CH₄和1—5个分子逐项核对原子数"
+      },
+      "sceneBehavior": "按分子组成和合理中心连接绘制球棍，计数随个数变",
+      "limitations": [
+        "颜色尺寸非真实；甲烷为立体结构的平面示意"
+      ],
+      "fixes": [
+        "修复原来绕空点连接的伪分子结构"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "元素属于种类概念，通常说“某元素”而不说“几个元素”。"
+        ],
+        "pitfallsChecked": [
+          "球的颜色与比例只是模型约定。"
+        ]
+      }
+    },
+    {
+      "id": "chem-water-filter-design",
+      "title": "净水模块选择与处理边界",
+      "mode": "live",
+      "purpose": "根据水质需求选择处理模块。",
+      "controlsReviewed": {
+        "keys": [
+          "method",
+          "impurity"
+        ],
+        "scientificChecks": "模块与指定杂质的匹配即时核对"
+      },
+      "sceneBehavior": "真实对应过滤、活性炭或蒸馏示意和处理后状态",
+      "limitations": [
+        "未建完整净水器、流量、吸附容量、微生物检测"
+      ],
+      "fixes": [
+        "从完整设计改为模块选择练习并记录部分覆盖"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "实验室模型仅解释净化原理。"
+        ],
+        "pitfallsChecked": [
+          "透明不等于可饮用。"
+        ]
+      }
+    },
+    {
+      "id": "chem-oxygen-design",
+      "title": "供氧量与过氧化氢用量的设计计算",
+      "mode": "live",
+      "purpose": "将供氧需求与反应计量、可控性联系。",
+      "controlsReviewed": {
+        "keys": [
+          "target",
+          "percent",
+          "collection"
+        ],
+        "scientificChecks": "目标O₂、浓度、收集率反推用量：默认20g，80%收集率需25g"
+      },
+      "sceneBehavior": "目标、需生成量、溶液用量同步显示",
+      "limitations": [
+        "没有医疗供氧、制造、流量控制或纯度验证"
+      ],
+      "fixes": [
+        "新增独立逆算模型，删除重复制气控件"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "化学计量产量不等于装置实际收集量。"
+        ],
+        "pitfallsChecked": [
+          "本装置不能作为医疗或救生供氧设备。"
+        ]
+      }
+    },
+    {
+      "id": "chem-carbon-budget",
+      "title": "用电排放估算与节电方案比较",
+      "mode": "live",
+      "purpose": "用明确边界与给定因子比较方案。",
+      "controlsReviewed": {
+        "keys": [
+          "energy",
+          "factor",
+          "saved"
+        ],
+        "scientificChecks": "电量、同一排放因子、节电百分比核对单位与边界"
+      },
+      "sceneBehavior": "方案前后条形和减少量即时变化",
+      "limitations": [
+        "因子为题设，不是实时全国值；非全生命周期碳中和"
+      ],
+      "fixes": [
+        "收窄题名为用电排放计算，不假称完成完整行动项目"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "排放量=活动量×排放因子。"
+        ],
+        "pitfallsChecked": [
+          "示例因子不是全国统一实时因子，也不是完整生命周期核算。"
+        ]
+      }
+    },
+    {
+      "id": "chem-fuel-survey",
+      "title": "家庭能源方案的热效率计算",
+      "mode": "live",
+      "purpose": "区分输入能量与有效利用能量。",
+      "controlsReviewed": {
+        "keys": [
+          "fuel",
+          "demand",
+          "efficiency"
+        ],
+        "scientificChecks": "需求、效率及气/电情境分别核对"
+      },
+      "sceneBehavior": "Godot求输入和非有效能量，图示能量分配即时变化",
+      "limitations": [
+        "没做真实燃料历史调查、成本和全生命周期排放"
+      ],
+      "fixes": [
+        "改热效率计算题名及步骤，实际引擎求解保留"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "效率=有效能量/输入能量。"
+        ],
+        "pitfallsChecked": [
+          "不能仅凭电器无现场废气断定全生命周期零排放。"
+        ]
+      }
+    },
+    {
+      "id": "chem-recycling",
+      "title": "回收物的材料识别与初步分选",
+      "mode": "live",
+      "purpose": "利用材料性质提出回收流程。",
+      "controlsReviewed": {
+        "keys": [
+          "material",
+          "method"
+        ],
+        "scientificChecks": "五种材料与磁选/人工分选方式逐项核对"
+      },
+      "sceneBehavior": "铁罐靠近磁铁，其他材料按类型显示；电池专门辨识",
+      "limitations": [
+        "不是工业回收流程、回收率或地方垃圾规则数据库"
+      ],
+      "fixes": [
+        "从泛用金属块改实际材质辨识与分选图"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "回收可减少原生资源消耗；混合材料需进一步处理。"
+        ],
+        "pitfallsChecked": [
+          "废电池不得拆解或用酸浸泡。"
+        ]
+      }
+    },
+    {
+      "id": "chem-sea-salt",
+      "title": "海水制盐的理想蒸发模型",
+      "mode": "playback",
+      "purpose": "追踪水减少、饱和与析盐的关系。",
+      "controlsReviewed": {
+        "keys": [
+          "mass",
+          "percent",
+          "evaporated"
+        ],
+        "scientificChecks": "初盐质量、含盐率、蒸发水上限与20℃溶解能力核对"
+      },
+      "sceneBehavior": "水位下降，达到饱和后出现晶体，默认能看见析盐",
+      "limitations": [
+        "仅NaCl-水，不是海洋资源综合利用或工业多盐分离"
+      ],
+      "fixes": [
+        "默认蒸发量改480g以体现析晶，阶段物质量联动"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "海水还含多种盐，本页只用NaCl简化。"
+        ],
+        "pitfallsChecked": [
+          "蒸发全部水的理论残留物不等于工业纯NaCl。"
+        ]
+      }
+    },
+    {
+      "id": "chem-aerospace",
+      "title": "航天材料与能源：需求匹配练习",
+      "mode": "live",
+      "purpose": "根据使用需求提出材料选择理由和待验证指标。",
+      "controlsReviewed": {
+        "keys": [
+          "material",
+          "need"
+        ],
+        "scientificChecks": "材料与轻量化/耐热/供能需求交叉审读"
+      },
+      "sceneBehavior": "材料性质与需求同时显示，明确还需查证指标",
+      "limitations": [
+        "没有航天器性能模拟或完成资料调查"
+      ],
+      "fixes": [
+        "改需求匹配资料练习，去掉伪造实验仪器感"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "复合材料通常由不同材料组合，不等于合金。"
+        ],
+        "pitfallsChecked": [
+          "“先进”不能替代具体性能证据。"
+        ]
+      }
+    },
+    {
+      "id": "chem-protein",
+      "title": "常见纤维的外观与燃烧现象对照",
+      "mode": "live",
+      "purpose": "利用多种证据辨别纤维类型。",
+      "controlsReviewed": {
+        "keys": [
+          "material",
+          "need"
+        ],
+        "scientificChecks": "羊毛/棉/涤纶与外观/燃烧资料交叉核对"
+      },
+      "sceneBehavior": "外观纤维、松脆黑渣、灰白灰烬及熔融硬球分别显示",
+      "limitations": [
+        "只典型单一纤维，混纺不保证符合；不直接嗅吸"
+      ],
+      "fixes": [
+        "修复观察方式无效，改资料分析且模型真正区分条件"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "羊毛燃烧与烧焦羽毛气味相似，但不能直接嗅吸烟气。"
+        ],
+        "pitfallsChecked": [
+          "混纺材料可能同时具有多种表现。"
+        ]
+      }
+    },
+    {
+      "id": "chem-plastic",
+      "title": "塑料受热表现的资料比较",
+      "mode": "live",
+      "purpose": "比较不同高分子材料受热表现。",
+      "controlsReviewed": {
+        "keys": [
+          "material",
+          "need"
+        ],
+        "scientificChecks": "热塑性/热固性与常温/受热组合核对"
+      },
+      "sceneBehavior": "常温平直，热塑性受热软化变形，热固性不按同样方式熔融",
+      "limitations": [
+        "没有具体牌号或精确温度；不模拟任意废塑料回收"
+      ],
+      "fixes": [
+        "修复冷/热选择不改变结论和图形"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "不是所有塑料都能靠加热重新成型。"
+        ],
+        "pitfallsChecked": [
+          "软化不是任意高温都安全，过热可能分解。"
+        ]
+      }
+    },
+    {
+      "id": "chem-hydrogen-burn",
+      "title": "氢气燃烧与水的组成证据",
+      "mode": "playback",
+      "purpose": "通过产物分析说明水含氢、氧元素。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "H₂/O₂质量关系4∶32∶36核对，缺氧不套完全燃烧"
+      },
+      "sceneBehavior": "先点燃，后干冷烧杯内水滴出现",
+      "limitations": [
+        "假定已验纯；不提供混合气体点火或真实燃烧参数"
+      ],
+      "fixes": [
+        "保持纯气体教学模型，按阶段出现产物"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "2H₂+O₂ → 2H₂O（点燃）。"
+        ],
+        "pitfallsChecked": [
+          "必须先验纯；本页只模拟纯净气体的计量，不提供混合气体点火操作。"
+        ]
+      }
+    },
+    {
+      "id": "chem-magnesium-mass",
+      "title": "镁燃烧后的固体增重与质量守恒",
+      "mode": "playback",
+      "purpose": "解释开放体系固体质量增加的来源。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "48∶32∶80质量关系和氧来源核对"
+      },
+      "sceneBehavior": "镁带、白光及收集固体示意",
+      "limitations": [
+        "纯氧理想MgO，真实空气氮化物及烟尘损失不纳入"
+      ],
+      "fixes": [
+        "按反应阶段推进；不把理想值说成实测增重"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "2Mg+O₂ → 2MgO；48 gMg与32 gO₂生成80 gMgO。"
+        ],
+        "pitfallsChecked": [
+          "真实空气中可能出现氮化物并有烟尘损失，不能将简化纯氧结果当作真实称量。"
+        ]
+      }
+    },
+    {
+      "id": "chem-reagent-taking",
+      "title": "试剂规范取用：固体转移与滴加",
+      "mode": "live",
+      "purpose": "按状态选择工具，减少污染与玻璃破损。",
+      "controlsReviewed": {
+        "keys": [
+          "form",
+          "operation"
+        ],
+        "scientificChecks": "块状、粉末、液体与规范/错误操作逐一核对"
+      },
+      "sceneBehavior": "镊子、纸槽、滴管和试管姿态按试剂状态不同",
+      "limitations": [
+        "倾倒细部仍只在步骤说明，未建完整操作评分器"
+      ],
+      "fixes": [
+        "替换所有状态共用镊子，归类操作练习"
+      ],
+      "status": "reviewed-with-limited-scope",
+      "examCheck": {
+        "checked": [
+          "块状固体避免垂直直落砸裂管底；粉末避免沾管口和管壁。"
+        ],
+        "pitfallsChecked": [
+          "胶头滴管不能平放、倒置或伸入另一试剂瓶；专用滴瓶滴管不冲洗后再放回。"
+        ]
+      }
+    },
+    {
+      "id": "chem-ethanol-water",
+      "title": "乙醇与水的互溶",
+      "mode": "live",
+      "purpose": "观察液体溶质与水形成均一体系。",
+      "controlsReviewed": {
+        "keys": [
+          "mixed",
+          "stage"
+        ],
+        "scientificChecks": "混合与充分静置条件核对，不允许互溶后重新分层"
+      },
+      "sceneBehavior": "未混合暂时界面与均一体系即时对比",
+      "limitations": [
+        "不以体积简单加和计算混合体积"
+      ],
+      "fixes": [
+        "保留合理状态对照，取消不必要播放"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "扩散也会使初始界面逐渐消失。"
+        ],
+        "pitfallsChecked": [
+          "未振荡时的暂时界面不表示两种液体不互溶。"
+        ]
+      }
+    },
+    {
+      "id": "chem-copper-concentration",
+      "title": "比较不同浓度硫酸铜溶液的颜色",
+      "mode": "live",
+      "purpose": "在可比观察条件下联系浓度与颜色深浅。",
+      "controlsReviewed": {
+        "keys": [
+          "salt",
+          "water",
+          "samePath"
+        ],
+        "scientificChecks": "0.1—5g溶质/50—200g水质量分数与同光程条件核对"
+      },
+      "sceneBehavior": "蓝色深浅和参照液层长度即时变化",
+      "limitations": [
+        "不是吸光度标定；输入范围按全部溶解"
+      ],
+      "fixes": [
+        "参照条件真正反映到图中，不仅更换文字"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "w=溶质质量/溶液质量×100%。"
+        ],
+        "pitfallsChecked": [
+          "容器、光程和光照不同会影响颜色判断。"
+        ]
+      }
+    },
+    {
+      "id": "chem-acid-properties",
+      "title": "观察盐酸与硫酸的物理性质",
+      "mode": "live",
+      "purpose": "区分挥发性、颜色和稀释前后的观察。",
+      "controlsReviewed": {
+        "keys": [
+          "acid",
+          "strength"
+        ],
+        "scientificChecks": "盐酸/硫酸及浓/稀组合核对挥发性和外观"
+      },
+      "sceneBehavior": "酸标签不同，浓盐酸开瓶上方有白雾，瓶塞另放",
+      "limitations": [
+        "物性资料，未定量测粘度/挥发量"
+      ],
+      "fixes": [
+        "修复原来盖着瓶盖却画瓶口白雾"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "酸的性质受浓度影响；不能靠直接嗅闻鉴别。"
+        ],
+        "pitfallsChecked": [
+          "物理性质观察不等于可以触摸试剂。"
+        ]
+      }
+    },
+    {
+      "id": "chem-sulfuric-dehydration",
+      "title": "浓硫酸的脱水性：材料炭化现象",
+      "mode": "playback",
+      "purpose": "从炭化现象认识浓硫酸的脱水性。",
+      "controlsReviewed": {
+        "keys": [
+          "material",
+          "acid"
+        ],
+        "scientificChecks": "纸/木/棉与浓/稀酸比较，炭化不能代表唯一反应"
+      },
+      "sceneBehavior": "浓酸接触区由浅色逐步变黑，稀酸无同样即时炭化",
+      "limitations": [
+        "复杂脱水不输出单一方程式或炭产率"
+      ],
+      "fixes": [
+        "过程状态与颜色同步，保留教师演示限定"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "变黑炭化是化学变化线索。"
+        ],
+        "pitfallsChecked": [
+          "本页不模拟具体反应式或炭产率；真实变化复杂。"
+        ]
+      }
+    },
+    {
+      "id": "chem-sulfuric-dilution",
+      "title": "浓硫酸稀释时的操作与放热",
+      "mode": "live",
+      "purpose": "联系放热与局部温度解释规定操作。",
+      "controlsReviewed": {
+        "keys": [
+          "order",
+          "stir"
+        ],
+        "scientificChecks": "酸入水/水入酸与是否搅拌组合核对"
+      },
+      "sceneBehavior": "倒入物、杯内物和玻璃棒不同；错误条件有操作提示",
+      "limitations": [
+        "只操作判断，不计算平均或局部真实温度"
+      ],
+      "fixes": [
+        "移除假播放，搅拌控件实际控制玻璃棒"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "应将酸缓慢加入水并不断搅拌；不得反向。"
+        ],
+        "pitfallsChecked": [
+          "不把平均温升等同于液面局部温度。"
+        ]
+      }
+    },
+    {
+      "id": "chem-solution-conductivity",
+      "title": "比较不同液体的导电性",
+      "mode": "live",
+      "purpose": "通过电学现象联系溶液中的可移动带电粒子。",
+      "controlsReviewed": {
+        "keys": [
+          "liquid",
+          "immersed"
+        ],
+        "scientificChecks": "四液体与电极接触条件核对，纯水不能说电流绝对0"
+      },
+      "sceneBehavior": "电极抬起/浸入、灯泡亮暗对应条件",
+      "limitations": [
+        "灯泡定性，不输出电流、电阻或电导率"
+      ],
+      "fixes": [
+        "电极条件不再只修改文字，保留低压装置"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "“无明显指示”不能断言绝对没有任何电流。"
+        ],
+        "pitfallsChecked": [
+          "电极直接相碰会短路，不能作为液体导电证据。"
+        ]
+      }
+    },
+    {
+      "id": "chem-naoh-deliquescence",
+      "title": "观察氢氧化钠的潮解",
+      "mode": "playback",
+      "purpose": "区分吸水潮解与溶解放热等性质。",
+      "controlsReviewed": {
+        "keys": [
+          "exposed",
+          "humid"
+        ],
+        "scientificChecks": "暴露/密封、有无水汽组合核对"
+      },
+      "sceneBehavior": "满足条件后固体表面液体逐渐增加",
+      "limitations": [
+        "不计算真实吸水量、相对湿度阈值或同时碳酸化"
+      ],
+      "fixes": [
+        "过程渲染使用中间状态，区别潮解与熔化"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "NaOH还可与空气中CO₂反应，保存需兼顾隔绝两者。"
+        ],
+        "pitfallsChecked": [
+          "潮解不等于固体熔化；变化中有水进入。"
+        ]
+      }
+    },
+    {
+      "id": "chem-lime-milk",
+      "title": "氢氧化钙的微溶与石灰水、石灰乳",
+      "mode": "live",
+      "purpose": "区分澄清石灰水与含未溶固体的石灰乳。",
+      "controlsReviewed": {
+        "keys": [
+          "amount",
+          "filtered"
+        ],
+        "scientificChecks": "少量/过量、过滤/未过滤组合核对"
+      },
+      "sceneBehavior": "过量未滤时有未溶固体，过滤后透明液仍含溶质",
+      "limitations": [
+        "定性微溶，没有Ca(OH)₂温度溶解度曲线"
+      ],
+      "fixes": [
+        "即时比较，不以澄清误判无溶质"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "不溶固体不计入溶液溶质质量。"
+        ],
+        "pitfallsChecked": [
+          "澄清不代表没有溶质；过滤不能除掉已溶解的Ca(OH)₂。"
+        ]
+      }
+    },
+    {
+      "id": "chem-copper-oxidation",
+      "title": "铜片加热后的表面变化",
+      "mode": "playback",
+      "purpose": "从红色铜表面变黑认识金属氧化。",
+      "controlsReviewed": {
+        "keys": [
+          "m1",
+          "m2"
+        ],
+        "scientificChecks": "Cu/O₂限制量及128∶32∶160质量关系核对"
+      },
+      "sceneBehavior": "加热后铜表面由红色转黑",
+      "limitations": [
+        "理论完全反应量不等于铜片表面实际反应量"
+      ],
+      "fixes": [
+        "阶段颜色变化保留，明确表面观察与理论计算不同范围"
+      ],
+      "status": "reviewed-teaching-model",
+      "examCheck": {
+        "checked": [
+          "氧化铜的氧来自空气，完整体系质量守恒。"
+        ],
+        "pitfallsChecked": [
+          "实际铜片通常只在表面反应，不能把全部反应理论值当作实测值。"
+        ]
+      }
+    }
+  ]
+}

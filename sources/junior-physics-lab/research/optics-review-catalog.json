@@ -1,0 +1,189 @@
+{
+  "phy-diffuse-reflection": {
+    "objective": "改变入射光与表面倾斜程度，逐处检查漫反射仍遵守反射定律。",
+    "steps": [
+      "保持各处入射光平行，观察六个小表面的局部法线。",
+      "改变表面倾斜幅度，逐处比较入射角和反射角。",
+      "将倾斜幅度调为0，比较平整表面与粗糙表面的反射方向。"
+    ],
+    "modelNote": "六个独立小表面的几何光学示意，不计算表面之间的遮挡和多次反射。入射角和反射角始终相对局部法线测量。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "入射方向、六处局部法线和反射方向由Godot逐一计算；倾斜幅度为0时退化为镜面反射。",
+      "limitation": "六个独立小表面示意，不计算表面间遮挡、多次反射或实际亮度。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  "phy-plane-mirror": {
+    "objective": "独立移动等大的替代蜡烛定位虚像，改变观察高度，并用光屏检验。",
+    "steps": [
+      "保持薄玻璃板竖直，设置镜前物距和物高。",
+      "调节镜后替代蜡烛的位置，直到与虚像重合。",
+      "改变观察高度，检查像的位置和重合判断是否改变。",
+      "放置镜后光屏，观察它不能承接平面镜虚像，再比较像距和物距。"
+    ],
+    "modelNote": "理想薄玻璃板的前表面反射，忽略厚玻璃板产生的重影。光线由Godot按对称关系求交；替代蜡烛滑块是位置操作，±0.5 cm仅为屏幕判断容差。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "替代蜡烛距离、观察高度和光屏均可独立操作，反射光线与虚像延长线实时更新。",
+      "limitation": "理想薄玻璃板，忽略厚度重影；位置重合采用±0.5 cm屏幕操作容差。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  "phy-prism-spectrum": {
+    "objective": "追踪不同色光通过三棱镜各界面的路径，比较色散和全反射条件。",
+    "steps": [
+      "设置白光的入射角与棱镜顶角。",
+      "观察各色光第一次和第二次折射后的传播方向。",
+      "比较题设不同折射率对应的偏向角。",
+      "改变角度，若发生全反射，观察后续路径，不能继续套直接出射公式。"
+    ],
+    "modelNote": "二维几何光学、空气折射率1、题设均匀三棱镜。颜色是离散示意，不是连续光谱。没有把单界面偏折当作完整棱镜偏向角；全反射后不再套用直接出射的偏向角公式。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "六个题设折射率分别进行棱镜界面追迹，包含两次折射以及必要的全反射和后续出射。",
+      "limitation": "离散色光与题设折射率，不是实测玻璃的连续光谱；未建模光强和吸收。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  "phy-myopia-correction": {
+    "objective": "比较题设近视模型的过早会聚与戴上凹透镜后的视网膜成像。",
+    "steps": [
+      "先取下矫正镜，观察远物的会聚点相对视网膜的位置。",
+      "戴上矫正镜，从负屈光度开始调节。",
+      "比较光线经矫正镜、传播到眼内透镜、再到视网膜的完整路径。",
+      "改变物距或题设眼球屈光力，再寻找本题合适的矫正条件。"
+    ],
+    "modelNote": "两个薄透镜的近轴模型，参数均为题设，不代表人的完整眼球和调节功能。显示的理想对焦屈光度仅用于本题，不是个人验光或配镜处方。±0.15 mm为画面判断容差。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "两薄透镜相距12 mm，按近轴传播逐段求光路；屈光度、物距与眼内透镜屈光力共同影响视网膜散焦。",
+      "limitation": "题设两透镜模型，不模拟真实眼球调节；模型对焦屈光度不用于个人验光配镜。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  "phy-hyperopia-correction": {
+    "objective": "比较题设远视模型中像在视网膜后与加入适当凸透镜后的光路。",
+    "steps": [
+      "先取下矫正镜，观察近物的会聚点相对固定视网膜的位置。",
+      "戴上矫正镜，从正屈光度开始调节。",
+      "观察两透镜共同作用后的会聚点能否回到视网膜附近。",
+      "改变题设条件，比较镜片单独成像与完整眼球系统的区别。"
+    ],
+    "modelNote": "两个薄透镜的近轴模型，参数均为题设，不代表人的完整眼球和调节功能。显示的理想对焦屈光度仅用于本题，不是个人验光或配镜处方。±0.15 mm为画面判断容差。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "眼前矫正镜与眼内透镜分段计算，屏上显示实际模型焦点和视网膜散焦，不再使用固定会聚箭头。",
+      "limitation": "题设近轴双透镜模型，视网膜距眼内透镜17 mm；不模拟实际人的调节和诊断。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    },
+    "workedExample": {
+      "title": "规范作答",
+      "given": "题设远视模型观察近物时，光线在视网膜后会聚。",
+      "steps": [
+        {
+          "title": "指出问题",
+          "text": "本题在当前物距下会聚不足，不能在视网膜上形成清晰像。"
+        },
+        {
+          "title": "选择镜片",
+          "text": "加入适当凸透镜，使进入眼内的光线先会聚。"
+        },
+        {
+          "title": "观察完整光路",
+          "text": "光线先经过矫正镜，再经过眼内透镜；两者共同使像向前移。"
+        },
+        {
+          "title": "判断是否矫正",
+          "text": "以最终像回到视网膜位置附近为依据，不能只看矫正镜单独成像。"
+        }
+      ],
+      "answer": "加入合适凸透镜，使光线经过整个光学系统后在视网膜附近会聚。"
+    }
+  },
+  "phy-bottle-lens": {
+    "objective": "改变文字与圆柱水瓶的距离，比较横向成像变化与竖直方向。",
+    "steps": [
+      "观察原文字的宽度与高度。",
+      "改变文字与瓶的距离，并比较不同题设水平焦距。",
+      "观察瓶中视野内的横向放大、缩小或反向，竖直高度保持不变。",
+      "当物在焦点处时，记录没有有限距离清晰像，不能填写虚构放大率。"
+    ],
+    "modelNote": "用题设焦距的理想薄柱透镜解释圆柱瓶现象，忽略厚壁、像差和瓶底曲面。焦点处没有有限距离的清晰像；瓶内窗口裁切超出视野的文字，不伪造有限放大率。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "Godot计算薄柱透镜的水平像距和放大率，SVG仅横向缩放文字，竖向倍率恒为1。",
+      "limitation": "理想薄柱透镜解释圆柱瓶，忽略厚壁与像差；超出视野的像按窗口裁切。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    },
+    "apparatus": [
+      "透明圆柱水瓶",
+      "文字卡",
+      "刻度尺"
+    ]
+  },
+  "phy-near-point": {
+    "objective": "记录本人用文字与刻度尺测得的近点，整理三次观察结果。",
+    "steps": [
+      "用实际文字和刻度尺测量，寻找最近仍能清楚观察的位置。",
+      "把第一次距离填入网页，并标记本次清楚或模糊。",
+      "若本次仍模糊，重新寻找最近的清晰位置，不把该距离作为近点。",
+      "填写另两次清晰近点记录，计算平均值并比较一致性。"
+    ],
+    "modelNote": "个人观察记录工具，不建立人的清晰/模糊阈值模型；网页示意距离不是屏幕到眼睛的实际距离。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "示意纸卡位置随输入距离移动；记录主观清楚/模糊与三次测量，只对本人确认的清晰记录求平均。",
+      "limitation": "观察记录工具，不模拟个人视觉阈值；网页距离不是屏幕到眼的真实距离，不用于诊断。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  "phy-convex-imaging": {
+    "objective": "独立改变物距和屏距，寻找清晰像，分区比较凸透镜成像规律。",
+    "steps": [
+      "设置焦距、物距与物高，保持示意装置光心同高。",
+      "独立调节光屏距离，观察光源顶端的光线能否在屏上会聚。",
+      "在找到清晰像时记录屏距与像的大小、方向。",
+      "比较物距大于二倍焦距、位于一倍与二倍焦距间、等于焦距和小于焦距的情形。"
+    ],
+    "modelNote": "理想薄凸透镜、近轴光线；光源顶端三条示意光线通过透镜不同高度。光屏在理论像距±0.5 cm内判为清晰，这是操作容差。图外光线被视口裁切，不改变理论像距。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "物体、透镜和光屏位置独立，三条近轴光线由Godot计算；光屏对焦与虚像不能承接均可操作检验。",
+      "limitation": "理想近轴薄透镜，采用±0.5 cm操作容差；图外光线裁切不改变实际计算像距。",
+      "evidence": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  }
+}

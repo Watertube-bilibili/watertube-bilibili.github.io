@@ -1,0 +1,1794 @@
+[
+  {
+    "id": "bio-campus",
+    "mode": "live",
+    "purpose": "按统一范围记录生物和生境，区分客观记录与推测。",
+    "controlsReviewed": [
+      "plants：样方植物计数用于密度",
+      "animals：独立的动物记录",
+      "area：密度分母"
+    ],
+    "sceneBehavior": "植物和动物输入用于样方密度与记录图；修改面积立即重新计算",
+    "limitations": "只统计输入的单一样方；不提供野外调查或自动物种鉴定",
+    "fixes": [
+      "零植物输入不再回退为默认数量；符号为教学记录图。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察校园、公园或林地中的生物",
+    "currentTitle": "观察校园、公园或林地中的生物",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-microscope",
+    "mode": "live",
+    "purpose": "掌握低倍定位、调焦和放大倍数关系。",
+    "controlsReviewed": [
+      "eyepiece/objective：乘积总倍数与线性图像比例",
+      "focus：离焦模糊",
+      "shift：玻片与倒像反向移动"
+    ],
+    "sceneBehavior": "字母倒像，玻片位移方向相反；倍数按乘积改变图像比例，细调改变清晰度",
+    "limitations": "光路、照明和粗准焦操作由步骤说明，网页不模拟真实机械装调",
+    "fixes": [
+      "取消图像倍率上限，图像线性比例与所示总倍数一致。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "练习使用显微镜",
+    "currentTitle": "练习使用显微镜",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-plant-cell",
+    "mode": "live",
+    "purpose": "辨认细胞壁、细胞质、细胞核及液泡等结构。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus：倍率和细调",
+      "specimen：洋葱与黑藻的叶绿体差别",
+      "stain：核的染色对比"
+    ],
+    "sceneBehavior": "切换洋葱/黑藻、染色、目物镜与调焦；叶绿体仅在黑藻材料显示",
+    "limitations": "支持材料结构对照，不支持亲手撕取、展平、盖片与排气泡",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "制作并观察植物细胞临时装片",
+    "currentTitle": "制作并观察植物细胞临时装片",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-animal-cell",
+    "mode": "live",
+    "purpose": "比较动物细胞与植物细胞的结构差异。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus：倍率和细调",
+      "stain：核的染色对比，保持动物细胞无壁"
+    ],
+    "sceneBehavior": "口腔细胞无壁，染色改变核的显著程度；放大和调焦立即响应",
+    "limitations": "典型结构拼图，不是口腔采样或真实显微照片",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察人的口腔上皮细胞和动物细胞",
+    "currentTitle": "观察人的口腔上皮细胞和动物细胞",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-cell-division",
+    "mode": "live",
+    "purpose": "通过永久装片与模型说明细胞分裂时遗传物质的分配。",
+    "controlsReviewed": [
+      "phase：四种染色体/细胞板状态",
+      "cycles：理论细胞数2^n，不改固定视野计数"
+    ],
+    "sceneBehavior": "分裂前核、中期排列、分离期两组移动位置和两个新核/细胞板分别绘制；分裂次数计算2的幂",
+    "limitations": "分裂次数是理论推算，不能把固定视野的12个示意框当实测细胞数",
+    "fixes": [
+      "分裂中期与分离期不再共用同一染色体图；末阶段显示两核和细胞板。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察洋葱根尖细胞的分裂",
+    "currentTitle": "观察洋葱根尖细胞的分裂",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-tissues",
+    "mode": "live",
+    "purpose": "把组织的结构特点与功能联系起来。",
+    "controlsReviewed": [
+      "tissue：五种组织形态与功能",
+      "zoom：整个组织示意的观察尺度"
+    ],
+    "sceneBehavior": "上皮紧密排列、肌纤维、神经突起、结缔纤维和植物细胞分别显示",
+    "limitations": "番茄组织示意简化，未完成取材制片；示意放大不是显微镜校准",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察人体和植物体的基本组织",
+    "currentTitle": "观察人体和植物体的基本组织",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-paramecium",
+    "mode": "playback",
+    "purpose": "观察单细胞生物并比较其对不同刺激的反应。",
+    "controlsReviewed": [
+      "stimulus：刺激物及迁移方向，无刺激无定向趋势",
+      "zoom：视野放大"
+    ],
+    "sceneBehavior": "刺激在右侧；草履虫随过程向食物或避盐方向移动，无刺激不定向迁移",
+    "limitations": "仅定性趋性模型；不预测真实分布，不是反射；棉纤维与取样操作由步骤说明",
+    "fixes": [
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察草履虫并探究其趋性",
+    "currentTitle": "观察草履虫并探究其趋性",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-cell-model",
+    "mode": "live",
+    "purpose": "用可解释的模型表现细胞基本结构及动植物细胞差异。",
+    "controlsReviewed": [
+      "type：有无细胞壁及大液泡",
+      "view：整体或对应细胞核的圈选"
+    ],
+    "sceneBehavior": "动物/植物细胞结构切换，遗传信息重点圈选相应细胞核",
+    "limitations": "观察现成模型与设计依据，不提供拖拽组装或真实模型材料制作",
+    "fixes": [
+      "动物细胞的核重点圈选位置纠正。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "制作细胞模型",
+    "currentTitle": "制作细胞模型",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-plants",
+    "mode": "live",
+    "purpose": "比较身体分化、输导结构和繁殖特征。",
+    "controlsReviewed": [
+      "organism：类群外形与种子/孢子/花果等证据"
+    ],
+    "sceneBehavior": "藻体、苔藓、蕨类孢子囊群、松球果类别和花果结构区别显示",
+    "limitations": "外形和关键繁殖结构示意，不能用于实际野外鉴定",
+    "fixes": [
+      "补被子植物花果与蕨类孢子囊群。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察不同类群的植物",
+    "currentTitle": "观察不同类群的植物",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-seed-structure",
+    "mode": "live",
+    "purpose": "识别胚各部分，并比较菜豆与玉米的营养储存部位。",
+    "controlsReviewed": [
+      "seed：子叶与胚乳贮藏结构差异",
+      "view：胚所在部位重点"
+    ],
+    "sceneBehavior": "菜豆子叶与玉米胚乳形态不同；剖面重点圈出胚",
+    "limitations": "没有真实剖切操作；胚芽、胚轴和胚根未逐件可选，只作为整体胚示意",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察种子的结构",
+    "currentTitle": "观察种子的结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-animal-groups",
+    "mode": "live",
+    "purpose": "以呼吸、身体分部和附肢等证据区分动物类群。",
+    "controlsReviewed": [
+      "animal：外部形态与呼吸/运动特征说明，未声称完成解剖"
+    ],
+    "sceneBehavior": "蚯蚓分节、缢蛏贝壳、蝗虫附肢、鱼鳍、蛙及兔形态分别显示",
+    "limitations": "外部形态比较；未逐类展示内部呼吸器官，不等同完整解剖",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察不同类群动物的形态结构",
+    "currentTitle": "观察不同类群动物的形态结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-bird",
+    "mode": "live",
+    "purpose": "结合观察说明鸟类结构与飞行相适应。",
+    "controlsReviewed": [
+      "feature：翼、羽毛、中空骨、肺气囊的不同结构重点"
+    ],
+    "sceneBehavior": "翼外形、放大羽毛、中空长骨和肺气囊重点分别显示",
+    "limitations": "是结构与功能识图，不模拟飞行动力学；气囊图为位置关系",
+    "fixes": [
+      "羽毛和中空骨选项增加对应局部结构。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "鸟适于飞行的形态结构特点",
+    "currentTitle": "鸟适于飞行的形态结构特点",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-teeth",
+    "mode": "live",
+    "purpose": "比较门齿、犬齿和臼齿，解释食性适应。",
+    "controlsReviewed": [
+      "animal：兔的门臼齿与狼犬齿轮廓比较"
+    ],
+    "sceneBehavior": "兔门齿/臼齿与狼犬齿轮廓区别显示",
+    "limitations": "侧面牙列简图，不按真实齿式、牙数或咬合比例制作",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较兔和狼的牙齿",
+    "currentTitle": "比较兔和狼的牙齿",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-microbe-distribution",
+    "mode": "live",
+    "purpose": "理解接种、对照与菌落，并规范比较微生物分布。",
+    "controlsReviewed": [
+      "sample：来源记录标签，不决定菌落多少",
+      "day：采样记录日序，不自动培养",
+      "colonies：输入菌落记录，驱动画面符号数"
+    ],
+    "sceneBehavior": "取样来源与观察日作记录标签；菌落图按用户输入记录绘制",
+    "limitations": "不根据洗手与否预设菌落数量；没有真实培养、鉴定或安全检测",
+    "fixes": [
+      "取消根据洗手前后强制生成菌落数，增加用户菌落记录。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "检测环境中的细菌和真菌",
+    "currentTitle": "环境细菌和真菌检测：培养记录分析",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-bacteria",
+    "mode": "live",
+    "purpose": "比较细菌与真核细胞，理解无成形细胞核。",
+    "controlsReviewed": [
+      "shape：球杆螺旋外形",
+      "view：DNA区域重点，无成形核"
+    ],
+    "sceneBehavior": "球、杆、螺旋形与无成形细胞核的DNA区域区别；重点圈选遗传区域",
+    "limitations": "典型基本结构，不给所有细菌画上共有鞭毛/荚膜，也不鉴定菌种",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察细菌的基本结构",
+    "currentTitle": "观察细菌的基本结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-fungi",
+    "mode": "live",
+    "purpose": "比较单细胞真菌与菌丝构成的真菌。",
+    "controlsReviewed": [
+      "specimen：酵母与霉菌形态",
+      "eyepiece/objective/focus：放大与离焦"
+    ],
+    "sceneBehavior": "酵母细胞与出芽、霉菌菌丝分支分别显示，倍数与调焦即时变化",
+    "limitations": "霉菌图为菌丝/产孢结构概括，不对应所有真菌属的显微特征",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察酵母菌和霉菌",
+    "currentTitle": "观察酵母菌和霉菌",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-fermentation",
+    "mode": "live",
+    "purpose": "比较不同发酵食品所利用的微生物及主要代谢特点。",
+    "controlsReviewed": [
+      "product：材料及菌种说明",
+      "temperature：适宜/冷/热条件判断",
+      "culture：是否具备所需培养物"
+    ],
+    "sceneBehavior": "面包、酸奶、泡菜材料切换；菌种和温度条件用于过程定性判断",
+    "limitations": "食品制作条件比较；没有真实培养或可食用成品，也不从外观判断安全",
+    "fixes": [
+      "纠正面团曲线坐标缺分隔符；只做条件比较。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "利用细菌或真菌制作发酵食品",
+    "currentTitle": "比较发酵食品的制作条件",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-classification",
+    "mode": "live",
+    "purpose": "选择稳定的多项特征建立分类路径。",
+    "controlsReviewed": [
+      "group：植物种子或动物脊柱的分类示例",
+      "criterion：关键结构与只按生境的反例"
+    ],
+    "sceneBehavior": "植物按种子、动物按脊柱作第一层检索；按生境时显示容易混类的实例",
+    "limitations": "支持分类依据比较，不提供全界检索表或完整物种分类树",
+    "fixes": [
+      "用有实例的分类分支替换空泛框图。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "对植物和动物进行分类",
+    "currentTitle": "对植物和动物进行分类",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-resources",
+    "mode": "live",
+    "purpose": "开展生物资源调查，保留鉴定证据并制作准确标牌。",
+    "controlsReviewed": [
+      "identified：已确认记录数",
+      "unknown：单列未定名类型",
+      "plots：计划调查样方数，不自动鉴定"
+    ],
+    "sceneBehavior": "记录已确认、未定名类型和计划样方数，显示记录整理要求",
+    "limitations": "记录设计与统计；没有现场调查、自动标牌生成或分类鉴定",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "调查生物资源并制作植物标牌",
+    "currentTitle": "调查生物资源并制作植物标牌",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-eye",
+    "mode": "live",
+    "purpose": "用等效眼成像解释近远视和矫正。",
+    "controlsReviewed": [
+      "eye/correction：Godot求得的像距和前置矫正镜光路",
+      "distance：近物发散光与晶状体示意曲率调节；正常调节后仍落在视网膜"
+    ],
+    "sceneBehavior": "近物发散光与较厚等效屈光结构、远物近平行光、前置矫正镜改变光线方向；焦点由Godot求解。",
+    "limitations": "使用任意教学尺度的等效薄透镜和示意光路；近物包含调节，不换算个人屈光度或完整角膜/晶状体机制。",
+    "fixes": [
+      "近物发散光与较厚等效屈光结构、远物近平行光、前置矫正镜改变光线方向；焦点由Godot求解。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "制作可调节的眼球成像模型",
+    "currentTitle": "制作可调节的眼球成像模型",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-reflex",
+    "mode": "playback",
+    "purpose": "理解反射弧完整性并区分反射与感觉。",
+    "controlsReviewed": [
+      "stimulus 有/无叩击",
+      "path 完整/传入/传出中断"
+    ],
+    "sceneBehavior": "刺激信号先沿反射弧到达效应器，再发生腿部运动；中断只传播至相应断点。",
+    "limitations": "信号速度不等于潜伏期；未画上行至大脑的感觉通路。",
+    "fixes": [
+      "刺激信号先沿反射弧到达效应器，再发生腿部运动；中断只传播至相应断点。",
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "膝跳反射与反射弧",
+    "currentTitle": "膝跳反射与反射弧",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-reaction",
+    "mode": "playback",
+    "purpose": "由落尺距离换算反应时间，理解重复测量。",
+    "controlsReviewed": [
+      "distance：下落距离，Godot轨迹换算并决定尺终点",
+      "trial：记录编号；不声称自动收集重复测量"
+    ],
+    "sceneBehavior": "尺按Godot自由下落轨迹移动，接尺手保持固定参考高度；结束距离来自输入记录。",
+    "limitations": "输入一个距离后用Godot轨迹换算；记录编号不是多次测量，未提供真实用户反应计时测试。",
+    "fixes": [
+      "尺按Godot自由下落轨迹移动，接尺手保持固定参考高度；结束距离来自输入记录。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "测定反应速度",
+    "currentTitle": "由落尺距离换算反应时间",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-muscle",
+    "mode": "live",
+    "purpose": "观察骨骼肌牵拉骨绕关节，比较屈伸肌。",
+    "controlsReviewed": [
+      "angle 改前臂线段",
+      "action 改肱二/三头肌粗细颜色"
+    ],
+    "sceneBehavior": "0度伸直，角度增大前臂屈曲；动作选项高亮相应主要肌群，参数直接可观察。",
+    "limitations": "非人体定量生物力学；固定角可以讨论动作方向，但需明确等长/正在屈伸的情境。",
+    "fixes": [
+      "0度伸直，角度增大前臂屈曲；动作选项高亮相应主要肌群，参数直接可观察。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察骨、关节和肌肉及屈伸肘动作",
+    "currentTitle": "观察骨、关节和肌肉及屈伸肘动作",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-hormone",
+    "mode": "live",
+    "purpose": "审查激素对照实验的单一变量与重复设置。",
+    "controlsReviewed": [
+      "factor 仅激素/同时饲料改变",
+      "replicate 多只重复/单只"
+    ],
+    "sceneBehavior": "两组方案卡显示激素条件、饲料是否同时改变和独立重复材料数量。",
+    "limitations": "题名已明确纸面方案，避免真实动物施药，属于合理范围限制。",
+    "fixes": [
+      "两组方案卡显示激素条件、饲料是否同时改变和独立重复材料数量。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "设计甲状腺激素作用的对照方案",
+    "currentTitle": "设计甲状腺激素作用的对照方案",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-daphnia",
+    "mode": "live",
+    "purpose": "由心搏次数与时长计算心率，比较对照记录。",
+    "controlsReviewed": [
+      "concentration：处理组浓度标签，不预测心搏次数",
+      "beats/controlBeats：处理/对照的输入计数",
+      "seconds：相同计数窗口，分别换算为次/min"
+    ],
+    "sceneBehavior": "显示心脏位置和两组输入次数/时间/换算心率表，不播放与记录无关的心跳。",
+    "limitations": "两组单次输入比较和心率换算；未模拟活体受酒精影响，也不能仅两条记录作因果结论。",
+    "fixes": [
+      "显示心脏位置和两组输入次数/时间/换算心率表，不播放与记录无关的心跳。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "探究酒精对水蚤心率的影响",
+    "currentTitle": "酒精对水蚤心率影响：对照记录分析",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-infection",
+    "mode": "live",
+    "purpose": "按具体疾病传播环节评价预防措施。",
+    "controlsReviewed": [
+      "route 选择传播途径",
+      "measure 高亮三个环节"
+    ],
+    "sceneBehavior": "传播途径情景卡及传染源/途径/易感人群干预重点相配；不预测感染风险。",
+    "limitations": "不含当地真实疫情资料与海报编辑器，不能说完成调查/制作。",
+    "fixes": [
+      "传播途径情景卡及传染源/途径/易感人群干预重点相配；不预测感染风险。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "调查当地传染病并设计预防海报",
+    "currentTitle": "调查当地传染病并设计预防海报",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-first-aid",
+    "mode": "live",
+    "purpose": "识别药品说明信息、急救求助及不凭印象处置。",
+    "controlsReviewed": [
+      "scenario 药品/倒地/出血",
+      "action 专业求助/凭印象"
+    ],
+    "sceneBehavior": "药品情景显示说明字段核对卡；倒地与止血情景显示人偶/敷料，行动作信息辨析。",
+    "limitations": "说明信息核对与情境选择；不对应某个真实药品剂量，也不代替正规的急救手法训练。",
+    "fixes": [
+      "药品情景显示说明字段核对卡；倒地与止血情景显示人偶/敷料，行动作信息辨析。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "用药说明与急救模拟实践",
+    "currentTitle": "药品说明信息与急救行动辨析",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-smoke",
+    "mode": "live",
+    "purpose": "比较模型滤材颗粒沉积与人体效应证据边界。",
+    "controlsReviewed": [
+      "exposure 清洁/颗粒",
+      "barrier 滤材/呼吸道"
+    ],
+    "sceneBehavior": "滤材/肺图实际切换并变色；烟雾过滤时有颗粒移动，呼吸道视图静态。",
+    "limitations": "滤材颜色不能估计全部有害物质或人体肺损伤。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "制作模型说明吸烟有害健康",
+    "currentTitle": "制作模型说明吸烟有害健康",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-woodlouse",
+    "mode": "live",
+    "purpose": "设计单变量光照/湿度对动物分布的观察。",
+    "controlsReviewed": [
+      "factor 改左右条件底色",
+      "contrast 同条件/对比",
+      "count 示意动物数"
+    ],
+    "sceneBehavior": "起始左右等量布置，光/湿度条件可比较；没有自动生成趋性结果或越界移动。",
+    "limitations": "只审查起始等量与控制变量；最终两侧分布、重复与归纳须来自真实记录。",
+    "fixes": [
+      "起始左右等量布置，光/湿度条件可比较；没有自动生成趋性结果或越界移动。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "探究非生物因素对某种动物的影响",
+    "currentTitle": "非生物因素对动物影响：实验方案设计",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-vegetation",
+    "mode": "live",
+    "purpose": "比较同条件裸地/植被地相对湿度记录。",
+    "controlsReviewed": [
+      "openTemp/plantTemp：两地气温记录与温差",
+      "openHumidity/plantHumidity：两地相对湿度记录与百分点差",
+      "repeats：计划重复次数，不生成均值"
+    ],
+    "sceneBehavior": "裸地和植被地各输入气温、湿度，即时比较差值；重复次数仅为调查计划。",
+    "limitations": "两地温湿度输入比较；没有真实温湿度采集或每次独立重复记录，计划次数不生成均值。",
+    "fixes": [
+      "裸地和植被地各输入气温、湿度，即时比较差值；重复次数仅为调查计划。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "调查植被条件与空气温湿度的关系",
+    "currentTitle": "调查植被条件与空气温湿度的关系",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-foodweb",
+    "mode": "live",
+    "purpose": "区分捕食链、竞争与合作关系及扰动。",
+    "controlsReviewed": [
+      "relationship：捕食网络、共享资源竞争、合作示意",
+      "disturbance：捕食网络中的植物/捕食者减少；合作情景仅提示适用范围"
+    ],
+    "sceneBehavior": "生产者连兔、蝗虫，后者连鸟与狐，形成交织关系；竞争和合作不是错误的捕食箭头。",
+    "limitations": "图示种间关系简化；合作情景中食物网扰动仅提示不适用，不推算合作或种群数变化。",
+    "fixes": [
+      "生产者连兔、蝗虫，后者连鸟与狐，形成交织关系；竞争和合作不是错误的捕食箭头。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察食物网与生物之间的关系",
+    "currentTitle": "观察食物网与生物之间的关系",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-ecosystem",
+    "mode": "live",
+    "purpose": "审查生态瓶植物、动物负荷和光照设计。",
+    "controlsReviewed": [
+      "plants/animals：组成数量，不用简单数量比保证稳定",
+      "light：黑暗遮层、强光及升温风险、普通光照情景"
+    ],
+    "sceneBehavior": "显示组成与光照情景；不再按动物数大于植物数判断稳定，不认可空瓶是合理系统。",
+    "limitations": "相对数量不是生物量，不能凭animals>plants判断稳定；分解者等未建模。",
+    "fixes": [
+      "显示组成与光照情景；不再按动物数大于植物数判断稳定，不认可空瓶是合理系统。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "设计并制作生态瓶",
+    "currentTitle": "设计并制作生态瓶",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-acidrain",
+    "mode": "live",
+    "purpose": "统计不同酸度处理和对照的发芽记录。",
+    "controlsReviewed": [
+      "ph 题设标签",
+      "treated/control 两组20粒萌发数"
+    ],
+    "sceneBehavior": "两组种子图和发芽率/百分点差对应输入。",
+    "limitations": "pH不自动生成萌发数是正确的；没有真实培养与多重复数据。",
+    "fixes": [
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "探究酸雨对生物的影响",
+    "currentTitle": "分析酸雨探究的条件与发芽记录",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-ecological-survey",
+    "mode": "live",
+    "purpose": "计算绿化面积比并评价选种依据。",
+    "controlsReviewed": [
+      "totalArea/greenArea 计算面积比",
+      "species 本地/未评估外来种给评价"
+    ],
+    "sceneBehavior": "场地图绿色面积变化，选种只改变文字。",
+    "limitations": "没有真实校园地图、物种调查或完整规划；比值不等于生态质量。",
+    "fixes": [
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "调查生态环境并设计校园绿化方案",
+    "currentTitle": "生态调查记录与校园绿化方案分析",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-cutting",
+    "mode": "live",
+    "purpose": "区分无性生殖方式及影响成活的关键因素。",
+    "controlsReviewed": [
+      "method：扦插或嫁接装置",
+      "condition：适宜、失水或嫁接形成层未贴合",
+      "扦插下该选项明确无关"
+    ],
+    "sceneBehavior": "扦插/嫁接方案切换，嫁接口贴合与失水状态可比较",
+    "limitations": "没有成活计时或实际接口愈合；无效的扦插形成层条件需按适用范围解释",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "植物的扦插或嫁接",
+    "currentTitle": "植物的扦插或嫁接",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-egg",
+    "mode": "live",
+    "purpose": "从保护、营养和气体交换等方面解释鸟卵结构。",
+    "controlsReviewed": [
+      "part：壳、卵白、卵黄胚盘、气室的精确重点圈选"
+    ],
+    "sceneBehavior": "圈选壳、卵白、卵黄/胚盘、钝端气室并给功能说明",
+    "limitations": "结构剖面识图，未模拟打开鸡卵或实际孵化",
+    "fixes": [
+      "每个结构选项圈选对应部位，避免只改底部文字。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "鸟卵适于在陆地上发育的结构特征",
+    "currentTitle": "鸟卵适于在陆地上发育的结构特征",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-animal-development",
+    "mode": "live",
+    "purpose": "比较完全变态、不完全变态与两栖动物发育。",
+    "controlsReviewed": [
+      "animal：家蚕、蝗虫、蛙的阶段差异",
+      "stage：所选发育阶段突出，不预测天数"
+    ],
+    "sceneBehavior": "家蚕、蝗虫、蛙的阶段形态分别绘制，选阶段突出对应状态",
+    "limitations": "饲养装置方案见文字，未提供真实饲养环境或跨日生长预测",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "设计饲养装置并观察动物的发育",
+    "currentTitle": "设计饲养装置并观察动物的发育",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-gene-transfer",
+    "mode": "live",
+    "purpose": "用模型说明成对基因随染色体分离并由双亲共同传递。",
+    "controlsReviewed": [
+      "parent1/parent2：两个亲本的等位基因，配子对应行列与子代组合"
+    ],
+    "sceneBehavior": "双亲基因分离到配子并形成四格组合；按行列标签正确计算子代基因型",
+    "limitations": "只演示一对等位基因传递，未模拟完整减数分裂与多染色体独立分配",
+    "fixes": [
+      "修正配子组合方格行列索引，异型亲本组合与标签一致。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "模拟有性生殖过程中染色体和基因的传递",
+    "currentTitle": "模拟有性生殖过程中染色体和基因的传递",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-dominance",
+    "mode": "live",
+    "purpose": "区分基因型与表现型，并根据配子组合计算理论概率。",
+    "controlsReviewed": [
+      "parent1/parent2：基因型方格与完全显性理论概率"
+    ],
+    "sceneBehavior": "双亲基因型直接更新组合方格和显隐性概率",
+    "limitations": "完全显性单基因假设，不能推广至多基因性状或真实小样本固定比例",
+    "fixes": [
+      "修正配子组合方格行列索引。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "模拟遗传性状显隐性的形成过程",
+    "currentTitle": "模拟遗传性状显隐性的形成过程",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-sex",
+    "mode": "live",
+    "purpose": "理解典型XX/XY染色体模型中的随机组合与概率。",
+    "controlsReviewed": [
+      "trials：独立模拟次数",
+      "seed：可复现的抽样序列编号，不能指定性别结果"
+    ],
+    "sceneBehavior": "次数与序列编号产生可复现的独立抽样记录；理论概率和合成频数分列",
+    "limitations": "不是实际生育或人口统计；有限样本不保证1:1",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "模拟人的性别决定",
+    "currentTitle": "模拟人的性别决定",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-variation",
+    "mode": "live",
+    "purpose": "练习随机抽样、统一测量、统计和有限推断。",
+    "controlsReviewed": [
+      "meanA/meanB：合成样本中心",
+      "spread：样本散布",
+      "sample：样本量与逐项统计"
+    ],
+    "sceneBehavior": "改变中心、分散度和样本量后显示合成逐项数据、均值和重叠散点",
+    "limitations": "不是随机收集的真实花生；不能由外观或均值断定全部遗传原因",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "探究花生果实大小的变异",
+    "currentTitle": "探究花生果实大小的变异",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-selection",
+    "mode": "playback",
+    "purpose": "用存活与繁殖差异解释保护色在群体中的变化。",
+    "controlsReviewed": [
+      "initial：既有变异比例",
+      "background：两色存活权重的假设",
+      "generations：逐代更新次数"
+    ],
+    "sceneBehavior": "播放按选择轮次替换群体构成，改变背景会改变既有颜色的存活权重",
+    "limitations": "每一轮代表新群体，不是原个体变色；权重人为给定，未模拟真实捕食行为",
+    "fixes": [
+      "明确每轮代表下一代群体构成，不用个体变色解释选择。",
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "模拟保护色的形成过程",
+    "currentTitle": "模拟保护色的形成过程",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-evolution",
+    "mode": "live",
+    "purpose": "比较多种证据，建立共同祖先与长期变化的解释。",
+    "controlsReviewed": [
+      "evidence：地层化石、同源结构、分子比对三类证据",
+      "不推算绝对年代"
+    ],
+    "sceneBehavior": "化石跨地层分布、前肢对应骨骼和分子比对示意切换",
+    "limitations": "证据示意并非特定真实类群年代；分子序列为教学符号，不足推断完整谱系",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较生物进化证据",
+    "currentTitle": "比较生物进化证据",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-biodiversity",
+    "mode": "live",
+    "purpose": "从遗传、物种和生态系统三个层次理解保护。",
+    "controlsReviewed": [
+      "species/habitats：不同调查层次的记录",
+      "protection：原生境与有限个体保存范围"
+    ],
+    "sceneBehavior": "输入记录物种/生境数并比较保护原生境与有限个体保存",
+    "limitations": "只作方案评价，不把数量总和当作完整多样性指数",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "调查生物多样性并比较保护方案",
+    "currentTitle": "调查生物多样性并比较保护方案",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-germination",
+    "mode": "playback",
+    "purpose": "比较水分、温度、胚活力与休眠条件，分清外因和内因。",
+    "controlsReviewed": [
+      "moisture 改变干燥/适湿/浸没背景与可萌发判断",
+      "temperature 冷热阻止模型萌发",
+      "viable 区分失活与休眠"
+    ],
+    "sceneBehavior": "适宜条件下15个种子符号随进度伸出胚根；不适宜条件保持未萌发。",
+    "limitations": "所有符号同时萌发仅为条件示意，不能读取为实际发芽率；完整分组、重复与真实时间尚需实物实验。",
+    "fixes": [
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "探究种子萌发的环境条件",
+    "currentTitle": "探究种子萌发的环境条件",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-germination-rate",
+    "mode": "live",
+    "purpose": "依据样本总数和萌发数计算发芽率。",
+    "controlsReviewed": [
+      "total 与 sprouted 进入百分率；超总数提示复核"
+    ],
+    "sceneBehavior": "40个固定种子符号表示比例，结果明确来自用户记录。",
+    "limitations": "40符号不是逐粒计数；不提供抽样过程和重复试验。",
+    "fixes": [
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "测定种子发芽率",
+    "currentTitle": "计算种子发芽率并分析检测记录",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-root",
+    "mode": "live",
+    "purpose": "辨认根冠、分生区、伸长区与成熟区。",
+    "controlsReviewed": [
+      "eyepiece/objective 改变视野尺寸",
+      "focus 显示模糊程度",
+      "region 高亮四区"
+    ],
+    "sceneBehavior": "成熟区根毛、伸长区长细胞、分生区小密细胞和根冠可切选，底部给区域功能。",
+    "limitations": "不是显微照片；细胞形态与大小仅区分区域特征，不能定量估计分裂率或生长速度。",
+    "fixes": [
+      "成熟区根毛、伸长区长细胞、分生区小密细胞和根冠可切选，底部给区域功能。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察根尖的结构",
+    "currentTitle": "观察根尖的结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-mineral",
+    "mode": "live",
+    "purpose": "比较无机盐及供氧对幼苗长期生长的影响。",
+    "controlsReviewed": [
+      "solution 切换培养液并改变植株颜色/大小",
+      "air 改供氧提示与气泡",
+      "day 改示意植株大小"
+    ],
+    "sceneBehavior": "玉米长条叶和须根；第0天各条件同初始大小，随后日序选择的大小只是定性情景。",
+    "limitations": "单株切选不是同步对照；没有真实株高和发育速率。",
+    "fixes": [
+      "玉米长条叶和须根；第0天各条件同初始大小，随后日序选择的大小只是定性情景。",
+      "纠正SVG插值坐标缺分隔符造成的叶片消失；各组初始大小一致。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较玉米幼苗在蒸馏水和土壤浸出液中的生长状况",
+    "currentTitle": "比较玉米幼苗在蒸馏水和土壤浸出液中的生长状况",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-flower",
+    "mode": "live",
+    "purpose": "在解剖图上辨认雄蕊、雌蕊、子房与胚珠。",
+    "controlsReviewed": [
+      "part：整体、雄蕊、雌蕊、子房的对应部位圈选及功能"
+    ],
+    "sceneBehavior": "选择雄蕊、雌蕊、子房时圈出相应结构；卵形胚珠在子房内部。",
+    "limitations": "不能替代真实拆分；比例简化。",
+    "fixes": [
+      "选择雄蕊、雌蕊、子房时圈出相应结构；卵形胚珠在子房内部。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "解剖和观察花的结构",
+    "currentTitle": "解剖和观察花的结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-stem-water",
+    "mode": "live",
+    "purpose": "由染色切面辨认导管运输水的通路。",
+    "controlsReviewed": [
+      "cut 切整体/横切/纵切",
+      "dye 改染液与导管颜色"
+    ],
+    "sceneBehavior": "切面新增圆形导管分布或纵向管道，条件变化立即可见。",
+    "limitations": "无染料上升时间或速度模型；不是所有植物茎的维管束分布均相同。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "水在茎中的运输",
+    "currentTitle": "水在茎中的运输",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-leaf",
+    "mode": "live",
+    "purpose": "观察叶横切与表皮，识别组织和气孔。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus：倍率与离焦",
+      "view：横切层次与表皮保卫细胞",
+      "stomata：两种视图均有开闭几何"
+    ],
+    "sceneBehavior": "横切区分上表皮、栅栏/海绵叶肉、下表皮；两种视图均显示气孔开闭。",
+    "limitations": "横切与表皮是概略组织图；叶脉和气孔位置不按具体物种真实数量或比例。",
+    "fixes": [
+      "横切区分上表皮、栅栏/海绵叶肉、下表皮；两种视图均显示气孔开闭。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察叶片的结构",
+    "currentTitle": "观察叶片的结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-transpiration",
+    "mode": "live",
+    "purpose": "排除土壤蒸发干扰，观察叶片散失水后凝结。",
+    "controlsReviewed": [
+      "cover 目录soil表示连湿土一起罩住",
+      "leaves 比较保留叶片/去叶"
+    ],
+    "sceneBehavior": "两种袋边界分别只罩枝条/连同湿土；湿土组可有蒸发水，不能单独归因蒸腾。",
+    "limitations": "水滴不能量化蒸腾速率；实际需初始干燥袋与相同条件。",
+    "fixes": [
+      "两种袋边界分别只罩枝条/连同湿土；湿土组可有蒸发水，不能单独归因蒸腾。",
+      "修正袋罩湿土被解释成隔绝土壤蒸发的反向含义。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察植物蒸腾作用",
+    "currentTitle": "观察植物蒸腾作用",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-photosynthesis-starch",
+    "mode": "live",
+    "purpose": "比较光照、暗处理、局部遮光后的碘液检验。",
+    "controlsReviewed": [
+      "dark 控制原有淀粉干扰",
+      "light 控制条件",
+      "mask 显示同叶遮光区"
+    ],
+    "sceneBehavior": "图示是处理后的显色终点；局部遮光和未遮光区颜色可比较。",
+    "limitations": "处理后的理想检验示意；暗处理不足时只能说明原有淀粉干扰，不能唯一预测显色。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "探究绿叶在光下制造有机物",
+    "currentTitle": "探究绿叶在光下制造有机物",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-photosynthesis-oxygen",
+    "mode": "playback",
+    "purpose": "观察光下绿色水生植物放气，区分气泡与鉴定。",
+    "controlsReviewed": [
+      "light/co2 决定是否出现光合放气示意"
+    ],
+    "sceneBehavior": "有光有CO2时气泡上升；无必要条件时停气。",
+    "limitations": "仅演示极端必要条件模型的放气；尚无气体鉴定操作、浓度或真实产气速率。",
+    "fixes": [
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察金鱼藻在光下释放氧气",
+    "currentTitle": "观察金鱼藻在光下释放氧气",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-photosynthesis-co2",
+    "mode": "live",
+    "purpose": "在去除/保留CO2组比较光合作用后的淀粉证据。",
+    "controlsReviewed": [
+      "co2 决定显色",
+      "light 控制条件",
+      "dark 标记归因是否受原有淀粉干扰"
+    ],
+    "sceneBehavior": "同一个罩内叶片呈不同碘液终点颜色。",
+    "limitations": "密闭去CO2与对照的题设比较；不提供试剂操作、实时光合速率或唯一显色预测。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "二氧化碳是光合作用必需的原料",
+    "currentTitle": "二氧化碳是光合作用必需的原料",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-seed-respiration",
+    "mode": "playback",
+    "purpose": "比较活种子与煮熟对照的放热、CO2和耗氧证据。",
+    "controlsReviewed": [
+      "test 切换温度计/石灰水/燃烧检验",
+      "seeds 控制活性"
+    ],
+    "sceneBehavior": "活种子条件可播放温柱上升、CO2通气浑浊加深、木条移向瓶口检验；煮熟对照无同样变化。",
+    "limitations": "仅定性现象；没有定量氧耗、发热量。",
+    "fixes": [
+      "活种子条件可播放温柱上升、CO2通气浑浊加深、木条移向瓶口检验；煮熟对照无同样变化。",
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察萌发种子的呼吸作用",
+    "currentTitle": "观察萌发种子的呼吸作用",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-food-storage",
+    "mode": "live",
+    "purpose": "评价低温、干燥、密封等保存策略。",
+    "controlsReviewed": [
+      "food 区分谷物/果蔬",
+      "storage 改措施说明"
+    ],
+    "sceneBehavior": "食品类型与低温、干燥、密封、常规保存的方案卡及对应局限即时更新。",
+    "limitations": "这是方案解释，不能预测保存天数；没有真实微生物和水分模型。",
+    "fixes": [
+      "食品类型与低温、干燥、密封、常规保存的方案卡及对应局限即时更新。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "调查利用呼吸作用原理保存食物的方法",
+    "currentTitle": "利用呼吸作用原理比较食物保存方案",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-plant-growth",
+    "mode": "live",
+    "purpose": "设计长期观察，比较环境因素与生命周期阶段。",
+    "controlsReviewed": [
+      "condition 选择光/水/无机盐的研究变量",
+      "level 比较适宜/受限",
+      "stage 切生命周期"
+    ],
+    "sceneBehavior": "当前已补种子、幼苗、开花、结果具体分支；阶段选择立即变化。",
+    "limitations": "条件只给统一受限色，未建真实发育速度/产量，不能声称完成栽培。",
+    "fixes": [
+      "纠正共用植物SVG坐标缺分隔符造成的叶片丢失。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "栽培一种植物，探究所需的环境条件",
+    "currentTitle": "栽培一种植物，探究所需的环境条件",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-human-reproduction",
+    "mode": "live",
+    "purpose": "识别男女生殖系统主要器官及功能。",
+    "controlsReviewed": [
+      "system 换男女系统图",
+      "view detail 高亮性腺"
+    ],
+    "sceneBehavior": "有两类系统位置图，细节仅圈卵巢/睾丸。",
+    "limitations": "当前仅支持器官关系与生殖细胞产生部位，不能演示受精、胚胎或分娩完整路径。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察男女生殖系统的结构与功能",
+    "currentTitle": "观察男女生殖系统的结构与功能",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-food-energy",
+    "mode": "live",
+    "purpose": "由水质量、温升和燃烧食物质量求表观单位热量。",
+    "controlsReviewed": [
+      "waterMass/rise/foodMass 进入Godot热学计算"
+    ],
+    "sceneBehavior": "量热装置温度计按输入温升变化，计算Q和Q/m。",
+    "limitations": "只输入记录并做量热计算，没有燃烧、温度采集或热效率测量；Godot负责相关热学量求解。",
+    "fixes": [
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "测定几种食物中的能量",
+    "currentTitle": "分析食物燃烧记录并计算水吸收的热量",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-digestion",
+    "mode": "live",
+    "purpose": "比较酶、温度、弄碎搅拌处理后的淀粉残留。",
+    "controlsReviewed": [
+      "saliva 选淀粉酶溶液/水",
+      "temperature 适宜/低温/失活",
+      "crush 碎末/大块"
+    ],
+    "sceneBehavior": "酶条件区分低温减慢、高温失活和无唾液酶；淀粉显色是足够处理条件下的理想比较。",
+    "limitations": "低温不是酶失活；整块也会部分消化；网页只定性示意残余是否足够显色。",
+    "fixes": [
+      "酶条件区分低温减慢、高温失活和无唾液酶；淀粉显色是足够处理条件下的理想比较。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "口腔对馒头（或米饭）的消化作用",
+    "currentTitle": "口腔对馒头（或米饭）的消化作用",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-diet",
+    "mode": "live",
+    "purpose": "根据多样性与食品标签评价膳食方案。",
+    "controlsReviewed": [
+      "plan 选择多样/单一/零食",
+      "label 选择完整/过期/不明"
+    ],
+    "sceneBehavior": "多样、单一和零食替代正餐显示不同餐盘；食品信息/过期状态同时显示。",
+    "limitations": "这是菜单与标签判断，不能据通用图定个人份量。",
+    "fixes": [
+      "多样、单一和零食替代正餐显示不同餐盘；食品信息/过期状态同时显示。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "制订合理的膳食计划",
+    "currentTitle": "制订合理的膳食计划",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-lung",
+    "mode": "live",
+    "purpose": "用膜位置和密封条件解释胸腔容积与通气。",
+    "controlsReviewed": [
+      "diaphragm -1到1实际改膜位置和气球大小",
+      "seal 漏气时维持小气球并改变解释"
+    ],
+    "sceneBehavior": "滑块直接拉膜，气球同步变化，播放无额外过程。",
+    "limitations": "无真实压力数值，未含肋间肌和完整胸廓。",
+    "fixes": [
+      "纠正膈膜曲线坐标缺分隔符；补吸气/呼气方向箭头。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "模拟膈肌的收缩和舒张与呼吸的关系",
+    "currentTitle": "模拟膈肌的收缩和舒张与呼吸的关系",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-exhaled-co2",
+    "mode": "live",
+    "purpose": "等体积通气比较空气和呼气的石灰水现象。",
+    "controlsReviewed": [
+      "gas 选气源",
+      "volume 控制示意气泡数"
+    ],
+    "sceneBehavior": "气泡随进度上升，但浑浊填色从开始即为终态。",
+    "limitations": "直接比较等体积气体的定性检验情景；不模拟气液反应速率，也不由气泡数计算CO2浓度。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "验证人体呼出气体中含有较多的二氧化碳",
+    "currentTitle": "验证人体呼出气体中含有较多的二氧化碳",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-lung-capacity",
+    "mode": "live",
+    "purpose": "由气球周长估算近球形体积，认识测量误差。",
+    "controlsReviewed": [
+      "circumference 控制气球尺寸与C³/(6π²)",
+      "shape 非球形时拒用球公式"
+    ],
+    "sceneBehavior": "球/椭圆示意与输入体积估算。",
+    "limitations": "只由输入周长估算近球形气球体积；不测肺活量，非球形时公式不适用。",
+    "fixes": [
+      "纠正气球周长曲线坐标缺分隔符；题名不再暗示真实肺活量测量。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "测定肺活量",
+    "currentTitle": "气球体积估算与肺活量测量方法",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-blood-smear",
+    "mode": "live",
+    "purpose": "辨认红细胞、白细胞、血小板的形态。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus 改视野",
+      "component 过滤/展示对应成分"
+    ],
+    "sceneBehavior": "红细胞中央浅区、白细胞核、血小板小片可辨认。",
+    "limitations": "所有成分比例是教学拼图，不是实际血细胞比例或计数；血小板需合理高倍观察。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察人血的永久涂片",
+    "currentTitle": "观察人血的永久涂片",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-fish-capillaries",
+    "mode": "playback",
+    "purpose": "按分支汇合流向和单行通过辨认血管。",
+    "controlsReviewed": [
+      "vessel 选动脉/毛细/静脉",
+      "speed 调示意移动速度"
+    ],
+    "sceneBehavior": "红细胞沿小动脉分支、毛细血管与小静脉汇合的连续线路运动，可慢放。",
+    "limitations": "不是活鱼显微影像；速度仅播放比例。",
+    "fixes": [
+      "红细胞沿小动脉分支、毛细血管与小静脉汇合的连续线路运动，可慢放。",
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察小鱼尾鳍内血管及血液的流动",
+    "currentTitle": "观察小鱼尾鳍内血管及血液的流动",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-heart",
+    "mode": "live",
+    "purpose": "识别心腔、相连大血管和瓣膜。",
+    "controlsReviewed": [
+      "part 高亮四腔/瓣膜/大血管"
+    ],
+    "sceneBehavior": "四腔关系图，腔静脉/肺静脉进入心房，肺动脉/主动脉从心室发出，房室箭头与瓣膜重点。",
+    "limitations": "支持四腔与主要血管连接、瓣膜方向的关系识图；不是实物解剖形状或心搏动力学模型。",
+    "fixes": [
+      "四腔关系图，腔静脉/肺静脉进入心房，肺动脉/主动脉从心室发出，房室箭头与瓣膜重点。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察心脏的结构",
+    "currentTitle": "观察心脏的结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-circulation",
+    "mode": "playback",
+    "purpose": "连接两条循环并追踪肺/组织处气体交换。",
+    "controlsReviewed": [
+      "circuit：只追踪肺、体或两条连续循环",
+      "substance：标记随肺/组织交换改变相对含量颜色"
+    ],
+    "sceneBehavior": "血流标记沿连接四个心腔的两条循环运动，肺和组织处改变所追踪气体的相对含量。",
+    "limitations": "支持四腔路径和肺/组织处气体交换方向；血流量、血压、时序和比例均未定量建模。",
+    "fixes": [
+      "血流标记沿连接四个心腔的两条循环运动，肺和组织处改变所追踪气体的相对含量。",
+      "按任务性质设为有实际阶段/位置变化的过程播放"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察血液循环的过程",
+    "currentTitle": "观察血液循环的过程",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-blood-pressure",
+    "mode": "live",
+    "purpose": "核对输入血压记录与测量姿势。",
+    "controlsReviewed": [
+      "systolic/diastolic：输入记录值",
+      "position：袖带相对心脏高度或活动干扰的画面变化"
+    ],
+    "sceneBehavior": "袖带按正常/低于心脏位置移动，活动状态有干扰提示；读数完全来自输入。",
+    "limitations": "不是血压计、不实际测量；中学生需按年龄等专业标准解释。",
+    "fixes": [
+      "袖带按正常/低于心脏位置移动，活动状态有干扰提示；读数完全来自输入。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "为他人测量血压",
+    "currentTitle": "血压记录与测量姿势分析",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-kidney",
+    "mode": "live",
+    "purpose": "在肾单位中区分滤过与重吸收的物质去向。",
+    "controlsReviewed": [
+      "view：系统、器官、肾单位尺度直接切换",
+      "substance：成分去向说明始终更新；几何分流仅在肾单位尺度展示"
+    ],
+    "sceneBehavior": "结构尺度直接切换；肾单位以分支箭头区分留血、滤过、正常葡萄糖返血、水分流及尿素排出。",
+    "limitations": "支持结构和成分去向识图；没有完整动态滤过路径、滤过率或个人肾功能判断。",
+    "fixes": [
+      "结构尺度直接切换；肾单位以分支箭头区分留血、滤过、正常葡萄糖返血、水分流及尿素排出。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察肾脏与尿液形成过程",
+    "currentTitle": "观察肾脏与尿液形成过程",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-body-model",
+    "mode": "live",
+    "purpose": "比较人体不同系统的器官位置与协作。",
+    "controlsReviewed": [
+      "system：消化、呼吸、循环、泌尿系统的器官位置",
+      "view：所选系统器官位置重点，未声称播放物质运输"
+    ],
+    "sceneBehavior": "系统图形不同，但detail并无完整物质路径。",
+    "limitations": "只显示器官位置与系统关系，不支持拖拽制作或连续物质运输。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "设计并制作人体结构模型",
+    "currentTitle": "设计并制作人体结构模型",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-aquarium",
+    "mode": "live",
+    "purpose": "审查水量、鱼负荷、增氧、水温、投喂、相容与维护计划。",
+    "controlsReviewed": [
+      "volume/fish 求每尾名义水量",
+      "aeration 改气泡",
+      "temperature/feeding/compatibility/waterchange 改评价"
+    ],
+    "sceneBehavior": "鱼数量变化和增氧示意，体积并不改变缸图；其余主要是计划卡。",
+    "limitations": "没有物种/成体体长、过滤成熟度或真实水质模型；每尾水量不是通用密度。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "设计水族箱并制订热带鱼饲养计划",
+    "currentTitle": "设计水族箱并制订热带鱼饲养计划",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-yeast-compare",
+    "mode": "live",
+    "purpose": "记录本地食品级酵母的来源，在相同条件下用重复实验比较产气量，区分数值差异与因果证据。",
+    "controlsReviewed": [
+      "a1/a2/a3和b1/b2/b3：两组独立输入读数及均值",
+      "samecondition：是否允许将差异联系到菌种"
+    ],
+    "sceneBehavior": "输入A/B各三次气体量，计算各组均值、差值和可比条件",
+    "limitations": "数据需用户记录或题设；未从温度和菌种预测实测发酵量",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "收集酵母来源信息并比较面包酵母的发酵效果",
+    "currentTitle": "收集酵母来源信息并比较面包酵母的发酵效果",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-pickle",
+    "mode": "live",
+    "purpose": "区分发酵现象与化学检测，把同一时点的处理组和对照组亚硝酸盐记录作有限比较。",
+    "controlsReviewed": [
+      "t1/t2/t3和c1/c2/c3：处理对照的三时点记录",
+      "day：选择同日比较",
+      "treatment：待控制的单一因素"
+    ],
+    "sceneBehavior": "输入第1/3/5日处理和对照浓度；表格与折线、同日差值即时更新",
+    "limitations": "不预测亚硝酸盐曲线，不提供检测化学操作或食用安全判断",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较泡菜制作条件与亚硝酸盐检测记录",
+    "currentTitle": "比较泡菜制作条件与亚硝酸盐检测记录",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-yogurt",
+    "mode": "live",
+    "purpose": "设计可比较的酸奶发酵方案，联系乳酸菌产酸、凝乳现象与输入的pH记录。",
+    "controlsReviewed": [
+      "culture/temperature：发酵必要条件",
+      "control：有无未接种对照",
+      "ph：酸度输入",
+      "hygiene：卫生设计检查"
+    ],
+    "sceneBehavior": "选择菌种、温度、对照、卫生和pH记录，解释凝乳与酸化条件",
+    "limitations": "pH输入不是检测；凝乳图不等于成功、安全或可食用",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "设计酸奶发酵装置并分析凝乳与pH记录",
+    "currentTitle": "设计酸奶发酵装置并分析凝乳与pH记录",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-firstaid-procedure",
+    "mode": "live",
+    "purpose": "按情境选择成人复苏或直接压迫止血步骤。",
+    "controlsReviewed": [
+      "scenario：成人倒地与止血流程分别列出",
+      "step：直接选六步，电话/AED/响应部位/按压手/敷料重点相配"
+    ],
+    "sceneBehavior": "直接选择流程步骤，核对观察重点、电话/AED或敷料提示；按压手只在相应教学步骤显示。",
+    "limitations": "流程辨析与人偶示意；不评估真实手法、按压深度/质量，不替代正规训练。",
+    "fixes": [
+      "直接选择流程步骤，核对观察重点、电话/AED或敷料提示；按压手只在相应教学步骤显示。",
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "成人心肺复苏与包扎止血流程模拟",
+    "currentTitle": "成人心肺复苏与止血：流程辨析",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-drug-prevention",
+    "mode": "live",
+    "purpose": "评价资料来源并练习拒绝、求助和紧急行动。",
+    "controlsReviewed": [
+      "source 改可信来源评价",
+      "scenario 改情境行动"
+    ],
+    "sceneBehavior": "统一警示海报图，选择主要影响文字卡。",
+    "limitations": "资料与情景判断，未举办真实参观或播放具体展览影片。",
+    "fixes": [
+      "题名和范围改为实际实现的观察、记录分析或方案辨析，教材活动原题保留在来源映射。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "参观禁毒展览或观看有关影像资料",
+    "currentTitle": "禁毒教育资料与情境判断",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-pond",
+    "mode": "live",
+    "purpose": "用显微观察区分水中微小生物的结构特点，并如实记录取样条件。",
+    "controlsReviewed": [
+      "organism：草履虫/衣藻/眼虫/水绵形态",
+      "sample：采样层记录",
+      "eyepiece/objective/focus：光学观察示意"
+    ],
+    "sceneBehavior": "四种典型微小生物的形态分别显示；取样层只是记录来源，非物种预测",
+    "limitations": "不是池塘水真实采样、活体录像或自动分类",
+    "fixes": [
+      "纠正眼虫轮廓曲线拼接的坐标缺分隔符。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察池塘水中的微小生物",
+    "currentTitle": "观察池塘水中的微小生物",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-kidney-slide",
+    "mode": "live",
+    "purpose": "比较肾皮质和髓质的显微结构。",
+    "controlsReviewed": [
+      "eyepiece/objective/focus 改视野",
+      "region 切皮质肾小体/髓质平行管道"
+    ],
+    "sceneBehavior": "皮质团状肾小球与管断面、髓质平行管道有实质区别。",
+    "limitations": "原创概略显微图，不可当真实小鼠装片定量、着色诊断。",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察小鼠肾脏纵切永久装片",
+    "currentTitle": "观察小鼠肾脏纵切永久装片",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-asexual",
+    "mode": "live",
+    "purpose": "通过不同实例识别无性生殖的共同特点及结构差异。",
+    "controlsReviewed": [
+      "organism：营养、分裂、出芽三种方式",
+      "stage：形成及独立阶段分离状态"
+    ],
+    "sceneBehavior": "叶生新株、草履虫分裂、水螅出芽各阶段可选；末阶段新个体分离",
+    "limitations": "阶段手选，不预测速度、成活率或保证后代完全不变异",
+    "fixes": [
+      "独立新个体阶段与形成阶段在位置/分离状态上区分。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较几种生物的无性生殖方式",
+    "currentTitle": "比较几种生物的无性生殖方式",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-egg-pores",
+    "mode": "live",
+    "purpose": "用可观察的现象为卵壳允许气体通过提供证据，并认识证据边界。",
+    "controlsReviewed": [
+      "water：温水/室温比较条件",
+      "observation：用户已观察到/未观察到气泡，不由温度生成假实测"
+    ],
+    "sceneBehavior": "水温比较条件和已观察气泡记录分别输入并图示",
+    "limitations": "气泡现象由用户输入，不是网页测量；不能用气泡数当气孔数",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "设计实验观察卵壳上的气孔",
+    "currentTitle": "设计实验观察卵壳上的气孔",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-traits",
+    "mode": "live",
+    "purpose": "区分性状与相对性状，避免把全部人类外观特征简单归为单基因遗传。",
+    "controlsReviewed": [
+      "pair：同一性状实例和跨性状反例",
+      "basis：判断依据是否核对同物种同项目"
+    ],
+    "sceneBehavior": "比较同物种同一性状与跨性状反例，并检查判断依据",
+    "limitations": "人的眼睑只作外观比较，不据此推断简单显隐性、亲缘或基因型",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察生物性状并识别相对性状",
+    "currentTitle": "观察生物性状并识别相对性状",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-genetic-material",
+    "mode": "live",
+    "purpose": "建立细胞核、染色体、DNA与基因的层级关系，区分结构和数量。",
+    "controlsReviewed": [
+      "level：细胞核到染色体、DNA和基因层级",
+      "pairs：简化体细胞对数和配子条数，DNA图仅代表一条"
+    ],
+    "sceneBehavior": "细胞核、成对染色体、DNA双链和高亮基因片段逐级切换；对数与条数一致",
+    "limitations": "任意简化物种的结构图，不是人体核型；DNA层只放大一条代表DNA",
+    "fixes": [
+      "细胞层图中的染色体按成对绘制，与对数/条数计算一致。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察染色体、DNA和基因的关系",
+    "currentTitle": "观察染色体、DNA和基因的关系",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-karyotype",
+    "mode": "live",
+    "purpose": "区分常染色体、性染色体与正常配子的数量，理解典型模型的范围。",
+    "controlsReviewed": [
+      "combination：典型XX/XY",
+      "cell：二倍体或配子条数",
+      "gamete：配子性染色体，检查来源矛盾"
+    ],
+    "sceneBehavior": "典型XX/XY与体细胞/配子条数对应，来源不符的Y配子明确报矛盾",
+    "limitations": "只表示典型组成，不进行临床核型或性发育判断",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "观察典型人类染色体组成",
+    "currentTitle": "观察典型人类染色体组成",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-origin-evidence",
+    "mode": "live",
+    "purpose": "区分模拟实验的观察证据、可支持的推论与尚不能回答的问题。",
+    "controlsReviewed": [
+      "part：装置局部定位",
+      "claim：有机物、生命、唯一路线的证据边界"
+    ],
+    "sceneBehavior": "选择装置环节定位，区分产生简单有机物、制造生命和唯一路线三种断言",
+    "limitations": "证据阅读模型；装置并非可运行放电实验，也不还原唯一地球历史",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "分析原始地球生命形成的证据",
+    "currentTitle": "分析原始地球生命形成的证据",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-human-comparison",
+    "mode": "live",
+    "purpose": "用多种特征及证据解释亲缘关系，避免直线演化与优劣排序。",
+    "controlsReviewed": [
+      "feature：运动/颅骨/交流学习",
+      "relationship：共同祖先分支与现代猿直接变人的错误解释"
+    ],
+    "sceneBehavior": "运动、颅骨、交流学习维度分别比较，并显示共同祖先分支关系",
+    "limitations": "概括图不能据外貌判价值、完整谱系或现代猿到现代人的直线关系",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较现代类人猿与人类的特征",
+    "currentTitle": "比较现代类人猿与人类的特征",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-species-register",
+    "mode": "live",
+    "purpose": "统计名录记录差异，区分知识更新、物种数与种群数量变化。",
+    "controlsReviewed": [
+      "earlier/later：名录记录数量与差",
+      "sameScope：口径可比性",
+      "explanation：记录更新与过度恢复断言"
+    ],
+    "sceneBehavior": "两年度输入柱图、差值和统计口径检查",
+    "limitations": "名录增加不等于野外个体增长，也不证明保护已全部成功",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较不同年度物种名录记录",
+    "currentTitle": "比较不同年度物种名录记录",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-invasive-species",
+    "mode": "live",
+    "purpose": "依据来源、定殖与危害证据区分外来种和入侵种，并评价保护方案。",
+    "controlsReviewed": [
+      "status：原生/外来/已证危害",
+      "pathway：放生/运输/封闭管理",
+      "action：措施合法性和适用范围"
+    ],
+    "sceneBehavior": "原生、外来、已证危害分别识别；传播方式和措施单独评价",
+    "limitations": "不由模型判断某真实物种是否入侵，不授权放生、采集或治理",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "调查外来入侵风险并比较保护措施",
+    "currentTitle": "调查外来入侵风险并比较保护措施",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-sexual-comparison",
+    "mode": "live",
+    "purpose": "用精卵结合辨认有性生殖，比较受精方式及其环境联系。",
+    "controlsReviewed": [
+      "animal：典型体内/体外受精情景",
+      "stage：精卵分开、结合与受精卵结构"
+    ],
+    "sceneBehavior": "按物种切换典型体内/外环境，精卵分开、结合和受精卵三阶段有不同结构",
+    "limitations": "不模拟真实受精动力学；所选典型材料不能概括所有鱼类等类群",
+    "fixes": [
+      "精卵分开、结合和受精卵分别绘制，不在受精卵内保留外部精子形态。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较几种动物的有性生殖",
+    "currentTitle": "比较几种动物的有性生殖",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-transgene-evidence",
+    "mode": "live",
+    "purpose": "根据给定对照证据讨论基因与性状的关系，识别环境混杂。",
+    "controlsReviewed": [
+      "group/temperature：给定材料与处理",
+      "controlled：其他因素改变是否导致混杂"
+    ],
+    "sceneBehavior": "教材情景的普通/导入基因材料和低温处理改变定性植株状态，混杂条件提示不可归因",
+    "limitations": "题设分析，非任意基因功能预测、真实转基因操作或实测图",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "分析转基因番茄对照实验的启示",
+    "currentTitle": "分析转基因番茄对照实验的启示",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-breeding",
+    "mode": "live",
+    "purpose": "比较变异来源与人工选择作用，识别诱变不定向及需要验证的环节。",
+    "controlsReviewed": [
+      "method：四种方法不同流程",
+      "claim：变异筛选与因需要定向出现的误解"
+    ],
+    "sceneBehavior": "选择、杂交、诱变、转基因四种方法呈现不同方案步骤，并评价定向变异误解",
+    "limitations": "方案比较，不模拟任何方法成功率或实际育种操作",
+    "fixes": [
+      "不同育种方法采用不同方案步骤，移除统一植株模板造成的名义控件。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "比较几个育种实例",
+    "currentTitle": "比较几个育种实例",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-sex-ratio-data",
+    "mode": "live",
+    "purpose": "按定义计算性别比并区分人口统计与受精时理论概率。",
+    "controlsReviewed": [
+      "male/female：统计分子分母",
+      "scope：常住人口与活产新生儿口径"
+    ],
+    "sceneBehavior": "输入男女人数换算每100名女性对应男性数，区分人口与出生统计口径",
+    "limitations": "不能当受精时XY概率或实际官方统计；分母零不生成虚假比值",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "分析人口性别比资料的统计口径",
+    "currentTitle": "分析人口性别比资料的统计口径",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-evidence-reasoning",
+    "mode": "live",
+    "purpose": "按证据来源、相关性和替代解释评价假说，区分观察与推断。",
+    "controlsReviewed": [
+      "case：灭绝或迁徙课堂资料",
+      "statement：事实、解释和过度推断的具体句子"
+    ],
+    "sceneBehavior": "资料句按观察、解释、过度断言分别呈现并评价证据限度",
+    "limitations": "原创课堂资料句，未引用最新科研实证或单一灭绝/迁徙答案",
+    "fixes": [
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "评价演化证据并区分事实和观点",
+    "currentTitle": "评价演化证据并区分事实和观点",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  },
+  {
+    "id": "bio-cell-comparison",
+    "mode": "live",
+    "purpose": "以细胞共同结构与差异联系生物多样性和统一性。",
+    "controlsReviewed": [
+      "group：四种典型细胞结构",
+      "focus：膜、遗传区域、壁/叶绿体比较重点"
+    ],
+    "sceneBehavior": "典型细菌、真菌、叶肉、动物细胞切换；膜、核、细胞壁重点标示",
+    "limitations": "典型模型不概括无核或其他特化细胞；真菌不按植物分类",
+    "fixes": [
+      "膜高亮贴合真实示意边界，不再高亮无关外框；增加细胞壁重点。",
+      "按任务性质设为直接观察或分析，取消统一开始等待"
+    ],
+    "status": "reviewed-with-declared-scope",
+    "originalTitle": "综合比较不同类群的细胞结构",
+    "currentTitle": "综合比较不同类群的细胞结构",
+    "reviewMethod": "逐项核对目录目标、simulate结果、render结构与控件；七下和八上另由独立智能体复核。非实物实验完成证明。"
+  }
+]

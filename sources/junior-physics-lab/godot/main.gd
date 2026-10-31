@@ -4,9 +4,13 @@ const CartScript = preload("res://cart.gd")
 const ScientificSolvers = preload("res://solvers.gd")
 const DynamicsSolver = preload("res://dynamic_solver.gd")
 const PendulumSolver = preload("res://pendulum_solver.gd")
+const ApparatusDynamics = preload("res://apparatus_dynamics.gd")
+const MechanicsReview = preload("res://mechanics_review.gd")
 var scientific_solver: Node
 var dynamics_solver: Node
 var pendulum_solver: Node
+var apparatus_solver: Node
+var mechanics_review: Node
 var evaluate_callback: JavaScriptObject
 var cart: RigidBody2D
 var js_window: JavaScriptObject
@@ -25,9 +29,13 @@ func _ready() -> void:
 	scientific_solver = ScientificSolvers.new()
 	dynamics_solver = DynamicsSolver.new()
 	pendulum_solver = PendulumSolver.new()
+	apparatus_solver = ApparatusDynamics.new()
+	mechanics_review = MechanicsReview.new()
 	add_child(scientific_solver)
 	add_child(dynamics_solver)
 	add_child(pendulum_solver)
+	add_child(apparatus_solver)
+	add_child(mechanics_review)
 	cart = CartScript.new()
 	add_child(cart)
 	cart.measured.connect(_on_measured)
@@ -94,7 +102,14 @@ func _on_evaluate(args: Array) -> void:
 	var model = str(request.get("model", ""))
 	var params = request.get("params", {})
 	var output = {}
-	if model in ["incline", "motion"]:
+	var scenario = str(params.get("scenario",""))
+	if (model=="motion" and scenario=="magnetDeflection") or (model=="energy" and scenario in ["solarFan","indentation"]) or (model=="pressure" and scenario=="airSuspension"):
+		_on_reset([])
+		output = await mechanics_review.evaluate(model,params)
+	elif (model=="force" and scenario=="interaction") or (model=="motion" and scenario=="supportRemoval") or (model=="energy" and scenario in ["rollingPendulum","kineticImpact","elasticReturn"]) or (model=="magnet" and scenario=="motor"):
+		_on_reset([])
+		output = await apparatus_solver.evaluate(model,params)
+	elif model in ["incline", "motion"]:
 		_on_reset([])
 		output = await dynamics_solver.evaluate(model, params)
 	elif model=="energy" and str(params.get("scenario",""))=="pendulum":

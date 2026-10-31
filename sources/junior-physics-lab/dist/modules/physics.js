@@ -70,7 +70,7 @@
     out+=s==='concave'?path('M438 95Q463 245 438 365H462Q437 245 462 95Z','#477ea2',2,'#cae9f488'):path('M450 90Q420 230 450 365Q480 230 450 90Z','#477ea2',2,'#cae9f488');
     for(const sign of[-1,1])for(const mult of[1,2]){const x=cx+sign*Math.abs(f)*scale*mult;if(x>65&&x<835)out+=line(x,cy-5,x,cy+5,C.line,1)+text(x,cy+22,mult===1?'F':'2F',13,C.ink,'middle');}
     out+=arrow(ox,cy,ox,cy-oh,C.red,5)+label(ox,cy+62,'物');
-    if(iv!==null&&iv!==undefined){const rawX=cx+N(iv)*scale,ix=rawX,imageH=N(v.imageHeight)*sy,iy=cy-imageH;out+=arrow(ix,cy,ix,iy,C.blue,4,!real)+line(ox,cy-oh,cx,cy-oh,C.red,2)+line(ox,cy-oh,cx,cy,C.gold,2);if(real){out+=line(cx,cy-oh,ix,iy,C.red,2)+line(cx,cy,ix,iy,C.gold,2);}else{out+=line(cx,cy-oh,ix,iy,C.red,1,'5 4')+line(cx,cy,ix,iy,C.gold,1,'5 4')+arrow(cx,cy-oh,830,cy-oh+(cy-oh-iy)/(cx-ix)*380,C.red,2)+arrow(cx,cy,830,cy+(cy-iy)/(cx-ix)*380,C.gold,2);}out+=label(clamp(ix,110,790),cy+62,(ix<65||ix>835)?'像位于画面外':real?'实像':'虚像');}
+    if(iv!==null&&iv!==undefined){const rawX=cx+N(iv)*scale,ix=rawX,imageH=N(v.imageHeight)*sy,iy=cy-imageH;out+='<g opacity="'+N(p.imageOpacity,1)+'">'+arrow(ix,cy,ix,iy,C.blue,4,!real)+line(ox,cy-oh,cx,cy-oh,C.red,2)+line(ox,cy-oh,cx,cy,C.gold,2);if(real){out+=line(cx,cy-oh,ix,iy,C.red,2)+line(cx,cy,ix,iy,C.gold,2);}else{out+=line(cx,cy-oh,ix,iy,C.red,1,'5 4')+line(cx,cy,ix,iy,C.gold,1,'5 4')+arrow(cx,cy-oh,830,cy-oh+(cy-oh-iy)/(cx-ix)*380,C.red,2)+arrow(cx,cy,830,cy+(cy-iy)/(cx-ix)*380,C.gold,2);}out+=label(clamp(ix,110,790),cy+62,(ix<65||ix>835)?'像位于画面外':real?'实像':'虚像')+'</g>';}
     else out+=arrow(cx,cy-oh,820,cy-oh+370*oh/Math.max(1,cx-ox),C.red,2)+arrow(cx,cy,820,cy+370*oh/Math.max(1,cx-ox),C.gold,2)+text(680,360,'出射光平行，不成有限远像',14);
     if(/eye|myopia|hyperopia/.test(s))out+=circle(745,135,55,'#faf0df','#897e6a',2)+path('M770 90Q809 135 770 180',C.red,3)+text(745,210,'眼球与视网膜示意',13,C.ink,'middle');return out+text(450,45,v.nature||'移动物体，观察像的位置与性质',19,C.ink,'middle')+text(450,410,'物距 '+F(u)+' cm；像距 '+F(iv)+' cm；物高 '+F(p.height)+' cm；像高 '+F(v.imageHeight)+' cm',15,C.ink,'middle');}
   function force(e,p,r,t){const v=r.values||{},s=p.scenario||'gravity';if(s==='gravity')return platform(355)+rect(425,155,70,70,'#879ead',C.line,4)+arrow(460,190,460,320,C.red,4)+text(480,270,'G = '+F(v.weight)+' N',18,C.red)+line(400,80,520,80,C.line,6)+spring(460,80,75,20)+label(460,50,'质量 '+F(v.mass)+' kg')+text(450,399,'重力方向竖直向下',18,C.ink,'middle');if(s==='interaction')return platform(340)+rect(230,195,150,60,'#b0c4d2',C.line,5)+rect(520,195,150,60,'#b0c4d2',C.line,5)+spring(380,220,5,10)+line(380,225,520,225,C.line,3)+arrow(370,170,475,170,C.red)+arrow(530,285,425,285,C.blue)+text(305,230,'测力计 A',17,C.ink,'middle')+text(595,230,'测力计 B',17,C.ink,'middle')+label(450,100,'两个物体相互作用')+text(450,390,'一对相互作用力作用在两个不同的物体上',17,C.ink,'middle');let out=platform(320)+rect(365,225,170,95,'#c4a06a','#8d6b42',4)+line(225,268,365,268,C.line,2)+line(535,268,675,268,C.line,2)+arrow(365,268,365-clamp(N(v.force2)*5,20,210),268,C.blue,4)+arrow(535,268,535+clamp(N(v.force)*5,20,210),268,C.red,4);return out+label(270,205,'F₂ = '+F(v.force2)+' N')+label(635,205,'F₁ = '+F(v.force)+' N')+label(450,100,v.balanced?'合力为零':'合力 '+F(v.netForce)+' N')+text(450,390,s==='deformation'?'观察受力后物体的形变；箭头只表示力':'同物体、同直线、等大、反向',17,C.ink,'middle');}
@@ -95,8 +95,8 @@
     const y=330-clamp(N(v.height)*21,0,230);let out=platform(355);if(s==='kinetic')out+=cart(285,355,0,F(v.mass)+' kg')+arrow(345,310,345+clamp(N(v.velocity)*20,0,160),310,C.red,3)+text(350,280,'v = '+F(v.velocity)+' m/s',17);else out+=circle(295,y,28,'#cd9f4f','#8c652f',2)+line(350,y,350,355,C.line,1,'5 4')+text(375,(y+355)/2,'h = '+F(v.height)+' m',17);return out+panel(540,95,285,210,'同一状态的能量')+text(565,150,'动能 '+F(v.kinetic)+' J',19)+text(565,200,'势能 '+F(v.potential)+' J',19)+text(565,250,'机械能 '+F(v.total)+' J',19)+text(450,405,'高度须相对于选定参考平面；数值表示当前状态',15,C.ink,'middle');}
   function molecular(e,p,r,t){const v=r.values||{},s=p.scenario||'diffusion',variant=p.variant||e.sceneVariant||e.id||'';if(s==='attraction'||s==='repulsion'){if(/lead/.test(variant))return line(300,75,600,75,C.line,7)+line(450,75,450,150,C.line,3)+rect(400,150,100,70,'#8b9daa',C.line,3)+rect(400,221,100,70,'#98aab7',C.line,3)+line(450,291,450,320,C.line,2)+weight(410,320,'重物',80,44)+label(450,45,'压紧新鲜、平整的铅块表面')+text(450,405,'紧密接触时体现分子间引力',18,C.ink,'middle');const gap=clamp(N(v.distance,1.2)*100,70,230);return circle(450-gap/2,215,37,'#d39772','#945f3e',2)+circle(450+gap/2,215,37,'#709eb7','#426b85',2)+arrow(450-gap/2,215,s==='repulsion'?330-gap/2:420,215,C.red,3)+arrow(450+gap/2,215,s==='repulsion'?570+gap/2:480,215,C.blue,3)+label(450,95,v.tendency||'分子间作用')+text(450,340,'间距为相对量：'+F(v.distance),17,C.ink,'middle')+text(450,395,'示意分子间同时存在的引力和斥力',16,C.ink,'middle');}
     const mix=clamp(N(v.mixingIndex)*t,0,1),gas=/gas/.test(variant);let out=gas?rect(225,95,440,235,'#edf5f8','#688ba2',3):beaker(225,95,440,235,.9);out+=line(225,210,665,210,'#a6bfce',1,'4 5');for(let i=0;i<72;i++){const lower=i%2===0,baseY=lower?235+(i*17)%78:115+(i*19)%78,mixedY=110+(i*47)%205,yy=baseY+(mixedY-baseY)*mix,xx=245+(i*53)%400;out+=circle(xx,yy,5,lower?'#95719b':'#73a7c0','none');}return out+label(450,60,gas?'两瓶气体接触后的混合':'两种液体接触后的混合')+label(450,370,'温度 '+F(v.temperature)+' ℃')+text(450,410,'粒子位置和混合程度仅为定性示意，不是显微实测',14,C.ink,'middle');}
-  function charge(e,p,r,t){const v=r.values||{},s=p.scenario||'electroscope',variant=p.variant||e.sceneVariant||e.id||'';if(s==='rubbing'||/rubbing/.test(variant)){let out=path('M240 170l320-65 14 45-320 65Z',C.line,2,'#b19f7f')+path('M310 95q20-30 65-5l35 25-25 25-52-5Z','#896c76',2,'#c6a2ad');for(let i=0;i<9;i++){const x=300+(i*51)%310,y=335-(N(v.totalCharge)!==0?((i*31+t*95)%95):0);out+=path(`M${x} ${y}l12-5 7 12-14 4Z`,'#b4a684',1,'#e4d9b9');}return out+label(450,60,'摩擦后的物体吸引轻小物体')+text(450,395,'吸引轻小物体不能单独判断电荷正负',17,C.ink,'middle');}
-    if(s==='interaction'||s==='transfer'){const d=clamp(N(p.distance,2)*24,55,185),q1=N(v.charge1),q2=N(v.charge2);let out=line(180,75,720,75,C.line,7)+line(450-d,75,450-d,210,C.line,2)+line(450+d,75,450+d,210,C.line,2)+circle(450-d,240,33,'#c87e6e','#85493b',2)+circle(450+d,240,33,'#7ca9c2','#47748d',2)+text(450-d,248,q1>0?'+':q1<0?'−':'0',27,'white','middle')+text(450+d,248,q2>0?'+':q2<0?'−':'0',27,'white','middle');const rep=q1*q2>0;out+=arrow(450-d,295,450-d+(rep?-70:70),295,C.red,3)+arrow(450+d,295,450+d+(rep?70:-70),295,C.blue,3);return out+label(450,350,v.interaction||'观察电荷相互作用')+text(450,405,'电荷为相对量，力箭头表示相互作用方向',14,C.ink,'middle');}
+  function charge(e,p,r,t){const v=r.values||{},s=p.scenario||'electroscope',variant=p.variant||e.sceneVariant||e.id||'';if(s==='rubbing'||/rubbing/.test(variant)){let out=path('M240 170l320-65 14 45-320 65Z',C.line,2,'#b19f7f')+path('M310 95q20-30 65-5l35 25-25 25-52-5Z','#896c76',2,'#c6a2ad');for(let i=0;i<9;i++){const x=300+(i*51)%310,y=335-(Math.abs(N(v.charge1))>0?((i*31+t*95)%95):0);out+=path(`M${x} ${y}l12-5 7 12-14 4Z`,'#b4a684',1,'#e4d9b9');}return out+label(450,60,'摩擦后的物体吸引轻小物体')+text(450,395,'吸引轻小物体不能单独判断电荷正负',17,C.ink,'middle');}
+    if(s==='interaction'||s==='transfer'){const d=clamp(N(p.distance,2)*24,55,185),q1=N(v.charge1),q2=N(v.charge2);let out=line(180,75,720,75,C.line,7)+line(450-d,75,450-d,210,C.line,2)+line(450+d,75,450+d,210,C.line,2)+circle(450-d,240,33,'#c87e6e','#85493b',2)+circle(450+d,240,33,'#7ca9c2','#47748d',2)+text(450-d,248,q1>0?'+':q1<0?'−':'0',27,'white','middle')+text(450+d,248,q2>0?'+':q2<0?'−':'0',27,'white','middle');const rep=q1*q2>0;if(q1*q2!==0)out+=arrow(450-d,295,450-d+(rep?-70:70),295,C.red,3)+arrow(450+d,295,450+d+(rep?70:-70),295,C.blue,3);return out+label(450,350,v.interaction||'观察电荷相互作用')+text(450,405,'电荷为相对量，力箭头表示相互作用方向',14,C.ink,'middle');}
     const angle=N(v.leafAngle)*Math.PI/180;return rect(300,170,300,180,'#edf5f8','#779bb1',6)+rect(285,155,330,18,'#9caeb9',C.line,3)+line(450,105,450,250,'#ae8e4f',7)+circle(450,100,34,'#d3b569','#8c743a',2)+line(450,250,450-80*Math.sin(angle),250+80*Math.cos(angle),'#ba9b4e',8)+line(450,250,450+80*Math.sin(angle),250+80*Math.cos(angle),'#ba9b4e',8)+label(450,65,'验电器')+text(690,200,'金属球',16)+line(650,195,485,110,C.line,1)+text(690,295,'金属箔片',16)+line(650,285,505,290,C.line,1)+text(450,402,'箔片因带同种电荷而张开；张角仅作定性示意',16,C.ink,'middle');}
   function resistor(x,y,value,title='R',slider=null){let out=line(x-55,y,x-35,y,C.line,3)+rect(x-35,y-14,70,28,'#f3e8c9','#826f48',2)+line(x+35,y,x+55,y,C.line,3)+text(x,y+46,title+' '+F(value)+' Ω',14,C.ink,'middle');if(slider!==null){const sx=x-35+clamp(N(slider),0,1)*70;out+=line(sx,y-65,sx,y-16,C.red,2)+path(`M${sx-6} ${y-26}l6 10 6-10`,C.red,2)+circle(sx,y-65,4,C.red,'none');}return out;}
   function bulb(x,y,power=0){const lit=Math.abs(N(power))>.0001;return(lit?circle(x,y,38,'#f4d06b33','none'):'')+circle(x,y,25,lit?'#f8e5a2':'#eff1ea','#887b58',2)+path(`M${x-15} ${y-15}l30 30m-30 0 30-30`,'#917844',2)+line(x-50,y,x-25,y,C.line,3)+line(x+25,y,x+50,y,C.line,3)+text(x,y+48,'灯泡',13,C.ink,'middle');}
@@ -129,6 +129,204 @@
   function induction(e,p,r,t){const v=r.values||{},s=p.scenario||'motion',generator=s==='generator'||s==='coil';let out=barMagnet(120,130,120,170,true)+barMagnet(640,130,120,170,true);if(generator){out+=`<g transform="rotate(${N(v.angle,p.angle)} 450 205)">`+rect(330,155,240,100,'none','#b58150',6)+line(450,100,450,310,C.line,5)+'</g>'+text(450,70,'转动线圈，磁通量改变',18,C.ink,'middle');}else{const dx=clamp(N(v.velocity)*20,-100,100);out+=line(340,185,550,185,'#b38a58',8)+path('M340 185V335H550V185',C.line,3)+arrow(450,145,450+dx,145,C.red,3)+text(450,100,'导体切割磁感线',19,C.ink,'middle');}
     out+=path('M340 335H410M490 335H550',C.line,3)+circle(450,335,39,'#f4f7ee','#74868b',2)+line(450,350,450+clamp(N(v.emf)*35,-25,25),310,C.red,2)+text(450,360,'G',15,C.ink,'middle')+text(450,410,'感应电动势 '+F(v.emf,4)+' V；开路时不能据此断言有持续电流',15,C.ink,'middle');for(let i=0;i<3;i++)out+=arrow(270,230+i*25,610,230+i*25,'#8ba8ba',1);return out;}
   function emwave(e,p,r,t){const v=r.values||{},s=p.scenario||'wave';let out=path('M155 315L200 115L245 315ZM175 225H225M165 270H235',C.line,4)+line(200,115,200,75,C.line,4)+circle(200,65,9,'#b57c5f',C.line,2)+rect(680,220,130,95,'#9eb4c3',C.line,5)+line(705,220,750,105,C.line,4)+circle(715,253,12,'#e0ebf1',C.line,2)+rect(742,240,48,31,'#294a60','#65859b')+text(765,262,'FM',13,'#dceff7','middle')+text(200,355,'发射端',18,C.ink,'middle')+text(745,355,'接收端',18,C.ink,'middle');for(let i=0;i<4;i++){const xx=290+i*75;out+=path(`M${xx} 115Q${xx+60} 185 ${xx} 255`,C.blue,2);}out+=text(450,58,'f = '+F(v.frequencyMHz)+' MHz；λ = '+F(v.wavelength,3)+' m',19,C.ink,'middle');if(s==='tuning')out+=label(450,310,'接收频率 '+F(v.receiverFrequency)+' MHz')+text(450,355,'相对接收指标 '+F(v.receptionIndex,3)+'；模型带宽 '+F(p.bandwidth??1)+' MHz',16,C.ink,'middle');return out+text(450,408,s==='vacuum'?'电磁波可以在真空中传播':'波前为传播示意，真实波长由读数给出',15,C.ink,'middle');}
+  function stateAt(states, progress) {
+    if (!states?.length) return null;
+    const lastTime=N(states.at(-1).time),target=lastTime*clamp(progress,0,1);
+    return states.find(a=>N(a.time)>=target)||states.at(-1);
+  }
+  // Each override is tied to a reviewed teaching operation. Coordinates use
+  // engine states; static controls operate apparatus without a dummy timer.
+  function reviewedScene(e,p,r,t) {
+    const key=(e.id||'').replace(/^phy-/,''),v=r.values||{},point=sampleAt(r,t);
+    for(const name of ['soundReview','mechanicsReview','opticsReview','electricalReview','deformationReview','measurementReview','fluidDensityReview']) {
+      const sceneRenderer=window.LAB_PHYSICS_SCENES?.[name];
+      if(typeof sceneRenderer==='function') {const scene=sceneRenderer(e,p,r,t);if(scene!==null&&scene!==undefined)return scene;}
+    }
+    if(key==='funnel-ball') {
+      const on=p.blowing==='on'&&N(p.speed)>0;let out=path('M405 75h90v105l145 120H260l145-120Z',C.line,4,'#dcecf3')+circle(450,283,52,'#e4d9b8','#8e835f',3)+line(450,336,450,370,C.line,2)+rect(380,370,140,12,'#a9bdc9',C.line);
+      if(on)out+=arrow(450,35,450,145,C.blue,3)+path('M430 175Q350 230 302 286M470 175Q550 230 598 286',C.blue,3)+arrow(315,270,280,300,C.blue,3)+arrow(585,270,620,300,C.blue,3);
+      return out+label(450,45,on?'向下吹气：观察漏斗与球间的气流路径':'停止吹气：先观察倒置漏斗装置')+text(450,410,'仅支持定性路径与压差分析；未模拟稳定托球，图中球由支架定位',14,C.ink,'middle');
+    }
+    if(key==='cold-water-reboil') {
+      const boiling=String(v.phase||'').includes('水蒸气共存');let out=path('M365 300Q270 270 270 180Q270 65 400 65Q530 65 530 180Q530 270 435 300V370H365Z',C.line,3,'#e2eef5')+path('M280 225Q400 245 520 225Q500 275 430 290V365H370V290Q300 275 280 225Z','#7ba9be',1,C.water)+rect(358,370,84,15,'#b09a73','#7e6947')+arrow(610,80,490,115,C.blue,3)+label(680,70,'冷却瓶身上部')+text(680,190,'瓶内气压 '+F(p.pressure)+' kPa',18,C.ink,'middle')+text(680,235,'对应沸点 '+F(v.boilingPoint,1)+' ℃',18,C.ink,'middle');
+      if(boiling)for(let i=0;i<9;i++)out+=circle(315+(i*31)%170,255+(i*19)%55,4+i%3,'none','#e4f8ff',1.5);
+      return out+label(450,40,boiling?'给定降压条件下出现再次沸腾':'当前压强条件下未出现再次沸腾')+text(450,419,'压强由题设直接改变；不计算冷却速度与凝结造成的压强演化',14,C.ink,'middle');
+    }
+    if(key==='magnet-carts') {
+      const points=r.trajectory||[],range=Math.max(.01,...points.flatMap(a=>[Math.abs(N(a[1])),Math.abs(N(a[2]))])),scale=185/range;
+      const x1=345+N(point?.[1])*scale,x2=555+N(point?.[2])*scale;
+      return platform(325)+cart(x1,325,0,F(p.mass1)+' kg')+cart(x2,325,0,F(p.mass2)+' kg')+barMagnet(x1-26,255,52,20)+barMagnet(x2-26,255,52,20,true)+(N(p.force)>0?arrow(x1,225,x1-65,225,C.blue,3)+arrow(x2,225,x2+65,225,C.red,3):'')+label(450,60,'同时释放，等大反向的相互作用力')+text(450,112,'F = '+F(p.force)+' N；t = '+F(point?.[0],3)+' s',19,C.ink,'middle')+text(450,380,'左车位移 '+F(point?.[1],3)+' m；右车位移 '+F(point?.[2],3)+' m',17,C.ink,'middle')+text(450,416,'恒力为给定条件；质量不同，加速度可以不同',14,C.ink,'middle');
+    }
+    if(key==='inertia-sheet') {
+      const y=135+clamp(N(point?.[1])/Math.max(.001,N(p.height)),0,1)*185,removed=t>0;
+      return beaker(340,180,220,190,0)+rect(removed?620:290,169,320,12,'#bda578','#8c7650')+circle(450,y,22,'#a8bac5',C.line,2)+line(450,110,450,355,C.blue,1,'5 4')+label(450,65,removed?'支撑片已抽去，小球竖直下落':'小球原先静止，准备快速抽片')+text(450,407,'下落 '+F(point?.[1],3)+' m；竖直速度 '+F(point?.[2],3)+' m/s；没有“惯性力”',16,C.ink,'middle');
+    }
+    if(key==='rolling-pendulum') {
+      const y=145+clamp(N(point?.[1])/Math.max(.01,N(p.height)),0,1)*175,a=N(point?.[3])*180/Math.PI;
+      return line(210,65,690,65,C.line,7)+line(362,65,362,y,C.line,2)+line(538,65,538,y,C.line,2)+rect(350,y-7,200,14,'#8fa4b2',C.line)+`<g transform="rotate(${a} 450 ${y})">`+circle(450,y,67,'#b4c7d4',C.line,3)+circle(450,y,22,'#829baa',C.line,2)+line(450,y,510,y,C.gold,5)+circle(450,y,6,C.line,'none')+'</g>'+label(450,40,'下降时平动与转动同时发生')+text(450,386,'下降 '+F(point?.[1],3)+' m；速度 '+F(point?.[2],3)+' m/s；角速度 '+F(point?.[4],3)+' rad/s',16,C.ink,'middle')+text(450,418,'本次计算到给定下降高度停止，尚未模拟反卷回升',14,C.ink,'middle');
+    }
+    if(key==='kinetic-energy') {
+      const points=r.trajectory||[],end=Math.max(.05,...points.map(a=>N(a[2]))),scale=Math.min(2000,540/(end+.25)),origin=260+.2*scale,bx=origin+N(point?.[1],-.2)*scale,wx=origin+N(point?.[2])*scale,ballRadius=Math.max(5,.0125*scale),halfBlock=Math.max(15,.0375*scale);
+      return platform(320)+circle(bx,320-ballRadius,ballRadius,'#9aadb9',C.line,2)+rect(wx-halfBlock,264,halfBlock*2,56,'#bc9d6c','#806841',3)+line(origin,330,origin,350,C.blue,1,'4 4')+arrow(origin,355,wx,355,C.blue,2)+label(450,65,N(point?.[5])<.5?'球向静止木块运动':'接触后共同运动并受摩擦减速')+text(450,112,'球 '+F(p.mass)+' kg；木块 '+F(p.blockMass)+' kg；初速度 '+F(p.velocity)+' m/s',18,C.ink,'middle')+text(450,390,'木块位移 '+F(point?.[2],4)+' m；理论最终滑移 '+F(v.slideDistance,4)+' m',17,C.ink,'middle')+text(450,419,'完全非弹性碰撞模型：动量守恒，碰撞机械能不守恒',14,C.ink,'middle');
+    }
+    if(key==='returning-can') {
+      const points=r.trajectory||[],max=Math.max(.001,...points.map(a=>Math.abs(N(a[1])))),cx=200+clamp(N(point?.[1])/max,-1,1)*480;
+      return platform(335)+circle(cx,266,66,'#b6cbd6',C.line,3)+circle(cx,266,45,'#d9e5eb',C.line,2)+line(cx-28,266,cx+28,266,'#a7854d',5)+weight(cx-22,274,'配重',44,31)+line(200,345,200,368,C.blue,2)+arrow(200,375,cx,375,C.blue,2)+label(450,60,'弹性储能使等效系统减速、反向、回返')+text(450,113,'位移 '+F(point?.[1],3)+' m；速度 '+F(point?.[2],3)+' m/s',19,C.ink,'middle')+text(450,420,'一维等效线性弹簧模型，不预测任意回滚罐的完整内部结构',14,C.ink,'middle');
+    }
+    if(key==='dc-motor-project') {
+      const state=stateAt(r.rotationStates,t),angle=N(state?.angle,v.angle),omega=N(state?.angularVelocity);
+      return barMagnet(100,145,140,175,true)+barMagnet(660,145,140,175,true)+`<g transform="rotate(${angle} 450 230)">`+rect(340,155,220,150,'none','#b28350',7)+line(450,135,450,325,C.line,5)+line(340,155,560,305,C.gold,2)+'</g>'+circle(450,230,13,'#a7b9c6',C.line,2)+label(450,65,'固定转轴，通电后实际积分转动')+text(450,372,'角速度 '+F(omega,3)+' rad/s；电流 '+F(p.current)+' A',19,C.ink,'middle')+text(450,415,'用平均换向器转矩与线性阻尼近似，转速不是功率的替代量',14,C.ink,'middle');
+    }
+    if(key==='hand-generator'||key==='electromagnetic-induction') {
+      const generator=key==='hand-generator',state=stateAt(r.rotationStates,t),angle=N(state?.angleDeg),emf=generator?N(state?.emf):N(point?.[2],v.emf),closed=p.closed!==false;
+      let out=barMagnet(100,135,140,175,true)+barMagnet(660,135,140,175,true);
+      if(generator)out+=`<g transform="rotate(${angle} 450 220)">`+rect(335,165,230,110,'none','#b58451',6)+line(450,140,450,300,C.line,5)+'</g>';
+      else {const max=Math.max(.1,...(r.trajectory||[]).map(a=>Math.abs(N(a[1])))),dx=N(point?.[1])/max*150,x=450+dx;out+=line(280,165,620,165,C.line,3)+line(280,285,620,285,C.line,3)+line(x,160,x,290,'#b58451',8)+path(`M280 165V350H380M520 350H620V285`,C.line,3)+(N(p.velocity)!==0?arrow(x,115,x+Math.sign(N(p.velocity))*70,115,C.red,3):'')+text(450,80,'导体位移 '+F(point?.[1],3)+' m',19,C.ink,'middle');}
+      out+=circle(450,350,38,'#f3f7eb',C.line,2)+line(450,366,450+(closed?clamp(emf*22,-27,27):0),326,C.red,3)+text(450,376,'G',14,C.ink,'middle')+text(450,415,'电动势 '+F(emf,4)+' V；'+(generator?'外力驱动匀速转动':closed?'闭合回路可产生感应电流':'回路断开，表针不偏转'),15,C.ink,'middle');
+      if(generator)out+=label(450,65,'转角 '+F(angle,1)+'°；转动频率 '+F(p.frequency)+' Hz');
+      return out;
+    }
+    if(key==='vacuum-phone') {
+      const vacuum=p.medium==='vacuum',received=v.received===true,audible=v.audibleOutside===true;
+      let out=path('M330 345V155Q330 70 455 70Q580 70 580 155V345Z',C.line,3,vacuum?'#edf4f8':'#dcebf3')+rect(310,345,290,18,'#9bb4c5',C.line)+rect(400,175,110,160,'#819cab','#435e73',8)+rect(412,195,86,100,'#eaf4e0','#6f8a72',3)+text(455,248,received?'收到来电':'等待信号',17,received?C.green:C.ink,'middle')+circle(455,314,8,'#ccdae2',C.line)+rect(85,185,100,140,'#a0b5c3',C.line,6)+line(110,185,145,110,C.line,4)+text(135,360,'外部发射端',15,C.ink,'middle');
+      if(received)for(let i=0;i<3;i++)out+=path(`M${215+i*32} 165q30 65 0 130`,C.blue,2);
+      if(audible)for(let i=0;i<3;i++)out+=path(`M${610+i*24} 195q25 35 0 70`,C.gold,2);
+      return out+label(450,45,vacuum?'真空：无线信号仍可到达，空气不能传声':'空气：比较无线接收与铃声传播')+text(725,185,received?'屏幕：有来电信号':'屏幕：无本次来电',18,C.ink,'middle')+text(725,240,v.sourceVibrating?'罩内扬声器仍振动':'扬声器未发声',17,C.ink,'middle')+text(725,290,audible?'罩外：可听到铃声':'罩外：没有本模型铃声',17,C.ink,'middle')+text(450,416,'电磁波不需要介质；声波需要介质。此处忽略固体支架传声',14,C.ink,'middle');
+    }
+    if(key==='spark-radio') {
+      const response=N(graphValue(r,t)),changing=p.mode==='switching',spark=N(graphValue({graph:r.sourceGraph},t))>0,contactY=changing&&t>0?(Math.floor(t*30)%2?170:130):170;
+      return path('M150 170V325H370V170',C.line,3)+battery(255,325,3)+line(150,170,205,170,C.line,3)+line(205,170,325,contactY,C.line,4)+line(325,170,370,170,C.line,3)+(spark?path('M315 155l-10 14 17-4-14 20',C.gold,3):'')+rect(600,185,170,130,'#a2b7c5',C.line,5)+line(625,185,675,95,C.line,4)+circle(635,255,22,'#e3eaf0',C.line,2)+rect(675,225,70,45,response>0?'#e9d68f':'#d8e1e8',C.line)+text(710,255,response>0?'干扰':'安静',15,C.ink,'middle')+label(450,55,changing?'迅速通断，电流发生快速变化':'稳恒阶段，不产生这一组通断干扰')+text(450,375,p.receiverOn?'观察接收端相对响应包络':'接收机关闭，当前无接收响应',18,C.ink,'middle')+text(450,417,'脉冲为慢放示意；火花具有宽频成分，不能用单一MHz正弦波代替',14,C.ink,'middle');
+    }
+    if(key==='emwave-transmission') {
+      const source=v.sourceOn===true,received=v.received===true;let out=path('M155 320L200 115L245 320ZM175 225H225M165 270H235',C.line,4)+line(200,115,200,75,C.line,4)+circle(200,65,9,source?C.red:'#9aabb6',C.line)+rect(675,200,130,110,'#a0b6c4',C.line,5)+line(705,200,750,105,C.line,4)+rect(700,230,80,45,received?'#dcebb7':'#e5ebed',C.line)+text(740,258,received?'有信号':'无信号',16,C.ink,'middle');
+      if(source)for(let i=0;i<4;i++)out+=path(`M${295+i*75} 115q55 75 0 150`,C.blue,2);
+      return out+label(450,45,'发射端与接收端的工作条件')+text(450,360,'f = '+F(v.frequencyMHz)+' MHz；λ = '+F(v.wavelength,4)+' m',21,C.ink,'middle')+text(450,417,'波前为传播方向示意，不按实际波长缩放，也不表示无线覆盖距离',14,C.ink,'middle');
+    }
+    if(key==='water-wave-analogy') {
+      const state=stateAt(r.waveStates,t),radii=state?.radii||[],probe=N(state?.displacement),scale=360;let out=beaker(120,105,650,250,.88)+line(425,60,425,210,'#a68a55',7);
+      for(const radius of radii)out+=`<ellipse cx="425" cy="235" rx="${N(radius)*scale}" ry="${N(radius)*scale*.32}" fill="none" stroke="#5792b1" stroke-width="2"/>`;
+      const bx=425+.25*scale;out+=line(bx,130,bx,320,'#a0b3be',1,'4 5')+circle(bx,235-probe*6,10,'#d3a352','#8b6a32',2);
+      return out+label(450,45,'波前向外传播，固定位置的浮标上下振动')+text(450,390,'浮标位移 '+F(probe,2)+' mm；波长 '+F(v.wavelength,3)+' m',18,C.ink,'middle')+text(450,419,'相速为题设；水面横向示意不能当作空气声波质点运动方向',14,C.ink,'middle');
+    }
+    if(key==='freezing-mixture') {
+      const cooled=p.stage==='cooled';let out=beaker(150,150,600,200,.8,'#b4d3e3');
+      for(const [x,name]of[[285,'纯水'],[575,'给定含酒精样品']])out+=path(`M${x-40} 90h80v215q0 38-40 38t-40-38Z`,C.line,3,'#eff6f988')+rect(x-33,195,66,113,'#c5e1ec','none')+label(x,380,name);
+      if(cooled)for(let i=0;i<5;i++)out+=rect(260+(i%2)*28,230+Math.floor(i/2)*25,24,20,'#e6f7fb','#93c1d1',2);
+      return out+label(450,45,cooled?'题设观察：纯水出现冰，混合样品仍可流动':'进入同一冷浴前：两个样品均为液体')+text(450,115,cooled?'环境低于0℃；未给出精确温度和酒精浓度':'室温下准备同样的试管与样品',16,C.ink,'middle')+text(450,420,'这是给定的观察情境，不是任意浓度下凝固点的预测',14,C.ink,'middle');
+    }
+    if(key==='kitchen-phase') {
+      const state=stateAt(r.thermalStates,t),temp=N(state?.temperature,v.initial),covered=p.covered===true,boiling=state?.boiling===true,stage=p.activity;
+      const remaining=state?.remainingMass??v.mass,waterHeight=clamp(N(remaining)/Math.max(.001,N(v.mass)),0,1)*100;
+      let out=platform(355)+path('M220 165h330v155q0 25-25 25H245q-25 0-25-25Z',C.line,4,'#c1cfd7')+rect(230,325-waterHeight,310,waterHeight,C.water,'none')+path('M220 205h-50v85h50M550 205h50v85h-50',C.line,8)+thermometer(385,95,220,state?.dry?null:temp);
+      if(covered)out+=path('M210 160q175-100 350 0Z',C.line,4,'#b7c9d5')+rect(360,92,50,18,'#8b7a5f','#675942',4);
+      if(stage!=='cooling'&&N(p.power)>0)out+=flame(385,350,.75);
+      if(boiling)for(let i=0;i<8;i++)out+=circle(255+(i*43)%250,315-((i*17+t*110)%80),4+i%3,'none','#dbf5fc',1.5);
+      if(covered&&temp>p.ambient&&t>0&&stage==='lid')for(let i=0;i<5;i++){const x=280+i*50;out+=path(`M${x} 147q-8 14 0 15q8-1 0-15`,C.blue,1,C.water);}
+      return out+label(450,45,stage==='cooling'?'关火后比较加盖和敞口的冷却':'加盖与敞口保持其他条件相同')+text(715,165,state?.dry?'水已耗尽，计算停止':'当前水温 '+F(temp,2)+' ℃',19,C.ink,'middle')+text(715,215,boiling?'到达沸点，余热用于汽化':state?.dry?'不能继续按液态水计算':'尚未到达沸点',16,C.ink,'middle')+text(715,265,'盖状态：'+(covered?'加盖':'敞口'),17,C.ink,'middle')+text(450,414,'热导为题设；盖上水滴来自水蒸气液化，不是水穿过金属',14,C.ink,'middle');
+    }
+    if(key==='coin-size') {
+      if(p.method==='rolling') {
+        const scale=45,d=N(v.diameter,p.diameter),radius=d*scale/2,cx=150+N(v.rollDistance)*scale,cy=300-radius;let out=rect(110,300,680,55,'#ecd69d','#a18b50');
+        for(let i=0;i<=14;i++)out+=line(150+i*scale,300,150+i*scale,317,'#7f6c3e',1)+text(150+i*scale,343,i,12,'#7f6c3e','middle');
+        out+=`<g transform="rotate(${N(v.rollAngle)} ${cx} ${cy})">`+circle(cx,cy,radius,'#d9b775','#927645',3)+line(cx,cy,cx,cy+radius,C.red,4)+'</g>'+arrow(150,380,cx,380,C.blue,2);
+        return out+label(450,55,N(v.rollTurns)===1?'记号回到原朝向，已无滑动滚动一周':'移动滚动圈数，观察记号与接触点')+text(450,413,'滚过 '+F(v.rollDistance,3)+' cm；圈数 '+F(v.rollTurns)+'；一周路程才是周长',17,C.ink,'middle');
+      }
+      const left=150+N(v.left,p.left)*60,right=150+N(v.right,p.right)*60,d=N(v.diameter,p.diameter),cx=150+(5+d/2)*60;
+      let out=rect(150,330,600,50,'#ecd69d','#a18b50')+circle(cx,230,d*30,'#d9b775','#927645',3)+circle(cx,230,d*30-7,'none','#b29457',1)+line(left,120,left,330,v.obstructed?C.red:C.line,7)+line(right,120,right,330,v.obstructed?C.red:C.line,7);
+      for(let i=0;i<=50;i++){const x=150+i*12;out+=line(x,330,x,i%5===0?350:341,'#7f6c3e',1);if(i%5===0)out+=text(x,369,F(i/5),11,'#7f6c3e','middle');}
+      return out+label(450,60,v.touching?'两侧恰好相切，可读出直径':v.obstructed?'夹板穿入样品，请重新调整':'分别移动左右夹板至相切')+text(450,412,'右读数 '+F(v.right)+' − 左读数 '+F(v.left)+' = '+F(v.measured)+' cm',18,C.ink,'middle');
+    }
+    if(key==='balance-mass') {
+      const tilt=v.balanced?0:clamp(N(v.difference)*.8,-10,10),left=270,right=630;
+      return platform(350)+path('M450 130L420 330H480Z',C.line,3,'#a5bdcc')+rect(280,330,340,20,'#a7becd',C.line)+`<g transform="rotate(${-tilt} 450 140)">`+line(230,140,670,140,C.line,7)+path(`M${left} 140l-65 120h130Z`,C.line,1)+path(`M${right} 140l-65 120h130Z`,C.line,1)+path('M200 260q70 26 140 0M560 260q70 26 140 0',C.line,3)+rect(240,205,60,55,'#879eae',C.line,3)+weight(600,218,F(p.weights)+' g',60,42)+'</g>'+line(450,140,450+tilt*2,65,C.red,3)+path('M420 65h60m-15-8v16m-15-16v16m-15-16v16',C.line,1.5)+rect(300,365,300,16,'#d9bd79','#8e783e')+rect(300+N(p.rider)/5*280,359,20,28,'#9c7850','#6d5238')+label(450,40,v.balanced?'天平平衡，可以读数':'调砝码和游码使天平平衡')+text(450,412,'砝码 '+F(v.weights)+' g + 游码 '+F(v.rider)+' g；'+(v.balanced?'示数 '+F(v.indicated)+' g':'未平衡，不记作质量结果'),16,C.ink,'middle');
+    }
+    if(key==='water-thermometer') {
+      const mode=p.immersion,outside=mode==='outside',tx=outside?580:mode==='wall'?223:345,ty=outside?65:mode==='bottom'?151:90,h=outside?180:190,top=ty+h*(1-clamp((N(v.temperature)+20)/140,0,1)),eyeY=top+(p.eyeLevel==='high'?-55:p.eyeLevel==='low'?55:0);
+      return beaker(210,165,275,190,.72)+thermometer(tx,ty,h,v.temperature)+circle(740,eyeY,17,'#f2e1c8','#967e61',2)+circle(730,eyeY,6,C.ink,'none')+line(720,eyeY,tx+7,top,p.eyeLevel==='level'?C.green:C.red,1.5,'5 5')+label(450,45,v.valid?'位置、视线和稳定条件均正确':'先纠正操作，再记录温度')+text(450,395,p.stable?'示数稳定':'示数尚未稳定，不能立即读数',19,C.ink,'middle')+text(450,422,'错误操作不预设固定误差；器材图用于检查读数条件',14,C.ink,'middle');
+    }
+    if(key==='homemade-thermometer') {
+      const rise=N(v.rise),scale=Math.min(8,150/Math.max(1,Math.abs(rise))),level=235-rise*scale,width=clamp(N(p.tubeArea)*2,5,20);
+      return path('M295 205h240v135q0 15-20 15H315q-20 0-20-15Z',C.line,3,'#dfedf4')+rect(295,199,240,20,'#b19a70','#816a43')+rect(410-width/2,65,width,235,'#e3f1f7',C.line,2)+rect(412-width/2,level,Math.max(1,width-4),300-level,'#bf7368','none')+rect(299,290,232,60,'#bf7368','none')+line(390,235,455,235,C.blue,1.5,'5 5')+arrow(470,235,470,level,C.red,2)+label(450,45,'体膨胀量挤入细管，细管把变化放大')+text(680,170,'ΔV = '+F(v.extraVolume,4)+' mL',18,C.ink,'middle')+text(680,225,'液柱位移 '+F(rise,3)+' cm',18,C.ink,'middle')+text(450,405,'改变管截面积比较灵敏程度；尚需用标准温度计标定',16,C.ink,'middle');
+    }
+    if(key==='infrared-heating') {
+      const temp=graphValue(r,t)??v.temperature,reference=graphValue(r.comparison,t)??v.referenceTemperature,position=p.position,detectorX=position==='red'?595:position==='outsideRed'?690:775;
+      let out=path('M275 120L220 285H355Z',C.line,2,'#d8edf4')+line(70,225,245,225,C.gold,8)+path('M245 225L350 225L625 155',C.red,3)+path('M245 225L350 235L625 205','#577faf',3)+line(625,140,625,225,'#8e9da5',4)+rect(745,110,100,225,'#dce2e4','none')+thermometer(detectorX,125,165,temp)+thermometer(120,155,165,reference);
+      if(p.blocked)out+=rect(390,135,22,150,'#717d85','#455661');
+      return out+label(450,50,'相同探测器：照射组与遮光对照组')+text(120,365,'遮光对照 '+F(reference,2)+' ℃',16,C.ink,'middle')+text(detectorX,365,'照射组 '+F(temp,2)+' ℃',16,C.ink,'middle')+text(450,414,'位置和遮光由你操作；吸收功率是题设，曲线由能量关系计算',14,C.ink,'middle');
+    }
+    if(key==='temperature-sensation') {
+      const compare=p.stage==='compare';let out=platform(350);
+      for(const [x,name,color]of[[125,'冷水','#9acde6'],[375,'同一盆温水','#b4d4df'],[625,'温热水','#d1ceba']])out+=beaker(x,175,150,160,.65,color)+label(x+75,385,name);
+      const hand=(x,color)=>path(`M${x-15} 120v75q-20-7-20 8q0 25 30 35q28-10 25-35v-55q0-12-12-8v-20Z`,'#a57f5f',2,color);
+      out+=hand(compare?420:195,'#a7c5d6')+hand(compare?475:700,'#d9b6a2');
+      return out+label(450,55,compare?'两手同时放入同一盆温水':'先让两手分别适应不同的水温')+text(450,110,compare?'先适应冷水的手觉得偏暖；先适应温热水的手觉得偏凉':'水温宜温和，避免用极冷或烫水',18,C.ink,'middle')+text(450,421,'同一水温可能产生不同触觉判断，温度测量应使用温度计',15,C.ink,'middle');
+    }
+    if(key==='evaporative-cooling') {
+      const wet=p.wet!==false,after=p.stage==='after',index=clamp(N(v.tendency)/10,0,1),level=wet&&after?220+index*65:220;
+      let out=thermometer(315,100,205,null)+rect(310,level,10,305-level,C.red,'none')+rect(270,290,90,35,wet?'#a5cee0':'#d6c9af','#8b8e86',4)+text(315,363,wet?'湿润包裹物':'干燥对照',17,C.ink,'middle')+arrow(470,205,650,205,C.blue,3)+text(570,175,'空气流动',16,C.ink,'middle');
+      if(wet&&after)for(let i=0;i<8;i++)out+=circle(290+(i*31)%55,250-(i*23)%100,3,'#7baec7','none');
+      return out+label(450,50,wet&&after?'液体蒸发吸热，温度有降低趋势':'先比较相同条件下的初始状态')+text(650,270,'温度计柱高为定性示意',17,C.ink,'middle')+text(650,310,'未给定实际冷却温差',17,C.ink,'middle')+text(450,415,'比较干湿与风速；不能用柱高读取未计算的温度',15,C.ink,'middle');
+    }
+    if(key==='paper-thickness') {
+      const count=Math.round(N(p.count,100)),height=clamp(N(v.actual,p.value)*100,10,240),layers=Math.min(count,24);let out=platform(350);
+      for(let i=0;i<layers;i++)out+=rect(210,350-height+i*height/layers,380,Math.max(1,height/layers-1),'#fffcef','#a7a998');
+      return out+rect(630,100,35,250,'#ecd79e','#a68a48')+label(450,65,'累积法：测整叠，再除以张数')+text(450,390,count+' 张；修正后总厚度 '+F(v.corrected)+' cm；平均 '+F(v.average,5)+' cm/张',18,C.ink,'middle')+text(450,420,'示意层数为便于观察，不把屏幕上画出的层数当计数值',14,C.ink,'middle');
+    }
+    if(key==='paperclip-mass')return balanceScene(v.corrected??v.indicated,'g')+label(450,55,'累积法：多个回形针一起称量')+text(450,405,N(p.count)+' 个；修正后总质量 '+F(v.corrected)+' g；平均 '+F(v.average,4)+' g/个',17,C.ink,'middle');
+    if(key==='reflection-law') {
+      const folded=p.folded===true,a=N(v.incidence,p.angle)*Math.PI/180,ox=450,oy=310,len=210;
+      return rect(130,80,320,230,'#efead6','#9c947e')+path(folded?'M450 80L680 125V355L450 310Z':'M450 80H770V310H450Z','#9c947e',2,'#e1ddca')+line(120,312,785,312,C.line,8)+line(450,65,450,310,'#778b98',1.5,'5 5')+arrow(ox-Math.sin(a)*len,oy-Math.cos(a)*len,ox,oy,C.red,3)+(folded?'':arrow(ox,oy,ox+Math.sin(a)*len,oy-Math.cos(a)*len,C.blue,3))+label(450,45,folded?'折板后纸面不再接收到反射光线':'入射光线、反射光线和法线在同一平面')+text(450,380,'入射角 '+F(v.incidence,1)+'°；反射角 '+F(v.reflection,1)+'°',20,C.ink,'middle')+text(450,417,'折板只改变观察面，反射光仍沿原方向传播',14,C.ink,'middle');
+    }
+    if(key==='covered-lens') {
+      const cover=clamp(N(p.cover),0,100),transmission=N(v.relativeTransmission,1-cover/100),covered=cover/100*270;
+      const picture=lens(e,{...p,imageOpacity:transmission},r,t);return picture+path('M450 90Q420 230 450 365Q480 230 450 90Z','#477ea2',2,'#cae9f488')+(cover?rect(427,90,46,covered,'#526570','#324853'):'')+label(720,80,cover===100?'完全挡光，屏上无像':'局部遮挡，仍成完整像')+text(720,120,'相对通光 '+F(transmission*100,0)+' %',16,C.ink,'middle');
+    }
+    if(key==='two-force-balance') {
+      const offset=N(p.offset)*10,same=N(p.direction,-1)>0,y1=230-offset/2,y2=230+offset/2,f1=clamp(N(p.force)*6,0,160),f2=clamp(N(p.force2)*6,0,160);
+      return rect(350,175,200,130,'#c7aa7a','#866b42',4)+line(180,y1,720,y1,'#99acb7',1,'5 4')+line(180,y2,720,y2,'#99acb7',1,'5 4')+arrow(450,y1,450+f1,y1,C.red,4)+arrow(450,y2,450+(same?f2:-f2),y2,C.blue,4)+label(450,70,v.balanced?'满足两力平衡条件':'不满足两力平衡条件')+text(450,355,'合力 '+F(v.netForce)+' N；合力矩 '+F(v.netTorque)+' N·m',20,C.ink,'middle')+text(450,402,'等大、反向、同一直线、同一物体；等大反向但不共线会形成力偶',15,C.ink,'middle');
+    }
+    if(key==='plumb-level') {
+      const angle=N(p.tilt),x=450+Math.sin(angle*Math.PI/180)*200,y=105+Math.cos(angle*Math.PI/180)*200;
+      return line(260,75,640,75,C.line,7)+line(450,105,x,y,'#b79662',16)+line(450,105,450,333,C.line,2)+path('M450 310L432 340H468Z',C.line,2,'#90a8b8')+label(450,45,'改变待测支架方向，铅垂线始终竖直')+text(450,389,angle===0?'支架与铅垂线重合：竖直':'支架与铅垂线不重合：不竖直',21,C.ink,'middle')+text(450,420,'铅垂线用重力方向作基准；质量不决定竖直方向',14,C.ink,'middle');
+    }
+    if(key==='model-camera') {
+      const u=N(v.objectDistance,p.distance),sd=N(p.screenDistance,30),iv=v.imageDistance,scale=Math.min(4,280/Math.max(1,u,sd,N(iv))),cx=420,screen=cx+sd*scale,ox=cx-u*scale,oh=60,imageH=clamp(N(v.imageHeight)*16,-125,125),focused=v.focused===true;
+      return line(80,250,830,250,'#94a9b6',1,'5 5')+arrow(ox,250,ox,190,C.red,5)+path('M420 95Q392 245 420 350Q448 245 420 95Z',C.blue,3,'#cee7f2')+rect(screen,100,12,250,'#d2c4a5','#8a7c62')+(iv!==null&&N(iv)>0?line(ox,190,cx,190,C.red,2)+line(cx,190,cx+N(iv)*scale,250-imageH,C.red,2)+line(ox,190,cx+N(iv)*scale,250-imageH,C.gold,2)+`<g opacity="${focused?1:.25}">`+arrow(screen-5,250,screen-5,250-imageH,C.blue,focused?4:14)+'</g>':'')+label(450,55,'独立移动感光面，比较像距与屏距')+text(450,390,'像距 '+F(iv)+' cm；屏距 '+F(sd)+' cm；'+(focused?'已对焦（示意容差±0.5cm）':'尚未对焦'),17,C.ink,'middle')+text(450,418,'模糊度为位置比较示意，不是完整光学点扩散函数',14,C.ink,'middle');
+    }
+    if(key==='dropper-pressure') {
+      const squeezed=p.stage==='squeeze';let out=beaker(260,205,280,150,.6)+path('M385 90h30v185l-15 35-15-35Z',C.line,3,'#d2e8f2')+path(squeezed?'M375 90V65q0-18 25-18t25 18v25Z':'M375 90V65q0-30 25-30t25 30v25Z',C.line,3,'#b98e79');
+      out+=squeezed?arrow(300,60,370,60,C.red,3)+arrow(500,60,430,60,C.red,3)+circle(400,303,6,'none',C.blue):rect(391,185,18,94,C.water,'none')+arrow(440,280,440,190,C.blue,3);
+      return out+label(450,405,squeezed?'挤压：空气排出，不能同时画成已吸满液体':'松手：胶头恢复，外界大气压使液体进入')+text(650,180,'手动选择动作阶段',19,C.ink,'middle')+text(650,225,'吸液高度仅作示意',16,C.ink,'middle');
+    }
+    if(key==='suction-hole') {
+      const sealed=p.sealed!==false;return rect(200,310,500,20,'#b3c5cf',C.line)+path('M300 310Q450 105 600 310Z',C.line,3,'#caa88b')+(sealed?'':circle(450,210,10,'#f6fafb',C.line))+(sealed?arrow(450,110,450,185,C.red,4):arrow(450,140,450,245,C.blue,3))+label(450,65,sealed?'密封并已排气：保持内外压强差':'通气：内外气压趋于相同')+text(450,388,'外界大气压 '+F(v.atmosphere,0)+' Pa',20,C.ink,'middle')+text(450,419,'未给接触面积和内部压强，不虚构精确吸附力',14,C.ink,'middle');
+    }
+    if(key==='inverted-water') {
+      const sealed=p.sealed!==false;return rect(300,120,180,200,'#dceef6',C.line,2)+rect(304,sealed?124:220,172,sealed?190:94,C.water,'none')+`<g transform="rotate(${sealed?0:25} 300 320)">`+rect(290,320,200,7,'#c7ab77','#846f4f')+'</g>'+(sealed?arrow(390,390,390,335,C.red,4):path('M335 329q0 20-15 30m60-30q0 30-15 50',C.blue,4))+label(450,65,sealed?'密封条件下比较纸片受力':'允许空气进入，原支持条件改变')+text(650,225,sealed?'杯内外压强条件不能省略':'水流出为操作示意',18,C.ink,'middle');
+    }
+    if(key==='magdeburg') {
+      const sealed=p.sealed!==false,gap=sealed?4:100;return path(`M${450-gap/2} 110A110 110 0 0 0 ${450-gap/2} 330Z`,C.line,3,'#a3b8c6')+path(`M${450+gap/2} 110A110 110 0 0 1 ${450+gap/2} 330Z`,C.line,3,'#bfd0da')+label(450,60,sealed?'抽气后：外压大于内压':'通气后：压强差趋近于零')+text(450,390,'外界大气压 '+F(v.atmosphere,0)+' Pa；图中未计算分离力',17,C.ink,'middle');
+    }
+    if(key==='torricelli') {
+      const height=N(v.mercuryHeight,.76),top=315-clamp(height/.9,0,1)*250;return beaker(280,275,290,85,.6,'#aabcc8')+path('M390 60v255h45V60q0-20-22-20t-23 20Z',C.line,3,'#e4eff4')+rect(396,top,33,315-top,'#8fa9b9','none')+line(490,top,490,315,C.red,2)+label(660,170,'管顶近似真空')+text(660,225,'竖直高度差 '+F(height,3)+' m',18,C.ink,'middle')+text(450,402,'大气压 '+F(v.atmosphere,0)+' Pa；只观察屏幕模型',17,C.ink,'middle');
+    }
+    if(key==='communicating-vessels') {
+      const surface=290-clamp(N(p.depth)/2,0,1)*180;return path('M190 80V330H680V80M245 80V275H360V80M420 80V275H620V80',C.line,3)+path(`M217 ${surface}V302H650V${surface}M390 ${surface}V302`,C.water,47)+line(150,surface,720,surface,C.red,1.5,'5 5')+label(450,50,'同种静止液体，各支管承受相同外压')+text(450,390,'各支液面等高；给定深度处压强 '+F(v.liquidPressure,0)+' Pa',18,C.ink,'middle');
+    }
+    if(key==='steelyard') {
+      const a=clamp(N(p.arm)*4,20,280),b=clamp(N(p.loadArm)*4,20,220),tilt=v.balanced?0:Math.sign(N(v.netTorque))*-6;
+      return platform(350)+path('M420 140L395 340H445Z',C.line,3,'#adbfcb')+`<g transform="rotate(${tilt} 420 140)">`+line(120,140,760,140,'#ad8957',9)+line(420-b,140,420-b,250,C.line,2)+weight(395-b,250,F(p.load)+' N',50,50)+line(420+a,140,420+a,220,C.line,2)+weight(395+a,220,F(p.force)+' N',50,50)+'</g>'+label(450,60,'调秤砣力臂，观察两边力矩')+text(450,395,v.balanced?'两侧力矩相等':'尚未平衡；秤砣位置随力臂变化',19,C.ink,'middle');
+    }
+    if(key==='water-light-guide') {
+      const tir=v.tir===true;return beaker(150,105,190,220,.68)+path('M340 235C450 235 590 270 690 355',C.water,22)+(tir?path('M90 230H335C450 230 590 265 690 350',C.red,3):path('M90 230H335L620 165',C.red,3))+label(450,60,tir?'给定界面角满足全反射条件':'当前角度不满足全反射条件')+text(450,407,tir?'曲线仅示意水流导光，不计算弯曲损耗':'光会透出边界，不能继续画作无损导光',16,C.ink,'middle');
+    }
+    if(key==='joule-resistance'||key==='joule-current') {
+      const group=[r,r.comparison||{}],peak=Math.max(1,...group.flatMap(a=>(a.graph?.points||[]).map(pt=>N(pt[1]))));let out=platform(355);
+      group.forEach((a,i)=>{const x=145+i*440,values=a.values||{},q=graphValue(a,t)??N(values.heat)*t,h=clamp(q/peak,0,1)*150;out+=beaker(x,150,185,195,.65)+rect(x+45,260,95,25,'#a69c88','#746d5c')+rect(x+220,180,30,150,'#f0f5f8','#829dac')+rect(x+222,330-h,26,h,'#bd7867','none')+text(x+92,100,'I='+F(values.current)+' A；R='+F(values.resistance)+' Ω',17,C.ink,'middle')+text(x+92,390,'Q='+F(q)+' J',20,C.ink,'middle');});
+      return out+label(450,45,'同一通电时长，比较累积焦耳热')+text(450,421,'旁侧柱表示相对热量，不是气柱、液柱或温度计实测高度',14,C.ink,'middle');
+    }
+    return null;
+  }
   function variantScene(e,p,r,t){const key=p.variant||e.sceneVariant||(e.id||'').replace(/^phy-/,''),v=r.values||{},s=p.scenario;
     if(key==='coin-size'){const d=clamp(N(v.actual,p.value)*7,45,120);let out=circle(420,215,d,'#d6b876','#9f8243',3)+circle(420,215,d-9,'none','#b99a53',1)+path(`M${420-d} 80V350H${420+d}V80`,C.line,3)+rect(420-d,350,d*2,35,'#efdda7','#a28a4f');return out+label(420,60,'平移三角板，使两板与硬币相切')+text(450,415,'直径读数 '+F(v.indicated)+' cm；曲线长度可用细线辅助',16,C.ink,'middle');}
     if(key==='paper-thickness'){let out=platform(350);for(let i=0;i<18;i++)out+=rect(190+i*.8,325-i*8,400,6,'#fffcef','#a7a998');return out+rect(630,120,40,230,'#ead69e','#a68a48')+label(430,75,'叠放多张纸，测量总厚度')+text(450,405,'平均厚度＝总厚度÷纸张数；读数 '+F(v.indicated)+' cm',16,C.ink,'middle');}
@@ -136,7 +334,7 @@
     if(key==='homemade-thermometer'){const level=clamp(N(v.indicated)*1.2,20,180);return path('M350 180V330Q350 350 370 350H480Q500 350 500 330V180Z',C.line,3,'#d8edf5')+rect(350,180,150,20,'#b1986b','#846f4f')+rect(415,65,20,230,'#e4f3f8',C.line,3)+rect(419,270-level,12,level+50,'#c17467','none')+rect(354,260,142,83,'#c17467','none')+label(450,40,'小瓶、塞子与细玻璃管')+text(650,170,'液柱位置示意',18,C.ink,'middle')+text(650,220,'需用标准温度计标定',15,C.ink,'middle')+text(450,405,'未经标定的小瓶装置不能直接读出准确温度',16,C.ink,'middle');}
     if(key==='walking-speed'){return platform(315)+path('M145 315L245 110H740L830 315Z','#8ca0aa',2,'#d8d1bd')+line(175,285,800,285,'white',4)+line(200,230,780,230,'white',4)+line(220,175,760,175,'white',4)+line(250,110,250,315,'#b08354',3)+line(700,110,700,315,'#b08354',3)+circle(290+300*t,125,15,'#c5a479','#6e5a44')+path(`M${290+300*t} 140v45m0-30-25 18m25-18 25 18m-25 12-22 35m22-35 24 35`,C.line,5)+label(450,65,'在已知长度的跑道上测量用时')+text(450,395,'当前模型平均速率 '+F(v.speed,3)+' m/s',18,C.ink,'middle');}
     if(key==='cup-telephone'){return path('M120 130H245L225 260H140Z',C.line,3,'#c8b394')+path('M655 130H780L760 260H675Z',C.line,3,'#c8b394')+line(185,260,717,260,'#b48d59',3)+label(450,210,'拉紧棉线')+text(185,330,'纸杯 A',18,C.ink,'middle')+text(717,330,'纸杯 B',18,C.ink,'middle')+text(450,65,'振动沿拉紧的线传播',20,C.ink,'middle')+text(450,404,'比较线被捏住、松弛时的传声效果',16,C.ink,'middle');}
-    if(key==='rubber-vibration'||key==='ruler-pitch'){const amp=clamp(N(v.amplitude,2)*5,3,45),dy=Math.sin(t*20)*amp;return platform(320)+rect(145,190,340,130,'#d3b681','#98794d')+(key==='ruler-pitch'?rect(315,178,340,13,'#bacbd4',C.line)+path(`M485 185Q570 ${185+dy} 690 ${185+dy}`,C.line,6):path(`M210 178Q420 ${178+dy} 650 178`,C.red,5))+arrow(565,110,565,165,C.blue,3)+label(450,65,key==='ruler-pitch'?'改变伸出桌面的钢尺长度':'拨动绷紧的橡皮筋')+text(450,390,'频率 '+F(v.frequency)+' Hz；振幅为相对量',18,C.ink,'middle');}
+    if(key==='rubber-vibration'){const amp=clamp(N(v.amplitude,2)*5,3,45),dy=Math.sin(t*20)*amp;return platform(320)+rect(145,190,340,130,'#d3b681','#98794d')+path(`M210 178Q420 ${178+dy} 650 178`,C.red,5)+arrow(565,110,565,165,C.blue,3)+label(450,65,'拨动绷紧的橡皮筋')+text(450,390,'频率 '+F(v.frequency)+' Hz；振幅为相对量',18,C.ink,'middle');}
     if(key==='bottle-xylophone'){let out=platform(355);for(let i=0;i<6;i++){const x=140+i*105;out+=path(`M${x+25} 110v60q-25 15-25 35v115q0 15 15 15h50q15 0 15-15V205q0-20-25-35v-60Z`,C.line,2,'#deedf3')+rect(x+4,300-i*22,72,32+i*22,'#8cc6e0','none')+label(x+40,393,String(i+1));}return out+text(450,60,'瓶中水量不同，敲击与吹气的振动主体不同',18,C.ink,'middle');}
     if(key==='piston-flute'){const x=430+clamp(N(v.frequency)/8,20,250);return rect(180,170,560,95,'#c8d8df',C.line,4)+rect(190,183,x-190,70,'#dcecf3','none')+rect(x,173,15,88,'#9eafba',C.line,2)+rect(x+15,211,160,15,'#b18c61','#806b4c')+arrow(125,217,180,217,C.blue,3)+label(450,90,'推拉活塞，改变空气柱长度')+text(450,355,'当前频率 '+F(v.frequency)+' Hz',20,C.ink,'middle')+text(450,405,'空气柱长度和频率的关联须在指定管端条件下比较',15,C.ink,'middle');}
     if(key==='water-wave-analogy'){let out=beaker(180,125,520,205,.7);for(let i=0;i<6;i++)out+=`<ellipse cx="440" cy="235" rx="${20+i*32}" ry="${7+i*8}" fill="none" stroke="#5a9aba" stroke-width="2"/>`;return out+line(440,85,440,230,'#b4935c',8)+label(450,65,'水波作类比，观察扰动向外传播')+text(450,401,'类比不能说明声波中的粒子也随波一直向前迁移',15,C.ink,'middle');}
@@ -169,7 +367,7 @@
     if(key==='magnet-ball'){const pt=sampleAt(r,t),points=r.trajectory||[],max=Math.max(1,...points.map(a=>Math.abs(N(a[1])))),xx=170+clamp(N(pt?.[1])/max,0,1)*470;return platform(320)+circle(xx,294,25,'#9caeb9',C.line,2)+barMagnet(690,235,120,85,true)+arrow(xx+40,280,xx+105,280,C.red,3)+label(450,75,'磁力改变铁球运动状态')+text(450,390,'当前速度 '+F(pt?.[2],3)+' m/s；力按所设条件作用',17,C.ink,'middle');}
     if(key==='magnet-carts'){return platform(320)+cart(300,320)+cart(600,320)+barMagnet(260,225,80,32)+barMagnet(560,225,80,32,true)+arrow(270,190,190,190,C.red,3)+arrow(630,190,710,190,C.blue,3)+label(450,95,'两辆车分别受到磁体的相互作用力')+text(450,400,'图示一对同极相对的磁体；两车受力大小相等方向相反',14,C.ink,'middle');}
     if(key==='plumb-level'){return path('M220 340L440 90L660 340Z',C.line,4,'#dfd0ad')+path('M300 315L440 155L580 315Z',C.line,2,'#f5f8f8')+line(440,90,440,330,C.red,3)+weight(420,330,'',40,35)+line(160,365,720,365,C.blue,3)+label(450,50,'利用重力方向判断竖直与水平')+text(450,411,'静止铅垂线的方向竖直向下',17,C.ink,'middle');}
-    if(key==='deformation'||key==='steel-ruler-force'){const shift=clamp(N(v.force)*2,0,100);return rect(180,120,55,235,'#9aaebb',C.line,3)+rect(160,130,110,40,'#b7c8d3',C.line,2)+path(`M230 155Q430 155 650 ${155+shift}`,C.blue,12)+arrow(650,155+shift,650,260+shift,C.red,3)+label(450,65,'观察力的大小、方向和作用点')+text(450,405,'形变只作现象示意；材料关系由模型说明限定',15,C.ink,'middle');}
+    if(key==='deformation'){const shift=clamp(N(v.force)*2,0,100);return rect(180,120,55,235,'#9aaebb',C.line,3)+rect(160,130,110,40,'#b7c8d3',C.line,2)+path(`M230 155Q430 155 650 ${155+shift}`,C.blue,12)+arrow(650,155+shift,650,260+shift,C.red,3)+label(450,65,'观察力的大小、方向和作用点')+text(450,405,'形变只作现象示意；材料关系由模型说明限定',15,C.ink,'middle');}
     if(key==='glass-microdeform'){const lift=clamp(N(v.rise)*12,0,140);return path('M280 175H500V330Q500 350 480 350H300Q280 350 280 330Z',C.line,4,'#d1e6f0')+rect(280,170,220,20,'#b49b71','#816b47')+rect(380,65,22,240,'#e8f5fa',C.line,3)+rect(385,265-lift,12,70+lift,'#c46d5f','none')+rect(285,265,210,78,'#c46d5f','none')+arrow(190,245,275,245,C.red,4)+arrow(590,245,505,245,C.red,4)+label(450,45,'挤压玻璃瓶，观察细管液面')+text(450,404,'细管液面上升 '+F(v.rise,3)+' cm；瓶壁形变不能按画面尺寸测量',14,C.ink,'middle');}
     if(key==='inertia-sheet'){return beaker(330,180,240,180,.0)+rect(275,170,350,13,'#bda578','#8c7650')+circle(450,140,30,'#a8bac5',C.line,2)+arrow(645,176,785,176,C.red,4)+line(450,185,450,330,C.blue,1,'6 5')+label(450,70,'快速抽走支撑片')+text(450,407,'小球原先静止；失去支持后受重力下落（操作示意）',15,C.ink,'middle');}
     if(key==='sliding-friction'){const pt=sampleAt(r,t),points=r.trajectory||[],max=Math.max(1,...points.map(a=>Math.abs(N(a[1])))),xx=180+clamp(N(pt?.[1])/max,0,1)*280;return platform(320)+rect(xx,235,130,85,'#c4a16d','#8a6d46',3)+weight(xx+38,190,F(p.mass)+' kg',55,42)+line(xx+130,270,xx+170,270,C.line,3)+rect(xx+170,245,140,48,'#b7ccd9',C.line,5)+text(xx+240,276,'测力计',15,C.ink,'middle')+arrow(xx+315,270,xx+365,270,C.red,3)+arrow(xx,304,xx-70,304,C.blue,3)+label(450,90,'沿水平方向匀速拉动时才可比较平衡力')+text(450,401,'当前模型速度 '+F(pt?.[2],3)+' m/s；不把任意变速状态当作平衡',15,C.ink,'middle');}
@@ -183,7 +381,7 @@
     if(key==='magdeburg')return path('M450 110A110 110 0 0 0 450 330Z',C.line,3,'#a3b8c6')+path('M455 110A110 110 0 0 1 455 330Z',C.line,3,'#bfd0da')+arrow(250,220,340,220,C.red,4)+arrow(650,220,565,220,C.red,4)+label(450,60,'马德堡半球原理示意')+label(450,385,'外界大气压 '+F(v.atmosphere,0)+' Pa');
     if(key==='piston-pump'){return beaker(160,260,260,115,.65)+path('M270 310V140H465V310H390',C.line,4)+rect(280,185,175,20,'#9cabb3',C.line,2)+path(v.outlet==='打开'?'M315 190l25-20':'M315 190h25',C.red,4)+path(v.inlet==='打开'?'M280 300l30-20':'M280 300h30',C.red,4)+rect(360,60,15,125,'#a8b9c4',C.line,2)+rect(310,55,115,15,'#b69b72','#806a49',3)+path('M465 250H620V305',C.line,13)+arrow(300,270,300,215,C.blue,3)+arrow(490,250,580,250,C.blue,3)+text(695,155,'底阀：'+(v.inlet||'等待计算'),18,C.ink,'middle')+text(695,210,'活塞阀：'+(v.outlet||'等待计算'),17,C.ink,'middle')+label(450,414,'按阶段观察阀门开闭，流向由压强差决定');}
     if(key==='blow-strip'){return path('M195 190Q340 290 510 310',C.line,4,'none')+path('M195 195Q370 240 530 225','#a8b6be',2,'none','5 4')+arrow(120,155,620,155,C.blue,4)+label(450,65,'沿纸条上表面吹气')+text(450,365,'流速与静压变化使纸条受力改变',20,C.ink,'middle')+text(450,410,'虚线为受气流作用后的形状示意',15,C.ink,'middle');}
-    if(key==='straw-spray'){let out=beaker(240,220,220,135,.7)+path('M345 320V155',C.line,10)+path('M140 145H350',C.line,22)+arrow(150,145,370,145,C.blue,4)+arrow(345,250,345,175,C.blue,2);for(let i=0;i<16;i++)out+=circle(390+(i*27)%235,125+(i*23)%90,3,'#82b5cf','none');return out+label(450,65,'水平气流经过竖直管口')+text(450,405,'管口气压降低，液体在压强差作用下上升并被吹散',15,C.ink,'middle');}
+    if(key==='straw-spray'){const flowing=N(v.speed)>0&&N(v.pressureDrop)>0;let out=beaker(240,220,220,135,.7)+path('M345 320V155',C.line,10)+path('M140 145H350',C.line,22);if(flowing){out+=arrow(150,145,370,145,C.blue,4)+arrow(345,250,345,175,C.blue,2);for(let i=0;i<16;i++)out+=circle(390+(i*27)%235,125+(i*23)%90,3,'#82b5cf','none');}return out+label(450,65,flowing?'水平气流经过竖直管口：喷雾原理示意':'没有吹气：不显示吸液箭头与水雾')+text(450,405,'未计算实际吸液高度与阈值，示意水雾不能用来量取流量',15,C.ink,'middle');}
     if(key==='archimedes'){return beaker(170,140,270,200,.8)+path('M440 180H520L570 260',C.line,7)+beaker(540,260,180,95,.35)+rect(270,200,70,80,'#9daab3',C.line,3)+spring(305,65,135,24)+line(200,65,410,65,C.line,6)+arrow(460,190,530,230,C.blue,2)+label(450,45,'溢水杯先装满，静置至不再滴水')+label(640,240,'收集排开的液体')+text(450,405,'比较浮力与排开液体的重力；F浮 = '+F(v.buoyantForce,3)+' N',16,C.ink,'middle');}
     if(key==='egg-saltwater'||key==='clay-boat'){const fraction=clamp(N(v.fraction),0,1),yy=key==='egg-saltwater'?115+120*fraction:145+60*fraction;let out=beaker(200,115,480,240,.75);if(key==='egg-saltwater')out+=`<ellipse cx="440" cy="${yy}" rx="42" ry="60" fill="#e7d8b8" stroke="#9b8a68" stroke-width="2"/>`;else out+=path(`M325 ${yy-30}H565L525 ${yy+30}H365Z`,'#8d7658',3,'#bda47d');return out+label(450,65,key==='egg-saltwater'?'比较清水与盐水中的浮沉':'把橡皮泥捏成中空船形')+text(450,393,'液体密度 '+F(v.liquidDensity)+' kg/m³；'+(v.state||''),18,C.ink,'middle');}
     if(key==='kinetic-energy'){return platform(335)+path('M160 315L400 145L400 335H160Z',C.line,3,'#c5d1da')+circle(320,180,25,'#9eafbb',C.line,2)+rect(540,270,105,65,'#bba06e','#8c724b',3)+arrow(430,295,510,295,C.red,3)+label(450,65,'比较钢球推动木块的效果')+text(450,393,'当前状态动能 '+F(v.kinetic)+' J；速度 '+F(v.velocity)+' m/s',18,C.ink,'middle');}
@@ -205,8 +403,44 @@
   }
   const renderers={measurement,incline,motion,sound,thermal,phase,density,optics,lens,force,spring:springScene,pressure,buoyancy,lever,pulley,work,energy,molecular,charge,circuit,joule,household,magnet,induction,emwave};
   function mergedParams(experiment,params){return {...Object.fromEntries((experiment.controls||[]).map(c=>[c.key,c.value])),...experiment.modelParams,...params};}
-  async function simulate(experiment,params){const engine=window.GodotLab;if(!engine||typeof engine.evaluate!=='function')throw new Error('实验引擎尚未就绪，请等待 Godot 加载完成。');const p=mergedParams(experiment,params),result=await engine.evaluate(experiment.model,p);if(!result||result.error)throw new Error(result?.error||'实验引擎没有返回有效结果。');if(experiment.model==='thermal'&&p.scenario==='capacity'&&p.capacity2!==undefined){result.comparison=await engine.evaluate('thermal',{...p,capacity:p.capacity2,mass:p.mass2??p.mass});}if(experiment.model==='joule'&&(p.resistance2!==undefined||p.current2!==undefined)){result.comparison=await engine.evaluate('joule',{...p,resistance:p.resistance2??p.resistance,current:p.current2??p.current});}if(result.comparison){const b=result.comparison;result.readings=[...(result.readings||[]),...(b.readings||[]).map(reading=>({...reading,label:'对照组：'+reading.label}))];result.process=[...(result.process||[]),...(b.process||[]).map(step=>({...step,title:'对照组 · '+step.title}))];}return result;}
-  function render(experiment,params,result={},progress=0){const p=mergedParams(experiment,params),draw=renderers[experiment.model],r=result||{};const bg=rect(0,0,900,430,'#f8fbfd','none')+Array.from({length:22},(_,i)=>line(0,i*20,900,i*20,'#dbe8f0',.55)).join('')+Array.from({length:46},(_,i)=>line(i*20,0,i*20,430,'#dbe8f0',.55)).join('');if(!draw)return bg+text(450,190,'此实验尚未连接相应的图形模型',22,C.ink,'middle')+text(450,235,experiment.model||'未指定模型',16,C.ink,'middle');return bg+`<g data-physics-model="${E(experiment.model)}" data-physics-scenario="${E(p.scenario||'')}">`+(variantScene(experiment,p,r,clamp(N(progress),0,1))??draw(experiment,p,r,clamp(N(progress),0,1)))+'</g>';}
+  async function simulate(experiment,params) {
+    const engine=window.GodotLab;
+    if(!engine||typeof engine.evaluate!=='function')throw new Error('实验引擎尚未就绪，请等待 Godot 加载完成。');
+    const p=mergedParams(experiment,params);
+    if(experiment.id==='phy-funnel-ball'&&p.blowing==='off')p.speed=0;
+    const result=await engine.evaluate(experiment.model,p);
+    if(!result||result.error)throw new Error(result?.error||'实验引擎没有返回有效结果。');
+    if(experiment.model==='thermal'&&p.scenario==='capacity'&&p.capacity2!==undefined) {
+      result.comparison=await engine.evaluate('thermal',{...p,capacity:p.capacity2,mass:p.mass2??p.mass});
+    }
+    if(experiment.model==='joule'&&(p.resistance2!==undefined||p.current2!==undefined)) {
+      result.comparison=await engine.evaluate('joule',{...p,resistance:p.resistance2??p.resistance,current:p.current2??p.current});
+    }
+    if(result.comparison) {
+      const b=result.comparison;
+      result.readings=[...(result.readings||[]),...(b.readings||[]).map(reading=>({...reading,label:'对照组：'+reading.label}))];
+      result.process=[...(result.process||[]),...(b.process||[]).map(step=>({...step,title:'对照组 · '+step.title}))];
+    }
+    return result;
+  }
+
+  function render(experiment,params,result={},progress=0) {
+    const p=mergedParams(experiment,params),position=clamp(N(progress),0,1),phaseState=stateAt(result?.phaseStates,position),r=phaseState?{...result,values:{...(result.values||{}),...phaseState}}:result||{};
+    const bg=rect(0,0,900,430,'#f8fbfd','none')
+      +Array.from({length:22},(_,i)=>line(0,i*20,900,i*20,'#dbe8f0',.55)).join('')
+      +Array.from({length:46},(_,i)=>line(i*20,0,i*20,430,'#dbe8f0',.55)).join('');
+    let content;
+    if (p.scenario==='ruler' && ['sound','force'].includes(experiment.model)) {
+      const ruler=window.LAB_PHYSICS_SCENES?.ruler;
+      if (typeof ruler!=='function') throw new Error('钢尺实验装置模块尚未载入。');
+      content=ruler(experiment,p,r,position);
+    } else {
+      const draw=renderers[experiment.model];
+      if (!draw) return bg+text(450,190,'此实验尚未连接相应的图形模型',22,C.ink,'middle')+text(450,235,experiment.model||'未指定模型',16,C.ink,'middle');
+      content=reviewedScene(experiment,p,r,position)??variantScene(experiment,p,r,position)??draw(experiment,p,r,position);
+    }
+    return bg+`<g data-physics-model="${E(experiment.model)}" data-physics-scenario="${E(p.scenario||'')}">`+content+'</g>';
+  }
   window.LAB_MODULES=window.LAB_MODULES||{};
   window.LAB_MODULES.physics={simulate,render};
 })();

@@ -1,0 +1,6355 @@
+[
+  {
+    "id": "phy-cold-water-reboil",
+    "mode": "live",
+    "purpose": "比较降温前后水是否重新沸腾，联系瓶内气压变化。",
+    "controlsReviewed": [
+      {
+        "key": "initial",
+        "label": "降压前水温",
+        "default": 90
+      },
+      {
+        "key": "pressure",
+        "label": "瓶内压强",
+        "default": 65
+      }
+    ],
+    "sceneBehavior": "在倒置热烧瓶中改变给定气压，对照水温与沸点，沸腾条件满足时出现气泡。",
+    "limitations": [
+      "气压由题设改变；没有联立求解瓶内凝结、冷水传热和压力随时间变化。"
+    ],
+    "fixes": [
+      "在倒置热烧瓶中改变给定气压，对照水温与沸点，沸腾条件满足时出现气泡。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-funnel-ball",
+    "mode": "live",
+    "purpose": "观察流动气体对球运动的影响。",
+    "controlsReviewed": [
+      {
+        "key": "blowing",
+        "label": "吹气状态",
+        "default": "off"
+      },
+      {
+        "key": "speed",
+        "label": "气流参考速度",
+        "default": 8
+      }
+    ],
+    "sceneBehavior": "可选择停吹/向下吹气，观察倒置漏斗与球间气流路径；球由支架定位。",
+    "limitations": [
+      "只支持定性路径与压差分析，未复现完整漏斗流场和稳定托球，不能用向上吹气的轴向阻力模型替代。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "needs-implementation",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-pendulum-period",
+    "mode": "playback",
+    "purpose": "用多次摆动总时间求周期，再改变摆长。",
+    "controlsReviewed": [
+      {
+        "key": "length",
+        "label": "摆长",
+        "default": 1
+      },
+      {
+        "key": "gravity",
+        "label": "重力场强度",
+        "default": 9.8
+      },
+      {
+        "key": "mass",
+        "label": "摆球质量",
+        "default": 0.1
+      },
+      {
+        "key": "angle",
+        "label": "释放角度",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "摆球位置由刚体与铰链轨迹提供；逐项核对摆长、重力和周期。",
+    "limitations": [
+      "小角度周期公式用于对照；真实大振幅周期应读轨迹，尚未完成所有参数浏览器实测。"
+    ],
+    "fixes": [
+      "Godot重力控件已修复并加入质量/释放角度。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-ruler-length",
+    "mode": "live",
+    "purpose": "练习零点对齐、正确视线、读数与单位记录。",
+    "controlsReviewed": [
+      {
+        "key": "value",
+        "label": "待测量",
+        "default": 12.34
+      },
+      {
+        "key": "division",
+        "label": "分度值",
+        "default": 0.1
+      },
+      {
+        "key": "zero",
+        "label": "零点偏移",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "调整物长、分度值和零点，观察刻度与修正读数。",
+    "limitations": [
+      "已知长度驱动画面是读数训练，不等于独立未知物体测量；还缺视差操作。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-stopwatch-pulse-step",
+    "mode": "live",
+    "purpose": "练习启动停止与累计计时。",
+    "controlsReviewed": [
+      {
+        "key": "count",
+        "label": "实际数到的次数，未计数填0",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "手动开始、暂停、继续、记录停止和清零，真实经过时间与实际计数传给引擎。",
+    "limitations": [
+      "使用performance.now计时；手动反应时间仍属于用户操作误差。默认计数0，不把示例次数当实测脉搏。"
+    ],
+    "fixes": [
+      "手动开始、暂停、继续、记录停止和清零，真实经过时间与实际计数传给引擎。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-coin-size",
+    "mode": "live",
+    "purpose": "比较辅助夹测、滚动或绕线的方法。",
+    "controlsReviewed": [
+      {
+        "key": "diameter",
+        "label": "待测圆形样品直径（教师设定）",
+        "default": 2.5
+      },
+      {
+        "key": "method",
+        "label": "测量方法",
+        "default": "clamp"
+      },
+      {
+        "key": "left",
+        "label": "左夹板位置",
+        "default": 4.5
+      },
+      {
+        "key": "right",
+        "label": "右夹板位置",
+        "default": 8
+      },
+      {
+        "key": "rollTurns",
+        "label": "无滑动滚动圈数",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "左右夹板独立移动，只有相切才接受直径；另有无滑动滚一周测周长。",
+    "limitations": [
+      "硬币理想圆，滚动不打滑；刻度是模拟器读数，不能用屏幕物理尺寸替代测量。"
+    ],
+    "fixes": [
+      "左右夹板独立移动，只有相切才接受直径；另有无滑动滚一周测周长。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-paper-thickness",
+    "mode": "live",
+    "purpose": "通过多张总厚度除以张数降低相对测量影响。",
+    "controlsReviewed": [
+      {
+        "key": "value",
+        "label": "整叠厚度",
+        "default": 1
+      },
+      {
+        "key": "division",
+        "label": "分度值",
+        "default": 0.1
+      },
+      {
+        "key": "zero",
+        "label": "零点偏移",
+        "default": 0
+      },
+      {
+        "key": "count",
+        "label": "纸张数",
+        "default": 100
+      }
+    ],
+    "sceneBehavior": "用整叠厚度和纸张数求单张平均厚度。",
+    "limitations": [
+      "应压紧并保持纸张同类；显示为理想读数，不模拟压缩导致的厚度误差。"
+    ],
+    "fixes": [
+      "加入纸张数并输出累积法平均值。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-incline-speed",
+    "mode": "playback",
+    "purpose": "测量对应路程与运动时间，计算并比较平均速度。",
+    "controlsReviewed": [
+      {
+        "key": "length",
+        "label": "斜面路程",
+        "default": 1
+      },
+      {
+        "key": "angle",
+        "label": "斜面角度",
+        "default": 12
+      },
+      {
+        "key": "mass",
+        "label": "小车质量",
+        "default": 200
+      }
+    ],
+    "sceneBehavior": "右高左低小车从A经过B到C，长度、坡角和质量进入刚体求解。",
+    "limitations": [
+      "光滑斜面理想模型；真实轮轴摩擦、手动反应时间未模拟。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-sensor-speed",
+    "mode": "playback",
+    "purpose": "用连续距离—时间记录得到小车或人的速度。",
+    "controlsReviewed": [
+      {
+        "key": "velocity",
+        "label": "初速度",
+        "default": 1
+      },
+      {
+        "key": "duration",
+        "label": "观察时长",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "采样轨迹的位置随时间变化，可比较位移与用时。",
+    "limitations": [
+      "匀速速度是给定条件，不模拟传感器采样噪声与真实数据导入。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-walking-speed",
+    "mode": "playback",
+    "purpose": "已知路线长度，计时求速度，再估测通学路程。",
+    "controlsReviewed": [
+      {
+        "key": "velocity",
+        "label": "初速度",
+        "default": 1
+      },
+      {
+        "key": "duration",
+        "label": "观察时长",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "行人在轨道上按轨迹回放并给出平均速率。",
+    "limitations": [
+      "当前输入速度和时长，缺少先量路线再手动计时的测量流程。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-rubber-vibration",
+    "mode": "playback",
+    "purpose": "拨动绷紧橡皮筋，联系振动与声音。",
+    "controlsReviewed": [
+      {
+        "key": "amplitude",
+        "label": "振幅（相对量）",
+        "default": 2
+      },
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 440
+      }
+    ],
+    "sceneBehavior": "拨动橡皮筋后观察振幅变化，零振幅必须静止。",
+    "limitations": [
+      "相对振幅与慢放振动不代表实际长度或真实时间比例。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-vacuum-bell",
+    "mode": "playback",
+    "purpose": "减少空气后声音减弱，以实验与推理讨论真空不传声。",
+    "controlsReviewed": [
+      {
+        "key": "medium",
+        "label": "介质",
+        "default": "vacuum"
+      },
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 440
+      },
+      {
+        "key": "amplitude",
+        "label": "振幅（相对量）",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "比较钟罩内有介质与真空，分清声源振动和声音传播。",
+    "limitations": [
+      "介质是离散状态；未模拟逐渐抽气的气压—响度关系。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-water-wave-analogy",
+    "mode": "playback",
+    "purpose": "借水面扰动传播帮助理解波的传播。",
+    "controlsReviewed": [
+      {
+        "key": "frequency",
+        "label": "波源频率",
+        "default": 1
+      },
+      {
+        "key": "amplitude_mm",
+        "label": "浮标振动幅度",
+        "default": 3
+      },
+      {
+        "key": "speed",
+        "label": "水面波相速（题设）",
+        "default": 0.2
+      }
+    ],
+    "sceneBehavior": "圆形波前传播与固定位置浮标上下振动来自引擎时间状态。",
+    "limitations": [
+      "相速为题设，忽略色散、反射和圆形波幅衰减；不能把水面波方向直接套用于空气声波。"
+    ],
+    "fixes": [
+      "圆形波前传播与固定位置浮标上下振动来自引擎时间状态。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-desk-sound",
+    "mode": "live",
+    "purpose": "比较贴桌与离桌的听觉现象。",
+    "controlsReviewed": [
+      {
+        "key": "medium",
+        "label": "介质",
+        "default": "steel"
+      },
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 440
+      },
+      {
+        "key": "distance",
+        "label": "传播距离",
+        "default": 34
+      }
+    ],
+    "sceneBehavior": "比较固体和空气传声的声速与路径。",
+    "limitations": [
+      "钢不是木桌的材料常数；未模拟贴耳/离耳及环境噪声差异。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-cup-telephone",
+    "mode": "live",
+    "purpose": "比较拉紧与松弛的线传声效果。",
+    "controlsReviewed": [
+      {
+        "key": "stringState",
+        "label": "棉线状态",
+        "default": "tight"
+      },
+      {
+        "key": "frequency",
+        "label": "声源频率",
+        "default": 440
+      },
+      {
+        "key": "amplitude",
+        "label": "拨动/振动幅度（相对量）",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "比较棉线绷紧、松弛和被捏住时的传声条件。",
+    "limitations": [
+      "声速参数不能代替真实棉线张力；传播强弱只可作定性比较。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-ruler-pitch",
+    "mode": "playback",
+    "purpose": "改变悬臂长度比较振动快慢与音调。",
+    "controlsReviewed": [
+      {
+        "key": "length",
+        "label": "伸出桌面的长度",
+        "default": 8
+      },
+      {
+        "key": "amplitude",
+        "label": "拨动幅度",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "固定端后调伸出长度，拨动钢尺；位移、弯曲形状和频率来自专用引擎。",
+    "limitations": [
+      "均匀弹性悬臂梁近似，忽略夹持柔度与空气阻尼；真实音效与慢放画面时间尺度分开。"
+    ],
+    "fixes": [
+      "专用可调伸出长度与拨动幅度，Godot悬臂梁位移与频率。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-amplitude-ball",
+    "mode": "playback",
+    "purpose": "改变敲击力度，通过乒乓球偏移比较振动幅度。",
+    "controlsReviewed": [
+      {
+        "key": "amplitude",
+        "label": "振幅（相对量）",
+        "default": 2
+      },
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 440
+      }
+    ],
+    "sceneBehavior": "音叉振幅改变时小球偏离幅度应跟随变化。",
+    "limitations": [
+      "小球用于放大观察，摆幅并非准确声压或响度计。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-timbre-waveform",
+    "mode": "live",
+    "purpose": "比较音叉、钢琴、长笛的波形形状。",
+    "controlsReviewed": [
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 440
+      },
+      {
+        "key": "amplitude",
+        "label": "振幅（相对量）",
+        "default": 2
+      },
+      {
+        "key": "harmonic2",
+        "label": "二次谐波相对系数",
+        "default": 0.5
+      },
+      {
+        "key": "harmonic3",
+        "label": "三次谐波相对系数",
+        "default": 0.25
+      }
+    ],
+    "sceneBehavior": "改变基频、二次和三次谐波，直接比较波形。",
+    "limitations": [
+      "不重建真实乐器频谱，谐波系数是题设；无需启动才显示曲线。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-bottle-xylophone",
+    "mode": "playback",
+    "purpose": "改变加水量并比较敲击音调。",
+    "controlsReviewed": [
+      {
+        "key": "waterLevel",
+        "label": "同一瓶子的加水量",
+        "default": 40
+      },
+      {
+        "key": "amplitude",
+        "label": "拨动/振动幅度（相对量）",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "改变水量后比较敲击同一瓶子的音调。",
+    "limitations": [
+      "敲瓶与吹瓶机制不同；瓶体、水体耦合只采用明确的相对经验模型，不能套用空气柱公式。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-piston-flute",
+    "mode": "playback",
+    "purpose": "移动活塞改变空气柱长度，比较音调。",
+    "controlsReviewed": [
+      {
+        "key": "length_cm",
+        "label": "空气柱长度",
+        "default": 20
+      },
+      {
+        "key": "amplitude",
+        "label": "拨动/振动幅度（相对量）",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "推拉活塞改变空气柱长度，读基频并播放慢放振动。",
+    "limitations": [
+      "采用一端闭合空气柱近似，忽略端部修正与真实哨口激励。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-speaker-candle",
+    "mode": "playback",
+    "purpose": "由烛焰运动观察声携带能量。",
+    "controlsReviewed": [
+      {
+        "key": "amplitude",
+        "label": "振幅（相对量）",
+        "default": 2
+      },
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 440
+      }
+    ],
+    "sceneBehavior": "扬声器振幅改变时振膜和烛焰跟随变化，振幅为零时静止。",
+    "limitations": [
+      "烛焰偏转是定性响应，不是声压、火焰温度或能量的定量测量。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-noise-waveform",
+    "mode": "live",
+    "purpose": "比较有规则振动和不规则振动。",
+    "controlsReviewed": [
+      {
+        "key": "amplitude",
+        "label": "振幅（相对量）",
+        "default": 2
+      },
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 440
+      }
+    ],
+    "sceneBehavior": "比较给定噪声波形的非规则性与振幅。",
+    "limitations": [
+      "合成波形不是环境录音；波形复杂本身不能判定声音是否有害。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-soundproof-room",
+    "mode": "live",
+    "purpose": "比较加衬材料前后的声音强弱及占用空间。",
+    "controlsReviewed": [
+      {
+        "key": "attenuation",
+        "label": "振幅减弱系数（题设）",
+        "default": 0.3
+      },
+      {
+        "key": "frequency",
+        "label": "声源频率",
+        "default": 440
+      },
+      {
+        "key": "amplitude",
+        "label": "拨动/振动幅度（相对量）",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "在声源与测点不变条件下比较隔声前后信号。",
+    "limitations": [
+      "材料的透射比例必须标明为给定示例，不能虚构实测隔声系数。"
+    ],
+    "fixes": [
+      "声音装置独立绘制；器材、控件和Godot源信号联动，零幅度无伪振动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-temperature-sensation",
+    "mode": "live",
+    "purpose": "比较感官判断与温度计读数。",
+    "controlsReviewed": [
+      {
+        "key": "stage",
+        "label": "双手观察阶段",
+        "default": "adapt"
+      }
+    ],
+    "sceneBehavior": "切换适应阶段与双手放入同一温水阶段，比较两手的不同感觉。",
+    "limitations": [
+      "是定性温觉适应演示，不预测个人感觉强度或具体温差阈值。"
+    ],
+    "fixes": [
+      "切换适应阶段与双手放入同一温水阶段，比较两手的不同感觉。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-homemade-thermometer",
+    "mode": "live",
+    "purpose": "观察热胀冷缩并讨论细管粗细与灵敏度。",
+    "controlsReviewed": [
+      {
+        "key": "volume",
+        "label": "瓶中液体初始体积",
+        "default": 10
+      },
+      {
+        "key": "deltaT",
+        "label": "温度变化",
+        "default": 20
+      },
+      {
+        "key": "tubeArea",
+        "label": "细管横截面积",
+        "default": 2
+      },
+      {
+        "key": "beta",
+        "label": "体膨胀系数（题设）",
+        "default": 0.0011
+      }
+    ],
+    "sceneBehavior": "Godot按液体体膨胀和细管截面积计算液面位移；管越细，位移越大。",
+    "limitations": [
+      "体膨胀系数为指定温区题设，忽略瓶管自身热膨胀；自制装置仍需标准温度点标定。"
+    ],
+    "fixes": [
+      "Godot按液体体膨胀和细管截面积计算液面位移；管越细，位移越大。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-water-thermometer",
+    "mode": "live",
+    "purpose": "检查量程分度值并在示数稳定时正确读数。",
+    "controlsReviewed": [
+      {
+        "key": "temperature",
+        "label": "待测液体温度",
+        "default": 35
+      },
+      {
+        "key": "immersion",
+        "label": "玻璃泡位置",
+        "default": "proper"
+      },
+      {
+        "key": "eyeLevel",
+        "label": "视线位置",
+        "default": "level"
+      },
+      {
+        "key": "stable",
+        "label": "示数状态",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "可改变浸入位置、视线和稳定状态；错误操作不允许生成有效温度记录。",
+    "limitations": [
+      "不虚构错误操作的固定偏高/偏低数值，未计算玻璃泡热惯性或杯壁温度分布。"
+    ],
+    "fixes": [
+      "可改变浸入位置、视线和稳定状态；错误操作不允许生成有效温度记录。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-bimetal-thermometer",
+    "mode": "live",
+    "purpose": "利用两种金属膨胀差异转换为指针偏转。",
+    "controlsReviewed": [
+      {
+        "key": "length",
+        "label": "金属片原长",
+        "default": 0.2
+      },
+      {
+        "key": "deltaT",
+        "label": "温度变化",
+        "default": 60
+      },
+      {
+        "key": "alpha1",
+        "label": "材料一线膨胀系数",
+        "default": 1.9e-05
+      },
+      {
+        "key": "alpha2",
+        "label": "材料二线膨胀系数",
+        "default": 1.2e-05
+      }
+    ],
+    "sceneBehavior": "比较两材料自由伸长量与弯曲方向。",
+    "limitations": [
+      "方向示意不等于双层梁曲率计算，不能将指针位置当作校准温度。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-ice-melting",
+    "mode": "playback",
+    "purpose": "同时观察冰量减少与混合物温度。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "水或冰质量",
+        "default": 0.1
+      },
+      {
+        "key": "power",
+        "label": "加热/放热功率",
+        "default": 100
+      },
+      {
+        "key": "time",
+        "label": "时间",
+        "default": 100
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": -10
+      }
+    ],
+    "sceneBehavior": "温度与冰水比例随加热时间推进，保持0℃平台。",
+    "limitations": [
+      "理想纯水焓模型，不计容器吸热与散热；相变平台须同时改变固液比例。"
+    ],
+    "fixes": [
+      "温度与物态使用引擎时间状态，不能只显示末态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-melting-curves",
+    "mode": "playback",
+    "purpose": "以温度—时间记录区分晶体和非晶体的熔化特征。",
+    "controlsReviewed": [
+      {
+        "key": "material",
+        "label": "物质",
+        "default": "hypo"
+      },
+      {
+        "key": "mass",
+        "label": "样品质量",
+        "default": 0.1
+      },
+      {
+        "key": "power",
+        "label": "加热/放热功率",
+        "default": 100
+      },
+      {
+        "key": "time",
+        "label": "时间",
+        "default": 300
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "选择冰、海波或石蜡，比较温度曲线与状态。",
+    "limitations": [
+      "海波和石蜡采用教学近似，不将混合物平台当精确材料相图。"
+    ],
+    "fixes": [
+      "温度与物态使用引擎时间状态，不能只显示末态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-freezing-mixture",
+    "mode": "live",
+    "purpose": "由混合液低于0摄氏度仍未凝固提出猜想。",
+    "controlsReviewed": [
+      {
+        "key": "stage",
+        "label": "查看题设观察",
+        "default": "before"
+      }
+    ],
+    "sceneBehavior": "查看同室温与同冷浴两阶段：题设中纯水出现冰、给定含酒精样品仍流动。",
+    "limitations": [
+      "资料分析情境，不是任意酒精浓度的相图预测；没有捏造精确凝固点或凝固时间。"
+    ],
+    "fixes": [
+      "查看同室温与同冷浴两阶段：题设中纯水出现冰、给定含酒精样品仍流动。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-alcohol-bag",
+    "mode": "live",
+    "purpose": "观察少量液体受热与降温引起的状态和袋体积变化。",
+    "controlsReviewed": [
+      {
+        "key": "action",
+        "label": "变化过程",
+        "default": "cooling"
+      },
+      {
+        "key": "progress",
+        "label": "观察进度",
+        "default": 0.5
+      }
+    ],
+    "sceneBehavior": "手动改变温热/冷却和观察阶段，软袋鼓缩。",
+    "limitations": [
+      "只呈现汽化液化方向，不计算真实压力、质量或体积变化。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-boiling-water",
+    "mode": "playback",
+    "purpose": "连续测温并观察气泡，判定沸腾需持续吸热。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "样品质量",
+        "default": 0.1
+      },
+      {
+        "key": "power",
+        "label": "加热/放热功率",
+        "default": 100
+      },
+      {
+        "key": "time",
+        "label": "时间",
+        "default": 500
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      },
+      {
+        "key": "pressure",
+        "label": "外界压强",
+        "default": 101.3
+      }
+    ],
+    "sceneBehavior": "按引擎时间序列更新温度、气泡和物态。",
+    "limitations": [
+      "气泡外形只作现象示意，不模拟气泡成核；气压与沸点关系有范围限制。"
+    ],
+    "fixes": [
+      "温度与物态使用引擎时间状态，不能只显示末态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-paper-pot",
+    "mode": "playback",
+    "purpose": "解释有水部分温度受水传热限制的现象。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "样品质量",
+        "default": 0.1
+      },
+      {
+        "key": "power",
+        "label": "加热/放热功率",
+        "default": 100
+      },
+      {
+        "key": "time",
+        "label": "时间",
+        "default": 500
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      },
+      {
+        "key": "pressure",
+        "label": "外界压强",
+        "default": 101.3
+      }
+    ],
+    "sceneBehavior": "水温随受热时间变化，沸腾阶段保留平台。",
+    "limitations": [
+      "不含纸张燃烧、干锅后着火与热传导模型，不可据画面证明纸锅一定安全。"
+    ],
+    "fixes": [
+      "温度与物态使用引擎时间状态，不能只显示末态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-evaporative-cooling",
+    "mode": "live",
+    "purpose": "对照干温度计与涂液温度计，观察蒸发吸热。",
+    "controlsReviewed": [
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 25
+      },
+      {
+        "key": "area",
+        "label": "液面面积（相对量）",
+        "default": 1
+      },
+      {
+        "key": "airflow",
+        "label": "空气流动（相对量）",
+        "default": 1
+      },
+      {
+        "key": "wet",
+        "label": "表面条件",
+        "default": true
+      },
+      {
+        "key": "stage",
+        "label": "观察阶段",
+        "default": "before"
+      }
+    ],
+    "sceneBehavior": "干湿对照与蒸发前后阶段改变温度计相对液柱，风速等条件影响蒸发趋势。",
+    "limitations": [
+      "液柱仅作降温方向示意，无精确温差刻度；引擎未求真实失水量与冷却温度。"
+    ],
+    "fixes": [
+      "干湿对照与蒸发前后阶段改变温度计相对液柱，风速等条件影响蒸发趋势。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-cold-bottle-condensation",
+    "mode": "live",
+    "purpose": "区分外界水蒸气液化与瓶中水渗出。",
+    "controlsReviewed": [
+      {
+        "key": "ambient",
+        "label": "环境温度",
+        "default": 25
+      },
+      {
+        "key": "surface",
+        "label": "瓶壁温度",
+        "default": 8
+      },
+      {
+        "key": "dewPoint",
+        "label": "空气露点",
+        "default": 15
+      }
+    ],
+    "sceneBehavior": "瓶壁温度低于给定露点时出现外壁水滴。",
+    "limitations": [
+      "露点为给定条件；没有由相对湿度求露点或计算水滴长大。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-iodine-sublimation",
+    "mode": "live",
+    "purpose": "比较温热水和冷水处理后的物态。",
+    "controlsReviewed": [
+      {
+        "key": "action",
+        "label": "变化过程",
+        "default": "heating"
+      },
+      {
+        "key": "progress",
+        "label": "观察进度",
+        "default": 0.5
+      }
+    ],
+    "sceneBehavior": "温热/冷却及阶段控件即时切换固体和紫色蒸气示意。",
+    "limitations": [
+      "不计算升华速率；粒子数是观察阶段示意而非物质的量。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-frost-can",
+    "mode": "live",
+    "purpose": "测量低温并辨认外表面形成的霜。",
+    "controlsReviewed": [
+      {
+        "key": "surfaceTemperature",
+        "label": "冷表面温度",
+        "default": -10
+      }
+    ],
+    "sceneBehavior": "按表面温度条件辨认结霜与结露。",
+    "limitations": [
+      "缺空气水蒸气含量条件；低于0℃并不保证实际结霜。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-kitchen-phase",
+    "mode": "playback",
+    "purpose": "观察烹饪中汽化液化等变化，检验改进建议。",
+    "controlsReviewed": [
+      {
+        "key": "activity",
+        "label": "观察内容",
+        "default": "heating"
+      },
+      {
+        "key": "covered",
+        "label": "锅盖状态",
+        "default": true
+      },
+      {
+        "key": "mass",
+        "label": "水质量",
+        "default": 0.3
+      },
+      {
+        "key": "initial",
+        "label": "初始水温",
+        "default": 80
+      },
+      {
+        "key": "power",
+        "label": "加热功率",
+        "default": 300
+      },
+      {
+        "key": "time",
+        "label": "观察时间",
+        "default": 300
+      },
+      {
+        "key": "ambient",
+        "label": "环境温度",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "加盖/敞口与加热/冷却操作进入Godot时步热量守恒，温度、汽化质量和锅盖水滴联动。",
+    "limitations": [
+      "总热导是题设；不含锅体热容、冷却时蒸发与冷凝量。水耗尽即停止液态水计算。"
+    ],
+    "fixes": [
+      "加盖/敞口与加热/冷却操作进入Godot时步热量守恒，温度、汽化质量和锅盖水滴联动。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-light-straight",
+    "mode": "live",
+    "purpose": "比较同种均匀介质中的光路。",
+    "controlsReviewed": [
+      {
+        "key": "angle",
+        "label": "入射角",
+        "default": 30
+      }
+    ],
+    "sceneBehavior": "改变入射方向后均匀介质内光束沿直线变化。",
+    "limitations": [
+      "只展示均匀介质中的路径，不在这个模型求玻璃边界折射。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-pinhole-image",
+    "mode": "live",
+    "purpose": "比较像的方向与大小，利用直线传播解释。",
+    "controlsReviewed": [
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "screen",
+        "label": "光屏距离",
+        "default": 20
+      },
+      {
+        "key": "height",
+        "label": "物高",
+        "default": 5
+      }
+    ],
+    "sceneBehavior": "改变物距、屏距与物高，几何光路直接更新倒立像。",
+    "limitations": [
+      "忽略孔径、衍射与清晰度；屏幕承接的是小孔投影。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-hand-shadow",
+    "mode": "live",
+    "purpose": "调整遮挡物位置，比较影子边界。",
+    "controlsReviewed": [
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "screen",
+        "label": "光屏距离",
+        "default": 20
+      },
+      {
+        "key": "height",
+        "label": "物高",
+        "default": 5
+      }
+    ],
+    "sceneBehavior": "调整物距、屏距和物高比较影子大小。",
+    "limitations": [
+      "简化点光源与遮挡物，不含手形调整或半影。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-reflection-law",
+    "mode": "live",
+    "purpose": "多次改变入射方向，测角并折转纸板。",
+    "controlsReviewed": [
+      {
+        "key": "angle",
+        "label": "入射角",
+        "default": 30
+      },
+      {
+        "key": "folded",
+        "label": "右半纸板状态",
+        "default": false
+      }
+    ],
+    "sceneBehavior": "调入射角并折转右半纸板，比较反射角及共面条件。",
+    "limitations": [
+      "折板后看不见反射线不表示光线消失；镜面和光源保持不动。"
+    ],
+    "fixes": [
+      "加入折转纸板操作。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-diffuse-reflection",
+    "mode": "live",
+    "purpose": "改变入射光与表面倾斜程度，逐处检查漫反射仍遵守反射定律。",
+    "controlsReviewed": [
+      {
+        "key": "angle",
+        "label": "光束入射方向",
+        "default": 30
+      },
+      {
+        "key": "roughness",
+        "label": "局部法线起伏幅度",
+        "default": 15
+      }
+    ],
+    "sceneBehavior": "入射方向、六处局部法线和反射方向由Godot逐一计算；倾斜幅度为0时退化为镜面反射。",
+    "limitations": [
+      "六个独立小表面示意，不计算表面间遮挡、多次反射或实际亮度。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-retroreflector",
+    "mode": "live",
+    "purpose": "观察尾灯并追踪多次反射光路。",
+    "controlsReviewed": [
+      {
+        "key": "stage",
+        "label": "观察阶段",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "手动切换入射、一次反射与二次反射光路。",
+    "limitations": [
+      "二维直角双镜不等同于任意空间方向均回返的三镜角反射器。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-plane-mirror",
+    "mode": "live",
+    "purpose": "独立移动等大的替代蜡烛定位虚像，改变观察高度，并用光屏检验。",
+    "controlsReviewed": [
+      {
+        "key": "distance",
+        "label": "物体到镜面距离",
+        "default": 30
+      },
+      {
+        "key": "height",
+        "label": "物体高度",
+        "default": 5
+      },
+      {
+        "key": "secondDistance",
+        "label": "替代蜡烛到镜面距离",
+        "default": 25
+      },
+      {
+        "key": "screen",
+        "label": "是否放光屏",
+        "default": false
+      },
+      {
+        "key": "eyeHeight",
+        "label": "观察点高度",
+        "default": 15
+      }
+    ],
+    "sceneBehavior": "替代蜡烛距离、观察高度和光屏均可独立操作，反射光线与虚像延长线实时更新。",
+    "limitations": [
+      "理想薄玻璃板，忽略厚度重影；位置重合采用±0.5 cm屏幕操作容差。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-spoon-mirrors",
+    "mode": "live",
+    "purpose": "比较勺子凹凸表面成像与视野。",
+    "controlsReviewed": [
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "focal",
+        "label": "曲面镜焦距",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "正负焦距切换凹/凸曲面镜，比较近轴成像。",
+    "limitations": [
+      "勺面不是精密球面镜；零焦距无意义，需排除或显示无有效成像。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-periscope",
+    "mode": "live",
+    "purpose": "通过两次反射改变观察路线。",
+    "controlsReviewed": [
+      {
+        "key": "stage",
+        "label": "观察阶段",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "按阶段显示两块平行镜面的两次反射。",
+    "limitations": [
+      "不模拟镜面有限尺寸造成的视场；无须再加自动开始。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-refraction-law",
+    "mode": "live",
+    "purpose": "比较空气进入介质及反向传播的角度。",
+    "controlsReviewed": [
+      {
+        "key": "angle",
+        "label": "入射角",
+        "default": 30
+      },
+      {
+        "key": "n1",
+        "label": "入射介质折射率",
+        "default": 1
+      },
+      {
+        "key": "n2",
+        "label": "折射介质折射率",
+        "default": 1.5
+      }
+    ],
+    "sceneBehavior": "调入射角和两侧折射率，观察折射、反射及全反射。",
+    "limitations": [
+      "几何光学理想界面，忽略光强分配和实际光束宽度。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-gradient-saline-ray",
+    "mode": "live",
+    "purpose": "比较浓度梯度存在与搅匀后的光路。",
+    "controlsReviewed": [
+      {
+        "key": "angle",
+        "label": "入射角",
+        "default": 30
+      },
+      {
+        "key": "nTop",
+        "label": "上层折射率",
+        "default": 1.3
+      },
+      {
+        "key": "nBottom",
+        "label": "下层折射率",
+        "default": 1.5
+      },
+      {
+        "key": "height",
+        "label": "介质层高度",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "改变上下折射率后使用引擎逐层光线坐标。",
+    "limitations": [
+      "折射率剖面是给定条件，不由实际盐水浓度求解。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-prism-spectrum",
+    "mode": "live",
+    "purpose": "追踪不同色光通过三棱镜各界面的路径，比较色散和全反射条件。",
+    "controlsReviewed": [
+      {
+        "key": "incidence",
+        "label": "棱镜入射角",
+        "default": 50
+      },
+      {
+        "key": "apex",
+        "label": "棱镜顶角",
+        "default": 60
+      }
+    ],
+    "sceneBehavior": "六个题设折射率分别进行棱镜界面追迹，包含两次折射以及必要的全反射和后续出射。",
+    "limitations": [
+      "离散色光与题设折射率，不是实测玻璃的连续光谱；未建模光强和吸收。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-rgb-mixture",
+    "mode": "live",
+    "purpose": "改变数字色光分量并记录屏幕颜色。",
+    "controlsReviewed": [
+      {
+        "key": "red",
+        "label": "红光强度",
+        "default": 255
+      },
+      {
+        "key": "green",
+        "label": "绿光强度",
+        "default": 255
+      },
+      {
+        "key": "blue",
+        "label": "蓝光强度",
+        "default": 255
+      }
+    ],
+    "sceneBehavior": "红绿蓝通道即时混合，零值和满值均有明确颜色变化。",
+    "limitations": [
+      "通道值不是实测光功率，屏幕色彩受显示设备影响。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-infrared-heating",
+    "mode": "playback",
+    "purpose": "根据光谱外温升推断不可见辐射。",
+    "controlsReviewed": [
+      {
+        "key": "position",
+        "label": "实验温度计位置",
+        "default": "outsideRed"
+      },
+      {
+        "key": "blocked",
+        "label": "额外遮光片",
+        "default": false
+      },
+      {
+        "key": "absorbedPower",
+        "label": "红外区有效吸收功率（题设）",
+        "default": 0.06
+      },
+      {
+        "key": "time",
+        "label": "照射时长",
+        "default": 120
+      },
+      {
+        "key": "initial",
+        "label": "两个探测器初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "移动温度计到红光、红光外侧或阴影，并加遮光片，与同初温遮光对照比较。",
+    "limitations": [
+      "有效吸收功率是题设而非实测光谱；按能量关系求温升，忽略散热。"
+    ],
+    "fixes": [
+      "移动温度计到红光、红光外侧或阴影，并加遮光片，与同初温遮光对照比较。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-lens-rays",
+    "mode": "live",
+    "purpose": "比较会聚与发散、标识焦点。",
+    "controlsReviewed": [
+      {
+        "key": "focal",
+        "label": "焦距大小",
+        "default": 10
+      },
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "height",
+        "label": "物高",
+        "default": 3
+      },
+      {
+        "key": "scenario",
+        "label": "透镜类型",
+        "default": "convex"
+      }
+    ],
+    "sceneBehavior": "凸/凹透镜选项改变会聚与发散光路。",
+    "limitations": [
+      "理想薄透镜，不含像差；需确保凹透镜选项实际传入引擎。"
+    ],
+    "fixes": [
+      "加入凸/凹透镜切换。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-convex-imaging",
+    "mode": "live",
+    "purpose": "独立改变物距和屏距，寻找清晰像，分区比较凸透镜成像规律。",
+    "controlsReviewed": [
+      {
+        "key": "focal",
+        "label": "焦距大小",
+        "default": 10
+      },
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "height",
+        "label": "物高",
+        "default": 3
+      },
+      {
+        "key": "screenDistance",
+        "label": "光屏到透镜距离",
+        "default": 25
+      }
+    ],
+    "sceneBehavior": "物体、透镜和光屏位置独立，三条近轴光线由Godot计算；光屏对焦与虚像不能承接均可操作检验。",
+    "limitations": [
+      "理想近轴薄透镜，采用±0.5 cm操作容差；图外光线裁切不改变实际计算像距。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-bottle-lens",
+    "mode": "live",
+    "purpose": "改变文字与圆柱水瓶的距离，比较横向成像变化与竖直方向。",
+    "controlsReviewed": [
+      {
+        "key": "focal",
+        "label": "水瓶水平等效焦距",
+        "default": 8
+      },
+      {
+        "key": "distance",
+        "label": "文字到水瓶距离",
+        "default": 4
+      }
+    ],
+    "sceneBehavior": "Godot计算薄柱透镜的水平像距和放大率，SVG仅横向缩放文字，竖向倍率恒为1。",
+    "limitations": [
+      "理想薄柱透镜解释圆柱瓶，忽略厚壁与像差；超出视野的像按窗口裁切。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-covered-lens",
+    "mode": "live",
+    "purpose": "比较遮挡前后像的完整性与亮度。",
+    "controlsReviewed": [
+      {
+        "key": "focal",
+        "label": "焦距大小",
+        "default": 10
+      },
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "height",
+        "label": "物高",
+        "default": 3
+      },
+      {
+        "key": "cover",
+        "label": "不透光纸片遮挡比例",
+        "default": 40
+      }
+    ],
+    "sceneBehavior": "遮挡比例独立控制透镜通光部分，完整像随通光减少变暗。",
+    "limitations": [
+      "亮度只是按通光比例的相对示意，不计算衍射或真实照度。"
+    ],
+    "fixes": [
+      "独立遮挡比例，并保持完整像和相对亮度。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-near-point",
+    "mode": "live",
+    "purpose": "记录本人用文字与刻度尺测得的近点，整理三次观察结果。",
+    "controlsReviewed": [
+      {
+        "key": "observedDistance",
+        "label": "第一次清晰观察距离",
+        "default": 15
+      },
+      {
+        "key": "clarity",
+        "label": "本人观察文字是否清楚",
+        "default": "clear"
+      },
+      {
+        "key": "trial2",
+        "label": "第二次记录",
+        "default": 15
+      },
+      {
+        "key": "trial3",
+        "label": "第三次记录",
+        "default": 16
+      }
+    ],
+    "sceneBehavior": "示意纸卡位置随输入距离移动；记录主观清楚/模糊与三次测量，只对本人确认的清晰记录求平均。",
+    "limitations": [
+      "观察记录工具，不模拟个人视觉阈值；网页距离不是屏幕到眼的真实距离，不用于诊断。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-spectacle-power",
+    "mode": "live",
+    "purpose": "由正透镜焦距换算焦度和镜片度数。",
+    "controlsReviewed": [
+      {
+        "key": "focal",
+        "label": "焦距大小",
+        "default": 10
+      },
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "height",
+        "label": "物高",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "焦距输入后比较透镜类型与屈光能力。",
+    "limitations": [
+      "处方验光不等同于单片理想透镜计算；真实镜片厚度与像差忽略。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-hyperopia-correction",
+    "mode": "live",
+    "purpose": "比较题设远视模型中像在视网膜后与加入适当凸透镜后的光路。",
+    "controlsReviewed": [
+      {
+        "key": "objectDistance",
+        "label": "物体到眼镜距离",
+        "default": 0.25
+      },
+      {
+        "key": "correctionPower",
+        "label": "矫正镜屈光度（题设）",
+        "default": 0
+      },
+      {
+        "key": "withLens",
+        "label": "是否戴矫正镜",
+        "default": false
+      },
+      {
+        "key": "eyePower",
+        "label": "眼球等效屈光度（题设）",
+        "default": 56
+      }
+    ],
+    "sceneBehavior": "眼前矫正镜与眼内透镜分段计算，屏上显示实际模型焦点和视网膜散焦，不再使用固定会聚箭头。",
+    "limitations": [
+      "题设近轴双透镜模型，视网膜距眼内透镜17 mm；不模拟实际人的调节和诊断。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-telescope",
+    "mode": "live",
+    "purpose": "选择长焦物镜与短焦目镜，调节间距观察远物。",
+    "controlsReviewed": [
+      {
+        "key": "objectiveFocal",
+        "label": "物镜焦距",
+        "default": 40
+      },
+      {
+        "key": "eyepieceFocal",
+        "label": "目镜焦距",
+        "default": 5
+      }
+    ],
+    "sceneBehavior": "比较物镜/目镜焦距与角放大率、镜筒长度。",
+    "limitations": [
+      "结构图不按实际比例，不含视场和像差；角放大率不是像高比。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-water-drop-microscope",
+    "mode": "live",
+    "purpose": "用水滴透镜并调节上方放大镜寻找放大图像。",
+    "controlsReviewed": [
+      {
+        "key": "focal",
+        "label": "水滴等效焦距",
+        "default": 1
+      },
+      {
+        "key": "distance",
+        "label": "物体到水滴距离",
+        "default": 1.2
+      },
+      {
+        "key": "eyepieceFocal",
+        "label": "上方放大镜焦距",
+        "default": 5
+      }
+    ],
+    "sceneBehavior": "调水滴等效焦距、物距及目镜焦距比较两级放大。",
+    "limitations": [
+      "水滴形状和折射像差未求解；图像必须提示当前参数可能不形成有效中间实像。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-balance-mass",
+    "mode": "live",
+    "purpose": "调平、选砝码、读游码，并利用容器质量差测液体。",
+    "controlsReviewed": [
+      {
+        "key": "objectMass",
+        "label": "物体质量（教师设定）",
+        "default": 37.6
+      },
+      {
+        "key": "weights",
+        "label": "右盘砝码总质量",
+        "default": 35
+      },
+      {
+        "key": "rider",
+        "label": "游码读数",
+        "default": 0
+      },
+      {
+        "key": "zero",
+        "label": "空盘零点偏移",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "独立增加砝码和移动游码，指针随左右质量差改变；仅平衡时接受示数。",
+    "limitations": [
+      "指针偏角为方向示意，不是天平灵敏度标定；零点偏移需要单独修正。"
+    ],
+    "fixes": [
+      "独立增加砝码和移动游码，指针随左右质量差改变；仅平衡时接受示数。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-paperclip-mass",
+    "mode": "live",
+    "purpose": "测多枚同规格物体的总质量再平均。",
+    "controlsReviewed": [
+      {
+        "key": "value",
+        "label": "多个回形针总质量",
+        "default": 10
+      },
+      {
+        "key": "division",
+        "label": "分度值",
+        "default": 0.2
+      },
+      {
+        "key": "zero",
+        "label": "零点偏移",
+        "default": 0
+      },
+      {
+        "key": "count",
+        "label": "回形针个数",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "将多个回形针总质量除以个数，比较累积法。",
+    "limitations": [
+      "个体质量可能不完全相同，结果是平均值；不模拟天平真实灵敏度。"
+    ],
+    "fixes": [
+      "加入计数并输出平均质量。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-mass-volume",
+    "mode": "live",
+    "purpose": "保持材料与状态相同，比较五块不同体积样品的质量，并与另一材料的m—V图线比较。",
+    "controlsReviewed": [
+      {
+        "key": "material",
+        "label": "当前材料",
+        "default": "aluminum"
+      },
+      {
+        "key": "comparisonMaterial",
+        "label": "对照材料",
+        "default": "iron"
+      },
+      {
+        "key": "volumeStep",
+        "label": "相邻样品的体积差",
+        "default": 10
+      },
+      {
+        "key": "sampleIndex",
+        "label": "选取样品",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "材料选择决定同一组样品的密度；五组体积与质量成套生成，支持选择样品、两材料曲线和计算后显示m/V。",
+    "limitations": [
+      "给定密度的理想模型数据，不冒充实物天平实测；题设木样密度不推广为所有木材。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-classroom-air-mass",
+    "mode": "live",
+    "purpose": "用空间尺寸与空气密度估算难以直接称量的质量。",
+    "controlsReviewed": [
+      {
+        "key": "roomLength",
+        "label": "教室长",
+        "default": 10
+      },
+      {
+        "key": "roomWidth",
+        "label": "教室宽",
+        "default": 6
+      },
+      {
+        "key": "roomHeight",
+        "label": "教室高",
+        "default": 3
+      },
+      {
+        "key": "airDensity",
+        "label": "空气密度",
+        "default": 1.29
+      }
+    ],
+    "sceneBehavior": "长宽高确定房间体积，再由空气密度估算质量。",
+    "limitations": [
+      "未扣除家具占据体积；密度随温度、压强、湿度变化。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-saltwater-density",
+    "mode": "live",
+    "purpose": "差量称质量并读量筒体积，计算密度。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 54
+      },
+      {
+        "key": "volume",
+        "label": "体积",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "同一样品质量与体积用于计算密度。",
+    "limitations": [
+      "尚缺烧杯前后差量称重操作与残留液体误差检验。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "needs-implementation",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-stone-density",
+    "mode": "live",
+    "purpose": "测质量与排开水体积。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 54
+      },
+      {
+        "key": "volume",
+        "label": "体积",
+        "default": 20
+      },
+      {
+        "key": "initialVolume",
+        "label": "量筒原水量",
+        "default": 40
+      }
+    ],
+    "sceneBehavior": "排水前后液位与石块质量对应密度计算。",
+    "limitations": [
+      "给定石块体积驱动画面；不含吸水、气泡和量筒凹液面视差。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-foil-thickness-density",
+    "mode": "live",
+    "purpose": "由密度先求体积，再除以长宽面积。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 2.7
+      },
+      {
+        "key": "area",
+        "label": "薄膜面积",
+        "default": 100
+      },
+      {
+        "key": "materialDensity",
+        "label": "材料密度",
+        "default": 2.7
+      }
+    ],
+    "sceneBehavior": "质量、面积与材料密度共同决定平均厚度。",
+    "limitations": [
+      "要求材料均匀、平展、无孔，不能替代对实际密度的独立测量。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-deformation",
+    "mode": "live",
+    "purpose": "按压橡皮泥，拉压弹簧，比较外形变化。",
+    "controlsReviewed": [
+      {
+        "key": "material",
+        "label": "试样",
+        "default": "spring"
+      },
+      {
+        "key": "force",
+        "label": "本次试验最大加载力",
+        "default": 4
+      },
+      {
+        "key": "stage",
+        "label": "观察阶段",
+        "default": "loaded"
+      }
+    ],
+    "sceneBehavior": "按压橡皮泥，拉压弹簧，比较外形变化。 操作步骤：最大加载力设为0，观察试样初始形状。；设定本次试验的最大加载力，表示全新试样从零单调加载到该值。；保持最大加载力记录不变，切换到卸载后，观察能否恢复。；改变最大加载力或换用另一种试样时，从全新试样重新比较，不把滑块操作累计成塑性加载历史。",
+    "limitations": [
+      "一维弹性/塑性教学模型：每组最大力表示全新试样从零单调加载至该值，再观察最大加载时或完全卸载后，不累计滑块历史。初长或初高50 mm，弹性系数500 N/m，软材料屈服阈值2 N、硬化参数500 N/m为题设；横向两个尺寸同比例展宽并近似保持体积。用于区分弹性恢复和塑性残余，不是实际橡皮泥标定。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-magnet-ball",
+    "mode": "playback",
+    "purpose": "比较静止、前方磁体、侧方磁体三种配置。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "小球质量",
+        "default": 0.05
+      },
+      {
+        "key": "velocity",
+        "label": "水平初速度",
+        "default": 0.5
+      },
+      {
+        "key": "placement",
+        "label": "磁体位置",
+        "default": "side"
+      },
+      {
+        "key": "strength",
+        "label": "吸力场强度（题设）",
+        "default": 0.04
+      },
+      {
+        "key": "duration",
+        "label": "观察时长",
+        "default": 1.2
+      }
+    ],
+    "sceneBehavior": "移开、前置、旁置磁体时实际二维刚体轨迹改变，旁置吸力使运动方向弯曲。",
+    "limitations": [
+      "软化吸力场为题设，不代表真实磁铁定量规律；轨迹由Godot积分。"
+    ],
+    "fixes": [
+      "移开、前置、旁置磁体时实际二维刚体轨迹改变，旁置吸力使运动方向弯曲。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-door-point",
+    "mode": "live",
+    "purpose": "相同推力下改变手到门轴的距离。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "动力",
+        "default": 10
+      },
+      {
+        "key": "arm",
+        "label": "动力臂",
+        "default": 30
+      },
+      {
+        "key": "load",
+        "label": "阻力",
+        "default": 15
+      },
+      {
+        "key": "loadArm",
+        "label": "阻力臂",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "改变作用点和垂直力臂后比较推门力矩。",
+    "limitations": [
+      "以杠杆为等效模型；缺不同施力方向对有效力臂的比较。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-magnet-carts",
+    "mode": "playback",
+    "purpose": "释放两车并观察双方同时运动。",
+    "controlsReviewed": [
+      {
+        "key": "mass1",
+        "label": "左车质量",
+        "default": 0.5
+      },
+      {
+        "key": "mass2",
+        "label": "右车质量",
+        "default": 0.5
+      },
+      {
+        "key": "force",
+        "label": "相互作用力（题设恒力）",
+        "default": 0.5
+      },
+      {
+        "key": "duration",
+        "label": "观察时长",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "两车在等大反向题设恒力下同时释放，实际位移和加速度随质量改变。",
+    "limitations": [
+      "相互作用力给定且恒定，不按真实磁铁距离求磁力；力相等不代表加速度相等。"
+    ],
+    "fixes": [
+      "两车在等大反向题设恒力下同时释放，实际位移和加速度随质量改变。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-spring-scale",
+    "mode": "live",
+    "purpose": "含识别量程分度值、调零、手感以及竖直悬挂和水平拉动文具袋。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "拉力",
+        "default": 2
+      },
+      {
+        "key": "stiffness",
+        "label": "劲度系数",
+        "default": 100
+      },
+      {
+        "key": "limit",
+        "label": "弹性限度对应力",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "给定拉力使弹簧伸长，超弹性范围停止线性外推。",
+    "limitations": [
+      "缺调零、选量程和估读流程；不能按屏幕尺寸读真实弹簧长。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-glass-microdeform",
+    "mode": "live",
+    "purpose": "改变捏瓶位置，观察细管液面升降。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "拉力",
+        "default": 2
+      },
+      {
+        "key": "compliance",
+        "label": "等效体积柔度（模型）",
+        "default": 0.002
+      },
+      {
+        "key": "tubeArea",
+        "label": "细管截面积",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "挤压作用与细管面积改变时液面放大位移变化。",
+    "limitations": [
+      "体积柔度为给定等效参数，不能反推真实玻璃应力或破裂极限。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-gravity-mass",
+    "mode": "live",
+    "purpose": "以多组钩码数据绘制重力—质量图像。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 1
+      },
+      {
+        "key": "gravity",
+        "label": "重力场强度",
+        "default": 9.8
+      }
+    ],
+    "sceneBehavior": "质量和重力场强度改变时重力读数与箭头更新。",
+    "limitations": [
+      "理想G=mg；真实弹簧测量误差未模拟。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-plumb-level",
+    "mode": "live",
+    "purpose": "利用重力方向检验桌面是否水平。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 1
+      },
+      {
+        "key": "gravity",
+        "label": "重力场强度",
+        "default": 9.8
+      },
+      {
+        "key": "tilt",
+        "label": "待测支架倾角",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "改变待测支架倾角，比较铅垂线与支架方向。",
+    "limitations": [
+      "重力一直竖直向下；原质量控件不足以完成水平/竖直判断。"
+    ],
+    "fixes": [
+      "加入待测支架倾角，铅垂线保持竖直。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-steel-ruler-force",
+    "mode": "live",
+    "purpose": "改变测力计的拉力、方向或作用位置，比较钢尺弯曲。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "拉力大小",
+        "default": 0.2
+      },
+      {
+        "key": "position",
+        "label": "作用点距桌边",
+        "default": 15
+      },
+      {
+        "key": "direction",
+        "label": "拉力方向",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "固定20cm钢尺，调力、方向和作用位置观察弯曲。",
+    "limitations": [
+      "小挠度弹性梁；超过适用条件不描述塑性变形，受力方向与变形方向要对应。"
+    ],
+    "fixes": [
+      "专用作用点、方向与力值，Godot静态弯曲曲线。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-resistance-motion",
+    "mode": "playback",
+    "purpose": "保持同一斜面释放高度，比较棉布和木板上的停止位置。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 1
+      },
+      {
+        "key": "velocity",
+        "label": "初速度",
+        "default": 1
+      },
+      {
+        "key": "duration",
+        "label": "观察时长",
+        "default": 2
+      },
+      {
+        "key": "friction",
+        "label": "动摩擦因数",
+        "default": 0.1
+      }
+    ],
+    "sceneBehavior": "同初速度在不同摩擦条件下的运动轨迹与停止距离。",
+    "limitations": [
+      "初速度直接给定，相当于控制相同释放条件；无摩擦时不会自行停下。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-inertia-sheet",
+    "mode": "playback",
+    "purpose": "观察支撑片快速移走时小球的运动。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "小球质量",
+        "default": 0.1
+      },
+      {
+        "key": "height",
+        "label": "球落到杯底的高度",
+        "default": 0.3
+      }
+    ],
+    "sceneBehavior": "快速抽板完成后，小球从零水平速度开始沿真实自由落体轨迹落下。",
+    "limitations": [
+      "没有模拟慢抽时纸片摩擦带动小球；不引入不存在的惯性力。"
+    ],
+    "fixes": [
+      "快速抽板完成后，小球从零水平速度开始沿真实自由落体轨迹落下。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-two-force-balance",
+    "mode": "live",
+    "purpose": "改变两端钩码与两力作用线，检验平衡。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "向右力",
+        "default": 10
+      },
+      {
+        "key": "force2",
+        "label": "向左力",
+        "default": 10
+      },
+      {
+        "key": "offset",
+        "label": "两力作用线间距",
+        "default": 0
+      },
+      {
+        "key": "direction",
+        "label": "两力方向",
+        "default": -1
+      }
+    ],
+    "sceneBehavior": "比较两力大小、方向及是否共线的静力状态。",
+    "limitations": [
+      "非共线等反向力可能形成力偶，不能仅以合力零宣布平衡。"
+    ],
+    "fixes": [
+      "加入作用线间距及同向/反向。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-sliding-friction",
+    "mode": "playback",
+    "purpose": "同材料下分别改变压力和粗糙程度；以水平匀速拉动测量。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 1
+      },
+      {
+        "key": "friction",
+        "label": "动摩擦因数",
+        "default": 0.1
+      },
+      {
+        "key": "velocity",
+        "label": "初速度",
+        "default": 1
+      },
+      {
+        "key": "duration",
+        "label": "观察时长",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "水平匀速拉动物体，测力计显示等于μmg的拉力。",
+    "limitations": [
+      "没有静摩擦启动或速度相关摩擦模型；只适用于匀速条件。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-collinear-forces",
+    "mode": "live",
+    "purpose": "橡皮筋圆环同位置，分别比较同向和反向两力与替代单力。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "向右力",
+        "default": 10
+      },
+      {
+        "key": "force2",
+        "label": "向左力",
+        "default": 10
+      },
+      {
+        "key": "direction",
+        "label": "第二力方向",
+        "default": "opposite"
+      }
+    ],
+    "sceneBehavior": "同向/反向切换并按大小更新两个力箭头与合力。",
+    "limitations": [
+      "箭头长度只作比例示意；未模拟橡皮筋的非线性位移。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-sponge-pressure",
+    "mode": "live",
+    "purpose": "海绵上小桌改变载荷和朝向，控制另一个变量。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "压力",
+        "default": 100
+      },
+      {
+        "key": "area",
+        "label": "受力面积",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "压力与面积变化影响压强及海绵压陷示意。",
+    "limitations": [
+      "海绵凹陷不是材料应力应变计算，不能量出真实凹陷深度。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-shoe-pressure",
+    "mode": "live",
+    "purpose": "测质量并由鞋印格数估算双脚接触面积。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "对地压力",
+        "default": 500
+      },
+      {
+        "key": "area",
+        "label": "总接触面积",
+        "default": 250
+      }
+    ],
+    "sceneBehavior": "给定压力和总接触面积计算压强，并表示面积比较。",
+    "limitations": [
+      "鞋印是面积估测示意，不等同于真实足底压力分布。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "needs-implementation",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-liquid-pressure",
+    "mode": "live",
+    "purpose": "转动同深度的橡皮膜探头，再分别改变深度和被测液体密度，比较U形管差压读数。",
+    "controlsReviewed": [
+      {
+        "key": "density",
+        "label": "被测液体密度",
+        "default": 1000
+      },
+      {
+        "key": "depth",
+        "label": "探头中心的竖直深度",
+        "default": 0.3
+      },
+      {
+        "key": "probeDirection",
+        "label": "橡皮膜朝向",
+        "default": "right"
+      },
+      {
+        "key": "manometerDensity",
+        "label": "U形管示压液密度",
+        "default": 1000
+      }
+    ],
+    "sceneBehavior": "探头四向可旋转且中心深度保持不变；p=ρgh和独立示压液密度给出真实模型液柱差，两侧液面对应压强方向。",
+    "limitations": [
+      "理想点状小膜片与气路传压，忽略膜张力、空气密度及气路容积变化；图示不是实物等比例尺。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-communicating-vessels",
+    "mode": "live",
+    "purpose": "比较开口相通容器中的同种静止液体。",
+    "controlsReviewed": [
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      },
+      {
+        "key": "depth",
+        "label": "深度",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "共同液面高度改变时各支管保持相平。",
+    "limitations": [
+      "只适用于同种静止液体和等外压；不含毛细或灌注过程。"
+    ],
+    "fixes": [
+      "液面随深度参数共同改变。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-suction-hole",
+    "mode": "live",
+    "purpose": "比较密封与连通空气后的吸附情况。",
+    "controlsReviewed": [
+      {
+        "key": "height",
+        "label": "海拔高度",
+        "default": 0
+      },
+      {
+        "key": "sealed",
+        "label": "内部是否与外界通气",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "切换密封/通气，比较内外压强差的作用。",
+    "limitations": [
+      "没有吸盘形变和漏气速率模型，吸力需要接触面积和内部气压条件。"
+    ],
+    "fixes": [
+      "加入通气状态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-inverted-water",
+    "mode": "live",
+    "purpose": "观察封闭塑料管口朝下时水的保持，并思考通气对照。",
+    "controlsReviewed": [
+      {
+        "key": "height",
+        "label": "海拔高度",
+        "default": 0
+      },
+      {
+        "key": "sealed",
+        "label": "内部是否与外界通气",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "切换是否允许空气进入，比较纸片支持条件。",
+    "limitations": [
+      "水柱高度和纸片润湿也影响稳定性；只有海拔输入不能完成覆杯判断。"
+    ],
+    "fixes": [
+      "加入通气状态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-torricelli",
+    "mode": "live",
+    "purpose": "比较竖直水银高度；改变玻璃管位置而保持管口浸没。",
+    "controlsReviewed": [
+      {
+        "key": "height",
+        "label": "海拔高度",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "气压变化后汞柱竖直高度随之变化。",
+    "limitations": [
+      "标准大气近似；汞仅屏幕演示，不模拟管倾斜、真空残余气体和温度。"
+    ],
+    "fixes": [
+      "汞柱随引擎大气压改变高度。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-bottle-barometer",
+    "mode": "live",
+    "purpose": "比较不同楼层的水柱高度；需控制温度和封闭气体状态。",
+    "controlsReviewed": [
+      {
+        "key": "height",
+        "label": "海拔高度",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "能根据海拔比较给定标准大气压，瓶与细管目前仍是结构图。",
+    "limitations": [
+      "液柱未随条件联动；尚缺密封气体体积、温度和内外压差共同决定液位的模型，不能作为完成的气压计观察操作。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "needs-implementation",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-dropper-pressure",
+    "mode": "live",
+    "purpose": "设计有无内外压差的对照，检验吸水解释。",
+    "controlsReviewed": [
+      {
+        "key": "height",
+        "label": "海拔高度",
+        "default": 0
+      },
+      {
+        "key": "stage",
+        "label": "胶头动作",
+        "default": "release"
+      }
+    ],
+    "sceneBehavior": "手动切换挤压与松手，显示排气和液体上升。",
+    "limitations": [
+      "动作阶段为教学示意；没有胶头容积或液体黏性模型。"
+    ],
+    "fixes": [
+      "加入挤压/松手阶段。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-magdeburg",
+    "mode": "live",
+    "purpose": "教材以压力锅模拟历史半球，只用于受力可视化。",
+    "controlsReviewed": [
+      {
+        "key": "height",
+        "label": "海拔高度",
+        "default": 0
+      },
+      {
+        "key": "sealed",
+        "label": "内部是否与外界通气",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "切换抽气与通气，比较内外压强差的受力方向。",
+    "limitations": [
+      "真实分离力需内压与半球截面积；大气压读数本身不是分离力。"
+    ],
+    "fixes": [
+      "加入通气状态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-piston-pump",
+    "mode": "live",
+    "purpose": "设计筒体、活塞和单向阀，并解释提压交替抽水。",
+    "controlsReviewed": [
+      {
+        "key": "stroke",
+        "label": "活塞动作",
+        "default": "pull"
+      }
+    ],
+    "sceneBehavior": "选择上提/下压时活塞位置和阀门开闭同步改变。",
+    "limitations": [
+      "理想阀门阶段；未模拟连续流量、漏气和实际扬程。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-blow-strip",
+    "mode": "live",
+    "purpose": "比较有无气流时纸条形态。",
+    "controlsReviewed": [
+      {
+        "key": "speed",
+        "label": "流速",
+        "default": 2
+      },
+      {
+        "key": "density",
+        "label": "流体密度",
+        "default": 1.2
+      }
+    ],
+    "sceneBehavior": "能比较气流速度与静压的题设数值，显示纸条受气流前后两种形状。",
+    "limitations": [
+      "两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "needs-implementation",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-flow-pressure-sensors",
+    "mode": "live",
+    "purpose": "用同高取压口比较宽窄管内两处流动气体的静压，根据连续性和伯努利关系解释U形管差值。",
+    "controlsReviewed": [
+      {
+        "key": "wideSpeed",
+        "label": "宽段气体流速",
+        "default": 6
+      },
+      {
+        "key": "areaRatio",
+        "label": "宽段面积 / 窄段面积",
+        "default": 3
+      },
+      {
+        "key": "gasDensity",
+        "label": "管内气体密度",
+        "default": 1.2
+      },
+      {
+        "key": "manometerDensity",
+        "label": "U形管示压液密度",
+        "default": 1000
+      }
+    ],
+    "sceneBehavior": "截面积比改变真实管形和连续性流速；压差比较两个非零流速；U形差压计使用(ρ示−ρ气)gΔh且方向正确。",
+    "limitations": [
+      "水平稳态低速气流、不可压缩近似，忽略黏性和局部损失；显示相对静压，不预测绝对气压或真实传感器噪声。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_fluid_density_review.gd：882条数值和边界断言通过",
+        "browser": "tests/fluid-density-review-browser.py：11份真实Godot输出的3场景SVG、文字边界和器材变化检查通过；已目视截图",
+        "scope": "本地真实Godot及独立Chromium已验证；整站Web导出联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-straw-spray",
+    "mode": "live",
+    "purpose": "横向气流使竖直吸管内液面上升。",
+    "controlsReviewed": [
+      {
+        "key": "speed",
+        "label": "流速",
+        "default": 2
+      },
+      {
+        "key": "density",
+        "label": "流体密度",
+        "default": 1.2
+      }
+    ],
+    "sceneBehavior": "停止吹气时不再显示液体上升箭头或水雾；有气流时显示喷雾原理示意。",
+    "limitations": [
+      "未计算液柱吸起阈值、真实吸液高度、黏性和雾滴粒径，示意水雾不能用于量取流量。"
+    ],
+    "fixes": [
+      "停止吹气时不再显示液体上升箭头或水雾；有气流时显示喷雾原理示意。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-buoyancy-weighing",
+    "mode": "live",
+    "purpose": "铝块在空气和水中读数对照，浸没后改变深度。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "default": 270
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "default": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      },
+      {
+        "key": "bottomDepth",
+        "label": "物块下表面距液面的深度",
+        "default": 15
+      }
+    ],
+    "sceneBehavior": "可从空气逐步浸入并在完全浸没后独立改变位置深度，同时比较空气与液中示数。",
+    "limitations": [
+      "忽略液面升降、表面张力、水阻力和仪器误差；上悬不能保持的条件明确无有效读数。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {}
+    }
+  },
+  {
+    "id": "phy-buoyancy-factors",
+    "mode": "live",
+    "purpose": "控制变量比较浸入体积及液体密度。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "default": 270
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "default": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      },
+      {
+        "key": "fraction",
+        "label": "浸入比例",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "可比较质量、体积、液体密度和浸入比例；同时显示重力、有效上悬读数和浮力，拒绝不可能静止条件。",
+    "limitations": [
+      "均匀液体和理想静止测力计；不模拟水阻力或测量误差。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {}
+    }
+  },
+  {
+    "id": "phy-archimedes",
+    "mode": "live",
+    "purpose": "组合称重法和溢水杯，分别测浮力与排水重力。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "default": 270
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "default": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      },
+      {
+        "key": "fraction",
+        "label": "浸入比例",
+        "default": 1
+      },
+      {
+        "key": "headroom",
+        "label": "实验前距溢水口还可容纳的水量",
+        "default": 0
+      },
+      {
+        "key": "lossPercent",
+        "label": "题设收集过程的漏接比例",
+        "default": 0
+      }
+    ],
+    "sceneBehavior": "四个独立仪器读数渠道及两次作差；可比较不满溢水杯、漏接和不能上悬的条件。",
+    "limitations": [
+      "数据由同一理想物理模型产生；不模拟真实传感器噪声、飞溅轨迹或连续溢流滞后。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {}
+    }
+  },
+  {
+    "id": "phy-egg-saltwater",
+    "mode": "live",
+    "purpose": "同一个鸡蛋换到密度不同的液体中。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "default": 80
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "default": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      }
+    ],
+    "sceneBehavior": "密度改变后观察鸡蛋浸入比例和浮沉平衡。",
+    "limitations": [
+      "显示平衡状态，不是上浮/下沉运动轨迹；不求盐的溶解与配比。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-clay-boat",
+    "mode": "live",
+    "purpose": "同块橡皮泥改变排水外形并测试载荷。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "default": 80
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "default": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      }
+    ],
+    "sceneBehavior": "通过排水体积与质量判断船形能否漂浮。",
+    "limitations": [
+      "形状变化以最大排液体积参数代替，没有橡皮泥三维捏塑。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-micro-hydrometer",
+    "mode": "live",
+    "purpose": "考虑总质量、浮子、细杆直径、配重与标定；只评估密度。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "default": 20
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "default": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      }
+    ],
+    "sceneBehavior": "液体密度改变时密度计浸入深度改变。",
+    "limitations": [
+      "刻度为示意，未按实际球泡细管几何标定密度刻线。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "needs-implementation",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-submarine-model",
+    "mode": "live",
+    "purpose": "改变模型内水量，比较总重力与浮力。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "物体质量",
+        "default": 80
+      },
+      {
+        "key": "volume",
+        "label": "物体体积",
+        "default": 100
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      }
+    ],
+    "sceneBehavior": "改变总质量比较重力与最大浮力，显示浮沉趋势。",
+    "limitations": [
+      "总质量代表压载水变化，未模拟充排水流量与真实升沉轨迹。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-kinetic-energy",
+    "mode": "playback",
+    "purpose": "分别控制质量或释放高度，用木块移动作能量比较指标。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "球质量",
+        "default": 0.05
+      },
+      {
+        "key": "blockMass",
+        "label": "木块质量",
+        "default": 0.2
+      },
+      {
+        "key": "velocity",
+        "label": "球的初速度",
+        "default": 1
+      },
+      {
+        "key": "friction",
+        "label": "地面滑动摩擦系数",
+        "default": 0.2
+      }
+    ],
+    "sceneBehavior": "两个实际刚体碰撞后以共同速度滑动，改变球质量/速度比较木块滑移。",
+    "limitations": [
+      "完全非弹性碰撞与恒滑动摩擦题设；碰撞机械能不守恒，不代替真实弹跳细节。"
+    ],
+    "fixes": [
+      "两个实际刚体碰撞后以共同速度滑动，改变球质量/速度比较木块滑移。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-pendulum-lock",
+    "mode": "playback",
+    "purpose": "无初推释放并观察回摆最高位置；使用安全替身展示。",
+    "controlsReviewed": [
+      {
+        "key": "length",
+        "label": "摆长",
+        "default": 1
+      },
+      {
+        "key": "mass",
+        "label": "摆球质量",
+        "default": 0.5
+      },
+      {
+        "key": "angle",
+        "label": "无初速释放角",
+        "default": 25
+      }
+    ],
+    "sceneBehavior": "从给定释放角无初速释放，铰链约束下摆动并比较所达高度。",
+    "limitations": [
+      "理想摆忽略真实耗散；没有额外推力，不能在释放时人为推动。"
+    ],
+    "fixes": [
+      "从给定释放角无初速释放，铰链约束下摆动并比较所达高度。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-rolling-pendulum",
+    "mode": "playback",
+    "purpose": "观察滚摆下降、上升过程。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "滚摆质量",
+        "default": 0.3
+      },
+      {
+        "key": "radius",
+        "label": "绕线轴半径",
+        "default": 0.006
+      },
+      {
+        "key": "inertia",
+        "label": "绕轴转动惯量（题设）",
+        "default": 0.0002
+      },
+      {
+        "key": "height",
+        "label": "观察下降高度",
+        "default": 0.5
+      }
+    ],
+    "sceneBehavior": "滚摆的下降位移、转角、平动能与转动能来自刚体及绕线约束。",
+    "limitations": [
+      "已实现下降，但尚未模拟反卷上升；这部分不能计为完整往返滚摆实验。"
+    ],
+    "fixes": [
+      "专用刚体/约束模型输出轨迹，画面读取实际状态，不再只有能量标签。"
+    ],
+    "status": "needs-implementation",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-returning-can",
+    "mode": "playback",
+    "purpose": "观察滚动时橡皮筋储能与反向回滚。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "等效运动质量",
+        "default": 0.3
+      },
+      {
+        "key": "spring",
+        "label": "等效弹性系数",
+        "default": 1
+      },
+      {
+        "key": "velocity",
+        "label": "从平衡位置释放的初速度",
+        "default": 0.5
+      }
+    ],
+    "sceneBehavior": "一维等效弹簧—质量刚体系统实际减速、反向并返回。",
+    "limitations": [
+      "回滚机制采用线性等效模型，不预测任意罐体内部结构或橡皮筋非线性。"
+    ],
+    "fixes": [
+      "一维等效弹簧—质量刚体系统实际减速、反向并返回。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-potential-height",
+    "mode": "playback",
+    "purpose": "同一钢珠从不同高度落到橡皮泥上，比较痕迹。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "落下物体质量",
+        "default": 0.05
+      },
+      {
+        "key": "height",
+        "label": "释放高度",
+        "default": 0.3
+      },
+      {
+        "key": "resistance",
+        "label": "材料阻力（题设恒力）",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "物体实际下落，进入材料后受给定阻力减速，比较最终压入深度。",
+    "limitations": [
+      "材料阻力采用恒力题设，不是橡皮泥真实塑性本构。"
+    ],
+    "fixes": [
+      "物体实际下落，进入材料后受给定阻力减速，比较最终压入深度。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-lever-balance",
+    "mode": "live",
+    "purpose": "水平调零，改变力和力臂，记录成组数据。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "动力",
+        "default": 10
+      },
+      {
+        "key": "arm",
+        "label": "动力臂",
+        "default": 30
+      },
+      {
+        "key": "load",
+        "label": "阻力",
+        "default": 15
+      },
+      {
+        "key": "loadArm",
+        "label": "阻力臂",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "力和力臂决定平衡，非平衡倾斜只表示力矩方向。",
+    "limitations": [
+      "没有实际动力学角度；轻杆、固定支点，力臂不是任意杆长。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-steelyard",
+    "mode": "live",
+    "purpose": "确定提纽、秤盘、秤砣，标零和标准质量刻度；可扩展双提纽。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "动力",
+        "default": 10
+      },
+      {
+        "key": "arm",
+        "label": "动力臂",
+        "default": 30
+      },
+      {
+        "key": "load",
+        "label": "阻力",
+        "default": 15
+      },
+      {
+        "key": "loadArm",
+        "label": "阻力臂",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "秤砣作用点随力臂设置移动，比较是否平衡。",
+    "limitations": [
+      "零点和刻度仍需秤盘及秤杆自重标定，原模型忽略这些重量。"
+    ],
+    "fixes": [
+      "秤砣位置随力臂移动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-pulley-properties",
+    "mode": "live",
+    "purpose": "比较力的大小和方向，以及绳端、重物移动距离。",
+    "controlsReviewed": [
+      {
+        "key": "load",
+        "label": "物重",
+        "default": 20
+      },
+      {
+        "key": "strands",
+        "label": "承重绳段数",
+        "default": 2
+      },
+      {
+        "key": "height",
+        "label": "提升高度",
+        "default": 1
+      },
+      {
+        "key": "efficiency",
+        "label": "机械效率",
+        "default": 100
+      }
+    ],
+    "sceneBehavior": "切换承重绳段数，比较拉力与绳端位移。",
+    "limitations": [
+      "结构与稳态数据比较无需自动开始；绳子无伸长，轮轴无摩擦的理想情况须明确。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-pulley-efficiency",
+    "mode": "live",
+    "purpose": "测G、F、h、s并重复不同载荷，计算有用功与总功之比。",
+    "controlsReviewed": [
+      {
+        "key": "load",
+        "label": "实测物重 G",
+        "default": 20
+      },
+      {
+        "key": "pull",
+        "label": "匀速提升中的实测拉力 F",
+        "default": 12.5
+      },
+      {
+        "key": "height",
+        "label": "实测重物上升距离 h",
+        "default": 0.5
+      },
+      {
+        "key": "ropeDistance",
+        "label": "实测绳端移动距离 s",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "四项实测记录输入后求效率，明确区分记录与模型预测，并校验不可能结果。",
+    "limitations": [
+      "页面用于操作示意与数据分析，没有代替实体测力计、机械摩擦与误差实测。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {}
+    }
+  },
+  {
+    "id": "phy-heat-capacity",
+    "mode": "playback",
+    "purpose": "用相同加热条件比较不同物质的温度变化。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 0.4
+      },
+      {
+        "key": "power",
+        "label": "加热功率",
+        "default": 50
+      },
+      {
+        "key": "time",
+        "label": "加热时间",
+        "default": 60
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "两组等质量同功率加热曲线和温度同步变化。",
+    "limitations": [
+      "油比热容是代表值，忽略散热与相变；比较前应保持相同初温。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-heat-capacity-sensor",
+    "mode": "playback",
+    "purpose": "利用温度—时间曲线比较加热响应。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 0.4
+      },
+      {
+        "key": "power",
+        "label": "加热功率",
+        "default": 50
+      },
+      {
+        "key": "time",
+        "label": "加热时间",
+        "default": 60
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "用传感器曲线显示两种液体等条件下的温升。",
+    "limitations": [
+      "与普通温度计版本共用物理模型，是观察方式变式而不是新增独立物理原理。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-gas-diffusion",
+    "mode": "playback",
+    "purpose": "以气体混合现象认识分子无规则运动。",
+    "controlsReviewed": [
+      {
+        "key": "temperature",
+        "label": "温度",
+        "default": 20
+      },
+      {
+        "key": "time",
+        "label": "观察进度（相对量）",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "两种颜色粒子随观察时间混合，温度影响混合趋势。",
+    "limitations": [
+      "示意粒子运动不是分子动力学，不能读作真实扩散系数。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-liquid-diffusion",
+    "mode": "playback",
+    "purpose": "区分缓慢扩散与搅拌引起的宏观流动。",
+    "controlsReviewed": [
+      {
+        "key": "temperature",
+        "label": "温度",
+        "default": 20
+      },
+      {
+        "key": "time",
+        "label": "观察进度（相对量）",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "两层粒子随时间逐渐混合。",
+    "limitations": [
+      "不包含重力对流、浓差和真实扩散系数；加快演示时间须说明。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-diffusion-temperature",
+    "mode": "playback",
+    "purpose": "比较温度对扩散快慢的影响。",
+    "controlsReviewed": [
+      {
+        "key": "temperature",
+        "label": "温度",
+        "default": 20
+      },
+      {
+        "key": "time",
+        "label": "观察进度（相对量）",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "在相同时段改变温度比较混合趋势。",
+    "limitations": [
+      "混合指数为教学趋势，不是经材料实验校准的定量速率。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-lead-attraction",
+    "mode": "live",
+    "purpose": "通过接触面结合现象认识分子间引力。",
+    "controlsReviewed": [
+      {
+        "key": "surface",
+        "label": "接触表面",
+        "default": "fresh"
+      },
+      {
+        "key": "separator",
+        "label": "两铅面之间",
+        "default": "none"
+      },
+      {
+        "key": "stage",
+        "label": "操作阶段",
+        "default": "released"
+      }
+    ],
+    "sceneBehavior": "比较新鲜平整、粗糙、氧化及隔纸条件，区别压紧中与撤力后的宏观结合证据。",
+    "limitations": [
+      "定性接触模型，不预测最大承载质量或真实表面黏着力；铅材料只作模拟。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {}
+    }
+  },
+  {
+    "id": "phy-compression-heating",
+    "mode": "playback",
+    "purpose": "认识外界对气体做功时内能的变化。",
+    "controlsReviewed": [
+      {
+        "key": "compressionRatio",
+        "label": "体积比",
+        "default": 2
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "压缩比改变末温，活塞随过程从初态移到终态。",
+    "limitations": [
+      "理想气体绝热模型，忽略漏气、散热和硝化棉点燃细节。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-expansion-cooling",
+    "mode": "playback",
+    "purpose": "用瓶塞运动和雾的产生认识膨胀做功。",
+    "controlsReviewed": [
+      {
+        "key": "compressionRatio",
+        "label": "体积比",
+        "default": 2
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "膨胀过程活塞位置与气体状态对应。",
+    "limitations": [
+      "理想气体绝热近似；白雾凝结条件未计算。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-friction-warming",
+    "mode": "live",
+    "purpose": "识别摩擦过程中机械能向内能的转化。",
+    "controlsReviewed": [
+      {
+        "key": "force",
+        "label": "滑动摩擦力",
+        "default": 5
+      },
+      {
+        "key": "distance",
+        "label": "相对滑动路程",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "相对滑动路程与摩擦力用于计算转成系统内能的功。",
+    "limitations": [
+      "不是摩擦温度测量，未分配两物体吸热，也没有实时温升曲线。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-solar-water",
+    "mode": "playback",
+    "purpose": "由题设功率和吸收效率计算水的吸热，观察升温、沸腾与水耗尽的不同阶段。",
+    "controlsReviewed": [
+      {
+        "key": "power",
+        "label": "照射输入功率",
+        "default": 500
+      },
+      {
+        "key": "efficiency",
+        "label": "整体吸收效率",
+        "default": 20
+      },
+      {
+        "key": "mass",
+        "label": "水的质量",
+        "default": 0.5
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      },
+      {
+        "key": "time",
+        "label": "照射时间",
+        "default": 120
+      }
+    ],
+    "sceneBehavior": "由题设功率和吸收效率计算水的吸热，观察升温、沸腾与水耗尽的不同阶段。 操作步骤：固定照射功率与吸收效率，设置水量、初温和时间。；播放受热过程，观察温度计与水量。；只改变水的质量，比较相同吸收热量下的温升。；按Q=ηPt、Q=mcΔT分步计算，检查是否发生沸腾。；水完全汽化后停止液态水温预测，不能继续把全部输入能量记为液态水吸热。",
+    "limitations": [
+      "按给定整体吸收效率计算Q=ηPt，再由水的质量、比热容和初温求温升。常压达到100 ℃后计汽化吸热；忽略额外散热和容器热容，不输出超过沸点的液态水温。 水全部汽化后不显示虚构液态水温，水吸热统计止于升温加汽化总能量；其后可输入能量另列为未建模部分。 容器水量刻度固定，液面随实际模型剩余质量变化；图中管路仅表示热量传递关系，未求解循环流动。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-solar-fan",
+    "mode": "playback",
+    "purpose": "追踪太阳能、电能和机械能之间的转化。",
+    "controlsReviewed": [
+      {
+        "key": "power",
+        "label": "照到电池板的光功率",
+        "default": 2
+      },
+      {
+        "key": "efficiency",
+        "label": "光电转换效率",
+        "default": 20
+      },
+      {
+        "key": "coverage",
+        "label": "电池板受光比例",
+        "default": 100
+      }
+    ],
+    "sceneBehavior": "受光比例、功率和效率进入电机转子动力学，遮光或零功率时没有光电驱动。",
+    "limitations": [
+      "使用给定电机与负载近似，不把光功率直接当转速，也不预测任意自制风扇。"
+    ],
+    "fixes": [
+      "受光比例、功率和效率进入电机转子动力学，遮光或零功率时没有光电驱动。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-rubbing-paper",
+    "mode": "playback",
+    "purpose": "观察摩擦起电及带电体吸引轻小物体。",
+    "controlsReviewed": [
+      {
+        "key": "charge1",
+        "label": "物体一电荷（相对量）",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "按声称的单个摩擦带电物体电荷判断吸引；charge1为0时纸屑静止，正负均能吸引。",
+    "limitations": [
+      "相对电荷与极化为定性示意，不能由吸引轻小物体辨认电荷正负。"
+    ],
+    "fixes": [
+      "按声称的单个摩擦带电物体电荷判断吸引；charge1为0时纸屑静止，正负均能吸引。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-steam-work",
+    "mode": "playback",
+    "purpose": "用蒸气做功模型说明热机原理。",
+    "controlsReviewed": [
+      {
+        "key": "power",
+        "label": "加热功率",
+        "default": 500
+      },
+      {
+        "key": "time",
+        "label": "加热时间",
+        "default": 120
+      },
+      {
+        "key": "efficiency",
+        "label": "热机效率",
+        "default": 30
+      }
+    ],
+    "sceneBehavior": "活塞运动表现气体对外做功，并计算给定效率的能量。",
+    "limitations": [
+      "没有汽化压强、阀门和缸内热力学循环，当前仅原理示意。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-simple-heat-engine",
+    "mode": "playback",
+    "purpose": "分析受热、膨胀和输出机械功的联系。",
+    "controlsReviewed": [
+      {
+        "key": "power",
+        "label": "加热功率",
+        "default": 500
+      },
+      {
+        "key": "time",
+        "label": "加热时间",
+        "default": 120
+      },
+      {
+        "key": "efficiency",
+        "label": "热机效率",
+        "default": 30
+      }
+    ],
+    "sceneBehavior": "比较给定输入与有效输出能量，活塞动作说明热机功能。",
+    "limitations": [
+      "与蒸汽做功为同模型变式，不是已搭建可预测性能的完整热机。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-charge-interaction",
+    "mode": "live",
+    "purpose": "通过带电棒的运动判断电荷相互作用。",
+    "controlsReviewed": [
+      {
+        "key": "charge1",
+        "label": "物体一电荷（相对量）",
+        "default": 3
+      },
+      {
+        "key": "charge2",
+        "label": "物体二电荷（相对量）",
+        "default": 3
+      },
+      {
+        "key": "distance",
+        "label": "间距（相对量）",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "改变两电荷正负、大小和距离，更新相互作用方向。",
+    "limitations": [
+      "静态力箭头不代表小球真实运动；电荷为相对量。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-electroscope",
+    "mode": "live",
+    "purpose": "依据金属箔张角判断接触后的带电状态。",
+    "controlsReviewed": [
+      {
+        "key": "charge1",
+        "label": "物体一电荷（相对量）",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "电荷符号与大小改变时箔片张角变化。",
+    "limitations": [
+      "张角不能准确测电量，也不能仅凭张开辨认正负。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-simple-circuit",
+    "mode": "live",
+    "purpose": "连接并理解电源、开关和用电器构成的闭合电路。",
+    "controlsReviewed": [
+      {
+        "key": "scenario",
+        "label": "开关状态",
+        "default": "ohm"
+      },
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "开关立即改变导通状态、灯亮及读数。",
+    "limitations": [
+      "理想直流低压电路；不允许靠开始键才闭合开关。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-led-direction",
+    "mode": "live",
+    "purpose": "通过调换LED方向认识单向导电性。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "限流电阻",
+        "default": 200
+      },
+      {
+        "key": "orientation",
+        "label": "二极管方向",
+        "default": "forward"
+      }
+    ],
+    "sceneBehavior": "改变LED方向与电压，比较是否达到正向导通条件。",
+    "limitations": [
+      "固定正向压降近似，不模拟击穿及真实I-U曲线。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-conductor-insulator",
+    "mode": "live",
+    "purpose": "把材料放入同一测试电路比较导电性。",
+    "controlsReviewed": [
+      {
+        "key": "material",
+        "label": "材料",
+        "default": "nichrome"
+      },
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "更换材料，比较通断与电流大小。",
+    "limitations": [
+      "材料值为教学代表，绝缘性取决于条件；不能推广到高压击穿。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-lamp-short",
+    "mode": "live",
+    "purpose": "区分短接用电器与电源短路。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "短接灯泡后该灯无电压，保留串联负载。",
+    "limitations": [
+      "灯泡短路与电源短路不同；应清楚显示被短接支路与剩余电阻。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-series-parallel-connect",
+    "mode": "live",
+    "purpose": "根据开关作用辨认串、并联结构。",
+    "controlsReviewed": [
+      {
+        "key": "scenario",
+        "label": "连接方式",
+        "default": "series"
+      },
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "直接切换串联/并联拓扑，更新电流与电压。",
+    "limitations": [
+      "尚非自由拖线搭建；缺错误接线识别和各灯独立开关。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-ammeter",
+    "mode": "live",
+    "purpose": "掌握电流表串联、极性、量程和读数。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "负载电阻",
+        "default": 20
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "default": "series"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "default": "correct"
+      },
+      {
+        "key": "range",
+        "label": "量程",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "掌握电流表串联、极性、量程和读数。 操作步骤：先选大量程，确认电源与负载条件。；电流表串联、电压表并联；正接线柱接较高电势一侧。；调整量程并读取示数，观察反接或超量程时的异常。；每次只改变一个条件，说明操作是否规范。",
+    "limitations": [
+      "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-series-current",
+    "mode": "live",
+    "purpose": "比较同一串联电路三个位置的电流。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "改变串联电阻和电压，比较各处同一电流。",
+    "limitations": [
+      "须显示至少两处读数；理想仪表无内阻。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-parallel-current",
+    "mode": "live",
+    "purpose": "检验并联电路的电流分配关系。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "改变各支路电阻，比较干路电流等于各支路之和。",
+    "limitations": [
+      "至少显示支路和干路读数；当前元件均为理想欧姆负载。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-voltmeter",
+    "mode": "live",
+    "purpose": "正确选择量程并测量元件两端电压。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "负载电阻",
+        "default": 20
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "default": "parallel"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "default": "correct"
+      },
+      {
+        "key": "range",
+        "label": "量程",
+        "default": 15
+      }
+    ],
+    "sceneBehavior": "正确选择量程并测量元件两端电压。 操作步骤：先选大量程，确认电源与负载条件。；电流表串联、电压表并联；正接线柱接较高电势一侧。；调整量程并读取示数，观察反接或超量程时的异常。；每次只改变一个条件，说明操作是否规范。",
+    "limitations": [
+      "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-series-voltage",
+    "mode": "live",
+    "purpose": "比较各用电器电压之和与电源电压。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "串联两电阻电压随阻值变化，比较总电压之和。",
+    "limitations": [
+      "电源与导线理想；不能用相同灯泡特例推断所有串联电压相等。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-battery-pack",
+    "mode": "live",
+    "purpose": "比较单节电池电压与串联总电压。",
+    "controlsReviewed": [
+      {
+        "key": "cells",
+        "label": "电池节数",
+        "default": 2
+      },
+      {
+        "key": "cellVoltage",
+        "label": "单节电压",
+        "default": 1.5
+      },
+      {
+        "key": "orientation",
+        "label": "电源方向",
+        "default": "forward"
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "电池数、单节电压和方向改变总电动势。",
+    "limitations": [
+      "忽略内阻，不模拟电池化学、短路温升及混用电池风险。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-parallel-voltage",
+    "mode": "live",
+    "purpose": "测量接在相同节点间的支路电压。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "并联两支路端电压与电源电压保持相等。",
+    "limitations": [
+      "导线理想、忽略内阻；相同电压不推出支路电流相等。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-resistance-comparison",
+    "mode": "live",
+    "purpose": "通过同一电路中的电流变化认识电阻。",
+    "controlsReviewed": [
+      {
+        "key": "material",
+        "label": "材料",
+        "default": "nichrome"
+      },
+      {
+        "key": "length",
+        "label": "导体长度",
+        "default": 1
+      },
+      {
+        "key": "area",
+        "label": "横截面积",
+        "default": 0.1
+      },
+      {
+        "key": "temperature",
+        "label": "导体温度",
+        "default": 20
+      },
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "选择材料及尺寸比较导体电阻与电流。",
+    "limitations": [
+      "数值是代表性材料常数，实际合金、温度和接触电阻会有差异。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-resistance-factors",
+    "mode": "live",
+    "purpose": "运用控制变量方法比较电阻。",
+    "controlsReviewed": [
+      {
+        "key": "material",
+        "label": "材料",
+        "default": "nichrome"
+      },
+      {
+        "key": "length",
+        "label": "导体长度",
+        "default": 1
+      },
+      {
+        "key": "area",
+        "label": "横截面积",
+        "default": 0.1
+      },
+      {
+        "key": "temperature",
+        "label": "导体温度",
+        "default": 20
+      },
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      }
+    ],
+    "sceneBehavior": "一次只改变长度、横截面积、材料或温度，比较R。",
+    "limitations": [
+      "与上一条为同装置控制变量变式，不能用多变量同时改变得单因果结论。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-rheostat",
+    "mode": "live",
+    "purpose": "根据有效电阻丝长度判断接法和滑片作用。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      },
+      {
+        "key": "slider",
+        "label": "滑片位置",
+        "default": 50
+      }
+    ],
+    "sceneBehavior": "滑片位置立即改变接入电阻与电流。",
+    "limitations": [
+      "接线已固定为有效接法，缺同上/同下错误接线和端点选择。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-dimmer-project",
+    "mode": "live",
+    "purpose": "依据电阻调节和器材额定值设计低压调光电路。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      },
+      {
+        "key": "resistance2",
+        "label": "电阻 R2",
+        "default": 20
+      },
+      {
+        "key": "slider",
+        "label": "滑片位置",
+        "default": 50
+      }
+    ],
+    "sceneBehavior": "在安全低压模型中滑片位置改变灯功率示意。",
+    "limitations": [
+      "用理想负载近似，不是市电调光器设计。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-ohm-voltage",
+    "mode": "live",
+    "purpose": "固定电阻，测量多组电压与电流。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 6
+      }
+    ],
+    "sceneBehavior": "固定10Ω改变电压，直接更新电流和关系图。",
+    "limitations": [
+      "0V点不能以0/0求电阻；理想定温欧姆元件。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-ohm-resistance",
+    "mode": "live",
+    "purpose": "更换定值电阻，同时维持其两端电压。",
+    "controlsReviewed": [
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "固定3V改变电阻，比较反比电流。",
+    "limitations": [
+      "实际换电阻需调变阻器保持被测电阻两端电压一致，模型自动满足这一前提。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-measure-resistance",
+    "mode": "live",
+    "purpose": "由同一状态下的电压与电流计算电阻。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "电阻 R1",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "读取U和I后分步代入R=U/I并记录多组。",
+    "limitations": [
+      "被测R仍作为题设输入，需与结果遮蔽练习区分；尚无真实未知电阻或误差。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-filament-resistance",
+    "mode": "live",
+    "purpose": "认识灯丝电阻随温度改变。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "ratedVoltage",
+        "label": "灯泡额定电压",
+        "default": 3
+      },
+      {
+        "key": "ratedPower",
+        "label": "灯泡额定功率",
+        "default": 1.5
+      }
+    ],
+    "sceneBehavior": "改变电压后显示灯丝阻值与电流的非线性趋势。",
+    "limitations": [
+      "热电阻曲线为近似模型，不能作为真实灯泡标定数据。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-digital-multimeter",
+    "mode": "live",
+    "purpose": "根据测量对象选择挡位、接法、极性和量程，识别带电测电阻及未接通等错误。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "resistance",
+        "label": "负载电阻",
+        "default": 20
+      },
+      {
+        "key": "mode",
+        "label": "测量挡位",
+        "default": "V"
+      },
+      {
+        "key": "energized",
+        "label": "外部电源",
+        "default": true
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "default": "parallel"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "default": "correct"
+      },
+      {
+        "key": "range",
+        "label": "当前挡位量程",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "根据测量对象选择挡位、接法、极性和量程，识别带电测电阻及未接通等错误。 操作步骤：明确测量对象，选择直流电压、电流或电阻挡。；选择相应的接法和足够大的量程。；电阻挡先断开外部电源；检查表笔接触。；比较正接、反接、未接通和超量程的显示。",
+    "limitations": [
+      "简化多用电表操作训练：只讨论直流电压、电流和独立元件电阻。量程单位随挡位改变，电阻挡先断开外部电源；不模拟实际产品的自动量程和所有功能。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-lamp-power",
+    "mode": "live",
+    "purpose": "用灯泡两端电压和通过电流确定实际功率。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "default": 3
+      },
+      {
+        "key": "ratedVoltage",
+        "label": "灯泡额定电压",
+        "default": 3
+      },
+      {
+        "key": "ratedPower",
+        "label": "灯泡额定功率",
+        "default": 1.5
+      }
+    ],
+    "sceneBehavior": "读取工作电压和电流，分步计算实际功率。",
+    "limitations": [
+      "额定值与实际值须区分；模型亮度不代表光通量。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-home-energy-audit",
+    "mode": "live",
+    "purpose": "用功率和使用时间估算电能并比较节电方案。",
+    "controlsReviewed": [
+      {
+        "key": "power",
+        "label": "用电器总功率",
+        "default": 2200
+      },
+      {
+        "key": "time",
+        "label": "使用时间",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "用铭牌功率与使用时间估算电能。",
+    "limitations": [
+      "并非电能表现场读数，启停与待机功率未包含。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-joule-resistance",
+    "mode": "playback",
+    "purpose": "控制电流与时间，比较不同电阻的发热。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "电流",
+        "default": 1
+      },
+      {
+        "key": "resistance",
+        "label": "容器一电阻",
+        "default": 10
+      },
+      {
+        "key": "time",
+        "label": "通电时间",
+        "default": 60
+      }
+    ],
+    "sceneBehavior": "等电流等时间比较不同电阻累积热量。",
+    "limitations": [
+      "气柱显示热量趋势，不是实际温升；需要随播放时间变化才适用加热回放。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-joule-current",
+    "mode": "playback",
+    "purpose": "保持电阻与时间相同，比较不同电流的发热。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "容器一电流",
+        "default": 1
+      },
+      {
+        "key": "resistance",
+        "label": "电阻",
+        "default": 10
+      },
+      {
+        "key": "time",
+        "label": "通电时间",
+        "default": 60
+      }
+    ],
+    "sceneBehavior": "等电阻等时间比较不同电流累积热量。",
+    "limitations": [
+      "详细分流电路未求解；液面高度不作为温度或热量的标定刻度。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-fuse-comparison",
+    "mode": "playback",
+    "purpose": "理解过流保护器件的作用与材料要求。",
+    "controlsReviewed": [
+      {
+        "key": "material",
+        "label": "题设细丝材料",
+        "default": "alloy"
+      },
+      {
+        "key": "current",
+        "label": "通电电流",
+        "default": 2
+      },
+      {
+        "key": "diameter",
+        "label": "细丝直径",
+        "default": 0.3
+      },
+      {
+        "key": "time",
+        "label": "通电时间",
+        "default": 10
+      }
+    ],
+    "sceneBehavior": "理解过流保护器件的作用与材料要求。 操作步骤：固定细丝长度、直径与电流，选择第一种材料。；观察温度上升、达到熔点后的熔化吸热平台；全部熔化后断丝，电流归零。；保持其他条件不变，更换材料比较。；结合电阻率、热容量和熔点解释差异，不能只比较熔点。",
+    "limitations": [
+      "长10 cm细丝采用题设电阻率、密度、比热容、熔点与熔化潜热。合金/铜/铁的L分别取25000/205000/247000 J/kg。假设均匀受热、绝热、断前定电流，全部熔化后断开；断后电流为零、焦耳热停止，忽略冷却与电弧。不能据此估算实际保险丝额定值。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-home-circuit-design",
+    "mode": "live",
+    "purpose": "用安全低压模型设计用电器并联、开关串联控制的家庭电路结构。",
+    "controlsReviewed": [
+      {
+        "key": "voltage",
+        "label": "安全低压模型电压",
+        "default": 6
+      },
+      {
+        "key": "resistance1",
+        "label": "支路一负载电阻",
+        "default": 20
+      },
+      {
+        "key": "resistance2",
+        "label": "支路二负载电阻",
+        "default": 30
+      },
+      {
+        "key": "switch1",
+        "label": "支路一开关",
+        "default": 1
+      },
+      {
+        "key": "switch2",
+        "label": "支路二开关",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "两支路开关分别控制负载，观察并联结构。",
+    "limitations": [
+      "仅低压模拟；接地与漏电保护为图示而非实际市电接线。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-magnetic-poles",
+    "mode": "live",
+    "purpose": "比较磁极与非磁极处的吸引，并判断两极作用。",
+    "controlsReviewed": [
+      {
+        "key": "pole1",
+        "label": "磁体一朝向",
+        "default": "N"
+      },
+      {
+        "key": "pole2",
+        "label": "磁体二朝向",
+        "default": "S"
+      }
+    ],
+    "sceneBehavior": "两相对磁极立即改变吸引/排斥箭头。",
+    "limitations": [
+      "方向示意不计算磁力大小或磁铁移动轨迹。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-compass-field",
+    "mode": "live",
+    "purpose": "把静止小磁针N极指向作为磁场方向。",
+    "controlsReviewed": [
+      {
+        "key": "x",
+        "label": "小磁针横向位置",
+        "default": 1.5
+      },
+      {
+        "key": "y",
+        "label": "小磁针纵向位置",
+        "default": 1
+      },
+      {
+        "key": "pole",
+        "label": "磁体右端磁极",
+        "default": "N"
+      }
+    ],
+    "sceneBehavior": "把静止小磁针N极指向作为磁场方向。 操作步骤：把小磁针移到磁体外部一个位置，记录红色N端方向。；逐个改变横、纵坐标，比较不同点的指向。；调换磁极，观察同一位置方向是否反转。；根据多处磁针指向描述磁场方向，不能只凭一处判断全场。",
+    "limitations": [
+      "条形磁铁外部的磁偶极近似。小磁针N端沿模型计算的局部磁场方向，中心附近不在此近似范围内；画面坐标是相对位置。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-magnetic-field-map",
+    "mode": "live",
+    "purpose": "将分散位置的方向信息连成磁场分布图。",
+    "controlsReviewed": [
+      {
+        "key": "pole",
+        "label": "所观察磁极",
+        "default": "N"
+      }
+    ],
+    "sceneBehavior": "磁场线表示方向，并随磁极选择变化。",
+    "limitations": [
+      "场线是表示法，不是实际存在的曲线；没有模拟铁屑相互作用。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-oersted",
+    "mode": "live",
+    "purpose": "通过通断电和换向建立电流与磁场的联系。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "电流",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "电流方向和断电状态改变磁针偏向。",
+    "limitations": [
+      "相对方向示意，不按距离和地磁场求真实偏转角。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-solenoid-field",
+    "mode": "live",
+    "purpose": "通过小磁针判断螺线管磁极与电流方向关系。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "电流",
+        "default": 1
+      },
+      {
+        "key": "turns",
+        "label": "线圈匝数",
+        "default": 100
+      },
+      {
+        "key": "core",
+        "label": "铁芯",
+        "default": "iron"
+      }
+    ],
+    "sceneBehavior": "改变电流、匝数与铁芯比较磁性趋势。",
+    "limitations": [
+      "相对场强不是实测磁感应强度，铁芯增强系数为教学近似。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-electromagnet-crane",
+    "mode": "live",
+    "purpose": "比较电流、匝数和铁芯对电磁铁的影响。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "电流",
+        "default": 1
+      },
+      {
+        "key": "turns",
+        "label": "匝数",
+        "default": 100
+      },
+      {
+        "key": "core",
+        "label": "铁芯",
+        "default": "iron"
+      },
+      {
+        "key": "load",
+        "label": "载荷质量",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "比较电流、匝数和铁芯对电磁铁的影响。 操作步骤：固定匝数、铁芯和载荷，改变电流比较能否托住。；保持电流相同，分别比较匝数和有无铁芯。；增加载荷，比较吸力与重力。；电流置零观察释放；反向电流改变磁极，但仍吸引软铁。",
+    "limitations": [
+      "给定磁路的理想吸力比较：气隙3 mm、面积1 cm²、磁路长10 cm、铁芯相对磁导率500，忽略漏磁与饱和。用于比较变量，不能作为实际起重机载荷计算。 本页比较已给装置的受力，不提供器材组装；线圈绕向固定，正电流左极为N，反向只改变磁极。画出的每匝代表10个实际匝数。"
+    ],
+    "fixes": [
+      "独立专用模块增加本项关键器材操作；详见末尾合入的专项审查说明。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-electromagnetic-relay",
+    "mode": "live",
+    "purpose": "区分控制电路和工作电路的作用。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "电流",
+        "default": 1
+      },
+      {
+        "key": "turns",
+        "label": "线圈匝数",
+        "default": 100
+      },
+      {
+        "key": "core",
+        "label": "铁芯",
+        "default": "iron"
+      }
+    ],
+    "sceneBehavior": "通电、断电时衔铁接点与受控电路同步切换。",
+    "limitations": [
+      "开闭阈值只作示意，不含线圈电感、弹簧力、磁滞与接点弹跳。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-magnetic-force-wire",
+    "mode": "live",
+    "purpose": "比较电流方向和磁场方向对受力方向的影响。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "电流",
+        "default": 1
+      },
+      {
+        "key": "field",
+        "label": "磁感应强度",
+        "default": 0.2
+      },
+      {
+        "key": "length",
+        "label": "通电导线长度",
+        "default": 0.5
+      },
+      {
+        "key": "angle",
+        "label": "线圈法线与磁场夹角",
+        "default": 45
+      }
+    ],
+    "sceneBehavior": "电流或磁场反向时力箭头反向，零电流无磁力。",
+    "limitations": [
+      "只比较受力，未求导线实际加速度或位移；角度应从电流方向与磁场夹角计。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-coil-torque",
+    "mode": "live",
+    "purpose": "比较线圈不同角度时的受力效果。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "电流",
+        "default": 1
+      },
+      {
+        "key": "turns",
+        "label": "线圈匝数",
+        "default": 100
+      },
+      {
+        "key": "angle",
+        "label": "线圈法线与磁场夹角",
+        "default": 45
+      }
+    ],
+    "sceneBehavior": "手动改变角度比较线圈力矩方向与大小。",
+    "limitations": [
+      "静态角度分析无需开始；相对力矩不等于已求出线圈转速。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-dc-motor-project",
+    "mode": "playback",
+    "purpose": "联系线圈受力、惯性和换向实现持续转动。",
+    "controlsReviewed": [
+      {
+        "key": "current",
+        "label": "线圈电流",
+        "default": 1
+      },
+      {
+        "key": "turns",
+        "label": "线圈匝数",
+        "default": 100
+      },
+      {
+        "key": "core",
+        "label": "铁芯",
+        "default": "iron"
+      }
+    ],
+    "sceneBehavior": "通电线圈应在磁场内连续转动并说明换向器作用。",
+    "limitations": [
+      "原版仅当前角度静态图；连续运动需惯量、阻尼和换向条件，不能拿任意旋转冒充引擎结果。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-electromagnetic-induction",
+    "mode": "playback",
+    "purpose": "通过导体运动、回路通断和磁场方向判断感应电流。",
+    "controlsReviewed": [
+      {
+        "key": "field",
+        "label": "磁感应强度",
+        "default": 0.2
+      },
+      {
+        "key": "length",
+        "label": "导体长度",
+        "default": 0.5
+      },
+      {
+        "key": "velocity",
+        "label": "切割速度",
+        "default": 2
+      },
+      {
+        "key": "angle",
+        "label": "速度与磁场夹角",
+        "default": 90
+      },
+      {
+        "key": "closed",
+        "label": "回路开关",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "导线运动、磁场和速度方向决定感应电动势。",
+    "limitations": [
+      "开路也可有电动势，只有闭合回路才有持续电流；原来固定导线没有运动。"
+    ],
+    "fixes": [
+      "导线位置与电动势按引擎时间状态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-hand-generator",
+    "mode": "playback",
+    "purpose": "通过摇动和电流方向变化认识发电机。",
+    "controlsReviewed": [
+      {
+        "key": "field",
+        "label": "磁感应强度",
+        "default": 0.2
+      },
+      {
+        "key": "turns",
+        "label": "匝数",
+        "default": 20
+      },
+      {
+        "key": "area",
+        "label": "线圈面积",
+        "default": 0.02
+      },
+      {
+        "key": "frequency",
+        "label": "转动频率",
+        "default": 2
+      },
+      {
+        "key": "rotationDirection",
+        "label": "手柄转动方向",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "转动线圈角度与感应电动势曲线同步变化。",
+    "limitations": [
+      "理想匀速外力驱动，不计负载反作用、内阻和能量损耗。"
+    ],
+    "fixes": [
+      "角度和指针使用引擎时间状态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-spark-radio",
+    "mode": "playback",
+    "purpose": "把收音机杂音与变化电流产生的电磁信号联系起来。",
+    "controlsReviewed": [
+      {
+        "key": "mode",
+        "label": "发射电路状态",
+        "default": "switching"
+      },
+      {
+        "key": "receiverOn",
+        "label": "接收机",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "稳恒电流/迅速通断与接收机开关形成对照，瞬态响应按慢放包络显示。",
+    "limitations": [
+      "包络为相对示意，火花不能等同于单一MHz正弦；未输出精确噪声级或场强。"
+    ],
+    "fixes": [
+      "稳恒电流/迅速通断与接收机开关形成对照，瞬态响应按慢放包络显示。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-vacuum-phone",
+    "mode": "live",
+    "purpose": "比较电磁波与声音对传播介质的要求。",
+    "controlsReviewed": [
+      {
+        "key": "medium",
+        "label": "罩内介质",
+        "default": "air"
+      },
+      {
+        "key": "sourceOn",
+        "label": "外部发射信号",
+        "default": true
+      },
+      {
+        "key": "phoneSoundOn",
+        "label": "手机铃声",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "空气/真空可切换；罩内手机接收信号、扬声器振动和罩外听声三种状态分别显示。",
+    "limitations": [
+      "理想对照忽略固体支架传声与罩体屏蔽；不模拟手机协议和实际声压。"
+    ],
+    "fixes": [
+      "空气/真空可切换；罩内手机接收信号、扬声器振动和罩外听声三种状态分别显示。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-radio-tuning",
+    "mode": "live",
+    "purpose": "认识频率单位并将调谐与选台联系起来。",
+    "controlsReviewed": [
+      {
+        "key": "frequency",
+        "label": "频率",
+        "default": 100
+      },
+      {
+        "key": "receiverFrequency",
+        "label": "接收调谐频率",
+        "default": 100
+      },
+      {
+        "key": "bandwidth",
+        "label": "模型带宽",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "接收频率偏离发射频率时，相对接收强度随带宽变化。",
+    "limitations": [
+      "中心完全重合时改变带宽应保持峰值，不能把该情况误报惰性控件；单峰相对模型。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-emwave-transmission",
+    "mode": "live",
+    "purpose": "比较发射频率改变时的接收信号。",
+    "controlsReviewed": [
+      {
+        "key": "frequency",
+        "label": "发射频率",
+        "default": 100
+      },
+      {
+        "key": "sourceOn",
+        "label": "发射端",
+        "default": true
+      },
+      {
+        "key": "receiverOn",
+        "label": "接收端",
+        "default": true
+      }
+    ],
+    "sceneBehavior": "发射/接收开关直接改变信号状态，频率由引擎换算真空波长。",
+    "limitations": [
+      "无屏蔽、匹配接收的工作原理示意，不计算真实无线覆盖距离或干扰。"
+    ],
+    "fixes": [
+      "发射/接收开关直接改变信号状态，频率由引擎换算真空波长。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_classroom_review.gd：27个关系与边界断言通过。",
+        "renderer": "tests/classroom-review-browser.py：16份真实Godot输出、64个渲染状态、137个断言通过，已目视3组截图。",
+        "scope": "独立场景验证；整站导出后需做完整UI联调。"
+      }
+    }
+  },
+  {
+    "id": "phy-water-light-guide",
+    "mode": "live",
+    "purpose": "用沿水流传播的光说明导光现象。",
+    "controlsReviewed": [
+      {
+        "key": "angle",
+        "label": "入射角",
+        "default": 65
+      },
+      {
+        "key": "n1",
+        "label": "水的折射率",
+        "default": 1.33
+      },
+      {
+        "key": "n2",
+        "label": "外部介质折射率",
+        "default": 1
+      }
+    ],
+    "sceneBehavior": "比较界面角度与临界条件，满足全反射时标示导光。",
+    "limitations": [
+      "原固定弯曲光路在不满足全反射时也显示导光，必须联动状态；不求实际弯曲水流损耗。"
+    ],
+    "fixes": [
+      "不满足全反射时取消固定导光结论。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-energy-saving-project",
+    "mode": "live",
+    "purpose": "用可比较的数据评价能源节约措施。",
+    "controlsReviewed": [
+      {
+        "key": "power",
+        "label": "用电器总功率",
+        "default": 2200
+      },
+      {
+        "key": "time",
+        "label": "使用时间",
+        "default": 2
+      }
+    ],
+    "sceneBehavior": "比较用电功率与时间方案的电能结果。",
+    "limitations": [
+      "与家庭能耗估算为任务变式；尚无多设备清单或现实节能验证。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-thermal-conductivity",
+    "mode": "live",
+    "purpose": "固定长度、粗细与受热条件，比较热量传递快慢。",
+    "controlsReviewed": [
+      {
+        "key": "conductivity",
+        "label": "导热能力（相对量）",
+        "default": 1
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      },
+      {
+        "key": "temperature2",
+        "label": "第二物体温度",
+        "default": 80
+      }
+    ],
+    "sceneBehavior": "改变两端温度和材料导热能力，比较热流方向与强弱。",
+    "limitations": [
+      "无瞬态温度分布和蜡滴脱落时刻，不应把静态比较包装为加热播放。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-molecular-gap",
+    "mode": "live",
+    "purpose": "比较混合前后体积，认识宏观体积不一定简单相加。",
+    "controlsReviewed": [
+      {
+        "key": "volume1",
+        "label": "液体一体积",
+        "default": 50
+      },
+      {
+        "key": "volume2",
+        "label": "液体二体积",
+        "default": 50
+      },
+      {
+        "key": "contraction",
+        "label": "体积缩减比例（示意）",
+        "default": 4
+      }
+    ],
+    "sceneBehavior": "给定两液体体积及收缩比例，展示混合后体积不简单相加。",
+    "limitations": [
+      "收缩比例是题设，不能预测任意液体混合结果；质量守恒仍成立。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-buoyancy-cause",
+    "mode": "live",
+    "purpose": "比较浸在液体中物体上下表面受到的压力。",
+    "controlsReviewed": [
+      {
+        "key": "area",
+        "label": "上下表面面积",
+        "default": 20
+      },
+      {
+        "key": "objectHeight",
+        "label": "物体高度",
+        "default": 5
+      },
+      {
+        "key": "depth",
+        "label": "上表面深度",
+        "default": 0.2
+      },
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      }
+    ],
+    "sceneBehavior": "上下表面深度、面积和液体密度决定压力差。",
+    "limitations": [
+      "完全浸没且底面接触液体；不含贴底密封的特殊情况。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-water-freezing",
+    "mode": "playback",
+    "purpose": "在持续放热过程中记录纯水的温度和状态。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "样品质量",
+        "default": 0.1
+      },
+      {
+        "key": "power",
+        "label": "加热/放热功率",
+        "default": 100
+      },
+      {
+        "key": "time",
+        "label": "时间",
+        "default": 300
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "随放热时间更新温度与冰水比例，0℃平台后继续降温。",
+    "limitations": [
+      "纯水理想焓模型，忽略过冷和容器散热细节。"
+    ],
+    "fixes": [
+      "温度与物态使用引擎时间状态，不能只显示末态。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-heat-mass-temperature",
+    "mode": "playback",
+    "purpose": "分别控制温升或质量，比较需要输入的热量。",
+    "controlsReviewed": [
+      {
+        "key": "mass",
+        "label": "质量",
+        "default": 0.4
+      },
+      {
+        "key": "power",
+        "label": "加热功率",
+        "default": 50
+      },
+      {
+        "key": "time",
+        "label": "加热时间",
+        "default": 60
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "default": 20
+      }
+    ],
+    "sceneBehavior": "固定水比热容，改变质量和输入热量比较温升。",
+    "limitations": [
+      "仅在无相变且忽略散热的范围适用；不能无限升温而当液态水。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-myopia-correction",
+    "mode": "live",
+    "purpose": "比较题设近视模型的过早会聚与戴上凹透镜后的视网膜成像。",
+    "controlsReviewed": [
+      {
+        "key": "objectDistance",
+        "label": "物体到眼镜距离",
+        "default": 5
+      },
+      {
+        "key": "correctionPower",
+        "label": "矫正镜屈光度（题设）",
+        "default": 0
+      },
+      {
+        "key": "withLens",
+        "label": "是否戴矫正镜",
+        "default": false
+      },
+      {
+        "key": "eyePower",
+        "label": "眼球等效屈光度（题设）",
+        "default": 62
+      }
+    ],
+    "sceneBehavior": "两薄透镜相距12 mm，按近轴传播逐段求光路；屈光度、物距与眼内透镜屈光力共同影响视网膜散焦。",
+    "limitations": [
+      "题设两透镜模型，不模拟真实眼球调节；模型对焦屈光度不用于个人验光配镜。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "verified-in-isolation-and-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "godot": "tests/godot_optics_review.gd：268条数值/边界断言通过",
+        "browser": "tests/optics-review-browser.py：19份真实Godot结果，8场景SVG/操作/文字边界检验通过；已目视截图",
+        "scope": "独立模块与本地真实Godot已验证，最终Web导出后的整站联调由主审执行"
+      }
+    }
+  },
+  {
+    "id": "phy-heat-engine-cycle",
+    "mode": "live",
+    "purpose": "按活塞、气门和点火状态追踪一个循环。",
+    "controlsReviewed": [
+      {
+        "key": "stroke",
+        "label": "冲程",
+        "default": "intake"
+      }
+    ],
+    "sceneBehavior": "选择冲程时气门开闭、活塞位置与做功方向联动。",
+    "limitations": [
+      "手动分阶段观察，无须统一自动开始；未求燃烧化学与缸压曲线。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-model-camera",
+    "mode": "live",
+    "purpose": "用凸透镜和可调屏距形成远物的缩小实像。",
+    "controlsReviewed": [
+      {
+        "key": "focal",
+        "label": "焦距大小",
+        "default": 10
+      },
+      {
+        "key": "distance",
+        "label": "物距",
+        "default": 30
+      },
+      {
+        "key": "height",
+        "label": "物高",
+        "default": 3
+      },
+      {
+        "key": "screenDistance",
+        "label": "镜头到感光面距离",
+        "default": 30
+      }
+    ],
+    "sceneBehavior": "调整物距和感光面位置，比较像距及是否对焦。",
+    "limitations": [
+      "薄透镜近似；实际清晰度还与孔径、像差和景深有关。"
+    ],
+    "fixes": [
+      "加入独立感光面位置和对焦比较。"
+    ],
+    "status": "fixed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  },
+  {
+    "id": "phy-water-jet",
+    "mode": "live",
+    "purpose": "比较液体对侧壁的压强随深度变化。",
+    "controlsReviewed": [
+      {
+        "key": "density",
+        "label": "液体密度",
+        "default": 1000
+      },
+      {
+        "key": "depth",
+        "label": "深度",
+        "default": 0.3
+      }
+    ],
+    "sceneBehavior": "改变液深后侧孔压力与水流示意改变。",
+    "limitations": [
+      "数值只给静压，水柱射程还与孔高和出流速度有关，未求射程。"
+    ],
+    "fixes": [
+      "按逐项教学目的区分即时操作与过程回放。"
+    ],
+    "status": "code-reviewed-browser-smoke-checked",
+    "evidence": {
+      "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+    }
+  }
+]

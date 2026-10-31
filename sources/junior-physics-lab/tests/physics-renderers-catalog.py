@@ -12,7 +12,7 @@ with sync_playwright() as pw:
  page.goto(base+'/__physics-render-test.html')
  assert page.evaluate('document.characterSet')=='UTF-8'
  page.set_content('<meta charset="utf-8"><div id="scenes" style="display:grid;grid-template-columns:1fr 1fr;gap:10px"></div>')
- page.add_script_tag(url=base+'/engine/loader.js');page.add_script_tag(url=base+'/modules/physics.js')
+ page.add_script_tag(url=base+'/engine/loader.js');[page.add_script_tag(url=base+'/modules/physics/'+scene.name) for scene in sorted((root/'dist/modules/physics').glob('*.js'))];page.add_script_tag(url=base+'/modules/physics.js')
  catalog=root/'dist/catalog/physics.js'
  if not catalog.exists():raise RuntimeError('Final physics catalog is required; draft scenario aliases are not scientific validation')
  page.add_script_tag(url=base+'/catalog/physics.js');page.wait_for_function('GodotLab.ready',timeout=60000)

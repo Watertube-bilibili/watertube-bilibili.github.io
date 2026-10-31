@@ -1,0 +1,588 @@
+{
+  "phy-ammeter": {
+    "model": "circuit",
+    "modelParams": {
+      "scenario": "ammeterPractice",
+      "mode": "I"
+    },
+    "controls": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "unit": "V",
+        "min": 0,
+        "max": 12,
+        "step": 0.5,
+        "value": 3
+      },
+      {
+        "key": "resistance",
+        "label": "负载电阻",
+        "unit": "Ω",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "value": 20
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "options": [
+          {
+            "value": "series",
+            "label": "串联"
+          },
+          {
+            "value": "parallel",
+            "label": "并联"
+          }
+        ],
+        "value": "series"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "options": [
+          {
+            "value": "correct",
+            "label": "正接"
+          },
+          {
+            "value": "reversed",
+            "label": "反接"
+          },
+          {
+            "value": "open",
+            "label": "未接通"
+          }
+        ],
+        "value": "correct"
+      },
+      {
+        "key": "range",
+        "label": "量程",
+        "options": [
+          {
+            "value": 0.6,
+            "label": "0～0.6 A"
+          },
+          {
+            "value": 3,
+            "label": "0～3 A"
+          }
+        ],
+        "value": 3
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "接法、极性和量程改变后即时检查示数，无需播放计时。"
+    },
+    "modelNote": "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。",
+    "steps": [
+      "先选大量程，确认电源与负载条件。",
+      "电流表串联、电压表并联；正接线柱接较高电势一侧。",
+      "调整量程并读取示数，观察反接或超量程时的异常。",
+      "每次只改变一个条件，说明操作是否规范。"
+    ]
+  },
+  "phy-voltmeter": {
+    "model": "circuit",
+    "modelParams": {
+      "scenario": "voltmeterPractice",
+      "mode": "V"
+    },
+    "controls": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "unit": "V",
+        "min": 0,
+        "max": 12,
+        "step": 0.5,
+        "value": 3
+      },
+      {
+        "key": "resistance",
+        "label": "负载电阻",
+        "unit": "Ω",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "value": 20
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "options": [
+          {
+            "value": "series",
+            "label": "串联"
+          },
+          {
+            "value": "parallel",
+            "label": "并联"
+          }
+        ],
+        "value": "parallel"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "options": [
+          {
+            "value": "correct",
+            "label": "正接"
+          },
+          {
+            "value": "reversed",
+            "label": "反接"
+          },
+          {
+            "value": "open",
+            "label": "未接通"
+          }
+        ],
+        "value": "correct"
+      },
+      {
+        "key": "range",
+        "label": "量程",
+        "options": [
+          {
+            "value": 3,
+            "label": "0～3 V"
+          },
+          {
+            "value": 15,
+            "label": "0～15 V"
+          }
+        ],
+        "value": 15
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "接法、极性和量程改变后即时检查示数，无需播放计时。"
+    },
+    "modelNote": "低压直流理想电表练习。接法、接线柱、量程分别影响操作判断与指针；误接只在屏幕中辨析，不模拟器材损坏。 表盘为30小格；显示的理论电表响应不代表超量程时可以从表盘读出该数值。",
+    "steps": [
+      "先选大量程，确认电源与负载条件。",
+      "电流表串联、电压表并联；正接线柱接较高电势一侧。",
+      "调整量程并读取示数，观察反接或超量程时的异常。",
+      "每次只改变一个条件，说明操作是否规范。"
+    ]
+  },
+  "phy-digital-multimeter": {
+    "model": "circuit",
+    "modelParams": {
+      "scenario": "multimeterPractice"
+    },
+    "controls": [
+      {
+        "key": "voltage",
+        "label": "电源电压",
+        "unit": "V",
+        "min": 0,
+        "max": 12,
+        "step": 0.5,
+        "value": 3
+      },
+      {
+        "key": "resistance",
+        "label": "负载电阻",
+        "unit": "Ω",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "value": 20
+      },
+      {
+        "key": "mode",
+        "label": "测量挡位",
+        "options": [
+          {
+            "value": "V",
+            "label": "直流电压"
+          },
+          {
+            "value": "I",
+            "label": "直流电流"
+          },
+          {
+            "value": "R",
+            "label": "电阻"
+          }
+        ],
+        "value": "V"
+      },
+      {
+        "key": "energized",
+        "label": "外部电源",
+        "options": [
+          {
+            "value": true,
+            "label": "接通"
+          },
+          {
+            "value": false,
+            "label": "断开"
+          }
+        ],
+        "value": true
+      },
+      {
+        "key": "connection",
+        "label": "电表接法",
+        "options": [
+          {
+            "value": "series",
+            "label": "串联"
+          },
+          {
+            "value": "parallel",
+            "label": "并联"
+          }
+        ],
+        "value": "parallel"
+      },
+      {
+        "key": "terminal",
+        "label": "接线柱 / 表笔",
+        "options": [
+          {
+            "value": "correct",
+            "label": "正接"
+          },
+          {
+            "value": "reversed",
+            "label": "反接"
+          },
+          {
+            "value": "open",
+            "label": "未接通"
+          }
+        ],
+        "value": "correct"
+      },
+      {
+        "key": "range",
+        "label": "当前挡位量程",
+        "unit": "",
+        "min": 0.1,
+        "max": 1000,
+        "step": 0.1,
+        "value": 20
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "选择挡位、接法与表笔后直接读表。"
+    },
+    "modelNote": "简化多用电表操作训练：只讨论直流电压、电流和独立元件电阻。量程单位随挡位改变，电阻挡先断开外部电源；不模拟实际产品的自动量程和所有功能。",
+    "steps": [
+      "明确测量对象，选择直流电压、电流或电阻挡。",
+      "选择相应的接法和足够大的量程。",
+      "电阻挡先断开外部电源；检查表笔接触。",
+      "比较正接、反接、未接通和超量程的显示。"
+    ],
+    "title": "数字多用表：直流电压、电流与电阻测量",
+    "objective": "根据测量对象选择挡位、接法、极性和量程，识别带电测电阻及未接通等错误。",
+    "observations": [
+      "直流表笔反接显示负号；独立电阻换向后阻值不变。",
+      "电阻挡未接通或量程不足显示OL；带电电阻测量被禁止。"
+    ]
+  },
+  "phy-compass-field": {
+    "model": "magnet",
+    "modelParams": {
+      "scenario": "compassMap"
+    },
+    "controls": [
+      {
+        "key": "x",
+        "label": "小磁针横向位置",
+        "unit": "",
+        "min": -3,
+        "max": 3,
+        "step": 0.1,
+        "value": 1.5
+      },
+      {
+        "key": "y",
+        "label": "小磁针纵向位置",
+        "unit": "",
+        "min": -2,
+        "max": 2,
+        "step": 0.1,
+        "value": 1
+      },
+      {
+        "key": "pole",
+        "label": "磁体右端磁极",
+        "options": [
+          {
+            "value": "N",
+            "label": "N极"
+          },
+          {
+            "value": "S",
+            "label": "S极"
+          }
+        ],
+        "value": "N"
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "在不同位置放置小磁针，直接观察N端方向。"
+    },
+    "modelNote": "条形磁铁外部的磁偶极近似。小磁针N端沿模型计算的局部磁场方向，中心附近不在此近似范围内；画面坐标是相对位置。",
+    "steps": [
+      "把小磁针移到磁体外部一个位置，记录红色N端方向。",
+      "逐个改变横、纵坐标，比较不同点的指向。",
+      "调换磁极，观察同一位置方向是否反转。",
+      "根据多处磁针指向描述磁场方向，不能只凭一处判断全场。"
+    ]
+  },
+  "phy-electromagnet-crane": {
+    "model": "magnet",
+    "modelParams": {
+      "scenario": "craneLoad"
+    },
+    "controls": [
+      {
+        "key": "current",
+        "label": "电流",
+        "unit": "A",
+        "min": -2,
+        "max": 2,
+        "step": 0.1,
+        "value": 1
+      },
+      {
+        "key": "turns",
+        "label": "匝数",
+        "unit": "",
+        "min": 20,
+        "max": 200,
+        "step": 10,
+        "value": 100
+      },
+      {
+        "key": "core",
+        "label": "铁芯",
+        "options": [
+          {
+            "value": "iron",
+            "label": "有铁芯"
+          },
+          {
+            "value": "air",
+            "label": "无铁芯"
+          }
+        ],
+        "value": "iron"
+      },
+      {
+        "key": "load",
+        "label": "载荷质量",
+        "unit": "g",
+        "min": 5,
+        "max": 100,
+        "step": 5,
+        "value": 20
+      }
+    ],
+    "interaction": {
+      "mode": "live",
+      "reason": "改变线圈条件与载荷，比较题设吸力能否托住载荷。"
+    },
+    "modelNote": "给定磁路的理想吸力比较：气隙3 mm、面积1 cm²、磁路长10 cm、铁芯相对磁导率500，忽略漏磁与饱和。用于比较变量，不能作为实际起重机载荷计算。 本页比较已给装置的受力，不提供器材组装；线圈绕向固定，正电流左极为N，反向只改变磁极。画出的每匝代表10个实际匝数。",
+    "steps": [
+      "固定匝数、铁芯和载荷，改变电流比较能否托住。",
+      "保持电流相同，分别比较匝数和有无铁芯。",
+      "增加载荷，比较吸力与重力。",
+      "电流置零观察释放；反向电流改变磁极，但仍吸引软铁。"
+    ],
+    "title": "电磁起重装置：比较吸力与载荷"
+  },
+  "phy-fuse-comparison": {
+    "model": "household",
+    "modelParams": {
+      "scenario": "fuseCompare"
+    },
+    "controls": [
+      {
+        "key": "material",
+        "label": "题设细丝材料",
+        "options": [
+          {
+            "value": "alloy",
+            "label": "低熔点合金"
+          },
+          {
+            "value": "copper",
+            "label": "铜"
+          },
+          {
+            "value": "iron",
+            "label": "铁"
+          }
+        ],
+        "value": "alloy"
+      },
+      {
+        "key": "current",
+        "label": "通电电流",
+        "unit": "A",
+        "min": 0,
+        "max": 5,
+        "step": 0.1,
+        "value": 2
+      },
+      {
+        "key": "diameter",
+        "label": "细丝直径",
+        "unit": "mm",
+        "min": 0.2,
+        "max": 0.8,
+        "step": 0.05,
+        "value": 0.3
+      },
+      {
+        "key": "time",
+        "label": "通电时间",
+        "unit": "s",
+        "min": 0,
+        "max": 30,
+        "step": 0.5,
+        "value": 10
+      }
+    ],
+    "interaction": {
+      "mode": "playback",
+      "reason": "播放升温、吸收熔化潜热、断丝和断后电流归零四个阶段，温度平台不等于立即熔断。",
+      "actionLabel": "观察过程"
+    },
+    "playSeconds": 5,
+    "modelNote": "长10 cm细丝采用题设电阻率、密度、比热容、熔点与熔化潜热。合金/铜/铁的L分别取25000/205000/247000 J/kg。假设均匀受热、绝热、断前定电流，全部熔化后断开；断后电流为零、焦耳热停止，忽略冷却与电弧。不能据此估算实际保险丝额定值。",
+    "steps": [
+      "固定细丝长度、直径与电流，选择第一种材料。",
+      "观察温度上升、达到熔点后的熔化吸热平台；全部熔化后断丝，电流归零。",
+      "保持其他条件不变，更换材料比较。",
+      "结合电阻率、热容量和熔点解释差异，不能只比较熔点。"
+    ],
+    "workedExample": {
+      "title": "从升温与熔化吸热求断开时间",
+      "given": "题设细丝R=0.20 Ω，m=0.00010 kg，c=200 J/(kg·℃)，I=1 A，初温20 ℃，熔点70 ℃，熔化潜热L=25000 J/kg。忽略散热，按全部熔化后断开，求断开时间。",
+      "steps": [
+        {
+          "title": "求升温吸热",
+          "text": "Q₁=mcΔT=0.00010×200×(70−20)=1.0 J。"
+        },
+        {
+          "title": "求熔化吸热",
+          "text": "Q₂=mL=0.00010×25000=2.5 J；此阶段温度保持70 ℃，不能继续用Q=mcΔT。"
+        },
+        {
+          "title": "求电功率与总时间",
+          "text": "P=I²R=1²×0.20=0.20 W。t=(Q₁+Q₂)/P=(1.0+2.5)/0.20=17.5 s。"
+        },
+        {
+          "title": "区分到熔点与熔断",
+          "text": "升到熔点仅需Q₁/P=5.0 s，此时尚未完成熔化。再吸热12.5 s后才按题设断开；断后I=0，焦耳热不再增加。"
+        }
+      ],
+      "answer": "题设断开时间17.5 s；达到熔点的5.0 s并非断开时间。"
+    }
+  },
+  "phy-solar-water": {
+    "model": "energy",
+    "modelParams": {
+      "scenario": "solarWater"
+    },
+    "controls": [
+      {
+        "key": "power",
+        "label": "照射输入功率",
+        "unit": "W",
+        "min": 0,
+        "max": 2000,
+        "step": 10,
+        "value": 500
+      },
+      {
+        "key": "efficiency",
+        "label": "整体吸收效率",
+        "unit": "%",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "value": 20
+      },
+      {
+        "key": "mass",
+        "label": "水的质量",
+        "unit": "kg",
+        "min": 0.1,
+        "max": 2,
+        "step": 0.1,
+        "value": 0.5
+      },
+      {
+        "key": "initial",
+        "label": "初温",
+        "unit": "℃",
+        "min": 0,
+        "max": 90,
+        "step": 1,
+        "value": 20
+      },
+      {
+        "key": "time",
+        "label": "照射时间",
+        "unit": "s",
+        "min": 0,
+        "max": 600,
+        "step": 10,
+        "value": 120
+      }
+    ],
+    "interaction": {
+      "mode": "playback",
+      "reason": "显示按题设吸收功率计算的温升与液态水状态。",
+      "actionLabel": "观察过程"
+    },
+    "playSeconds": 5,
+    "modelNote": "按给定整体吸收效率计算Q=ηPt，再由水的质量、比热容和初温求温升。常压达到100 ℃后计汽化吸热；忽略额外散热和容器热容，不输出超过沸点的液态水温。 水全部汽化后不显示虚构液态水温，水吸热统计止于升温加汽化总能量；其后可输入能量另列为未建模部分。 容器水量刻度固定，液面随实际模型剩余质量变化；图中管路仅表示热量传递关系，未求解循环流动。",
+    "steps": [
+      "固定照射功率与吸收效率，设置水量、初温和时间。",
+      "播放受热过程，观察温度计与水量。",
+      "只改变水的质量，比较相同吸收热量下的温升。",
+      "按Q=ηPt、Q=mcΔT分步计算，检查是否发生沸腾。",
+      "水完全汽化后停止液态水温预测，不能继续把全部输入能量记为液态水吸热。"
+    ],
+    "workedExample": {
+      "title": "计算太阳能加热温升",
+      "given": "输入功率500 W，整体吸收效率20%，照射120 s；水0.5 kg，初温20 ℃，c=4200 J/(kg·℃)，不计额外散热。",
+      "steps": [
+        {
+          "title": "求吸收热量",
+          "text": "Q=ηPt=0.20×500×120=12000 J。"
+        },
+        {
+          "title": "求温升",
+          "text": "ΔT=Q/(mc)=12000/(0.5×4200)≈5.71 ℃。"
+        },
+        {
+          "title": "求末温",
+          "text": "T=20+5.71=25.71 ℃，低于100 ℃，可使用液态升温关系。"
+        }
+      ],
+      "answer": "模型末温约25.7 ℃。"
+    },
+    "title": "太阳能热水装置：吸热、温升与沸腾",
+    "objective": "由题设功率和吸收效率计算水的吸热，观察升温、沸腾与水耗尽的不同阶段。"
+  }
+}

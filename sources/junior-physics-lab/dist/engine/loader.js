@@ -2,6 +2,8 @@
 (() => {
   'use strict';
   const base = new URL('./', document.currentScript.src);
+  const revision = new URL(document.currentScript.src).searchParams.get('v');
+  const asset = name => { const url = new URL(name, base); if (revision) url.searchParams.set('v', revision); return url; };
   let startPhysics = null, resetPhysics = null, evaluatePhysics = null;
   let evaluationSequence = 0, evaluationQueue = Promise.resolve();
   const pendingEvaluations = new Map();
@@ -54,7 +56,7 @@
       canvas.style.cssText = 'position:fixed;left:-32px;top:0;width:16px;height:16px;pointer-events:none';
       document.body.append(canvas);
     }
-    const binary = fetch(new URL('lab.wasm.bin', base)).then(async response => {
+    const binary = fetch(asset('lab.wasm.bin')).then(async response => {
       if (!response.ok) throw new Error('Physics runtime download failed.');
       const total = Number(response.headers.get('content-length')) || 9400000;
       const reader = response.body.getReader();
@@ -75,13 +77,14 @@
     binary.catch(error => dispatch('godot-error', { message: error.message }));
     await new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = new URL('lab.js', base);
+      script.src = asset('lab.js');
       script.onload = resolve;
       script.onerror = () => reject(new Error('Physics runtime script failed to load.'));
       document.head.append(script);
     });
     const engine = new Engine({
       executable: new URL('lab', base).href,
+      mainPack: asset('lab.pck').href,
       canvas,
       canvasResizePolicy: 0,
       focusCanvas: false,
