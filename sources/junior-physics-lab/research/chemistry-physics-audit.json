@@ -1,0 +1,39 @@
+{
+  "checked": "2026-10-31",
+  "delegated": [
+    {
+      "id": "chem-neutralization",
+      "chemicalWork": "HCl/NaOH计量、25℃pH和反应热n×57.3kJ/mol",
+      "godotWork": "给定Q、m、c、初温求ΔT和末温",
+      "model": "thermal",
+      "scenario": "heat-input"
+    },
+    {
+      "id": "chem-fuel-survey",
+      "chemicalWork": "方案描述、输入单位MJ转J",
+      "godotWork": "给定有效热量与效率求输入能量及损耗",
+      "model": "thermal",
+      "scenario": "efficiency-input"
+    }
+  ],
+  "retained": [
+    {
+      "family": "制气、电解、燃烧、置换、沉淀",
+      "reason": "方程式质量计量、限制反应物和组成比例，无理想气体状态方程计算"
+    },
+    {
+      "family": "溶液、溶解度、结晶、稀释",
+      "reason": "化学组成、参考溶解度与质量守恒；温度为题设，无热传递计算"
+    },
+    {
+      "family": "导电、扩散、潮解、材料、CO2软瓶",
+      "reason": "明确的定性条件判断或无量纲呈现；不输出欧姆电流、气压、真实速率或热流"
+    },
+    {
+      "family": "碳核算、样本比较、分子计数",
+      "reason": "题设统计、成分计数和排放因子算术，不是物理动力学求解"
+    }
+  ],
+  "fallback": "No JS fallback for requiresPhysics experiments",
+  "contract": "Public simulate solves final conditions independent of renderer playhead"
+}

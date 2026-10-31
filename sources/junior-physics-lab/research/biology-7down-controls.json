@@ -1,0 +1,1379 @@
+[
+  {
+    "id": "bio-germination",
+    "model": "germination",
+    "config": {
+      "variant": "conditions"
+    },
+    "controls": [
+      {
+        "key": "moisture",
+        "label": "水分条件",
+        "value": "damp",
+        "options": [
+          {
+            "value": "dry",
+            "label": "干燥"
+          },
+          {
+            "value": "damp",
+            "label": "适量水"
+          },
+          {
+            "value": "submerged",
+            "label": "完全浸没"
+          }
+        ]
+      },
+      {
+        "key": "temperature",
+        "label": "温度条件",
+        "value": "suitable",
+        "options": [
+          {
+            "value": "cold",
+            "label": "偏低"
+          },
+          {
+            "value": "suitable",
+            "label": "适宜"
+          },
+          {
+            "value": "hot",
+            "label": "过高"
+          }
+        ]
+      },
+      {
+        "key": "viable",
+        "label": "种子状态",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "完整、有活力且不休眠"
+          },
+          {
+            "value": "no",
+            "label": "胚已失去活力"
+          },
+          {
+            "value": "dormant",
+            "label": "仍处于休眠"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      21
+    ]
+  },
+  {
+    "id": "bio-germination-rate",
+    "model": "survey",
+    "config": {
+      "variant": "germination-rate",
+      "synthetic": true
+    },
+    "controls": [
+      {
+        "key": "total",
+        "label": "抽样种子数",
+        "min": 10,
+        "max": 200,
+        "value": 100,
+        "step": 10,
+        "unit": "粒"
+      },
+      {
+        "key": "sprouted",
+        "label": "已萌发种子数",
+        "min": 0,
+        "max": 200,
+        "value": 92,
+        "step": 1,
+        "unit": "粒"
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-root",
+    "model": "microscope",
+    "config": {
+      "specimen": "root",
+      "variant": "root"
+    },
+    "controls": [
+      {
+        "key": "eyepiece",
+        "label": "目镜",
+        "min": 5,
+        "max": 15,
+        "value": 10,
+        "step": 5,
+        "unit": "倍"
+      },
+      {
+        "key": "objective",
+        "label": "物镜",
+        "value": "10",
+        "options": [
+          {
+            "value": "4",
+            "label": "4倍"
+          },
+          {
+            "value": "10",
+            "label": "10倍"
+          },
+          {
+            "value": "40",
+            "label": "40倍"
+          }
+        ]
+      },
+      {
+        "key": "focus",
+        "label": "细准焦位置",
+        "min": -5,
+        "max": 5,
+        "value": 0,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "key": "region",
+        "label": "重点区域",
+        "value": "mature",
+        "options": [
+          {
+            "value": "cap",
+            "label": "根冠"
+          },
+          {
+            "value": "division",
+            "label": "分生区"
+          },
+          {
+            "value": "elongation",
+            "label": "伸长区"
+          },
+          {
+            "value": "mature",
+            "label": "成熟区"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      18
+    ]
+  },
+  {
+    "id": "bio-mineral",
+    "model": "plant",
+    "config": {
+      "variant": "mineral"
+    },
+    "controls": [
+      {
+        "key": "solution",
+        "label": "培养液",
+        "value": "extract",
+        "options": [
+          {
+            "value": "distilled",
+            "label": "蒸馏水"
+          },
+          {
+            "value": "extract",
+            "label": "土壤浸出液"
+          },
+          {
+            "value": "nutrient",
+            "label": "适宜营养液"
+          }
+        ]
+      },
+      {
+        "key": "air",
+        "label": "根部供氧",
+        "value": "adequate",
+        "options": [
+          {
+            "value": "adequate",
+            "label": "通气适宜"
+          },
+          {
+            "value": "poor",
+            "label": "供氧不足"
+          }
+        ]
+      },
+      {
+        "key": "day",
+        "label": "观察日序",
+        "min": 0,
+        "max": 14,
+        "value": 7,
+        "step": 1,
+        "unit": "日"
+      }
+    ],
+    "ncetIds": [
+      23
+    ]
+  },
+  {
+    "id": "bio-flower",
+    "model": "anatomy",
+    "config": {
+      "specimen": "flower",
+      "variant": "flower"
+    },
+    "controls": [
+      {
+        "key": "part",
+        "label": "观察结构",
+        "value": "whole",
+        "options": [
+          {
+            "value": "whole",
+            "label": "整体"
+          },
+          {
+            "value": "stamen",
+            "label": "雄蕊"
+          },
+          {
+            "value": "pistil",
+            "label": "雌蕊"
+          },
+          {
+            "value": "ovary",
+            "label": "子房与胚珠"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      19
+    ]
+  },
+  {
+    "id": "bio-stem-water",
+    "model": "plant",
+    "config": {
+      "variant": "stem"
+    },
+    "controls": [
+      {
+        "key": "cut",
+        "label": "观察切面",
+        "value": "whole",
+        "options": [
+          {
+            "value": "whole",
+            "label": "带叶枝条"
+          },
+          {
+            "value": "cross",
+            "label": "茎横切面"
+          },
+          {
+            "value": "longitudinal",
+            "label": "茎纵切面"
+          }
+        ]
+      },
+      {
+        "key": "dye",
+        "label": "液体",
+        "value": "red",
+        "options": [
+          {
+            "value": "red",
+            "label": "红色染液"
+          },
+          {
+            "value": "clear",
+            "label": "清水对照"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-leaf",
+    "model": "microscope",
+    "config": {
+      "specimen": "leaf",
+      "variant": "leaf"
+    },
+    "controls": [
+      {
+        "key": "eyepiece",
+        "label": "目镜",
+        "min": 5,
+        "max": 15,
+        "value": 10,
+        "step": 5,
+        "unit": "倍"
+      },
+      {
+        "key": "objective",
+        "label": "物镜",
+        "value": "10",
+        "options": [
+          {
+            "value": "4",
+            "label": "4倍"
+          },
+          {
+            "value": "10",
+            "label": "10倍"
+          },
+          {
+            "value": "40",
+            "label": "40倍"
+          }
+        ]
+      },
+      {
+        "key": "focus",
+        "label": "细准焦位置",
+        "min": -5,
+        "max": 5,
+        "value": 0,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "key": "view",
+        "label": "观察材料",
+        "value": "section",
+        "options": [
+          {
+            "value": "section",
+            "label": "叶横切片"
+          },
+          {
+            "value": "epidermis",
+            "label": "表皮装片"
+          }
+        ]
+      },
+      {
+        "key": "stomata",
+        "label": "气孔状态",
+        "value": "open",
+        "options": [
+          {
+            "value": "open",
+            "label": "张开"
+          },
+          {
+            "value": "closed",
+            "label": "关闭"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      20
+    ]
+  },
+  {
+    "id": "bio-transpiration",
+    "model": "plant",
+    "config": {
+      "variant": "transpiration"
+    },
+    "controls": [
+      {
+        "key": "cover",
+        "label": "塑料袋包围部位",
+        "value": "leaves",
+        "options": [
+          {
+            "value": "leaves",
+            "label": "只罩住带叶枝条"
+          },
+          {
+            "value": "soil",
+            "label": "连同湿土一起罩住"
+          }
+        ]
+      },
+      {
+        "key": "leaves",
+        "label": "叶片情况",
+        "value": "many",
+        "options": [
+          {
+            "value": "many",
+            "label": "保留叶片"
+          },
+          {
+            "value": "none",
+            "label": "去叶对照"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-photosynthesis-starch",
+    "model": "photosynthesis",
+    "config": {
+      "variant": "starch"
+    },
+    "controls": [
+      {
+        "key": "dark",
+        "label": "预处理",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "充分暗处理"
+          },
+          {
+            "value": "no",
+            "label": "未暗处理"
+          }
+        ]
+      },
+      {
+        "key": "light",
+        "label": "照光",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "有光"
+          },
+          {
+            "value": "no",
+            "label": "无光"
+          }
+        ]
+      },
+      {
+        "key": "mask",
+        "label": "叶片处理",
+        "value": "half",
+        "options": [
+          {
+            "value": "half",
+            "label": "局部遮光"
+          },
+          {
+            "value": "none",
+            "label": "不遮光"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      24
+    ]
+  },
+  {
+    "id": "bio-photosynthesis-oxygen",
+    "model": "photosynthesis",
+    "config": {
+      "variant": "oxygen"
+    },
+    "controls": [
+      {
+        "key": "light",
+        "label": "光照",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "适宜光照"
+          },
+          {
+            "value": "no",
+            "label": "遮光"
+          }
+        ]
+      },
+      {
+        "key": "co2",
+        "label": "二氧化碳供应",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "充足且适宜"
+          },
+          {
+            "value": "no",
+            "label": "受限"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      24
+    ]
+  },
+  {
+    "id": "bio-photosynthesis-co2",
+    "model": "photosynthesis",
+    "config": {
+      "variant": "co2"
+    },
+    "controls": [
+      {
+        "key": "co2",
+        "label": "容器内处理",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "清水对照，保留二氧化碳"
+          },
+          {
+            "value": "no",
+            "label": "吸收二氧化碳"
+          }
+        ]
+      },
+      {
+        "key": "light",
+        "label": "照光",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "有光"
+          },
+          {
+            "value": "no",
+            "label": "无光"
+          }
+        ]
+      },
+      {
+        "key": "dark",
+        "label": "预处理",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "充分暗处理"
+          },
+          {
+            "value": "no",
+            "label": "未暗处理"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      24
+    ]
+  },
+  {
+    "id": "bio-seed-respiration",
+    "model": "respiration",
+    "config": {
+      "variant": "seeds"
+    },
+    "controls": [
+      {
+        "key": "test",
+        "label": "观察项目",
+        "value": "heat",
+        "options": [
+          {
+            "value": "heat",
+            "label": "能量变化"
+          },
+          {
+            "value": "co2",
+            "label": "二氧化碳产生"
+          },
+          {
+            "value": "oxygen",
+            "label": "氧气消耗"
+          }
+        ]
+      },
+      {
+        "key": "seeds",
+        "label": "种子组",
+        "value": "living",
+        "options": [
+          {
+            "value": "living",
+            "label": "正在萌发的活种子"
+          },
+          {
+            "value": "boiled",
+            "label": "煮熟并冷却的对照种子"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-food-storage",
+    "model": "respiration",
+    "config": {
+      "variant": "storage"
+    },
+    "controls": [
+      {
+        "key": "food",
+        "label": "保存对象",
+        "value": "grain",
+        "options": [
+          {
+            "value": "grain",
+            "label": "干燥种子"
+          },
+          {
+            "value": "produce",
+            "label": "新鲜果蔬"
+          }
+        ]
+      },
+      {
+        "key": "storage",
+        "label": "措施",
+        "value": "cool",
+        "options": [
+          {
+            "value": "cool",
+            "label": "适宜低温"
+          },
+          {
+            "value": "dry",
+            "label": "充分干燥"
+          },
+          {
+            "value": "sealed",
+            "label": "完全密封"
+          },
+          {
+            "value": "normal",
+            "label": "普通环境"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      25
+    ]
+  },
+  {
+    "id": "bio-plant-growth",
+    "model": "plant",
+    "config": {
+      "variant": "growth"
+    },
+    "controls": [
+      {
+        "key": "condition",
+        "label": "比较因素",
+        "value": "light",
+        "options": [
+          {
+            "value": "light",
+            "label": "光照"
+          },
+          {
+            "value": "water",
+            "label": "水分"
+          },
+          {
+            "value": "mineral",
+            "label": "无机盐"
+          }
+        ]
+      },
+      {
+        "key": "level",
+        "label": "实验组条件",
+        "value": "suitable",
+        "options": [
+          {
+            "value": "suitable",
+            "label": "适宜"
+          },
+          {
+            "value": "limited",
+            "label": "不足"
+          }
+        ]
+      },
+      {
+        "key": "stage",
+        "label": "观察阶段",
+        "min": 0,
+        "max": 4,
+        "value": 2,
+        "step": 1,
+        "unit": ""
+      }
+    ],
+    "ncetIds": [
+      22,
+      50
+    ]
+  },
+  {
+    "id": "bio-human-reproduction",
+    "model": "anatomy",
+    "config": {
+      "specimen": "human-reproduction",
+      "variant": "human-reproduction"
+    },
+    "controls": [
+      {
+        "key": "system",
+        "label": "观察系统",
+        "value": "male",
+        "options": [
+          {
+            "value": "male",
+            "label": "男性生殖系统"
+          },
+          {
+            "value": "female",
+            "label": "女性生殖系统"
+          }
+        ]
+      },
+      {
+        "key": "view",
+        "label": "观察重点",
+        "value": "whole",
+        "options": [
+          {
+            "value": "whole",
+            "label": "器官位置"
+          },
+          {
+            "value": "detail",
+            "label": "生殖细胞与发育路径"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-food-energy",
+    "model": "calorimetry",
+    "config": {
+      "variant": "food-energy"
+    },
+    "controls": [
+      {
+        "key": "waterMass",
+        "label": "受热水质量",
+        "min": 20,
+        "max": 200,
+        "value": 50,
+        "step": 10,
+        "unit": "g"
+      },
+      {
+        "key": "rise",
+        "label": "水温升高",
+        "min": 0,
+        "max": 60,
+        "value": 20,
+        "step": 1,
+        "unit": "℃"
+      },
+      {
+        "key": "foodMass",
+        "label": "实际燃烧食物质量",
+        "min": 0.5,
+        "max": 5,
+        "value": 1,
+        "step": 0.1,
+        "unit": "g"
+      }
+    ],
+    "ncetIds": [
+      27
+    ]
+  },
+  {
+    "id": "bio-digestion",
+    "model": "digestion",
+    "config": {
+      "variant": "starch"
+    },
+    "controls": [
+      {
+        "key": "saliva",
+        "label": "加入物质",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "淀粉酶溶液"
+          },
+          {
+            "value": "no",
+            "label": "等量清水"
+          }
+        ]
+      },
+      {
+        "key": "temperature",
+        "label": "处理温度",
+        "value": "suitable",
+        "options": [
+          {
+            "value": "suitable",
+            "label": "适宜温度"
+          },
+          {
+            "value": "cold",
+            "label": "低温"
+          },
+          {
+            "value": "boiled",
+            "label": "高温使酶失活"
+          }
+        ]
+      },
+      {
+        "key": "crush",
+        "label": "材料处理",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "充分弄碎并搅拌"
+          },
+          {
+            "value": "no",
+            "label": "大块且少搅拌"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      26
+    ]
+  },
+  {
+    "id": "bio-diet",
+    "model": "health",
+    "config": {
+      "variant": "diet"
+    },
+    "controls": [
+      {
+        "key": "plan",
+        "label": "菜单结构",
+        "value": "varied",
+        "options": [
+          {
+            "value": "varied",
+            "label": "主食、蔬果、蛋白质来源等多样搭配"
+          },
+          {
+            "value": "single",
+            "label": "仅一种食物"
+          },
+          {
+            "value": "snacks",
+            "label": "以零食饮料替代正餐"
+          }
+        ]
+      },
+      {
+        "key": "label",
+        "label": "包装信息",
+        "value": "complete",
+        "options": [
+          {
+            "value": "complete",
+            "label": "标签完整且符合食用条件"
+          },
+          {
+            "value": "expired",
+            "label": "已超过保质期"
+          },
+          {
+            "value": "unknown",
+            "label": "来源与标签不明"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      28
+    ]
+  },
+  {
+    "id": "bio-lung",
+    "model": "lung",
+    "config": {
+      "variant": "diaphragm"
+    },
+    "controls": [
+      {
+        "key": "diaphragm",
+        "label": "模型膈向下位移",
+        "min": -1,
+        "max": 1,
+        "value": 0,
+        "step": 0.1,
+        "unit": "示意"
+      },
+      {
+        "key": "seal",
+        "label": "装置密封",
+        "value": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "密封良好"
+          },
+          {
+            "value": "no",
+            "label": "漏气"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      34
+    ]
+  },
+  {
+    "id": "bio-exhaled-co2",
+    "model": "lung",
+    "config": {
+      "variant": "exhaled-co2"
+    },
+    "controls": [
+      {
+        "key": "gas",
+        "label": "气体来源",
+        "value": "air",
+        "options": [
+          {
+            "value": "air",
+            "label": "环境空气"
+          },
+          {
+            "value": "exhaled",
+            "label": "呼出气体"
+          }
+        ]
+      },
+      {
+        "key": "volume",
+        "label": "比较气体体积",
+        "min": 100,
+        "max": 500,
+        "value": 200,
+        "step": 50,
+        "unit": "mL"
+      }
+    ],
+    "ncetIds": [
+      33
+    ]
+  },
+  {
+    "id": "bio-lung-capacity",
+    "model": "health",
+    "config": {
+      "variant": "lung-capacity"
+    },
+    "controls": [
+      {
+        "key": "circumference",
+        "label": "近似球形气球最大周长",
+        "min": 30,
+        "max": 80,
+        "value": 60,
+        "step": 1,
+        "unit": "cm"
+      },
+      {
+        "key": "shape",
+        "label": "气球形状",
+        "value": "sphere",
+        "options": [
+          {
+            "value": "sphere",
+            "label": "近似球形"
+          },
+          {
+            "value": "irregular",
+            "label": "明显不规则"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-blood-smear",
+    "model": "microscope",
+    "config": {
+      "specimen": "blood",
+      "variant": "blood"
+    },
+    "controls": [
+      {
+        "key": "eyepiece",
+        "label": "目镜",
+        "min": 5,
+        "max": 15,
+        "value": 10,
+        "step": 5,
+        "unit": "倍"
+      },
+      {
+        "key": "objective",
+        "label": "物镜",
+        "value": "10",
+        "options": [
+          {
+            "value": "4",
+            "label": "4倍"
+          },
+          {
+            "value": "10",
+            "label": "10倍"
+          },
+          {
+            "value": "40",
+            "label": "40倍"
+          }
+        ]
+      },
+      {
+        "key": "focus",
+        "label": "细准焦位置",
+        "min": -5,
+        "max": 5,
+        "value": 0,
+        "step": 1,
+        "unit": ""
+      },
+      {
+        "key": "component",
+        "label": "观察重点",
+        "value": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "所有成分"
+          },
+          {
+            "value": "red",
+            "label": "红细胞"
+          },
+          {
+            "value": "white",
+            "label": "白细胞"
+          },
+          {
+            "value": "platelet",
+            "label": "血小板"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      29
+    ]
+  },
+  {
+    "id": "bio-fish-capillaries",
+    "model": "circulation",
+    "config": {
+      "variant": "fish"
+    },
+    "controls": [
+      {
+        "key": "vessel",
+        "label": "观察血管",
+        "value": "artery",
+        "options": [
+          {
+            "value": "artery",
+            "label": "由粗分细的血管"
+          },
+          {
+            "value": "capillary",
+            "label": "毛细血管"
+          },
+          {
+            "value": "vein",
+            "label": "由细汇粗的血管"
+          }
+        ]
+      },
+      {
+        "key": "speed",
+        "label": "动画观察速度",
+        "min": 0.25,
+        "max": 1,
+        "value": 1,
+        "step": 0.25,
+        "unit": "倍"
+      }
+    ],
+    "ncetIds": [
+      30
+    ]
+  },
+  {
+    "id": "bio-heart",
+    "model": "anatomy",
+    "config": {
+      "specimen": "heart",
+      "variant": "heart"
+    },
+    "controls": [
+      {
+        "key": "part",
+        "label": "观察部位",
+        "value": "whole",
+        "options": [
+          {
+            "value": "whole",
+            "label": "整体"
+          },
+          {
+            "value": "chambers",
+            "label": "四个心腔"
+          },
+          {
+            "value": "valves",
+            "label": "瓣膜"
+          },
+          {
+            "value": "vessels",
+            "label": "相连血管"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      31
+    ]
+  },
+  {
+    "id": "bio-circulation",
+    "model": "circulation",
+    "config": {
+      "variant": "circuits"
+    },
+    "controls": [
+      {
+        "key": "circuit",
+        "label": "追踪路径",
+        "value": "both",
+        "options": [
+          {
+            "value": "pulmonary",
+            "label": "肺循环"
+          },
+          {
+            "value": "systemic",
+            "label": "体循环"
+          },
+          {
+            "value": "both",
+            "label": "两条循环"
+          }
+        ]
+      },
+      {
+        "key": "substance",
+        "label": "追踪物质",
+        "value": "oxygen",
+        "options": [
+          {
+            "value": "oxygen",
+            "label": "氧气"
+          },
+          {
+            "value": "co2",
+            "label": "二氧化碳"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-blood-pressure",
+    "model": "health",
+    "config": {
+      "variant": "blood-pressure"
+    },
+    "controls": [
+      {
+        "key": "systolic",
+        "label": "教学记录：收缩压",
+        "min": 80,
+        "max": 180,
+        "value": 120,
+        "step": 1,
+        "unit": "mmHg"
+      },
+      {
+        "key": "diastolic",
+        "label": "教学记录：舒张压",
+        "min": 40,
+        "max": 120,
+        "value": 80,
+        "step": 1,
+        "unit": "mmHg"
+      },
+      {
+        "key": "position",
+        "label": "测量姿势",
+        "value": "correct",
+        "options": [
+          {
+            "value": "correct",
+            "label": "静坐，袖带与心脏同高"
+          },
+          {
+            "value": "moving",
+            "label": "说话或移动"
+          },
+          {
+            "value": "low",
+            "label": "袖带明显低于心脏"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  },
+  {
+    "id": "bio-kidney",
+    "model": "kidney",
+    "config": {
+      "variant": "kidney"
+    },
+    "controls": [
+      {
+        "key": "view",
+        "label": "观察尺度",
+        "value": "nephron",
+        "options": [
+          {
+            "value": "system",
+            "label": "泌尿系统"
+          },
+          {
+            "value": "kidney",
+            "label": "肾脏纵切"
+          },
+          {
+            "value": "nephron",
+            "label": "肾单位"
+          }
+        ]
+      },
+      {
+        "key": "substance",
+        "label": "追踪成分",
+        "value": "water",
+        "options": [
+          {
+            "value": "water",
+            "label": "水"
+          },
+          {
+            "value": "glucose",
+            "label": "葡萄糖"
+          },
+          {
+            "value": "urea",
+            "label": "尿素"
+          },
+          {
+            "value": "protein",
+            "label": "大分子蛋白质"
+          },
+          {
+            "value": "cell",
+            "label": "血细胞"
+          }
+        ]
+      }
+    ],
+    "ncetIds": [
+      35,
+      36
+    ]
+  },
+  {
+    "id": "bio-body-model",
+    "model": "anatomy",
+    "config": {
+      "specimen": "body-model",
+      "variant": "body-model"
+    },
+    "controls": [
+      {
+        "key": "system",
+        "label": "模型主题",
+        "value": "digestive",
+        "options": [
+          {
+            "value": "digestive",
+            "label": "消化系统"
+          },
+          {
+            "value": "respiratory",
+            "label": "呼吸系统"
+          },
+          {
+            "value": "circulatory",
+            "label": "循环系统"
+          },
+          {
+            "value": "urinary",
+            "label": "泌尿系统"
+          }
+        ]
+      },
+      {
+        "key": "view",
+        "label": "呈现方式",
+        "value": "whole",
+        "options": [
+          {
+            "value": "whole",
+            "label": "器官位置"
+          },
+          {
+            "value": "detail",
+            "label": "物质经过的路径"
+          }
+        ]
+      }
+    ],
+    "ncetIds": []
+  }
+]

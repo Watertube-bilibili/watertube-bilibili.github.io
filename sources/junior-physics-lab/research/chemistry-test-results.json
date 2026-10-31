@@ -1,0 +1,14 @@
+{
+  "physicsDelegated": [
+    "chem-neutralization",
+    "chem-fuel-survey"
+  ],
+  "status": "passed",
+  "experiments": 79,
+  "scenarios": 510,
+  "svgStates": 1530,
+  "baselineMapped": 35,
+  "namedActivities": 8,
+  "crossDisciplinarySupport": 10,
+  "checked": "2026-10-31"
+}

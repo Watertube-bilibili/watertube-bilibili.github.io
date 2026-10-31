@@ -1,0 +1,3125 @@
+{
+  "book": "人教版物理八年级上册（根据2022年版课程标准修订）",
+  "edition": "2024新教材",
+  "checked": "2026-10-31",
+  "sourceId": "physics-g8a-textbook",
+  "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+  "sourceIndex": "https://www.jymxkt.com/index.php/post/10.html",
+  "sourceType": "第三方公开PDF镜像；目录与出版社新教材介绍交叉核对",
+  "pdfPageCount": 170,
+  "pageRule": "正文印刷页n对应PDF第n+7页",
+  "method": "逐页核对正文、明确栏目与练习中含实作或装置预测的条目；原创题名和研究重点，不复制教材段落或插图。",
+  "limits": "活动拆分为产品研究粒度，不是出版社公布的实验总数。正文观察与练习装置题也收录并单列类别；一般纯计算题和纯资料查阅不作为实验。未逐图OCR核验不含可提取文字的全部图像。",
+  "chapters": [
+    {
+      "chapter": 0,
+      "title": "开启科学探索之旅",
+      "sections": [
+        {
+          "id": "绪言",
+          "page": 1
+        }
+      ]
+    },
+    {
+      "chapter": 1,
+      "title": "机械运动",
+      "sections": [
+        {
+          "id": "1.1",
+          "title": "长度和时间的测量",
+          "page": 11
+        },
+        {
+          "id": "1.2",
+          "title": "运动的描述",
+          "page": 17
+        },
+        {
+          "id": "1.3",
+          "title": "运动的快慢",
+          "page": 20
+        },
+        {
+          "id": "1.4",
+          "title": "速度的测量",
+          "page": 25
+        }
+      ]
+    },
+    {
+      "chapter": 2,
+      "title": "声现象",
+      "sections": [
+        {
+          "id": "2.1",
+          "title": "声音的产生与传播",
+          "page": 32
+        },
+        {
+          "id": "2.2",
+          "title": "声音的特性",
+          "page": 37
+        },
+        {
+          "id": "2.3",
+          "title": "声的利用",
+          "page": 44
+        },
+        {
+          "id": "2.4",
+          "title": "噪声的危害和控制",
+          "page": 49
+        },
+        {
+          "id": "2.5",
+          "title": "跨学科实践：制作隔音房间模型",
+          "page": 53
+        }
+      ]
+    },
+    {
+      "chapter": 3,
+      "title": "物态变化",
+      "sections": [
+        {
+          "id": "3.1",
+          "title": "温度",
+          "page": 58
+        },
+        {
+          "id": "3.2",
+          "title": "熔化和凝固",
+          "page": 64
+        },
+        {
+          "id": "3.3",
+          "title": "汽化和液化",
+          "page": 70
+        },
+        {
+          "id": "3.4",
+          "title": "升华和凝华",
+          "page": 77
+        },
+        {
+          "id": "3.5",
+          "title": "跨学科实践：探索厨房中的物态变化问题",
+          "page": 81
+        }
+      ]
+    },
+    {
+      "chapter": 4,
+      "title": "光现象",
+      "sections": [
+        {
+          "id": "4.1",
+          "title": "光的直线传播",
+          "page": 88
+        },
+        {
+          "id": "4.2",
+          "title": "光的反射",
+          "page": 93
+        },
+        {
+          "id": "4.3",
+          "title": "平面镜成像",
+          "page": 98
+        },
+        {
+          "id": "4.4",
+          "title": "光的折射",
+          "page": 103
+        },
+        {
+          "id": "4.5",
+          "title": "光的色散",
+          "page": 107
+        }
+      ]
+    },
+    {
+      "chapter": 5,
+      "title": "透镜及其应用",
+      "sections": [
+        {
+          "id": "5.1",
+          "title": "透镜",
+          "page": 114
+        },
+        {
+          "id": "5.2",
+          "title": "生活中的透镜",
+          "page": 118
+        },
+        {
+          "id": "5.3",
+          "title": "凸透镜成像的规律",
+          "page": 122
+        },
+        {
+          "id": "5.4",
+          "title": "眼睛和眼镜",
+          "page": 126
+        },
+        {
+          "id": "5.5",
+          "title": "跨学科实践：制作望远镜",
+          "page": 130
+        }
+      ]
+    },
+    {
+      "chapter": 6,
+      "title": "质量与密度",
+      "sections": [
+        {
+          "id": "6.1",
+          "title": "质量",
+          "page": 139
+        },
+        {
+          "id": "6.2",
+          "title": "密度",
+          "page": 144
+        },
+        {
+          "id": "6.3",
+          "title": "测量液体和固体的密度",
+          "page": 149
+        },
+        {
+          "id": "6.4",
+          "title": "密度的应用",
+          "page": 152
+        }
+      ]
+    }
+  ],
+  "activities": [
+    {
+      "id": "phy-cold-water-reboil",
+      "term": "8上",
+      "section": "绪言",
+      "title": "向倒置热烧瓶浇冷水后的沸腾",
+      "printedPages": [
+        2
+      ],
+      "pdfPages": [
+        9
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "烧瓶",
+        "水",
+        "塞子",
+        "冷水"
+      ],
+      "focus": "比较降温前后水是否重新沸腾，联系瓶内气压变化。",
+      "notes": "仅作模拟或教师演示；低压会降低沸点，不是冷水把水加热。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-intro-coil-motor",
+      "term": "8上",
+      "section": "绪言",
+      "title": "磁体上方通电线圈的转动",
+      "printedPages": [
+        2
+      ],
+      "pdfPages": [
+        9
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "线圈",
+        "强磁体",
+        "电源",
+        "支架"
+      ],
+      "focus": "观察接通电源后线圈运动，提出电磁作用问题。",
+      "notes": "低压电源；线圈转动还受换向方式影响。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-magnifier-near-far",
+      "term": "8上",
+      "section": "绪言",
+      "title": "同一放大镜观察近物和远物",
+      "printedPages": [
+        3
+      ],
+      "pdfPages": [
+        10
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "凸透镜",
+        "近处物体",
+        "远处物体"
+      ],
+      "focus": "改变物距，比较指纹与窗外景物的像。",
+      "notes": "勿观察太阳。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-two-lenses-intro",
+      "term": "8上",
+      "section": "绪言",
+      "title": "两块放大镜组合观察",
+      "printedPages": [
+        3
+      ],
+      "pdfPages": [
+        10
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "两个凸透镜",
+        "远处物体"
+      ],
+      "focus": "调节两镜间距并比较观察效果。",
+      "notes": "作为望远镜项目的先导体验。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-funnel-ball",
+      "term": "8上",
+      "section": "绪言",
+      "title": "漏斗向下吹气托住乒乓球",
+      "printedPages": [
+        3
+      ],
+      "pdfPages": [
+        10
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "漏斗",
+        "乒乓球"
+      ],
+      "focus": "观察流动气体对球运动的影响。",
+      "notes": "教材只提出观察问题；气流作用包含复杂流场，不宜用单一压强公式伪装精确预测。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-pendulum-period",
+      "term": "8上",
+      "section": "1.1",
+      "title": "测量单摆周期并调节摆长",
+      "printedPages": [
+        16
+      ],
+      "pdfPages": [
+        23
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "摆线",
+        "小球",
+        "秒表",
+        "刻度尺"
+      ],
+      "focus": "用多次摆动总时间求周期，再改变摆长。",
+      "notes": "只在小摆角范围讨论近似等时性；绪言p8提供科学史背景。",
+      "variants": [
+        "小摆角重复计时",
+        "尝试调出指定周期",
+        "比较长度和质量的影响"
+      ],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-ruler-length",
+      "term": "8上",
+      "section": "1.1",
+      "title": "刻度尺测量铅笔和书本",
+      "printedPages": [
+        13
+      ],
+      "pdfPages": [
+        20
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "刻度尺",
+        "铅笔",
+        "作业本",
+        "课本"
+      ],
+      "focus": "练习零点对齐、正确视线、读数与单位记录。",
+      "notes": "",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-body-ruler",
+      "term": "8上",
+      "section": "1.1",
+      "title": "用身体尺度估测长度",
+      "printedPages": [
+        14
+      ],
+      "pdfPages": [
+        21
+      ],
+      "textbookColumn": "想想议议",
+      "kind": "小实验",
+      "apparatus": [
+        "刻度尺",
+        "人体尺度"
+      ],
+      "focus": "把步长或手掌长度标定后用于估测。",
+      "notes": "属于含实作要求的议议栏目。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-stopwatch-pulse-step",
+      "term": "8上",
+      "section": "1.1",
+      "title": "秒表记录脉搏和步行节律",
+      "printedPages": [
+        15
+      ],
+      "pdfPages": [
+        22
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "秒表"
+      ],
+      "focus": "练习启动停止与累计计时。",
+      "notes": "脉搏活动仅为计时练习，不用于健康诊断。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-height-foot",
+      "term": "8上",
+      "section": "1.1",
+      "title": "身高与脚长的测量比较",
+      "printedPages": [
+        16
+      ],
+      "pdfPages": [
+        23
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "卷尺",
+        "直尺"
+      ],
+      "focus": "用测量值计算个体的长度比。",
+      "notes": "不能把某一个人的比值当所有人的定律。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-coin-size",
+      "term": "8上",
+      "section": "1.1",
+      "title": "硬币直径与周长的间接测量",
+      "printedPages": [
+        16
+      ],
+      "pdfPages": [
+        23
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "硬币",
+        "刻度尺",
+        "三角板",
+        "细线"
+      ],
+      "focus": "比较辅助夹测、滚动或绕线的方法。",
+      "notes": "测法为原创建议；教材要求自行提出至少两种方法。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-paper-thickness",
+      "term": "8上",
+      "section": "1.章末",
+      "title": "叠纸测单张厚度",
+      "printedPages": [
+        29
+      ],
+      "pdfPages": [
+        36
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "纸张",
+        "刻度尺"
+      ],
+      "focus": "通过多张总厚度除以张数降低相对测量影响。",
+      "notes": "区分纸张张数与课本页码数。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-wire-diameter",
+      "term": "8上",
+      "section": "1.章末",
+      "title": "密绕铜丝测直径",
+      "printedPages": [
+        29
+      ],
+      "pdfPages": [
+        36
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "细铜丝",
+        "圆柱",
+        "刻度尺"
+      ],
+      "focus": "紧密排列多匝，利用总宽度与匝数估测直径。",
+      "notes": "匝间不能留缝；不把整段铜丝长度当作总宽度。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-syringe-diameter",
+      "term": "8上",
+      "section": "1.章末",
+      "title": "设计注射器活塞直径测法",
+      "printedPages": [
+        29
+      ],
+      "pdfPages": [
+        36
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "无针注射器",
+        "刻度尺",
+        "三角板"
+      ],
+      "focus": "比较直接夹测与由圆周间接求直径。",
+      "notes": "只使用无针、清洁的教学器材。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-court-measure",
+      "term": "8上",
+      "section": "1.章末",
+      "title": "选择量程测篮球场和边线",
+      "printedPages": [
+        29
+      ],
+      "pdfPages": [
+        36
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "卷尺",
+        "直尺",
+        "三角板"
+      ],
+      "focus": "根据被测尺寸选择卷尺或直尺。",
+      "notes": "区分量程与分度值。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-incline-speed",
+      "term": "8上",
+      "section": "1.4",
+      "title": "小车全程与上半程平均速度",
+      "printedPages": [
+        25,
+        26
+      ],
+      "pdfPages": [
+        32,
+        33
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "小车",
+        "斜面",
+        "刻度尺",
+        "秒表",
+        "金属挡片"
+      ],
+      "focus": "测量对应路程与运动时间，计算并比较平均速度。",
+      "notes": "后半程需从同次连续运动的时间差得到；不能从中点重新释放替代。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-sensor-speed",
+      "term": "8上",
+      "section": "1.4",
+      "title": "传感器记录运动位置和速度",
+      "printedPages": [
+        26
+      ],
+      "pdfPages": [
+        33
+      ],
+      "textbookColumn": "拓展实验",
+      "kind": "拓展探究",
+      "apparatus": [
+        "距离传感器",
+        "计算机",
+        "小车"
+      ],
+      "focus": "用连续距离—时间记录得到小车或人的速度。",
+      "notes": "区分采样时间间隔和显示动画时长。",
+      "variants": [
+        "小车下滑",
+        "人在传感器前往返行走"
+      ],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-walking-speed",
+      "term": "8上",
+      "section": "1.4",
+      "title": "操场测步行速度并估算路程",
+      "printedPages": [
+        27
+      ],
+      "pdfPages": [
+        34
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "已知长度跑道",
+        "手表"
+      ],
+      "focus": "已知路线长度，计时求速度，再估测通学路程。",
+      "notes": "估测需假定平均步速近似不变。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-milestone-speed",
+      "term": "8上",
+      "section": "1.4",
+      "title": "利用里程碑估测骑行速度",
+      "printedPages": [
+        27
+      ],
+      "pdfPages": [
+        34
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "里程记录",
+        "计时器"
+      ],
+      "focus": "由已知里程差与行驶时间求平均速度。",
+      "notes": "网页只作数据模拟；真实骑行应遵守交通规则，不能边骑边操作设备。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-drip-timer",
+      "term": "8上",
+      "section": "1.章末",
+      "title": "滴水计时器显示小车运动",
+      "printedPages": [
+        30
+      ],
+      "pdfPages": [
+        37
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "滴水装置",
+        "玩具车",
+        "木板",
+        "刻度尺"
+      ],
+      "focus": "利用恒定滴水间隔及相邻点距推断运动快慢。",
+      "notes": "点数比时间间隔数多1；教材为装置题，可做等效模拟。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-rubber-vibration",
+      "term": "8上",
+      "section": "2.1",
+      "title": "橡皮筋振动发声",
+      "printedPages": [
+        32
+      ],
+      "pdfPages": [
+        39
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "橡皮筋"
+      ],
+      "focus": "拨动绷紧橡皮筋，联系振动与声音。",
+      "notes": "不把橡皮筋对准人脸。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-vocal-cord",
+      "term": "8上",
+      "section": "2.1",
+      "title": "触摸喉部感受发声振动",
+      "printedPages": [
+        32
+      ],
+      "pdfPages": [
+        39
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "人体喉部"
+      ],
+      "focus": "说话时轻触喉部，比较发声和停声。",
+      "notes": "只轻触，不能按压颈部。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-vacuum-bell",
+      "term": "8上",
+      "section": "2.1",
+      "title": "抽气罩内铃声的变化",
+      "printedPages": [
+        33
+      ],
+      "pdfPages": [
+        40
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "玻璃罩",
+        "闹钟",
+        "抽气装置"
+      ],
+      "focus": "减少空气后声音减弱，以实验与推理讨论真空不传声。",
+      "notes": "不能声称装置实现绝对真空；罩与底座的固体传声可能仍存在。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-water-wave-analogy",
+      "term": "8上",
+      "section": "2.1",
+      "title": "轻点水面观察波纹传播",
+      "printedPages": [
+        33,
+        34
+      ],
+      "pdfPages": [
+        40,
+        41
+      ],
+      "textbookColumn": "正文活动",
+      "kind": "小实验",
+      "apparatus": [
+        "水槽",
+        "水",
+        "铅笔"
+      ],
+      "focus": "借水面扰动传播帮助理解波的传播。",
+      "notes": "这是类比，不把水面上下运动等同于声波中空气质点运动方向。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-desk-sound",
+      "term": "8上",
+      "section": "2.1",
+      "title": "轻刮桌面检验固体传声",
+      "printedPages": [
+        34
+      ],
+      "pdfPages": [
+        41
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "桌子"
+      ],
+      "focus": "比较贴桌与离桌的听觉现象。",
+      "notes": "用很轻的刮擦，避免用撞击损伤听力。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-drum-grains",
+      "term": "8上",
+      "section": "2.章末",
+      "title": "设计方法显示鼓面振动",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        63
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "鼓",
+        "轻小颗粒"
+      ],
+      "focus": "用轻小物体运动把微小振动显示出来。",
+      "notes": "轻小颗粒方案为原创实现选择，教材只要求设计方案。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-cup-telephone",
+      "term": "8上",
+      "section": "2.章末",
+      "title": "纸杯棉线电话",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        63
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "纸杯",
+        "棉线",
+        "小木棒"
+      ],
+      "focus": "比较拉紧与松弛的线传声效果。",
+      "notes": "拉线不可绕颈；制孔由教师协助。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-ruler-pitch",
+      "term": "8上",
+      "section": "2.2",
+      "title": "钢尺伸出长度与音调",
+      "printedPages": [
+        37
+      ],
+      "pdfPages": [
+        44
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "钢尺",
+        "桌子"
+      ],
+      "focus": "改变悬臂长度比较振动快慢与音调。",
+      "notes": "振幅尽量相近；不把音调与响度混淆。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-frequency-waveform",
+      "term": "8上",
+      "section": "2.2",
+      "title": "比较不同频率音叉的波形",
+      "printedPages": [
+        38,
+        39
+      ],
+      "pdfPages": [
+        45,
+        46
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "不同音叉",
+        "拾音设备",
+        "波形显示器"
+      ],
+      "focus": "相同时间尺度下比较波形疏密。",
+      "notes": "屏幕横轴时间尺度必须相同。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-amplitude-ball",
+      "term": "8上",
+      "section": "2.2",
+      "title": "音叉弹球显示振幅与响度",
+      "printedPages": [
+        40
+      ],
+      "pdfPages": [
+        47
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "音叉",
+        "软锤",
+        "细线",
+        "乒乓球"
+      ],
+      "focus": "改变敲击力度，通过乒乓球偏移比较振动幅度。",
+      "notes": "转换法；控制观察距离；弹球幅度不是精确声压值。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-timbre-waveform",
+      "term": "8上",
+      "section": "2.2",
+      "title": "比较同音高乐器的波形",
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        48
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "同音高录音",
+        "波形显示器"
+      ],
+      "focus": "比较音叉、钢琴、长笛的波形形状。",
+      "notes": "不同波形不等于不同基频。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-instrument-observation",
+      "term": "8上",
+      "section": "2.2",
+      "title": "观察乐器的发声部位",
+      "printedPages": [
+        43
+      ],
+      "pdfPages": [
+        50
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "一种乐器"
+      ],
+      "focus": "识别振动物体与改变音调、响度的方法。",
+      "notes": "为开放观察活动，没有唯一器材。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-bottle-xylophone",
+      "term": "8上",
+      "section": "2.2",
+      "title": "不同水位玻璃瓶的敲击音阶",
+      "printedPages": [
+        43
+      ],
+      "pdfPages": [
+        50
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "相同玻璃瓶",
+        "水",
+        "敲击棒"
+      ],
+      "focus": "改变加水量并比较敲击音调。",
+      "notes": "敲瓶主要是瓶和水共同振动；不能套用吹瓶空气柱的相反规律。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-piston-flute",
+      "term": "8上",
+      "section": "2.2",
+      "title": "活塞式哨管调音",
+      "printedPages": [
+        43
+      ],
+      "pdfPages": [
+        50
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "管子",
+        "活塞"
+      ],
+      "focus": "移动活塞改变空气柱长度，比较音调。",
+      "notes": "个人器材，避免交叉吹用。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-speaker-candle",
+      "term": "8上",
+      "section": "2.3",
+      "title": "扬声器使附近烛焰颤动",
+      "printedPages": [
+        46
+      ],
+      "pdfPages": [
+        53
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "扬声器",
+        "蜡烛",
+        "音频源"
+      ],
+      "focus": "由烛焰运动观察声携带能量。",
+      "notes": "教师控制火源；不能将扬声器气流影响当唯一可量化声能指标。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-noise-waveform",
+      "term": "8上",
+      "section": "2.4",
+      "title": "比较刮擦噪声与音叉波形",
+      "printedPages": [
+        49
+      ],
+      "pdfPages": [
+        56
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "泡沫块",
+        "玻璃",
+        "拾音设备",
+        "音叉"
+      ],
+      "focus": "比较有规则振动和不规则振动。",
+      "notes": "避免刺耳大音量，网页可无声展示波形。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-noise-survey",
+      "term": "8上",
+      "section": "2.4",
+      "title": "调查校园噪声与控制位置",
+      "printedPages": [
+        52
+      ],
+      "pdfPages": [
+        59
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "校园观察记录",
+        "可选声级计"
+      ],
+      "focus": "定位声源、传播路径和接收者并提出措施。",
+      "notes": "手机测量仅用于相对比较，不作为法定噪声鉴定。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-noise-pulse-observation",
+      "term": "8上",
+      "section": "2.4",
+      "title": "不同环境下脉搏的观察比较",
+      "printedPages": [
+        52
+      ],
+      "pdfPages": [
+        59
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "秒表",
+        "观察记录"
+      ],
+      "focus": "把环境变化与脉搏记录作为观察课题。",
+      "notes": "不主动制造过大声音；个体脉搏没有固定预测值，模型只能展示记录方法。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-earmuff-design",
+      "term": "8上",
+      "section": "2.4",
+      "title": "设计防噪声耳罩材料方案",
+      "printedPages": [
+        52
+      ],
+      "pdfPages": [
+        59
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "材料样品",
+        "耳罩模型"
+      ],
+      "focus": "比较材料隔音与佩戴条件。",
+      "notes": "讨论设计不等于防护用品认证。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-soundproof-room",
+      "term": "8上",
+      "section": "2.5",
+      "title": "隔音房间模型的设计与测试",
+      "printedPages": [
+        53,
+        54
+      ],
+      "pdfPages": [
+        60,
+        61
+      ],
+      "textbookColumn": "跨学科实践",
+      "kind": "拓展探究",
+      "apparatus": [
+        "纸盒",
+        "闹钟",
+        "衬垫材料",
+        "声音测量设备"
+      ],
+      "focus": "比较加衬材料前后的声音强弱及占用空间。",
+      "notes": "控制声源、测距与开口；模型分贝降幅必须标明是假设参数。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-temperature-sensation",
+      "term": "8上",
+      "section": "3.1",
+      "title": "冷热适应后对同杯水的感觉",
+      "printedPages": [
+        58
+      ],
+      "pdfPages": [
+        65
+      ],
+      "textbookColumn": "问题",
+      "kind": "小实验",
+      "apparatus": [
+        "冷水",
+        "温水",
+        "温热水"
+      ],
+      "focus": "比较感官判断与温度计读数。",
+      "notes": "用安全温水，不能用烫水。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-homemade-thermometer",
+      "term": "8上",
+      "section": "3.1",
+      "title": "细管液体温度计模型",
+      "printedPages": [
+        59,
+        62
+      ],
+      "pdfPages": [
+        66,
+        69
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "小瓶",
+        "带色水",
+        "细管",
+        "塞子"
+      ],
+      "focus": "观察热胀冷缩并讨论细管粗细与灵敏度。",
+      "notes": "需标定才可给出温度值；不加热密封硬容器。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-water-thermometer",
+      "term": "8上",
+      "section": "3.1",
+      "title": "温度计测量不同水温",
+      "printedPages": [
+        60,
+        61
+      ],
+      "pdfPages": [
+        67,
+        68
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "液体温度计",
+        "烧杯",
+        "水"
+      ],
+      "focus": "检查量程分度值并在示数稳定时正确读数。",
+      "notes": "玻璃泡不碰容器，读数时不离开液体。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-fridge-temperature",
+      "term": "8上",
+      "section": "3.1",
+      "title": "比较冰箱不同位置温度",
+      "printedPages": [
+        61
+      ],
+      "pdfPages": [
+        68
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "合适温度计",
+        "冰箱"
+      ],
+      "focus": "按位置记录温度并评价食物存放条件。",
+      "notes": "不久开冰箱门；实际温度需实测，不从室名直接编造。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-classroom-temperature",
+      "term": "8上",
+      "section": "3.1",
+      "title": "记录晴天与阴天的室温曲线",
+      "printedPages": [
+        63
+      ],
+      "pdfPages": [
+        70
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "寒暑表",
+        "记录表"
+      ],
+      "focus": "同一位置重复测温，比较随时间变化。",
+      "notes": "避免阳光直射和人为热源；天气变化不能保证唯一趋势。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-bimetal-thermometer",
+      "term": "8上",
+      "section": "3.1",
+      "title": "双金属片指针温度计设计",
+      "printedPages": [
+        63
+      ],
+      "pdfPages": [
+        70
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "双金属片",
+        "指针",
+        "刻度盘"
+      ],
+      "focus": "利用两种金属膨胀差异转换为指针偏转。",
+      "notes": "教材要求设计草图；不得声称已校准的真实温度测量。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-ice-melting",
+      "term": "8上",
+      "section": "3.2",
+      "title": "室温下冰水混合物的温度",
+      "printedPages": [
+        64,
+        65
+      ],
+      "pdfPages": [
+        71,
+        72
+      ],
+      "textbookColumn": "正文活动",
+      "kind": "小实验",
+      "apparatus": [
+        "冰",
+        "水",
+        "碗",
+        "温度计"
+      ],
+      "focus": "同时观察冰量减少与混合物温度。",
+      "notes": "冰熔化需要吸热，即使没有外加火焰。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-melting-curves",
+      "term": "8上",
+      "section": "3.2",
+      "title": "海波与石蜡的熔化过程比较",
+      "printedPages": [
+        65,
+        66
+      ],
+      "pdfPages": [
+        72,
+        73
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "海波",
+        "石蜡",
+        "试管",
+        "水浴",
+        "温度计",
+        "计时器"
+      ],
+      "focus": "以温度—时间记录区分晶体和非晶体的熔化特征。",
+      "notes": "熔化曲线绘图是p66想想做做，归入同一实验；热水浴教师操作。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-freezing-mixture",
+      "term": "8上",
+      "section": "3.2",
+      "title": "水与酒精混合液的低温现象",
+      "printedPages": [
+        69
+      ],
+      "pdfPages": [
+        76
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "混合液",
+        "温度计",
+        "低温环境"
+      ],
+      "focus": "由混合液低于0摄氏度仍未凝固提出猜想。",
+      "notes": "教材为观察情境；不可用冰水熔点规律直接套混合物。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-alcohol-bag",
+      "term": "8上",
+      "section": "3.3",
+      "title": "密封软袋中的汽化和液化",
+      "printedPages": [
+        70
+      ],
+      "pdfPages": [
+        77
+      ],
+      "textbookColumn": "问题",
+      "kind": "小实验",
+      "apparatus": [
+        "软塑料袋",
+        "少量酒精",
+        "温水浴"
+      ],
+      "focus": "观察少量液体受热与降温引起的状态和袋体积变化。",
+      "notes": "酒精易燃；只作模拟或教师安全演示，不用火直接加热。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-boiling-water",
+      "term": "8上",
+      "section": "3.3",
+      "title": "水沸腾前后的温度曲线",
+      "printedPages": [
+        71,
+        72
+      ],
+      "pdfPages": [
+        78,
+        79
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "烧杯",
+        "水",
+        "热源",
+        "温度计",
+        "秒表"
+      ],
+      "focus": "连续测温并观察气泡，判定沸腾需持续吸热。",
+      "notes": "沸点受气压影响，不能把所有实测平台强行改成100摄氏度。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-paper-pot",
+      "term": "8上",
+      "section": "3.3",
+      "title": "纸锅盛水加热现象",
+      "printedPages": [
+        73
+      ],
+      "pdfPages": [
+        80
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "纸锅",
+        "水",
+        "热源"
+      ],
+      "focus": "解释有水部分温度受水传热限制的现象。",
+      "notes": "只作模拟或教师演示；空烧与水面上纸边可着火，纸燃点也非普适固定数值。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-evaporative-cooling",
+      "term": "8上",
+      "section": "3.3",
+      "title": "酒精蒸发与吹风的温度比较",
+      "printedPages": [
+        73,
+        74
+      ],
+      "pdfPages": [
+        80,
+        81
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "酒精",
+        "温度计",
+        "扇子"
+      ],
+      "focus": "对照干温度计与涂液温度计，观察蒸发吸热。",
+      "notes": "酒精远离火源；干温度计吹风不必然降到室温以下。",
+      "variants": [
+        "手背涂少量酒精的感觉",
+        "温度计涂液后吹风",
+        "干温度计吹风作对照"
+      ],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-evaporative-food-cooler",
+      "term": "8上",
+      "section": "3.3",
+      "title": "湿纱布与通风的降温方案",
+      "printedPages": [
+        76
+      ],
+      "pdfPages": [
+        83
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "水盆",
+        "湿布",
+        "支架"
+      ],
+      "focus": "用蒸发条件解释简易降温装置。",
+      "notes": "不是食品安全保证；模拟装置不能替代冷藏。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-cold-bottle-condensation",
+      "term": "8上",
+      "section": "3.3",
+      "title": "冷瓶外壁的小水珠",
+      "printedPages": [
+        76
+      ],
+      "pdfPages": [
+        83
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "冷水瓶",
+        "室内空气"
+      ],
+      "focus": "区分外界水蒸气液化与瓶中水渗出。",
+      "notes": "发生与否取决于瓶壁温度和露点。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-three-cup-condensation",
+      "term": "8上",
+      "section": "3.章末",
+      "title": "热水、冰水和室温水杯的凝露位置",
+      "printedPages": [
+        86
+      ],
+      "pdfPages": [
+        93
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "三个纸杯",
+        "不同温度的水"
+      ],
+      "focus": "比较杯内外壁温差与水蒸气来源。",
+      "notes": "须说明环境湿度条件；常见情形是热杯内壁、冷杯外壁凝露。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-iodine-sublimation",
+      "term": "8上",
+      "section": "3.4",
+      "title": "密闭碘容器的升华和凝华",
+      "printedPages": [
+        77,
+        80
+      ],
+      "pdfPages": [
+        84,
+        87
+      ],
+      "textbookColumn": "问题",
+      "kind": "小实验",
+      "apparatus": [
+        "密闭碘管",
+        "温热水",
+        "冷水"
+      ],
+      "focus": "比较温热水和冷水处理后的物态。",
+      "notes": "只作模拟或教师密闭装置演示；不打开容器或直接用火加热。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-frost-can",
+      "term": "8上",
+      "section": "3.4",
+      "title": "冰盐降温后罐外结霜",
+      "printedPages": [
+        80
+      ],
+      "pdfPages": [
+        87
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "易拉罐",
+        "冰",
+        "盐",
+        "温度计"
+      ],
+      "focus": "测量低温并辨认外表面形成的霜。",
+      "notes": "霜来自空气中水蒸气；保护手部，避免罐缘割伤与低温伤害。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-kitchen-phase",
+      "term": "8上",
+      "section": "3.5",
+      "title": "厨房物态变化与节能方案",
+      "printedPages": [
+        81,
+        82,
+        83
+      ],
+      "pdfPages": [
+        88,
+        89,
+        90
+      ],
+      "textbookColumn": "跨学科实践",
+      "kind": "拓展探究",
+      "apparatus": [
+        "观察记录",
+        "厨房模型"
+      ],
+      "focus": "观察烹饪中汽化液化等变化，检验改进建议。",
+      "notes": "网页仅模拟；真实厨房活动由成人指导，注意蒸汽烫伤。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-light-straight",
+      "term": "8上",
+      "section": "4.1",
+      "title": "光在水和玻璃中的传播路径",
+      "printedPages": [
+        89
+      ],
+      "pdfPages": [
+        96
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "光源",
+        "水槽",
+        "少量散射剂",
+        "玻璃砖"
+      ],
+      "focus": "比较同种均匀介质中的光路。",
+      "notes": "不让激光直射或反射入眼。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-pinhole-image",
+      "term": "8上",
+      "section": "4.1",
+      "title": "小孔成像与物距变化",
+      "printedPages": [
+        90
+      ],
+      "pdfPages": [
+        97
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "带孔暗筒",
+        "半透明屏",
+        "发光物体"
+      ],
+      "focus": "比较像的方向与大小，利用直线传播解释。",
+      "notes": "可用LED代替火焰；像的形状不是小孔形状。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-hand-shadow",
+      "term": "8上",
+      "section": "4.1",
+      "title": "手影和影子大小",
+      "printedPages": [
+        92
+      ],
+      "pdfPages": [
+        99
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "光源",
+        "遮挡物",
+        "白屏"
+      ],
+      "focus": "调整遮挡物位置，比较影子边界。",
+      "notes": "点光源与扩展光源的影区不同。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-reflection-law",
+      "term": "8上",
+      "section": "4.2",
+      "title": "反射角、共面条件和光路可逆",
+      "printedPages": [
+        93,
+        94,
+        95
+      ],
+      "pdfPages": [
+        100,
+        101,
+        102
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "平面镜",
+        "可折纸板",
+        "光源",
+        "量角器"
+      ],
+      "focus": "多次改变入射方向，测角并折转纸板。",
+      "notes": "角度都从法线量起；折板看不见光迹不等于没有反射光。",
+      "variants": [
+        "入射角与反射角",
+        "折转纸板检验共面",
+        "沿反方向发光检验可逆"
+      ],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-diffuse-reflection",
+      "term": "8上",
+      "section": "4.2",
+      "title": "光滑镜面与粗糙白纸的反射",
+      "printedPages": [
+        95,
+        96
+      ],
+      "pdfPages": [
+        102,
+        103
+      ],
+      "textbookColumn": "正文活动",
+      "kind": "小实验",
+      "apparatus": [
+        "镜子",
+        "白纸",
+        "光源"
+      ],
+      "focus": "改变观察方向比较明暗。",
+      "notes": "漫反射的每束光也遵循反射定律。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-retroreflector",
+      "term": "8上",
+      "section": "4.2",
+      "title": "自行车尾灯回归反射",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        104
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "手电筒",
+        "自行车反光片"
+      ],
+      "focus": "观察尾灯并追踪多次反射光路。",
+      "notes": "尾灯本身不是主动光源；二维模型仅表示截面。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-plane-mirror",
+      "term": "8上",
+      "section": "4.3",
+      "title": "平面镜像的位置、大小与虚实",
+      "printedPages": [
+        98,
+        99
+      ],
+      "pdfPages": [
+        105,
+        106
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "玻璃板",
+        "等大物体",
+        "刻度尺",
+        "光屏"
+      ],
+      "focus": "用等大物替代定位，再尝试用屏承接。",
+      "notes": "光屏检验是p99想想做做，合并同一装置；虚像不能用屏承接。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-spoon-mirrors",
+      "term": "8上",
+      "section": "4.3",
+      "title": "勺子两面的像",
+      "printedPages": [
+        101
+      ],
+      "pdfPages": [
+        108
+      ],
+      "textbookColumn": "科学世界",
+      "kind": "小实验",
+      "apparatus": [
+        "金属勺"
+      ],
+      "focus": "比较勺子凹凸表面成像与视野。",
+      "notes": "正文配图观察，非独立标号实验；曲面镜不套平面镜等大规律。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-periscope",
+      "term": "8上",
+      "section": "4.3",
+      "title": "双平面镜潜望镜",
+      "printedPages": [
+        102,
+        111
+      ],
+      "pdfPages": [
+        109,
+        118
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "两块平面镜",
+        "纸筒"
+      ],
+      "focus": "通过两次反射改变观察路线。",
+      "notes": "两镜安装方向决定成像方向，不能只画任意两块镜子。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-coin-reappears",
+      "term": "8上",
+      "section": "4.4",
+      "title": "向碗中加水使硬币重现",
+      "printedPages": [
+        103
+      ],
+      "pdfPages": [
+        110
+      ],
+      "textbookColumn": "问题",
+      "kind": "小实验",
+      "apparatus": [
+        "碗",
+        "硬币",
+        "水"
+      ],
+      "focus": "固定观察位置，分析折射使光进入眼睛。",
+      "notes": "必须保持眼睛和硬币位置不变。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-refraction-law",
+      "term": "8上",
+      "section": "4.4",
+      "title": "改变入射方向观察水和玻璃中的折射",
+      "printedPages": [
+        103,
+        104,
+        112
+      ],
+      "pdfPages": [
+        110,
+        111,
+        119
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "水槽",
+        "半圆玻璃砖",
+        "光源",
+        "角度盘"
+      ],
+      "focus": "比较空气进入介质及反向传播的角度。",
+      "notes": "不概括成折射角总小于入射角；p112要求反例实验。",
+      "variants": [
+        "空气到水",
+        "垂直入射",
+        "水到空气的可逆光路",
+        "半圆玻璃砖反例"
+      ],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-water-spot",
+      "term": "8上",
+      "section": "4.4",
+      "title": "加水时杯底光斑移动",
+      "printedPages": [
+        106
+      ],
+      "pdfPages": [
+        113
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "透明杯",
+        "水",
+        "固定光源"
+      ],
+      "focus": "保持入射光方向，观察水深改变对光斑的影响。",
+      "notes": "教材为预测题，可用模型检验，不能在记录中称原书学生实验。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-bent-chopstick",
+      "term": "8上",
+      "section": "4.4",
+      "title": "斜插水中的筷子看似弯折",
+      "printedPages": [
+        106
+      ],
+      "pdfPages": [
+        113
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "透明杯",
+        "水",
+        "筷子"
+      ],
+      "focus": "辨认水中部分的虚像位置。",
+      "notes": "筷子并未实际弯曲。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-gradient-saline-ray",
+      "term": "8上",
+      "section": "4.章末",
+      "title": "非均匀盐水中的弯曲光路",
+      "printedPages": [
+        111
+      ],
+      "pdfPages": [
+        118
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "盐水",
+        "透明槽",
+        "光源",
+        "搅拌棒"
+      ],
+      "focus": "比较浓度梯度存在与搅匀后的光路。",
+      "notes": "用渐变折射率模型；不把连续弯曲误画成单一平面折射。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-prism-spectrum",
+      "term": "8上",
+      "section": "4.5",
+      "title": "三棱镜分解白光",
+      "printedPages": [
+        107
+      ],
+      "pdfPages": [
+        114
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "白光源",
+        "三棱镜",
+        "白屏"
+      ],
+      "focus": "观察色带与不同色光偏折差异。",
+      "notes": "屏幕配色是可见光近似；避免直视强光。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-water-mirror-spectrum",
+      "term": "8上",
+      "section": "4.5",
+      "title": "水中斜镜形成彩色光带",
+      "printedPages": [
+        108
+      ],
+      "pdfPages": [
+        115
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "浅水盘",
+        "平面镜",
+        "白屏",
+        "白光源"
+      ],
+      "focus": "观察水与镜面组合后的色散。",
+      "notes": "需同时考虑折射和反射。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-rgb-mixture",
+      "term": "8上",
+      "section": "4.5",
+      "title": "调节红绿蓝亮度进行色光混合",
+      "printedPages": [
+        110
+      ],
+      "pdfPages": [
+        117
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "显示屏",
+        "RGB控件"
+      ],
+      "focus": "改变数字色光分量并记录屏幕颜色。",
+      "notes": "这是加色混合，与颜料混合不同；数字值不是光功率的线性刻度。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-infrared-heating",
+      "term": "8上",
+      "section": "4.5",
+      "title": "可见红端外的温度变化",
+      "printedPages": [
+        109
+      ],
+      "pdfPages": [
+        116
+      ],
+      "textbookColumn": "正文活动",
+      "kind": "小实验",
+      "apparatus": [
+        "色散装置",
+        "灵敏温度传感器"
+      ],
+      "focus": "根据光谱外温升推断不可见辐射。",
+      "notes": "教材为历史实验式说明；普通温度计不一定足够灵敏。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-lens-rays",
+      "term": "8上",
+      "section": "5.1",
+      "title": "凸凹透镜对平行光的作用",
+      "printedPages": [
+        115,
+        116
+      ],
+      "pdfPages": [
+        122,
+        123
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "凸透镜",
+        "凹透镜",
+        "平行光源"
+      ],
+      "focus": "比较会聚与发散、标识焦点。",
+      "notes": "会聚是相对偏折方向，不要求任意入射光通过凸透镜后都实际相交。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-focal-length",
+      "term": "8上",
+      "section": "5.1",
+      "title": "测量凸透镜焦距",
+      "printedPages": [
+        116,
+        137
+      ],
+      "pdfPages": [
+        123,
+        144
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "凸透镜",
+        "白屏",
+        "刻度尺"
+      ],
+      "focus": "用平行光或远景成像位置近似确定焦距。",
+      "notes": "太阳法可能聚焦起火；网页用平行光模型，真实操作勿聚焦到皮肤眼睛。",
+      "variants": [
+        "平行光成像测焦距",
+        "阴天远景成像近似测焦距"
+      ],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-parallel-light-source",
+      "term": "8上",
+      "section": "5.1",
+      "title": "将小光源置于焦点得到平行光",
+      "printedPages": [
+        117
+      ],
+      "pdfPages": [
+        124
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "凸透镜",
+        "小灯泡"
+      ],
+      "focus": "利用可逆光路寻找光源位置。",
+      "notes": "实际有限尺寸光源只能近似准直。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-model-camera",
+      "term": "8上",
+      "section": "5.2",
+      "title": "伸缩纸筒照相机模型",
+      "printedPages": [
+        119,
+        121,
+        136
+      ],
+      "pdfPages": [
+        126,
+        128,
+        143
+      ],
+      "textbookColumn": "想想做做",
+      "kind": "小实验",
+      "apparatus": [
+        "凸透镜",
+        "套筒",
+        "半透明屏"
+      ],
+      "focus": "调节屏距成清晰倒立实像。",
+      "notes": "拍近物时需要相应调焦，不是简单拉长就总能清晰。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-projector-image",
+      "term": "8上",
+      "section": "5.2",
+      "title": "投影仪的放大实像",
+      "printedPages": [
+        119,
+        120
+      ],
+      "pdfPages": [
+        126,
+        127
+      ],
+      "textbookColumn": "演示",
+      "kind": "演示实验",
+      "apparatus": [
+        "投影仪",
+        "投影片",
+        "屏"
+      ],
+      "focus": "比较投影片与光屏上像的大小和方向。",
+      "notes": "取下反光镜是教材示范操作，不建议学生拆电子投影设备。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-magnifier-image",
+      "term": "8上",
+      "section": "5.2",
+      "title": "放大镜形成正立虚像",
+      "printedPages": [
+        120,
+        121,
+        125
+      ],
+      "pdfPages": [
+        127,
+        128,
+        132
+      ],
+      "textbookColumn": "正文活动",
+      "kind": "小实验",
+      "apparatus": [
+        "凸透镜",
+        "小文字"
+      ],
+      "focus": "改变焦距内物距比较放大效果。",
+      "notes": "不能用屏承接虚像；物距接近焦距时理论放大倍数增长。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-convex-imaging",
+      "term": "8上",
+      "section": "5.3",
+      "title": "凸透镜成像规律探究",
+      "printedPages": [
+        122,
+        123,
+        124
+      ],
+      "pdfPages": [
+        129,
+        130,
+        131
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "光具座",
+        "LED物体",
+        "凸透镜",
+        "光屏"
+      ],
+      "focus": "分区改变物距，记录像的虚实、大小、方向与像距。",
+      "notes": "物在焦点上不形成有限距离清晰像；实验前同高共轴。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-bottle-lens",
+      "term": "8上",
+      "section": "5.3",
+      "title": "盛水圆柱瓶观察移动的笔",
+      "printedPages": [
+        124,
+        125
+      ],
+      "pdfPages": [
+        131,
+        132
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "透明圆柱瓶",
+        "水",
+        "笔"
+      ],
+      "focus": "移动笔比较圆柱透镜在横向的成像变化。",
+      "notes": "圆柱瓶主要在一个方向聚焦，不等同球面薄透镜。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-covered-lens",
+      "term": "8上",
+      "section": "5.3",
+      "title": "遮挡透镜局部后像的变化",
+      "printedPages": [
+        125
+      ],
+      "pdfPages": [
+        132
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "凸透镜成像装置",
+        "小遮片"
+      ],
+      "focus": "比较遮挡前后像的完整性与亮度。",
+      "notes": "理想情况下完整像仍在但亮度减弱；不出现手指清晰像。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-lens-position-swap",
+      "term": "8上",
+      "section": "5.章末",
+      "title": "固定物屏距离寻找两次清晰成像",
+      "printedPages": [
+        136
+      ],
+      "pdfPages": [
+        143
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "光具座",
+        "物体",
+        "透镜",
+        "光屏"
+      ],
+      "focus": "移动凸透镜比较两位置的像大小。",
+      "notes": "仅物屏距离大于4倍焦距时存在两位置；临界情况合并。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-near-point",
+      "term": "8上",
+      "section": "5.4",
+      "title": "测量看清文字的近点",
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        135
+      ],
+      "textbookColumn": "科学世界",
+      "kind": "小实验",
+      "apparatus": [
+        "文字",
+        "刻度尺"
+      ],
+      "focus": "记录个体能清楚观察文字的最近距离。",
+      "notes": "不用于诊断近视或开处方；避免强迫长时间近距离盯看。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-spectacle-power",
+      "term": "8上",
+      "section": "5.4",
+      "title": "测老花镜焦距并估算度数",
+      "printedPages": [
+        128
+      ],
+      "pdfPages": [
+        135
+      ],
+      "textbookColumn": "科学世界",
+      "kind": "小实验",
+      "apparatus": [
+        "老花镜",
+        "白屏",
+        "刻度尺"
+      ],
+      "focus": "由正透镜焦距换算焦度和镜片度数。",
+      "notes": "焦距用米；仅演示薄透镜近似，不代替专业验光。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-hyperopia-correction",
+      "term": "8上",
+      "section": "5.4",
+      "title": "用光具座模拟远视及矫正",
+      "printedPages": [
+        129
+      ],
+      "pdfPages": [
+        136
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "凸透镜",
+        "可移动屏",
+        "附加凸透镜",
+        "物体"
+      ],
+      "focus": "调整屏位置模拟视网膜，再加凸透镜恢复清晰像。",
+      "notes": "眼球模型是固定光屏的简化；勿把简单示范参数当临床屈光度。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-telescope",
+      "term": "8上",
+      "section": "5.5",
+      "title": "双凸透镜望远镜设计",
+      "printedPages": [
+        130,
+        131,
+        132,
+        133
+      ],
+      "pdfPages": [
+        137,
+        138,
+        139,
+        140
+      ],
+      "textbookColumn": "跨学科实践",
+      "kind": "拓展探究",
+      "apparatus": [
+        "两块凸透镜",
+        "镜筒",
+        "刻度尺"
+      ],
+      "focus": "选择长焦物镜与短焦目镜，调节间距观察远物。",
+      "notes": "严禁观察太阳；无穷远近似镜间距为两焦距之和。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-water-drop-microscope",
+      "term": "8上",
+      "section": "5.章末",
+      "title": "水滴与放大镜组合观察微小物体",
+      "printedPages": [
+        137
+      ],
+      "pdfPages": [
+        144
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "玻璃片",
+        "水滴",
+        "放大镜",
+        "小物体"
+      ],
+      "focus": "用水滴透镜并调节上方放大镜寻找放大图像。",
+      "notes": "水滴形状影响焦距，实际系统并非固定倍率。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-balance-mass",
+      "term": "8上",
+      "section": "6.1",
+      "title": "托盘天平测量固体和液体质量",
+      "printedPages": [
+        141,
+        142,
+        143
+      ],
+      "pdfPages": [
+        148,
+        149,
+        150
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "托盘天平",
+        "砝码",
+        "镊子",
+        "固体",
+        "容器"
+      ],
+      "focus": "调平、选砝码、读游码，并利用容器质量差测液体。",
+      "notes": "称量中不调平衡螺母；潮湿物和药品不直接放盘。",
+      "variants": [
+        "橡皮铅笔称量",
+        "液体或盐粉借容器称量",
+        "调平与游码读数"
+      ],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-paperclip-mass",
+      "term": "8上",
+      "section": "6.1",
+      "title": "累积测回形针质量并估计数量",
+      "printedPages": [
+        143
+      ],
+      "pdfPages": [
+        150
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "天平",
+        "同规格回形针"
+      ],
+      "focus": "测多枚同规格物体的总质量再平均。",
+      "notes": "必须扣除容器质量；个体并非完全相同。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-mass-volume",
+      "term": "8上",
+      "section": "6.2",
+      "title": "同种物质的质量与体积关系",
+      "printedPages": [
+        144,
+        145
+      ],
+      "pdfPages": [
+        151,
+        152
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "天平",
+        "规则样品",
+        "刻度尺"
+      ],
+      "focus": "测若干规则样品并作质量—体积图像。",
+      "notes": "改变物体大小不等于改变材料；图像斜率表达密度。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-classroom-air-mass",
+      "term": "8上",
+      "section": "6.2",
+      "title": "测教室体积并估算空气质量",
+      "printedPages": [
+        148
+      ],
+      "pdfPages": [
+        155
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "卷尺",
+        "空间尺寸记录"
+      ],
+      "focus": "用空间尺寸与空气密度估算难以直接称量的质量。",
+      "notes": "可忽略室内家具排开的体积作粗估；空气密度需说明条件。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-saltwater-density",
+      "term": "8上",
+      "section": "6.3",
+      "title": "测量配制盐水的密度",
+      "printedPages": [
+        149
+      ],
+      "pdfPages": [
+        156
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "天平",
+        "烧杯",
+        "盐水",
+        "量筒"
+      ],
+      "focus": "差量称质量并读量筒体积，计算密度。",
+      "notes": "先测总量后倒部分测剩余，可减少附着液体造成的系统影响。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-stone-density",
+      "term": "8上",
+      "section": "6.3",
+      "title": "排水法测不吸水石块密度",
+      "printedPages": [
+        150
+      ],
+      "pdfPages": [
+        157
+      ],
+      "textbookColumn": "实验",
+      "kind": "学生实验",
+      "apparatus": [
+        "天平",
+        "量筒",
+        "细线",
+        "石块"
+      ],
+      "focus": "测质量与排开水体积。",
+      "notes": "完全浸没且无气泡；不适用于会吸水或溶解的样品而不修正。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-milk-density",
+      "term": "8上",
+      "section": "6.3",
+      "title": "用倒出前后质量差测牛奶密度",
+      "printedPages": [
+        151
+      ],
+      "pdfPages": [
+        158
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "牛奶容器",
+        "天平",
+        "量筒"
+      ],
+      "focus": "以倒出液体质量和体积计算密度。",
+      "notes": "是盐水密度方法的应用变式，可与盐水主实验合并实现。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-foil-thickness-density",
+      "term": "8上",
+      "section": "6.4",
+      "title": "用质量和面积推算铝箔厚度",
+      "printedPages": [
+        156
+      ],
+      "pdfPages": [
+        163
+      ],
+      "textbookColumn": "练习与应用",
+      "kind": "小实验",
+      "apparatus": [
+        "天平",
+        "刻度尺",
+        "长方形铝箔"
+      ],
+      "focus": "由密度先求体积，再除以长宽面积。",
+      "notes": "需材质均匀、已知密度、无褶皱；全部单位一致。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    },
+    {
+      "id": "phy-bean-density-bottle",
+      "term": "8上",
+      "section": "6.章末",
+      "title": "用定容瓶和替代水测绿豆密度",
+      "printedPages": [
+        158
+      ],
+      "pdfPages": [
+        165
+      ],
+      "textbookColumn": "复习与提高",
+      "kind": "小实验",
+      "apparatus": [
+        "小口瓶",
+        "天平",
+        "水",
+        "绿豆",
+        "碗"
+      ],
+      "focus": "利用加豆前后取代的水体积求豆粒体积。",
+      "notes": "短时间测量避免吸水；瓶颈标记有利于提高液面定位精度。",
+      "variants": [],
+      "sourceIds": [
+        "physics-g8a-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "coverage": "identified activity, not implementation status"
+    }
+  ],
+  "count": 101
+}

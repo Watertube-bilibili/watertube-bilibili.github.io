@@ -1,0 +1,786 @@
+{
+  "subject": "physics",
+  "checked": "2026-10-31",
+  "baseline": "中小学实验教学基本目录（2023年版）初中物理",
+  "sourceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+  "total": 68,
+  "scope": "目录的68个基本活动，不能混同其他口径的学生必做清单；活动名称为本项目审计摘要。",
+  "entries": [
+    {
+      "number": 1,
+      "activitySummary": "温度测量",
+      "implementationIds": [
+        "phy-water-thermometer"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 2,
+      "activitySummary": "晶体熔化与凝固",
+      "implementationIds": [
+        "phy-melting-curves",
+        "phy-water-freezing"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 3,
+      "activitySummary": "升华及凝华",
+      "implementationIds": [
+        "phy-iodine-sublimation"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 4,
+      "activitySummary": "加热水到沸腾",
+      "implementationIds": [
+        "phy-boiling-water"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 5,
+      "activitySummary": "蒸发影响因素",
+      "implementationIds": [
+        "phy-evaporative-cooling"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 6,
+      "activitySummary": "材料弹性比较",
+      "implementationIds": [
+        "phy-deformation"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 7,
+      "activitySummary": "磁性及磁极",
+      "implementationIds": [
+        "phy-magnetic-poles"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 8,
+      "activitySummary": "导电能力比较",
+      "implementationIds": [
+        "phy-conductor-insulator"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 9,
+      "activitySummary": "导热能力比较",
+      "implementationIds": [
+        "phy-thermal-conductivity"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 10,
+      "activitySummary": "托盘天平称量",
+      "implementationIds": [
+        "phy-balance-mass"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 11,
+      "activitySummary": "质量—体积关系",
+      "implementationIds": [
+        "phy-mass-volume"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 12,
+      "activitySummary": "固液密度测定",
+      "implementationIds": [
+        "phy-stone-density",
+        "phy-saltwater-density"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 13,
+      "activitySummary": "扩散观察",
+      "implementationIds": [
+        "phy-gas-diffusion",
+        "phy-liquid-diffusion"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 14,
+      "activitySummary": "微观粒子间隙",
+      "implementationIds": [
+        "phy-molecular-gap"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 15,
+      "activitySummary": "分子引力证据",
+      "implementationIds": [
+        "phy-lead-attraction"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 16,
+      "activitySummary": "长度测量",
+      "implementationIds": [
+        "phy-ruler-length"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 17,
+      "activitySummary": "计时测量",
+      "implementationIds": [
+        "phy-stopwatch-pulse-step"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 18,
+      "activitySummary": "运动速度测量",
+      "implementationIds": [
+        "phy-incline-speed",
+        "phy-walking-speed"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 19,
+      "activitySummary": "受力后形变",
+      "implementationIds": [
+        "phy-deformation",
+        "phy-steel-ruler-force"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 20,
+      "activitySummary": "力与运动状态",
+      "implementationIds": [
+        "phy-magnet-ball"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 21,
+      "activitySummary": "滑动摩擦的变量",
+      "implementationIds": [
+        "phy-sliding-friction"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 22,
+      "activitySummary": "弹簧测力计",
+      "implementationIds": [
+        "phy-spring-scale"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 23,
+      "activitySummary": "两力平衡",
+      "implementationIds": [
+        "phy-two-force-balance"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 24,
+      "activitySummary": "惯性演示",
+      "implementationIds": [
+        "phy-inertia-sheet"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 25,
+      "activitySummary": "阻力和运动",
+      "implementationIds": [
+        "phy-resistance-motion"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 26,
+      "activitySummary": "杠杆平衡",
+      "implementationIds": [
+        "phy-lever-balance"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 27,
+      "activitySummary": "压力作用效果",
+      "implementationIds": [
+        "phy-sponge-pressure"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 28,
+      "activitySummary": "器壁受到液体压力",
+      "implementationIds": [
+        "phy-water-jet"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 29,
+      "activitySummary": "液体内部压强体验",
+      "implementationIds": [
+        "phy-liquid-pressure"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 30,
+      "activitySummary": "液体压强的变量",
+      "implementationIds": [
+        "phy-liquid-pressure"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 31,
+      "activitySummary": "浮力的形成原因",
+      "implementationIds": [
+        "phy-buoyancy-cause"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 32,
+      "activitySummary": "浮力大小的变量",
+      "implementationIds": [
+        "phy-buoyancy-factors",
+        "phy-archimedes"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 33,
+      "activitySummary": "声源振动",
+      "implementationIds": [
+        "phy-rubber-vibration",
+        "phy-amplitude-ball"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 34,
+      "activitySummary": "传声条件",
+      "implementationIds": [
+        "phy-vacuum-bell",
+        "phy-desk-sound",
+        "phy-cup-telephone"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 35,
+      "activitySummary": "音调响度音色",
+      "implementationIds": [
+        "phy-ruler-pitch",
+        "phy-amplitude-ball",
+        "phy-timbre-waveform"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 36,
+      "activitySummary": "反射规律",
+      "implementationIds": [
+        "phy-reflection-law"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 37,
+      "activitySummary": "折射规律",
+      "implementationIds": [
+        "phy-refraction-law"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 38,
+      "activitySummary": "平面镜的像",
+      "implementationIds": [
+        "phy-plane-mirror"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 39,
+      "activitySummary": "凸透镜的像",
+      "implementationIds": [
+        "phy-convex-imaging"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 40,
+      "activitySummary": "简易照相机设计",
+      "implementationIds": [
+        "phy-model-camera"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 41,
+      "activitySummary": "近远视矫正模型",
+      "implementationIds": [
+        "phy-hyperopia-correction",
+        "phy-myopia-correction"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 42,
+      "activitySummary": "白光分解",
+      "implementationIds": [
+        "phy-prism-spectrum"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 43,
+      "activitySummary": "色光合成",
+      "implementationIds": [
+        "phy-rgb-mixture"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 44,
+      "activitySummary": "摩擦带电",
+      "implementationIds": [
+        "phy-rubbing-paper"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 45,
+      "activitySummary": "磁场探测",
+      "implementationIds": [
+        "phy-magnetic-field-map",
+        "phy-compass-field"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 46,
+      "activitySummary": "电流周围磁场",
+      "implementationIds": [
+        "phy-oersted"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 47,
+      "activitySummary": "螺线管磁场方向",
+      "implementationIds": [
+        "phy-solenoid-field"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 48,
+      "activitySummary": "通电导体磁力",
+      "implementationIds": [
+        "phy-magnetic-force-wire"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 49,
+      "activitySummary": "直流电动机设计",
+      "implementationIds": [
+        "phy-dc-motor-project"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 50,
+      "activitySummary": "感应电流的条件",
+      "implementationIds": [
+        "phy-electromagnetic-induction"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 51,
+      "activitySummary": "简易发电机设计",
+      "implementationIds": [
+        "phy-hand-generator"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 52,
+      "activitySummary": "内能对外做功",
+      "implementationIds": [
+        "phy-steam-work",
+        "phy-expansion-cooling"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 53,
+      "activitySummary": "机械功改变内能",
+      "implementationIds": [
+        "phy-friction-warming",
+        "phy-compression-heating"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 54,
+      "activitySummary": "电能驱动运动",
+      "implementationIds": [
+        "phy-simple-circuit",
+        "phy-dc-motor-project"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 55,
+      "activitySummary": "通电发热",
+      "implementationIds": [
+        "phy-joule-resistance"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 56,
+      "activitySummary": "动能势能转换",
+      "implementationIds": [
+        "phy-rolling-pendulum",
+        "phy-pendulum-lock"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 57,
+      "activitySummary": "机械效率测量",
+      "implementationIds": [
+        "phy-pulley-efficiency"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 58,
+      "activitySummary": "吸热量与质量温升",
+      "implementationIds": [
+        "phy-heat-mass-temperature"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 59,
+      "activitySummary": "热机工作过程",
+      "implementationIds": [
+        "phy-heat-engine-cycle"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+    },
+    {
+      "number": 60,
+      "activitySummary": "电流电压电阻关系",
+      "implementationIds": [
+        "phy-ohm-voltage",
+        "phy-ohm-resistance"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 61,
+      "activitySummary": "电流表测量",
+      "implementationIds": [
+        "phy-ammeter"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 62,
+      "activitySummary": "电压表测量",
+      "implementationIds": [
+        "phy-voltmeter"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 63,
+      "activitySummary": "串并联搭建",
+      "implementationIds": [
+        "phy-series-parallel-connect"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 64,
+      "activitySummary": "伏安测阻",
+      "implementationIds": [
+        "phy-measure-resistance"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 65,
+      "activitySummary": "串并联电流电压特点",
+      "implementationIds": [
+        "phy-series-current",
+        "phy-parallel-current",
+        "phy-series-voltage",
+        "phy-parallel-voltage"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 66,
+      "activitySummary": "电热的影响因素",
+      "implementationIds": [
+        "phy-joule-current",
+        "phy-joule-resistance"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    },
+    {
+      "number": 67,
+      "activitySummary": "低压模拟家庭用电",
+      "implementationIds": [
+        "phy-home-circuit-design"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "最终内容明确安全低压电源与小灯泡模拟、断电检查及并联结构；市电仅用于纸面原理与理论计算。最终交互尚需运行验收。"
+    },
+    {
+      "number": 68,
+      "activitySummary": "新能源应用设计",
+      "implementationIds": [
+        "phy-solar-fan",
+        "phy-solar-water"
+      ],
+      "status": "mapped-content-reviewed",
+      "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+      "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+      "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+    }
+  ],
+  "limits": [
+    "这是内容映射审计，不表示全部模型和图像已通过运行测试。",
+    "正文教材拓展活动另见各册活动映射；基线覆盖不等于所有教材版本所有活动均已实现。",
+    "作者修复后需重新审读并更新partial/missing状态。"
+  ]
+}

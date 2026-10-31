@@ -1,0 +1,832 @@
+[
+  {
+    "activityId": "phy-deformation",
+    "activity": "橡皮泥与弹簧的形变",
+    "section": "7.1",
+    "printedPages": [
+      3
+    ],
+    "column": "正文操作",
+    "implementationId": "phy-deformation",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-elastic-recovery",
+    "activity": "直尺与橡皮筋的弹性恢复",
+    "section": "7.2",
+    "printedPages": [
+      7
+    ],
+    "column": "正文操作",
+    "implementationId": "phy-deformation",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-magnet-ball",
+    "activity": "磁体改变铁球运动",
+    "section": "7.1",
+    "printedPages": [
+      3
+    ],
+    "column": "演示",
+    "implementationId": "phy-magnet-ball",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-door-point",
+    "activity": "推门位置与作用效果",
+    "section": "7.1",
+    "printedPages": [
+      4
+    ],
+    "column": "想想做做",
+    "implementationId": "phy-door-point",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-magnet-carts",
+    "activity": "两辆磁体小车相互作用",
+    "section": "7.1",
+    "printedPages": [
+      5
+    ],
+    "column": "想想做做",
+    "implementationId": "phy-magnet-carts",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-skates-wall",
+    "activity": "旱冰鞋推墙与反作用",
+    "section": "7.1",
+    "printedPages": [
+      5
+    ],
+    "column": "想想做做",
+    "implementationId": "phy-magnet-carts",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-spring-scale",
+    "activity": "使用弹簧测力计",
+    "section": "7.2",
+    "printedPages": [
+      8
+    ],
+    "column": "实验",
+    "implementationId": "phy-spring-scale",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-glass-microdeform",
+    "activity": "水柱放大玻璃瓶微小形变",
+    "section": "7.2",
+    "printedPages": [
+      10
+    ],
+    "column": "练习与应用4",
+    "implementationId": "phy-glass-microdeform",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-gravity-mass",
+    "activity": "重力与质量的关系",
+    "section": "7.3",
+    "printedPages": [
+      12,
+      13
+    ],
+    "column": "实验",
+    "implementationId": "phy-gravity-mass",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-plumb-level",
+    "activity": "铅垂线和三角板水平仪",
+    "section": "7.3",
+    "printedPages": [
+      14,
+      16
+    ],
+    "column": "正文应用与练习5",
+    "implementationId": "phy-plumb-level",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-floating-level",
+    "activity": "水盆浮式水平仪调平",
+    "section": "7.review",
+    "printedPages": [
+      17
+    ],
+    "column": "复习与提高5",
+    "implementationId": "phy-plumb-level",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-steel-ruler-force",
+    "activity": "钢尺弯曲研究力的三要素",
+    "section": "7.review",
+    "printedPages": [
+      17
+    ],
+    "column": "复习与提高2",
+    "implementationId": "phy-steel-ruler-force",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-resistance-motion",
+    "activity": "不同阻力下的小车滑行",
+    "section": "8.1",
+    "printedPages": [
+      19,
+      20
+    ],
+    "column": "演示",
+    "implementationId": "phy-resistance-motion",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-inertia-sheet",
+    "activity": "弹出金属片后的小球",
+    "section": "8.1",
+    "printedPages": [
+      21
+    ],
+    "column": "想想议议中的演示装置",
+    "implementationId": "phy-inertia-sheet",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-hammer-inertia",
+    "activity": "锤头借惯性套紧",
+    "section": "8.1",
+    "printedPages": [
+      21
+    ],
+    "column": "正文示例",
+    "implementationId": "phy-inertia-sheet",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-two-force-balance",
+    "activity": "小车二力平衡条件",
+    "section": "8.2",
+    "printedPages": [
+      24,
+      25
+    ],
+    "column": "实验",
+    "implementationId": "phy-two-force-balance",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-sliding-friction",
+    "activity": "滑动摩擦力的影响因素",
+    "section": "8.3",
+    "printedPages": [
+      28,
+      29
+    ],
+    "column": "实验",
+    "implementationId": "phy-sliding-friction",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-hand-friction",
+    "activity": "手掌滑动感受摩擦",
+    "section": "8.3",
+    "printedPages": [
+      27
+    ],
+    "column": "问题中的操作",
+    "implementationId": "phy-sliding-friction",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-collinear-forces",
+    "activity": "同一直线二力的合成",
+    "section": "8.4",
+    "printedPages": [
+      34,
+      35
+    ],
+    "column": "演示",
+    "implementationId": "phy-collinear-forces",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-sponge-pressure",
+    "activity": "压力和接触面积的作用",
+    "section": "9.1",
+    "printedPages": [
+      41
+    ],
+    "column": "演示",
+    "implementationId": "phy-sponge-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-balloon-pressure",
+    "activity": "手掌与手指夹气球",
+    "section": "9.review",
+    "printedPages": [
+      62
+    ],
+    "column": "复习与提高1",
+    "implementationId": "phy-sponge-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-shoe-pressure",
+    "activity": "方格纸鞋印估测压强",
+    "section": "9.1",
+    "printedPages": [
+      43,
+      44
+    ],
+    "column": "练习与应用1",
+    "implementationId": "phy-shoe-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-liquid-pressure",
+    "activity": "液体压强的影响因素",
+    "section": "9.2",
+    "printedPages": [
+      46,
+      47
+    ],
+    "column": "实验",
+    "implementationId": "phy-liquid-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-water-jet",
+    "activity": "侧孔喷水与液面高度",
+    "section": "9.2",
+    "printedPages": [
+      45
+    ],
+    "column": "正文实验",
+    "implementationId": "phy-liquid-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-bottle-membrane",
+    "activity": "药瓶橡皮膜朝向与水压",
+    "section": "9.2",
+    "printedPages": [
+      51
+    ],
+    "column": "练习与应用1",
+    "implementationId": "phy-liquid-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-partition-membrane",
+    "activity": "隔板橡皮膜比较两侧液压",
+    "section": "9.2",
+    "printedPages": [
+      51
+    ],
+    "column": "练习与应用2",
+    "implementationId": "phy-liquid-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-communicating-vessels",
+    "activity": "连通器静止液面的比较",
+    "section": "9.2",
+    "printedPages": [
+      49
+    ],
+    "column": "正文装置",
+    "implementationId": "phy-communicating-vessels",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-tube-level",
+    "activity": "透明软管水准仪",
+    "section": "9.2",
+    "printedPages": [
+      51
+    ],
+    "column": "练习与应用6",
+    "implementationId": "phy-communicating-vessels",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-tilted-utube",
+    "activity": "倾斜U形管后的液面",
+    "section": "9.review",
+    "printedPages": [
+      62
+    ],
+    "column": "复习与提高7",
+    "implementationId": "phy-communicating-vessels",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-suction-hole",
+    "activity": "吸盘打孔的对照",
+    "section": "9.3",
+    "printedPages": [
+      52
+    ],
+    "column": "正文实验",
+    "implementationId": "phy-suction-hole",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-inverted-water",
+    "activity": "纸片托住倒置水柱",
+    "section": "9.3",
+    "printedPages": [
+      52
+    ],
+    "column": "正文实验",
+    "implementationId": "phy-inverted-water",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-torricelli",
+    "activity": "托里拆利气压测量",
+    "section": "9.3",
+    "printedPages": [
+      53,
+      54
+    ],
+    "column": "演示",
+    "implementationId": "phy-torricelli",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-bottle-barometer",
+    "activity": "瓶和细管制作气压计",
+    "section": "9.3",
+    "printedPages": [
+      54,
+      55
+    ],
+    "column": "想想做做",
+    "implementationId": "phy-bottle-barometer",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-dropper-pressure",
+    "activity": "滴管进水由外界压强推动",
+    "section": "9.3",
+    "printedPages": [
+      55
+    ],
+    "column": "练习与应用1",
+    "implementationId": "phy-dropper-pressure",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-magdeburg",
+    "activity": "马德堡半球压差演示",
+    "section": "9.3",
+    "printedPages": [
+      55
+    ],
+    "column": "历史实验及练习3",
+    "implementationId": "phy-magdeburg",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-piston-pump",
+    "activity": "简易活塞式抽水机",
+    "section": "9.4",
+    "printedPages": [
+      56,
+      57,
+      58
+    ],
+    "column": "跨学科实践",
+    "implementationId": "phy-piston-pump",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-syringe-water",
+    "activity": "注射器活塞提水",
+    "section": "9.4",
+    "printedPages": [
+      56
+    ],
+    "column": "项目预实验",
+    "implementationId": "phy-piston-pump",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-blow-strip",
+    "activity": "向纸条上方吹气",
+    "section": "9.5",
+    "printedPages": [
+      59
+    ],
+    "column": "问题中的操作",
+    "implementationId": "phy-blow-strip",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-blow-two-papers",
+    "activity": "两张纸之间吹气",
+    "section": "9.5",
+    "printedPages": [
+      59,
+      60
+    ],
+    "column": "想想做做",
+    "implementationId": "phy-blow-strip",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-flow-pressure-sensors",
+    "activity": "变截面管气压传感器实验",
+    "section": "9.5",
+    "printedPages": [
+      60,
+      61
+    ],
+    "column": "拓展实验",
+    "implementationId": "phy-flow-pressure-sensors",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-straw-spray",
+    "activity": "两根吸管形成简易喷雾",
+    "section": "9.5",
+    "printedPages": [
+      61
+    ],
+    "column": "练习与应用4",
+    "implementationId": "phy-straw-spray",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-buoyancy-weighing",
+    "activity": "称重法测浮力与浸没深度",
+    "section": "10.1",
+    "printedPages": [
+      64,
+      65
+    ],
+    "column": "演示",
+    "implementationId": "phy-buoyancy-weighing",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-buoyancy-factors",
+    "activity": "浮力大小的影响因素",
+    "section": "10.1",
+    "printedPages": [
+      66
+    ],
+    "column": "实验",
+    "implementationId": "phy-buoyancy-factors",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-bottle-immersion",
+    "activity": "把空瓶逐渐压入水中",
+    "section": "10.1",
+    "printedPages": [
+      65
+    ],
+    "column": "正文经验操作",
+    "implementationId": "phy-buoyancy-factors",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-archimedes",
+    "activity": "浮力与排开液体重力的关系",
+    "section": "10.2",
+    "printedPages": [
+      69,
+      70
+    ],
+    "column": "实验",
+    "implementationId": "phy-archimedes",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-egg-saltwater",
+    "activity": "鸡蛋在水和盐水中的浮沉",
+    "section": "10.3",
+    "printedPages": [
+      74
+    ],
+    "column": "想想做做",
+    "implementationId": "phy-egg-saltwater",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-clay-boat",
+    "activity": "橡皮泥船与承载能力",
+    "section": "10.3",
+    "printedPages": [
+      74,
+      75
+    ],
+    "column": "想想做做",
+    "implementationId": "phy-clay-boat",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-micro-hydrometer",
+    "activity": "微型密度计的设计与标定",
+    "section": "10.4",
+    "printedPages": [
+      77,
+      78,
+      79,
+      80
+    ],
+    "column": "跨学科实践",
+    "implementationId": "phy-micro-hydrometer",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-straw-hydrometer",
+    "activity": "吸管密度计比较液体",
+    "section": "10.3",
+    "printedPages": [
+      76
+    ],
+    "column": "练习与应用5",
+    "implementationId": "phy-micro-hydrometer",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-submarine-model",
+    "activity": "烧瓶潜水艇模型",
+    "section": "10.review",
+    "printedPages": [
+      82
+    ],
+    "column": "复习与提高7",
+    "implementationId": "phy-submarine-model",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-kinetic-energy",
+    "activity": "钢球推动木块比较动能",
+    "section": "11.3",
+    "printedPages": [
+      92
+    ],
+    "column": "演示",
+    "implementationId": "phy-kinetic-energy",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-pendulum-lock",
+    "activity": "摆回的重物能否超过释放高度",
+    "section": "11.4",
+    "printedPages": [
+      96
+    ],
+    "column": "问题中的演示",
+    "implementationId": "phy-pendulum-lock",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-ball-pendulum",
+    "activity": "小球摆动过程的能量转换",
+    "section": "11.4",
+    "printedPages": [
+      97
+    ],
+    "column": "想想做做2",
+    "implementationId": "phy-pendulum-lock",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-bounce-higher",
+    "activity": "怎样让乒乓球弹得高于起点",
+    "section": "11.4",
+    "printedPages": [
+      100
+    ],
+    "column": "练习与应用3",
+    "implementationId": "phy-pendulum-lock",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  },
+  {
+    "activityId": "phy-rolling-pendulum",
+    "activity": "滚摆的动能与势能转换",
+    "section": "11.4",
+    "printedPages": [
+      97
+    ],
+    "column": "想想做做1",
+    "implementationId": "phy-rolling-pendulum",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-returning-can",
+    "activity": "橡皮筋回滚罐",
+    "section": "11.4",
+    "printedPages": [
+      100
+    ],
+    "column": "练习与应用4",
+    "implementationId": "phy-returning-can",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-potential-height",
+    "activity": "钢珠压痕比较重力势能",
+    "section": "11.review",
+    "printedPages": [
+      102
+    ],
+    "column": "复习与提高8",
+    "implementationId": "phy-potential-height",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-lever-balance",
+    "activity": "杠杆平衡条件",
+    "section": "12.1",
+    "printedPages": [
+      105,
+      106
+    ],
+    "column": "实验",
+    "implementationId": "phy-lever-balance",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-steelyard",
+    "activity": "简易杆秤制作和标定",
+    "section": "12.2",
+    "printedPages": [
+      111,
+      112
+    ],
+    "column": "跨学科实践",
+    "implementationId": "phy-steelyard",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-pulley-properties",
+    "activity": "定滑轮与动滑轮比较",
+    "section": "12.3",
+    "printedPages": [
+      114
+    ],
+    "column": "演示",
+    "implementationId": "phy-pulley-properties",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-pulley-efficiency",
+    "activity": "滑轮组机械效率",
+    "section": "12.4",
+    "printedPages": [
+      119,
+      120
+    ],
+    "column": "实验",
+    "implementationId": "phy-pulley-efficiency",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "primary"
+  },
+  {
+    "activityId": "phy-moving-pulley-work",
+    "activity": "动滑轮省力是否省功",
+    "section": "12.4",
+    "printedPages": [
+      117,
+      118
+    ],
+    "column": "演示",
+    "implementationId": "phy-pulley-efficiency",
+    "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "verification": "verified-text-layer",
+    "implementationRelation": "same-principle-variant"
+  }
+]

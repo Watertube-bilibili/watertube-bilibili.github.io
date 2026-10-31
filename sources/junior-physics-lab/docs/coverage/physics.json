@@ -1,0 +1,3821 @@
+{
+  "checked": "2026-10-31",
+  "editionScope": "八上2024修订、八下2025春启用、九全2025修订；网站将九全分到9上/9下浏览。无独立人教版七年级物理。",
+  "standardScope": "确认2022年版2025年日常修订课标存在；未逐字审校全本修订差异。",
+  "method": "已核对活动文字和页码，重复操作与课后变式合并；实施映射不表示每一装置都进行了完整物理复现，具体数值边界见modelNote。",
+  "catalogCount": 182,
+  "textbookActivities": [
+    {
+      "activityId": "phy-cold-water-reboil",
+      "activity": "向倒置热烧瓶浇冷水后的沸腾",
+      "section": "绪言",
+      "printedPages": [
+        2
+      ],
+      "column": "演示",
+      "implementationId": "phy-cold-water-reboil",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-funnel-ball",
+      "activity": "漏斗向下吹气托住乒乓球",
+      "section": "绪言",
+      "printedPages": [
+        3
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-funnel-ball",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-pendulum-period",
+      "activity": "测量单摆周期并调节摆长",
+      "section": "1.1",
+      "printedPages": [
+        16
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-pendulum-period",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-ruler-length",
+      "activity": "刻度尺测量铅笔和书本",
+      "section": "1.1",
+      "printedPages": [
+        13
+      ],
+      "column": "实验",
+      "implementationId": "phy-ruler-length",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-body-ruler",
+      "activity": "用身体尺度估测长度",
+      "section": "1.1",
+      "printedPages": [
+        14
+      ],
+      "column": "想想议议",
+      "implementationId": "phy-ruler-length",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-height-foot",
+      "activity": "身高与脚长的测量比较",
+      "section": "1.1",
+      "printedPages": [
+        16
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-ruler-length",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-court-measure",
+      "activity": "选择量程测篮球场和边线",
+      "section": "1.章末",
+      "printedPages": [
+        29
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-ruler-length",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-stopwatch-pulse-step",
+      "activity": "秒表记录脉搏和步行节律",
+      "section": "1.1",
+      "printedPages": [
+        15
+      ],
+      "column": "实验",
+      "implementationId": "phy-stopwatch-pulse-step",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-coin-size",
+      "activity": "硬币直径与周长的间接测量",
+      "section": "1.1",
+      "printedPages": [
+        16
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-coin-size",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-syringe-diameter",
+      "activity": "设计注射器活塞直径测法",
+      "section": "1.章末",
+      "printedPages": [
+        29
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-coin-size",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-paper-thickness",
+      "activity": "叠纸测单张厚度",
+      "section": "1.章末",
+      "printedPages": [
+        29
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-paper-thickness",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-wire-diameter",
+      "activity": "密绕铜丝测直径",
+      "section": "1.章末",
+      "printedPages": [
+        29
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-paper-thickness",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-incline-speed",
+      "activity": "小车全程与上半程平均速度",
+      "section": "1.4",
+      "printedPages": [
+        25,
+        26
+      ],
+      "column": "实验",
+      "implementationId": "phy-incline-speed",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-sensor-speed",
+      "activity": "传感器记录运动位置和速度",
+      "section": "1.4",
+      "printedPages": [
+        26
+      ],
+      "column": "拓展实验",
+      "implementationId": "phy-sensor-speed",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-drip-timer",
+      "activity": "滴水计时器显示小车运动",
+      "section": "1.章末",
+      "printedPages": [
+        30
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-sensor-speed",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-walking-speed",
+      "activity": "操场测步行速度并估算路程",
+      "section": "1.4",
+      "printedPages": [
+        27
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-walking-speed",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-milestone-speed",
+      "activity": "利用里程碑估测骑行速度",
+      "section": "1.4",
+      "printedPages": [
+        27
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-walking-speed",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-rubber-vibration",
+      "activity": "橡皮筋振动发声",
+      "section": "2.1",
+      "printedPages": [
+        32
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-rubber-vibration",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-vocal-cord",
+      "activity": "触摸喉部感受发声振动",
+      "section": "2.1",
+      "printedPages": [
+        32
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-rubber-vibration",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-drum-grains",
+      "activity": "设计方法显示鼓面振动",
+      "section": "2.章末",
+      "printedPages": [
+        56
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-rubber-vibration",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-vacuum-bell",
+      "activity": "抽气罩内铃声的变化",
+      "section": "2.1",
+      "printedPages": [
+        33
+      ],
+      "column": "演示",
+      "implementationId": "phy-vacuum-bell",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-water-wave-analogy",
+      "activity": "轻点水面观察波纹传播",
+      "section": "2.1",
+      "printedPages": [
+        33,
+        34
+      ],
+      "column": "正文活动",
+      "implementationId": "phy-water-wave-analogy",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-desk-sound",
+      "activity": "轻刮桌面检验固体传声",
+      "section": "2.1",
+      "printedPages": [
+        34
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-desk-sound",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-cup-telephone",
+      "activity": "纸杯棉线电话",
+      "section": "2.章末",
+      "printedPages": [
+        56
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-cup-telephone",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-ruler-pitch",
+      "activity": "钢尺伸出长度与音调",
+      "section": "2.2",
+      "printedPages": [
+        37
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-ruler-pitch",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-frequency-waveform",
+      "activity": "比较不同频率音叉的波形",
+      "section": "2.2",
+      "printedPages": [
+        38,
+        39
+      ],
+      "column": "演示",
+      "implementationId": "phy-ruler-pitch",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-amplitude-ball",
+      "activity": "音叉弹球显示振幅与响度",
+      "section": "2.2",
+      "printedPages": [
+        40
+      ],
+      "column": "演示",
+      "implementationId": "phy-amplitude-ball",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-timbre-waveform",
+      "activity": "比较同音高乐器的波形",
+      "section": "2.2",
+      "printedPages": [
+        41
+      ],
+      "column": "演示",
+      "implementationId": "phy-timbre-waveform",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-instrument-observation",
+      "activity": "观察乐器的发声部位",
+      "section": "2.2",
+      "printedPages": [
+        43
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-timbre-waveform",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-bottle-xylophone",
+      "activity": "不同水位玻璃瓶的敲击音阶",
+      "section": "2.2",
+      "printedPages": [
+        43
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-bottle-xylophone",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-piston-flute",
+      "activity": "活塞式哨管调音",
+      "section": "2.2",
+      "printedPages": [
+        43
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-piston-flute",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-speaker-candle",
+      "activity": "扬声器使附近烛焰颤动",
+      "section": "2.3",
+      "printedPages": [
+        46
+      ],
+      "column": "演示",
+      "implementationId": "phy-speaker-candle",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-noise-waveform",
+      "activity": "比较刮擦噪声与音叉波形",
+      "section": "2.4",
+      "printedPages": [
+        49
+      ],
+      "column": "演示",
+      "implementationId": "phy-noise-waveform",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-soundproof-room",
+      "activity": "隔音房间模型的设计与测试",
+      "section": "2.5",
+      "printedPages": [
+        53,
+        54
+      ],
+      "column": "跨学科实践",
+      "implementationId": "phy-soundproof-room",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-noise-survey",
+      "activity": "调查校园噪声与控制位置",
+      "section": "2.4",
+      "printedPages": [
+        52
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-soundproof-room",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-noise-pulse-observation",
+      "activity": "不同环境下脉搏的观察比较",
+      "section": "2.4",
+      "printedPages": [
+        52
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-soundproof-room",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-earmuff-design",
+      "activity": "设计防噪声耳罩材料方案",
+      "section": "2.4",
+      "printedPages": [
+        52
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-soundproof-room",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-temperature-sensation",
+      "activity": "冷热适应后对同杯水的感觉",
+      "section": "3.1",
+      "printedPages": [
+        58
+      ],
+      "column": "问题",
+      "implementationId": "phy-temperature-sensation",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-homemade-thermometer",
+      "activity": "细管液体温度计模型",
+      "section": "3.1",
+      "printedPages": [
+        59,
+        62
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-homemade-thermometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-water-thermometer",
+      "activity": "温度计测量不同水温",
+      "section": "3.1",
+      "printedPages": [
+        60,
+        61
+      ],
+      "column": "实验",
+      "implementationId": "phy-water-thermometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-fridge-temperature",
+      "activity": "比较冰箱不同位置温度",
+      "section": "3.1",
+      "printedPages": [
+        61
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-water-thermometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-classroom-temperature",
+      "activity": "记录晴天与阴天的室温曲线",
+      "section": "3.1",
+      "printedPages": [
+        63
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-water-thermometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-bimetal-thermometer",
+      "activity": "双金属片指针温度计设计",
+      "section": "3.1",
+      "printedPages": [
+        63
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-bimetal-thermometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-ice-melting",
+      "activity": "室温下冰水混合物的温度",
+      "section": "3.2",
+      "printedPages": [
+        64,
+        65
+      ],
+      "column": "正文活动",
+      "implementationId": "phy-ice-melting",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-melting-curves",
+      "activity": "海波与石蜡的熔化过程比较",
+      "section": "3.2",
+      "printedPages": [
+        65,
+        66
+      ],
+      "column": "演示",
+      "implementationId": "phy-melting-curves",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-freezing-mixture",
+      "activity": "水与酒精混合液的低温现象",
+      "section": "3.2",
+      "printedPages": [
+        69
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-freezing-mixture",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-alcohol-bag",
+      "activity": "密封软袋中的汽化和液化",
+      "section": "3.3",
+      "printedPages": [
+        70
+      ],
+      "column": "问题",
+      "implementationId": "phy-alcohol-bag",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-boiling-water",
+      "activity": "水沸腾前后的温度曲线",
+      "section": "3.3",
+      "printedPages": [
+        71,
+        72
+      ],
+      "column": "实验",
+      "implementationId": "phy-boiling-water",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-paper-pot",
+      "activity": "纸锅盛水加热现象",
+      "section": "3.3",
+      "printedPages": [
+        73
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-paper-pot",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-evaporative-cooling",
+      "activity": "酒精蒸发与吹风的温度比较",
+      "section": "3.3",
+      "printedPages": [
+        73,
+        74
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-evaporative-cooling",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-evaporative-food-cooler",
+      "activity": "湿纱布与通风的降温方案",
+      "section": "3.3",
+      "printedPages": [
+        76
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-evaporative-cooling",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-cold-bottle-condensation",
+      "activity": "冷瓶外壁的小水珠",
+      "section": "3.3",
+      "printedPages": [
+        76
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-cold-bottle-condensation",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-three-cup-condensation",
+      "activity": "热水、冰水和室温水杯的凝露位置",
+      "section": "3.章末",
+      "printedPages": [
+        86
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-cold-bottle-condensation",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-iodine-sublimation",
+      "activity": "密闭碘容器的升华和凝华",
+      "section": "3.4",
+      "printedPages": [
+        77,
+        80
+      ],
+      "column": "问题",
+      "implementationId": "phy-iodine-sublimation",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-frost-can",
+      "activity": "冰盐降温后罐外结霜",
+      "section": "3.4",
+      "printedPages": [
+        80
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-frost-can",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-kitchen-phase",
+      "activity": "厨房物态变化与节能方案",
+      "section": "3.5",
+      "printedPages": [
+        81,
+        82,
+        83
+      ],
+      "column": "跨学科实践",
+      "implementationId": "phy-kitchen-phase",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-light-straight",
+      "activity": "光在水和玻璃中的传播路径",
+      "section": "4.1",
+      "printedPages": [
+        89
+      ],
+      "column": "演示",
+      "implementationId": "phy-light-straight",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-pinhole-image",
+      "activity": "小孔成像与物距变化",
+      "section": "4.1",
+      "printedPages": [
+        90
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-pinhole-image",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-hand-shadow",
+      "activity": "手影和影子大小",
+      "section": "4.1",
+      "printedPages": [
+        92
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-hand-shadow",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-reflection-law",
+      "activity": "反射角、共面条件和光路可逆",
+      "section": "4.2",
+      "printedPages": [
+        93,
+        94,
+        95
+      ],
+      "column": "实验",
+      "implementationId": "phy-reflection-law",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-diffuse-reflection",
+      "activity": "光滑镜面与粗糙白纸的反射",
+      "section": "4.2",
+      "printedPages": [
+        95,
+        96
+      ],
+      "column": "正文活动",
+      "implementationId": "phy-diffuse-reflection",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-retroreflector",
+      "activity": "自行车尾灯回归反射",
+      "section": "4.2",
+      "printedPages": [
+        97
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-retroreflector",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-plane-mirror",
+      "activity": "平面镜像的位置、大小与虚实",
+      "section": "4.3",
+      "printedPages": [
+        98,
+        99
+      ],
+      "column": "实验",
+      "implementationId": "phy-plane-mirror",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-spoon-mirrors",
+      "activity": "勺子两面的像",
+      "section": "4.3",
+      "printedPages": [
+        101
+      ],
+      "column": "科学世界",
+      "implementationId": "phy-spoon-mirrors",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-periscope",
+      "activity": "双平面镜潜望镜",
+      "section": "4.3",
+      "printedPages": [
+        102,
+        111
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-periscope",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-refraction-law",
+      "activity": "改变入射方向观察水和玻璃中的折射",
+      "section": "4.4",
+      "printedPages": [
+        103,
+        104,
+        112
+      ],
+      "column": "演示",
+      "implementationId": "phy-refraction-law",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-coin-reappears",
+      "activity": "向碗中加水使硬币重现",
+      "section": "4.4",
+      "printedPages": [
+        103
+      ],
+      "column": "问题",
+      "implementationId": "phy-refraction-law",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-bent-chopstick",
+      "activity": "斜插水中的筷子看似弯折",
+      "section": "4.4",
+      "printedPages": [
+        106
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-refraction-law",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-water-spot",
+      "activity": "加水时杯底光斑移动",
+      "section": "4.4",
+      "printedPages": [
+        106
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-refraction-law",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-gradient-saline-ray",
+      "activity": "非均匀盐水中的弯曲光路",
+      "section": "4.章末",
+      "printedPages": [
+        111
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-gradient-saline-ray",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-prism-spectrum",
+      "activity": "三棱镜分解白光",
+      "section": "4.5",
+      "printedPages": [
+        107
+      ],
+      "column": "演示",
+      "implementationId": "phy-prism-spectrum",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-water-mirror-spectrum",
+      "activity": "水中斜镜形成彩色光带",
+      "section": "4.5",
+      "printedPages": [
+        108
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-prism-spectrum",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-rgb-mixture",
+      "activity": "调节红绿蓝亮度进行色光混合",
+      "section": "4.5",
+      "printedPages": [
+        110
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-rgb-mixture",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-infrared-heating",
+      "activity": "可见红端外的温度变化",
+      "section": "4.5",
+      "printedPages": [
+        109
+      ],
+      "column": "正文活动",
+      "implementationId": "phy-infrared-heating",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-lens-rays",
+      "activity": "凸凹透镜对平行光的作用",
+      "section": "5.1",
+      "printedPages": [
+        115,
+        116
+      ],
+      "column": "演示",
+      "implementationId": "phy-lens-rays",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-focal-length",
+      "activity": "测量凸透镜焦距",
+      "section": "5.1",
+      "printedPages": [
+        116,
+        137
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-lens-rays",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-parallel-light-source",
+      "activity": "将小光源置于焦点得到平行光",
+      "section": "5.1",
+      "printedPages": [
+        117
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-lens-rays",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-convex-imaging",
+      "activity": "凸透镜成像规律探究",
+      "section": "5.3",
+      "printedPages": [
+        122,
+        123,
+        124
+      ],
+      "column": "实验",
+      "implementationId": "phy-convex-imaging",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-magnifier-near-far",
+      "activity": "同一放大镜观察近物和远物",
+      "section": "绪言",
+      "printedPages": [
+        3
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-convex-imaging",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-model-camera",
+      "activity": "伸缩纸筒照相机模型",
+      "section": "5.2",
+      "printedPages": [
+        119,
+        121,
+        136
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-model-camera",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-projector-image",
+      "activity": "投影仪的放大实像",
+      "section": "5.2",
+      "printedPages": [
+        119,
+        120
+      ],
+      "column": "演示",
+      "implementationId": "phy-convex-imaging",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-magnifier-image",
+      "activity": "放大镜形成正立虚像",
+      "section": "5.2",
+      "printedPages": [
+        120,
+        121,
+        125
+      ],
+      "column": "正文活动",
+      "implementationId": "phy-convex-imaging",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-lens-position-swap",
+      "activity": "固定物屏距离寻找两次清晰成像",
+      "section": "5.章末",
+      "printedPages": [
+        136
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-convex-imaging",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-bottle-lens",
+      "activity": "盛水圆柱瓶观察移动的笔",
+      "section": "5.3",
+      "printedPages": [
+        124,
+        125
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-bottle-lens",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-covered-lens",
+      "activity": "遮挡透镜局部后像的变化",
+      "section": "5.3",
+      "printedPages": [
+        125
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-covered-lens",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-near-point",
+      "activity": "测量看清文字的近点",
+      "section": "5.4",
+      "printedPages": [
+        128
+      ],
+      "column": "科学世界",
+      "implementationId": "phy-near-point",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-spectacle-power",
+      "activity": "测老花镜焦距并估算度数",
+      "section": "5.4",
+      "printedPages": [
+        128
+      ],
+      "column": "科学世界",
+      "implementationId": "phy-spectacle-power",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-hyperopia-correction",
+      "activity": "用光具座模拟远视及矫正",
+      "section": "5.4",
+      "printedPages": [
+        129
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-hyperopia-correction",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-telescope",
+      "activity": "双凸透镜望远镜设计",
+      "section": "5.5",
+      "printedPages": [
+        130,
+        131,
+        132,
+        133
+      ],
+      "column": "跨学科实践",
+      "implementationId": "phy-telescope",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-two-lenses-intro",
+      "activity": "两块放大镜组合观察",
+      "section": "绪言",
+      "printedPages": [
+        3
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-telescope",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-water-drop-microscope",
+      "activity": "水滴与放大镜组合观察微小物体",
+      "section": "5.章末",
+      "printedPages": [
+        137
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-water-drop-microscope",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-balance-mass",
+      "activity": "托盘天平测量固体和液体质量",
+      "section": "6.1",
+      "printedPages": [
+        141,
+        142,
+        143
+      ],
+      "column": "实验",
+      "implementationId": "phy-balance-mass",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-paperclip-mass",
+      "activity": "累积测回形针质量并估计数量",
+      "section": "6.1",
+      "printedPages": [
+        143
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-paperclip-mass",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-mass-volume",
+      "activity": "同种物质的质量与体积关系",
+      "section": "6.2",
+      "printedPages": [
+        144,
+        145
+      ],
+      "column": "实验",
+      "implementationId": "phy-mass-volume",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-classroom-air-mass",
+      "activity": "测教室体积并估算空气质量",
+      "section": "6.2",
+      "printedPages": [
+        148
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-classroom-air-mass",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-saltwater-density",
+      "activity": "测量配制盐水的密度",
+      "section": "6.3",
+      "printedPages": [
+        149
+      ],
+      "column": "实验",
+      "implementationId": "phy-saltwater-density",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-milk-density",
+      "activity": "用倒出前后质量差测牛奶密度",
+      "section": "6.3",
+      "printedPages": [
+        151
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-saltwater-density",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-stone-density",
+      "activity": "排水法测不吸水石块密度",
+      "section": "6.3",
+      "printedPages": [
+        150
+      ],
+      "column": "实验",
+      "implementationId": "phy-stone-density",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-bean-density-bottle",
+      "activity": "用定容瓶和替代水测绿豆密度",
+      "section": "6.章末",
+      "printedPages": [
+        158
+      ],
+      "column": "复习与提高",
+      "implementationId": "phy-stone-density",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "same-principle-variant",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-foil-thickness-density",
+      "activity": "用质量和面积推算铝箔厚度",
+      "section": "6.4",
+      "printedPages": [
+        156
+      ],
+      "column": "练习与应用",
+      "implementationId": "phy-foil-thickness-density",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "primary",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-intro-coil-motor",
+      "activity": "磁体上方通电线圈的转动",
+      "section": "绪言",
+      "printedPages": [
+        2
+      ],
+      "column": "演示",
+      "implementationId": "phy-dc-motor-project",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/物理八年级上册-2024新版本.pdf",
+      "verification": "textbook-text-layer-verified",
+      "implementationRelation": "cross-book-intro-to-developed-experiment",
+      "book": "八上"
+    },
+    {
+      "activityId": "phy-deformation",
+      "activity": "橡皮泥与弹簧的形变",
+      "section": "7.1",
+      "printedPages": [
+        3
+      ],
+      "column": "正文操作",
+      "implementationId": "phy-deformation",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-elastic-recovery",
+      "activity": "直尺与橡皮筋的弹性恢复",
+      "section": "7.2",
+      "printedPages": [
+        7
+      ],
+      "column": "正文操作",
+      "implementationId": "phy-deformation",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-magnet-ball",
+      "activity": "磁体改变铁球运动",
+      "section": "7.1",
+      "printedPages": [
+        3
+      ],
+      "column": "演示",
+      "implementationId": "phy-magnet-ball",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-door-point",
+      "activity": "推门位置与作用效果",
+      "section": "7.1",
+      "printedPages": [
+        4
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-door-point",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-magnet-carts",
+      "activity": "两辆磁体小车相互作用",
+      "section": "7.1",
+      "printedPages": [
+        5
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-magnet-carts",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-skates-wall",
+      "activity": "旱冰鞋推墙与反作用",
+      "section": "7.1",
+      "printedPages": [
+        5
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-magnet-carts",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-spring-scale",
+      "activity": "使用弹簧测力计",
+      "section": "7.2",
+      "printedPages": [
+        8
+      ],
+      "column": "实验",
+      "implementationId": "phy-spring-scale",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-glass-microdeform",
+      "activity": "水柱放大玻璃瓶微小形变",
+      "section": "7.2",
+      "printedPages": [
+        10
+      ],
+      "column": "练习与应用4",
+      "implementationId": "phy-glass-microdeform",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-gravity-mass",
+      "activity": "重力与质量的关系",
+      "section": "7.3",
+      "printedPages": [
+        12,
+        13
+      ],
+      "column": "实验",
+      "implementationId": "phy-gravity-mass",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-plumb-level",
+      "activity": "铅垂线和三角板水平仪",
+      "section": "7.3",
+      "printedPages": [
+        14,
+        16
+      ],
+      "column": "正文应用与练习5",
+      "implementationId": "phy-plumb-level",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-floating-level",
+      "activity": "水盆浮式水平仪调平",
+      "section": "7.review",
+      "printedPages": [
+        17
+      ],
+      "column": "复习与提高5",
+      "implementationId": "phy-plumb-level",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-steel-ruler-force",
+      "activity": "钢尺弯曲研究力的三要素",
+      "section": "7.review",
+      "printedPages": [
+        17
+      ],
+      "column": "复习与提高2",
+      "implementationId": "phy-steel-ruler-force",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-resistance-motion",
+      "activity": "不同阻力下的小车滑行",
+      "section": "8.1",
+      "printedPages": [
+        19,
+        20
+      ],
+      "column": "演示",
+      "implementationId": "phy-resistance-motion",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-inertia-sheet",
+      "activity": "弹出金属片后的小球",
+      "section": "8.1",
+      "printedPages": [
+        21
+      ],
+      "column": "想想议议中的演示装置",
+      "implementationId": "phy-inertia-sheet",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-hammer-inertia",
+      "activity": "锤头借惯性套紧",
+      "section": "8.1",
+      "printedPages": [
+        21
+      ],
+      "column": "正文示例",
+      "implementationId": "phy-inertia-sheet",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-two-force-balance",
+      "activity": "小车二力平衡条件",
+      "section": "8.2",
+      "printedPages": [
+        24,
+        25
+      ],
+      "column": "实验",
+      "implementationId": "phy-two-force-balance",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-sliding-friction",
+      "activity": "滑动摩擦力的影响因素",
+      "section": "8.3",
+      "printedPages": [
+        28,
+        29
+      ],
+      "column": "实验",
+      "implementationId": "phy-sliding-friction",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-hand-friction",
+      "activity": "手掌滑动感受摩擦",
+      "section": "8.3",
+      "printedPages": [
+        27
+      ],
+      "column": "问题中的操作",
+      "implementationId": "phy-sliding-friction",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-collinear-forces",
+      "activity": "同一直线二力的合成",
+      "section": "8.4",
+      "printedPages": [
+        34,
+        35
+      ],
+      "column": "演示",
+      "implementationId": "phy-collinear-forces",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-sponge-pressure",
+      "activity": "压力和接触面积的作用",
+      "section": "9.1",
+      "printedPages": [
+        41
+      ],
+      "column": "演示",
+      "implementationId": "phy-sponge-pressure",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-balloon-pressure",
+      "activity": "手掌与手指夹气球",
+      "section": "9.review",
+      "printedPages": [
+        62
+      ],
+      "column": "复习与提高1",
+      "implementationId": "phy-sponge-pressure",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-shoe-pressure",
+      "activity": "方格纸鞋印估测压强",
+      "section": "9.1",
+      "printedPages": [
+        43,
+        44
+      ],
+      "column": "练习与应用1",
+      "implementationId": "phy-shoe-pressure",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-liquid-pressure",
+      "activity": "液体压强的影响因素",
+      "section": "9.2",
+      "printedPages": [
+        46,
+        47
+      ],
+      "column": "实验",
+      "implementationId": "phy-liquid-pressure",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-water-jet",
+      "activity": "侧孔喷水与液面高度",
+      "section": "9.2",
+      "printedPages": [
+        45
+      ],
+      "column": "正文实验",
+      "implementationId": "phy-water-jet",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-bottle-membrane",
+      "activity": "药瓶橡皮膜朝向与水压",
+      "section": "9.2",
+      "printedPages": [
+        51
+      ],
+      "column": "练习与应用1",
+      "implementationId": "phy-liquid-pressure",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-partition-membrane",
+      "activity": "隔板橡皮膜比较两侧液压",
+      "section": "9.2",
+      "printedPages": [
+        51
+      ],
+      "column": "练习与应用2",
+      "implementationId": "phy-liquid-pressure",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-communicating-vessels",
+      "activity": "连通器静止液面的比较",
+      "section": "9.2",
+      "printedPages": [
+        49
+      ],
+      "column": "正文装置",
+      "implementationId": "phy-communicating-vessels",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-tube-level",
+      "activity": "透明软管水准仪",
+      "section": "9.2",
+      "printedPages": [
+        51
+      ],
+      "column": "练习与应用6",
+      "implementationId": "phy-communicating-vessels",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-tilted-utube",
+      "activity": "倾斜U形管后的液面",
+      "section": "9.review",
+      "printedPages": [
+        62
+      ],
+      "column": "复习与提高7",
+      "implementationId": "phy-communicating-vessels",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-suction-hole",
+      "activity": "吸盘打孔的对照",
+      "section": "9.3",
+      "printedPages": [
+        52
+      ],
+      "column": "正文实验",
+      "implementationId": "phy-suction-hole",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-inverted-water",
+      "activity": "纸片托住倒置水柱",
+      "section": "9.3",
+      "printedPages": [
+        52
+      ],
+      "column": "正文实验",
+      "implementationId": "phy-inverted-water",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-torricelli",
+      "activity": "托里拆利气压测量",
+      "section": "9.3",
+      "printedPages": [
+        53,
+        54
+      ],
+      "column": "演示",
+      "implementationId": "phy-torricelli",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-bottle-barometer",
+      "activity": "瓶和细管制作气压计",
+      "section": "9.3",
+      "printedPages": [
+        54,
+        55
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-bottle-barometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-dropper-pressure",
+      "activity": "滴管进水由外界压强推动",
+      "section": "9.3",
+      "printedPages": [
+        55
+      ],
+      "column": "练习与应用1",
+      "implementationId": "phy-dropper-pressure",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-magdeburg",
+      "activity": "马德堡半球压差演示",
+      "section": "9.3",
+      "printedPages": [
+        55
+      ],
+      "column": "历史实验及练习3",
+      "implementationId": "phy-magdeburg",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-piston-pump",
+      "activity": "简易活塞式抽水机",
+      "section": "9.4",
+      "printedPages": [
+        56,
+        57,
+        58
+      ],
+      "column": "跨学科实践",
+      "implementationId": "phy-piston-pump",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-syringe-water",
+      "activity": "注射器活塞提水",
+      "section": "9.4",
+      "printedPages": [
+        56
+      ],
+      "column": "项目预实验",
+      "implementationId": "phy-piston-pump",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-blow-strip",
+      "activity": "向纸条上方吹气",
+      "section": "9.5",
+      "printedPages": [
+        59
+      ],
+      "column": "问题中的操作",
+      "implementationId": "phy-blow-strip",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-blow-two-papers",
+      "activity": "两张纸之间吹气",
+      "section": "9.5",
+      "printedPages": [
+        59,
+        60
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-blow-strip",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-flow-pressure-sensors",
+      "activity": "变截面管气压传感器实验",
+      "section": "9.5",
+      "printedPages": [
+        60,
+        61
+      ],
+      "column": "拓展实验",
+      "implementationId": "phy-flow-pressure-sensors",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-straw-spray",
+      "activity": "两根吸管形成简易喷雾",
+      "section": "9.5",
+      "printedPages": [
+        61
+      ],
+      "column": "练习与应用4",
+      "implementationId": "phy-straw-spray",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-buoyancy-weighing",
+      "activity": "称重法测浮力与浸没深度",
+      "section": "10.1",
+      "printedPages": [
+        64,
+        65
+      ],
+      "column": "演示",
+      "implementationId": "phy-buoyancy-weighing",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-buoyancy-factors",
+      "activity": "浮力大小的影响因素",
+      "section": "10.1",
+      "printedPages": [
+        66
+      ],
+      "column": "实验",
+      "implementationId": "phy-buoyancy-factors",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-bottle-immersion",
+      "activity": "把空瓶逐渐压入水中",
+      "section": "10.1",
+      "printedPages": [
+        65
+      ],
+      "column": "正文经验操作",
+      "implementationId": "phy-buoyancy-factors",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-archimedes",
+      "activity": "浮力与排开液体重力的关系",
+      "section": "10.2",
+      "printedPages": [
+        69,
+        70
+      ],
+      "column": "实验",
+      "implementationId": "phy-archimedes",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-egg-saltwater",
+      "activity": "鸡蛋在水和盐水中的浮沉",
+      "section": "10.3",
+      "printedPages": [
+        74
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-egg-saltwater",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-clay-boat",
+      "activity": "橡皮泥船与承载能力",
+      "section": "10.3",
+      "printedPages": [
+        74,
+        75
+      ],
+      "column": "想想做做",
+      "implementationId": "phy-clay-boat",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-micro-hydrometer",
+      "activity": "微型密度计的设计与标定",
+      "section": "10.4",
+      "printedPages": [
+        77,
+        78,
+        79,
+        80
+      ],
+      "column": "跨学科实践",
+      "implementationId": "phy-micro-hydrometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-straw-hydrometer",
+      "activity": "吸管密度计比较液体",
+      "section": "10.3",
+      "printedPages": [
+        76
+      ],
+      "column": "练习与应用5",
+      "implementationId": "phy-micro-hydrometer",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-submarine-model",
+      "activity": "烧瓶潜水艇模型",
+      "section": "10.review",
+      "printedPages": [
+        82
+      ],
+      "column": "复习与提高7",
+      "implementationId": "phy-submarine-model",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-kinetic-energy",
+      "activity": "钢球推动木块比较动能",
+      "section": "11.3",
+      "printedPages": [
+        92
+      ],
+      "column": "演示",
+      "implementationId": "phy-kinetic-energy",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-pendulum-lock",
+      "activity": "摆回的重物能否超过释放高度",
+      "section": "11.4",
+      "printedPages": [
+        96
+      ],
+      "column": "问题中的演示",
+      "implementationId": "phy-pendulum-lock",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-ball-pendulum",
+      "activity": "小球摆动过程的能量转换",
+      "section": "11.4",
+      "printedPages": [
+        97
+      ],
+      "column": "想想做做2",
+      "implementationId": "phy-pendulum-lock",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-bounce-higher",
+      "activity": "怎样让乒乓球弹得高于起点",
+      "section": "11.4",
+      "printedPages": [
+        100
+      ],
+      "column": "练习与应用3",
+      "implementationId": "phy-pendulum-lock",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-rolling-pendulum",
+      "activity": "滚摆的动能与势能转换",
+      "section": "11.4",
+      "printedPages": [
+        97
+      ],
+      "column": "想想做做1",
+      "implementationId": "phy-rolling-pendulum",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-returning-can",
+      "activity": "橡皮筋回滚罐",
+      "section": "11.4",
+      "printedPages": [
+        100
+      ],
+      "column": "练习与应用4",
+      "implementationId": "phy-returning-can",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-potential-height",
+      "activity": "钢珠压痕比较重力势能",
+      "section": "11.review",
+      "printedPages": [
+        102
+      ],
+      "column": "复习与提高8",
+      "implementationId": "phy-potential-height",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-lever-balance",
+      "activity": "杠杆平衡条件",
+      "section": "12.1",
+      "printedPages": [
+        105,
+        106
+      ],
+      "column": "实验",
+      "implementationId": "phy-lever-balance",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-steelyard",
+      "activity": "简易杆秤制作和标定",
+      "section": "12.2",
+      "printedPages": [
+        111,
+        112
+      ],
+      "column": "跨学科实践",
+      "implementationId": "phy-steelyard",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-pulley-properties",
+      "activity": "定滑轮与动滑轮比较",
+      "section": "12.3",
+      "printedPages": [
+        114
+      ],
+      "column": "演示",
+      "implementationId": "phy-pulley-properties",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-pulley-efficiency",
+      "activity": "滑轮组机械效率",
+      "section": "12.4",
+      "printedPages": [
+        119,
+        120
+      ],
+      "column": "实验",
+      "implementationId": "phy-pulley-efficiency",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "primary",
+      "book": "八下"
+    },
+    {
+      "activityId": "phy-moving-pulley-work",
+      "activity": "动滑轮省力是否省功",
+      "section": "12.4",
+      "printedPages": [
+        117,
+        118
+      ],
+      "column": "演示",
+      "implementationId": "phy-pulley-efficiency",
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "verification": "verified-text-layer",
+      "implementationRelation": "same-principle-variant",
+      "book": "八下"
+    },
+    {
+      "activity": "比较水与食用油的吸热能力",
+      "book": "九全",
+      "section": "13.1",
+      "printedPage": "2–3",
+      "implementationId": "phy-heat-capacity",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用温度传感器比较比热容",
+      "book": "九全",
+      "section": "13.1",
+      "printedPage": "5",
+      "implementationId": "phy-heat-capacity-sensor",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "观察气体相互扩散",
+      "book": "九全",
+      "section": "13.2",
+      "printedPage": "9",
+      "implementationId": "phy-gas-diffusion",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "观察液体界面逐渐模糊",
+      "book": "九全",
+      "section": "13.2",
+      "printedPage": "9",
+      "implementationId": "phy-liquid-diffusion",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "比较冷热水中的墨水扩散",
+      "book": "九全",
+      "section": "13.2",
+      "printedPage": "9",
+      "implementationId": "phy-diffusion-temperature",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "压紧的铅柱为何不易分开",
+      "book": "九全",
+      "section": "13.2",
+      "printedPage": "10",
+      "implementationId": "phy-lead-attraction",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "压缩空气使温度升高",
+      "book": "九全",
+      "section": "13.3",
+      "printedPage": "16",
+      "implementationId": "phy-compression-heating",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "气体推动瓶塞与白雾出现",
+      "book": "九全",
+      "section": "13.3",
+      "printedPage": "16",
+      "implementationId": "phy-expansion-cooling",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "搓手中的能量转化",
+      "book": "九全",
+      "section": "14.1",
+      "printedPage": "20",
+      "implementationId": "phy-friction-warming",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "黑色容器中的水吸收太阳能",
+      "book": "九全",
+      "section": "14.1",
+      "printedPage": "20",
+      "implementationId": "phy-solar-water",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "太阳能电池驱动小风扇",
+      "book": "九全",
+      "section": "14.1",
+      "printedPage": "20",
+      "implementationId": "phy-solar-fan",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "摩擦后的塑料笔杆吸引纸屑",
+      "book": "九全",
+      "section": "14.1",
+      "printedPage": "20",
+      "implementationId": "phy-rubbing-paper",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "水蒸气推动塞子",
+      "book": "九全",
+      "section": "14.2",
+      "printedPage": "25",
+      "implementationId": "phy-steam-work",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "设计简易热机模型",
+      "book": "九全",
+      "section": "14.4",
+      "printedPage": "35–37",
+      "implementationId": "phy-simple-heat-engine",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "比较两种电荷的相互作用",
+      "book": "九全",
+      "section": "15.1",
+      "printedPage": "40–41",
+      "implementationId": "phy-charge-interaction",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用验电器检查带电状态",
+      "book": "九全",
+      "section": "15.1",
+      "printedPage": "41",
+      "implementationId": "phy-electroscope",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "让灯泡、电动机与蜂鸣器工作",
+      "book": "九全",
+      "section": "15.2",
+      "printedPage": "44",
+      "implementationId": "phy-simple-circuit",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "观察发光二极管的单向导电",
+      "book": "九全",
+      "section": "15.2",
+      "printedPage": "45–46",
+      "implementationId": "phy-led-direction",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "比较金属与橡胶的导电性",
+      "book": "九全",
+      "section": "15.2",
+      "printedPage": "46",
+      "implementationId": "phy-conductor-insulator",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "观察小灯泡被局部短接",
+      "book": "九全",
+      "section": "15.2",
+      "printedPage": "48",
+      "implementationId": "phy-lamp-short",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "连接串联与并联电路并观察开关作用",
+      "book": "九全",
+      "section": "15.3",
+      "printedPage": "51–52",
+      "implementationId": "phy-series-parallel-connect",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用电流表测量电流",
+      "book": "九全",
+      "section": "15.4",
+      "printedPage": "56–58",
+      "implementationId": "phy-ammeter",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "探究串联电路各处电流",
+      "book": "九全",
+      "section": "15.5",
+      "printedPage": "60–61",
+      "implementationId": "phy-series-current",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "探究并联干路与支路电流",
+      "book": "九全",
+      "section": "15.5",
+      "printedPage": "61–62",
+      "implementationId": "phy-parallel-current",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用电压表测量电压",
+      "book": "九全",
+      "section": "16.1",
+      "printedPage": "69–70",
+      "implementationId": "phy-voltmeter",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "探究串联电路的电压分配",
+      "book": "九全",
+      "section": "16.2",
+      "printedPage": "72–73",
+      "implementationId": "phy-series-voltage",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "测量串联电池组的电压",
+      "book": "九全",
+      "section": "16.2",
+      "printedPage": "73",
+      "implementationId": "phy-battery-pack",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "探究并联各支路电压",
+      "book": "九全",
+      "section": "16.2",
+      "printedPage": "74–75",
+      "implementationId": "phy-parallel-voltage",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "铁丝与铅笔芯对电流的影响",
+      "book": "九全",
+      "section": "16.3",
+      "printedPage": "77",
+      "implementationId": "phy-resistance-comparison",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "探究导体电阻与长度、粗细、材料的关系",
+      "book": "九全",
+      "section": "16.3",
+      "printedPage": "78–79",
+      "implementationId": "phy-resistance-factors",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "使用滑动变阻器改变灯泡亮度",
+      "book": "九全",
+      "section": "16.4",
+      "printedPage": "83–84",
+      "implementationId": "phy-rheostat",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "设计简易调光台灯",
+      "book": "九全",
+      "section": "16.5",
+      "printedPage": "87–90",
+      "implementationId": "phy-dimmer-project",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "电阻一定时电流与电压的关系",
+      "book": "九全",
+      "section": "17.1",
+      "printedPage": "93–94",
+      "implementationId": "phy-ohm-voltage",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "电压一定时电流与电阻的关系",
+      "book": "九全",
+      "section": "17.1",
+      "printedPage": "95–96",
+      "implementationId": "phy-ohm-resistance",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "伏安法测量定值电阻",
+      "book": "九全",
+      "section": "17.3",
+      "printedPage": "101–102",
+      "implementationId": "phy-measure-resistance",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "比较小灯泡冷、热状态的电阻",
+      "book": "九全",
+      "section": "17.3",
+      "printedPage": "102",
+      "implementationId": "phy-filament-resistance",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用数字多用表测量电阻",
+      "book": "九全",
+      "section": "17.3",
+      "printedPage": "102–103",
+      "implementationId": "phy-digital-multimeter",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "测量小灯泡电功率并比较亮度",
+      "book": "九全",
+      "section": "18.2",
+      "printedPage": "115–116",
+      "implementationId": "phy-lamp-power",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "为家庭节约用电提出方案",
+      "book": "九全",
+      "section": "18.3",
+      "printedPage": "118–119",
+      "implementationId": "phy-home-energy-audit",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "比较电阻大小对电热的影响",
+      "book": "九全",
+      "section": "18.4",
+      "printedPage": "120",
+      "implementationId": "phy-joule-resistance",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "比较电流大小对电热的影响",
+      "book": "九全",
+      "section": "18.4",
+      "printedPage": "121",
+      "implementationId": "phy-joule-current",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "比较保险丝与铜丝的过流表现",
+      "book": "九全",
+      "section": "19.2",
+      "printedPage": "134–135",
+      "implementationId": "phy-fuse-comparison",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "设计家庭电路的分支与保护",
+      "book": "九全",
+      "section": "19.3",
+      "printedPage": "141–144",
+      "implementationId": "phy-home-circuit-design",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "观察磁体吸铁与磁极相互作用",
+      "book": "九全",
+      "section": "20.1",
+      "printedPage": "147",
+      "implementationId": "phy-magnetic-poles",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用小磁针判断某点磁场方向",
+      "book": "九全",
+      "section": "20.1",
+      "printedPage": "148",
+      "implementationId": "phy-compass-field",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用磁针与铁屑描绘磁场分布",
+      "book": "九全",
+      "section": "20.1",
+      "printedPage": "149",
+      "implementationId": "phy-magnetic-field-map",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "奥斯特实验：通电导线使磁针偏转",
+      "book": "九全",
+      "section": "20.2",
+      "printedPage": "152–153",
+      "implementationId": "phy-oersted",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "探究通电螺线管外部磁场方向",
+      "book": "九全",
+      "section": "20.2",
+      "printedPage": "153–154",
+      "implementationId": "phy-solenoid-field",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "制作电磁起重机并比较磁性强弱",
+      "book": "九全",
+      "section": "20.3",
+      "printedPage": "158",
+      "implementationId": "phy-electromagnet-crane",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "观察电磁继电器的控制过程",
+      "book": "九全",
+      "section": "20.3",
+      "printedPage": "159",
+      "implementationId": "phy-electromagnetic-relay",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "通电导体在磁场中受力",
+      "book": "九全",
+      "section": "20.4",
+      "printedPage": "161–162",
+      "implementationId": "phy-magnetic-force-wire",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "通电线圈为什么不能自行连续转动",
+      "book": "九全",
+      "section": "20.4",
+      "printedPage": "162–163",
+      "implementationId": "phy-coil-torque",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "制作简易直流电动机模型",
+      "book": "九全",
+      "section": "20.5",
+      "printedPage": "165–166",
+      "implementationId": "phy-dc-motor-project",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "探究产生感应电流的条件",
+      "book": "九全",
+      "section": "20.6",
+      "printedPage": "167–168",
+      "implementationId": "phy-electromagnetic-induction",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "学生实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "手摇发电机与交替发光的LED",
+      "book": "九全",
+      "section": "20.6",
+      "printedPage": "169",
+      "implementationId": "phy-hand-generator",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "用收音机观察迅速变化电流的效应",
+      "book": "九全",
+      "section": "21.1",
+      "printedPage": "175",
+      "implementationId": "phy-spark-radio",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "真空罩中的手机还能接收信号吗",
+      "book": "九全",
+      "section": "21.1",
+      "printedPage": "176",
+      "implementationId": "phy-vacuum-phone",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "读收音机刻度与调谐频率",
+      "book": "九全",
+      "section": "21.1",
+      "printedPage": "177",
+      "implementationId": "phy-radio-tuning",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "小实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "观察电磁信号的发射与接收",
+      "book": "九全",
+      "section": "21.2",
+      "printedPage": "180",
+      "implementationId": "phy-emwave-transmission",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "水流导光与光纤通信",
+      "book": "九全",
+      "section": "21.3",
+      "printedPage": "185",
+      "implementationId": "phy-water-light-guide",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "演示实验",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    },
+    {
+      "activity": "为家庭能源使用设计改进方案",
+      "book": "九全",
+      "section": "22.3",
+      "printedPage": "200–203",
+      "implementationId": "phy-energy-saving-project",
+      "verification": "textbook-text-verified",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248011.html",
+      "evidenceType": "拓展探究",
+      "scopeNote": "据公开教材文字逐项核对；图示器材由本项目原创重绘。"
+    }
+  ],
+  "supplementIds": [
+    "phy-thermal-conductivity",
+    "phy-molecular-gap",
+    "phy-buoyancy-cause",
+    "phy-water-freezing",
+    "phy-heat-mass-temperature",
+    "phy-myopia-correction",
+    "phy-heat-engine-cycle",
+    "phy-model-camera",
+    "phy-water-jet"
+  ],
+  "ncetMappingFile": "physics-ncet-mapping.json",
+  "baseline": {
+    "subject": "physics",
+    "checked": "2026-10-31",
+    "baseline": "中小学实验教学基本目录（2023年版）初中物理",
+    "sourceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+    "total": 68,
+    "scope": "目录的68个基本活动，不能混同其他口径的学生必做清单；活动名称为本项目审计摘要。",
+    "entries": [
+      {
+        "number": 1,
+        "activitySummary": "温度测量",
+        "implementationIds": [
+          "phy-water-thermometer"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 2,
+        "activitySummary": "晶体熔化与凝固",
+        "implementationIds": [
+          "phy-melting-curves",
+          "phy-water-freezing"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 3,
+        "activitySummary": "升华及凝华",
+        "implementationIds": [
+          "phy-iodine-sublimation"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 4,
+        "activitySummary": "加热水到沸腾",
+        "implementationIds": [
+          "phy-boiling-water"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 5,
+        "activitySummary": "蒸发影响因素",
+        "implementationIds": [
+          "phy-evaporative-cooling"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 6,
+        "activitySummary": "材料弹性比较",
+        "implementationIds": [
+          "phy-deformation"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 7,
+        "activitySummary": "磁性及磁极",
+        "implementationIds": [
+          "phy-magnetic-poles"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 8,
+        "activitySummary": "导电能力比较",
+        "implementationIds": [
+          "phy-conductor-insulator"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 9,
+        "activitySummary": "导热能力比较",
+        "implementationIds": [
+          "phy-thermal-conductivity"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 10,
+        "activitySummary": "托盘天平称量",
+        "implementationIds": [
+          "phy-balance-mass"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 11,
+        "activitySummary": "质量—体积关系",
+        "implementationIds": [
+          "phy-mass-volume"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 12,
+        "activitySummary": "固液密度测定",
+        "implementationIds": [
+          "phy-stone-density",
+          "phy-saltwater-density"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 13,
+        "activitySummary": "扩散观察",
+        "implementationIds": [
+          "phy-gas-diffusion",
+          "phy-liquid-diffusion"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 14,
+        "activitySummary": "微观粒子间隙",
+        "implementationIds": [
+          "phy-molecular-gap"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 15,
+        "activitySummary": "分子引力证据",
+        "implementationIds": [
+          "phy-lead-attraction"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 16,
+        "activitySummary": "长度测量",
+        "implementationIds": [
+          "phy-ruler-length"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 17,
+        "activitySummary": "计时测量",
+        "implementationIds": [
+          "phy-stopwatch-pulse-step"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 18,
+        "activitySummary": "运动速度测量",
+        "implementationIds": [
+          "phy-incline-speed",
+          "phy-walking-speed"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 19,
+        "activitySummary": "受力后形变",
+        "implementationIds": [
+          "phy-deformation",
+          "phy-steel-ruler-force"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 20,
+        "activitySummary": "力与运动状态",
+        "implementationIds": [
+          "phy-magnet-ball"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 21,
+        "activitySummary": "滑动摩擦的变量",
+        "implementationIds": [
+          "phy-sliding-friction"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 22,
+        "activitySummary": "弹簧测力计",
+        "implementationIds": [
+          "phy-spring-scale"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 23,
+        "activitySummary": "两力平衡",
+        "implementationIds": [
+          "phy-two-force-balance"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 24,
+        "activitySummary": "惯性演示",
+        "implementationIds": [
+          "phy-inertia-sheet"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 25,
+        "activitySummary": "阻力和运动",
+        "implementationIds": [
+          "phy-resistance-motion"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 26,
+        "activitySummary": "杠杆平衡",
+        "implementationIds": [
+          "phy-lever-balance"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 27,
+        "activitySummary": "压力作用效果",
+        "implementationIds": [
+          "phy-sponge-pressure"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 28,
+        "activitySummary": "器壁受到液体压力",
+        "implementationIds": [
+          "phy-water-jet"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 29,
+        "activitySummary": "液体内部压强体验",
+        "implementationIds": [
+          "phy-liquid-pressure"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 30,
+        "activitySummary": "液体压强的变量",
+        "implementationIds": [
+          "phy-liquid-pressure"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 31,
+        "activitySummary": "浮力的形成原因",
+        "implementationIds": [
+          "phy-buoyancy-cause"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 32,
+        "activitySummary": "浮力大小的变量",
+        "implementationIds": [
+          "phy-buoyancy-factors",
+          "phy-archimedes"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 33,
+        "activitySummary": "声源振动",
+        "implementationIds": [
+          "phy-rubber-vibration",
+          "phy-amplitude-ball"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 34,
+        "activitySummary": "传声条件",
+        "implementationIds": [
+          "phy-vacuum-bell",
+          "phy-desk-sound",
+          "phy-cup-telephone"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 35,
+        "activitySummary": "音调响度音色",
+        "implementationIds": [
+          "phy-ruler-pitch",
+          "phy-amplitude-ball",
+          "phy-timbre-waveform"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 36,
+        "activitySummary": "反射规律",
+        "implementationIds": [
+          "phy-reflection-law"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 37,
+        "activitySummary": "折射规律",
+        "implementationIds": [
+          "phy-refraction-law"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 38,
+        "activitySummary": "平面镜的像",
+        "implementationIds": [
+          "phy-plane-mirror"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 39,
+        "activitySummary": "凸透镜的像",
+        "implementationIds": [
+          "phy-convex-imaging"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 40,
+        "activitySummary": "简易照相机设计",
+        "implementationIds": [
+          "phy-model-camera"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 41,
+        "activitySummary": "近远视矫正模型",
+        "implementationIds": [
+          "phy-hyperopia-correction",
+          "phy-myopia-correction"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 42,
+        "activitySummary": "白光分解",
+        "implementationIds": [
+          "phy-prism-spectrum"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 43,
+        "activitySummary": "色光合成",
+        "implementationIds": [
+          "phy-rgb-mixture"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 44,
+        "activitySummary": "摩擦带电",
+        "implementationIds": [
+          "phy-rubbing-paper"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 45,
+        "activitySummary": "磁场探测",
+        "implementationIds": [
+          "phy-magnetic-field-map",
+          "phy-compass-field"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 46,
+        "activitySummary": "电流周围磁场",
+        "implementationIds": [
+          "phy-oersted"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 47,
+        "activitySummary": "螺线管磁场方向",
+        "implementationIds": [
+          "phy-solenoid-field"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 48,
+        "activitySummary": "通电导体磁力",
+        "implementationIds": [
+          "phy-magnetic-force-wire"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 49,
+        "activitySummary": "直流电动机设计",
+        "implementationIds": [
+          "phy-dc-motor-project"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 50,
+        "activitySummary": "感应电流的条件",
+        "implementationIds": [
+          "phy-electromagnetic-induction"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 51,
+        "activitySummary": "简易发电机设计",
+        "implementationIds": [
+          "phy-hand-generator"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 52,
+        "activitySummary": "内能对外做功",
+        "implementationIds": [
+          "phy-steam-work",
+          "phy-expansion-cooling"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 53,
+        "activitySummary": "机械功改变内能",
+        "implementationIds": [
+          "phy-friction-warming",
+          "phy-compression-heating"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 54,
+        "activitySummary": "电能驱动运动",
+        "implementationIds": [
+          "phy-simple-circuit",
+          "phy-dc-motor-project"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 55,
+        "activitySummary": "通电发热",
+        "implementationIds": [
+          "phy-joule-resistance"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 56,
+        "activitySummary": "动能势能转换",
+        "implementationIds": [
+          "phy-rolling-pendulum",
+          "phy-pendulum-lock"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 57,
+        "activitySummary": "机械效率测量",
+        "implementationIds": [
+          "phy-pulley-efficiency"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 58,
+        "activitySummary": "吸热量与质量温升",
+        "implementationIds": [
+          "phy-heat-mass-temperature"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 59,
+        "activitySummary": "热机工作过程",
+        "implementationIds": [
+          "phy-heat-engine-cycle"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "补充活动已独立审读，内容范围对应；仍需验证最终控制参数、Godot结果和图示。"
+      },
+      {
+        "number": 60,
+        "activitySummary": "电流电压电阻关系",
+        "implementationIds": [
+          "phy-ohm-voltage",
+          "phy-ohm-resistance"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 61,
+        "activitySummary": "电流表测量",
+        "implementationIds": [
+          "phy-ammeter"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 62,
+        "activitySummary": "电压表测量",
+        "implementationIds": [
+          "phy-voltmeter"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 63,
+        "activitySummary": "串并联搭建",
+        "implementationIds": [
+          "phy-series-parallel-connect"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 64,
+        "activitySummary": "伏安测阻",
+        "implementationIds": [
+          "phy-measure-resistance"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 65,
+        "activitySummary": "串并联电流电压特点",
+        "implementationIds": [
+          "phy-series-current",
+          "phy-parallel-current",
+          "phy-series-voltage",
+          "phy-parallel-voltage"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 66,
+        "activitySummary": "电热的影响因素",
+        "implementationIds": [
+          "phy-joule-current",
+          "phy-joule-resistance"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      },
+      {
+        "number": 67,
+        "activitySummary": "低压模拟家庭用电",
+        "implementationIds": [
+          "phy-home-circuit-design"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "最终内容明确安全低压电源与小灯泡模拟、断电检查及并联结构；市电仅用于纸面原理与理论计算。最终交互尚需运行验收。"
+      },
+      {
+        "number": 68,
+        "activitySummary": "新能源应用设计",
+        "implementationIds": [
+          "phy-solar-fan",
+          "phy-solar-water"
+        ],
+        "status": "mapped-content-reviewed",
+        "verification": "2023目录编号与活动范围已独立核对；实验内容已审读；最终运行时另行验证",
+        "evidenceUrl": "https://jyt.hunan.gov.cn/sjyt/jyzbc/zbczcwj/syjx/202506/t20250605_33692362.html",
+        "note": "内容范围对应；不据此声称真实实验已被虚拟模拟完整替代。"
+      }
+    ],
+    "limits": [
+      "这是内容映射审计，不表示全部模型和图像已通过运行测试。",
+      "正文教材拓展活动另见各册活动映射；基线覆盖不等于所有教材版本所有活动均已实现。",
+      "作者修复后需重新审读并更新partial/missing状态。"
+    ]
+  },
+  "unverifiedTextbookAssignments": []
+}

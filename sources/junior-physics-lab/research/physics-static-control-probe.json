@@ -1,0 +1,158 @@
+{
+  "checkedDefaults": 174,
+  "displayUnchanged": [
+    {
+      "control": "amplitude",
+      "id": "phy-vacuum-bell",
+      "model": "sound",
+      "scenario": "vacuum"
+    },
+    {
+      "control": "progress",
+      "id": "phy-freezing-mixture",
+      "model": "phase",
+      "scenario": "mixture"
+    },
+    {
+      "control": "progress",
+      "id": "phy-alcohol-bag",
+      "model": "phase",
+      "scenario": "alcohol_cycle"
+    },
+    {
+      "control": "progress",
+      "id": "phy-iodine-sublimation",
+      "model": "phase",
+      "scenario": "sublimation"
+    },
+    {
+      "control": "angle",
+      "id": "phy-light-straight",
+      "model": "optics",
+      "scenario": "straight"
+    },
+    {
+      "control": "height",
+      "id": "phy-gradient-saline-ray",
+      "model": "optics",
+      "scenario": "gradient"
+    },
+    {
+      "control": "height",
+      "id": "phy-lens-rays",
+      "model": "lens",
+      "scenario": "convex"
+    },
+    {
+      "control": "height",
+      "id": "phy-convex-imaging",
+      "model": "lens",
+      "scenario": "convex"
+    },
+    {
+      "control": "height",
+      "id": "phy-bottle-lens",
+      "model": "lens",
+      "scenario": "convex"
+    },
+    {
+      "control": "height",
+      "id": "phy-covered-lens",
+      "model": "lens",
+      "scenario": "convex"
+    },
+    {
+      "control": "height",
+      "id": "phy-near-point",
+      "model": "lens",
+      "scenario": "eye"
+    },
+    {
+      "control": "height",
+      "id": "phy-spectacle-power",
+      "model": "lens",
+      "scenario": "convex"
+    },
+    {
+      "control": "initialVolume",
+      "id": "phy-stone-density",
+      "model": "density",
+      "scenario": "displacement"
+    },
+    {
+      "control": "time",
+      "id": "phy-gas-diffusion",
+      "model": "molecular",
+      "scenario": "diffusion"
+    },
+    {
+      "control": "time",
+      "id": "phy-liquid-diffusion",
+      "model": "molecular",
+      "scenario": "diffusion"
+    },
+    {
+      "control": "time",
+      "id": "phy-diffusion-temperature",
+      "model": "molecular",
+      "scenario": "diffusion"
+    },
+    {
+      "control": "charge1",
+      "id": "phy-rubbing-paper",
+      "model": "charge",
+      "scenario": "rubbing"
+    },
+    {
+      "control": "distance",
+      "id": "phy-charge-interaction",
+      "model": "charge",
+      "scenario": "interaction"
+    },
+    {
+      "control": "angle",
+      "id": "phy-coil-torque",
+      "model": "magnet",
+      "scenario": "coil"
+    },
+    {
+      "control": "angle",
+      "id": "phy-dc-motor-project",
+      "model": "magnet",
+      "scenario": "motor"
+    },
+    {
+      "control": "receiverFrequency",
+      "id": "phy-radio-tuning",
+      "model": "emwave",
+      "scenario": "tuning"
+    },
+    {
+      "control": "bandwidth",
+      "id": "phy-radio-tuning",
+      "model": "emwave",
+      "scenario": "tuning"
+    },
+    {
+      "control": "initial",
+      "id": "phy-thermal-conductivity",
+      "model": "thermal",
+      "scenario": "conduction"
+    },
+    {
+      "control": "temperature2",
+      "id": "phy-thermal-conductivity",
+      "model": "thermal",
+      "scenario": "conduction"
+    },
+    {
+      "control": "height",
+      "id": "phy-model-camera",
+      "model": "lens",
+      "scenario": "camera"
+    }
+  ],
+  "errors": [],
+  "evaluatedControls": 941,
+  "scope": "Static scientific models only; motion, incline and pendulum use separate actual rigid-body solvers. Display comparisons exclude apparatus changes."
+}

@@ -1,0 +1,1795 @@
+{
+  "book": "人教版物理八年级下册（根据2022年版课程标准修订）",
+  "rollout": "2025春",
+  "checked": "2026-10-31",
+  "source": {
+    "id": "physics-g8b-textbook",
+    "title": "人教版八年级下册新版教材公开PDF镜像",
+    "url": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+    "indexUrl": "https://www.jymxkt.com/index.php/post/10.html",
+    "publisher": "人民教育出版社；PDF由小欣物理公开提供",
+    "editionEvidence": "当前文件与新版24节目录一致，含8.4与三项跨学科实践；文件名2024，不等于启用学期。版权页未载可辨认印次。",
+    "pages": 131,
+    "printedToPdfOffset": 5
+  },
+  "coverageClaim": "逐页核对印刷页1—124的实验、演示、想想做做、拓展实验、跨学科实践及明确操作型正文/练习。保留扩展栏目类型，未把所有图片和计算题冒称实验。",
+  "sections": [
+    {
+      "section": "7.1",
+      "title": "力",
+      "printedStart": 2
+    },
+    {
+      "section": "7.2",
+      "title": "弹力",
+      "printedStart": 7
+    },
+    {
+      "section": "7.3",
+      "title": "重力",
+      "printedStart": 11
+    },
+    {
+      "section": "8.1",
+      "title": "牛顿第一定律",
+      "printedStart": 19
+    },
+    {
+      "section": "8.2",
+      "title": "二力平衡",
+      "printedStart": 23
+    },
+    {
+      "section": "8.3",
+      "title": "摩擦力",
+      "printedStart": 27
+    },
+    {
+      "section": "8.4",
+      "title": "同一直线上二力的合成",
+      "printedStart": 33
+    },
+    {
+      "section": "9.1",
+      "title": "压强",
+      "printedStart": 40
+    },
+    {
+      "section": "9.2",
+      "title": "液体的压强",
+      "printedStart": 45
+    },
+    {
+      "section": "9.3",
+      "title": "大气压强",
+      "printedStart": 52
+    },
+    {
+      "section": "9.4",
+      "title": "跨学科实践：制作简易活塞式抽水机",
+      "printedStart": 56
+    },
+    {
+      "section": "9.5",
+      "title": "流体压强与流速的关系",
+      "printedStart": 59
+    },
+    {
+      "section": "10.1",
+      "title": "浮力",
+      "printedStart": 64
+    },
+    {
+      "section": "10.2",
+      "title": "阿基米德原理",
+      "printedStart": 68
+    },
+    {
+      "section": "10.3",
+      "title": "物体的浮沉条件及应用",
+      "printedStart": 73
+    },
+    {
+      "section": "10.4",
+      "title": "跨学科实践：制作微型密度计",
+      "printedStart": 77
+    },
+    {
+      "section": "11.1",
+      "title": "功",
+      "printedStart": 84
+    },
+    {
+      "section": "11.2",
+      "title": "功率",
+      "printedStart": 88
+    },
+    {
+      "section": "11.3",
+      "title": "动能和势能",
+      "printedStart": 91
+    },
+    {
+      "section": "11.4",
+      "title": "机械能及其转化",
+      "printedStart": 96
+    },
+    {
+      "section": "12.1",
+      "title": "杠杆",
+      "printedStart": 104
+    },
+    {
+      "section": "12.2",
+      "title": "跨学科实践：制作简易杆秤",
+      "printedStart": 111
+    },
+    {
+      "section": "12.3",
+      "title": "滑轮",
+      "printedStart": 113
+    },
+    {
+      "section": "12.4",
+      "title": "机械效率",
+      "printedStart": 117
+    }
+  ],
+  "activities": [
+    {
+      "id": "phy-deformation",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.1",
+      "sectionTitle": "力",
+      "title": "橡皮泥与弹簧的形变",
+      "textbookCategory": "正文操作",
+      "printedPages": [
+        3
+      ],
+      "pdfPages": [
+        8
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "按压橡皮泥，拉压弹簧，比较外形变化。",
+      "suggestedModel": "force",
+      "variant": "deformation",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-magnet-ball",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.1",
+      "sectionTitle": "力",
+      "title": "磁体改变铁球运动",
+      "textbookCategory": "演示",
+      "printedPages": [
+        3
+      ],
+      "pdfPages": [
+        8
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较静止、前方磁体、侧方磁体三种配置。",
+      "suggestedModel": "force",
+      "variant": "magnetic-deflection",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-door-point",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.1",
+      "sectionTitle": "力",
+      "title": "推门位置与作用效果",
+      "textbookCategory": "想想做做",
+      "printedPages": [
+        4
+      ],
+      "pdfPages": [
+        9
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "相同推力下改变手到门轴的距离。",
+      "suggestedModel": "lever",
+      "variant": "door",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-magnet-carts",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.1",
+      "sectionTitle": "力",
+      "title": "两辆磁体小车相互作用",
+      "textbookCategory": "想想做做",
+      "printedPages": [
+        5
+      ],
+      "pdfPages": [
+        10
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "释放两车并观察双方同时运动。",
+      "suggestedModel": "force",
+      "variant": "interaction",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-skates-wall",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.1",
+      "sectionTitle": "力",
+      "title": "旱冰鞋推墙与反作用",
+      "textbookCategory": "想想做做",
+      "printedPages": [
+        5
+      ],
+      "pdfPages": [
+        10
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "观察人推墙后自身后退，页面应只作模拟。",
+      "suggestedModel": "force",
+      "variant": "interaction",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-elastic-recovery",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.2",
+      "sectionTitle": "弹力",
+      "title": "直尺与橡皮筋的弹性恢复",
+      "textbookCategory": "正文操作",
+      "printedPages": [
+        7
+      ],
+      "pdfPages": [
+        12
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较受力与撤力后形状，限定弹性范围。",
+      "suggestedModel": "force",
+      "variant": "spring",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-spring-scale",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.2",
+      "sectionTitle": "弹力",
+      "title": "使用弹簧测力计",
+      "textbookCategory": "实验",
+      "printedPages": [
+        8
+      ],
+      "pdfPages": [
+        13
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "含识别量程分度值、调零、手感以及竖直悬挂和水平拉动文具袋。",
+      "suggestedModel": "force",
+      "variant": "spring",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-glass-microdeform",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.2",
+      "sectionTitle": "弹力",
+      "title": "水柱放大玻璃瓶微小形变",
+      "textbookCategory": "练习与应用4",
+      "printedPages": [
+        10
+      ],
+      "pdfPages": [
+        15
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "改变捏瓶位置，观察细管液面升降。",
+      "suggestedModel": "force",
+      "variant": "deformation",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-gravity-mass",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.3",
+      "sectionTitle": "重力",
+      "title": "重力与质量的关系",
+      "textbookCategory": "实验",
+      "printedPages": [
+        12,
+        13
+      ],
+      "pdfPages": [
+        17,
+        18
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "以多组钩码数据绘制重力—质量图像。",
+      "suggestedModel": "force",
+      "variant": "gravity",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-plumb-level",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.3",
+      "sectionTitle": "重力",
+      "title": "铅垂线和三角板水平仪",
+      "textbookCategory": "正文应用与练习5",
+      "printedPages": [
+        14,
+        16
+      ],
+      "pdfPages": [
+        19,
+        21
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "利用重力方向检验桌面是否水平。",
+      "suggestedModel": "force",
+      "variant": "gravity-direction",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-steel-ruler-force",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.review",
+      "sectionTitle": "复习与提高",
+      "title": "钢尺弯曲研究力的三要素",
+      "textbookCategory": "复习与提高2",
+      "printedPages": [
+        17
+      ],
+      "pdfPages": [
+        22
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "改变测力计的拉力、方向或作用位置，比较钢尺弯曲。",
+      "suggestedModel": "force",
+      "variant": "deformation",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-floating-level",
+      "term": "8下",
+      "chapterNumber": 7,
+      "chapterTitle": "力",
+      "section": "7.review",
+      "sectionTitle": "复习与提高",
+      "title": "水盆浮式水平仪调平",
+      "textbookCategory": "复习与提高5",
+      "printedPages": [
+        17
+      ],
+      "pdfPages": [
+        22
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "观察两瞄准线与水面关系，思考配平方法。",
+      "suggestedModel": "buoyancy",
+      "variant": "floating-level",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-resistance-motion",
+      "term": "8下",
+      "chapterNumber": 8,
+      "chapterTitle": "运动和力",
+      "section": "8.1",
+      "sectionTitle": "牛顿第一定律",
+      "title": "不同阻力下的小车滑行",
+      "textbookCategory": "演示",
+      "printedPages": [
+        19,
+        20
+      ],
+      "pdfPages": [
+        24,
+        25
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "保持同一斜面释放高度，比较棉布和木板上的停止位置。",
+      "suggestedModel": "force",
+      "variant": "inertia",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-inertia-sheet",
+      "term": "8下",
+      "chapterNumber": 8,
+      "chapterTitle": "运动和力",
+      "section": "8.1",
+      "sectionTitle": "牛顿第一定律",
+      "title": "弹出金属片后的小球",
+      "textbookCategory": "想想议议中的演示装置",
+      "printedPages": [
+        21
+      ],
+      "pdfPages": [
+        26
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "观察支撑片快速移走时小球的运动。",
+      "suggestedModel": "force",
+      "variant": "inertia",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-hammer-inertia",
+      "term": "8下",
+      "chapterNumber": 8,
+      "chapterTitle": "运动和力",
+      "section": "8.1",
+      "sectionTitle": "牛顿第一定律",
+      "title": "锤头借惯性套紧",
+      "textbookCategory": "正文示例",
+      "printedPages": [
+        21
+      ],
+      "pdfPages": [
+        26
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "描述锤柄突然停止与锤头继续下移；不作为学生敲击操作。",
+      "suggestedModel": "force",
+      "variant": "inertia",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-two-force-balance",
+      "term": "8下",
+      "chapterNumber": 8,
+      "chapterTitle": "运动和力",
+      "section": "8.2",
+      "sectionTitle": "二力平衡",
+      "title": "小车二力平衡条件",
+      "textbookCategory": "实验",
+      "printedPages": [
+        24,
+        25
+      ],
+      "pdfPages": [
+        29,
+        30
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "改变两端钩码与两力作用线，检验平衡。",
+      "suggestedModel": "force",
+      "variant": "balance",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-hand-friction",
+      "term": "8下",
+      "chapterNumber": 8,
+      "chapterTitle": "运动和力",
+      "section": "8.3",
+      "sectionTitle": "摩擦力",
+      "title": "手掌滑动感受摩擦",
+      "textbookCategory": "问题中的操作",
+      "printedPages": [
+        27
+      ],
+      "pdfPages": [
+        32
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较压力和接触面改变时的阻碍感。",
+      "suggestedModel": "force",
+      "variant": "friction",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-sliding-friction",
+      "term": "8下",
+      "chapterNumber": 8,
+      "chapterTitle": "运动和力",
+      "section": "8.3",
+      "sectionTitle": "摩擦力",
+      "title": "滑动摩擦力的影响因素",
+      "textbookCategory": "实验",
+      "printedPages": [
+        28,
+        29
+      ],
+      "pdfPages": [
+        33,
+        34
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "同材料下分别改变压力和粗糙程度；以水平匀速拉动测量。",
+      "suggestedModel": "force",
+      "variant": "friction",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-collinear-forces",
+      "term": "8下",
+      "chapterNumber": 8,
+      "chapterTitle": "运动和力",
+      "section": "8.4",
+      "sectionTitle": "同一直线上二力的合成",
+      "title": "同一直线二力的合成",
+      "textbookCategory": "演示",
+      "printedPages": [
+        34,
+        35
+      ],
+      "pdfPages": [
+        39,
+        40
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "橡皮筋圆环同位置，分别比较同向和反向两力与替代单力。",
+      "suggestedModel": "force",
+      "variant": "resultant",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-sponge-pressure",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.1",
+      "sectionTitle": "压强",
+      "title": "压力和接触面积的作用",
+      "textbookCategory": "演示",
+      "printedPages": [
+        41
+      ],
+      "pdfPages": [
+        46
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "海绵上小桌改变载荷和朝向，控制另一个变量。",
+      "suggestedModel": "pressure",
+      "variant": "solid",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-shoe-pressure",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.1",
+      "sectionTitle": "压强",
+      "title": "方格纸鞋印估测压强",
+      "textbookCategory": "练习与应用1",
+      "printedPages": [
+        43,
+        44
+      ],
+      "pdfPages": [
+        48,
+        49
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "测质量并由鞋印格数估算双脚接触面积。",
+      "suggestedModel": "pressure",
+      "variant": "solid",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-water-jet",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.2",
+      "sectionTitle": "液体的压强",
+      "title": "侧孔喷水与液面高度",
+      "textbookCategory": "正文实验",
+      "printedPages": [
+        45
+      ],
+      "pdfPages": [
+        50
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "观察液面下降时同一侧孔射流变化。",
+      "suggestedModel": "pressure",
+      "variant": "liquid",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-liquid-pressure",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.2",
+      "sectionTitle": "液体的压强",
+      "title": "液体压强的影响因素",
+      "textbookCategory": "实验",
+      "printedPages": [
+        46,
+        47
+      ],
+      "pdfPages": [
+        51,
+        52
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "用橡皮膜探头和U形管分别考察方向、深度、密度。",
+      "suggestedModel": "pressure",
+      "variant": "liquid",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-communicating-vessels",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.2",
+      "sectionTitle": "液体的压强",
+      "title": "连通器静止液面的比较",
+      "textbookCategory": "正文装置",
+      "printedPages": [
+        49
+      ],
+      "pdfPages": [
+        54
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较开口相通容器中的同种静止液体。",
+      "suggestedModel": "pressure",
+      "variant": "communicating",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-bottle-membrane",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.2",
+      "sectionTitle": "液体的压强",
+      "title": "药瓶橡皮膜朝向与水压",
+      "textbookCategory": "练习与应用1",
+      "printedPages": [
+        51
+      ],
+      "pdfPages": [
+        56
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "同一瓶位，比较瓶口朝上和朝下时橡皮膜凹陷。",
+      "suggestedModel": "pressure",
+      "variant": "liquid",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-partition-membrane",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.2",
+      "sectionTitle": "液体的压强",
+      "title": "隔板橡皮膜比较两侧液压",
+      "textbookCategory": "练习与应用2",
+      "printedPages": [
+        51
+      ],
+      "pdfPages": [
+        56
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "分别控制液体种类或液面高度，观察膜的偏向。",
+      "suggestedModel": "pressure",
+      "variant": "liquid-difference",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-tube-level",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.2",
+      "sectionTitle": "液体的压强",
+      "title": "透明软管水准仪",
+      "textbookCategory": "练习与应用6",
+      "printedPages": [
+        51
+      ],
+      "pdfPages": [
+        56
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "用同一静止水面为画框两端定位。",
+      "suggestedModel": "pressure",
+      "variant": "communicating",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-suction-hole",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.3",
+      "sectionTitle": "大气压强",
+      "title": "吸盘打孔的对照",
+      "textbookCategory": "正文实验",
+      "printedPages": [
+        52
+      ],
+      "pdfPages": [
+        57
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较密封与连通空气后的吸附情况。",
+      "suggestedModel": "pressure",
+      "variant": "atmosphere",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-inverted-water",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.3",
+      "sectionTitle": "大气压强",
+      "title": "纸片托住倒置水柱",
+      "textbookCategory": "正文实验",
+      "printedPages": [
+        52
+      ],
+      "pdfPages": [
+        57
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "观察封闭塑料管口朝下时水的保持，并思考通气对照。",
+      "suggestedModel": "pressure",
+      "variant": "atmosphere",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-torricelli",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.3",
+      "sectionTitle": "大气压强",
+      "title": "托里拆利气压测量",
+      "textbookCategory": "演示",
+      "printedPages": [
+        53,
+        54
+      ],
+      "pdfPages": [
+        58,
+        59
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较竖直水银高度；改变玻璃管位置而保持管口浸没。",
+      "suggestedModel": "pressure",
+      "variant": "barometer",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-bottle-barometer",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.3",
+      "sectionTitle": "大气压强",
+      "title": "瓶和细管制作气压计",
+      "textbookCategory": "想想做做",
+      "printedPages": [
+        54,
+        55
+      ],
+      "pdfPages": [
+        59,
+        60
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较不同楼层的水柱高度；需控制温度和封闭气体状态。",
+      "suggestedModel": "pressure",
+      "variant": "barometer",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-dropper-pressure",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.3",
+      "sectionTitle": "大气压强",
+      "title": "滴管进水由外界压强推动",
+      "textbookCategory": "练习与应用1",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        60
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "设计有无内外压差的对照，检验吸水解释。",
+      "suggestedModel": "pressure",
+      "variant": "atmosphere",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-magdeburg",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.3",
+      "sectionTitle": "大气压强",
+      "title": "马德堡半球压差演示",
+      "textbookCategory": "历史实验及练习3",
+      "printedPages": [
+        55
+      ],
+      "pdfPages": [
+        60
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "教材以压力锅模拟历史半球，只用于受力可视化。",
+      "suggestedModel": "pressure",
+      "variant": "atmosphere",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-syringe-water",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.4",
+      "sectionTitle": "跨学科实践：制作简易活塞式抽水机",
+      "title": "注射器活塞提水",
+      "textbookCategory": "项目预实验",
+      "printedPages": [
+        56
+      ],
+      "pdfPages": [
+        61
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较提起和压下活塞时水的流向。",
+      "suggestedModel": "pressure",
+      "variant": "pump",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-piston-pump",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.4",
+      "sectionTitle": "跨学科实践：制作简易活塞式抽水机",
+      "title": "简易活塞式抽水机",
+      "textbookCategory": "跨学科实践",
+      "printedPages": [
+        56,
+        57,
+        58
+      ],
+      "pdfPages": [
+        61,
+        62,
+        63
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "设计筒体、活塞和单向阀，并解释提压交替抽水。",
+      "suggestedModel": "pressure",
+      "variant": "pump",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-blow-strip",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.5",
+      "sectionTitle": "流体压强与流速的关系",
+      "title": "向纸条上方吹气",
+      "textbookCategory": "问题中的操作",
+      "printedPages": [
+        59
+      ],
+      "pdfPages": [
+        64
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较有无气流时纸条形态。",
+      "suggestedModel": "pressure",
+      "variant": "flow",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-blow-two-papers",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.5",
+      "sectionTitle": "流体压强与流速的关系",
+      "title": "两张纸之间吹气",
+      "textbookCategory": "想想做做",
+      "printedPages": [
+        59,
+        60
+      ],
+      "pdfPages": [
+        64,
+        65
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较纸片内外气流与运动方向。",
+      "suggestedModel": "pressure",
+      "variant": "flow",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-flow-pressure-sensors",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.5",
+      "sectionTitle": "流体压强与流速的关系",
+      "title": "变截面管气压传感器实验",
+      "textbookCategory": "拓展实验",
+      "printedPages": [
+        60,
+        61
+      ],
+      "pdfPages": [
+        65,
+        66
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "抽气时测量不同截面的静压并比较流速。",
+      "suggestedModel": "pressure",
+      "variant": "flow",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-straw-spray",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.5",
+      "sectionTitle": "流体压强与流速的关系",
+      "title": "两根吸管形成简易喷雾",
+      "textbookCategory": "练习与应用4",
+      "printedPages": [
+        61
+      ],
+      "pdfPages": [
+        66
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "横向气流使竖直吸管内液面上升。",
+      "suggestedModel": "pressure",
+      "variant": "flow",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-balloon-pressure",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.review",
+      "sectionTitle": "复习与提高",
+      "title": "手掌与手指夹气球",
+      "textbookCategory": "复习与提高1",
+      "printedPages": [
+        62
+      ],
+      "pdfPages": [
+        67
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "同一气球两侧受力，比较面积与形变。",
+      "suggestedModel": "pressure",
+      "variant": "solid",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-tilted-utube",
+      "term": "8下",
+      "chapterNumber": 9,
+      "chapterTitle": "压强",
+      "section": "9.review",
+      "sectionTitle": "复习与提高",
+      "title": "倾斜U形管后的液面",
+      "textbookCategory": "复习与提高7",
+      "printedPages": [
+        62
+      ],
+      "pdfPages": [
+        67
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "倾斜连通器并等待同种液体静止。",
+      "suggestedModel": "pressure",
+      "variant": "communicating",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-buoyancy-weighing",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.1",
+      "sectionTitle": "浮力",
+      "title": "称重法测浮力与浸没深度",
+      "textbookCategory": "演示",
+      "printedPages": [
+        64,
+        65
+      ],
+      "pdfPages": [
+        69,
+        70
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "铝块在空气和水中读数对照，浸没后改变深度。",
+      "suggestedModel": "buoyancy",
+      "variant": "weighing",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-bottle-immersion",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.1",
+      "sectionTitle": "浮力",
+      "title": "把空瓶逐渐压入水中",
+      "textbookCategory": "正文经验操作",
+      "printedPages": [
+        65
+      ],
+      "pdfPages": [
+        70
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "感受浸入体积改变时需要施加的力。",
+      "suggestedModel": "buoyancy",
+      "variant": "immersion",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-buoyancy-factors",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.1",
+      "sectionTitle": "浮力",
+      "title": "浮力大小的影响因素",
+      "textbookCategory": "实验",
+      "printedPages": [
+        66
+      ],
+      "pdfPages": [
+        71
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "控制变量比较浸入体积及液体密度。",
+      "suggestedModel": "buoyancy",
+      "variant": "factors",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-archimedes",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.2",
+      "sectionTitle": "阿基米德原理",
+      "title": "浮力与排开液体重力的关系",
+      "textbookCategory": "实验",
+      "printedPages": [
+        69,
+        70
+      ],
+      "pdfPages": [
+        74,
+        75
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "组合称重法和溢水杯，分别测浮力与排水重力。",
+      "suggestedModel": "buoyancy",
+      "variant": "archimedes",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-egg-saltwater",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.3",
+      "sectionTitle": "物体的浮沉条件及应用",
+      "title": "鸡蛋在水和盐水中的浮沉",
+      "textbookCategory": "想想做做",
+      "printedPages": [
+        74
+      ],
+      "pdfPages": [
+        79
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "同一个鸡蛋换到密度不同的液体中。",
+      "suggestedModel": "buoyancy",
+      "variant": "sinking",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-clay-boat",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.3",
+      "sectionTitle": "物体的浮沉条件及应用",
+      "title": "橡皮泥船与承载能力",
+      "textbookCategory": "想想做做",
+      "printedPages": [
+        74,
+        75
+      ],
+      "pdfPages": [
+        79,
+        80
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "同块橡皮泥改变排水外形并测试载荷。",
+      "suggestedModel": "buoyancy",
+      "variant": "boat",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-straw-hydrometer",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.3",
+      "sectionTitle": "物体的浮沉条件及应用",
+      "title": "吸管密度计比较液体",
+      "textbookCategory": "练习与应用5",
+      "printedPages": [
+        76
+      ],
+      "pdfPages": [
+        81
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "密封吸管加配重，比较不同液体中的浸入深度。",
+      "suggestedModel": "buoyancy",
+      "variant": "hydrometer",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-micro-hydrometer",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.4",
+      "sectionTitle": "跨学科实践：制作微型密度计",
+      "title": "微型密度计的设计与标定",
+      "textbookCategory": "跨学科实践",
+      "printedPages": [
+        77,
+        78,
+        79,
+        80
+      ],
+      "pdfPages": [
+        82,
+        83,
+        84,
+        85
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "考虑总质量、浮子、细杆直径、配重与标定；只评估密度。",
+      "suggestedModel": "buoyancy",
+      "variant": "hydrometer",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-submarine-model",
+      "term": "8下",
+      "chapterNumber": 10,
+      "chapterTitle": "浮力",
+      "section": "10.review",
+      "sectionTitle": "复习与提高",
+      "title": "烧瓶潜水艇模型",
+      "textbookCategory": "复习与提高7",
+      "printedPages": [
+        82
+      ],
+      "pdfPages": [
+        87
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "改变模型内水量，比较总重力与浮力。",
+      "suggestedModel": "buoyancy",
+      "variant": "submarine",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-kinetic-energy",
+      "term": "8下",
+      "chapterNumber": 11,
+      "chapterTitle": "功和机械能",
+      "section": "11.3",
+      "sectionTitle": "动能和势能",
+      "title": "钢球推动木块比较动能",
+      "textbookCategory": "演示",
+      "printedPages": [
+        92
+      ],
+      "pdfPages": [
+        97
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "分别控制质量或释放高度，用木块移动作能量比较指标。",
+      "suggestedModel": "energy",
+      "variant": "kinetic",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-pendulum-lock",
+      "term": "8下",
+      "chapterNumber": 11,
+      "chapterTitle": "功和机械能",
+      "section": "11.4",
+      "sectionTitle": "机械能及其转化",
+      "title": "摆回的重物能否超过释放高度",
+      "textbookCategory": "问题中的演示",
+      "printedPages": [
+        96
+      ],
+      "pdfPages": [
+        101
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "无初推释放并观察回摆最高位置；使用安全替身展示。",
+      "suggestedModel": "energy",
+      "variant": "pendulum",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-rolling-pendulum",
+      "term": "8下",
+      "chapterNumber": 11,
+      "chapterTitle": "功和机械能",
+      "section": "11.4",
+      "sectionTitle": "机械能及其转化",
+      "title": "滚摆的动能与势能转换",
+      "textbookCategory": "想想做做1",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        102
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "观察滚摆下降、上升过程。",
+      "suggestedModel": "energy",
+      "variant": "rolling-pendulum",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-ball-pendulum",
+      "term": "8下",
+      "chapterNumber": 11,
+      "chapterTitle": "功和机械能",
+      "section": "11.4",
+      "sectionTitle": "机械能及其转化",
+      "title": "小球摆动过程的能量转换",
+      "textbookCategory": "想想做做2",
+      "printedPages": [
+        97
+      ],
+      "pdfPages": [
+        102
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较最高点、最低点与中间位置。",
+      "suggestedModel": "energy",
+      "variant": "pendulum",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-bounce-higher",
+      "term": "8下",
+      "chapterNumber": 11,
+      "chapterTitle": "功和机械能",
+      "section": "11.4",
+      "sectionTitle": "机械能及其转化",
+      "title": "怎样让乒乓球弹得高于起点",
+      "textbookCategory": "练习与应用3",
+      "printedPages": [
+        100
+      ],
+      "pdfPages": [
+        105
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较静止释放和向下抛出，区分初始动能。",
+      "suggestedModel": "energy",
+      "variant": "bounce",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-returning-can",
+      "term": "8下",
+      "chapterNumber": 11,
+      "chapterTitle": "功和机械能",
+      "section": "11.4",
+      "sectionTitle": "机械能及其转化",
+      "title": "橡皮筋回滚罐",
+      "textbookCategory": "练习与应用4",
+      "printedPages": [
+        100
+      ],
+      "pdfPages": [
+        105
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "观察滚动时橡皮筋储能与反向回滚。",
+      "suggestedModel": "energy",
+      "variant": "elastic-return",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-potential-height",
+      "term": "8下",
+      "chapterNumber": 11,
+      "chapterTitle": "功和机械能",
+      "section": "11.review",
+      "sectionTitle": "复习与提高",
+      "title": "钢珠压痕比较重力势能",
+      "textbookCategory": "复习与提高8",
+      "printedPages": [
+        102
+      ],
+      "pdfPages": [
+        107
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "同一钢珠从不同高度落到橡皮泥上，比较痕迹。",
+      "suggestedModel": "energy",
+      "variant": "potential",
+      "coreLabeledActivity": false
+    },
+    {
+      "id": "phy-lever-balance",
+      "term": "8下",
+      "chapterNumber": 12,
+      "chapterTitle": "简单机械",
+      "section": "12.1",
+      "sectionTitle": "杠杆",
+      "title": "杠杆平衡条件",
+      "textbookCategory": "实验",
+      "printedPages": [
+        105,
+        106
+      ],
+      "pdfPages": [
+        110,
+        111
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "水平调零，改变力和力臂，记录成组数据。",
+      "suggestedModel": "lever",
+      "variant": "balance",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-steelyard",
+      "term": "8下",
+      "chapterNumber": 12,
+      "chapterTitle": "简单机械",
+      "section": "12.2",
+      "sectionTitle": "跨学科实践：制作简易杆秤",
+      "title": "简易杆秤制作和标定",
+      "textbookCategory": "跨学科实践",
+      "printedPages": [
+        111,
+        112
+      ],
+      "pdfPages": [
+        116,
+        117
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "确定提纽、秤盘、秤砣，标零和标准质量刻度；可扩展双提纽。",
+      "suggestedModel": "lever",
+      "variant": "steelyard",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-pulley-properties",
+      "term": "8下",
+      "chapterNumber": 12,
+      "chapterTitle": "简单机械",
+      "section": "12.3",
+      "sectionTitle": "滑轮",
+      "title": "定滑轮与动滑轮比较",
+      "textbookCategory": "演示",
+      "printedPages": [
+        114
+      ],
+      "pdfPages": [
+        119
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "比较力的大小和方向，以及绳端、重物移动距离。",
+      "suggestedModel": "pulley",
+      "variant": "properties",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-moving-pulley-work",
+      "term": "8下",
+      "chapterNumber": 12,
+      "chapterTitle": "简单机械",
+      "section": "12.4",
+      "sectionTitle": "机械效率",
+      "title": "动滑轮省力是否省功",
+      "textbookCategory": "演示",
+      "printedPages": [
+        117,
+        118
+      ],
+      "pdfPages": [
+        122,
+        123
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "同高提升钩码，比较直接提升与使用动滑轮的总功。",
+      "suggestedModel": "pulley",
+      "variant": "work",
+      "coreLabeledActivity": true
+    },
+    {
+      "id": "phy-pulley-efficiency",
+      "term": "8下",
+      "chapterNumber": 12,
+      "chapterTitle": "简单机械",
+      "section": "12.4",
+      "sectionTitle": "机械效率",
+      "title": "滑轮组机械效率",
+      "textbookCategory": "实验",
+      "printedPages": [
+        119,
+        120
+      ],
+      "pdfPages": [
+        124,
+        125
+      ],
+      "evidenceStatus": "verified-text-layer",
+      "sourceIds": [
+        "physics-g8b-textbook"
+      ],
+      "sourceUrl": "https://jymxkt.com/rht_soft_updata/jiaocai/2024%E7%89%88%E3%80%90%E4%BA%BA%E6%95%99%E7%89%88%E3%80%91%E7%89%A9%E7%90%86%E5%85%AB%E5%B9%B4%E7%BA%A7%E4%B8%8B%E5%86%8C.pdf",
+      "evidenceSummary": "测G、F、h、s并重复不同载荷，计算有用功与总功之比。",
+      "suggestedModel": "pulley",
+      "variant": "efficiency",
+      "coreLabeledActivity": true
+    }
+  ],
+  "excludedAsNonActivity": [
+    {
+      "section": "7.2",
+      "pages": [
+        9
+      ],
+      "item": "低温橡胶密封圈历史事例",
+      "reason": "科普材料，未给出可执行课堂操作；可作为扩展阅读。"
+    },
+    {
+      "section": "9.2",
+      "pages": [
+        49,
+        50
+      ],
+      "item": "三峡船闸过程",
+      "reason": "原理应用图解而非教材明确小实验；可新增为原创拓展模型，不能标称学生实验。"
+    },
+    {
+      "section": "10.3",
+      "pages": [
+        75
+      ],
+      "item": "热气球、飞艇",
+      "reason": "应用解释，不是本节操作任务。"
+    },
+    {
+      "section": "11.1",
+      "pages": [
+        84,
+        85,
+        86,
+        87
+      ],
+      "item": "功",
+      "reason": "本节无标记实验；可用原创拉车/提升模型辅助概念学习。"
+    },
+    {
+      "section": "11.2",
+      "pages": [
+        88,
+        89,
+        90
+      ],
+      "item": "功率",
+      "reason": "本节无测功率实验操作；勿把常见的爬楼功率实验标成这里的原文实验。"
+    },
+    {
+      "section": "12.3",
+      "pages": [
+        115,
+        116
+      ],
+      "item": "轮轴与斜面",
+      "reason": "科学世界与生活观察；可作为原创拓展。"
+    }
+  ]
+}

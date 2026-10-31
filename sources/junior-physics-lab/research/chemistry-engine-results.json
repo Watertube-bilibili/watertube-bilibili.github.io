@@ -1,0 +1,226 @@
+{
+  "checked": 7,
+  "calls": [
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 114.60000000000001,
+        "mass": 0.04,
+        "capacity": 4180,
+        "initial": 25
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 114.60000000000001,
+        "mass": 0.04,
+        "capacity": 4180,
+        "initial": 25
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 0,
+        "mass": 0.02,
+        "capacity": 4180,
+        "initial": 15
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 0,
+        "mass": 0.02,
+        "capacity": 4180,
+        "initial": 15
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 286.50000000000006,
+        "mass": 0.11,
+        "capacity": 4180,
+        "initial": 35
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 286.50000000000006,
+        "mass": 0.11,
+        "capacity": 4180,
+        "initial": 35
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 5.73,
+        "mass": 0.061,
+        "capacity": 4180,
+        "initial": 25
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "heat-input",
+        "heat": 5.73,
+        "mass": 0.061,
+        "capacity": 4180,
+        "initial": 25
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "efficiency-input",
+        "useful": 5000000,
+        "efficiency": 50
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "efficiency-input",
+        "useful": 20000000,
+        "efficiency": 95
+      }
+    },
+    {
+      "model": "thermal",
+      "params": {
+        "scenario": "efficiency-input",
+        "useful": 1000000,
+        "efficiency": 20
+      }
+    }
+  ],
+  "outputs": [
+    {
+      "id": "chem-neutralization",
+      "params": {
+        "acidVolume": 20,
+        "baseVolume": 20,
+        "temperature": 25
+      },
+      "delta": 0.685406698564593,
+      "temperature": 25.6854066985646,
+      "pH": 7,
+      "engine": {
+        "solver": "Godot scientific solver",
+        "model": "thermal",
+        "scenario": "heat-input"
+      }
+    },
+    {
+      "id": "chem-neutralization",
+      "params": {
+        "acidVolume": 20,
+        "baseVolume": 0,
+        "temperature": 15
+      },
+      "delta": 0,
+      "temperature": 15,
+      "pH": 0.9999999999995657,
+      "engine": {
+        "solver": "Godot scientific solver",
+        "model": "thermal",
+        "scenario": "heat-input"
+      }
+    },
+    {
+      "id": "chem-neutralization",
+      "params": {
+        "acidVolume": 50,
+        "baseVolume": 60,
+        "temperature": 35
+      },
+      "delta": 0.623096998695085,
+      "temperature": 35.6230969986951,
+      "pH": 11.958607314894325,
+      "engine": {
+        "solver": "Godot scientific solver",
+        "model": "thermal",
+        "scenario": "heat-input"
+      }
+    },
+    {
+      "id": "chem-neutralization",
+      "params": {
+        "acidVolume": 1,
+        "baseVolume": 60,
+        "temperature": 25
+      },
+      "delta": 0.0224723507726096,
+      "temperature": 25.0224723507726,
+      "pH": 12.985522176631841,
+      "engine": {
+        "solver": "Godot scientific solver",
+        "model": "thermal",
+        "scenario": "heat-input"
+      }
+    },
+    {
+      "id": "chem-fuel-survey",
+      "params": {
+        "demand": 5,
+        "efficiency": 50,
+        "fuel": "gas"
+      },
+      "input": 10,
+      "loss": 5,
+      "engine": {
+        "solver": "Godot scientific solver",
+        "model": "thermal",
+        "scenario": "efficiency-input"
+      }
+    },
+    {
+      "id": "chem-fuel-survey",
+      "params": {
+        "demand": 20,
+        "efficiency": 95,
+        "fuel": "electric"
+      },
+      "input": 21.0526315789474,
+      "loss": 1.05263157894737,
+      "engine": {
+        "solver": "Godot scientific solver",
+        "model": "thermal",
+        "scenario": "efficiency-input"
+      }
+    },
+    {
+      "id": "chem-fuel-survey",
+      "params": {
+        "demand": 1,
+        "efficiency": 20,
+        "fuel": "gas"
+      },
+      "input": 5,
+      "loss": 4,
+      "engine": {
+        "solver": "Godot scientific solver",
+        "model": "thermal",
+        "scenario": "efficiency-input"
+      }
+    }
+  ],
+  "prePlayFinalResult": 0.44,
+  "pageReadings": {
+    "chem-neutralization": "模型pH（25 ℃平衡）\n7\n生成NaCl\n0.117g\n绝热估算温升\n0.685℃\n估算最终温度\n25.685℃\n当前加入碱体积\n20mL",
+    "chem-fuel-survey": "需要的输入能量\n10MJ\n有效利用能量\n5MJ\n未计入有效部分\n5MJ",
+    "chem-co2": "生成 CaCl₂\n1.11g\n生成 H₂O\n0.18g\n生成 CO₂\n0.44g\n剩余 CaCO₃\n0g\n剩余 HCl\n0g"
+  }
+}

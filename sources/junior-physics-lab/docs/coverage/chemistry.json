@@ -1,0 +1,1961 @@
+{
+  "subject": "chemistry",
+  "checked": "2026-10-31",
+  "license": "AGPL-3.0-only",
+  "experimentCount": 79,
+  "edition": {
+    "organization": "按人教版2024修订九年级上、下册现行单元组织；2025、2026使用年份不自动视为新的首次出版版本。",
+    "evidence": [
+      "chem-pep-upper-2024",
+      "chem-pep-lower-2024",
+      "chem-standard-2025-use",
+      "chem-pep-lower-text"
+    ],
+    "status": "current-toc-cross-checked; publisher-full-text-not-fully-audited",
+    "standards": "2022年版及2025年修订使用背景；2025全国修订全文未逐页核读。"
+  },
+  "baseline": {
+    "sourceId": "chem-directory-2023",
+    "expectedCount": 35,
+    "items": [
+      {
+        "number": 1,
+        "title": "辨别物理变化和化学变化",
+        "implementationIds": [
+          "chem-changes"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 2,
+        "title": "体验观察物质物理性质和化学性质的常用方法",
+        "implementationIds": [
+          "chem-properties"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 3,
+        "title": "对物质及其变化的探究",
+        "implementationIds": [
+          "chem-candle"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 4,
+        "title": "识别化学实验室安全警示标志和常用危险化学品的标志",
+        "implementationIds": [
+          "chem-hazards"
+        ],
+        "status": "implemented-design-and-evidence-training",
+        "verification": "official-directory-title-verified",
+        "boundary": "场景辨识和处置依据练习，不能替代实物设施操作训练。"
+      },
+      {
+        "number": 5,
+        "title": "安全防护设施的使用",
+        "implementationIds": [
+          "chem-protection"
+        ],
+        "status": "implemented-design-and-evidence-training",
+        "verification": "official-directory-title-verified",
+        "boundary": "场景辨识和处置依据练习，不能替代实物设施操作训练。"
+      },
+      {
+        "number": 6,
+        "title": "化学药品的取用",
+        "implementationIds": [
+          "chem-measure",
+          "chem-reagent-taking"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 7,
+        "title": "物质的加热",
+        "implementationIds": [
+          "chem-heating"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 8,
+        "title": "仪器装置的连接",
+        "implementationIds": [
+          "chem-airtight"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 9,
+        "title": "玻璃仪器的洗涤",
+        "implementationIds": [
+          "chem-washing"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 10,
+        "title": "测定空气中氧气的含量",
+        "implementationIds": [
+          "chem-air-oxygen"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 11,
+        "title": "氧气的实验室制取与性质",
+        "implementationIds": [
+          "chem-oxygen",
+          "chem-properties",
+          "chem-carbon-oxygen",
+          "chem-sulfur-oxygen",
+          "chem-iron-oxygen",
+          "chem-permanganate"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 12,
+        "title": "探究过氧化氢分解反应中二氧化锰的催化作用",
+        "implementationIds": [
+          "chem-catalyst"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 13,
+        "title": "二氧化碳的实验室制取与性质",
+        "implementationIds": [
+          "chem-co2",
+          "chem-limewater",
+          "chem-co2-extinguish",
+          "chem-co2-solubility"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 14,
+        "title": "探究二氧化碳与水反应",
+        "implementationIds": [
+          "chem-co2-water"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 15,
+        "title": "制取蒸馏水",
+        "implementationIds": [
+          "chem-distill"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 16,
+        "title": "探究活性炭和明矾等净水剂的净水作用",
+        "implementationIds": [
+          "chem-purification"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 17,
+        "title": "粗盐中难溶性杂质的去除",
+        "implementationIds": [
+          "chem-salt-purify"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 18,
+        "title": "探究氯化钠、硝酸铵、氢氧化钠在水中溶解时溶液的温度变化",
+        "implementationIds": [
+          "chem-dissolve-heat"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 19,
+        "title": "观察比较不同溶质在不同溶剂中的溶解性差异",
+        "implementationIds": [
+          "chem-dissolve"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 20,
+        "title": "一定溶质质量分数的氯化钠溶液的配制",
+        "implementationIds": [
+          "chem-solution"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 21,
+        "title": "探究常见金属的物理性质和化学性质",
+        "implementationIds": [
+          "chem-metal-properties",
+          "chem-metal-acid",
+          "chem-metal-displacement",
+          "chem-alloy"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 22,
+        "title": "探究铁钉生锈的条件",
+        "implementationIds": [
+          "chem-rust"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 23,
+        "title": "使用pH试纸等检测生活中常见溶液的酸碱性",
+        "implementationIds": [
+          "chem-ph"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 24,
+        "title": "自制酸碱指示剂并观察其在不同溶液中的颜色变化",
+        "implementationIds": [
+          "chem-indicator"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 25,
+        "title": "探究常见酸、碱的化学性质",
+        "implementationIds": [
+          "chem-acid-base",
+          "chem-ph",
+          "chem-indicator",
+          "chem-neutralization",
+          "chem-limewater",
+          "chem-precipitation"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 26,
+        "title": "探究二氧化碳与氢氧化钠稀溶液的反应",
+        "implementationIds": [
+          "chem-co2-naoh"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 27,
+        "title": "探究土壤酸碱性及氮、磷、钾元素与植物生长的关系",
+        "implementationIds": [
+          "chem-soil"
+        ],
+        "status": "implemented-design-and-evidence-training",
+        "verification": "official-directory-title-verified",
+        "boundary": "含pH和N/P/K单变量设计、缺素线索及重复要求；不伪造长期植物生长数据。"
+      },
+      {
+        "number": 28,
+        "title": "观察并分析氨水挥发使酚酞溶液变红",
+        "implementationIds": [
+          "chem-ammonia"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 29,
+        "title": "比较物质在冷水和热水中扩散的实验现象",
+        "implementationIds": [
+          "chem-diffusion"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 30,
+        "title": "水的组成及变化的探究",
+        "implementationIds": [
+          "chem-water-electrolysis",
+          "chem-hydrogen-burn"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 31,
+        "title": "通过蜡烛、乙醇的燃烧实验探究物质元素的组成",
+        "implementationIds": [
+          "chem-candle",
+          "chem-ethanol"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 32,
+        "title": "探究氢氧化钠溶液和稀盐酸发生中和反应时的温度和pH的变化",
+        "implementationIds": [
+          "chem-neutralization"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 33,
+        "title": "探究常见酸溶液、盐溶液与金属发生置换反应的规律",
+        "implementationIds": [
+          "chem-metal-acid",
+          "chem-metal-displacement"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 34,
+        "title": "燃烧条件的探究",
+        "implementationIds": [
+          "chem-combustion"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      },
+      {
+        "number": 35,
+        "title": "比较反应前后物质的质量关系",
+        "implementationIds": [
+          "chem-conservation",
+          "chem-magnesium-mass",
+          "chem-metal-displacement"
+        ],
+        "status": "implemented-teaching-model",
+        "verification": "official-directory-title-verified",
+        "boundary": "原理、步骤、条件判断及可适用的定量模型；不代替真实动手实验。"
+      }
+    ]
+  },
+  "pepActivities": [
+    {
+      "number": 1,
+      "title": "氧气的实验室制取与性质",
+      "implementationIds": [
+        "chem-oxygen"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    },
+    {
+      "number": 2,
+      "title": "水的组成及变化的探究",
+      "implementationIds": [
+        "chem-water-electrolysis"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    },
+    {
+      "number": 3,
+      "title": "二氧化碳的实验室制取与性质",
+      "implementationIds": [
+        "chem-co2"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    },
+    {
+      "number": 4,
+      "title": "燃烧条件的探究",
+      "implementationIds": [
+        "chem-combustion"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    },
+    {
+      "number": 5,
+      "title": "常见金属的物理性质和化学性质",
+      "implementationIds": [
+        "chem-metal-properties"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    },
+    {
+      "number": 6,
+      "title": "一定溶质质量分数的氯化钠溶液的配制",
+      "implementationIds": [
+        "chem-solution"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    },
+    {
+      "number": 7,
+      "title": "粗盐中难溶性杂质的去除",
+      "implementationIds": [
+        "chem-salt-purify"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    },
+    {
+      "number": 8,
+      "title": "常见酸、碱的化学性质",
+      "implementationIds": [
+        "chem-acid-base"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-teaching-model"
+    }
+  ],
+  "pepCrossDisciplinary": [
+    {
+      "number": 1,
+      "title": "微型空气质量“检测站”的组装与使用",
+      "implementationIds": [
+        "chem-air-station"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 2,
+      "title": "制作模型并展示科学家探索物质组成与结构的历程",
+      "implementationIds": [
+        "chem-atom-model"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供分子模型制作与计数；科学史资料搜集和成果展示需在课堂完成。"
+    },
+    {
+      "number": 3,
+      "title": "水质检测及自制净水器",
+      "implementationIds": [
+        "chem-water-filter-design"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 4,
+      "title": "基于特定需求设计和制作简易供氧器",
+      "implementationIds": [
+        "chem-oxygen-design"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 5,
+      "title": "基于碳中和理念设计低碳行动方案",
+      "implementationIds": [
+        "chem-carbon-budget"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 6,
+      "title": "调查家用燃料的变迁与合理使用",
+      "implementationIds": [
+        "chem-fuel-survey"
+      ],
+      "sourceId": "chem-pep-upper-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 7,
+      "title": "垃圾的分类与回收利用",
+      "implementationIds": [
+        "chem-recycling"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 8,
+      "title": "海洋资源的综合利用与制盐",
+      "implementationIds": [
+        "chem-sea-salt"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 9,
+      "title": "探究土壤酸碱性对植物生长的影响",
+      "implementationIds": [
+        "chem-soil"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    },
+    {
+      "number": 10,
+      "title": "调查我国航天科技领域中新型材料、新型能源的应用",
+      "implementationIds": [
+        "chem-aerospace"
+      ],
+      "sourceId": "chem-pep-lower-2024",
+      "verification": "current-third-party-toc-verified",
+      "status": "implemented-project-support",
+      "boundary": "提供活动相关的设计、条件比较或题设计算；实物组装、现场调查、连续测量和完整项目报告不由网页虚构完成。"
+    }
+  ],
+  "experiments": [
+    {
+      "id": "chem-changes",
+      "title": "辨别物理变化和化学变化",
+      "term": "9上",
+      "model": "changes",
+      "directoryNumbers": [
+        1
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验1-1",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-properties",
+      "title": "观察物理性质与检验化学性质",
+      "term": "9上",
+      "model": "gas-test",
+      "directoryNumbers": [
+        2
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验1-2",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-candle",
+      "title": "观察蜡烛燃烧并检验产物",
+      "term": "9上",
+      "model": "fuel",
+      "directoryNumbers": [
+        3,
+        31
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册探究：观察与描述蜡烛及其燃烧",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-hazards",
+      "title": "识别实验安全标志",
+      "term": "9上",
+      "model": "safety",
+      "directoryNumbers": [
+        4
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-protection",
+      "title": "认识安全防护设施的使用",
+      "term": "9上",
+      "model": "safety",
+      "directoryNumbers": [
+        5
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-measure",
+      "title": "取用试剂与量筒读数",
+      "term": "9上",
+      "model": "measurement",
+      "directoryNumbers": [
+        6
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册基本操作：量筒与滴管",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-heating",
+      "title": "试管中液体的加热",
+      "term": "9上",
+      "model": "heating",
+      "directoryNumbers": [
+        7
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验1-5",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-airtight",
+      "title": "连接装置并检查气密性",
+      "term": "9上",
+      "model": "airtight",
+      "directoryNumbers": [
+        8
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-washing",
+      "title": "玻璃仪器的洗涤与检查",
+      "term": "9上",
+      "model": "washing",
+      "directoryNumbers": [
+        9
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验1-6",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-air-oxygen",
+      "title": "测定空气中氧气的体积分数",
+      "term": "9上",
+      "model": "air-oxygen",
+      "directoryNumbers": [
+        10
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-oxygen",
+      "title": "氧气的实验室制取与性质",
+      "term": "9上",
+      "model": "oxygen",
+      "directoryNumbers": [
+        11
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动1",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-catalyst",
+      "title": "探究二氧化锰的催化作用",
+      "term": "9上",
+      "model": "oxygen",
+      "directoryNumbers": [
+        12
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-co2",
+      "title": "二氧化碳的实验室制取与性质",
+      "term": "9上",
+      "model": "reaction",
+      "directoryNumbers": [
+        13
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动3",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-co2-water",
+      "title": "探究二氧化碳与水反应",
+      "term": "9上",
+      "model": "co2-water",
+      "directoryNumbers": [
+        14
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验6-5",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-distill",
+      "title": "制取蒸馏水",
+      "term": "9上",
+      "model": "purification",
+      "directoryNumbers": [
+        15
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验4-3",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-purification",
+      "title": "比较沉降、过滤与吸附的净水作用",
+      "term": "9上",
+      "model": "purification",
+      "directoryNumbers": [
+        16
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验4-1、4-2、6-1",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-salt-purify",
+      "title": "粗盐中难溶性杂质的去除",
+      "term": "9下",
+      "model": "salt-purify",
+      "directoryNumbers": [
+        17
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动7",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-solubility-data"
+      ]
+    },
+    {
+      "id": "chem-dissolve-heat",
+      "title": "比较溶解时的温度变化",
+      "term": "9下",
+      "model": "dissolve-heat",
+      "directoryNumbers": [
+        18
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-dissolve",
+      "title": "比较不同溶质、溶剂的溶解性",
+      "term": "9下",
+      "model": "solvent",
+      "directoryNumbers": [
+        19
+      ],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验9-1、9-2；另含乙醇溶剂变式",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-solution",
+      "title": "配制一定溶质质量分数的氯化钠溶液",
+      "term": "9下",
+      "model": "solution",
+      "directoryNumbers": [
+        20
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动6",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-solubility-data"
+      ]
+    },
+    {
+      "id": "chem-metal-properties",
+      "title": "常见金属的物理性质和化学性质",
+      "term": "9下",
+      "model": "metal-properties",
+      "directoryNumbers": [
+        21
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动5",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-rust",
+      "title": "探究铁钉生锈的条件与防护",
+      "term": "9下",
+      "model": "rust",
+      "directoryNumbers": [
+        22
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-ph",
+      "title": "使用pH试纸检验溶液酸碱性",
+      "term": "9下",
+      "model": "ph",
+      "directoryNumbers": [
+        23
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-indicator",
+      "title": "自制酸碱指示剂的比较",
+      "term": "9下",
+      "model": "indicator-prep",
+      "directoryNumbers": [
+        24
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-acid-base",
+      "title": "常见酸、碱的化学性质",
+      "term": "9下",
+      "model": "reaction",
+      "directoryNumbers": [
+        25
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动8",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-co2-naoh",
+      "title": "二氧化碳与氢氧化钠溶液的反应",
+      "term": "9下",
+      "model": "co2-base",
+      "directoryNumbers": [
+        26
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-soil",
+      "title": "土壤酸碱性与植物生长的对照设计",
+      "term": "9下",
+      "model": "soil",
+      "directoryNumbers": [
+        27
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动9",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-ammonia",
+      "title": "氨水挥发与分子运动",
+      "term": "9上",
+      "model": "diffusion",
+      "directoryNumbers": [
+        28
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-diffusion",
+      "title": "比较冷、热水中的扩散",
+      "term": "9上",
+      "model": "diffusion",
+      "directoryNumbers": [
+        29
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验3-1及温度对照",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-water-electrolysis",
+      "title": "水的组成及变化的探究",
+      "term": "9上",
+      "model": "electrolysis",
+      "directoryNumbers": [
+        30
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动2",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-ethanol",
+      "title": "乙醇燃烧与元素组成的证据",
+      "term": "9上",
+      "model": "reaction",
+      "directoryNumbers": [
+        31
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-neutralization",
+      "title": "中和反应中的pH与温度变化",
+      "term": "9下",
+      "model": "neutralization",
+      "directoryNumbers": [
+        32
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-neutral-heat"
+      ],
+      "requiresPhysics": true,
+      "physicsEngine": "Godot",
+      "physicsScenario": "thermal/heat-input"
+    },
+    {
+      "id": "chem-metal-acid",
+      "title": "金属与稀酸的反应及活动性",
+      "term": "9下",
+      "model": "metal-acid",
+      "directoryNumbers": [
+        33
+      ],
+      "currentEditionStatus": "national-baseline-verified; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-combustion",
+      "title": "燃烧条件的探究",
+      "term": "9上",
+      "model": "combustion",
+      "directoryNumbers": [
+        34
+      ],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录实验活动4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-conservation",
+      "title": "比较化学反应前后的质量",
+      "term": "9上",
+      "model": "conservation",
+      "directoryNumbers": [
+        35
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验5-1及质量守恒探究",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-carbon-oxygen",
+      "title": "木炭在空气和氧气中燃烧",
+      "term": "9上",
+      "model": "burn-oxygen",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验2-2、2-3、2-4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-sulfur-oxygen",
+      "title": "硫在空气和氧气中燃烧",
+      "term": "9上",
+      "model": "burn-oxygen",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验2-2、2-3、2-4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-iron-oxygen",
+      "title": "铁丝在氧气中燃烧",
+      "term": "9上",
+      "model": "burn-oxygen",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验2-2、2-3、2-4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-permanganate",
+      "title": "加热高锰酸钾制氧气",
+      "term": "9上",
+      "model": "permanganate",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验2-5",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-limewater",
+      "title": "二氧化碳与澄清石灰水",
+      "term": "9上",
+      "model": "limewater",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-co2-extinguish",
+      "title": "倾倒二氧化碳与阶梯蜡烛",
+      "term": "9上",
+      "model": "co2-physical",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验6-3",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-co2-solubility",
+      "title": "二氧化碳的溶解与软瓶变化",
+      "term": "9上",
+      "model": "co2-physical",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验6-4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-carbon-cuo",
+      "title": "木炭还原氧化铜",
+      "term": "9上",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验6-2",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-iron-smelting",
+      "title": "一氧化碳还原氧化铁的模型",
+      "term": "9下",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-metal-displacement",
+      "title": "金属与盐溶液的置换",
+      "term": "9下",
+      "model": "displacement",
+      "directoryNumbers": [
+        33
+      ],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册金属与盐溶液的反应探究；保留Fe/Cu原创比较",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-alloy",
+      "title": "比较合金与纯金属的性质",
+      "term": "9下",
+      "model": "alloy",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-saturation",
+      "title": "饱和溶液与溶解度",
+      "term": "9下",
+      "model": "solubility",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-solubility-data"
+      ]
+    },
+    {
+      "id": "chem-crystallization",
+      "title": "冷却结晶与溶解度曲线",
+      "term": "9下",
+      "model": "crystallization",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-solubility-data"
+      ]
+    },
+    {
+      "id": "chem-emulsion",
+      "title": "乳化作用与溶解的区别",
+      "term": "9下",
+      "model": "emulsion",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-lime-heat",
+      "title": "生石灰与水反应的放热",
+      "term": "9上",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验7-1",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-methane",
+      "title": "甲烷燃烧产物的检验",
+      "term": "9上",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验7-2",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-carbonate-test",
+      "title": "碳酸盐与稀酸的检验",
+      "term": "9下",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-precipitation",
+      "title": "复分解反应与沉淀生成",
+      "term": "9下",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验10-12、10-13；另含原创比较组合",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-dilution",
+      "title": "溶液稀释与溶质守恒",
+      "term": "9下",
+      "model": "dilution",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-hardness",
+      "title": "硬水与软水的比较",
+      "term": "9上",
+      "model": "hardness",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-copper-hydroxide-heat",
+      "title": "氢氧化铜沉淀的生成与受热变化",
+      "term": "9上",
+      "model": "copper-heat",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验1-5",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-air-station",
+      "title": "微型空气质量检测站：采样与比较",
+      "term": "9上",
+      "model": "air-station",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动1",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-atom-model",
+      "title": "制作模型理解分子、原子与元素",
+      "term": "9上",
+      "model": "atom-model",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动2",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-water-filter-design",
+      "title": "设计净水器并判断处理边界",
+      "term": "9上",
+      "model": "purification",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动3",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-oxygen-design",
+      "title": "按需求设计简易供氧器的理论用量",
+      "term": "9上",
+      "model": "oxygen",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-carbon-budget",
+      "title": "基于碳中和理念比较低碳方案",
+      "term": "9上",
+      "model": "carbon-budget",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动5",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ]
+    },
+    {
+      "id": "chem-fuel-survey",
+      "title": "比较家庭燃料的使用方案",
+      "term": "9上",
+      "model": "fuel-survey",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动6",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024"
+      ],
+      "requiresPhysics": true,
+      "physicsEngine": "Godot",
+      "physicsScenario": "thermal/efficiency-input"
+    },
+    {
+      "id": "chem-recycling",
+      "title": "垃圾分类与金属回收设计",
+      "term": "9下",
+      "model": "recycling",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动7",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-sea-salt",
+      "title": "海水制盐的理想蒸发模型",
+      "term": "9下",
+      "model": "sea-salt",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动8",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-solubility-data"
+      ]
+    },
+    {
+      "id": "chem-aerospace",
+      "title": "航天材料与能源的证据比较",
+      "term": "9下",
+      "model": "materials",
+      "directoryNumbers": [],
+      "currentEditionStatus": "named-activity-toc-verified",
+      "evidence": "现行目录跨学科实践活动10",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-protein",
+      "title": "区分常见纤维的组成与现象",
+      "term": "9下",
+      "model": "materials",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-plastic",
+      "title": "认识塑料的受热变化",
+      "term": "9下",
+      "model": "materials",
+      "directoryNumbers": [],
+      "currentEditionStatus": "curriculum-aligned-extension; exact-current-page-unverified",
+      "evidence": "按全国实验主题与现行单元组织的原创示例",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024"
+      ]
+    },
+    {
+      "id": "chem-hydrogen-burn",
+      "title": "氢气燃烧与水的组成证据",
+      "term": "9上",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验4-4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-magnesium-mass",
+      "title": "镁燃烧后的固体增重与质量守恒",
+      "term": "9上",
+      "model": "reaction",
+      "directoryNumbers": [
+        35
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验5-2",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-reagent-taking",
+      "title": "固体药品与液体药品的规范取用",
+      "term": "9上",
+      "model": "reagent-taking",
+      "directoryNumbers": [
+        6
+      ],
+      "currentEditionStatus": "upper-activity-cross-checked-in-secondary-full-text",
+      "evidence": "上册实验1-3、1-4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-upper-2024",
+        "chem-pep-upper-scan"
+      ]
+    },
+    {
+      "id": "chem-ethanol-water",
+      "title": "乙醇与水的互溶",
+      "term": "9下",
+      "model": "miscibility",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验9-3",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-copper-concentration",
+      "title": "比较不同浓度硫酸铜溶液的颜色",
+      "term": "9下",
+      "model": "concentration-color",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验9-7",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-acid-properties",
+      "title": "观察盐酸与硫酸的物理性质",
+      "term": "9下",
+      "model": "acid-properties",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验10-4",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-sulfuric-dehydration",
+      "title": "浓硫酸的脱水性：材料炭化现象",
+      "term": "9下",
+      "model": "acid-dehydration",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验10-5",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-sulfuric-dilution",
+      "title": "浓硫酸稀释时的操作与放热",
+      "term": "9下",
+      "model": "acid-dilution",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验10-6",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-solution-conductivity",
+      "title": "比较不同液体的导电性",
+      "term": "9下",
+      "model": "conductivity",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验10-7",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-naoh-deliquescence",
+      "title": "观察氢氧化钠的潮解",
+      "term": "9下",
+      "model": "deliquescence",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验10-8",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-lime-milk",
+      "title": "氢氧化钙的微溶与石灰水、石灰乳",
+      "term": "9下",
+      "model": "lime-milk",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验10-9",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    },
+    {
+      "id": "chem-copper-oxidation",
+      "title": "铜片加热后的表面变化",
+      "term": "9下",
+      "model": "reaction",
+      "directoryNumbers": [],
+      "currentEditionStatus": "lower-activity-cross-checked-in-secondary-full-text",
+      "evidence": "下册实验活动5：铜片加热",
+      "sourceIds": [
+        "chem-directory-2023",
+        "chem-pep-lower-2024",
+        "chem-pep-lower-text"
+      ]
+    }
+  ],
+  "limitations": [
+    "全国35项均有明确网页教学支持映射，不等于35项真实实验已完成。",
+    "现行8个实验活动、10个跨学科实践活动名称经当前第三方目录交叉核对，不能冒称出版社官网全文核验。",
+    "已交叉核对上册所列实验及下册编号实验8-1、9-1至9-8、10-1至10-13；仍未获得出版社官方完整逐页校验，不声称所有边栏、家庭活动已穷尽。",
+    "个别原实验试剂组合为安全教学目的采用原创替代对照，来源表和模型说明标明范围。",
+    "动画进度为阶段或反应程度；不输出未经测定的反应时间、植物长势、健康等级或医学供氧能力。",
+    "体积与热量的高级数值用明确假设计算；课堂化学方程式计算按初中相对原子质量近似。"
+  ],
+  "lowerNumberedExperiments": [
+    {
+      "number": "8-1",
+      "implementationIds": [
+        "chem-alloy"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-1",
+      "implementationIds": [
+        "chem-dissolve"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-2",
+      "implementationIds": [
+        "chem-dissolve"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-3",
+      "implementationIds": [
+        "chem-ethanol-water"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-4",
+      "implementationIds": [
+        "chem-dissolve-heat"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-5",
+      "implementationIds": [
+        "chem-saturation"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-6",
+      "implementationIds": [
+        "chem-saturation",
+        "chem-crystallization"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-7",
+      "implementationIds": [
+        "chem-copper-concentration"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "9-8",
+      "implementationIds": [
+        "chem-solution"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-1",
+      "implementationIds": [
+        "chem-ph"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-2",
+      "implementationIds": [
+        "chem-ph"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-3",
+      "implementationIds": [
+        "chem-ph"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-4",
+      "implementationIds": [
+        "chem-acid-properties"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-5",
+      "implementationIds": [
+        "chem-sulfuric-dehydration"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-6",
+      "implementationIds": [
+        "chem-sulfuric-dilution"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-7",
+      "implementationIds": [
+        "chem-solution-conductivity"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-8",
+      "implementationIds": [
+        "chem-naoh-deliquescence",
+        "chem-dissolve-heat"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-9",
+      "implementationIds": [
+        "chem-lime-milk"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-10",
+      "implementationIds": [
+        "chem-neutralization"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "加液顺序为反向的等价中和教学变式。"
+    },
+    {
+      "number": "10-11",
+      "implementationIds": [
+        "chem-carbonate-test"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-12",
+      "implementationIds": [
+        "chem-precipitation"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    },
+    {
+      "number": "10-13",
+      "implementationIds": [
+        "chem-precipitation"
+      ],
+      "sourceId": "chem-pep-lower-text",
+      "verification": "secondary-full-text-theme-verified",
+      "boundary": "正文主题与模型对应；原页面、连续文字未复制。"
+    }
+  ],
+  "physicsDelegation": {
+    "requiredIds": [
+      "chem-neutralization",
+      "chem-fuel-survey"
+    ],
+    "rule": "物理温升与效率逆算直接由Godot求解；化学反应计量/pH及明确相对定性现象保留化学模型。",
+    "simulationContract": "simulate公开接口求完整条件终态；render单独接收播放进度。"
+  }
+}

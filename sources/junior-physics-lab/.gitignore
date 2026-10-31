@@ -1,0 +1,8 @@
+node_modules/
+*.tar.gz
+__pycache__/
+.godot/
+.env
+.env.*
+
+/research/chemistry-directory-original.txt

@@ -1,0 +1,36 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const vm=require('node:vm');
+const path=require('node:path');
+const source=fs.readFileSync(path.join(__dirname,'../dist/modules/physics.js'),'utf8');
+const window={};vm.runInNewContext(source,{window});
+const mod=window.LAB_MODULES.physics;
+(async()=>{
+ await assert.rejects(mod.simulate({model:'incline'},{}),/引擎尚未就绪/);
+ const calls=[];window.GodotLab={evaluate:async(model,params)=>{calls.push({model,params});return {model,values:{temperature:20},solver:'Godot test double'};}};
+ const result=await mod.simulate({model:'thermal',modelParams:{scenario:'capacity',capacity2:2100,mass:1},controls:[{key:'power',value:500}]},{mass:2});
+ assert.equal(calls.length,2);assert.equal(calls[0].params.mass,2);assert.equal(calls[0].params.power,500);assert.equal(calls[1].params.capacity,2100);assert.ok(result.comparison);
+ window.GodotLab.evaluate=async()=>{throw new Error('engine failure');};
+ await assert.rejects(mod.simulate({model:'incline'},{}),/engine failure/);
+ const exp={model:'incline',modelParams:{length:1,angle:12,mass:200}},r={trajectory:[[0,0,0],[.3,.1,1],[1,1,2]],values:{}};
+ const start=mod.render(exp,{},r,0),end=mod.render(exp,{},r,1),middle=mod.render(exp,{},r,.5);
+ assert.ok(start.includes('右高左低'));assert.ok(middle.includes('0.5 s'),'display must interpolate trajectory time, not sample index');
+ const cartX=svg=>Number(svg.match(/<g transform="translate\(([^,]+),0\) rotate\(0\)"><path d="M-32/)[1]);
+ assert.ok(cartX(start)>cartX(end),'cart must move from high right to low left');
+ assert.ok(end.includes('已通过 1 m'));
+ assert.ok(mod.render({model:'missing'}, {}, {},0).includes('尚未连接'));
+ const zero=mod.render({model:'circuit',modelParams:{scenario:'open'}},{},{values:{current:0}},1);
+ assert.ok(zero.includes('开关断开'));assert.ok(!zero.includes('电流方向'));assert.ok(zero.includes('R '),'opening the switch must retain the load');
+ const virtual=mod.render({model:'lens',modelParams:{focal:10,distance:5,height:3}},{},{values:{focal:10,objectDistance:5,imageDistance:-10,imageHeight:6,real:false}},1);
+ assert.ok(virtual.includes('虚像'));assert.ok(virtual.includes('stroke-dasharray="5 4"'));
+ assert.ok(!/NaN|Infinity|undefined/.test(virtual));
+ const retro={id:'phy-retroreflector',model:'optics',modelParams:{scenario:'retroreflection',variant:'retroreflector'}};
+ const first=mod.render(retro,{stage:0},{values:{stage:0}},1),both=mod.render(retro,{stage:2},{values:{stage:2}},1);
+ assert.ok(first.includes('M125 145H435'));assert.ok(!first.includes('V295H125'));
+ assert.ok(both.includes('M125 145H435V295H125'),'two perpendicular mirrors must show the return ray');
+ const pendulum={id:'phy-pendulum-period',model:'energy',modelParams:{scenario:'pendulum',variant:'pendulum-period'}};
+ const moving={values:{period:2},trajectoryKind:'pendulumAngle',trajectory:[[0,20,0],[.5,0,1],[1,-20,0]]};
+ assert.notEqual(mod.render(pendulum,{},moving,0),mod.render(pendulum,{},moving,1),'pendulum diagram must consume the rigid-body angle trajectory');
+ console.log('PASS physics renderer delegation, no fallback, time interpolation, right-to-left cart, open circuit, virtual image');
+})().catch(e=>{console.error(e);process.exitCode=1;});

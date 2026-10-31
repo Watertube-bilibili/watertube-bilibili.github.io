@@ -1,0 +1,3194 @@
+{
+  "schemaVersion": 1,
+  "checked": "2026-10-31",
+  "moduleCount": 95,
+  "editionNotes": [
+    "依据人教社2024介绍，新体系7上为生物和细胞、多种多样的生物；7下为植物的生活及人体生理与健康（一）；8上为人体生理与健康（二）及生物与环境；8下为生命的延续和发展。",
+    "7上2024、7下2025、8上2025活动标题来自公开二手全文转录；8下2026除教师用书摘录外，已独立视觉核对第三方学生书p1—99完整图像。均不能冒充出版社原本及版权页印次认证。"
+  ],
+  "sources": [
+    {
+      "id": "bio-ncet2023",
+      "title": "教育部中小学实验教学基本目录（2023年版）· 初中生物学",
+      "url": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+      "publisher": "教育部教育技术与资源发展中心（中央电化教育馆）",
+      "scope": "核对生物学56个条目原题；47—56为跨学科实践可选项目。目录编号映射不代表真实实物操作已经完成。",
+      "edition": "2023年基本目录，适用2022年课程标准",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-standard2022",
+      "title": "义务教育生物学课程标准（2022年版）",
+      "url": "https://www.moe.gov.cn/srcsite/A26/s8001/202204/W020220420582359998122.pdf",
+      "publisher": "中华人民共和国教育部",
+      "scope": "课程性质及实践要求的官方依据；本站不把课标主题直接当作教材某册原题。",
+      "edition": "2022年课程标准",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep-new",
+      "title": "人教版义务教育教科书·生物学新教材介绍",
+      "url": "https://www.pep.com.cn/xw/zt/hd/12/xjcjs/cz/202409/t20240914_1995532.html",
+      "publisher": "人民教育出版社",
+      "scope": "核对新教材六单元结构与编写思路；用于说明新旧册次重排，不作全部活动逐题核验依据。",
+      "edition": "2024年启用的新修订教材体系",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep-features",
+      "title": "生物学新教材编写特点与教学建议",
+      "url": "https://www.pep.com.cn/xw/zt/hd/12/zbtjc/202409/t20240920_1995567.html",
+      "publisher": "人民教育出版社",
+      "scope": "新教材活动组织及跨学科实践的说明。",
+      "edition": "2024年新教材说明",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep7up-text",
+      "title": "人教版七年级上册生物学公开文本（2024修订本）",
+      "url": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "publisher": "公开教材文本转载页面（非出版社官网）",
+      "scope": "用于活动名称与所在单元交叉核对；来源为二手转录，未逐页核验出版社原版版式，不分发原文与扫描件。",
+      "edition": "七上2024新教材；微生物与生物分类内容已重排到本册",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep7down-text",
+      "title": "人教版七年级下册生物学公开文本（2025修订本）",
+      "url": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "publisher": "公开教材文本转载页面（非出版社官网）",
+      "scope": "核对植物的生活、人体生理与健康（一）中的命名活动；二手文本证据，网站实验内容均为原创改写。",
+      "edition": "七下2025新教材；植物生活与人体生理（一）",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep8up-text",
+      "title": "人教版八年级上册生物学公开文本（2025修订本）",
+      "url": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "publisher": "公开教材文本转载页面（非出版社官网）",
+      "scope": "核对人体生理与健康（二）、生物与环境中的活动名称；不能据此声称旧版八上动物专题仍按原册次排列。",
+      "edition": "八上2025新教材；人体生理（二）与生物环境",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep8down-guide",
+      "title": "2026新教材八年级下册生物学教师用书活动说明（公开摘录）",
+      "url": "https://www.sohu.com/a/1053101410_120904083",
+      "publisher": "搜狐公开教师用书摘录（非出版社官网）",
+      "scope": "核对五项实验探究及两项跨学科实践；只有目录与活动说明证据，未核对全册每个栏目的出版社原本。",
+      "edition": "八下2026新教材活动说明；生殖、遗传变异、进化与多样性保护",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-aha-bls2025",
+      "title": "2025 American Heart Association Guidelines · Adult Basic Life Support",
+      "url": "https://cpr.heart.org/en/resuscitation-science/cpr-and-ecc-guidelines/adult-basic-life-support",
+      "publisher": "American Heart Association",
+      "scope": "核对成人CPR按压频率100—120次/分、深度约5—6cm、充分回弹、受训者30:2及早期AED等教学要点；不替代当地急救培训。",
+      "edition": "2025成人基础生命支持指南",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-redcross-bleeding",
+      "title": "Life-Threatening External Bleeding · First Aid",
+      "url": "https://www.redcross.org/take-a-class/resources/learn-first-aid/bleeding-life-threatening-external",
+      "publisher": "American Red Cross",
+      "scope": "核对严重外出血呼救、个人防护及持续直接压迫等原则；本站仅提供流程模型，不提供危险实操演示。",
+      "edition": "官网急救教学资料，2026-10-31核对",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-nhc-health2024",
+      "title": "中国公民健康素养——基本知识与技能（2024年版）",
+      "url": "https://www.nhc.gov.cn/xcs/c100123/202404/c30d31cb877749ce94ce23d2c55ad973/files/1733220375762_77083.pdf",
+      "publisher": "国家卫生健康委员会",
+      "scope": "核对急救求助与拒绝毒品等公众健康原则，非个人医疗建议。",
+      "edition": "2024年版",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep8down-start2026",
+      "title": "人教版新修订八年级下册教材2026年春季启用说明",
+      "url": "https://www.pep.com.cn/rjdt/mtbd/202603/t20260304_2005510.shtml",
+      "publisher": "人民教育出版社",
+      "scope": "官方启用时间与教材体系依据；不把启用新闻当作各活动逐页证据。",
+      "edition": "2026年春季启用，封面2024审定的新修订体系",
+      "checked": "2026-10-31"
+    },
+    {
+      "id": "bio-pep8down-images",
+      "title": "人教版八年级下册生物学学生书公开图像镜像",
+      "url": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "publisher": "第三方公开教材镜像（非出版社官网）",
+      "scope": "独立视觉核对印刷页1—99的26项命名栏目及卵壳气孔边栏；封面2024审定、章节与2026教师用书一致。未核版权页印次，不称出版社原本认证。只链接证据，不分发教材图像或原文。",
+      "edition": "2024审定体系，2026春使用；第三方学生书图像逐页核对",
+      "checked": "2026-10-31"
+    }
+  ],
+  "baseline": {
+    "ncet2023": {
+      "total": 56,
+      "optionalIds": [
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "items": [
+        {
+          "ncetId": 1,
+          "exactTitle": "练习使用光学显微镜",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-microscope"
+          ],
+          "implementationTitles": [
+            "练习使用显微镜"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 2,
+          "exactTitle": "观察池塘水中的微小生物",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-paramecium",
+            "bio-pond"
+          ],
+          "implementationTitles": [
+            "观察草履虫并探究其趋性",
+            "观察池塘水中的微小生物"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "独立显微模型比较草履虫、眼虫、衣藻和水绵及取样记录；真实水样物种组成必须实际观察，不由模型预测。",
+          "choiceStatus": "基本实验活动目录条目",
+          "primaryImplementationIds": [
+            "bio-pond"
+          ],
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 3,
+          "exactTitle": "制作植物细胞、动物细胞的临时装片（如观察洋葱鳞片叶表皮细胞、观察人体口腔上皮细胞等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-plant-cell",
+            "bio-animal-cell"
+          ],
+          "implementationTitles": [
+            "制作并观察植物细胞临时装片",
+            "观察人的口腔上皮细胞和动物细胞"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 4,
+          "exactTitle": "制作植物细胞、动物细胞的结构模型",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-cell-model"
+          ],
+          "implementationTitles": [
+            "制作细胞模型"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 5,
+          "exactTitle": "观察根尖细胞分裂的永久装片",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-cell-division"
+          ],
+          "implementationTitles": [
+            "观察洋葱根尖细胞的分裂"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 6,
+          "exactTitle": "观察人体和植物体的基本组织（如人体组织的永久装片、番茄果实不同组织的临时装片等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-tissues"
+          ],
+          "implementationTitles": [
+            "观察人体和植物体的基本组织"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 7,
+          "exactTitle": "观察某种原生动物（如草履虫），并探究其取食、运动或趋性",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-paramecium"
+          ],
+          "implementationTitles": [
+            "观察草履虫并探究其趋性"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 8,
+          "exactTitle": "观察不同类群的植物，认识其主要特征（如观察藻类、苔藓植物、蕨类植物、裸子植物、被子植物等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-plants"
+          ],
+          "implementationTitles": [
+            "观察不同类群的植物"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 9,
+          "exactTitle": "观察不同类群的动物，认识其主要特征（如观察蛔虫、缢蛏、蚯蚓、蝗虫、鲫鱼、家鸽、家兔等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-animal-groups",
+            "bio-bird"
+          ],
+          "implementationTitles": [
+            "观察不同类群动物的形态结构",
+            "鸟适于飞行的形态结构特点"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 10,
+          "exactTitle": "培养并观察细菌的菌落",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-microbe-distribution"
+          ],
+          "implementationTitles": [
+            "检测环境中的细菌和真菌"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 11,
+          "exactTitle": "观察酵母菌和霉菌",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 41,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-fungi"
+          ],
+          "implementationTitles": [
+            "观察酵母菌和霉菌"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 12,
+          "exactTitle": "探究影响鼠妇（或蚯蚓等）分布的环境因素",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-woodlouse"
+          ],
+          "implementationTitles": [
+            "探究非生物因素对某种动物的影响"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 13,
+          "exactTitle": "探究植被类型与环境湿度或温度之间的关系",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-vegetation"
+          ],
+          "implementationTitles": [
+            "调查植被条件与空气温湿度的关系"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 14,
+          "exactTitle": "调查校园或附近的小池塘、农田等环境中生物之间的关系",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-foodweb"
+          ],
+          "implementationTitles": [
+            "观察食物网与生物之间的关系"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 15,
+          "exactTitle": "调查生态环境被破坏或者改善的实例",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-ecological-survey"
+          ],
+          "implementationTitles": [
+            "调查生态环境并设计校园绿化方案"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 16,
+          "exactTitle": "设计校园绿化方案",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-ecological-survey"
+          ],
+          "implementationTitles": [
+            "调查生态环境并设计校园绿化方案"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 17,
+          "exactTitle": "观察种子的结构（如菜豆、玉米等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-seed-structure"
+          ],
+          "implementationTitles": [
+            "观察种子的结构"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 18,
+          "exactTitle": "观察根尖的结构（如洋葱根尖、大蒜根尖等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-root"
+          ],
+          "implementationTitles": [
+            "观察根尖的结构"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 19,
+          "exactTitle": "解剖和观察花的结构（如桃花、百合等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-flower"
+          ],
+          "implementationTitles": [
+            "解剖和观察花的结构"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 20,
+          "exactTitle": "制作徒手切片，观察叶片的结构（如绿萝、黑藻等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-leaf"
+          ],
+          "implementationTitles": [
+            "观察叶片的结构"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 21,
+          "exactTitle": "探究种子萌发所需的条件",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-germination"
+          ],
+          "implementationTitles": [
+            "探究种子萌发的环境条件"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 22,
+          "exactTitle": "栽培一种常见植物并观察其生长发育的全过程（如向日葵、彩椒等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-plant-growth"
+          ],
+          "implementationTitles": [
+            "栽培一种植物，探究所需的环境条件"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "含植物生长阶段和条件探究设计；网页阶段模型不能代替真实栽培的全过程连续观察记录。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 23,
+          "exactTitle": "运用无土栽培技术栽培一种植物（如水培大蒜、沙培花生等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-mineral"
+          ],
+          "implementationTitles": [
+            "比较玉米幼苗在蒸馏水和土壤浸出液中的生长状况"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "含蒸馏水、土壤浸出液及营养液的比较；对应无土栽培原理与方案，不能声称已完成实物栽培。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 24,
+          "exactTitle": "探究植物光合作用的条件、原料和产物",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-photosynthesis-starch",
+            "bio-photosynthesis-oxygen",
+            "bio-photosynthesis-co2"
+          ],
+          "implementationTitles": [
+            "探究绿叶在光下制造有机物",
+            "观察金鱼藻在光下释放氧气",
+            "二氧化碳是光合作用必需的原料"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 25,
+          "exactTitle": "调查生活中利用呼吸作用原理保存食物的方法措施",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 42,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-food-storage"
+          ],
+          "implementationTitles": [
+            "调查利用呼吸作用原理保存食物的方法"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 26,
+          "exactTitle": "探究唾液淀粉酶对淀粉的消化作用",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-digestion"
+          ],
+          "implementationTitles": [
+            "口腔对馒头（或米饭）的消化作用"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 27,
+          "exactTitle": "探究几种食物能量的差异（如薯条、花生等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-food-energy"
+          ],
+          "implementationTitles": [
+            "测定几种食物中的能量"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 28,
+          "exactTitle": "制订合理的膳食计划",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-diet"
+          ],
+          "implementationTitles": [
+            "制订合理的膳食计划"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 29,
+          "exactTitle": "观察血涂片永久装片",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-blood-smear"
+          ],
+          "implementationTitles": [
+            "观察人血的永久涂片"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 30,
+          "exactTitle": "观察小鱼尾鳍内血液流动现象",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-fish-capillaries"
+          ],
+          "implementationTitles": [
+            "观察小鱼尾鳍内血管及血液的流动"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 31,
+          "exactTitle": "观察哺乳动物心脏的形态与结构",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-heart"
+          ],
+          "implementationTitles": [
+            "观察心脏的结构"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 32,
+          "exactTitle": "开展人工呼吸、心肺复苏、包扎止血的模拟实践活动",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-first-aid",
+            "bio-firstaid-procedure"
+          ],
+          "implementationTitles": [
+            "用药说明与急救模拟实践",
+            "成人心肺复苏与包扎止血流程模拟"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "已补成人无反应/呼吸识别、120与AED、训练人偶按压、受训者30:2、持续直接压迫与包扎后的远端循环检查。仅为成人流程训练模型，不认证操作合格或替代实际急救；不在真实同学身上演练。",
+          "choiceStatus": "基本实验活动目录条目",
+          "primaryImplementationIds": [
+            "bio-firstaid-procedure"
+          ],
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 33,
+          "exactTitle": "验证人体呼出的气体中含有较多的二氧化碳",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-exhaled-co2"
+          ],
+          "implementationTitles": [
+            "验证人体呼出气体中含有较多的二氧化碳"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 34,
+          "exactTitle": "模拟吸气与呼气时肺与胸廓的变化",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-lung"
+          ],
+          "implementationTitles": [
+            "模拟膈肌的收缩和舒张与呼吸的关系"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 35,
+          "exactTitle": "观察哺乳动物肾脏的形态与结构",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-kidney"
+          ],
+          "implementationTitles": [
+            "观察肾脏与尿液形成过程"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 36,
+          "exactTitle": "观察小鼠肾脏纵切永久装片",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-kidney",
+            "bio-kidney-slide"
+          ],
+          "implementationTitles": [
+            "观察肾脏与尿液形成过程",
+            "观察小鼠肾脏纵切永久装片"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "独立肾纵切永久装片场景比较皮质、髓质、肾小体和肾小管断面；图示不是显微照片，不测定滤过速率。",
+          "choiceStatus": "基本实验活动目录条目",
+          "primaryImplementationIds": [
+            "bio-kidney-slide"
+          ],
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 37,
+          "exactTitle": "观察人或动物的某些反射活动（如膝跳、缩手、眨眼、唾液分泌等反射）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-reflex"
+          ],
+          "implementationTitles": [
+            "膝跳反射与反射弧"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 38,
+          "exactTitle": "观察某种脊椎动物的肌肉、骨骼、关节的基本结构（如鸡翅、羊腿骨等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-muscle"
+          ],
+          "implementationTitles": [
+            "观察骨、关节和肌肉及屈伸肘动作"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 39,
+          "exactTitle": "探究酒精对水蚤心率或成活率的影响",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 43,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-daphnia"
+          ],
+          "implementationTitles": [
+            "探究酒精对水蚤心率的影响"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 40,
+          "exactTitle": "调查当地某种传染病的发生及预防措施",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 44,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-infection"
+          ],
+          "implementationTitles": [
+            "调查当地传染病并设计预防海报"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 41,
+          "exactTitle": "设计和制作社区海报，宣传预防某种传染病的科普知识",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 44,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-infection"
+          ],
+          "implementationTitles": [
+            "调查当地传染病并设计预防海报"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 42,
+          "exactTitle": "观察鸡卵的结构",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 44,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-egg"
+          ],
+          "implementationTitles": [
+            "鸟卵适于在陆地上发育的结构特征"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 43,
+          "exactTitle": "模拟人的性别决定过程",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 44,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-sex"
+          ],
+          "implementationTitles": [
+            "模拟人的性别决定"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 44,
+          "exactTitle": "模拟遗传性状显隐性的形成过程",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 44,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-dominance"
+          ],
+          "implementationTitles": [
+            "模拟遗传性状显隐性的形成过程"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 45,
+          "exactTitle": "探究某种植物果实的性状差异（如玉米果穗、花生果实等）",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 44,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-variation"
+          ],
+          "implementationTitles": [
+            "探究花生果实大小的变异"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 46,
+          "exactTitle": "模拟保护色的形成过程",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 44,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-selection"
+          ],
+          "implementationTitles": [
+            "模拟保护色的形成过程"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "基本实验活动目录条目",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 47,
+          "exactTitle": "制作可调节的眼球成像模型",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-eye"
+          ],
+          "implementationTitles": [
+            "制作可调节的眼球成像模型"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "已包含可调模型设计、制作后的统一条件检验、Godot等效眼光学与矫正对照；网页不能完成实物制作或验光。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 48,
+          "exactTitle": "制作实验装置模拟吸烟有害健康",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-smoke"
+          ],
+          "implementationTitles": [
+            "制作模型说明吸烟有害健康"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "含模拟吸烟危害的装置原理，不等同实际制作或实测危害剂量。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 49,
+          "exactTitle": "设计并制作能较长时间维持平衡的生态瓶",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-ecosystem"
+          ],
+          "implementationTitles": [
+            "设计并制作生态瓶"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "含生态瓶设计与光照、植物、动物负荷模型，不具备长期实测稳定性记录。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 50,
+          "exactTitle": "探究栽培一种植物所需的物理和化学环境条件",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-plant-growth"
+          ],
+          "implementationTitles": [
+            "栽培一种植物，探究所需的环境条件"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 51,
+          "exactTitle": "探究影响扦插植物成活的生物和非生物因素",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-cutting"
+          ],
+          "implementationTitles": [
+            "植物的扦插或嫁接"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "本条核对目录题目和静态教学内容；未据此认证渲染、参数效果或真实实验完成。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 52,
+          "exactTitle": "饲养家蚕并观察家蚕的生殖与发育",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-animal-development"
+          ],
+          "implementationTitles": [
+            "设计饲养装置并观察动物的发育"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "含家蚕发育阶段和饲养需求设计，不具备连续实物饲养记录。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 53,
+          "exactTitle": "制作水族箱，饲养热带鱼",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-aquarium"
+          ],
+          "implementationTitles": [
+            "设计水族箱并制订热带鱼饲养计划"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "已补独立水族箱布局、鱼种资料、名义条数密度、温度、供氧、投饵、相容性及维护计划；具体物种的实际水质阈值与连续饲养资料仍须另行核对，不能据模型保证成活。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "primaryImplementationIds": [
+            "bio-aquarium"
+          ],
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 54,
+          "exactTitle": "收集当地面包酵母菌种并比较发酵效果",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-yeast-compare"
+          ],
+          "implementationTitles": [
+            "收集酵母来源信息并比较面包酵母的发酵效果"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "已补当地食品级酵母来源记录与A/B各三次独立重复的输入、均值及差值分析。未知菌的采集、分离纯化由专业条件完成；网页不实际获取菌种、不生成实测产气值。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "primaryImplementationIds": [
+            "bio-yeast-compare"
+          ],
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 55,
+          "exactTitle": "设计简单装置，制作酸奶",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-yogurt"
+          ],
+          "implementationTitles": [
+            "设计酸奶发酵装置并分析凝乳与pH记录"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "已补独立发酵装置方案、未接种对照、温度、器具卫生、凝乳及输入pH分析。未提供实际制作记录；凝乳、pH和卫生选项不能证明食品安全。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "primaryImplementationIds": [
+            "bio-yogurt"
+          ],
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        },
+        {
+          "ncetId": 56,
+          "exactTitle": "制作泡菜并探究影响泡菜亚硝酸盐浓度的因素",
+          "sourceId": "bio-ncet2023",
+          "sourceUrl": "https://www.ncet.edu.cn/u/cms/www/202311/241430136xjv.pdf",
+          "printedPage": 45,
+          "verificationStatus": "primary-official-directory-title-checked",
+          "implementationIds": [
+            "bio-pickle"
+          ],
+          "implementationTitles": [
+            "比较泡菜制作条件与亚硝酸盐检测记录"
+          ],
+          "mappingBasis": "catalog.ncetIds",
+          "catalogCoverage": "simulation-core-implemented-with-stated-practical-boundaries",
+          "limitations": "已补第1/3/5天处理组与对照组的六个亚硝酸盐输入记录、同日差值以及盐度/温度/供氧单因素方案。网页不实施化学检测，不按条件预测浓度，也不判定食用安全；真实取样与检测需合适方法和专业监督。",
+          "choiceStatus": "跨学科实践可根据实际情况选择开展",
+          "primaryImplementationIds": [
+            "bio-pickle"
+          ],
+          "simulationImplemented": true,
+          "physicalPracticeCompleted": false
+        }
+      ]
+    }
+  },
+  "textbookActivities": [
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "观察校园、公园或林地中的生物",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        457
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-campus"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-campus": [
+          "观察校园、公园或林地中的生物",
+          "生物和非生物"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "生物和非生物",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        570
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-campus"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-campus": [
+          "观察校园、公园或林地中的生物",
+          "生物和非生物"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "练习使用显微镜",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        706
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-microscope"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-microscope": [
+          "练习使用显微镜"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "制作并观察植物细胞临时装片",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        834
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-plant-cell"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-plant-cell": [
+          "制作并观察植物细胞临时装片"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "观察人的口腔上皮细胞和动物细胞",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        953
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-animal-cell"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-animal-cell": [
+          "观察人的口腔上皮细胞和动物细胞"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "动物细胞的形态和结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        994
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "semantic-candidate",
+      "implementationIds": [
+        "bio-animal-cell",
+        "bio-tissues"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-animal-cell": [
+          "观察人的口腔上皮细胞和动物细胞"
+        ],
+        "bio-tissues": [
+          "人体的基本组织",
+          "胃的组织构成与功能"
+        ]
+      },
+      "note": "动物细胞与组织模块有相关内容，但此标题尚未进入 evidenceTitles；需要比较多种动物细胞形态。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "洋葱根尖细胞的分裂",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        1240
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-cell-division"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-cell-division": [
+          "洋葱根尖细胞的分裂"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "人体的基本组织",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        1367
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-tissues"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-tissues": [
+          "人体的基本组织",
+          "胃的组织构成与功能"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "胃的组织构成与功能",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        1394
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-tissues"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-tissues": [
+          "人体的基本组织",
+          "胃的组织构成与功能"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "观察草履虫并探究其趋性",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        1576
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-paramecium"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-paramecium": [
+          "观察草履虫并探究其趋性"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "综合实践项目",
+      "exactTitle": "制作细胞模型",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        1689
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-cell-model"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-cell-model": [
+          "制作细胞模型"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "几种苔藓植物和蕨类植物",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        1967
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-plants"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-plants": [
+          "几种苔藓植物和蕨类植物",
+          "种子的着生位置"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "观察种子的结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2041
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-seed-structure"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-seed-structure": [
+          "观察种子的结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "种子的着生位置",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2110
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-plants"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-plants": [
+          "几种苔藓植物和蕨类植物",
+          "种子的着生位置"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "鱼的形态、结构和运动",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2420
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-animal-groups"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-animal-groups": [
+          "鱼的形态、结构和运动",
+          "蛙的形态"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "蛙的形态",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2521
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-animal-groups"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-animal-groups": [
+          "鱼的形态、结构和运动",
+          "蛙的形态"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "鸟适于飞行的形态结构特点",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2638
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-bird"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-bird": [
+          "鸟适于飞行的形态结构特点"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "兔和狼的牙齿",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2733
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-teeth"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-teeth": [
+          "兔和狼的牙齿"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "检测环境中的细菌和真菌",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2854
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-microbe-distribution"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-microbe-distribution": [
+          "检测环境中的细菌和真菌"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "细菌的基本结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        2954
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-bacteria"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-bacteria": [
+          "细菌的基本结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "实验·探究",
+      "exactTitle": "观察酵母菌和霉菌",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        3094
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-fungi"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-fungi": [
+          "观察酵母菌和霉菌"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "课外实践",
+      "exactTitle": "调查当地食用菌的种类及生产情况",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        3200
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-resources"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-resources": [
+          "调查本地区的某种生物资源",
+          "给校园内的植物挂牌",
+          "调查当地食用菌的种类及生产情况"
+        ]
+      },
+      "note": "综合资源调查模块合并映射；需实际调查记录才构成地方食用菌生产调查。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "综合实践项目",
+      "exactTitle": "利用细菌或真菌制作发酵食品",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        3372
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-fermentation",
+        "bio-yeast-compare",
+        "bio-pickle",
+        "bio-yogurt"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-fermentation": [
+          "利用细菌或真菌制作发酵食品"
+        ],
+        "bio-yeast-compare": [
+          "利用细菌或真菌制作发酵食品"
+        ],
+        "bio-pickle": [
+          "利用细菌或真菌制作发酵食品"
+        ],
+        "bio-yogurt": [
+          "利用细菌或真菌制作发酵食品"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "对植物进行分类",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        3456
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-classification"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-classification": [
+          "对植物进行分类",
+          "对动物进行分类"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "观察·思考",
+      "exactTitle": "对动物进行分类",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        3479
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-classification"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-classification": [
+          "对植物进行分类",
+          "对动物进行分类"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "调查",
+      "exactTitle": "调查本地区的某种生物资源",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        1866,
+        3648
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-resources"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-resources": [
+          "调查本地区的某种生物资源",
+          "给校园内的植物挂牌",
+          "调查当地食用菌的种类及生产情况"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7上",
+      "headingKind": "课外实践",
+      "exactTitle": "给校园内的植物挂牌",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246806.html",
+      "sourceTextLines": [
+        3688
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-resources"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-resources": [
+          "调查本地区的某种生物资源",
+          "给校园内的植物挂牌",
+          "调查当地食用菌的种类及生产情况"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "探究种子萌发的环境条件",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        390
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-germination"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-germination": [
+          "探究种子萌发的环境条件"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "课外实践",
+      "exactTitle": "测定种子发芽率",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        498
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-germination-rate"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-germination-rate": [
+          "测定种子发芽率"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "观察根尖的结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        539
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-root"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-root": [
+          "观察根尖的结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "比较玉米幼苗在蒸馏水和土壤浸出液中的生长状况",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        612
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-mineral"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-mineral": [
+          "比较玉米幼苗在蒸馏水和土壤浸出液中的生长状况"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "解剖和观察花的结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        753
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-flower"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-flower": [
+          "解剖和观察花的结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "水在茎中的运输",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        923
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-stem-water"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-stem-water": [
+          "水在茎中的运输"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "观察叶片的结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        951
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-leaf"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-leaf": [
+          "观察叶片的结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "探究绿叶在光下制造有机物",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1091
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-photosynthesis-starch"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-photosynthesis-starch": [
+          "探究绿叶在光下制造有机物"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "金鱼藻在光下释放氧气",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1151
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "semantic-candidate",
+      "implementationIds": [
+        "bio-photosynthesis-oxygen"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-photosynthesis-oxygen": [
+          "观察金鱼藻在光下释放氧气"
+        ]
+      },
+      "note": "当前 evidenceTitles 为“观察金鱼藻在光下释放氧气”，属于增加“观察”的语义匹配。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "二氧化碳是光合作用必需的原料",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1176
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-photosynthesis-co2"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-photosynthesis-co2": [
+          "二氧化碳是光合作用必需的原料"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "种子在萌发过程中的能量变化",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1335
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-seed-respiration"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-seed-respiration": [
+          "种子在萌发过程中的能量变化",
+          "种子在萌发过程中的物质变化"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "种子在萌发过程中的物质变化",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1350
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-seed-respiration"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-seed-respiration": [
+          "种子在萌发过程中的能量变化",
+          "种子在萌发过程中的物质变化"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "课外实践",
+      "exactTitle": "参加当地的绿化活动",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1666
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-plant-growth"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-plant-growth": [
+          "栽培一种植物，探究所需的环境条件",
+          "参加当地的绿化活动"
+        ]
+      },
+      "note": "当前依附植物栽培模块的证据标题；真实地方绿化参与不能由该模拟替代。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "综合实践项目",
+      "exactTitle": "栽培一种植物，探究所需的环境条件",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1678
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-plant-growth"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-plant-growth": [
+          "栽培一种植物，探究所需的环境条件",
+          "参加当地的绿化活动"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "男女生殖系统的结构与功能",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        1869
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-human-reproduction"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-human-reproduction": [
+          "男女生殖系统的结构与功能"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "测定几种食物中的能量",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        2249
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-food-energy"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-food-energy": [
+          "测定几种食物中的能量"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "口腔对馒头（或米饭）的消化作用",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        2454
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-digestion"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-digestion": [
+          "口腔对馒头（或米饭）的消化作用"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "课外实践",
+      "exactTitle": "制订合理的膳食计划",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        2790
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-diet"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-diet": [
+          "制订合理的膳食计划"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "模拟膈肌的收缩和舒张与呼吸的关系",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3017
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-lung"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-lung": [
+          "模拟膈肌的收缩和舒张与呼吸的关系"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "课外实践",
+      "exactTitle": "测定肺活量",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3076
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-lung-capacity"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-lung-capacity": [
+          "测定肺活量"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "人血的永久涂片",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3210
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-blood-smear"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-blood-smear": [
+          "人血的永久涂片"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "实验·探究",
+      "exactTitle": "观察小鱼尾鳍内血管及血液的流动",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3375
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-fish-capillaries"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-fish-capillaries": [
+          "观察小鱼尾鳍内血管及血液的流动"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "心脏的结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3493
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-heart"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-heart": [
+          "心脏的结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "血液循环的过程",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3569
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-circulation"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-circulation": [
+          "血液循环的过程"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "课外实践",
+      "exactTitle": "为他人测量血压",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3641
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-blood-pressure"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-blood-pressure": [
+          "为他人测量血压"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "观察·思考",
+      "exactTitle": "组成泌尿系统的器官",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3720
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-kidney"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-kidney": [
+          "组成泌尿系统的器官",
+          "血浆、肾小囊中的液体和尿液成分的比较"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "7下",
+      "headingKind": "综合实践项目",
+      "exactTitle": "设计并制作人体结构模型",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91248302.html",
+      "sourceTextLines": [
+        3864
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-body-model"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-body-model": [
+          "设计并制作人体结构模型"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "实验·探究",
+      "exactTitle": "膝跳反射",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        713
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-reflex"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-reflex": [
+          "膝跳反射"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "实验·探究",
+      "exactTitle": "测定反应速度",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        802
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-reaction"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-reaction": [
+          "测定反应速度"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "观察·思考",
+      "exactTitle": "骨、关节和肌肉",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        889
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-muscle"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-muscle": [
+          "骨、关节和肌肉",
+          "屈肘动作和伸肘动作"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "观察·思考",
+      "exactTitle": "屈肘动作和伸肘动作",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        940
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-muscle"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-muscle": [
+          "骨、关节和肌肉",
+          "屈肘动作和伸肘动作"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "调查",
+      "exactTitle": "调查当地的主要传染病",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        352,
+        1354
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-infection"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-infection": [
+          "调查当地的主要传染病",
+          "健康生活宣传展演"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "实验·探究",
+      "exactTitle": "酒精对水蚤心率的影响",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2037
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-daphnia"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-daphnia": [
+          "酒精对水蚤心率的影响"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "课外实践",
+      "exactTitle": "参观禁毒展览或观看有关影像资料",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2156
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-drug-prevention"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-drug-prevention": [
+          "参观禁毒展览或观看有关影像资料"
+        ]
+      },
+      "note": "已补独立禁毒资料评价与拒绝、求助情境模块；真实展览参观或观看记录仍需教师组织完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "综合实践项目",
+      "exactTitle": "健康生活宣传展演",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2159
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-infection",
+        "bio-smoke"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-infection": [
+          "调查当地的主要传染病",
+          "健康生活宣传展演"
+        ],
+        "bio-smoke": [
+          "健康生活宣传展演"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "实验·探究",
+      "exactTitle": "非生物因素对某种动物的影响",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2387
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-woodlouse"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-woodlouse": [
+          "非生物因素对某种动物的影响"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "调查",
+      "exactTitle": "不同植被条件下的气温和湿度",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2472
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "semantic-candidate",
+      "implementationIds": [
+        "bio-vegetation"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-vegetation": []
+      },
+      "note": "原文明确比较裸地、草地、树林并分早中晚记录温度和湿度；当前双地块湿度输入只覆盖其中一部分。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "课外实践",
+      "exactTitle": "调查校园或农田中生物之间的关系",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2512
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-foodweb"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-foodweb": [
+          "调查校园或农田中生物之间的关系",
+          "草原生态系统的营养结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "观察·思考",
+      "exactTitle": "草原生态系统的营养结构",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2604
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-foodweb"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-foodweb": [
+          "调查校园或农田中生物之间的关系",
+          "草原生态系统的营养结构"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "观察·思考",
+      "exactTitle": "生态系统中的物质和能量变化",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2630
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "semantic-candidate",
+      "implementationIds": [
+        "bio-foodweb",
+        "bio-ecosystem"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-foodweb": [
+          "调查校园或农田中生物之间的关系",
+          "草原生态系统的营养结构"
+        ],
+        "bio-ecosystem": [
+          "设计并制作生态瓶"
+        ]
+      },
+      "note": "相关生态模块可解释部分关系；应明确区分物质循环与能量流动，标题及教学目标需要独立核对。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "综合实践项目",
+      "exactTitle": "设计并制作生态瓶",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        2878
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-ecosystem"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-ecosystem": [
+          "设计并制作生态瓶"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "实验·探究",
+      "exactTitle": "酸雨对生物的影响",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        3063
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-acidrain"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-acidrain": [
+          "酸雨对生物的影响"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8上",
+      "headingKind": "调查",
+      "exactTitle": "调查当地生态环境现状，拟订保护行动计划",
+      "sourceUrl": "https://www.yeyulingfeng.com/wendang/91246602.html",
+      "sourceTextLines": [
+        3283
+      ],
+      "verificationStatus": "secondary-current-edition-text",
+      "mappingStatus": "exact-evidence-title",
+      "implementationIds": [
+        "bio-ecological-survey"
+      ],
+      "matchedEvidenceTitles": {
+        "bio-ecological-survey": [
+          "调查当地生态环境现状，拟订保护行动计划"
+        ]
+      },
+      "note": "标题匹配仅确认目录对应，不认证运行效果、操作完整性或真实实践完成。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "实验·探究",
+      "exactTitle": "鸟卵适于在陆地上发育的结构特征",
+      "printedPages": [
+        14
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-egg"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "实验·探究",
+      "exactTitle": "模拟有性生殖过程中染色体和基因的传递",
+      "printedPages": [
+        29
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-gene-transfer"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "实验·探究",
+      "exactTitle": "模拟人的性别决定",
+      "printedPages": [
+        40
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-sex"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "实验·探究",
+      "exactTitle": "花生果实大小的变异",
+      "printedPages": [
+        44,
+        45
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-variation"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "实验·探究",
+      "exactTitle": "模拟保护色的形成过程",
+      "printedPages": [
+        64,
+        65,
+        66
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-selection"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "综合实践项目",
+      "exactTitle": "植物的扦插或嫁接",
+      "printedPages": [
+        8,
+        9
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-cutting"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "综合实践项目",
+      "exactTitle": "设计并制作装置，饲养一种动物",
+      "printedPages": [
+        18,
+        19
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-animal-development"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "观察·思考",
+      "exactTitle": "几种生物的生殖方式",
+      "printedPages": [
+        3
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-asexual"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "观察·思考",
+      "exactTitle": "生物的不同性状",
+      "printedPages": [
+        21,
+        22
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-traits"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "观察·思考",
+      "exactTitle": "染色体、DNA和基因的关系",
+      "printedPages": [
+        27
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-genetic-material"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "观察·思考",
+      "exactTitle": "男性和女性的染色体",
+      "printedPages": [
+        39
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-karyotype"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "观察·思考",
+      "exactTitle": "比较现代类人猿与人类",
+      "printedPages": [
+        71,
+        72
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-human-comparison"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "几种动物的有性生殖",
+      "printedPages": [
+        12
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-sexual-comparison"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "转基因番茄的启示",
+      "printedPages": [
+        23
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-transgene-evidence"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "高茎豌豆和矮茎豌豆的杂交实验",
+      "printedPages": [
+        32,
+        33
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-dominance"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "几个育种实例",
+      "printedPages": [
+        46,
+        47
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-breeding"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "原始地球上生命形成的推测",
+      "printedPages": [
+        52,
+        53
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-origin-evidence"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "几种化石及化石在地层中的分布",
+      "printedPages": [
+        57,
+        58
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-evolution"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "我国的物种多样性",
+      "printedPages": [
+        79
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-species-register"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "外来入侵物种如何威胁生物多样性？",
+      "printedPages": [
+        85,
+        86
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-invasive-species"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "分析·讨论",
+      "exactTitle": "保护生物多样性的措施",
+      "printedPages": [
+        86,
+        87
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-invasive-species",
+        "bio-biodiversity"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "思维训练",
+      "exactTitle": "分析和解释数据",
+      "printedPages": [
+        42
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-sex-ratio-data"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "思维训练",
+      "exactTitle": "评价证据与假说",
+      "printedPages": [
+        61
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-evidence-reasoning"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "思维训练",
+      "exactTitle": "区分事实和观点",
+      "printedPages": [
+        74
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-evidence-reasoning"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "思维训练",
+      "exactTitle": "综合概括",
+      "printedPages": [
+        89
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-cell-comparison"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    },
+    {
+      "term": "8下",
+      "headingKind": "试一试",
+      "exactTitle": "卵壳气孔实验设计（无独立正式题名，内容摘要）",
+      "printedPages": [
+        15
+      ],
+      "sourceId": "bio-pep8down-images",
+      "sourceUrl": "https://zxkeben.szxuexiao.com/rjb8njswx2024.html",
+      "verificationStatus": "secondary-full-student-book-images-visually-checked-no-imprint-certification",
+      "mappingStatus": "original-interactive-task-linked-to-verified-heading",
+      "implementationIds": [
+        "bio-egg-pores"
+      ],
+      "note": "第三方学生书印刷p1—99活动核对；无版权页印次认证。模型为原创，不分发教材图像。"
+    }
+  ],
+  "limitations": [
+    "本清单记录已核命名活动与基本实验目录映射，不声称穷尽所有未命名图片、讨论与正文小操作。",
+    "每项网页模型是原创的教学任务，不能替代真实标本观察、培养、调查和急救技能训练。",
+    "图示数值为公式理论值、明确合成样本或用户输入记录，不是网页测得的真实生物数据。",
+    "NCET 2023条目先于新教材重排，部分学期标签为本网站教学归类。",
+    "8下完整第三方学生书图像核对覆盖26项命名栏目；未核版权页印次，不能宣称出版社原本认证。"
+  ]
+}

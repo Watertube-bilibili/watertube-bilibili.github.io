@@ -1,0 +1,5855 @@
+{
+  "version": 2,
+  "engine": "Godot 4.6.3",
+  "g": 9.8,
+  "scenarioUsage": "Catalog modelParams.scenario selects a scientific model. Controls visible on each catalog entry override defaults. scenarioControls documents scenario-specific inputs; energy/pendulum uses the actual RigidBody2D and PinJoint2D solver, not the static solve method.",
+  "models": {
+    "measurement": {
+      "scenarios": [
+        "length",
+        "time",
+        "volume",
+        "temperature",
+        "balance"
+      ],
+      "controls": [
+        {
+          "key": "value",
+          "label": "待测量",
+          "unit": "",
+          "min": 0,
+          "max": 200,
+          "step": 0.1,
+          "value": 12.34
+        },
+        {
+          "key": "division",
+          "label": "分度值",
+          "unit": "",
+          "min": 0.01,
+          "max": 10,
+          "step": 0.01,
+          "value": 0.1
+        },
+        {
+          "key": "zero",
+          "label": "零点偏移",
+          "unit": "",
+          "min": -5,
+          "max": 5,
+          "step": 0.1,
+          "value": 0
+        }
+      ],
+      "note": "Readings rounded to instrument division; corrected reading removes zero error. scenario selects units.",
+      "scenarioControls": {
+        "length": [
+          {
+            "key": "value",
+            "label": "整叠厚度",
+            "unit": "cm",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.01,
+            "value": 1
+          },
+          {
+            "key": "division",
+            "label": "分度值",
+            "unit": "cm",
+            "min": 0.01,
+            "max": 0.2,
+            "step": 0.01,
+            "value": 0.1
+          },
+          {
+            "key": "zero",
+            "label": "零点偏移",
+            "unit": "cm",
+            "min": -5,
+            "max": 5,
+            "step": 0.1,
+            "value": 0
+          }
+        ],
+        "time": [
+          {
+            "key": "value",
+            "label": "计时时间",
+            "unit": "s",
+            "min": 0,
+            "max": 120,
+            "step": 0.01,
+            "value": 30.28
+          },
+          {
+            "key": "division",
+            "label": "分度值",
+            "unit": "s",
+            "min": 0.01,
+            "max": 1,
+            "step": 0.01,
+            "value": 0.01
+          },
+          {
+            "key": "zero",
+            "label": "零点偏移",
+            "unit": "s",
+            "min": -5,
+            "max": 5,
+            "step": 0.1,
+            "value": 0
+          }
+        ],
+        "temperature": [
+          {
+            "key": "value",
+            "label": "待测量",
+            "unit": "℃",
+            "min": -10,
+            "max": 100,
+            "step": 0.1,
+            "value": 35
+          },
+          {
+            "key": "division",
+            "label": "分度值",
+            "unit": "℃",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "zero",
+            "label": "零点偏移",
+            "unit": "℃",
+            "min": -5,
+            "max": 5,
+            "step": 0.1,
+            "value": 0
+          }
+        ],
+        "balance": [
+          {
+            "key": "value",
+            "label": "多个回形针总质量",
+            "unit": "g",
+            "min": 0,
+            "max": 200,
+            "step": 0.1,
+            "value": 10
+          },
+          {
+            "key": "division",
+            "label": "分度值",
+            "unit": "g",
+            "min": 0.01,
+            "max": 10,
+            "step": 0.01,
+            "value": 0.2
+          },
+          {
+            "key": "zero",
+            "label": "零点偏移",
+            "unit": "g",
+            "min": -5,
+            "max": 5,
+            "step": 0.1,
+            "value": 0
+          }
+        ]
+      },
+      "extraControls": []
+    },
+    "incline": {
+      "scenarios": [
+        "speed"
+      ],
+      "controls": [
+        {
+          "key": "length",
+          "label": "斜面路程",
+          "unit": "m",
+          "min": 0.5,
+          "max": 2,
+          "step": 0.05,
+          "value": 1
+        },
+        {
+          "key": "angle",
+          "label": "斜面角度",
+          "unit": "°",
+          "min": 3,
+          "max": 30,
+          "step": 1,
+          "value": 12
+        },
+        {
+          "key": "mass",
+          "label": "小车质量",
+          "unit": "g",
+          "min": 100,
+          "max": 500,
+          "step": 50,
+          "value": 200
+        }
+      ],
+      "note": "Actual RigidBody2D solver. Ideal frictionless incline, right-to-left. mass in grams only for incline.",
+      "scenarioControls": {
+        "speed": [
+          {
+            "key": "length",
+            "label": "斜面路程",
+            "unit": "m",
+            "min": 0.5,
+            "max": 2,
+            "step": 0.05,
+            "value": 1
+          },
+          {
+            "key": "angle",
+            "label": "斜面角度",
+            "unit": "°",
+            "min": 3,
+            "max": 30,
+            "step": 1,
+            "value": 12
+          },
+          {
+            "key": "mass",
+            "label": "小车质量",
+            "unit": "g",
+            "min": 100,
+            "max": 500,
+            "step": 50,
+            "value": 200
+          }
+        ]
+      },
+      "extraControls": []
+    },
+    "motion": {
+      "scenarios": [
+        "uniform",
+        "inertia",
+        "friction",
+        "force",
+        "freefall",
+        "collision"
+      ],
+      "controls": [
+        {
+          "key": "mass",
+          "label": "质量",
+          "unit": "kg",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "force",
+          "label": "拉力",
+          "unit": "N",
+          "min": 0,
+          "max": 20,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "friction",
+          "label": "动摩擦因数",
+          "unit": "",
+          "min": 0,
+          "max": 1,
+          "step": 0.01,
+          "value": 0.1
+        },
+        {
+          "key": "velocity",
+          "label": "初速度",
+          "unit": "m/s",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "duration",
+          "label": "观察时长",
+          "unit": "s",
+          "min": 0.2,
+          "max": 5,
+          "step": 0.1,
+          "value": 2
+        }
+      ],
+      "note": "Actual RigidBody2D solver; horizontal unless freefall. Ideal dry friction, no drag. uniform overrides force/friction to zero; collision uses static wall at distance.",
+      "extraControls": [
+        {
+          "key": "distance",
+          "label": "碰撞挡板位置",
+          "unit": "m",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "elasticity",
+          "label": "恢复系数",
+          "unit": "",
+          "min": 0,
+          "max": 1,
+          "step": 0.1,
+          "value": 0.5
+        }
+      ],
+      "scenarioControls": {
+        "uniform": [
+          {
+            "key": "velocity",
+            "label": "初速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "duration",
+            "label": "观察时长",
+            "unit": "s",
+            "min": 0.2,
+            "max": 5,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "force": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "velocity",
+            "label": "初速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "force",
+            "label": "拉力",
+            "unit": "N",
+            "min": 0,
+            "max": 20,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "duration",
+            "label": "观察时长",
+            "unit": "s",
+            "min": 0.2,
+            "max": 5,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "friction": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "velocity",
+            "label": "初速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "duration",
+            "label": "观察时长",
+            "unit": "s",
+            "min": 0.2,
+            "max": 5,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "friction",
+            "label": "动摩擦因数",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "value": 0.1
+          }
+        ],
+        "inertia": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "velocity",
+            "label": "初速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "duration",
+            "label": "观察时长",
+            "unit": "s",
+            "min": 0.2,
+            "max": 5,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "friction",
+            "label": "动摩擦因数",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "value": 0.1
+          }
+        ]
+      }
+    },
+    "sound": {
+      "scenarios": [
+        "pitch",
+        "amplitude",
+        "medium",
+        "vacuum",
+        "echo",
+        "noise",
+        "resonance",
+        "timbre"
+      ],
+      "controls": [
+        {
+          "key": "frequency",
+          "label": "频率",
+          "unit": "Hz",
+          "min": 20,
+          "max": 2000,
+          "step": 10,
+          "value": 440
+        },
+        {
+          "key": "amplitude",
+          "label": "振幅（相对量）",
+          "unit": "",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "distance",
+          "label": "传播距离",
+          "unit": "m",
+          "min": 1,
+          "max": 500,
+          "step": 1,
+          "value": 34
+        },
+        {
+          "key": "medium",
+          "label": "介质",
+          "options": [
+            {
+              "value": "air",
+              "label": "空气"
+            },
+            {
+              "value": "water",
+              "label": "水"
+            },
+            {
+              "value": "steel",
+              "label": "钢"
+            },
+            {
+              "value": "vacuum",
+              "label": "真空"
+            }
+          ],
+          "value": "air"
+        }
+      ],
+      "note": "Ideal sinusoidal acoustic signal; amplitude and loudness indices are relative, not measured dB. Sound speeds are approximate at room temperature.",
+      "scenarioControls": {
+        "amplitude": [
+          {
+            "key": "amplitude",
+            "label": "振幅（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "Hz",
+            "min": 20,
+            "max": 2000,
+            "step": 10,
+            "value": 440
+          }
+        ],
+        "vacuum": [
+          {
+            "key": "medium",
+            "label": "介质",
+            "options": [
+              {
+                "value": "air",
+                "label": "空气"
+              },
+              {
+                "value": "water",
+                "label": "水"
+              },
+              {
+                "value": "steel",
+                "label": "钢"
+              },
+              {
+                "value": "vacuum",
+                "label": "真空"
+              }
+            ],
+            "value": "vacuum"
+          },
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "Hz",
+            "min": 20,
+            "max": 2000,
+            "step": 10,
+            "value": 440
+          },
+          {
+            "key": "amplitude",
+            "label": "振幅（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "medium": [
+          {
+            "key": "medium",
+            "label": "介质",
+            "options": [
+              {
+                "value": "air",
+                "label": "空气"
+              },
+              {
+                "value": "water",
+                "label": "水"
+              },
+              {
+                "value": "steel",
+                "label": "钢"
+              },
+              {
+                "value": "vacuum",
+                "label": "真空"
+              }
+            ],
+            "value": "steel"
+          },
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "Hz",
+            "min": 20,
+            "max": 2000,
+            "step": 10,
+            "value": 440
+          },
+          {
+            "key": "distance",
+            "label": "传播距离",
+            "unit": "m",
+            "min": 1,
+            "max": 500,
+            "step": 1,
+            "value": 34
+          }
+        ],
+        "pitch": [
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "Hz",
+            "min": 20,
+            "max": 2000,
+            "step": 10,
+            "value": 440
+          },
+          {
+            "key": "amplitude",
+            "label": "振幅（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "timbre": [
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "Hz",
+            "min": 20,
+            "max": 2000,
+            "step": 10,
+            "value": 440
+          },
+          {
+            "key": "amplitude",
+            "label": "振幅（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "harmonic2",
+            "label": "二次谐波相对系数",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.5
+          },
+          {
+            "key": "harmonic3",
+            "label": "三次谐波相对系数",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.25
+          }
+        ],
+        "noise": [
+          {
+            "key": "amplitude",
+            "label": "振幅（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "Hz",
+            "min": 20,
+            "max": 2000,
+            "step": 10,
+            "value": 440
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "harmonic2",
+          "label": "二次谐波相对系数",
+          "unit": "",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "value": 0.5
+        },
+        {
+          "key": "harmonic3",
+          "label": "三次谐波相对系数",
+          "unit": "",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "value": 0.25
+        }
+      ]
+    },
+    "thermal": {
+      "scenarios": [
+        "heating",
+        "mixing",
+        "capacity",
+        "conduction",
+        "engine",
+        "compression",
+        "expansion",
+        "bimetal",
+        "linearExpansion",
+        "friction",
+        "cycle",
+        "calorimetry",
+        "heat-input",
+        "efficiency-input"
+      ],
+      "controls": [
+        {
+          "key": "mass",
+          "label": "质量",
+          "unit": "kg",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "capacity",
+          "label": "比热容",
+          "unit": "J/(kg·℃)",
+          "min": 100,
+          "max": 5000,
+          "step": 100,
+          "value": 4200
+        },
+        {
+          "key": "power",
+          "label": "加热功率",
+          "unit": "W",
+          "min": 10,
+          "max": 2000,
+          "step": 10,
+          "value": 500
+        },
+        {
+          "key": "time",
+          "label": "加热时间",
+          "unit": "s",
+          "min": 0,
+          "max": 600,
+          "step": 10,
+          "value": 120
+        },
+        {
+          "key": "initial",
+          "label": "初温",
+          "unit": "℃",
+          "min": 0,
+          "max": 90,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "mass2",
+          "label": "第二物体质量",
+          "unit": "kg",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "temperature2",
+          "label": "第二物体温度",
+          "unit": "℃",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "value": 80
+        }
+      ],
+      "note": "No heat loss; heating temperatures bounded by boiling only in phase model, not general thermal. mixing same material unless capacity2 supplied.",
+      "extraControls": [
+        {
+          "key": "compressionRatio",
+          "label": "体积比",
+          "unit": "",
+          "min": 1,
+          "max": 4,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "gamma",
+          "label": "比热比",
+          "unit": "",
+          "min": 1.1,
+          "max": 1.67,
+          "step": 0.01,
+          "value": 1.4
+        },
+        {
+          "key": "efficiency",
+          "label": "热机效率",
+          "unit": "%",
+          "min": 0,
+          "max": 80,
+          "step": 1,
+          "value": 30
+        },
+        {
+          "key": "conductivity",
+          "label": "导热能力（相对量）",
+          "unit": "",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "length",
+          "label": "金属片原长",
+          "unit": "m",
+          "min": 0.05,
+          "max": 0.5,
+          "step": 0.01,
+          "value": 0.2
+        },
+        {
+          "key": "deltaT",
+          "label": "温度变化",
+          "unit": "℃",
+          "min": -40,
+          "max": 100,
+          "step": 5,
+          "value": 60
+        },
+        {
+          "key": "alpha1",
+          "label": "材料一线膨胀系数",
+          "unit": "1/℃",
+          "min": 5e-06,
+          "max": 3e-05,
+          "step": 1e-06,
+          "value": 1.9e-05
+        },
+        {
+          "key": "alpha2",
+          "label": "材料二线膨胀系数",
+          "unit": "1/℃",
+          "min": 5e-06,
+          "max": 3e-05,
+          "step": 1e-06,
+          "value": 1.2e-05
+        },
+        {
+          "key": "force",
+          "label": "滑动摩擦力",
+          "unit": "N",
+          "min": 0,
+          "max": 20,
+          "step": 0.5,
+          "value": 5
+        },
+        {
+          "key": "distance",
+          "label": "相对滑动路程",
+          "unit": "m",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "stroke",
+          "label": "冲程",
+          "options": [
+            {
+              "value": "intake",
+              "label": "吸气"
+            },
+            {
+              "value": "compression",
+              "label": "压缩"
+            },
+            {
+              "value": "power",
+              "label": "做功"
+            },
+            {
+              "value": "exhaust",
+              "label": "排气"
+            }
+          ],
+          "value": "intake"
+        }
+      ],
+      "scenarioControls": {
+        "bimetal": [
+          {
+            "key": "length",
+            "label": "金属片原长",
+            "unit": "m",
+            "min": 0.05,
+            "max": 0.5,
+            "step": 0.01,
+            "value": 0.2
+          },
+          {
+            "key": "deltaT",
+            "label": "温度变化",
+            "unit": "℃",
+            "min": -40,
+            "max": 100,
+            "step": 5,
+            "value": 60
+          },
+          {
+            "key": "alpha1",
+            "label": "材料一线膨胀系数",
+            "unit": "1/℃",
+            "min": 5e-06,
+            "max": 3e-05,
+            "step": 1e-06,
+            "value": 1.9e-05
+          },
+          {
+            "key": "alpha2",
+            "label": "材料二线膨胀系数",
+            "unit": "1/℃",
+            "min": 5e-06,
+            "max": 3e-05,
+            "step": 1e-06,
+            "value": 1.2e-05
+          }
+        ],
+        "heating": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.2,
+            "max": 1,
+            "step": 0.1,
+            "value": 0.4
+          },
+          {
+            "key": "capacity",
+            "label": "比热容",
+            "unit": "J/(kg·℃)",
+            "min": 2000,
+            "max": 4500,
+            "step": 100,
+            "value": 4200
+          },
+          {
+            "key": "power",
+            "label": "加热功率",
+            "unit": "W",
+            "min": 10,
+            "max": 100,
+            "step": 10,
+            "value": 50
+          },
+          {
+            "key": "time",
+            "label": "加热时间",
+            "unit": "s",
+            "min": 0,
+            "max": 120,
+            "step": 5,
+            "value": 60
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "capacity": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.2,
+            "max": 1,
+            "step": 0.1,
+            "value": 0.4
+          },
+          {
+            "key": "power",
+            "label": "加热功率",
+            "unit": "W",
+            "min": 10,
+            "max": 100,
+            "step": 10,
+            "value": 50
+          },
+          {
+            "key": "time",
+            "label": "加热时间",
+            "unit": "s",
+            "min": 0,
+            "max": 120,
+            "step": 5,
+            "value": 60
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 10,
+            "max": 30,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "compression": [
+          {
+            "key": "compressionRatio",
+            "label": "体积比",
+            "unit": "",
+            "min": 1,
+            "max": 4,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 0,
+            "max": 90,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "expansion": [
+          {
+            "key": "compressionRatio",
+            "label": "体积比",
+            "unit": "",
+            "min": 1,
+            "max": 4,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 0,
+            "max": 90,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "friction": [
+          {
+            "key": "force",
+            "label": "滑动摩擦力",
+            "unit": "N",
+            "min": 0,
+            "max": 20,
+            "step": 0.5,
+            "value": 5
+          },
+          {
+            "key": "distance",
+            "label": "相对滑动路程",
+            "unit": "m",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "engine": [
+          {
+            "key": "power",
+            "label": "加热功率",
+            "unit": "W",
+            "min": 10,
+            "max": 2000,
+            "step": 10,
+            "value": 500
+          },
+          {
+            "key": "time",
+            "label": "加热时间",
+            "unit": "s",
+            "min": 0,
+            "max": 600,
+            "step": 10,
+            "value": 120
+          },
+          {
+            "key": "efficiency",
+            "label": "热机效率",
+            "unit": "%",
+            "min": 0,
+            "max": 80,
+            "step": 1,
+            "value": 30
+          }
+        ],
+        "conduction": [
+          {
+            "key": "conductivity",
+            "label": "导热能力（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 0,
+            "max": 90,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "temperature2",
+            "label": "第二物体温度",
+            "unit": "℃",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "value": 80
+          }
+        ],
+        "cycle": [
+          {
+            "key": "stroke",
+            "label": "冲程",
+            "options": [
+              {
+                "value": "intake",
+                "label": "吸气"
+              },
+              {
+                "value": "compression",
+                "label": "压缩"
+              },
+              {
+                "value": "power",
+                "label": "做功"
+              },
+              {
+                "value": "exhaust",
+                "label": "排气"
+              }
+            ],
+            "value": "intake"
+          }
+        ],
+        "calorimetry": [
+          {
+            "key": "mass",
+            "label": "水的质量",
+            "unit": "kg",
+            "min": 0.01,
+            "max": 1,
+            "step": 0.01,
+            "value": 0.05
+          },
+          {
+            "key": "capacity",
+            "label": "比热容",
+            "unit": "J/(kg·℃)",
+            "min": 100,
+            "max": 5000,
+            "step": 100,
+            "value": 4200
+          },
+          {
+            "key": "rise",
+            "label": "温升",
+            "unit": "℃",
+            "min": 0,
+            "max": 80,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "foodMass",
+            "label": "食物质量",
+            "unit": "kg",
+            "min": 0.0001,
+            "max": 0.1,
+            "step": 0.0001,
+            "value": 0.001
+          }
+        ],
+        "heat-input": [
+          {
+            "key": "heat",
+            "label": "体系净吸热",
+            "unit": "J",
+            "min": -10000,
+            "max": 10000,
+            "step": 100,
+            "value": 4200
+          },
+          {
+            "key": "mass",
+            "label": "吸热物体质量",
+            "unit": "kg",
+            "min": 0.01,
+            "max": 10,
+            "step": 0.01,
+            "value": 0.1
+          },
+          {
+            "key": "capacity",
+            "label": "比热容",
+            "unit": "J/(kg·℃)",
+            "min": 100,
+            "max": 5000,
+            "step": 100,
+            "value": 4200
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 0,
+            "max": 80,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "efficiency-input": [
+          {
+            "key": "useful",
+            "label": "有效能量",
+            "unit": "J",
+            "min": 0,
+            "max": 10000000,
+            "step": 10000,
+            "value": 1000000
+          },
+          {
+            "key": "efficiency",
+            "label": "能量利用效率",
+            "unit": "%",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 50
+          }
+        ]
+      }
+    },
+    "phase": {
+      "scenarios": [
+        "melting",
+        "boiling",
+        "evaporation",
+        "condensation",
+        "sublimation",
+        "freezing",
+        "deposition",
+        "mixture",
+        "alcohol_cycle"
+      ],
+      "controls": [
+        {
+          "key": "mass",
+          "label": "水或冰质量",
+          "unit": "kg",
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05,
+          "value": 0.1
+        },
+        {
+          "key": "power",
+          "label": "加热/放热功率",
+          "unit": "W",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "value": 100
+        },
+        {
+          "key": "time",
+          "label": "时间",
+          "unit": "s",
+          "min": 0,
+          "max": 1200,
+          "step": 10,
+          "value": 100
+        },
+        {
+          "key": "initial",
+          "label": "初温",
+          "unit": "℃",
+          "min": -20,
+          "max": 100,
+          "step": 1,
+          "value": -10
+        },
+        {
+          "key": "pressure",
+          "label": "外界压强",
+          "unit": "kPa",
+          "min": 60,
+          "max": 110,
+          "step": 1,
+          "value": 101.3
+        },
+        {
+          "key": "area",
+          "label": "液面面积（相对量）",
+          "unit": "",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "airflow",
+          "label": "空气流动（相对量）",
+          "unit": "",
+          "min": 0,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        }
+      ],
+      "note": "Water/ice enthalpy model with phase plateaus at 0C and pressure-dependent boiling point. Evaporation/sublimation are qualitative tendency models, not measured rate.",
+      "scenarioControls": {
+        "boiling": [
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": -20,
+            "max": 90,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "pressure",
+            "label": "外界压强",
+            "unit": "kPa",
+            "min": 60,
+            "max": 110,
+            "step": 0.1,
+            "value": 101.3
+          },
+          {
+            "key": "mass",
+            "label": "样品质量",
+            "unit": "kg",
+            "min": 0.05,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.1
+          },
+          {
+            "key": "power",
+            "label": "加热/放热功率",
+            "unit": "W",
+            "min": 10,
+            "max": 200,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "time",
+            "label": "时间",
+            "unit": "s",
+            "min": 0,
+            "max": 500,
+            "step": 10,
+            "value": 500
+          }
+        ],
+        "melting": [
+          {
+            "key": "mass",
+            "label": "样品质量",
+            "unit": "kg",
+            "min": 0.05,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.1
+          },
+          {
+            "key": "power",
+            "label": "加热/放热功率",
+            "unit": "W",
+            "min": 10,
+            "max": 1000,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "time",
+            "label": "时间",
+            "unit": "s",
+            "min": 0,
+            "max": 1200,
+            "step": 10,
+            "value": 300
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 0,
+            "max": 45,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "material",
+            "label": "物质",
+            "options": [
+              {
+                "value": "hypo",
+                "label": "海波"
+              },
+              {
+                "value": "wax",
+                "label": "石蜡"
+              }
+            ],
+            "value": "hypo"
+          }
+        ],
+        "mixture": [
+          {
+            "key": "concentration",
+            "label": "乙醇质量分数（题设）",
+            "unit": "%",
+            "min": 0,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "action",
+            "label": "变化过程",
+            "options": [
+              {
+                "value": "warming",
+                "label": "温热"
+              },
+              {
+                "value": "cooling",
+                "label": "冷却"
+              }
+            ],
+            "value": "cooling"
+          },
+          {
+            "key": "progress",
+            "label": "观察进度",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.5
+          }
+        ],
+        "alcohol_cycle": [
+          {
+            "key": "action",
+            "label": "变化过程",
+            "options": [
+              {
+                "value": "warming",
+                "label": "温热"
+              },
+              {
+                "value": "cooling",
+                "label": "冷却"
+              }
+            ],
+            "value": "warming"
+          },
+          {
+            "key": "progress",
+            "label": "观察进度",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.5
+          }
+        ],
+        "evaporation": [
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": 5,
+            "max": 60,
+            "step": 1,
+            "value": 25
+          },
+          {
+            "key": "area",
+            "label": "液面面积（相对量）",
+            "unit": "",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "airflow",
+            "label": "空气流动（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          }
+        ],
+        "condensation": [
+          {
+            "key": "ambient",
+            "label": "环境温度",
+            "unit": "℃",
+            "min": 10,
+            "max": 35,
+            "step": 1,
+            "value": 25
+          },
+          {
+            "key": "surface",
+            "label": "瓶壁温度",
+            "unit": "℃",
+            "min": 0,
+            "max": 35,
+            "step": 1,
+            "value": 8
+          },
+          {
+            "key": "dewPoint",
+            "label": "空气露点",
+            "unit": "℃",
+            "min": 0,
+            "max": 25,
+            "step": 1,
+            "value": 15
+          }
+        ],
+        "sublimation": [
+          {
+            "key": "action",
+            "label": "变化过程",
+            "options": [
+              {
+                "value": "heating",
+                "label": "温和加热"
+              },
+              {
+                "value": "cooling",
+                "label": "冷却"
+              }
+            ],
+            "value": "heating"
+          },
+          {
+            "key": "progress",
+            "label": "观察进度",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.5
+          }
+        ],
+        "deposition": [
+          {
+            "key": "surfaceTemperature",
+            "label": "冷表面温度",
+            "unit": "℃",
+            "min": -20,
+            "max": 10,
+            "step": 1,
+            "value": -10
+          }
+        ],
+        "freezing": [
+          {
+            "key": "mass",
+            "label": "样品质量",
+            "unit": "kg",
+            "min": 0.05,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.1
+          },
+          {
+            "key": "power",
+            "label": "加热/放热功率",
+            "unit": "W",
+            "min": 10,
+            "max": 1000,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "time",
+            "label": "时间",
+            "unit": "s",
+            "min": 0,
+            "max": 1200,
+            "step": 10,
+            "value": 300
+          },
+          {
+            "key": "initial",
+            "label": "初温",
+            "unit": "℃",
+            "min": -20,
+            "max": 90,
+            "step": 1,
+            "value": 20
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "material",
+          "label": "物质",
+          "options": [
+            {
+              "value": "hypo",
+              "label": "海波"
+            },
+            {
+              "value": "wax",
+              "label": "石蜡"
+            }
+          ],
+          "value": "hypo"
+        },
+        {
+          "key": "concentration",
+          "label": "乙醇质量分数（题设）",
+          "unit": "%",
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "value": 10
+        },
+        {
+          "key": "action",
+          "label": "变化过程",
+          "options": [
+            {
+              "value": "warming",
+              "label": "温热"
+            },
+            {
+              "value": "cooling",
+              "label": "冷却"
+            }
+          ],
+          "value": "cooling"
+        },
+        {
+          "key": "progress",
+          "label": "观察进度",
+          "unit": "",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "value": 0.5
+        },
+        {
+          "key": "ambient",
+          "label": "环境温度",
+          "unit": "℃",
+          "min": 10,
+          "max": 35,
+          "step": 1,
+          "value": 25
+        },
+        {
+          "key": "surface",
+          "label": "瓶壁温度",
+          "unit": "℃",
+          "min": 0,
+          "max": 35,
+          "step": 1,
+          "value": 8
+        },
+        {
+          "key": "dewPoint",
+          "label": "空气露点",
+          "unit": "℃",
+          "min": 0,
+          "max": 25,
+          "step": 1,
+          "value": 15
+        },
+        {
+          "key": "surfaceTemperature",
+          "label": "冷表面温度",
+          "unit": "℃",
+          "min": -20,
+          "max": 10,
+          "step": 1,
+          "value": -10
+        }
+      ]
+    },
+    "density": {
+      "scenarios": [
+        "solid",
+        "liquid",
+        "displacement",
+        "hollow",
+        "air",
+        "foil"
+      ],
+      "controls": [
+        {
+          "key": "mass",
+          "label": "质量",
+          "unit": "g",
+          "min": 1,
+          "max": 500,
+          "step": 1,
+          "value": 54
+        },
+        {
+          "key": "volume",
+          "label": "体积",
+          "unit": "cm³",
+          "min": 1,
+          "max": 200,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "initialVolume",
+          "label": "量筒原水量",
+          "unit": "mL",
+          "min": 0,
+          "max": 200,
+          "step": 1,
+          "value": 40
+        },
+        {
+          "key": "voidVolume",
+          "label": "空心体积",
+          "unit": "cm³",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "value": 0
+        }
+      ],
+      "note": "density g/cm3 and kg/m3; displacement volume equals immersed nonporous body volume.",
+      "scenarioControls": {
+        "solid": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "g",
+            "min": 1,
+            "max": 500,
+            "step": 1,
+            "value": 54
+          },
+          {
+            "key": "volume",
+            "label": "体积",
+            "unit": "cm³",
+            "min": 1,
+            "max": 200,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "air": [
+          {
+            "key": "roomLength",
+            "label": "教室长",
+            "unit": "m",
+            "min": 3,
+            "max": 15,
+            "step": 0.5,
+            "value": 10
+          },
+          {
+            "key": "roomWidth",
+            "label": "教室宽",
+            "unit": "m",
+            "min": 3,
+            "max": 10,
+            "step": 0.5,
+            "value": 6
+          },
+          {
+            "key": "roomHeight",
+            "label": "教室高",
+            "unit": "m",
+            "min": 2,
+            "max": 6,
+            "step": 0.1,
+            "value": 3
+          },
+          {
+            "key": "airDensity",
+            "label": "空气密度",
+            "unit": "kg/m³",
+            "min": 0.8,
+            "max": 1.5,
+            "step": 0.01,
+            "value": 1.29
+          }
+        ],
+        "liquid": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "g",
+            "min": 1,
+            "max": 500,
+            "step": 1,
+            "value": 54
+          },
+          {
+            "key": "volume",
+            "label": "体积",
+            "unit": "cm³",
+            "min": 1,
+            "max": 200,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "displacement": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "g",
+            "min": 1,
+            "max": 500,
+            "step": 1,
+            "value": 54
+          },
+          {
+            "key": "volume",
+            "label": "体积",
+            "unit": "cm³",
+            "min": 1,
+            "max": 200,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "initialVolume",
+            "label": "量筒原水量",
+            "unit": "mL",
+            "min": 0,
+            "max": 200,
+            "step": 1,
+            "value": 40
+          }
+        ],
+        "foil": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "g",
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "value": 2.7
+          },
+          {
+            "key": "area",
+            "label": "薄膜面积",
+            "unit": "cm²",
+            "min": 10,
+            "max": 1000,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "materialDensity",
+            "label": "材料密度",
+            "unit": "g/cm³",
+            "min": 0.5,
+            "max": 12,
+            "step": 0.1,
+            "value": 2.7
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "roomLength",
+          "label": "教室长",
+          "unit": "m",
+          "min": 3,
+          "max": 15,
+          "step": 0.5,
+          "value": 10
+        },
+        {
+          "key": "roomWidth",
+          "label": "教室宽",
+          "unit": "m",
+          "min": 3,
+          "max": 10,
+          "step": 0.5,
+          "value": 6
+        },
+        {
+          "key": "roomHeight",
+          "label": "教室高",
+          "unit": "m",
+          "min": 2,
+          "max": 6,
+          "step": 0.1,
+          "value": 3
+        },
+        {
+          "key": "airDensity",
+          "label": "空气密度",
+          "unit": "kg/m³",
+          "min": 0.8,
+          "max": 1.5,
+          "step": 0.01,
+          "value": 1.29
+        },
+        {
+          "key": "area",
+          "label": "薄膜面积",
+          "unit": "cm²",
+          "min": 10,
+          "max": 1000,
+          "step": 10,
+          "value": 100
+        },
+        {
+          "key": "materialDensity",
+          "label": "材料密度",
+          "unit": "g/cm³",
+          "min": 0.5,
+          "max": 12,
+          "step": 0.1,
+          "value": 2.7
+        }
+      ]
+    },
+    "optics": {
+      "scenarios": [
+        "reflection",
+        "refraction",
+        "dispersion",
+        "straight",
+        "shadow",
+        "pinhole",
+        "mirror",
+        "fiber",
+        "rgb",
+        "periscope",
+        "retroreflection",
+        "curved-mirror",
+        "gradient"
+      ],
+      "controls": [
+        {
+          "key": "angle",
+          "label": "入射角",
+          "unit": "°",
+          "min": 0,
+          "max": 85,
+          "step": 1,
+          "value": 30
+        },
+        {
+          "key": "n1",
+          "label": "入射介质折射率",
+          "unit": "",
+          "min": 1,
+          "max": 2,
+          "step": 0.01,
+          "value": 1
+        },
+        {
+          "key": "n2",
+          "label": "折射介质折射率",
+          "unit": "",
+          "min": 1,
+          "max": 2,
+          "step": 0.01,
+          "value": 1.5
+        },
+        {
+          "key": "distance",
+          "label": "物距",
+          "unit": "cm",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 30
+        },
+        {
+          "key": "screen",
+          "label": "光屏距离",
+          "unit": "cm",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "height",
+          "label": "物高",
+          "unit": "cm",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "value": 5
+        }
+      ],
+      "note": "Angles measured from normal. Snell law including total internal reflection; mirror plane and pinhole straight rays.",
+      "extraControls": [
+        {
+          "key": "stage",
+          "label": "观察阶段",
+          "options": [
+            {
+              "value": 0,
+              "label": "入射光"
+            },
+            {
+              "value": 1,
+              "label": "第一次反射"
+            },
+            {
+              "value": 2,
+              "label": "第二次反射"
+            }
+          ],
+          "value": 2
+        },
+        {
+          "key": "focal",
+          "label": "曲面镜焦距",
+          "unit": "cm",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "value": 10
+        },
+        {
+          "key": "nTop",
+          "label": "上层折射率",
+          "unit": "",
+          "min": 1,
+          "max": 1.6,
+          "step": 0.01,
+          "value": 1.3
+        },
+        {
+          "key": "nBottom",
+          "label": "下层折射率",
+          "unit": "",
+          "min": 1,
+          "max": 1.6,
+          "step": 0.01,
+          "value": 1.5
+        },
+        {
+          "key": "red",
+          "label": "红光强度",
+          "unit": "通道值",
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "value": 255
+        },
+        {
+          "key": "green",
+          "label": "绿光强度",
+          "unit": "通道值",
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "value": 255
+        },
+        {
+          "key": "blue",
+          "label": "蓝光强度",
+          "unit": "通道值",
+          "min": 0,
+          "max": 255,
+          "step": 1,
+          "value": 255
+        }
+      ],
+      "scenarioControls": {
+        "straight": [
+          {
+            "key": "angle",
+            "label": "入射角",
+            "unit": "°",
+            "min": 0,
+            "max": 85,
+            "step": 1,
+            "value": 30
+          }
+        ],
+        "pinhole": [
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "screen",
+            "label": "光屏距离",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "height",
+            "label": "物高",
+            "unit": "cm",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "value": 5
+          }
+        ],
+        "shadow": [
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "screen",
+            "label": "光屏距离",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "height",
+            "label": "物高",
+            "unit": "cm",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "value": 5
+          }
+        ],
+        "reflection": [
+          {
+            "key": "angle",
+            "label": "入射角",
+            "unit": "°",
+            "min": 0,
+            "max": 85,
+            "step": 1,
+            "value": 30
+          }
+        ],
+        "retroreflection": [
+          {
+            "key": "stage",
+            "label": "观察阶段",
+            "options": [
+              {
+                "value": 0,
+                "label": "入射光"
+              },
+              {
+                "value": 1,
+                "label": "第一次反射"
+              },
+              {
+                "value": 2,
+                "label": "第二次反射"
+              }
+            ],
+            "value": 2
+          }
+        ],
+        "mirror": [
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "height",
+            "label": "物高",
+            "unit": "cm",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "value": 5
+          }
+        ],
+        "curved-mirror": [
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "focal",
+            "label": "曲面镜焦距",
+            "unit": "cm",
+            "min": -30,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          }
+        ],
+        "periscope": [
+          {
+            "key": "stage",
+            "label": "观察阶段",
+            "options": [
+              {
+                "value": 0,
+                "label": "入射光"
+              },
+              {
+                "value": 1,
+                "label": "第一次反射"
+              },
+              {
+                "value": 2,
+                "label": "第二次反射"
+              }
+            ],
+            "value": 2
+          }
+        ],
+        "refraction": [
+          {
+            "key": "angle",
+            "label": "入射角",
+            "unit": "°",
+            "min": 0,
+            "max": 85,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "n1",
+            "label": "入射介质折射率",
+            "unit": "",
+            "min": 1,
+            "max": 2,
+            "step": 0.01,
+            "value": 1
+          },
+          {
+            "key": "n2",
+            "label": "折射介质折射率",
+            "unit": "",
+            "min": 1,
+            "max": 2,
+            "step": 0.01,
+            "value": 1.5
+          }
+        ],
+        "gradient": [
+          {
+            "key": "angle",
+            "label": "入射角",
+            "unit": "°",
+            "min": 0,
+            "max": 85,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "nTop",
+            "label": "上层折射率",
+            "unit": "",
+            "min": 1,
+            "max": 1.6,
+            "step": 0.01,
+            "value": 1.3
+          },
+          {
+            "key": "nBottom",
+            "label": "下层折射率",
+            "unit": "",
+            "min": 1,
+            "max": 1.6,
+            "step": 0.01,
+            "value": 1.5
+          },
+          {
+            "key": "height",
+            "label": "介质层高度",
+            "unit": "m",
+            "min": 0.1,
+            "max": 2,
+            "step": 0.1,
+            "value": 1
+          }
+        ],
+        "dispersion": [
+          {
+            "key": "angle",
+            "label": "入射角",
+            "unit": "°",
+            "min": 0,
+            "max": 85,
+            "step": 1,
+            "value": 30
+          }
+        ],
+        "rgb": [
+          {
+            "key": "red",
+            "label": "红光强度",
+            "unit": "通道值",
+            "min": 0,
+            "max": 255,
+            "step": 1,
+            "value": 255
+          },
+          {
+            "key": "green",
+            "label": "绿光强度",
+            "unit": "通道值",
+            "min": 0,
+            "max": 255,
+            "step": 1,
+            "value": 255
+          },
+          {
+            "key": "blue",
+            "label": "蓝光强度",
+            "unit": "通道值",
+            "min": 0,
+            "max": 255,
+            "step": 1,
+            "value": 255
+          }
+        ],
+        "fiber": [
+          {
+            "key": "angle",
+            "label": "入射角",
+            "unit": "°",
+            "min": 0,
+            "max": 85,
+            "step": 1,
+            "value": 65
+          },
+          {
+            "key": "n1",
+            "label": "水的折射率",
+            "unit": "",
+            "min": 1,
+            "max": 2,
+            "step": 0.01,
+            "value": 1.33
+          },
+          {
+            "key": "n2",
+            "label": "外部介质折射率",
+            "unit": "",
+            "min": 1,
+            "max": 2,
+            "step": 0.01,
+            "value": 1
+          }
+        ]
+      }
+    },
+    "lens": {
+      "scenarios": [
+        "convex",
+        "concave",
+        "eye",
+        "myopia",
+        "hyperopia",
+        "telescope",
+        "microscope",
+        "camera"
+      ],
+      "controls": [
+        {
+          "key": "focal",
+          "label": "焦距大小",
+          "unit": "cm",
+          "min": 5,
+          "max": 30,
+          "step": 1,
+          "value": 10
+        },
+        {
+          "key": "distance",
+          "label": "物距",
+          "unit": "cm",
+          "min": 1,
+          "max": 80,
+          "step": 1,
+          "value": 30
+        },
+        {
+          "key": "height",
+          "label": "物高",
+          "unit": "cm",
+          "min": 1,
+          "max": 10,
+          "step": 0.5,
+          "value": 3
+        }
+      ],
+      "note": "Thin lens equation, focal distance positive convex negative concave. Real/virtual image and magnification correctly signed.",
+      "scenarioControls": {
+        "convex": [
+          {
+            "key": "focal",
+            "label": "焦距大小",
+            "unit": "cm",
+            "min": 5,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 80,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "height",
+            "label": "物高",
+            "unit": "cm",
+            "min": 1,
+            "max": 10,
+            "step": 0.5,
+            "value": 3
+          }
+        ],
+        "eye": [
+          {
+            "key": "focal",
+            "label": "焦距大小",
+            "unit": "cm",
+            "min": 5,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 80,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "height",
+            "label": "物高",
+            "unit": "cm",
+            "min": 1,
+            "max": 10,
+            "step": 0.5,
+            "value": 3
+          }
+        ],
+        "hyperopia": [
+          {
+            "key": "focal",
+            "label": "焦距大小",
+            "unit": "cm",
+            "min": 5,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 80,
+            "step": 1,
+            "value": 30
+          }
+        ],
+        "telescope": [
+          {
+            "key": "objectiveFocal",
+            "label": "物镜焦距",
+            "unit": "cm",
+            "min": 10,
+            "max": 100,
+            "step": 1,
+            "value": 40
+          },
+          {
+            "key": "eyepieceFocal",
+            "label": "目镜焦距",
+            "unit": "cm",
+            "min": 2,
+            "max": 20,
+            "step": 1,
+            "value": 5
+          }
+        ],
+        "microscope": [
+          {
+            "key": "focal",
+            "label": "水滴等效焦距",
+            "unit": "cm",
+            "min": 0.5,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "distance",
+            "label": "物体到水滴距离",
+            "unit": "cm",
+            "min": 0.6,
+            "max": 6,
+            "step": 0.1,
+            "value": 1.2
+          },
+          {
+            "key": "eyepieceFocal",
+            "label": "上方放大镜焦距",
+            "unit": "cm",
+            "min": 2,
+            "max": 10,
+            "step": 0.5,
+            "value": 5
+          }
+        ],
+        "myopia": [
+          {
+            "key": "focal",
+            "label": "焦距大小",
+            "unit": "cm",
+            "min": 5,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 80,
+            "step": 1,
+            "value": 30
+          }
+        ],
+        "camera": [
+          {
+            "key": "focal",
+            "label": "焦距大小",
+            "unit": "cm",
+            "min": 5,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "distance",
+            "label": "物距",
+            "unit": "cm",
+            "min": 1,
+            "max": 80,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "height",
+            "label": "物高",
+            "unit": "cm",
+            "min": 1,
+            "max": 10,
+            "step": 0.5,
+            "value": 3
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "objectiveFocal",
+          "label": "物镜焦距",
+          "unit": "cm",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "value": 40
+        },
+        {
+          "key": "eyepieceFocal",
+          "label": "目镜焦距",
+          "unit": "cm",
+          "min": 2,
+          "max": 20,
+          "step": 1,
+          "value": 5
+        }
+      ]
+    },
+    "force": {
+      "scenarios": [
+        "gravity",
+        "balance",
+        "interaction",
+        "deformation",
+        "resultant"
+      ],
+      "controls": [
+        {
+          "key": "mass",
+          "label": "质量",
+          "unit": "kg",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "force",
+          "label": "向右力",
+          "unit": "N",
+          "min": 0,
+          "max": 50,
+          "step": 0.5,
+          "value": 10
+        },
+        {
+          "key": "force2",
+          "label": "向左力",
+          "unit": "N",
+          "min": 0,
+          "max": 50,
+          "step": 0.5,
+          "value": 10
+        },
+        {
+          "key": "gravity",
+          "label": "重力场强度",
+          "unit": "N/kg",
+          "min": 1,
+          "max": 10,
+          "step": 0.1,
+          "value": 9.8
+        }
+      ],
+      "note": "Static force resultants, not fabricated experimental deformation; spring model quantifies elasticity.",
+      "scenarioControls": {
+        "deformation": [
+          {
+            "key": "force",
+            "label": "向右力",
+            "unit": "N",
+            "min": 0,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          }
+        ],
+        "interaction": [
+          {
+            "key": "force",
+            "label": "向右力",
+            "unit": "N",
+            "min": 0,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          }
+        ],
+        "gravity": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "gravity",
+            "label": "重力场强度",
+            "unit": "N/kg",
+            "min": 1,
+            "max": 10,
+            "step": 0.1,
+            "value": 9.8
+          }
+        ],
+        "balance": [
+          {
+            "key": "force",
+            "label": "向右力",
+            "unit": "N",
+            "min": 0,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          },
+          {
+            "key": "force2",
+            "label": "向左力",
+            "unit": "N",
+            "min": 0,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          }
+        ],
+        "resultant": [
+          {
+            "key": "force",
+            "label": "向右力",
+            "unit": "N",
+            "min": 0,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          },
+          {
+            "key": "force2",
+            "label": "向左力",
+            "unit": "N",
+            "min": 0,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          },
+          {
+            "key": "direction",
+            "label": "第二力方向",
+            "options": [
+              {
+                "value": "same",
+                "label": "同向"
+              },
+              {
+                "value": "opposite",
+                "label": "反向"
+              }
+            ],
+            "value": "opposite"
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "direction",
+          "label": "第二力方向",
+          "options": [
+            {
+              "value": "same",
+              "label": "同向"
+            },
+            {
+              "value": "opposite",
+              "label": "反向"
+            }
+          ],
+          "value": "opposite"
+        }
+      ]
+    },
+    "spring": {
+      "scenarios": [
+        "hooke",
+        "measurement",
+        "microdeformation"
+      ],
+      "controls": [
+        {
+          "key": "force",
+          "label": "拉力",
+          "unit": "N",
+          "min": 0,
+          "max": 20,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "stiffness",
+          "label": "劲度系数",
+          "unit": "N/m",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "value": 100
+        },
+        {
+          "key": "limit",
+          "label": "弹性限度对应力",
+          "unit": "N",
+          "min": 1,
+          "max": 30,
+          "step": 1,
+          "value": 10
+        }
+      ],
+      "note": "Hooke law only within stated elastic limit; outside model returns validity warning, not extrapolated elastic result.",
+      "scenarioControls": {
+        "measurement": [
+          {
+            "key": "force",
+            "label": "拉力",
+            "unit": "N",
+            "min": 0,
+            "max": 20,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "stiffness",
+            "label": "劲度系数",
+            "unit": "N/m",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "limit",
+            "label": "弹性限度对应力",
+            "unit": "N",
+            "min": 1,
+            "max": 30,
+            "step": 1,
+            "value": 10
+          }
+        ],
+        "microdeformation": [
+          {
+            "key": "force",
+            "label": "拉力",
+            "unit": "N",
+            "min": 0,
+            "max": 20,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "compliance",
+            "label": "等效体积柔度（模型）",
+            "unit": "cm³/N",
+            "min": 0.0005,
+            "max": 0.005,
+            "step": 0.0005,
+            "value": 0.002
+          },
+          {
+            "key": "tubeArea",
+            "label": "细管截面积",
+            "unit": "mm²",
+            "min": 0.5,
+            "max": 5,
+            "step": 0.5,
+            "value": 1
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "compliance",
+          "label": "等效体积柔度（模型）",
+          "unit": "cm³/N",
+          "min": 0.0005,
+          "max": 0.005,
+          "step": 0.0005,
+          "value": 0.002
+        },
+        {
+          "key": "tubeArea",
+          "label": "细管截面积",
+          "unit": "mm²",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.5,
+          "value": 1
+        }
+      ]
+    },
+    "pressure": {
+      "scenarios": [
+        "solid",
+        "liquid",
+        "atmosphere",
+        "flow",
+        "communicating",
+        "pump"
+      ],
+      "controls": [
+        {
+          "key": "force",
+          "label": "压力",
+          "unit": "N",
+          "min": 1,
+          "max": 1000,
+          "step": 1,
+          "value": 100
+        },
+        {
+          "key": "area",
+          "label": "受力面积",
+          "unit": "cm²",
+          "min": 1,
+          "max": 200,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "density",
+          "label": "液体密度",
+          "unit": "kg/m³",
+          "min": 500,
+          "max": 14000,
+          "step": 100,
+          "value": 1000
+        },
+        {
+          "key": "depth",
+          "label": "深度",
+          "unit": "m",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "speed",
+          "label": "流速",
+          "unit": "m/s",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "海拔高度",
+          "unit": "m",
+          "min": 0,
+          "max": 5000,
+          "step": 100,
+          "value": 0
+        }
+      ],
+      "note": "Hydrostatic gauge pressure rho g h; simplified incompressible Bernoulli and standard atmosphere assumptions specified.",
+      "scenarioControls": {
+        "flow": [
+          {
+            "key": "speed",
+            "label": "流速",
+            "unit": "m/s",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "density",
+            "label": "流体密度",
+            "unit": "kg/m³",
+            "min": 1,
+            "max": 1000,
+            "step": 0.1,
+            "value": 1.2
+          }
+        ],
+        "solid": [
+          {
+            "key": "force",
+            "label": "对地压力",
+            "unit": "N",
+            "min": 1,
+            "max": 1000,
+            "step": 1,
+            "value": 500
+          },
+          {
+            "key": "area",
+            "label": "总接触面积",
+            "unit": "cm²",
+            "min": 20,
+            "max": 500,
+            "step": 1,
+            "value": 250
+          }
+        ],
+        "liquid": [
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 2000,
+            "step": 50,
+            "value": 1000
+          },
+          {
+            "key": "depth",
+            "label": "深度",
+            "unit": "m",
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "value": 0.3
+          }
+        ],
+        "communicating": [
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 14000,
+            "step": 100,
+            "value": 1000
+          },
+          {
+            "key": "depth",
+            "label": "深度",
+            "unit": "m",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 1
+          }
+        ],
+        "atmosphere": [
+          {
+            "key": "height",
+            "label": "海拔高度",
+            "unit": "m",
+            "min": 0,
+            "max": 5000,
+            "step": 100,
+            "value": 0
+          }
+        ],
+        "pump": [
+          {
+            "key": "stroke",
+            "label": "活塞动作",
+            "options": [
+              {
+                "value": "pull",
+                "label": "上提"
+              },
+              {
+                "value": "push",
+                "label": "下压"
+              }
+            ],
+            "value": "pull"
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "stroke",
+          "label": "活塞动作",
+          "options": [
+            {
+              "value": "pull",
+              "label": "上提"
+            },
+            {
+              "value": "push",
+              "label": "下压"
+            }
+          ],
+          "value": "pull"
+        }
+      ]
+    },
+    "buoyancy": {
+      "scenarios": [
+        "archimedes",
+        "floating",
+        "submerged",
+        "densitymeter",
+        "submarine",
+        "cause"
+      ],
+      "controls": [
+        {
+          "key": "mass",
+          "label": "物体质量",
+          "unit": "g",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "value": 80
+        },
+        {
+          "key": "volume",
+          "label": "物体体积",
+          "unit": "cm³",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "value": 100
+        },
+        {
+          "key": "density",
+          "label": "液体密度",
+          "unit": "kg/m³",
+          "min": 500,
+          "max": 1500,
+          "step": 50,
+          "value": 1000
+        },
+        {
+          "key": "fraction",
+          "label": "浸入比例",
+          "unit": "",
+          "min": 0,
+          "max": 1,
+          "step": 0.05,
+          "value": 1
+        }
+      ],
+      "note": "Archimedes displaced-volume model; floating equilibrium submerged fraction only when object density <= liquid density.",
+      "scenarioControls": {
+        "submerged": [
+          {
+            "key": "mass",
+            "label": "物体质量",
+            "unit": "g",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 200
+          },
+          {
+            "key": "volume",
+            "label": "物体体积",
+            "unit": "cm³",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 1500,
+            "step": 50,
+            "value": 1000
+          },
+          {
+            "key": "fraction",
+            "label": "浸入比例",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "value": 1
+          }
+        ],
+        "archimedes": [
+          {
+            "key": "mass",
+            "label": "物体质量",
+            "unit": "g",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 80
+          },
+          {
+            "key": "volume",
+            "label": "物体体积",
+            "unit": "cm³",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 1500,
+            "step": 50,
+            "value": 1000
+          },
+          {
+            "key": "fraction",
+            "label": "浸入比例",
+            "unit": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.05,
+            "value": 1
+          }
+        ],
+        "floating": [
+          {
+            "key": "mass",
+            "label": "物体质量",
+            "unit": "g",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 80
+          },
+          {
+            "key": "volume",
+            "label": "物体体积",
+            "unit": "cm³",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 1500,
+            "step": 50,
+            "value": 1000
+          }
+        ],
+        "densitymeter": [
+          {
+            "key": "mass",
+            "label": "物体质量",
+            "unit": "g",
+            "min": 5,
+            "max": 50,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "volume",
+            "label": "物体体积",
+            "unit": "cm³",
+            "min": 50,
+            "max": 200,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 1500,
+            "step": 50,
+            "value": 1000
+          }
+        ],
+        "submarine": [
+          {
+            "key": "mass",
+            "label": "物体质量",
+            "unit": "g",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 80
+          },
+          {
+            "key": "volume",
+            "label": "物体体积",
+            "unit": "cm³",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 1500,
+            "step": 50,
+            "value": 1000
+          }
+        ],
+        "cause": [
+          {
+            "key": "area",
+            "label": "上下表面面积",
+            "unit": "cm²",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "objectHeight",
+            "label": "物体高度",
+            "unit": "cm",
+            "min": 1,
+            "max": 20,
+            "step": 1,
+            "value": 5
+          },
+          {
+            "key": "depth",
+            "label": "上表面深度",
+            "unit": "m",
+            "min": 0,
+            "max": 2,
+            "step": 0.05,
+            "value": 0.2
+          },
+          {
+            "key": "density",
+            "label": "液体密度",
+            "unit": "kg/m³",
+            "min": 500,
+            "max": 1500,
+            "step": 50,
+            "value": 1000
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "area",
+          "label": "上下表面面积",
+          "unit": "cm²",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "objectHeight",
+          "label": "物体高度",
+          "unit": "cm",
+          "min": 1,
+          "max": 20,
+          "step": 1,
+          "value": 5
+        },
+        {
+          "key": "depth",
+          "label": "上表面深度",
+          "unit": "m",
+          "min": 0,
+          "max": 2,
+          "step": 0.05,
+          "value": 0.2
+        }
+      ]
+    },
+    "lever": {
+      "scenarios": [
+        "balance",
+        "classification"
+      ],
+      "controls": [
+        {
+          "key": "force",
+          "label": "动力",
+          "unit": "N",
+          "min": 1,
+          "max": 50,
+          "step": 0.5,
+          "value": 10
+        },
+        {
+          "key": "arm",
+          "label": "动力臂",
+          "unit": "cm",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 30
+        },
+        {
+          "key": "load",
+          "label": "阻力",
+          "unit": "N",
+          "min": 1,
+          "max": 50,
+          "step": 0.5,
+          "value": 15
+        },
+        {
+          "key": "loadArm",
+          "label": "阻力臂",
+          "unit": "cm",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        }
+      ],
+      "note": "Torques use perpendicular moment arms, not necessarily rod lengths.",
+      "scenarioControls": {
+        "classification": [
+          {
+            "key": "force",
+            "label": "动力",
+            "unit": "N",
+            "min": 1,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          },
+          {
+            "key": "arm",
+            "label": "动力臂",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "load",
+            "label": "阻力",
+            "unit": "N",
+            "min": 1,
+            "max": 50,
+            "step": 0.5,
+            "value": 15
+          },
+          {
+            "key": "loadArm",
+            "label": "阻力臂",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "balance": [
+          {
+            "key": "force",
+            "label": "动力",
+            "unit": "N",
+            "min": 1,
+            "max": 50,
+            "step": 0.5,
+            "value": 10
+          },
+          {
+            "key": "arm",
+            "label": "动力臂",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "load",
+            "label": "阻力",
+            "unit": "N",
+            "min": 1,
+            "max": 50,
+            "step": 0.5,
+            "value": 15
+          },
+          {
+            "key": "loadArm",
+            "label": "阻力臂",
+            "unit": "cm",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          }
+        ]
+      },
+      "extraControls": []
+    },
+    "pulley": {
+      "scenarios": [
+        "fixed",
+        "movable",
+        "block"
+      ],
+      "controls": [
+        {
+          "key": "load",
+          "label": "物重",
+          "unit": "N",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "strands",
+          "label": "承重绳段数",
+          "unit": "",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "提升高度",
+          "unit": "m",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "efficiency",
+          "label": "机械效率",
+          "unit": "%",
+          "min": 20,
+          "max": 100,
+          "step": 1,
+          "value": 80
+        }
+      ],
+      "note": "Ideal massless pulley for fixed/movable or stated efficiency for block; rope distance n*h, pull load/(n*eta).",
+      "scenarioControls": {
+        "block": [
+          {
+            "key": "load",
+            "label": "物重",
+            "unit": "N",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "strands",
+            "label": "承重绳段数",
+            "unit": "",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "value": 2
+          },
+          {
+            "key": "height",
+            "label": "提升高度",
+            "unit": "m",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "efficiency",
+            "label": "机械效率",
+            "unit": "%",
+            "min": 20,
+            "max": 100,
+            "step": 1,
+            "value": 80
+          }
+        ]
+      },
+      "extraControls": []
+    },
+    "work": {
+      "scenarios": [
+        "work",
+        "power",
+        "efficiency"
+      ],
+      "controls": [
+        {
+          "key": "force",
+          "label": "力",
+          "unit": "N",
+          "min": 0,
+          "max": 200,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "distance",
+          "label": "沿运动方向位移",
+          "unit": "m",
+          "min": 0,
+          "max": 20,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "time",
+          "label": "用时",
+          "unit": "s",
+          "min": 0.1,
+          "max": 60,
+          "step": 0.1,
+          "value": 4
+        },
+        {
+          "key": "angle",
+          "label": "力与位移夹角",
+          "unit": "°",
+          "min": 0,
+          "max": 180,
+          "step": 5,
+          "value": 0
+        },
+        {
+          "key": "useful",
+          "label": "有用功",
+          "unit": "J",
+          "min": 0,
+          "max": 1000,
+          "step": 1,
+          "value": 20
+        }
+      ],
+      "note": "Work F*s*cos(theta); efficiency only when total positive and useful<=total."
+    },
+    "energy": {
+      "scenarios": [
+        "kinetic",
+        "potential",
+        "conversion",
+        "conservation",
+        "solar",
+        "solarFan",
+        "solarWater",
+        "conversionPower",
+        "elastic",
+        "pendulum"
+      ],
+      "controls": [
+        {
+          "key": "mass",
+          "label": "质量",
+          "unit": "kg",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "velocity",
+          "label": "速度",
+          "unit": "m/s",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "height",
+          "label": "高度",
+          "unit": "m",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 2
+        }
+      ],
+      "note": "Energy state solver; no loss. Motion animations requiring trajectories use motion/incline engine models.",
+      "extraControls": [
+        {
+          "key": "power",
+          "label": "输入功率",
+          "unit": "W",
+          "min": 0,
+          "max": 2000,
+          "step": 10,
+          "value": 500
+        },
+        {
+          "key": "efficiency",
+          "label": "转换效率",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "time",
+          "label": "时间",
+          "unit": "s",
+          "min": 0,
+          "max": 600,
+          "step": 10,
+          "value": 120
+        },
+        {
+          "key": "length",
+          "label": "摆长",
+          "unit": "m",
+          "min": 0.1,
+          "max": 2,
+          "step": 0.05,
+          "value": 1
+        },
+        {
+          "key": "gravity",
+          "label": "重力场强度",
+          "unit": "N/kg",
+          "min": 1,
+          "max": 10,
+          "step": 0.1,
+          "value": 9.8
+        },
+        {
+          "key": "stiffness",
+          "label": "劲度系数",
+          "unit": "N/m",
+          "min": 10,
+          "max": 500,
+          "step": 10,
+          "value": 100
+        },
+        {
+          "key": "extension",
+          "label": "弹性形变",
+          "unit": "m",
+          "min": 0,
+          "max": 0.2,
+          "step": 0.01,
+          "value": 0.1
+        }
+      ],
+      "scenarioControls": {
+        "pendulum": [
+          {
+            "key": "length",
+            "label": "摆长",
+            "unit": "m",
+            "min": 0.1,
+            "max": 2,
+            "step": 0.05,
+            "value": 1
+          },
+          {
+            "key": "gravity",
+            "label": "重力场强度",
+            "unit": "N/kg",
+            "min": 1,
+            "max": 10,
+            "step": 0.1,
+            "value": 9.8
+          }
+        ],
+        "kinetic": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "velocity",
+            "label": "速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "conservation": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "height",
+            "label": "高度",
+            "unit": "m",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "velocity",
+            "label": "速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "conversion": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "height",
+            "label": "高度",
+            "unit": "m",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "velocity",
+            "label": "速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "elastic": [
+          {
+            "key": "stiffness",
+            "label": "劲度系数",
+            "unit": "N/m",
+            "min": 10,
+            "max": 500,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "extension",
+            "label": "弹性形变",
+            "unit": "m",
+            "min": 0,
+            "max": 0.2,
+            "step": 0.01,
+            "value": 0.1
+          }
+        ],
+        "potential": [
+          {
+            "key": "mass",
+            "label": "质量",
+            "unit": "kg",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "height",
+            "label": "高度",
+            "unit": "m",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          }
+        ],
+        "solarWater": [
+          {
+            "key": "power",
+            "label": "输入功率",
+            "unit": "W",
+            "min": 0,
+            "max": 2000,
+            "step": 10,
+            "value": 500
+          },
+          {
+            "key": "efficiency",
+            "label": "转换效率",
+            "unit": "%",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "time",
+            "label": "时间",
+            "unit": "s",
+            "min": 0,
+            "max": 600,
+            "step": 10,
+            "value": 120
+          }
+        ],
+        "solarFan": [
+          {
+            "key": "power",
+            "label": "输入功率",
+            "unit": "W",
+            "min": 0,
+            "max": 2000,
+            "step": 10,
+            "value": 500
+          },
+          {
+            "key": "efficiency",
+            "label": "转换效率",
+            "unit": "%",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "time",
+            "label": "时间",
+            "unit": "s",
+            "min": 0,
+            "max": 600,
+            "step": 10,
+            "value": 120
+          }
+        ]
+      }
+    },
+    "molecular": {
+      "scenarios": [
+        "diffusion",
+        "attraction",
+        "repulsion",
+        "gap"
+      ],
+      "controls": [
+        {
+          "key": "temperature",
+          "label": "温度",
+          "unit": "℃",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "time",
+          "label": "观察进度（相对量）",
+          "unit": "",
+          "min": 0,
+          "max": 10,
+          "step": 0.1,
+          "value": 3
+        },
+        {
+          "key": "distance",
+          "label": "分子间距（相对量）",
+          "unit": "",
+          "min": 0.8,
+          "max": 3,
+          "step": 0.05,
+          "value": 1.2
+        }
+      ],
+      "note": "Qualitative dimensionless diffusion/interaction trends; no invented real molecular measurements.",
+      "scenarioControls": {
+        "diffusion": [
+          {
+            "key": "temperature",
+            "label": "温度",
+            "unit": "℃",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "time",
+            "label": "观察进度（相对量）",
+            "unit": "",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 3
+          }
+        ],
+        "attraction": [
+          {
+            "key": "distance",
+            "label": "分子间距（相对量）",
+            "unit": "",
+            "min": 0.8,
+            "max": 3,
+            "step": 0.05,
+            "value": 1.2
+          }
+        ],
+        "gap": [
+          {
+            "key": "volume1",
+            "label": "液体一体积",
+            "unit": "mL",
+            "min": 10,
+            "max": 100,
+            "step": 5,
+            "value": 50
+          },
+          {
+            "key": "volume2",
+            "label": "液体二体积",
+            "unit": "mL",
+            "min": 10,
+            "max": 100,
+            "step": 5,
+            "value": 50
+          },
+          {
+            "key": "contraction",
+            "label": "体积缩减比例（示意）",
+            "unit": "%",
+            "min": 0,
+            "max": 8,
+            "step": 0.5,
+            "value": 4
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "volume1",
+          "label": "液体一体积",
+          "unit": "mL",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "value": 50
+        },
+        {
+          "key": "volume2",
+          "label": "液体二体积",
+          "unit": "mL",
+          "min": 10,
+          "max": 100,
+          "step": 5,
+          "value": 50
+        },
+        {
+          "key": "contraction",
+          "label": "体积缩减比例（示意）",
+          "unit": "%",
+          "min": 0,
+          "max": 8,
+          "step": 0.5,
+          "value": 4
+        }
+      ]
+    },
+    "charge": {
+      "scenarios": [
+        "electroscope",
+        "interaction",
+        "transfer",
+        "rubbing",
+        "conduction"
+      ],
+      "controls": [
+        {
+          "key": "charge1",
+          "label": "物体一电荷（相对量）",
+          "unit": "",
+          "min": -5,
+          "max": 5,
+          "step": 1,
+          "value": 3
+        },
+        {
+          "key": "charge2",
+          "label": "物体二电荷（相对量）",
+          "unit": "",
+          "min": -5,
+          "max": 5,
+          "step": 1,
+          "value": 3
+        },
+        {
+          "key": "distance",
+          "label": "间距（相对量）",
+          "unit": "",
+          "min": 1,
+          "max": 10,
+          "step": 0.5,
+          "value": 2
+        }
+      ],
+      "note": "Electrostatic qualitative relative model; electroscope angle is illustrative, cannot measure charge quantitatively.",
+      "extraControls": [],
+      "scenarioControls": {
+        "rubbing": [
+          {
+            "key": "charge1",
+            "label": "物体一电荷（相对量）",
+            "unit": "",
+            "min": -5,
+            "max": 5,
+            "step": 1,
+            "value": 3
+          }
+        ],
+        "interaction": [
+          {
+            "key": "charge1",
+            "label": "物体一电荷（相对量）",
+            "unit": "",
+            "min": -5,
+            "max": 5,
+            "step": 1,
+            "value": 3
+          },
+          {
+            "key": "charge2",
+            "label": "物体二电荷（相对量）",
+            "unit": "",
+            "min": -5,
+            "max": 5,
+            "step": 1,
+            "value": 3
+          },
+          {
+            "key": "distance",
+            "label": "间距（相对量）",
+            "unit": "",
+            "min": 1,
+            "max": 10,
+            "step": 0.5,
+            "value": 2
+          }
+        ],
+        "electroscope": [
+          {
+            "key": "charge1",
+            "label": "物体一电荷（相对量）",
+            "unit": "",
+            "min": -5,
+            "max": 5,
+            "step": 1,
+            "value": 3
+          }
+        ]
+      }
+    },
+    "circuit": {
+      "scenarios": [
+        "ohm",
+        "series",
+        "parallel",
+        "rheostat",
+        "voltmeter",
+        "ammeter",
+        "resistance",
+        "short",
+        "open",
+        "power",
+        "lamp",
+        "material",
+        "length",
+        "area",
+        "temperature",
+        "shortedBulb",
+        "filament",
+        "led",
+        "battery",
+        "conductivity"
+      ],
+      "controls": [
+        {
+          "key": "voltage",
+          "label": "电源电压",
+          "unit": "V",
+          "min": 0,
+          "max": 24,
+          "step": 0.5,
+          "value": 6
+        },
+        {
+          "key": "resistance",
+          "label": "电阻 R1",
+          "unit": "Ω",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 10
+        },
+        {
+          "key": "resistance2",
+          "label": "电阻 R2",
+          "unit": "Ω",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "slider",
+          "label": "滑片位置",
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "value": 50
+        },
+        {
+          "key": "ratedVoltage",
+          "label": "灯泡额定电压",
+          "unit": "V",
+          "min": 1,
+          "max": 12,
+          "step": 0.5,
+          "value": 3
+        },
+        {
+          "key": "ratedPower",
+          "label": "灯泡额定功率",
+          "unit": "W",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "value": 1.5
+        }
+      ],
+      "note": "DC ideal source and ohmic resistors. Lamp fixed rated resistance approximation explicitly noted; short circuit uses explicit internalResistance default0.5ohm.",
+      "extraControls": [
+        {
+          "key": "material",
+          "label": "材料",
+          "options": [
+            {
+              "value": "copper",
+              "label": "铜"
+            },
+            {
+              "value": "aluminum",
+              "label": "铝"
+            },
+            {
+              "value": "iron",
+              "label": "铁"
+            },
+            {
+              "value": "nichrome",
+              "label": "镍铬合金"
+            },
+            {
+              "value": "graphite",
+              "label": "石墨"
+            },
+            {
+              "value": "plastic",
+              "label": "塑料"
+            },
+            {
+              "value": "glass",
+              "label": "玻璃"
+            }
+          ],
+          "value": "nichrome"
+        },
+        {
+          "key": "length",
+          "label": "导体长度",
+          "unit": "m",
+          "min": 0.1,
+          "max": 5,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "area",
+          "label": "横截面积",
+          "unit": "mm²",
+          "min": 0.01,
+          "max": 2,
+          "step": 0.01,
+          "value": 0.1
+        },
+        {
+          "key": "temperature",
+          "label": "导体温度",
+          "unit": "℃",
+          "min": 0,
+          "max": 200,
+          "step": 5,
+          "value": 20
+        },
+        {
+          "key": "cells",
+          "label": "电池节数",
+          "unit": "",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "value": 2
+        },
+        {
+          "key": "cellVoltage",
+          "label": "单节电压",
+          "unit": "V",
+          "min": 0.5,
+          "max": 3,
+          "step": 0.5,
+          "value": 1.5
+        },
+        {
+          "key": "orientation",
+          "label": "电源方向",
+          "options": [
+            {
+              "value": "forward",
+              "label": "正向"
+            },
+            {
+              "value": "reverse",
+              "label": "反向"
+            }
+          ],
+          "value": "forward"
+        },
+        {
+          "key": "internalResistance",
+          "label": "电源内阻",
+          "unit": "Ω",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "value": 0.5
+        },
+        {
+          "key": "scenario",
+          "label": "开关状态",
+          "options": [
+            {
+              "value": "ohm",
+              "label": "闭合"
+            },
+            {
+              "value": "open",
+              "label": "断开"
+            }
+          ],
+          "value": "ohm"
+        }
+      ],
+      "scenarioControls": {
+        "ohm": [
+          {
+            "key": "scenario",
+            "label": "开关状态",
+            "options": [
+              {
+                "value": "ohm",
+                "label": "闭合"
+              },
+              {
+                "value": "open",
+                "label": "断开"
+              }
+            ],
+            "value": "ohm"
+          },
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0.5,
+            "max": 6,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance",
+            "label": "电阻 R1",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 10
+          }
+        ],
+        "led": [
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 6,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance",
+            "label": "限流电阻",
+            "unit": "Ω",
+            "min": 100,
+            "max": 1000,
+            "step": 50,
+            "value": 200
+          },
+          {
+            "key": "orientation",
+            "label": "二极管方向",
+            "options": [
+              {
+                "value": "forward",
+                "label": "正向"
+              },
+              {
+                "value": "reverse",
+                "label": "反向"
+              }
+            ],
+            "value": "forward"
+          }
+        ],
+        "conductivity": [
+          {
+            "key": "material",
+            "label": "材料",
+            "options": [
+              {
+                "value": "copper",
+                "label": "铜"
+              },
+              {
+                "value": "aluminum",
+                "label": "铝"
+              },
+              {
+                "value": "iron",
+                "label": "铁"
+              },
+              {
+                "value": "nichrome",
+                "label": "镍铬合金"
+              },
+              {
+                "value": "graphite",
+                "label": "石墨"
+              },
+              {
+                "value": "plastic",
+                "label": "塑料"
+              },
+              {
+                "value": "glass",
+                "label": "玻璃"
+              }
+            ],
+            "value": "nichrome"
+          },
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          }
+        ],
+        "shortedBulb": [
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance2",
+            "label": "电阻 R2",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "series": [
+          {
+            "key": "scenario",
+            "label": "连接方式",
+            "options": [
+              {
+                "value": "series",
+                "label": "串联"
+              },
+              {
+                "value": "parallel",
+                "label": "并联"
+              }
+            ],
+            "value": "series"
+          },
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance",
+            "label": "电阻 R1",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "resistance2",
+            "label": "电阻 R2",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "ammeter": [
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance",
+            "label": "电阻 R1",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "resistance2",
+            "label": "电阻 R2",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "parallel": [
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance",
+            "label": "电阻 R1",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "resistance2",
+            "label": "电阻 R2",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "voltmeter": [
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance",
+            "label": "电阻 R1",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "resistance2",
+            "label": "电阻 R2",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          }
+        ],
+        "battery": [
+          {
+            "key": "cells",
+            "label": "电池节数",
+            "unit": "",
+            "min": 1,
+            "max": 8,
+            "step": 1,
+            "value": 2
+          },
+          {
+            "key": "cellVoltage",
+            "label": "单节电压",
+            "unit": "V",
+            "min": 0.5,
+            "max": 3,
+            "step": 0.5,
+            "value": 1.5
+          },
+          {
+            "key": "orientation",
+            "label": "电源方向",
+            "options": [
+              {
+                "value": "forward",
+                "label": "正向"
+              },
+              {
+                "value": "reverse",
+                "label": "反向"
+              }
+            ],
+            "value": "forward"
+          },
+          {
+            "key": "resistance",
+            "label": "电阻 R1",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 10
+          }
+        ],
+        "material": [
+          {
+            "key": "material",
+            "label": "材料",
+            "options": [
+              {
+                "value": "copper",
+                "label": "铜"
+              },
+              {
+                "value": "aluminum",
+                "label": "铝"
+              },
+              {
+                "value": "iron",
+                "label": "铁"
+              },
+              {
+                "value": "nichrome",
+                "label": "镍铬合金"
+              }
+            ],
+            "value": "nichrome"
+          },
+          {
+            "key": "length",
+            "label": "导体长度",
+            "unit": "m",
+            "min": 0.1,
+            "max": 5,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "area",
+            "label": "横截面积",
+            "unit": "mm²",
+            "min": 0.01,
+            "max": 2,
+            "step": 0.01,
+            "value": 0.1
+          },
+          {
+            "key": "temperature",
+            "label": "导体温度",
+            "unit": "℃",
+            "min": 0,
+            "max": 200,
+            "step": 5,
+            "value": 20
+          },
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          }
+        ],
+        "rheostat": [
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "resistance",
+            "label": "电阻 R1",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "resistance2",
+            "label": "电阻 R2",
+            "unit": "Ω",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "slider",
+            "label": "滑片位置",
+            "unit": "%",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "value": 50
+          }
+        ],
+        "filament": [
+          {
+            "key": "voltage",
+            "label": "电源电压",
+            "unit": "V",
+            "min": 0,
+            "max": 6,
+            "step": 0.1,
+            "value": 3
+          },
+          {
+            "key": "ratedVoltage",
+            "label": "灯泡额定电压",
+            "unit": "V",
+            "min": 1,
+            "max": 12,
+            "step": 0.5,
+            "value": 3
+          },
+          {
+            "key": "ratedPower",
+            "label": "灯泡额定功率",
+            "unit": "W",
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "value": 1.5
+          }
+        ]
+      }
+    },
+    "joule": {
+      "scenarios": [
+        "heat",
+        "resistance",
+        "current",
+        "time"
+      ],
+      "controls": [
+        {
+          "key": "current",
+          "label": "电流",
+          "unit": "A",
+          "min": 0,
+          "max": 3,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "resistance",
+          "label": "电阻",
+          "unit": "Ω",
+          "min": 1,
+          "max": 50,
+          "step": 1,
+          "value": 10
+        },
+        {
+          "key": "time",
+          "label": "通电时间",
+          "unit": "s",
+          "min": 0,
+          "max": 300,
+          "step": 5,
+          "value": 60
+        }
+      ],
+      "note": "Joule heat I^2 R t; assumes constant resistance and all electrical energy becomes heat.",
+      "scenarioControls": {
+        "resistance": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": 0,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "resistance",
+            "label": "容器一电阻",
+            "unit": "Ω",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "time",
+            "label": "通电时间",
+            "unit": "s",
+            "min": 0,
+            "max": 300,
+            "step": 5,
+            "value": 60
+          }
+        ],
+        "current": [
+          {
+            "key": "current",
+            "label": "容器一电流",
+            "unit": "A",
+            "min": 0,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "resistance",
+            "label": "电阻",
+            "unit": "Ω",
+            "min": 1,
+            "max": 50,
+            "step": 1,
+            "value": 10
+          },
+          {
+            "key": "time",
+            "label": "通电时间",
+            "unit": "s",
+            "min": 0,
+            "max": 300,
+            "step": 5,
+            "value": 60
+          }
+        ]
+      },
+      "extraControls": []
+    },
+    "household": {
+      "scenarios": [
+        "power",
+        "meter",
+        "overload",
+        "safety",
+        "design"
+      ],
+      "controls": [
+        {
+          "key": "power",
+          "label": "用电器总功率",
+          "unit": "W",
+          "min": 0,
+          "max": 10000,
+          "step": 100,
+          "value": 2200
+        },
+        {
+          "key": "time",
+          "label": "使用时间",
+          "unit": "h",
+          "min": 0,
+          "max": 24,
+          "step": 0.5,
+          "value": 2
+        },
+        {
+          "key": "voltage",
+          "label": "家庭电压",
+          "unit": "V",
+          "min": 110,
+          "max": 240,
+          "step": 10,
+          "value": 220
+        },
+        {
+          "key": "limit",
+          "label": "额定电流",
+          "unit": "A",
+          "min": 5,
+          "max": 40,
+          "step": 1,
+          "value": 10
+        }
+      ],
+      "note": "Residential energy and current calculation; safety scenarios qualitative, simulation only.",
+      "scenarioControls": {
+        "power": [
+          {
+            "key": "power",
+            "label": "用电器总功率",
+            "unit": "W",
+            "min": 0,
+            "max": 10000,
+            "step": 100,
+            "value": 2200
+          },
+          {
+            "key": "time",
+            "label": "使用时间",
+            "unit": "h",
+            "min": 0,
+            "max": 24,
+            "step": 0.5,
+            "value": 2
+          }
+        ],
+        "overload": [
+          {
+            "key": "power",
+            "label": "用电器总功率",
+            "unit": "W",
+            "min": 0,
+            "max": 10000,
+            "step": 100,
+            "value": 2200
+          },
+          {
+            "key": "voltage",
+            "label": "家庭电压",
+            "unit": "V",
+            "min": 110,
+            "max": 240,
+            "step": 10,
+            "value": 220
+          },
+          {
+            "key": "limit",
+            "label": "额定电流",
+            "unit": "A",
+            "min": 5,
+            "max": 40,
+            "step": 1,
+            "value": 10
+          }
+        ],
+        "design": [
+          {
+            "key": "voltage",
+            "label": "安全低压模型电压",
+            "unit": "V",
+            "min": 3,
+            "max": 12,
+            "step": 1,
+            "value": 6
+          },
+          {
+            "key": "resistance1",
+            "label": "支路一负载电阻",
+            "unit": "Ω",
+            "min": 5,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "resistance2",
+            "label": "支路二负载电阻",
+            "unit": "Ω",
+            "min": 5,
+            "max": 100,
+            "step": 1,
+            "value": 30
+          },
+          {
+            "key": "switch1",
+            "label": "支路一开关",
+            "options": [
+              {
+                "value": 1,
+                "label": "闭合"
+              },
+              {
+                "value": 0,
+                "label": "断开"
+              }
+            ],
+            "value": 1
+          },
+          {
+            "key": "switch2",
+            "label": "支路二开关",
+            "options": [
+              {
+                "value": 1,
+                "label": "闭合"
+              },
+              {
+                "value": 0,
+                "label": "断开"
+              }
+            ],
+            "value": 1
+          }
+        ]
+      },
+      "extraControls": [
+        {
+          "key": "resistance1",
+          "label": "支路一负载电阻",
+          "unit": "Ω",
+          "min": 5,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        },
+        {
+          "key": "resistance2",
+          "label": "支路二负载电阻",
+          "unit": "Ω",
+          "min": 5,
+          "max": 100,
+          "step": 1,
+          "value": 30
+        },
+        {
+          "key": "switch1",
+          "label": "支路一开关",
+          "options": [
+            {
+              "value": 1,
+              "label": "闭合"
+            },
+            {
+              "value": 0,
+              "label": "断开"
+            }
+          ],
+          "value": 1
+        },
+        {
+          "key": "switch2",
+          "label": "支路二开关",
+          "options": [
+            {
+              "value": 1,
+              "label": "闭合"
+            },
+            {
+              "value": 0,
+              "label": "断开"
+            }
+          ],
+          "value": 1
+        }
+      ]
+    },
+    "magnet": {
+      "scenarios": [
+        "field",
+        "electromagnet",
+        "motor",
+        "compass",
+        "wireForce",
+        "coil",
+        "torque",
+        "relay",
+        "oersted",
+        "solenoid",
+        "poles"
+      ],
+      "controls": [
+        {
+          "key": "current",
+          "label": "电流",
+          "unit": "A",
+          "min": -3,
+          "max": 3,
+          "step": 0.1,
+          "value": 1
+        },
+        {
+          "key": "turns",
+          "label": "线圈匝数",
+          "unit": "",
+          "min": 10,
+          "max": 300,
+          "step": 10,
+          "value": 100
+        },
+        {
+          "key": "core",
+          "label": "铁芯",
+          "options": [
+            {
+              "value": "air",
+              "label": "无铁芯"
+            },
+            {
+              "value": "iron",
+              "label": "有铁芯"
+            }
+          ],
+          "value": "iron"
+        },
+        {
+          "key": "angle",
+          "label": "线圈法线与磁场夹角",
+          "unit": "°",
+          "min": 0,
+          "max": 180,
+          "step": 5,
+          "value": 45
+        }
+      ],
+      "note": "Relative solenoid field and torque, not calibrated force; sign controls polarity and motor torque direction.",
+      "extraControls": [
+        {
+          "key": "field",
+          "label": "磁感应强度",
+          "unit": "T",
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05,
+          "value": 0.2
+        },
+        {
+          "key": "length",
+          "label": "通电导线长度",
+          "unit": "m",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.1,
+          "value": 0.5
+        },
+        {
+          "key": "pole1",
+          "label": "磁体一朝向",
+          "options": [
+            {
+              "value": "N",
+              "label": "N极"
+            },
+            {
+              "value": "S",
+              "label": "S极"
+            }
+          ],
+          "value": "N"
+        },
+        {
+          "key": "pole2",
+          "label": "磁体二朝向",
+          "options": [
+            {
+              "value": "N",
+              "label": "N极"
+            },
+            {
+              "value": "S",
+              "label": "S极"
+            }
+          ],
+          "value": "S"
+        },
+        {
+          "key": "pole",
+          "label": "所观察磁极",
+          "options": [
+            {
+              "value": "N",
+              "label": "N极"
+            },
+            {
+              "value": "S",
+              "label": "S极"
+            }
+          ],
+          "value": "N"
+        }
+      ],
+      "scenarioControls": {
+        "poles": [
+          {
+            "key": "pole1",
+            "label": "磁体一朝向",
+            "options": [
+              {
+                "value": "N",
+                "label": "N极"
+              },
+              {
+                "value": "S",
+                "label": "S极"
+              }
+            ],
+            "value": "N"
+          },
+          {
+            "key": "pole2",
+            "label": "磁体二朝向",
+            "options": [
+              {
+                "value": "N",
+                "label": "N极"
+              },
+              {
+                "value": "S",
+                "label": "S极"
+              }
+            ],
+            "value": "S"
+          }
+        ],
+        "compass": [
+          {
+            "key": "pole",
+            "label": "所观察磁极",
+            "options": [
+              {
+                "value": "N",
+                "label": "N极"
+              },
+              {
+                "value": "S",
+                "label": "S极"
+              }
+            ],
+            "value": "N"
+          }
+        ],
+        "field": [
+          {
+            "key": "pole",
+            "label": "所观察磁极",
+            "options": [
+              {
+                "value": "N",
+                "label": "N极"
+              },
+              {
+                "value": "S",
+                "label": "S极"
+              }
+            ],
+            "value": "N"
+          }
+        ],
+        "oersted": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": -3,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          }
+        ],
+        "solenoid": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": -3,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "turns",
+            "label": "线圈匝数",
+            "unit": "",
+            "min": 10,
+            "max": 300,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "core",
+            "label": "铁芯",
+            "options": [
+              {
+                "value": "air",
+                "label": "无铁芯"
+              },
+              {
+                "value": "iron",
+                "label": "有铁芯"
+              }
+            ],
+            "value": "iron"
+          }
+        ],
+        "electromagnet": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": -3,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "turns",
+            "label": "线圈匝数",
+            "unit": "",
+            "min": 10,
+            "max": 300,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "core",
+            "label": "铁芯",
+            "options": [
+              {
+                "value": "air",
+                "label": "无铁芯"
+              },
+              {
+                "value": "iron",
+                "label": "有铁芯"
+              }
+            ],
+            "value": "iron"
+          }
+        ],
+        "relay": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": -3,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "turns",
+            "label": "线圈匝数",
+            "unit": "",
+            "min": 10,
+            "max": 300,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "core",
+            "label": "铁芯",
+            "options": [
+              {
+                "value": "air",
+                "label": "无铁芯"
+              },
+              {
+                "value": "iron",
+                "label": "有铁芯"
+              }
+            ],
+            "value": "iron"
+          }
+        ],
+        "wireForce": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": -3,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "field",
+            "label": "磁感应强度",
+            "unit": "T",
+            "min": 0.05,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.2
+          },
+          {
+            "key": "length",
+            "label": "通电导线长度",
+            "unit": "m",
+            "min": 0.1,
+            "max": 1,
+            "step": 0.1,
+            "value": 0.5
+          },
+          {
+            "key": "angle",
+            "label": "线圈法线与磁场夹角",
+            "unit": "°",
+            "min": 0,
+            "max": 180,
+            "step": 5,
+            "value": 45
+          }
+        ],
+        "coil": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": -3,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "turns",
+            "label": "线圈匝数",
+            "unit": "",
+            "min": 10,
+            "max": 300,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "angle",
+            "label": "线圈法线与磁场夹角",
+            "unit": "°",
+            "min": 0,
+            "max": 180,
+            "step": 5,
+            "value": 45
+          }
+        ],
+        "motor": [
+          {
+            "key": "current",
+            "label": "电流",
+            "unit": "A",
+            "min": -3,
+            "max": 3,
+            "step": 0.1,
+            "value": 1
+          },
+          {
+            "key": "turns",
+            "label": "线圈匝数",
+            "unit": "",
+            "min": 10,
+            "max": 300,
+            "step": 10,
+            "value": 100
+          },
+          {
+            "key": "angle",
+            "label": "线圈法线与磁场夹角",
+            "unit": "°",
+            "min": 0,
+            "max": 180,
+            "step": 5,
+            "value": 45
+          },
+          {
+            "key": "core",
+            "label": "铁芯",
+            "options": [
+              {
+                "value": "air",
+                "label": "无铁芯"
+              },
+              {
+                "value": "iron",
+                "label": "有铁芯"
+              }
+            ],
+            "value": "iron"
+          }
+        ]
+      }
+    },
+    "induction": {
+      "scenarios": [
+        "motion",
+        "coil",
+        "generator"
+      ],
+      "controls": [
+        {
+          "key": "field",
+          "label": "磁感应强度",
+          "unit": "T",
+          "min": 0.05,
+          "max": 1,
+          "step": 0.05,
+          "value": 0.2
+        },
+        {
+          "key": "length",
+          "label": "导体长度",
+          "unit": "m",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.1,
+          "value": 0.5
+        },
+        {
+          "key": "velocity",
+          "label": "切割速度",
+          "unit": "m/s",
+          "min": -5,
+          "max": 5,
+          "step": 0.1,
+          "value": 2
+        },
+        {
+          "key": "angle",
+          "label": "速度与磁场夹角",
+          "unit": "°",
+          "min": 0,
+          "max": 180,
+          "step": 5,
+          "value": 90
+        },
+        {
+          "key": "turns",
+          "label": "匝数",
+          "unit": "",
+          "min": 1,
+          "max": 100,
+          "step": 1,
+          "value": 20
+        }
+      ],
+      "note": "Induced emf for straight conductor B*l*v*sin(theta), or sinusoidal rotating-coil conceptual model.",
+      "extraControls": [
+        {
+          "key": "area",
+          "label": "线圈面积",
+          "unit": "m²",
+          "min": 0.005,
+          "max": 0.1,
+          "step": 0.005,
+          "value": 0.02
+        },
+        {
+          "key": "frequency",
+          "label": "转动频率",
+          "unit": "Hz",
+          "min": 0,
+          "max": 10,
+          "step": 0.5,
+          "value": 2
+        }
+      ],
+      "scenarioControls": {
+        "motion": [
+          {
+            "key": "field",
+            "label": "磁感应强度",
+            "unit": "T",
+            "min": 0.05,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.2
+          },
+          {
+            "key": "length",
+            "label": "导体长度",
+            "unit": "m",
+            "min": 0.1,
+            "max": 1,
+            "step": 0.1,
+            "value": 0.5
+          },
+          {
+            "key": "velocity",
+            "label": "切割速度",
+            "unit": "m/s",
+            "min": -5,
+            "max": 5,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "angle",
+            "label": "速度与磁场夹角",
+            "unit": "°",
+            "min": 0,
+            "max": 180,
+            "step": 5,
+            "value": 90
+          }
+        ],
+        "generator": [
+          {
+            "key": "field",
+            "label": "磁感应强度",
+            "unit": "T",
+            "min": 0.05,
+            "max": 1,
+            "step": 0.05,
+            "value": 0.2
+          },
+          {
+            "key": "turns",
+            "label": "匝数",
+            "unit": "",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "value": 20
+          },
+          {
+            "key": "area",
+            "label": "线圈面积",
+            "unit": "m²",
+            "min": 0.005,
+            "max": 0.1,
+            "step": 0.005,
+            "value": 0.02
+          },
+          {
+            "key": "frequency",
+            "label": "转动频率",
+            "unit": "Hz",
+            "min": 0,
+            "max": 10,
+            "step": 0.5,
+            "value": 2
+          }
+        ]
+      }
+    },
+    "emwave": {
+      "scenarios": [
+        "wave",
+        "communication",
+        "spectrum",
+        "vacuum",
+        "emission",
+        "tuning",
+        "transmission"
+      ],
+      "controls": [
+        {
+          "key": "frequency",
+          "label": "频率",
+          "unit": "MHz",
+          "min": 1,
+          "max": 3000,
+          "step": 1,
+          "value": 100
+        }
+      ],
+      "note": "Vacuum electromagnetic speed c; lambda=c/f with MHz conversion.",
+      "extraControls": [
+        {
+          "key": "receiverFrequency",
+          "label": "接收调谐频率",
+          "unit": "MHz",
+          "min": 1,
+          "max": 3000,
+          "step": 1,
+          "value": 100
+        },
+        {
+          "key": "bandwidth",
+          "label": "模型带宽",
+          "unit": "MHz",
+          "min": 0.1,
+          "max": 10,
+          "step": 0.1,
+          "value": 1
+        }
+      ],
+      "scenarioControls": {
+        "emission": [
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "MHz",
+            "min": 1,
+            "max": 3000,
+            "step": 1,
+            "value": 100
+          }
+        ],
+        "vacuum": [
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "MHz",
+            "min": 1,
+            "max": 3000,
+            "step": 1,
+            "value": 100
+          }
+        ],
+        "tuning": [
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "MHz",
+            "min": 1,
+            "max": 3000,
+            "step": 1,
+            "value": 100
+          },
+          {
+            "key": "receiverFrequency",
+            "label": "接收调谐频率",
+            "unit": "MHz",
+            "min": 1,
+            "max": 3000,
+            "step": 1,
+            "value": 100
+          },
+          {
+            "key": "bandwidth",
+            "label": "模型带宽",
+            "unit": "MHz",
+            "min": 0.1,
+            "max": 10,
+            "step": 0.1,
+            "value": 1
+          }
+        ],
+        "transmission": [
+          {
+            "key": "frequency",
+            "label": "频率",
+            "unit": "MHz",
+            "min": 1,
+            "max": 3000,
+            "step": 1,
+            "value": 100
+          }
+        ]
+      }
+    }
+  }
+}
