@@ -1,0 +1,17 @@
+import {browserWorldRequest,BROWSER_WORLD_ROADSTER_MODELS} from './browser-world-policy.js';
+const request=browserWorldRequest();
+export const browserPhysicsRequested=true;
+export async function loadPhysicsBackend(){
+ if(!request)throw Error('请从日出独立存档页进入');
+ const choice=request.physics??new URLSearchParams(globalThis.location?.search??'').get('physics')??'rapier';
+ if(choice==='rapier'){
+  const {RapierPhysicsSystem,preloadRapier}=await import('./rapier-physics.js');
+  return{PhysicsSystem:RapierPhysicsSystem,preloadPhysics:preloadRapier};
+ }
+ if(choice!=='browser')throw Error('Unknown requested physics backend');
+ const {BrowserPhysicsSystem}=await import('./browser-physics.js');
+ class BrowserWorldPhysics extends BrowserPhysicsSystem{
+  constructor(game){super(game,{motorcycles:true,roadsters:true,roadsterModels:BROWSER_WORLD_ROADSTER_MODELS});this.backendId='browser';}
+ }
+ return{PhysicsSystem:BrowserWorldPhysics,preloadPhysics:async()=>{}};
+}

@@ -1,0 +1,208 @@
+{
+  "name": "@dimforge/rapier3d",
+  "version": "0.21.0",
+  "license": "Apache-2.0",
+  "source": "https://registry.npmjs.org/@dimforge/rapier3d/-/rapier3d-0.21.0.tgz",
+  "integrity": "sha512-wpyT3jc6otNV5LPTomj7A85VTI2QKZl/vCnhFwuOSMWoopZqxCgWLt/jCQUUugcIQmLI/pD5aAuswtUc5owo+w==",
+  "upstreamWasmSha256": "17cfa80eebd8de0291b948496dbffba724b98b489687f8272ca236a7bbf1dd4b",
+  "modifications": [
+    "Explicit .js or /index.js relative import suffixes for native browser ESM.",
+    "Removed unshipped source map references.",
+    "rapier_wasm3d.js replaced bundler-specific WASM import with explicit async WebAssembly loader; generated glue unchanged.",
+    "Local package.json declares ESM for Node verification."
+  ],
+  "files": {
+    "LICENSE": {
+      "bytes": 11343,
+      "sha256": "4c05555705e3efde601fb1252ae48f1d63992af8a8fb8947745b7fa834e8f519"
+    },
+    "coarena.js": {
+      "bytes": 1714,
+      "sha256": "4d8359bbe5d597b808ad00261af9c750cab74988807808d8728d70a8091ae295"
+    },
+    "control/character_controller.js": {
+      "bytes": 11246,
+      "sha256": "0df48fd4d1df85cb065c0b19980a30a1c95f0a53bccb530dcfa05641dd59a32f"
+    },
+    "control/index.js": {
+      "bytes": 152,
+      "sha256": "3a3c32c59716a2a60d42356d46f931104e3e2ab0f741cb80d8b42a5ade656e88"
+    },
+    "control/pid_controller.js": {
+      "bytes": 3609,
+      "sha256": "0b978b6c693c3081967bd3eb2f6f220ae94e5e35d0b03e04989c041a3aaf680c"
+    },
+    "control/ray_cast_vehicle_controller.js": {
+      "bytes": 13947,
+      "sha256": "16a291cdaae6009c7d1794f41785eedfbe99eb86c1abd541a6c842481238e817"
+    },
+    "dynamics/ccd_solver.js": {
+      "bytes": 542,
+      "sha256": "d5487a691edd7e3ab2d99dcc063e06d32526ef08c49161bf19ceffa1a002cfae"
+    },
+    "dynamics/coefficient_combine_rule.js": {
+      "bytes": 628,
+      "sha256": "d0922f630a62711af10f3a67efb6ef5fbdee4c91cbf420c5ceb87e1d4a4ee425"
+    },
+    "dynamics/impulse_joint.js": {
+      "bytes": 23680,
+      "sha256": "2eaaa017e8107adec0730ceaf50837ada33695be7b7f170ddaefe4964b215b1d"
+    },
+    "dynamics/impulse_joint_set.js": {
+      "bytes": 4045,
+      "sha256": "18fc578b09f1adb0a63c9b77d68565f00baa5a87504e054bea54af13209f84dc"
+    },
+    "dynamics/index.js": {
+      "bytes": 456,
+      "sha256": "5d64b728bcc65bede712e027ffe1dfac73d7b35d0d5bd5272848bbb728bb30dd"
+    },
+    "dynamics/integration_parameters.js": {
+      "bytes": 5705,
+      "sha256": "beb65baa55e32006d6b16e81f755e9c1f2cc103f8a7c827f1f07970a5a2fa396"
+    },
+    "dynamics/island_manager.js": {
+      "bytes": 897,
+      "sha256": "b173881e163545c1a057c04a942b9336eac8faa7eb5d04bcd178be25d5207b18"
+    },
+    "dynamics/multibody_joint.js": {
+      "bytes": 3913,
+      "sha256": "9485ea03a24138c04ca92cdfa898113e9a405f5c23b2357f970c92f97a15fd87"
+    },
+    "dynamics/multibody_joint_set.js": {
+      "bytes": 3818,
+      "sha256": "b47379a936c5b5fda575a9503d2c986c40d18e4660a44116414ac3fbf0227da2"
+    },
+    "dynamics/rigid_body.js": {
+      "bytes": 46346,
+      "sha256": "cd1482a905231705a975be32f0a22aaa54d01d1d5615dc08f8b7005f6f61f257"
+    },
+    "dynamics/rigid_body_set.js": {
+      "bytes": 6440,
+      "sha256": "b65c440b6f82634cb1ee11b421a053aba3ac98a00cfe842cb4e126c3253b1c15"
+    },
+    "dynamics/soft_body.js": {
+      "bytes": 55443,
+      "sha256": "5908b6c7500003616f6aca7fe9e87b486856289cea5a9382a5f0e3ee028a7c86"
+    },
+    "dynamics/soft_body_set.js": {
+      "bytes": 7131,
+      "sha256": "c86b9b5609093768df8313b549b2210f0b77a184a0e2fa6d6216765a5c32dc28"
+    },
+    "exports.js": {
+      "bytes": 971,
+      "sha256": "cd9c74d09723ee1aab33f35f53c4aa9630e99d0c2f19769b8b40e549328a541f"
+    },
+    "geometry/broad_phase.js": {
+      "bytes": 14739,
+      "sha256": "c69cb9cb0f82b921603df436686cee66f2d2c3e0158e8211f11df071d55fbbcc"
+    },
+    "geometry/collider.js": {
+      "bytes": 58217,
+      "sha256": "08089b96cb1d606305ec7c7d6e9fc7d5424ecd91a85e120f09daa7e6032ca3bc"
+    },
+    "geometry/collider_set.js": {
+      "bytes": 8304,
+      "sha256": "53287e6edaa361290fd89ea0d03de072c1f1dc4b8d9eca74a4d81092ccf7923c"
+    },
+    "geometry/contact.js": {
+      "bytes": 1527,
+      "sha256": "c3a5412030df8951c870c757d9c5ce3a642ae6dfd80c2eb6212400a72941d23a"
+    },
+    "geometry/feature.js": {
+      "bytes": 325,
+      "sha256": "56c0ecdbf0ae0aea5358743a9797ecfdd0ddd24cff0eea896b12247814b52cf7"
+    },
+    "geometry/index.js": {
+      "bytes": 344,
+      "sha256": "9a77e1519319851d9d66ff53f68afcab4a3f13a16b0da2464555ae72a8991d3e"
+    },
+    "geometry/interaction_groups.js": {
+      "bytes": 11,
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    "geometry/narrow_phase.js": {
+      "bytes": 8057,
+      "sha256": "b1e79571944296a02d1077c53b007143495dde44987c51874d2c2bcf96effe18"
+    },
+    "geometry/point.js": {
+      "bytes": 2512,
+      "sha256": "c67a4842acaab022d517bf617322ed0e2eafb5bc2634e789d1f3cb587c454ea4"
+    },
+    "geometry/ray.js": {
+      "bytes": 4145,
+      "sha256": "78f8f29710f554ceb9ac11643d596f4f7e61c4f1cf821e4d3c485e5d9e01c098"
+    },
+    "geometry/shape.js": {
+      "bytes": 42879,
+      "sha256": "bd11b31cbdcae52a6437bc9cfc90be6cec89c89d856937bcc7b32c57408eaffc"
+    },
+    "geometry/toi.js": {
+      "bytes": 3482,
+      "sha256": "29b61ab6b8c795c66144096943d55cae9994d1dc0ccb6c6d103ee9f3f3b2a770"
+    },
+    "init.js": {
+      "bytes": 11,
+      "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+    },
+    "math.js": {
+      "bytes": 3959,
+      "sha256": "13faa43f3c1f12153e31cda2815fc6bebf1e7db681b99a377d3a7715dd12c83a"
+    },
+    "package.json": {
+      "bytes": 124,
+      "sha256": "55bf7b87a32309b20d07c2647f5fb7394cab369ff76d7a43265a23f466acf198"
+    },
+    "pipeline/debug_render_pipeline.js": {
+      "bytes": 1287,
+      "sha256": "cc34d0674432b89d298a20f1c2171e682d740427159862aedbe1d47e836b8539"
+    },
+    "pipeline/event_queue.js": {
+      "bytes": 5189,
+      "sha256": "6c8a3f82447313b9272b3c2fc6c084a8424043293a41226f4c894e58edf705ac"
+    },
+    "pipeline/index.js": {
+      "bytes": 263,
+      "sha256": "6615d9b266bb5f3fd73da9f8472d4e7c05fad60235171e32a1718d6f77b577bb"
+    },
+    "pipeline/physics_hooks.js": {
+      "bytes": 602,
+      "sha256": "19cc1b99d068061b0157ffe7703dd51cc1d43aaf9358f87295f4d4f8453450e4"
+    },
+    "pipeline/physics_pipeline.js": {
+      "bytes": 1153,
+      "sha256": "e87bfd3589906b58bf3ae58a72cc07da46bb0b282e5cc2c0219da9b042072256"
+    },
+    "pipeline/query_pipeline.js": {
+      "bytes": 1702,
+      "sha256": "a219ca80ea34816034c95ad6a9e7a19bb9d50501a52cf7c1831692a6d2113c59"
+    },
+    "pipeline/serialization_pipeline.js": {
+      "bytes": 2059,
+      "sha256": "da3b2dd16ec4d5e625e7b7ec0e8daa252d3781d72f31a042c3341ffcad29ec09"
+    },
+    "pipeline/world.js": {
+      "bytes": 44265,
+      "sha256": "d1f2e8b2fbe72833bcf9dcb1b2ea0b1f014b1fc3afd1654bb35973080a4525c1"
+    },
+    "rapier.js": {
+      "bytes": 93,
+      "sha256": "c50b4e94d965031e7d4c86e47223633e7d22c36b1bf3077b333c2f410dfc60d3"
+    },
+    "rapier_wasm3d.js": {
+      "bytes": 923,
+      "sha256": "0d0df453bddd961295ce723a60dcaeff0939c1f6d12651486a3f3673b48972c3"
+    },
+    "rapier_wasm3d_bg.js": {
+      "bytes": 338179,
+      "sha256": "2f2f665915207d821c41035abaf17909085d8aaeba9496c854797861f25260d5"
+    },
+    "rapier_wasm3d_bg.wasm": {
+      "bytes": 3082103,
+      "sha256": "17cfa80eebd8de0291b948496dbffba724b98b489687f8272ca236a7bbf1dd4b"
+    },
+    "raw.js": {
+      "bytes": 36,
+      "sha256": "87b313c00e53c0acb0f76d350dc98429cbb330bf46ed005bf7d70cc816fee7ff"
+    }
+  }
+}

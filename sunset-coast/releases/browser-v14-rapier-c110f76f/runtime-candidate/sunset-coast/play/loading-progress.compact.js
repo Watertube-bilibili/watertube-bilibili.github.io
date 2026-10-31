@@ -1,0 +1,1 @@
+export const LUCENT_VISION_BYTES=11758564;export function decodedModelProgress(event){const loaded=Number.isFinite(event.loaded)&&event.loaded>=0?event.loaded:0;const total=loaded<=LUCENT_VISION_BYTES?LUCENT_VISION_BYTES:0;return{loaded,total,lengthComputable:total>0};}

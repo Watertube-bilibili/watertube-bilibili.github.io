@@ -1,0 +1,49 @@
+{
+  "product": "SUNRISE COAST",
+  "version": "日出 Rapier 更新 · 2026.10.31",
+  "release": "browser-v14-rapier-c110f76f",
+  "entry": "/sunset-coast/",
+  "saveNamespace": "sunrise-coast:browser-world:v2",
+  "previousProjectPreserved": true,
+  "localNormalEntryAcceptance": true,
+  "publicDeploymentVerified": false,
+  "acceptanceScope": "Parent independently reran source144 and compact144 Node tests; native isolated Chromium normal UI verified ESTUARY creation/GLB scene/short S driving/save/refresh and CRESCENT creation/walking/save/refresh. Producer additional deterministic tests retained separately. Not all-model/full-map/manual special-vehicle or real-device performance acceptance.",
+  "unavailable": [
+    "aircraft",
+    "airport gameplay",
+    "automatic flight tricks",
+    "structural wheel-detachment enhancement",
+    "autonomous driving",
+    "CRESCENT careers",
+    "all-model redesign"
+  ],
+  "published": true,
+  "baseCommit": "0954269f79e34af77d12b56cc1cb551284d40978",
+  "runtimeBaseline": "browser-v13-3aeca5247940",
+  "physicsBackend": "rapier",
+  "saveFormat": "browser-v2",
+  "realIPhoneAcceptance": false,
+  "savePoseLimitation": "Inherited v13 schema restores vehicle x/z/yaw grounded; does not persist airborne elevation or full orientation.",
+  "verification": {
+    "sourceNodeTests": 144,
+    "compactNodeTests": 144,
+    "parentNativeGUI": [
+      "ESTUARY short S drive/save/refresh",
+      "CRESCENT walking/save/refresh"
+    ],
+    "realDevicePerformance": false
+  },
+  "previousCandidateCommit": "d2ee4bb99d4165fedd1c36617646fab0d318b247",
+  "explicitBackendFallback": "?physics=browser",
+  "fallbackScope": "Explicit modified browser backend within this release; not original v13 files.",
+  "sameOriginSaveRisk": "Same browser-v2 map and slot keys as v13. Back up progress before choosing historical runtimes.",
+  "sourceCandidateCommit": "c110f76f7c061394c935a72e5451397a08173218",
+  "sizeDisclosure": {
+    "scope": "producer cold JS/MJS/WASM request graph, per-response gzip9 estimate, excludes HTML/CSS/GLB/textures/fonts",
+    "estuaryRawBytes": 5762289,
+    "estuaryGzip9Bytes": 1903854,
+    "v13Gzip9Bytes": 1874443,
+    "gzipIncreasePercent": 1.57,
+    "wholeGameSmallerClaim": false
+  }
+}

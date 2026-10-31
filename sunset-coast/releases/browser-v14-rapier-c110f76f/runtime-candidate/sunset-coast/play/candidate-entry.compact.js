@@ -1,0 +1,1 @@
+import{browserWorldRequest}from"./browser-world-policy.js";import{startBrowserWorld}from"./browser-world-entry.js";const request=browserWorldRequest();if(!request)throw Error("请从日出独立存档页进入");await startBrowserWorld(request);

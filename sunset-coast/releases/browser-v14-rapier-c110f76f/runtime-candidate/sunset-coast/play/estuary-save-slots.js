@@ -1,0 +1,44 @@
+import {freshSave,validateBetaRaw} from './beta-save-slots.js';
+import {ESTUARY_DELIVERY_CATALOG} from './delivery-offers.js';
+export const ESTUARY_PREFIX='sunrise-coast:estuary:v1';
+export const isEstuarySlot=id=>typeof id==='string'&&/^e-[a-z0-9-]{1,96}$/.test(id);
+export function estuaryConfig(id){
+ if(!isEstuarySlot(id))throw Error('新地图存档编号无效');
+ return {production:true,key:ESTUARY_PREFIX+':'+id, schema:{version:1,map:'estuary',catalog:ESTUARY_DELIVERY_CATALOG,playerId:id},slot:id};
+}
+export function requestedEstuary(search=''){const p=new URLSearchParams(search);return p.get('world')==='estuary'&&p.get('runtime')!=='browser';}
+export function estuarySlotFromSearch(search=''){const p=new URLSearchParams(search),ids=p.getAll('estuarySlot');if(ids.length!==1||!isEstuarySlot(ids[0]))throw Error('请从新地图存档页选择进度');return ids[0];}
+const digest=async raw=>Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(raw))),x=>x.toString(16).padStart(2,'0')).join('');
+export function freshEstuarySave(id,now=new Date().toISOString()){
+ const s=JSON.parse(freshSave(now)); // Same existing game new-save economy: 12,500, not QA credit.
+ s.vehicle.x=1290;s.vehicle.z=211;s.player.x=1293;s.player.z=211;
+ s.deliveryHost=estuaryConfig(id).schema;s.saveRevision=0;return s;
+}
+export async function readEstuarySlot(storage,id,validate){
+ const config=estuaryConfig(id),raw=storage.getItem(config.key);const save=validateBetaRaw(raw,validate);
+ if(JSON.stringify(save.deliveryHost)!==JSON.stringify(config.schema))throw Error('新地图身份或版本不匹配，未修改原档');
+ const backupRaw=storage.getItem(config.key+':initial-backup');if(!backupRaw||backupRaw.length>1100000)throw Error('新地图初始备份缺失');
+ const backup=JSON.parse(backupRaw);if(backup.version!==1||typeof backup.raw!=='string'||await digest(backup.raw)!==backup.sha256)throw Error('新地图初始备份校验失败');
+ const initial=validateBetaRaw(backup.raw,validate);if(JSON.stringify(initial.deliveryHost)!==JSON.stringify(config.schema))throw Error('初始备份身份不匹配');
+ if(storage.getItem(config.key)!==raw||storage.getItem(config.key+':initial-backup')!==backupRaw)throw Error('存档读取期间改变，请重试');
+ return {id,raw,save,config};
+}
+export async function createEstuarySlot(storage,validate,{locks=navigator.locks,idFactory=()=>('e-'+crypto.randomUUID()),now=()=>new Date().toISOString()}={}){
+ if(!locks?.request)throw Error('浏览器缺少安全存档锁');
+ return locks.request(ESTUARY_PREFIX+':create',async()=>{
+ const id=idFactory(),config=estuaryConfig(id),key=config.key;
+ if(storage.getItem(key)!==null||storage.getItem(key+':initial-backup')!==null)throw Error('存档编号已存在，未覆盖');
+ const raw=JSON.stringify(freshEstuarySave(id,now()));validateBetaRaw(raw,validate);
+ const backup=JSON.stringify({version:1,raw,sha256:await digest(raw)});
+ storage.setItem(key+':initial-backup',backup);if(storage.getItem(key+':initial-backup')!==backup)throw Error('初始备份保存失败');
+ storage.setItem(key,raw);if(storage.getItem(key)!==raw)throw Error('新档保存失败；已保留初始备份');
+ return readEstuarySlot(storage,id,validate);
+ });
+}
+export async function listEstuarySlots(storage,validate){const result=[];for(let i=0;i<storage.length;i++){const key=storage.key(i);if(!key?.startsWith(ESTUARY_PREFIX+':'))continue;const id=key.slice(ESTUARY_PREFIX.length+1);if(!isEstuarySlot(id))continue;try{result.push(await readEstuarySlot(storage,id,validate));}catch(e){result.push({id,error:e.message});}}return result;}
+export async function acquireEstuaryLease(id,{locks=navigator.locks,window=globalThis.window}={}){
+ const {key}=estuaryConfig(id);if(!locks?.request)throw Error('浏览器缺少安全存档锁');
+ let owned=false,release,resolve,reject;const done=new Promise(r=>release=r),ready=new Promise((r,j)=>{resolve=r;reject=j;});
+ locks.request(key,{ifAvailable:true},async lock=>{if(!lock){reject(Error('该新地图存档已在另一标签页打开'));return;}owned=true;resolve({ownsLock:()=>owned,release:()=>{owned=false;release();}});await done;owned=false;}).catch(reject);
+ window.addEventListener('pagehide',()=>{owned=false;release();},{once:true});window.addEventListener('pageshow',e=>{if(e.persisted)window.location.reload();});return ready;
+}

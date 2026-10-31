@@ -1,0 +1,51 @@
+import {resetVehicleLights} from './vehicle-lights.js';
+import {repairBrakeFault,serializeBrakeFault} from './brake-fault.js';
+import {repairAxleFault} from './axle-fault.js';
+const games=new WeakMap();
+const signature=(g,v)=>JSON.stringify([v.condition,v.battery,g.health,g.armor,v.brakeFault,v.axleFault,!!v.structuralDamageActive]);
+const report=r=>Object.freeze({status:r.status,structureRepaired:!!r.structureRepaired,stateCommitted:!!r.stateCommitted,charged:r.charged??0,persistence:r.persistence??'not-attempted',errors:[...(r.errors??[])]});
+function effects(g,r){r.errors=[];for(const [key,fn]of [
+ ['money',()=>g.ui.updateMoney()],['brakeView',()=>g.brakeCloseup?.update()],
+ ['all',()=>g.ui.updateAll()],['save',()=>{const saved=g.save(false);r.persistence=saved===false?'not-written':'save-returned';}],
+ ['toast',()=>g.ui.toast('车辆、车轴与脚刹已修复并充满电')]
+ ]){if(g.vehicle!==r.vehicle||signature(g,r.vehicle)!==r.signature){r.status='completed-effects-obsolete';r.errors.push('Vehicle or repair state changed; old effects not replayed');return report(r);}if(r.done.has(key))continue;try{fn();r.done.add(key);}catch(e){r.errors.push(key+': '+String(e.message??e));if(key==='save')r.persistence='failed';}}
+ r.status=r.errors.length?'completed-with-effects-errors':'completed';return report(r);
+}
+// No geometry rollback promise: structure succeeds BEFORE this financial/state stage.
+export function runRepairTransaction(g,{repairVehicleDamage,refillRoadster}){
+ let state=games.get(g);if(!state){state={busy:false,receipts:new WeakMap()};games.set(g,state);}if(state.busy)return Object.freeze({status:'busy',charged:0});
+ const v=g.vehicle,previous=state.receipts.get(v);state.busy=true;
+ try{
+  if(previous&&previous.signature===signature(g,v)&&previous.stateCommitted)return effects(g,previous);
+  if(g.money<250){try{g.ui.toast('维修需要 $250','error');}catch{}return Object.freeze({status:'insufficient-funds',charged:0,structureRepaired:false});}
+  // Prepare the ledger before geometry changes. The existing addMoney helper mixes
+  // ledger mutation and UI, so commit its exact ledger semantics separately below.
+  const ledger=[{label:'维修与充电',amount:-250,time:g.clockString()},...(g.transactions??[])].slice(0,18);
+  const r={status:'preparing',charged:0,done:new Set(),errors:[],structureRepaired:false,stateCommitted:false};
+  try{const result=repairVehicleDamage(v);if(result?.then||result?.accepted===false)throw Error('Synchronous repair did not succeed');r.structureRepaired=true;}
+  catch(e){r.status='repair-failed';r.errors=[String(e.message??e)];return report(r);}
+  if(g.vehicle!==v){r.status='structure-repaired-vehicle-changed';return report(r);}
+  // Snapshot ONLY state/poses after explicit structural repair. Never rewind the
+  // already-repaired geometry or re-detach a repaired door on a later UI failure.
+  const keys=['condition','battery','brakeFault','axleFault','requestedBrakeAmount','brakeAmount'];
+  const fields=Object.fromEntries(keys.map(k=>[k,{present:Object.hasOwn(v,k),value:v[k]}]));
+  const prior={health:g.health,armor:g.armor,money:g.money,transactions:g.transactions,vehicleFaults:g.vehicleFaults};
+  const poses=[v.chassis,...(v.wheels??[]).map(w=>w.pivot)].filter(Boolean).map(o=>[o,o.position.clone(),o.quaternion.clone(),o.scale.clone()]);
+  const toe=(v.wheels??[]).map(w=>[w,w.axleToeOffset]);
+  try{
+   // Same state operations as actual Game.restoreBrakes, with brakeCloseup UI
+   // deferred to effects; no UI call can split the financial commit.
+   resetVehicleLights(v);repairBrakeFault(v);repairAxleFault(v);
+   if(g.isGarageCar(v)&&v.model.id==='c800')g.vehicleFaults={...g.vehicleFaults,c800:serializeBrakeFault(v)};
+   v.condition=100;v.battery=100;refillRoadster(v);g.health=100;g.armor=70;
+   g.money=Math.max(0,g.money-250);g.transactions=ledger;r.charged=250;r.stateCommitted=true;
+  }catch(e){
+   for(const[k,s]of Object.entries(fields)){if(s.present)v[k]=s.value;else delete v[k];}
+   Object.assign(g,prior);for(const[o,p,q,s]of poses){o.position.copy(p);o.quaternion.copy(q);o.scale.copy(s);}for(const[w,x]of toe)w.axleToeOffset=x;
+   r.status='structure-repaired-state-failed';r.errors=[String(e.message??e)];return report(r);
+  }
+  r.vehicle=v;r.signature=signature(g,v);state.receipts.set(v,r);return effects(g,r);
+ }finally{state.busy=false;}
+}
+
+export function sRepairTransactionEnabled(v,search=globalThis.location?.search??''){const p=new URLSearchParams(search);return v?.model?.id==='s'&&!!v.blenderSRig&&(p.get('world')==='estuary'||p.get('preview')==='1'&&p.get('map')==='estuary')&&p.get('blenderVehicle')==='volt-s-v2'&&p.get('damage')==='structure';}

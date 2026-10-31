@@ -1,0 +1,54 @@
+// Static collision mirrors the existing streamed world; rendering remains Three.js.
+import {Vector3 as V} from './vendor/three.module.js';
+import {physicsSurfaceMesh} from './physics-surfaces.js';
+const TILE=32, CELLS=16;
+export class RapierWorldGeometry {
+ constructor(R,world,source){this.R=R;this.world=world;this.source=source;this.boxes=new Map();this.tiles=new Map();this.groups=new Map();}
+ sync(vehicles,dt=1/60){
+  const {R,world,source}=this, desired=new Set();
+  for(const c of source.colliders??[]){
+   const key=c.id??c;desired.add(key);
+   const h=c.height??10,base=c.baseY??0,yaw=c.yaw??0;
+   if(![c.x,c.z,c.w,c.d,h,base,yaw].every(Number.isFinite)||Math.min(c.w,c.d,h)<=0)throw Error('Invalid world collider');
+   const signature=[c.x,c.z,c.w,c.d,h,base,yaw].join(',');let old=this.boxes.get(key);
+   if(old?.signature===signature)continue;
+   if(old)world.removeCollider(old.collider,true);
+   const collider=world.createCollider(R.ColliderDesc.cuboid(c.w,h/2,c.d).setTranslation(c.x,base+h/2,c.z).setRotation({x:0,y:Math.sin(yaw/2),z:0,w:Math.cos(yaw/2)}).setFriction(.6));
+   this.boxes.set(key,{collider,signature});
+  }
+  for(const [key,e]of this.boxes)if(!desired.has(key)){world.removeCollider(e.collider,true);this.boxes.delete(key);}
+  const wanted=new Set();
+  for(const v of vehicles){const reach=Math.max(8,(v.wheelBase??3)+Math.abs(v.speed??0)*dt*2+4);for(let x=Math.floor((v.pos.x-reach)/TILE);x<=Math.floor((v.pos.x+reach)/TILE);x++)for(let z=Math.floor((v.pos.z-reach)/TILE);z<=Math.floor((v.pos.z+reach)/TILE);z++)wanted.add(x+','+z);}
+  for(const key of wanted)if(!this.tiles.has(key)){
+   const [tx,tz]=key.split(',').map(Number),vertices=[],indices=[];
+   for(let z=0;z<=CELLS;z++)for(let x=0;x<=CELLS;x++){const px=tx*TILE+x*TILE/CELLS,pz=tz*TILE+z*TILE/CELLS,y=source.groundHeight?.(px,pz)??0;if(!Number.isFinite(y))throw Error('Invalid terrain height');vertices.push(px,y,pz);}
+   for(let z=0;z<CELLS;z++)for(let x=0;x<CELLS;x++){const a=z*(CELLS+1)+x,b=a+1,c=a+CELLS+1,d=c+1;indices.push(a,c,b,b,c,d);}
+   this.tiles.set(key,world.createCollider(R.ColliderDesc.trimesh(new Float32Array(vertices),new Uint32Array(indices)).setFriction(.7)));
+  }
+  for(const [key,c]of this.tiles)if(!wanted.has(key)){world.removeCollider(c,true);this.tiles.delete(key);}
+  const groups=new Set([...Array.from(source.chunks?.values()??[],x=>x.group),...Array.from(source.entities?.values()??[],x=>x.group)].filter(Boolean));
+  for(const group of groups)if(!this.groups.has(group)){
+   const raw=[];group.traverse?.(o=>{if(o.userData?.surfaces)raw.push(...o.userData.surfaces);});
+   const mesh=raw.length?{vertices:raw,indices:Array.from({length:raw.length/3},(_,i)=>i)}:physicsSurfaceMesh(group,source.groundHeight??(()=>0));
+   if(!mesh.vertices.every(Number.isFinite)||mesh.indices.length%3)throw Error('Invalid authored collision surface');
+   const c=mesh.indices.length?world.createCollider(R.ColliderDesc.trimesh(new Float32Array(mesh.vertices),new Uint32Array(mesh.indices)).setFriction(.7)):null;
+   this.groups.set(group,c);
+  }
+  for(const [group,c]of this.groups)if(!groups.has(group)){if(c)world.removeCollider(c,true);this.groups.delete(group);}
+  if(!this.boundaries&&source.bounds){const b=source.bounds,h=2000;this.boundaries=[
+   [b.minX-1,(b.minZ+b.maxZ)/2,1,(b.maxZ-b.minZ)/2+2],
+   [b.maxX+1,(b.minZ+b.maxZ)/2,1,(b.maxZ-b.minZ)/2+2],
+   [(b.minX+b.maxX)/2,b.minZ-1,(b.maxX-b.minX)/2+2,1],
+   [(b.minX+b.maxX)/2,b.maxZ+1,(b.maxX-b.minX)/2+2,1]
+  ].map(([x,z,w,d])=>world.createCollider(R.ColliderDesc.cuboid(w,h,d).setTranslation(x,0,z)));}
+ }
+ surface(excludedBody){return{raycast:(origin,direction,maxDistance)=>{
+  const hit=this.world.castRayAndGetNormal(new this.R.Ray(origin,direction),maxDistance,false,undefined,undefined,undefined,excludedBody);
+  if(!hit)return null;
+  const normal=new V(hit.normal.x,hit.normal.y,hit.normal.z);
+  if(normal.dot(direction)>=-1e-7)return null;
+  return{position:origin.clone().addScaledVector(direction,hit.timeOfImpact),normal,distance:hit.timeOfImpact};
+ }};}
+ get colliderCount(){return this.world.colliders.len();}
+ clear(){this.boxes.clear();this.tiles.clear();this.groups.clear();this.boundaries=null;}
+}
