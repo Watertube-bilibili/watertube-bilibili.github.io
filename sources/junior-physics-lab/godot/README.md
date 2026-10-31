@@ -108,10 +108,9 @@ The model families intentionally use two different kinds of computation:
   successive crossings in the same direction. The small-angle formula is
   provided separately as an approximation; it does not generate the trajectory.
 * `apparatus_dynamics.gd` and `mechanics_review.gd`: actual rigid bodies for
-  paired carts, support removal, descending rolling pendulum, impact and friction,
+  paired carts, support removal, impact and friction,
   elastic return, motor rotation, two-dimensional magnetic deflection, an ideal
-  solar motor and indentation against a given resisting force. The rolling
-  pendulum currently covers descent only; reverse winding is declared incomplete.
+  solar motor and indentation against a given resisting force. Rolling return uses its separate solver described below.
 * Dedicated review solvers implement cantilever shapes and frequencies, acoustic
   source versus received signals, multi-surface optical rays, meter wiring and
   ranges, elastic/plastic unloading, hydrostatic measurements and flow continuity.
@@ -169,3 +168,11 @@ Additional endpoint sweep:
 This covers every static schema scenario at default/min/max numeric control
 settings and checks for non-finite outputs. Numerical stability checks supplement,
 but do not replace, the independent physical identities in the domain suite.
+
+### Rolling pendulum with return
+
+`rolling_pendulum_solver.gd` and `rolling_pendulum_body.gd` preserve the original descending no-slip acceleration. Actual Godot bodies integrate every travel branch. At the lower endpoint a mass-metric string impulse enforces the new tangent constraint using `apply_central_impulse` and `apply_torque_impulse`. The upper turning point never changes the winding branch. Results expose `rollingStates` and event pre/post states at equal timestamps; renderers must use right-continuous sampling at impulses.
+
+The ideal capture domain is I >= m r²; the equality stops at the lower boundary. Tiny unresolved returns end the observation with remaining kinetic energy preserved. Numerical energy residuals are separate from physical capture losses. `values.descent` retains the first descent measurements; final metrics now describe the selected return observation.
+
+See [model, limitations and reproducible tests](../docs/review/rolling-pendulum.md).

@@ -1,0 +1,140 @@
+{
+  "phy-rolling-pendulum": {
+    "title": "滚摆往返：下降、反卷与能量",
+    "objective": "观察滚摆下降、最低点反卷上升及多次往返，区分转动方向、能量转化与能量损失。",
+    "model": "energy",
+    "modelParams": {
+      "scenario": "rollingPendulum",
+      "variant": "rolling-pendulum"
+    },
+    "controls": [
+      {
+        "key": "mass",
+        "label": "滚摆质量",
+        "unit": "kg",
+        "min": 0.1,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.3
+      },
+      {
+        "key": "radius",
+        "label": "绕线轴半径",
+        "unit": "m",
+        "min": 0.003,
+        "max": 0.015,
+        "step": 0.001,
+        "value": 0.006
+      },
+      {
+        "key": "inertia",
+        "label": "绕轴转动惯量（题设）",
+        "unit": "kg·m²",
+        "min": 2e-05,
+        "max": 0.001,
+        "step": 1e-05,
+        "value": 0.0002
+      },
+      {
+        "key": "height",
+        "label": "从释放点到最低点的距离",
+        "unit": "m",
+        "min": 0.1,
+        "max": 1,
+        "step": 0.05,
+        "value": 0.5
+      },
+      {
+        "key": "cycles",
+        "label": "观察往返次数",
+        "unit": "次",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "value": 3
+      }
+    ],
+    "playSeconds": 12,
+    "interaction": {
+      "mode": "playback",
+      "actionLabel": "释放滚摆",
+      "reason": "连续观察真实引擎积分的下降、绳侧切换、反卷上升及再次下降；可暂停并拖动过程。"
+    },
+    "steps": [
+      "设置质量、绕线轴半径、转动惯量和绳展开距离，先检查I≥mr²。",
+      "从静止释放，观察下降时重力势能、平动动能和转动动能的变化。",
+      "暂停在最低点前后，比较绕线侧与竖直速度：常见参数下旋转方向保持，质心改为上升。",
+      "继续观察上升顶点及再次下降，比较每次回升高度。",
+      "对照累计能量损失与机械能，说明它们与真实摩擦、绳弹性实验的区别。"
+    ],
+    "observations": [
+      "下降时重力势能减小，两种动能同时增加；反卷上升时相反。",
+      "最低点收紧前后角位置连续；在I>mr²时，质心速度反向而滚摆转动方向保持。",
+      "上升到顶点时两种速度趋于0，随后转动和竖直运动一起反向，开始下一次下降。",
+      "收紧事件使机械能减少，之后回升不到原释放高度；其他连续运动段不另外设置摩擦衰减。"
+    ],
+    "conclusion": "滚摆的重力势能与平动、转动动能相互转化。此模型把最低点收紧的不可逆损失单独记账；多次回升高度降低不违反能量守恒。",
+    "examPoints": [
+      "以同一最低点为重力势能零点，用mgh比较每次最高位置。",
+      "最低点通常动能较大，不能把重力势能为0说成机械能为0。",
+      "最高点速度瞬间为0，受力或加速度不一定为0。",
+      "滚摆同时平移与转动，不能把所有动能写成mv²/2。",
+      "质心运动方向与物体转动方向是不同概念，须分别观察。",
+      "瞬时收紧冲量模型是数值拓展，不是初中必背公式，也不等于测出了真实器材的损耗。"
+    ],
+    "pitfalls": [
+      "把上升画成下降轨迹倒放，并在最低点错误地让角速度自动反向。",
+      "忽略最低点收紧的能量损失，却又任意压低回升高度。",
+      "把本模型未设置的空气阻力、轴摩擦或弹性耗散说成实测结果。",
+      "将I<mr²的参数组合套入本反卷捕获近似，或把负回卷因子取绝对值。"
+    ],
+    "questions": [
+      {
+        "q": "滚摆在最低点开始反卷上升时，转动方向一定立即反向吗？",
+        "a": "不一定。本模型在I>mr²时，收紧前后角速度同号，竖直速度变号；到上升顶点之后，转动与竖直运动才共同反向。"
+      },
+      {
+        "q": "回升高度逐次降低是否违背能量守恒？",
+        "a": "不违背。减少的机械能计入绳收紧等不可逆过程对应的能量损失；能量总账仍须核对。"
+      },
+      {
+        "q": "将转动惯量设成I=mr²会怎样？",
+        "a": "本瞬时捕获模型的回卷因子q=(I−mr²)/(I+mr²)=0，收紧后两种速度均为0，不再反卷。I<mr²超出本次反卷近似的适用范围。"
+      }
+    ],
+    "workedExample": {
+      "title": "由能量求首次回升高度",
+      "given": "滚摆质量m=0.300 kg，从高于最低点H=0.500 m处静止释放，g=9.8 N/kg。最低点收紧后，模型给出的机械能为1.18418 J；上升段不再耗散。",
+      "steps": [
+        {
+          "title": "明确参考面并求初始机械能",
+          "text": "以最低点为重力势能零点。释放时动能为0，E₀=mgH=0.300×9.8×0.500=1.470 J。"
+        },
+        {
+          "title": "计算此次机械能损失",
+          "text": "ΔE=E₀−E收紧后=1.470−1.18418≈0.28582 J。不能把这部分能量从总账中省掉。"
+        },
+        {
+          "title": "分析回升最高点",
+          "text": "最高点平动和转动速度均为0，故mgh₁=E收紧后。h₁=1.18418/(0.300×9.8)≈0.40278 m。"
+        },
+        {
+          "title": "比较并说明适用条件",
+          "text": "0.40278 m<0.500 m。本结果使用题设的收紧后能量和无后续耗散条件，不以此替代真实滚摆的损失测量。"
+        }
+      ],
+      "answer": "首次回升高度约0.403 m，低于初始0.500 m；本次收紧损失约0.286 J。"
+    },
+    "modelNote": "由Godot刚体分别积分平移和转动，轻绳不滑动。最低点改变绕线侧，用新切点无滑移捕获的瞬时绳冲量近似收紧；该事件损失部分机械能，随后继续实际积分反卷上升和再次下降。要求I≥mr²；等号时收紧后停摆。此模型未求绳的有限弹性、收紧时长或峰值张力，也未把空气阻力和轴摩擦当作已测参数。",
+    "implementationReview": {
+      "status": "verified-with-limitations",
+      "scope": "同一实际刚体分段积分下降和反卷上升；最低点依据无滑移捕获冲量切换绕线侧并记损失，最高点之后自然再次下降。",
+      "limitation": "收紧为瞬时冲量近似，适用I≥mr²；未模拟绳的有限弹性、冲击张力波形、空气阻力与轴摩擦，不等于完整实物滚摆验收。",
+      "evidence": {
+        "engine": "tests/godot_rolling_pendulum.gd: 20 actual Godot cases pass, including impulsive capture, energy, boundary limits and step-halving convergence.",
+        "browser": "tests/rolling-pendulum-browser.py: actual exported Godot and 7 groups of page/control/state checks pass; tests/rolling-pendulum-scenes.py: 12 actual states pass.",
+        "scope": "Ideal no-slip travel and instantaneous inelastic capture. No physical apparatus, elastic string, slack-string or real impact calibration validation."
+      }
+    }
+  }
+}

@@ -48,6 +48,7 @@ function mountManualTimer(){
   onReset(){if(!isManualTimer())return;params.value=0;manualRecorded=false;completed=false;cancelExperiment();clearResults();drawScene();}
  });
 }
+function canPlayback(){return ready&&!!result&&result.playbackAvailable!==false;}
 function actionLabel(){return selected?.interaction?.actionLabel||'开始实验';}
 function configureInteraction(){
  const live=isLive();$('runBtn').hidden=live;$('pauseBtn').hidden=live;$('playheadLabel').hidden=live;
@@ -120,7 +121,7 @@ window.addEventListener('godot-error',()=>{engineError=true;});
 window.addEventListener('godot-ready',()=>{engineError=false;});
 async function prepareEvaluation(){
  if(!selected)return;
- const own=++epoch,e=selected,p={...params};ready=false;$('runBtn').disabled=true;$('pauseBtn').disabled=true;
+ const own=++epoch,e=selected,p={...params};ready=false;$('runBtn').disabled=true;$('pauseBtn').disabled=true;$('playhead').disabled=true;
  $('stageNotice').hidden=false;$('stageNotice').textContent='正在准备实验装置…';$('simulationStatus').textContent='正在准备';
  try{
   if(e.subject==='physics'||e.requiresPhysics)await waitForGodot();
@@ -128,9 +129,9 @@ async function prepareEvaluation(){
   const next=await mod.simulate(e,p,1);
   if(own!==epoch||selected?.id!==e.id)return;
   if(!next||!Array.isArray(next.readings))throw new Error('实验结果格式异常，请重新选择实验。');
-  result=next;ready=true;$('stageNotice').hidden=true;$('runBtn').disabled=false;
+  result=next;ready=true;$('stageNotice').hidden=true;$('runBtn').disabled=!canPlayback();$('playhead').disabled=!canPlayback();
   if(isLive()){progress=1;completed=!isManualTimer()||manualRecorded;$('simulationStatus').textContent=isManualTimer()?'手动计时':'可调整条件';$('calculateBtn').disabled=!completed;if(completed)showReadings();}
-  else $('simulationStatus').textContent='准备就绪';
+  else $('simulationStatus').textContent=canPlayback()?'准备就绪':'请调整实验条件';
   drawScene();syncAudio();
  }catch(error){if(own!==epoch)return;ready=false;$('stageNotice').textContent=error.message||'实验未能载入。';$('stageNotice').hidden=false;$('simulationStatus').textContent='请重新载入';}
 }
@@ -152,7 +153,7 @@ function clearResults(){
  $('pauseBtn').disabled=true;$('runBtn').innerHTML=icon('play')+esc(actionLabel());$('playhead').value=Math.round(progress*1000);
 }
 function startExperiment(){
- if(isLive()||!ready||!result)return;
+ if(isLive()||!canPlayback())return;
  cancelCalculation();if(completed)clearResults();completed=false;$('currentProcess').innerHTML='';$('calculateBtn').disabled=true;
  if(progress>=1)progress=0;if(progress===0)playSound();playing=true;lastFrame=performance.now();
  $('simulationStatus').textContent='实验进行中';$('runBtn').disabled=true;$('pauseBtn').disabled=false;
@@ -165,7 +166,7 @@ function startExperiment(){
  }
  frameId=requestAnimationFrame(tick);
 }
-function finishExperiment(){playing=false;completed=true;$('simulationStatus').textContent=hasPartialScope(selected)?'本段演示结束':'实验完成';$('runBtn').disabled=false;$('runBtn').innerHTML=icon('reset')+'再做一次';$('pauseBtn').disabled=true;$('calculateBtn').disabled=false;showReadings();}
+function finishExperiment(){playing=false;completed=true;$('simulationStatus').textContent=result.completionLabel||(hasPartialScope(selected)?'本段演示结束':'实验完成');$('runBtn').disabled=false;$('runBtn').innerHTML=icon('reset')+'再做一次';$('pauseBtn').disabled=true;$('calculateBtn').disabled=false;showReadings();}
 function showReadings(includeCalculated=false){
  if(!result)return;
  $('resultLabel').textContent=includeCalculated?'测量与计算结果':'当前条件下的测量与观察';
@@ -240,8 +241,8 @@ $('soundVolume').addEventListener('input',()=>window.LabAudio?.setVolume(Number(
 window.addEventListener('lab-audio-state',syncAudio);
 $('runBtn').addEventListener('click',startExperiment);
 $('pauseBtn').addEventListener('click',()=>{if(playing){playing=false;window.LabAudio?.stop();cancelAnimationFrame(frameId);$('pauseBtn').innerHTML=icon('play')+'继续';$('simulationStatus').textContent='已暂停';}else startExperiment();});
-$('resetBtn').addEventListener('click',()=>{if(selected){if(isLive()){selectExperiment(selected);return;}cancelExperiment();progress=0;completed=false;clearResults();ready=!!result;$('runBtn').disabled=!ready;drawScene();$('simulationStatus').textContent=ready?'准备就绪':'正在准备';if(!ready)prepareEvaluation();syncAudio();}});
-$('playhead').addEventListener('input',()=>{if(!ready||isLive())return;playing=false;window.LabAudio?.stop();cancelAnimationFrame(frameId);cancelCalculation();progress=Number($('playhead').value)/1000;if(progress<1&&completed){completed=false;clearResults();}drawScene();$('runBtn').disabled=false;$('pauseBtn').disabled=true;if(progress>=1)finishExperiment();else{$('simulationStatus').textContent='观察过程';}});
+$('resetBtn').addEventListener('click',()=>{if(selected){if(isLive()){selectExperiment(selected);return;}cancelExperiment();progress=0;completed=false;clearResults();ready=!!result;$('runBtn').disabled=!canPlayback();$('playhead').disabled=!canPlayback();drawScene();$('simulationStatus').textContent=ready?(canPlayback()?'准备就绪':'请调整实验条件'):'正在准备';if(!ready)prepareEvaluation();syncAudio();}});
+$('playhead').addEventListener('input',()=>{if(!canPlayback()||isLive())return;playing=false;window.LabAudio?.stop();cancelAnimationFrame(frameId);cancelCalculation();progress=Number($('playhead').value)/1000;if(progress<1&&completed){completed=false;clearResults();}drawScene();$('runBtn').disabled=false;$('pauseBtn').disabled=true;if(progress>=1)finishExperiment();else{$('simulationStatus').textContent='观察过程';}});
 $('calculateBtn').addEventListener('click',calculate);
 document.querySelectorAll('[data-tab]').forEach(button=>{button.addEventListener('click',()=>showTab(button.dataset.tab));button.addEventListener('keydown',event=>{const buttons=[...document.querySelectorAll('[data-tab]')];const index=buttons.indexOf(button);if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();const next=buttons[(index+(event.key==='ArrowRight'?1:-1)+buttons.length)%buttons.length];showTab(next.dataset.tab);next.focus();}});});
 for(const [id,direction]of [['previousExperiment',-1],['nextExperiment',1]])$(id).addEventListener('click',()=>{const choices=filtered(),index=choices.findIndex(e=>e.id===selected?.id),next=choices[(Math.max(0,index)+direction+choices.length)%choices.length];if(next)navigate(next.id);});

@@ -1,0 +1,27 @@
+{
+  "checks": [
+    "actual exported rigid-body solver completes three bottom/top pairs",
+    "pause freezes real apparatus and continue resumes",
+    "ascent shows actual Godot displacement, same axial rotation direction and accounted loss",
+    "complete observation exposes worked analysis with existing progress/record behavior",
+    "cycle count re-evaluates the engine instead of replaying an old fixed path",
+    "invalid capture domain disables playback through reset and recovers after a valid edit",
+    "reset and parameter-change/navigation cancel stale work without changing live experiments"
+  ],
+  "initialRun": {
+    "solver": "Godot RigidBody2D — rolling pendulum with impulsive no-slip capture",
+    "cycles": 3,
+    "events": [
+      "bottom",
+      "top",
+      "bottom",
+      "top",
+      "bottom",
+      "top"
+    ],
+    "states": 877
+  },
+  "pageErrors": [],
+  "failedRequests": [],
+  "scope": "Actual browser and exported Godot model; no physical apparatus validation."
+}

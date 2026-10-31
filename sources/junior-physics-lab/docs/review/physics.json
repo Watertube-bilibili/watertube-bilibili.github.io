@@ -3660,7 +3660,7 @@
   {
     "id": "phy-rolling-pendulum",
     "mode": "playback",
-    "purpose": "观察滚摆下降、上升过程。",
+    "purpose": "观察滚摆下降、最低点反卷上升及多次往返，区分转动方向、能量转化与能量损失。",
     "controlsReviewed": [
       {
         "key": "mass",
@@ -3679,21 +3679,31 @@
       },
       {
         "key": "height",
-        "label": "观察下降高度",
+        "label": "从释放点到最低点的距离",
         "default": 0.5
+      },
+      {
+        "key": "cycles",
+        "label": "观察往返次数",
+        "default": 3
       }
     ],
-    "sceneBehavior": "滚摆的下降位移、转角、平动能与转动能来自刚体及绕线约束。",
+    "sceneBehavior": "同一实际刚体分段积分下降和反卷上升；最低点依据无滑移捕获冲量切换绕线侧并记损失，最高点之后自然再次下降。",
     "limitations": [
-      "已实现下降，但尚未模拟反卷上升；这部分不能计为完整往返滚摆实验。"
+      "收紧为瞬时冲量近似，适用I≥mr²；未模拟绳的有限弹性、冲击张力波形、空气阻力与轴摩擦，不等于完整实物滚摆验收。"
     ],
     "fixes": [
-      "专用刚体/约束模型输出轨迹，画面读取实际状态，不再只有能量标签。"
+      "实际刚体积分下降和反卷上升，最低点切换绳侧并记能损，顶点后自然再次下降。"
     ],
-    "status": "needs-implementation",
+    "status": "verified-in-isolation-and-browser-smoke-checked",
     "evidence": {
       "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
-      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。",
+      "specialist": {
+        "engine": "tests/godot_rolling_pendulum.gd: 20 actual Godot cases pass, including impulsive capture, energy, boundary limits and step-halving convergence.",
+        "browser": "tests/rolling-pendulum-browser.py: actual exported Godot and 7 groups of page/control/state checks pass; tests/rolling-pendulum-scenes.py: 12 actual states pass.",
+        "scope": "Ideal no-slip travel and instantaneous inelastic capture. No physical apparatus, elastic string, slack-string or real impact calibration validation."
+      }
     }
   },
   {

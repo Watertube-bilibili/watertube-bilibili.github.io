@@ -22,7 +22,7 @@ func simulate(model: String, params: Dictionary) -> Dictionary:
 	check(result.process.size()>=3,"Calculations explain model and limits")
 	var prior_time = -1.0
 	for point in result.trajectory:
-		check(float(point[0])>prior_time,"Trajectory time strictly increases")
+		check(float(point[0])>=prior_time if params.get("scenario","")=="rollingPendulum" else float(point[0])>prior_time,"Time advances; rolling event pre/post share a timestamp")
 		prior_time = float(point[0])
 		for value in point:
 			check(is_finite(float(value)),"All sampled physical quantities are finite")
@@ -56,16 +56,16 @@ func run_tests() -> void:
 	near(fall.values.horizontalDisplacement,0.0,.000001,"Rapid ideal removal imparts no horizontal momentum")
 
 	var rolling = await simulate("energy",{"scenario":"rollingPendulum"})
-	v = rolling.values
-	reports.rollingPendulum = v
+	v = rolling.values.descent
+	reports.rollingPendulum = rolling.values
 	near(v.constraintError,0.0,.00002,"No-slip y=r theta constraint survives actual integrations")
-	near(v.velocity,v.radius*v.angularVelocity,.00002,"No-slip v=r omega constraint")
+	near(v.velocity,rolling.values.radius*v.angularVelocity,.00002,"No-slip v=r omega constraint")
 	near(v.translationEnergy+v.rotationEnergy,v.releasedPotential,.006,"Rolling descent conserves total mechanical energy")
 	check(v.rotationEnergy>v.translationEnergy,"Specified high inertia stores most energy in rotation")
 	var larger_axle = await simulate("energy",{"scenario":"rollingPendulum","radius":.012})
-	check(larger_axle.values.duration<v.duration,"Larger axle with unchanged inertia descends faster")
+	check(larger_axle.values.descent.duration<v.duration,"Larger axle with unchanged inertia descends faster")
 	var high_inertia = await simulate("energy",{"scenario":"rollingPendulum","inertia":.0004})
-	check(high_inertia.values.duration>v.duration,"Larger inertia with unchanged axle descends slower")
+	check(high_inertia.values.descent.duration>v.duration,"Larger inertia with unchanged axle descends slower")
 
 	var impact = await simulate("energy",{"scenario":"kineticImpact"})
 	v = impact.values

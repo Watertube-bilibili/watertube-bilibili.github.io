@@ -1,0 +1,401 @@
+{
+  "scope": "20 actual native Godot runs of the stated ideal no-slip/impulsive-capture model; not physical apparatus validation.",
+  "cases": [
+    {
+      "case": "default-three-returns",
+      "params": {},
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 3,
+      "duration": 7.23020259873173,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00561680498928308,
+      "constraintError": 7.05037847546919e-06,
+      "returnHeights": [
+        0.4021453207446033,
+        0.32338511094337197,
+        0.259999283405578
+      ]
+    },
+    {
+      "case": "one-return",
+      "params": {
+        "cycles": 1
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 1,
+      "duration": 2.67692531634857,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00208713767878188,
+      "constraintError": 6.18239500671525e-06,
+      "returnHeights": [
+        0.4021453207446033
+      ]
+    },
+    {
+      "case": "five-returns",
+      "params": {
+        "cycles": 5
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 5,
+      "duration": 10.8906261921559,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00843644143844924,
+      "constraintError": 7.05037847546919e-06,
+      "returnHeights": [
+        0.4021453207446033,
+        0.32338511094337197,
+        0.259999283405578,
+        0.20899178702883098,
+        0.16795020892609103
+      ]
+    },
+    {
+      "case": "slow-small-axle",
+      "params": {
+        "cycles": 1,
+        "height": 1,
+        "inertia": 0.001,
+        "mass": 0.1,
+        "radius": 0.003
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 1,
+      "duration": 30.1025063805451,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.998201618543311,
+      "energyBalanceError": 0.000214013640688737,
+      "constraintError": 6.11374604153614e-05,
+      "returnHeights": [
+        0.9961887243665791
+      ]
+    },
+    {
+      "case": "large-mass-large-axle",
+      "params": {
+        "cycles": 2,
+        "height": 0.1,
+        "inertia": 0.001,
+        "mass": 1,
+        "radius": 0.015
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 2,
+      "duration": 0.885429031725939,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.63265306122449,
+      "energyBalanceError": 0.00814262317607206,
+      "constraintError": 2.10116245680236e-07,
+      "returnHeights": [
+        0.03970256463450471,
+        0.01568763227412351
+      ]
+    },
+    {
+      "case": "small-inertia",
+      "params": {
+        "cycles": 2,
+        "height": 1,
+        "inertia": 2e-05,
+        "mass": 0.1,
+        "radius": 0.003
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 2,
+      "duration": 7.97033429891368,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.913875598086124,
+      "energyBalanceError": 0.0016673253325924,
+      "constraintError": 2.48535373548187e-05,
+      "returnHeights": [
+        0.834368555122756,
+        0.6960887811069429
+      ]
+    },
+    {
+      "case": "minimum-height",
+      "params": {
+        "height": 0.1
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 3,
+      "duration": 3.22885818304911,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00248050344841688,
+      "constraintError": 3.94916616991425e-07,
+      "returnHeights": [
+        0.0802760889248359,
+        0.0644161390375923,
+        0.05166602128151371
+      ]
+    },
+    {
+      "case": "maximum-height",
+      "params": {
+        "height": 1
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 3,
+      "duration": 10.2286886547435,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00787449349705893,
+      "constraintError": 1.10908528671416e-05,
+      "returnHeights": [
+        0.8046842148398781,
+        0.647426467145281,
+        0.520819814544497
+      ]
+    },
+    {
+      "case": "larger-axle",
+      "params": {
+        "cycles": 1,
+        "radius": 0.012
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 1,
+      "duration": 1.24573551379652,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.644736842105263,
+      "energyBalanceError": 0.00332032065168186,
+      "constraintError": 2.75171602012736e-06,
+      "returnHeights": [
+        0.207115437581483
+      ]
+    },
+    {
+      "case": "larger-inertia",
+      "params": {
+        "cycles": 1,
+        "inertia": 0.0004
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 1,
+      "duration": 3.83571257654103,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.947419668938656,
+      "energyBalanceError": 0.00141244920818773,
+      "constraintError": 2.18870634321466e-05,
+      "returnHeights": [
+        0.4483481096181652
+      ]
+    },
+    {
+      "case": "half-integration-step",
+      "params": {
+        "step": 0.000520833333333333
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 3,
+      "duration": 7.2349146423947,
+      "integrationStep": 0.000520833333333333,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00258533009979378,
+      "constraintError": 3.11736336013269e-05,
+      "returnHeights": [
+        0.40250749999653557,
+        0.323984771880648,
+        0.260744862462925
+      ]
+    },
+    {
+      "case": "equal-inertia-capture-stop",
+      "params": {
+        "inertia": 2e-05,
+        "mass": 0.2,
+        "radius": 0.01
+      },
+      "valid": true,
+      "stopReason": "capture-stop",
+      "completedCycles": 0,
+      "duration": 0.451233555137993,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.0,
+      "energyBalanceError": 0.00225540625492582,
+      "constraintError": 9.96976217360057e-07,
+      "returnHeights": []
+    },
+    {
+      "case": "below-inertia-domain",
+      "params": {
+        "inertia": 2e-05,
+        "mass": 1,
+        "radius": 0.015
+      },
+      "valid": false,
+      "stopReason": "outside-model-domain",
+      "completedCycles": 0,
+      "duration": 0.0,
+      "integrationStep": 0.00104166666666667,
+      "q": -0.836734693877551,
+      "energyBalanceError": 0.0,
+      "constraintError": 0.0,
+      "returnHeights": []
+    },
+    {
+      "case": "zero-release-height",
+      "params": {
+        "height": 0
+      },
+      "valid": true,
+      "stopReason": "zero-height",
+      "completedCycles": 0,
+      "duration": 0.0,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.0,
+      "constraintError": 0.0,
+      "returnHeights": []
+    },
+    {
+      "case": "unresolved-small-return",
+      "params": {
+        "inertia": 2.0001e-05,
+        "mass": 0.2,
+        "radius": 0.01
+      },
+      "valid": true,
+      "stopReason": "resolution-limit",
+      "completedCycles": 0,
+      "duration": 0.451239070948313,
+      "integrationStep": 0.00104166666666667,
+      "q": 2.49993750155947e-05,
+      "energyBalanceError": 0.00225651155313045,
+      "constraintError": 1.44052283479468e-06,
+      "returnHeights": []
+    },
+    {
+      "case": "nonfinite-nan",
+      "params": {
+        "cycles": "nan",
+        "height": "nan",
+        "inertia": "nan",
+        "mass": "nan",
+        "radius": "nan",
+        "step": "nan"
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 3,
+      "duration": 7.23020259873173,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00561680498928308,
+      "constraintError": 7.05037847546919e-06,
+      "returnHeights": [
+        0.4021453207446033,
+        0.32338511094337197,
+        0.259999283405578
+      ]
+    },
+    {
+      "case": "nonfinite-inf",
+      "params": {
+        "cycles": "inf",
+        "height": "inf",
+        "inertia": "inf",
+        "mass": "inf",
+        "radius": "inf",
+        "step": "inf"
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 3,
+      "duration": 7.23020259873173,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00561680498928308,
+      "constraintError": 7.05037847546919e-06,
+      "returnHeights": [
+        0.4021453207446033,
+        0.32338511094337197,
+        0.259999283405578
+      ]
+    },
+    {
+      "case": "nonfinite--inf",
+      "params": {
+        "cycles": "-inf",
+        "height": "-inf",
+        "inertia": "-inf",
+        "mass": "-inf",
+        "radius": "-inf",
+        "step": "-inf"
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 3,
+      "duration": 7.23020259873173,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.89753320683112,
+      "energyBalanceError": 0.00561680498928308,
+      "constraintError": 7.05037847546919e-06,
+      "returnHeights": [
+        0.4021453207446033,
+        0.32338511094337197,
+        0.259999283405578
+      ]
+    },
+    {
+      "case": "clamped-low-controls",
+      "params": {
+        "cycles": -5,
+        "height": -1,
+        "inertia": -1,
+        "mass": -1,
+        "radius": -1
+      },
+      "valid": true,
+      "stopReason": "zero-height",
+      "completedCycles": 0,
+      "duration": 0.0,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.913875598086124,
+      "energyBalanceError": 0.0,
+      "constraintError": 0.0,
+      "returnHeights": []
+    },
+    {
+      "case": "clamped-high-controls",
+      "params": {
+        "cycles": 20,
+        "height": 2,
+        "inertia": 1,
+        "mass": 2,
+        "radius": 0.1
+      },
+      "valid": true,
+      "stopReason": "observation-complete",
+      "completedCycles": 5,
+      "duration": 4.19603839305053,
+      "integrationStep": 0.00104166666666667,
+      "q": 0.63265306122449,
+      "energyBalanceError": 0.0388030664560279,
+      "constraintError": 1.07228124420211e-05,
+      "returnHeights": [
+        0.399218778419524,
+        0.15914374759209204,
+        0.06328293901694404,
+        0.025067956578792017,
+        0.00986935932660904
+      ]
+    }
+  ],
+  "failures": []
+}

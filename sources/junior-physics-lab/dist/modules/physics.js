@@ -161,10 +161,6 @@
       const y=135+clamp(N(point?.[1])/Math.max(.001,N(p.height)),0,1)*185,removed=t>0;
       return beaker(340,180,220,190,0)+rect(removed?620:290,169,320,12,'#bda578','#8c7650')+circle(450,y,22,'#a8bac5',C.line,2)+line(450,110,450,355,C.blue,1,'5 4')+label(450,65,removed?'支撑片已抽去，小球竖直下落':'小球原先静止，准备快速抽片')+text(450,407,'下落 '+F(point?.[1],3)+' m；竖直速度 '+F(point?.[2],3)+' m/s；没有“惯性力”',16,C.ink,'middle');
     }
-    if(key==='rolling-pendulum') {
-      const y=145+clamp(N(point?.[1])/Math.max(.01,N(p.height)),0,1)*175,a=N(point?.[3])*180/Math.PI;
-      return line(210,65,690,65,C.line,7)+line(362,65,362,y,C.line,2)+line(538,65,538,y,C.line,2)+rect(350,y-7,200,14,'#8fa4b2',C.line)+`<g transform="rotate(${a} 450 ${y})">`+circle(450,y,67,'#b4c7d4',C.line,3)+circle(450,y,22,'#829baa',C.line,2)+line(450,y,510,y,C.gold,5)+circle(450,y,6,C.line,'none')+'</g>'+label(450,40,'下降时平动与转动同时发生')+text(450,386,'下降 '+F(point?.[1],3)+' m；速度 '+F(point?.[2],3)+' m/s；角速度 '+F(point?.[4],3)+' rad/s',16,C.ink,'middle')+text(450,418,'本次计算到给定下降高度停止，尚未模拟反卷回升',14,C.ink,'middle');
-    }
     if(key==='kinetic-energy') {
       const points=r.trajectory||[],end=Math.max(.05,...points.map(a=>N(a[2]))),scale=Math.min(2000,540/(end+.25)),origin=260+.2*scale,bx=origin+N(point?.[1],-.2)*scale,wx=origin+N(point?.[2])*scale,ballRadius=Math.max(5,.0125*scale),halfBlock=Math.max(15,.0375*scale);
       return platform(320)+circle(bx,320-ballRadius,ballRadius,'#9aadb9',C.line,2)+rect(wx-halfBlock,264,halfBlock*2,56,'#bc9d6c','#806841',3)+line(origin,330,origin,350,C.blue,1,'4 4')+arrow(origin,355,wx,355,C.blue,2)+label(450,65,N(point?.[5])<.5?'球向静止木块运动':'接触后共同运动并受摩擦减速')+text(450,112,'球 '+F(p.mass)+' kg；木块 '+F(p.blockMass)+' kg；初速度 '+F(p.velocity)+' m/s',18,C.ink,'middle')+text(450,390,'木块位移 '+F(point?.[2],4)+' m；理论最终滑移 '+F(v.slideDistance,4)+' m',17,C.ink,'middle')+text(450,419,'完全非弹性碰撞模型：动量守恒，碰撞机械能不守恒',14,C.ink,'middle');
@@ -386,7 +382,6 @@
     if(key==='egg-saltwater'||key==='clay-boat'){const fraction=clamp(N(v.fraction),0,1),yy=key==='egg-saltwater'?115+120*fraction:145+60*fraction;let out=beaker(200,115,480,240,.75);if(key==='egg-saltwater')out+=`<ellipse cx="440" cy="${yy}" rx="42" ry="60" fill="#e7d8b8" stroke="#9b8a68" stroke-width="2"/>`;else out+=path(`M325 ${yy-30}H565L525 ${yy+30}H365Z`,'#8d7658',3,'#bda47d');return out+label(450,65,key==='egg-saltwater'?'比较清水与盐水中的浮沉':'把橡皮泥捏成中空船形')+text(450,393,'液体密度 '+F(v.liquidDensity)+' kg/m³；'+(v.state||''),18,C.ink,'middle');}
     if(key==='kinetic-energy'){return platform(335)+path('M160 315L400 145L400 335H160Z',C.line,3,'#c5d1da')+circle(320,180,25,'#9eafbb',C.line,2)+rect(540,270,105,65,'#bba06e','#8c724b',3)+arrow(430,295,510,295,C.red,3)+label(450,65,'比较钢球推动木块的效果')+text(450,393,'当前状态动能 '+F(v.kinetic)+' J；速度 '+F(v.velocity)+' m/s',18,C.ink,'middle');}
     if(key==='pendulum-period'||key==='pendulum-lock'){const sample=r.trajectoryKind==='pendulumAngle'?sampleAt(r,t):null,a=N(sample?.[1],N(v.angle,p.angle??20))*Math.PI/180,x=450+Math.sin(a)*225,y=90+Math.cos(a)*225;return line(230,75,670,75,C.line,7)+circle(450,90,7,C.line,'none')+line(450,90,x,y,C.line,3)+circle(x,y,27,'#bd9556','#8a672e',2)+line(450,90,450,335,'#97adbc',1,'5 5')+label(450,42,'摆线与小球')+text(450,380,key==='pendulum-period'?'周期 '+F(v.period,3)+' s':'机械能 '+F(v.total)+' J',21,C.ink,'middle')+text(450,415,r.trajectoryKind==='pendulumAngle'?'小球位置来自 Godot 刚体与铰接约束的轨迹':'当前摆角的状态示意，实际周期须在所给模型条件下比较',14,C.ink,'middle');}
-    if(key==='rolling-pendulum'){return line(200,70,700,70,C.line,7)+line(320,70,320,255,C.line,3)+line(580,70,580,255,C.line,3)+rect(275,247,350,16,'#92a8b7',C.line,3)+circle(450,255,85,'#b4c7d4',C.line,3)+circle(450,255,35,'#859fae',C.line,2)+label(450,40,'滚摆的下降与上升')+text(450,398,'动能与重力势能互相转化；当前机械能 '+F(v.total)+' J',16,C.ink,'middle');}
     if(key==='returning-can'){return rect(255,145,390,165,'#d0dde5',C.line,8)+`<ellipse cx="255" cy="227" rx="40" ry="82" fill="#afc4d2" stroke="#526f83" stroke-width="3"/>`+`<ellipse cx="645" cy="227" rx="40" ry="82" fill="#dce8ef" stroke="#526f83" stroke-width="3"/>`+path('M255 227Q360 180 450 227T645 227','#b38c4e',6)+weight(420,242,'配重')+line(450,227,450,242,C.line,3)+label(450,65,'罐体、橡皮筋与悬挂配重')+text(450,390,'弹性势能 '+F(v.elasticEnergy)+' J',21,C.ink,'middle')+text(450,421,'回滚还取决于摩擦与装置结构；剖面仅示意储能部件',14,C.ink,'middle');}
     if(key==='steelyard'){return platform(360)+path('M400 140L375 350H425Z',C.line,3,'#aabfcc')+line(180,145,750,145,'#ad8957',9)+line(240,145,200,260,C.line,2)+line(240,145,280,260,C.line,2)+path('M170 260Q240 300 310 260Z',C.line,2,'#b7c7d1')+rect(215,225,50,35,'#aaa293','#776f61')+line(610,145,610,230,C.line,2)+weight(580,230,F(p.force)+' N')+label(450,65,'移动秤砣，观察杠杆平衡')+text(450,407,'读数刻度须由支点位置、秤砣和秤盘共同标定',16,C.ink,'middle');}
     if(key==='friction'){return platform(325)+rect(170,280,550,45,'#bd9e6c','#8b7049')+rect(350,210,170,70,'#cdb181','#8b7049',3)+arrow(550,245,680,245,C.red,4)+arrow(330,275,240,275,C.blue,3)+label(450,75,'相对滑动，克服摩擦做功')+text(450,155,'f = '+F(v.force)+' N；s相对 = '+F(v.distance)+' m',20,C.ink,'middle')+text(450,385,'转化为接触系统的内能 '+F(v.heat)+' J',20,C.ink,'middle')+text(450,418,'未假定每个物体分别分得多少热量或温升',14,C.ink,'middle');}
@@ -430,7 +425,11 @@
       +Array.from({length:22},(_,i)=>line(0,i*20,900,i*20,'#dbe8f0',.55)).join('')
       +Array.from({length:46},(_,i)=>line(i*20,0,i*20,430,'#dbe8f0',.55)).join('');
     let content;
-    if (p.scenario==='ruler' && ['sound','force'].includes(experiment.model)) {
+    if (experiment.model==='energy' && p.scenario==='rollingPendulum') {
+      const rolling=window.LAB_PHYSICS_SCENES?.rollingPendulum;
+      if (typeof rolling!=='function') throw new Error('滚摆往返装置模块尚未载入。');
+      content=rolling(experiment,p,r,position);
+    } else if (p.scenario==='ruler' && ['sound','force'].includes(experiment.model)) {
       const ruler=window.LAB_PHYSICS_SCENES?.ruler;
       if (typeof ruler!=='function') throw new Error('钢尺实验装置模块尚未载入。');
       content=ruler(experiment,p,r,position);

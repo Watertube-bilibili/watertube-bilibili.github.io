@@ -77,8 +77,6 @@ def apply_quality(records, root):
     set_controls('returning-can',[
         number('mass','等效运动质量','kg',.1,1,.05,.3),number('spring','等效弹性系数','N/m',.2,4,.1,1),
         number('velocity','从平衡位置释放的初速度','m/s',.1,1,.05,.5)],'elasticReturn')
-    byid['rolling-pendulum']['title']='滚摆下降：平动与转动能量'
-    byid['rolling-pendulum']['modelNote']='由 Godot 刚体与绕线约束计算下降过程，线不滑动、轴刚性且无耗散。计入平动与转动动能；转动惯量是给定条件。本模型到指定下降高度停止，尚未模拟反卷回升。'
     byid['returning-can']['modelNote']='把罐体与橡皮筋视为一维等效弹簧—质量系统，由 Godot 积分一个往返周期；不含滑动、橡皮筋非线性和耗散。说明储能与回返机制，不等同于任意自制回滚罐的精确运动。'
     byid['kinetic-energy']['modelNote']='采用两刚体完全非弹性碰撞：接触后以共同速度运动，再受相同滑动摩擦减速。先守恒总动量，碰撞机械能不守恒；木块滑移用于比较初始动能，只适用于本题设，不代替真实球块弹跳实验。'
     byid['magnet-carts']['modelNote']='两车受到等大反向的给定恒力，由 Godot 刚体积分位置和速度。力相等不代表加速度相等；没有按磁铁间距求真实磁力，题设恒力用于隔离相互作用与质量因素。'
@@ -126,7 +124,7 @@ def apply_quality(records, root):
         'electromagnetic-induction':'移动导体','hand-generator':'转动手柄',
         'dc-motor-project':'接通电动机','water-freezing':'开始冷却','heat-mass-temperature':'开始加热','spark-radio':'操作发射电路'}
     # A reviewed mapping is not a claim that every textbook procedure is complete.
-    incomplete={'funnel-ball','rolling-pendulum','saltwater-density','micro-hydrometer','shoe-pressure','bottle-barometer','blow-strip'}
+    incomplete={'funnel-ball','saltwater-density','micro-hydrometer','shoe-pressure','bottle-barometer','blow-strip'}
     revised={
         'cold-water-reboil':('在倒置热烧瓶中改变给定气压，对照水温与沸点，沸腾条件满足时出现气泡。','气压由题设改变；没有联立求解瓶内凝结、冷水传热和压力随时间变化。'),
         'funnel-ball':('可选择停吹/向下吹气，观察倒置漏斗与球间气流路径；球由支架定位。','只支持定性路径与压差分析，未复现完整漏斗流场和稳定托球，不能用向上吹气的轴向阻力模型替代。'),
@@ -147,7 +145,7 @@ def apply_quality(records, root):
         'spark-radio':('稳恒电流/迅速通断与接收机开关形成对照，瞬态响应按慢放包络显示。','包络为相对示意，火花不能等同于单一MHz正弦；未输出精确噪声级或场强。'),
         'vacuum-phone':('空气/真空可切换；罩内手机接收信号、扬声器振动和罩外听声三种状态分别显示。','理想对照忽略固体支架传声与罩体屏蔽；不模拟手机协议和实际声压。'),
         'emwave-transmission':('发射/接收开关直接改变信号状态，频率由引擎换算真空波长。','无屏蔽、匹配接收的工作原理示意，不计算真实无线覆盖距离或干扰。'),
-        'rolling-pendulum':('滚摆的下降位移、转角、平动能与转动能来自刚体及绕线约束。','已实现下降，但尚未模拟反卷上升；这部分不能计为完整往返滚摆实验。'),
+        'rolling-pendulum':('实际刚体积分下降和反卷上升，最低点切换绳侧并记能损，顶点后自然再次下降。','绳收紧为瞬时捕获冲量近似；适用I≥mr²，未模拟有限弹性、张力峰值、空气阻力或轴摩擦。'),
         'kinetic-energy':('两个实际刚体碰撞后以共同速度滑动，改变球质量/速度比较木块滑移。','完全非弹性碰撞与恒滑动摩擦题设；碰撞机械能不守恒，不代替真实弹跳细节。'),
         'pendulum-lock':('从给定释放角无初速释放，铰链约束下摆动并比较所达高度。','理想摆忽略真实耗散；没有额外推力，不能在释放时人为推动。'),
         'returning-can':('一维等效弹簧—质量刚体系统实际减速、反向并返回。','回滚机制采用线性等效模型，不预测任意罐体内部结构或橡皮筋非线性。'),
@@ -199,7 +197,7 @@ def apply_quality(records, root):
             r['modelNote'] += ' 本项操作范围：'+limitation
         audit.append(dict(id=r['id'],mode=mode,purpose=r['objective'],controlsReviewed=[{'key':c['key'],'label':c['label'],'default':c['value']} for c in r['controls']],sceneBehavior=scene,limitations=[limitation],fixes=[fixed[key]] if key in fixed else ['按逐项教学目的区分即时操作与过程回放。'],status=status,evidence={'method':'逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。','browser':'待最终引擎导出后的端到端复测，不以源码可运行视为通过。'}))
     # Root-owned ruler contracts are applied last, after all general defaults.
-    for patch_file in ['ruler-catalog.json','electrical-review-catalog.json','deformation-review-catalog.json','physics-measurement-review-catalog.json','optics-review-catalog.json','fluid-density-review-catalog.json']:
+    for patch_file in ['ruler-catalog.json','electrical-review-catalog.json','deformation-review-catalog.json','physics-measurement-review-catalog.json','optics-review-catalog.json','fluid-density-review-catalog.json','rolling-pendulum-catalog.json']:
         patch_path=root/'research'/patch_file
         if not patch_path.exists():continue
         for fullid,patch in json.loads(patch_path.read_text()).items():

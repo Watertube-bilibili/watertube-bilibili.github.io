@@ -525,11 +525,6 @@
     "readings": 5
   },
   {
-    "id": "phy-rolling-pendulum",
-    "ok": true,
-    "readings": 4
-  },
-  {
     "id": "phy-returning-can",
     "ok": true,
     "readings": 4
@@ -908,5 +903,10 @@
     "id": "phy-water-jet",
     "ok": true,
     "readings": 2
+  },
+  {
+    "id": "phy-rolling-pendulum",
+    "ok": true,
+    "readings": 4
   }
 ]

@@ -3,6 +3,8 @@ extends Node
 
 signal finished(result: Dictionary)
 const Body = preload("res://apparatus_body.gd")
+const RollingSolver = preload("res://rolling_pendulum_solver.gd")
+var rolling_solver: Node
 const G = 9.8
 var bodies = []
 var latest = []
@@ -36,6 +38,11 @@ var physical_step = 1.0/960.0
 var sample_stride = 4
 
 func evaluate(model: String, supplied: Dictionary) -> Dictionary:
+	if model=="energy" and str(supplied.get("scenario",""))=="rollingPendulum":
+		if not is_instance_valid(rolling_solver):
+			rolling_solver=RollingSolver.new()
+			add_child(rolling_solver)
+		return await rolling_solver.evaluate(supplied)
 	model_name = model
 	scenario = str(supplied.get("scenario",""))
 	parameters = supplied.duplicate()
@@ -102,17 +109,6 @@ func _configure() -> Array:
 			var height = _number("height",.3,.05,1.0)
 			max_time = sqrt(2.0*height/G)+.1
 			return [{"mass":mass,"axis":Vector2.DOWN,"force":mass*G}]
-		"rollingPendulum":
-			var mass = _number("mass",.3,.1,1.0)
-			var radius = _number("radius",.006,.003,.015)
-			var inertia = _number("inertia",.0002,.00002,.001)
-			var height = _number("height",.5,.1,1.0)
-			# No slip at the axle: a=r*alpha. Combining m*a=m*g-T
-			# and I*alpha=T*r gives the total upward string tension.
-			var tension = mass*G*inertia/(inertia+mass*radius*radius)
-			parameters["tension"] = tension
-			max_time = sqrt(2.0*height/(G-tension/mass))+.1
-			return [{"mass":mass,"axis":Vector2.DOWN,"force":mass*G-tension,"inertia":inertia,"torque":tension*radius}]
 		"kineticImpact":
 			var mass = _number("mass",.05,.02,.2)
 			var block_mass = _number("blockMass",.2,.05,1.0)
@@ -165,12 +161,6 @@ func _sample(sample: Dictionary, index: int) -> void:
 		"supportRemoval":
 			point = [time,x,velocity]
 			done = x >= float(parameters.height)
-		"rollingPendulum":
-			var angle = float(first.angle)
-			unwrapped_angle += wrapf(angle-prior_angle,-PI,PI)
-			prior_angle = angle
-			point = [time,x,velocity,unwrapped_angle,first.angularVelocity]
-			done = x >= float(parameters.height)
 		"kineticImpact":
 			var other = latest[1]
 			point = [time,x,other.position,velocity,other.velocity,1 if collided else 0]
@@ -205,7 +195,7 @@ func _sample(sample: Dictionary, index: int) -> void:
 	# samples; do not let the displayed object pass through its receiving plane.
 	if done and not previous_point.is_empty() and scenario!="kineticImpact":
 		var fraction = 1.0
-		if scenario in ["supportRemoval","rollingPendulum"]:
+		if scenario in ["supportRemoval"]:
 			fraction = (float(parameters.height)-float(previous_point[1]))/(float(point[1])-float(previous_point[1]))
 		else:
 			fraction = (max_time-float(previous_point[0]))/(float(point[0])-float(previous_point[0]))
@@ -239,11 +229,6 @@ func _finish(final_point: Array) -> void:
 		"supportRemoval":
 			values.merge({"distance":final_point[1],"velocity":final_point[2],"horizontalDisplacement":0.0},true)
 			_support_learning()
-		"rollingPendulum":
-			var translational = .5*float(parameters.mass)*pow(float(final_point[2]),2)
-			var rotational = .5*float(parameters.inertia)*pow(float(final_point[4]),2)
-			values.merge({"distance":final_point[1],"velocity":final_point[2],"angle":final_point[3],"angularVelocity":final_point[4],"translationEnergy":translational,"rotationEnergy":rotational,"initialPotential":float(parameters.mass)*G*float(parameters.height),"releasedPotential":float(parameters.mass)*G*float(final_point[1]),"constraintError":float(final_point[1])-float(parameters.radius)*float(final_point[3])},true)
-			_rolling_learning()
 		"kineticImpact":
 			var initial = .5*float(parameters.mass)*pow(impact_velocity,2)
 			var after_impact = .5*(float(parameters.mass)+float(parameters.blockMass))*shared_velocity*shared_velocity
@@ -278,13 +263,6 @@ func _support_learning() -> void:
 	result_pending.readings = [{"label":"下落高度","value":v.height,"unit":"m"},{"label":"下落时间","value":v.duration,"unit":"s"},{"label":"竖直速度","value":v.velocity,"unit":"m/s"},{"label":"水平位移","value":0.0,"unit":"m"}]
 	result_pending.process = [{"title":"分析抽离瞬间","text":"支撑物抽离前，物体静止。理想快速抽离不给物体水平冲量，故物体保留原来的水平静止状态。"},{"title":"分析抽离后受力","text":"失去支持力后，物体受竖直向下的重力，因此向下运动。不能说物体只凭惯性就会向下落。"},{"title":"读数并区分方向","text":"从 %.3f m 高处下落约需 %.4f s；水平位移为 0 m，向下速度约 %.4f m/s。"%[v.height,v.duration,v.velocity]}]
 	result_pending.conclusion = "惯性解释物体保持原有水平运动状态；重力解释它在失去支持后向下运动。"
-
-func _rolling_learning() -> void:
-	var v = result_pending.values
-	result_pending.assumptions = "仅模拟滚摆从静止释放后的下降段。两股轻绳的合张力记为 T，绳与半径 r 的轮轴不打滑；轮轴视为刚体，转动惯量 I 为给定值，无轴摩擦和空气阻力。约束 a=rα 决定张力，Godot 分别以重力减张力和张力力矩积分平移与转动；不模拟底端反卷上升。"
-	result_pending.readings = [{"label":"下降距离","value":v.distance,"unit":"m"},{"label":"平动速度","value":v.velocity,"unit":"m/s"},{"label":"平动动能","value":v.translationEnergy,"unit":"J"},{"label":"转动动能","value":v.rotationEnergy,"unit":"J"}]
-	result_pending.process = [{"title":"记录重力势能的减少","text":"m=%.3f kg，下降 h≈%.4f m。重力势能减少 mgh≈%.3f×9.8×%.4f=%.6f J。"%[v.mass,v.distance,v.mass,v.distance,v.releasedPotential]},{"title":"区分两种运动","text":"轮轴一边下降、一边转动；重力势能同时转化为平动动能和转动动能。不能把全部 mgh 都当作平动动能。"},{"title":"核对能量（拓展）","text":"E平动=mv²/2≈%.6f J；E转动=Iω²/2≈%.6f J，合计约 %.6f J。固定步长积分会产生小量数值误差。"%[v.translationEnergy,v.rotationEnergy,v.translationEnergy+v.rotationEnergy]},{"title":"限定模型的适用范围","text":"本图只演示下降。实际滚摆在最低点附近重新卷绳并上升，需要另行处理绳的约束变化，不能由本段动画推断。"}]
-	result_pending.conclusion = "滚摆下降时，重力势能转化为平动和转动的动能；忽略阻力时机械能近似守恒。"
 
 func _impact_learning() -> void:
 	var v = result_pending.values

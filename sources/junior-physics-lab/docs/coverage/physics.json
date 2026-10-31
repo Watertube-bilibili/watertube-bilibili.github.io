@@ -3330,10 +3330,10 @@
       "implementationRelation": "primary",
       "book": "八下",
       "implementationReview": {
-        "status": "needs-implementation",
-        "sceneBehavior": "滚摆的下降位移、转角、平动能与转动能来自刚体及绕线约束。",
+        "status": "verified-in-isolation-and-browser-smoke-checked",
+        "sceneBehavior": "同一实际刚体分段积分下降和反卷上升；最低点依据无滑移捕获冲量切换绕线侧并记损失，最高点之后自然再次下降。",
         "limitations": [
-          "已实现下降，但尚未模拟反卷上升；这部分不能计为完整往返滚摆实验。"
+          "收紧为瞬时冲量近似，适用I≥mr²；未模拟绳的有限弹性、冲击张力波形、空气阻力与轴摩擦，不等于完整实物滚摆验收。"
         ]
       }
     },
@@ -5394,7 +5394,6 @@
     "phy-shoe-pressure",
     "phy-bottle-barometer",
     "phy-blow-strip",
-    "phy-micro-hydrometer",
-    "phy-rolling-pendulum"
+    "phy-micro-hydrometer"
   ]
 }

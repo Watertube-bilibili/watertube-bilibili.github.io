@@ -43,7 +43,11 @@ func run_tests() -> void:
 				check(absf(v.duration/sqrt(2.0*v.height/9.8)-1.0)<.012,"Boundary free-fall time")
 			"rollingPendulum":
 				check(absf(v.constraintError)<.0002,"Boundary no-slip position constraint")
-				check(absf((v.rotationEnergy+v.translationEnergy)/v.releasedPotential-1.0)<.015,"Boundary rolling energy accounting")
+				if v.valid:
+					var d=v.descent
+					check(absf((d.rotationEnergy+d.translationEnergy)/d.releasedPotential-1.0)<.015,"Boundary descent energy accounting")
+				else:
+					check(result.trajectory.is_empty() and v.inertia<v.mass*v.radius*v.radius,"Invalid rewind domain produces no invented trajectory")
 			"kineticImpact":
 				var theoretical_distance = v.collisionVelocity*v.collisionVelocity/(2.0*v.friction*9.8)
 				check(v.slideDistance>0.0,"Tiny collision still produces measurable positive displacement")
