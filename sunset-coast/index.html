@@ -8,8 +8,8 @@
 <link rel="icon" type="image/png" sizes="32x32" href="./neon-2-0-icon.png?v=2fd8fed1b8cc">
 <link rel="icon" type="image/svg+xml" sizes="any" href="./neon-2-0-icon.svg?v=648e15bd548e">
 <link rel="apple-touch-icon" sizes="180x180" href="./neon-2-0-icon-apple.png?v=aa1e159903ad">
-<title>SUNRISE COAST · 日出 Rapier 更新 · 2026.10.31</title>
-  <meta name="description" content="SUNRISE COAST 日出 Rapier 更新 · 2026.10.31。海岸与弧湾分别保存完整进度，旧版与旧存档保留。">
+<title>SUNRISE COAST · 原日出城市与新地图入口</title>
+  <meta name="description" content="SUNRISE COAST：继续原日出城市已有进度，或单独体验新地图 Rapier 迁移验证版；不是原城市全功能替换。">
   <link rel="stylesheet" href="./beta-launcher.css?v=e41e31cc67ed">
 <style>
 /* Canonical-site notice: normal document flow, no gameplay overlay. */
@@ -26,33 +26,43 @@
   <main>
     <header class="entry-header">
       <a class="brand" href="./" aria-label="SUNRISE COAST 首页">SUNRISE <span>COAST</span></a>
-      <span class="version">日出 Rapier 更新 · 2026.10.31</span>
+      <span class="version">原日出城市与新地图入口</span>
     </header>
     <aside class="canonical-notice" aria-label="网站提示"><span class="canonical-notice-icon" aria-hidden="true">!</span><span class="canonical-notice-copy">SUNRISE COAST 官方项目入口：<a class="canonical-notice-link" href="https://watertube-bilibili.github.io/sunset-coast/">https://watertube-bilibili.github.io/sunset-coast/</a></span></aside>
     <div class="entry-layout">
       <section class="entry-overview" aria-labelledby="entry-title">
-        <h1 id="entry-title">同一片海岸，<br>新的旅程。</h1>
-        <p class="intro">从这里进入 ESTUARY 新地图，或继续原来的旧城存档。两个地图分别保存，已有进度不会覆盖。</p>
+        <h1 id="entry-title">回到原来的城市。</h1>
+        <p class="intro">原城市与新海岸、弧湾是不同的世界。请在右侧继续原日出已有进度；新地图并未包含原城市全部地标与玩法。</p>
         <dl class="entry-facts">
-          <div><dt>版本状态</dt><dd>本轮正式更新；后续功能持续开发</dd></div>
-          <div><dt>存档方式</dt><dd>SUNRISE COAST 与霓虹海岸分别保存</dd></div>
+          <div><dt>版本状态</dt><dd>原城市保留；新地图迁移尚未完成</dd></div>
+          <div><dt>存档方式</dt><dd>原城市与两张新地图分别保存</dd></div>
           <div><dt>保存位置</dt><dd>当前浏览器的本地存储</dd></div>
         </dl>
       </section>
       <section class="entry-selection" aria-labelledby="save-title">
-        <section class="estuary-launch" aria-labelledby="estuary-title"><h2 id="estuary-title">日出 · 海岸与弧湾</h2><p>真实沥青与车辆模型、三款摩托、Rocket 手动起降、海岸外卖职业；弧湾可步行探索。各地图独立保存，旧城进度保留，不自动迁移。</p><a class="estuary-primary" href="/sunset-coast/releases/browser-v14-rapier-c110f76f/">进入日出 · 地图与独立存档</a><p class="note">默认使用 Rapier 0.21.0；故障停止，不静默回退。支持保存与刷新继续。飞机、自动特技、结构掉轮、弧湾职业及自动驾驶未开放；不是全部玩法完成版。新地图不导入旧城坐标。</p></section><p class="note">选择页依赖已减少；同范围 JS/MJS/WASM 的 gzip9 估算较 v13 仍增加 1.57%，不代表整游戏更小或手机性能改善。</p><p><a href="/sunset-coast/releases/browser-v13-3aeca5247940/">此前 v13 正式运行器（保留）</a>：与新版使用同一浏览器存档，请先导出备份。</p><h2 id="save-title">继续旧城存档</h2>
-        <p><a href="../sunrise-browser-preview/">此前浏览器测试版（保留）</a><br><small>保留此前入口及其共享进度；本轮正式更新请使用上方日出入口。</small></p>
+        <h2 id="save-title">原完整城市（旧版 / Godot）</h2>
+        <p>原日出海滨、城市街区、港口、高速与高原等内容在这个入口；使用原来的存档，不会转换为新地图坐标。</p>
+        <p class="note">旧运行器仍依赖 Godot，首次下载可能较慢。下方“继续原城市已有进度”只在找到可校验的已有进度时显示；找旧进度请先展开存档列表，不要用“新建”替代。</p>
         <p id="beta-status" role="status" aria-live="polite">正在检查本浏览器的旧城进度…</p>
         <section id="beta-actions" aria-label="选择测试存档">
-          <button id="beta-continue" hidden>继续旧城进度</button>
+          <button id="beta-continue" hidden>继续原城市已有进度</button>
           <button id="beta-copy">复制标准版存档进入</button>
           <button id="beta-new" class="secondary">新建旧城存档</button>
           <a class="cancel" href="../projects.html">返回项目列表</a>
         </section>
         <details id="beta-saved">
-          <summary>查看已有测试存档</summary>
+          <summary>选择原城市已有进度（不新建）</summary>
           <div id="beta-slots"></div>
         </details>
+        <section class="estuary-launch" aria-labelledby="estuary-title" style="margin-top:30px">
+          <h2 id="estuary-title">海岸 ESTUARY / 弧湾 CRESCENT · 新地图 Rapier 验证版</h2>
+          <p>这是另外两张新地图，不是原城市换引擎后的完整版本。当前没有原城市的人流、车流、警察、自动驾驶、原机场与全部职业。</p>
+          <a href="/sunset-coast/releases/browser-v14-rapier-c110f76f/">单独进入新地图 / Rapier 验证版</a>
+          <p class="note">三款摩托、Rocket 手动起降与通用相机等已接入；海岸有外卖，弧湾职业尚未适配。飞机、自动特技、结构掉轮未开放。各地图保留独立进度，不读取或覆盖原城市槽。</p>
+          <p class="note">同范围 JS/MJS/WASM 的 gzip9 估算较 v13 仍增加 1.57%，不代表整游戏更小或手机性能改善。</p>
+          <p><a href="/sunset-coast/releases/browser-v13-3aeca5247940/">此前新地图 v13 运行器（保留）</a>：与新地图 v14 共用浏览器槽；这不是原城市。切换前请导出备份。</p>
+          <p><a href="../sunrise-browser-preview/">此前浏览器测试版（保留）</a>：独立旧入口及其共享进度保留。</p>
+        </section>
       </section>
     </div>
     <footer class="entry-notes" aria-label="测试存档说明">
