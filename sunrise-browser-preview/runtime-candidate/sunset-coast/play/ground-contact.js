@@ -20,6 +20,7 @@ const offsets=radius=>radius>0?[[0,0],[radius,0],[-radius,0],[0,radius],[0,-radi
  * correction. Neither form modifies a visible pose or its matrices. */
 export function getActorFootOffset(person,{posed=false}={}){
  if(!person?.root)return 0;
+ const assetFeet=person.getFootSamples?.({posed});if(assetFeet?.length)return Math.min(...assetFeet.map(p=>p.y));
  if(!posed&&actorFeet.has(person.root))return actorFeet.get(person.root);
  const limbs=person.tail?[...(person.arms??[]),...(person.legs??[])]:person.legs??[];
  const neutral=new Set(limbs),identity=new THREE.Quaternion(),matrix=new THREE.Matrix4(),part=new THREE.Matrix4(),vertex=new THREE.Vector3();let minimum=Infinity;
@@ -39,7 +40,7 @@ export function getActorFootOffset(person,{posed=false}={}){
 export function getActorGroundHeight(person,ground,position=person?.root?.position,{posed=false,clearance=CLEARANCE,yaw=person?.root?.rotation?.y??0}={}){
  if(!person?.root)return ground.heightAt(position.x,position.z)+clearance;
  let state=footQueryState.get(person.root);if(!state){state={posed:[],samples:[],heights:[],matrix:new THREE.Matrix4(),part:new THREE.Matrix4(),identity:new THREE.Quaternion()};footQueryState.set(person.root,state);}
- let points=!posed?neutralFootVertices.get(person.root):null;
+ let points=person.getFootSamples?.({posed})??(!posed?neutralFootVertices.get(person.root):null);
  if(!points){
   points=posed?state.posed:[];let cursor=0;const limbs=person.tail?[...(person.arms??[]),...(person.legs??[])]:person.legs??[],neutral=new Set(limbs),{identity,matrix,part}=state;
   for(const limb of limbs)limb.children?.[1]?.traverse(object=>{

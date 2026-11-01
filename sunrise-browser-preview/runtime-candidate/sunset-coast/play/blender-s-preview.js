@@ -55,9 +55,10 @@ export function updateBlenderSOccupant(game){
  p.root.position.set(pose.position.x,pose.position.y,pose.position.z).applyMatrix4(v.chassis.matrixWorld);
  const local=new THREE.Quaternion().setFromEuler(new THREE.Euler(pose.pitch,pose.yaw,0,'YXZ'));
  p.root.quaternion.copy(v.chassis.getWorldQuaternion(new THREE.Quaternion())).multiply(local);p.root.scale.set(1,1,1);p.root.visible=true;
- // Actual Game cameraMode 1 is first-person. The monolithic torso mesh
- // crosses the close camera view; mask that mesh, not the original character
- // root or limb groups. Preserve hands/legs and restore all prior visibility.
- if(game.cameraMode===1){const nodes=new Set([p.head,p.hair,p.body].filter(Boolean));p.root.traverse(node=>{if(['CharacterHead','CharacterHair','CharacterHairExtra','CharacterHeadwear'].includes(node.name))nodes.add(node);});p.blenderSViewVisibility=[...nodes].map(node=>[node,node.visible]);for(const node of nodes)node.visible=false;}
- for(const [limbs,angles] of [[p.arms??[],pose.arms],[p.legs??[],pose.legs]])limbs.forEach((limb,i)=>{const a=angles[i];if(a)limb.rotation.set(a.x,a.y,a.z);});return true;
+ // The loaded human is one skinned mesh: hide it in first person and restore
+ // its exact visibility on the next view. Do not expose hidden proxy limbs.
+ if(game.cameraMode===1){const nodes=new Set([p.head,p.hair,p.body].filter(Boolean));p.root.traverse(node=>{if(node.isSkinnedMesh||['CharacterHead','CharacterHair','CharacterHairExtra','CharacterHeadwear'].includes(node.name))nodes.add(node);});p.blenderSViewVisibility=[...nodes].map(node=>[node,node.visible]);for(const node of nodes)node.visible=false;}
+ for(const [limbs,angles] of [[p.arms??[],pose.arms],[p.legs??[],pose.legs]])limbs.forEach((limb,i)=>{const a=angles[i];if(a)limb.rotation.set(a.x,a.y,a.z);});
+ const floor=new THREE.Vector3(pose.position.x,pose.floor,pose.position.z).applyMatrix4(v.chassis.matrixWorld).y;
+ p.applyPose?.({...pose,yaw:new THREE.Euler().setFromQuaternion(p.root.quaternion,'YXZ').y,floor});return true;
 }

@@ -12,6 +12,7 @@ export const CHARACTER_ASSETS=Object.freeze([
  {id:'female-worker',gender:'female',outfit:'worker'}
 ]);
 const templates=new Map(),requests=new Map();
+export const CHARACTER_LOAD_TIMEOUT_MS=20000;
 let nextVariant=0;
 const CLIPS=Object.freeze({idle:'Idle_Neutral',walk:'Walk',run:'Run',death:'Death',aim:'Idle_Gun_Pointing',interact:'Interact'});
 const PLAYER_ASSETS=new Map([[0xddd6b4,'male-hoodie'],[0x8a8e9b,'female-casual'],[0x476c74,'male-worker']]);
@@ -28,11 +29,25 @@ export function registerCharacterTemplate(id,gltf){
  if(meshes!==1)throw new Error('CHARACTER_MESH_BUDGET_EXCEEDED');
  const template={scene:gltf.scene,clips};templates.set(id,template);return template;
 }
-export function loadCharacterAsset(id){
+export function loadCharacterAsset(id,{timeoutMs=CHARACTER_LOAD_TIMEOUT_MS}={}){
  if(templates.has(id))return Promise.resolve(templates.get(id));
  if(!CHARACTER_ASSETS.some(a=>a.id===id))return Promise.reject(new Error('UNKNOWN_CHARACTER_ASSET'));
- if(!requests.has(id))requests.set(id,new GLTFLoader().loadAsync(new URL(`./assets/characters/${id}.glb`,import.meta.url).href)
-  .then(gltf=>registerCharacterTemplate(id,gltf)).catch(error=>{requests.delete(id);throw error;}));
+ if(!requests.has(id)){
+  const controller=new AbortController();let timer,request,rejectDeadline;
+  const deadline=new Promise((_,reject)=>{rejectDeadline=reject;});
+  const work=Promise.resolve().then(async()=>{
+   timer=setTimeout(()=>{const error=new Error('CHARACTER_LOAD_TIMEOUT');controller.abort(error);rejectDeadline(error);},timeoutMs);
+   const url=new URL(`./assets/characters/${id}.glb`,import.meta.url),response=await fetch(url.href,{signal:controller.signal});
+   if(controller.signal.aborted)throw controller.signal.reason;
+   if(!response.ok)throw Error('CHARACTER_HTTP_'+response.status);
+   const data=await response.arrayBuffer();if(controller.signal.aborted)throw controller.signal.reason;
+   const gltf=await new GLTFLoader().parseAsync(data,new URL('.',url).href);
+   if(controller.signal.aborted)throw controller.signal.reason;
+   return registerCharacterTemplate(id,gltf);
+  });
+  request=Promise.race([work,deadline]).finally(()=>{clearTimeout(timer);if(requests.get(id)===request)requests.delete(id);});
+  requests.set(id,request);
+ }
  return requests.get(id);
 }
 export function cloneCharacterSkeleton(source){
@@ -54,6 +69,7 @@ export function attachCharacterAsset(actor,{color,assetId,autoLoad=true}={}){
  let disposed=false,model=null,mesh=null,mixer=null,template=null,current=null,forced=null,lastTime=null,lastSample=-Infinity,poseMode=false;
  let headBone=null,restFeet=null,pendingPose=null,entryStart=null;const entryRig={};const footPoints=Array.from({length:8},()=>new THREE.Vector3()),v=new THREE.Vector3();
  const bones={},bindPose={},aimPose={};
+ function assetState(state,error){root.userData.characterAssetState=state;if(error)root.userData.characterAssetError=String(error.message??error);else delete root.userData.characterAssetError;root.dispatchEvent({type:'characterstate',assetId:id,state});}
  function select(state,phase=0){
   if(!mixer)return false;const name=CLIPS[state]??CLIPS.idle,clip=template.clips.get(name)??template.clips.get(CLIPS.idle);
   if(current?.clip===clip)return true;
@@ -120,7 +136,8 @@ export function attachCharacterAsset(actor,{color,assetId,autoLoad=true}={}){
  actor.applyPose=pose=>{
   pendingPose=pose;
   if(!mixer||disposed)return false;
-  if(!pose){poseMode=false;entryStart=null;current=null;lastSample=-Infinity;return true;}
+  if(!pose){poseMode=false;entryStart=null;current=null;lastSample=-Infinity;root.userData.characterPoseMode='locomotion';return true;}
+  root.userData.characterPoseMode='entry';
   if(!poseMode){
    entryStart=pose.entering!==false&&pose.phase==='approach'?Object.fromEntries(Object.entries(bones).map(([name,bone])=>[name,{position:bone.position.clone(),quaternion:bone.quaternion.clone()}])):null;
   }
@@ -197,16 +214,17 @@ export function attachCharacterAsset(actor,{color,assetId,autoLoad=true}={}){
   placeholderMeshes.forEach(o=>{o.visible=false;o.userData.characterPlaceholder=true;});
   // Hide old hair/cap decorations added by switchCharacter while loading.
   for(const child of root.children)if(child.isMesh&&child!==headProxy)child.visible=false;
-  root.userData.characterAssetState='ready';root.userData.characterDrawCalls=1;root.userData.characterBones=mesh.skeleton.bones.length;
+  root.userData.characterDrawCalls=1;root.userData.characterBones=mesh.skeleton.bones.length;
   select(forced??'idle');mixer.update(0);for(const [name,bone] of Object.entries(bones))bindPose[name]={position:bone.position.clone(),quaternion:bone.quaternion.clone()};root.updateMatrixWorld(true);restFeet=actor.getFootSamples({posed:true}).map(p=>p.clone());
   updateHead();if(pendingPose)actor.applyPose(pendingPose);
-  root.dispatchEvent({type:'characterready',assetId:id});return actor;
+  assetState('ready');root.dispatchEvent({type:'characterready',assetId:id});return actor;
  }
  actor.animate=(time,speed=1)=>{
   if(!mixer){legacyAnimate(time,speed);return;}
   const t=Number.isFinite(time)?time:0,distance=Number(root.userData.characterDistance??0),interval=distance>120?.2:distance>45?1/15:0;
   root.position.y=0; // Public legacy contract: caller adds ground height.
   if(poseMode){poseMode=false;entryStart=null;pendingPose=null;current=null;}
+  root.userData.characterPoseMode='locomotion';
   const locomotion=speed>1.25?'run':speed>.05?'walk':'idle',state=forced==='aim'&&speed>.05?locomotion:forced??locomotion;
   if(current?.state!==state)select(state,t);
   if(lastTime===null){current.action.time=state==='death'?0:t%current.clip.duration;lastTime=t;}
@@ -215,8 +233,8 @@ export function attachCharacterAsset(actor,{color,assetId,autoLoad=true}={}){
   mesh.castShadow=distance<42;
   root.updateMatrixWorld(true);updateHead();
  };
- actor.disposeCharacter=()=>{disposed=true;root.userData.characterAssetState='disposed';mixer?.stopAllAction();if(model)mixer?.uncacheRoot(model);};
- actor.retryCharacterAsset=()=>disposed||root.userData.characterAssetState==='ready'?Promise.resolve(actor):loadCharacterAsset(id).then(install).catch(error=>{if(!disposed){root.userData.characterAssetState='error';root.userData.characterAssetError=String(error.message??error);}return actor;});
+ actor.disposeCharacter=()=>{if(disposed)return;disposed=true;assetState('disposed');mixer?.stopAllAction();if(model){mixer?.uncacheRoot(model);const owned=new Set();model.traverse(o=>{if(o.isSkinnedMesh)owned.add(o.skeleton);});for(const skeleton of owned)skeleton.dispose();}};
+ actor.retryCharacterAsset=()=>{if(disposed||root.userData.characterAssetState==='ready')return Promise.resolve(actor);assetState('loading');return actor.assetReady=loadCharacterAsset(id).then(install).catch(error=>{if(!disposed)assetState('error',error);return actor;});};
  if(templates.has(id)){install(templates.get(id));actor.assetReady=Promise.resolve(actor);}
  else if(autoLoad&&typeof window!=='undefined')actor.assetReady=actor.retryCharacterAsset();
  else actor.assetReady=Promise.resolve(actor);

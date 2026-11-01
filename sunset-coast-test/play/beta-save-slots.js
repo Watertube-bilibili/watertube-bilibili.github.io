@@ -123,25 +123,18 @@ export function selectBetaSlot(storage,entry){
  return entry;
 }
 function randomSlot(crypto){if(!crypto?.randomUUID)fail('crypto-unavailable','此浏览器无法创建独立存档编号，请更新浏览器。');return's-'+crypto.randomUUID();}
-export async function createBetaSlot(storage,{mode,sourceKey,sourceRaw,validateSave,locks=globalThis.navigator?.locks,crypto=globalThis.crypto,idFactory=()=>randomSlot(crypto),now=()=>new Date().toISOString()}={}){
+export async function createBetaSlot(storage,{mode,validateSave,locks=globalThis.navigator?.locks,crypto=globalThis.crypto,idFactory=()=>randomSlot(crypto),now=()=>new Date().toISOString()}={}){
  if(mode==='copy')fail('test-isolation','此隔离测试入口只使用新测试存档，不读取正式版存档。');
- if(!['copy','fresh'].includes(mode))fail('invalid-mode','请选择复制标准版存档、新存档进入，或取消。');
+ if(mode!=='fresh')fail('invalid-mode','请选择新建测试存档，或取消。');
  if(!locks?.request)fail('locks-unavailable','此浏览器不支持安全的跨标签页存档锁，请更新浏览器后重试。原数据未修改。');
  return locks.request(BETA_LOCK,async()=>{
-  let original=null,raw,key=null;
-  if(mode==='copy'){original=resolveStandardSave(storage,sourceKey);key=original.key;raw=sourceRaw??original.raw;if(raw===null)fail('missing-source','还没有标准版存档，请先在标准版点“存档”，或选择新存档进入。');}
-  else raw=freshSave(now());
+  const raw=freshSave(now());
   validateBetaRaw(raw,validateSave);
-  const body=backupBody(mode,raw,key),hash=await checksum(JSON.stringify(body),crypto),operationToken='sha256-'+(mode==='copy'?hash:await checksum(hash+idFactory(),crypto));
-  await activeBetaSlot(storage,validateSave,{crypto});
-  const existing=await listBetaSlots(storage,validateSave,{crypto});
-  // Never create a second copy when the previous operation's record is damaged.
-  if(existing.warnings.length)fail('existing-corrupt',existing.warnings.join(' ')+' 请先检查测试版存档，未新建或覆盖。');
-  const previous=existing.entries.find(e=>e.operationToken===operationToken);
-  if(previous)return selectBetaSlot(storage,{...previous,resumed:true});
+  const body=backupBody(mode,raw,null),hash=await checksum(JSON.stringify(body),crypto),operationToken='sha256-'+await checksum(hash+idFactory(),crypto);
+  // A fresh UUID slot is independent of earlier slots. Keep all collision
+  // checks and writes together after the asynchronous checksum work.
   let slot;for(let attempt=0;attempt<32;attempt++){const proposed=idFactory();if(!isBetaSlotId(proposed))fail('invalid-slot','无法创建有效的独立存档编号。');const prefix=BETA_PREFIX+':slot-'+proposed+':';if(!keys(storage).some(k=>k.startsWith(prefix)||k===betaIndexKey(proposed)||k===betaBackupKey(proposed))){slot=proposed;break;}}
   if(!slot)fail('collision','独立存档编号冲突，请重试。');
-  if(original&&get(storage,original.key)!==original.raw)fail('concurrent-change','标准版存档刚刚改变，请再点一次复制。原存档未修改。');
   const record={version:1,slot,mode,createdAt:now(),operationToken,initialChecksum:hash};
   const writes=[[betaBackupKey(slot),JSON.stringify({...body,checksum:hash})],[betaStorageKeys(slot).SAVE_KEY,raw],[betaIndexKey(slot),JSON.stringify(record)]],attempted=[];
   try{for(const [k,v]of writes){if(get(storage,k)!==null)fail('collision','存档编号已使用，未覆盖已有数据。');attempted.push([k,v]);storage.setItem(k,v);if(get(storage,k)!==v)throw Error('write verification');}}

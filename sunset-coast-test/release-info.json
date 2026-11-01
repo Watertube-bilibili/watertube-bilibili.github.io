@@ -3,5 +3,7 @@
   "version": "1.0 Beta",
   "saveNamespace": "sunset-coast-test-2.0-beta",
   "previousProjectPreserved": true,
-  "liveGameplayAcceptance": false
+  "liveGameplayAcceptance": false,
+  "characterUpdate": "2026-11-01-original-rig",
+  "characterLoading": "Original character rigs, work-start deadline, visible failure and manual retry"
 }
