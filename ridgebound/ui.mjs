@@ -12,11 +12,12 @@ export function createUI(actions = {}) {
   function syncInput() {
     const held = name => [...pointers.values()].some(v => v.name === name);
     const has = (...codes) => codes.some(code => keys.has(code));
-    input.throttle = playing && !paused && (has('KeyW','ArrowUp') || held('throttle')) ? 1 : 0;
-    input.reverse = playing && !paused && (has('KeyS','ArrowDown') || held('reverse')) ? 1 : 0;
-    input.steer = playing && !paused ? Number(has('KeyD','ArrowRight') || held('right')) - Number(has('KeyA','ArrowLeft') || held('left')) : 0;
-    input.brake = playing && !paused && (has('Space') || held('brake'));
-    input.reel = playing && !paused && (has('KeyF') || held('reel'));
+    const active = playing && !paused && !document.querySelector('dialog[open]');
+    input.throttle = active && (has('KeyW','ArrowUp') || held('throttle')) ? 1 : 0;
+    input.reverse = active && (has('KeyS','ArrowDown') || held('reverse')) ? 1 : 0;
+    input.steer = active ? Number(has('KeyD','ArrowRight') || held('right')) - Number(has('KeyA','ArrowLeft') || held('left')) : 0;
+    input.brake = active && (has('Space') || held('brake'));
+    input.reel = active && (has('KeyF') || held('reel'));
   }
   function resetInput() {
     keys.clear();
@@ -57,7 +58,7 @@ export function createUI(actions = {}) {
     paused = false;
     resetInput();
   }
-  $('start').addEventListener('click', () => call('start'));
+  $('start').addEventListener('click', () => {if (!$('start').disabled) call('start');});
   $('pause').addEventListener('click', () => {call('pause'); setPaused(true);});
   $('help').addEventListener('click', () => {if (playing) call('pause'); setPaused(true);});
   $('resume').addEventListener('click', closePause);
@@ -73,6 +74,8 @@ export function createUI(actions = {}) {
   $('controller-settings').addEventListener('click',()=>call('controllerSettings'));
   $('dialog-controllers').addEventListener('click',()=>{pauseDialog.close();call('controllerSettings');});
   $('dialog-camera').addEventListener('click',()=>{closePause();call('camera');});
+  $('dialog-photo').addEventListener('click',()=>call('photo'));
+  $('dialog-fullscreen').addEventListener('click',()=>$('fullscreen').click());
   $('repair').addEventListener('click',()=>call('repair'));
   $('garage-button').addEventListener('click', () => call('garage'));
   $('buyTires').addEventListener('click', () => call('buyTires'));
@@ -124,7 +127,7 @@ export function createUI(actions = {}) {
       if(paused) closePause(); else {call('pause'); setPaused(true);}
       return;
     }
-    if (!playing || paused || victoryDialog.open) return;
+    if (!playing || paused || document.querySelector('dialog[open]')) return;
     if (movement.has(event.code) || shortcuts[event.code]) event.preventDefault();
     if (movement.has(event.code)) {keys.add(event.code);syncInput();}
     if (!event.repeat && shortcuts[event.code]) call(shortcuts[event.code]);
@@ -205,7 +208,13 @@ export function createUI(actions = {}) {
   function setDamage(damage={},repairAvailable=false) {
     for(const [key,id]of [['body','body-health'],['tires','tires-health'],['suspension','suspension-health']]){const integrity=Math.max(0,Math.min(100,damage?.[key]??100));$(id).textContent=Math.round(integrity)+'%';$(id).classList.toggle('damaged',integrity<65);}
     $('repair').disabled=!repairAvailable;
-    $('repair').textContent=repairAvailable?'小屋维修 · T':'靠近小屋维修';
+    $('repair').hidden=!repairAvailable;
+    $('repair').textContent='小屋维修 (T)';
   }
-  return {input,update,setDamage,setPlaying,toast,showGarage,updateGarage,showWinchTargets(value){$('anchor-instruction').hidden=!value;},showVictory,setAudio,setPaused,resetInput};
+  function setReady(ready,message) {
+    $('start').disabled=!ready;
+    $('start').setAttribute('aria-busy',String(!ready));
+    if($('loading')){ $('loading').hidden=!!ready; if(message && $('loading').lastChild) $('loading').lastChild.textContent=message; }
+  }
+  return {input,update,setReady,setDamage,setPlaying,toast,showGarage,updateGarage,showWinchTargets(value){$('anchor-instruction').hidden=!value;},showVictory,setAudio,setPaused,resetInput};
 }

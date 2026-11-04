@@ -214,6 +214,8 @@ func _unload_distant() -> void:
 func _make_resources() -> void:
 	_terrain_material = StandardMaterial3D.new()
 	_terrain_material.vertex_color_use_as_albedo = true
+	_terrain_material.vertex_color_is_srgb = true
+	_terrain_material.metallic_specular = 0.0
 	_terrain_material.roughness = 1.0
 	_trunk_material = StandardMaterial3D.new()
 	_trunk_material.albedo_color = Color("655a49") if _region == "forest" else Color("596266")
@@ -222,10 +224,12 @@ func _make_resources() -> void:
 	_foliage_material.vertex_color_use_as_albedo = true
 	_foliage_material.albedo_color = Color("47624b") if _region == "forest" else Color("a8c5c5")
 	_foliage_material.roughness = 1.0
+	_foliage_material.metallic_specular = 0.0
 	_rock_material = StandardMaterial3D.new()
 	_rock_material.vertex_color_use_as_albedo = true
 	_rock_material.albedo_color = Color("8c9384") if _region == "forest" else Color("b7c9d0")
 	_rock_material.roughness = 1.0
+	_rock_material.metallic_specular = 0.0
 	_trunk_mesh = CylinderMesh.new()
 	_trunk_mesh.top_radius = 0.13
 	_trunk_mesh.bottom_radius = 0.2
@@ -270,7 +274,9 @@ func _point(x: float, z: float) -> Vector3:
 
 func _add_triangle(tool: SurfaceTool, a: Vector3, b: Vector3, c: Vector3) -> void:
 	var normal: Vector3 = (b - a).cross(c - a).normalized()
-	for vertex: Vector3 in [a, b, c]:
+	# Godot front faces use clockwise winding. Keep the upward normal,
+	# reverse vertex submission from the cross-product convention.
+	for vertex: Vector3 in [a, c, b]:
 		tool.set_normal(normal)
 		tool.set_color(_surface_color(vertex.x, vertex.z))
 		tool.add_vertex(vertex)

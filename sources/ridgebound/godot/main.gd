@@ -24,6 +24,13 @@ var elapsed=0.0
 var report_clock=0.0
 var blocked=false
 var previous_position=Vector3.ZERO
+var streaming_waiting=false
+var terrain_safety:MeshInstance3D
+var coarse_triangles=0
+var throttle_value=0.0
+var sky_material:ProceduralSkyMaterial
+var quality_clock=0.0
+var contact_shadow:MeshInstance3D
 var target_camera=Vector3.ZERO
 var material_cache={}
 var model_scene=preload("res://assets/ridge-rover.glb")
@@ -46,9 +53,11 @@ func _ready():
 	rpm_needle=vehicle.find_child("RPMNeedle",true,false)
 	camera=Camera3D.new()
 	camera.fov=52
-	camera.far=800
+	camera.far=780
+	camera.near=.06
 	add_child(camera)
 	camera.current=true
+	_make_contact_shadow()
 	cable=MeshInstance3D.new()
 	add_child(cable)
 	cable.material_override=_mat(Color("d8b770"))
@@ -56,25 +65,50 @@ func _ready():
 	_report()
 	if js_enabled:JavaScriptBridge.eval("window.onRidgeReady && window.onRidgeReady();")
 
+func _make_contact_shadow():
+	# A single soft contact patch gives the tires weight without shadow maps.
+	contact_shadow=MeshInstance3D.new()
+	contact_shadow.name="VehicleContactShadow"
+	var plane=PlaneMesh.new()
+	plane.size=Vector2(4.0,6.2)
+	contact_shadow.mesh=plane
+	contact_shadow.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var shader=Shader.new()
+	shader.code="shader_type spatial; render_mode unshaded, blend_mix, depth_draw_never, cull_disabled, shadows_disabled; void fragment(){ vec2 p=(UV-vec2(0.5))*2.0; float fade=1.0-smoothstep(0.3,1.0,length(p)); ALBEDO=vec3(0.10,0.14,0.09); ALPHA=fade*0.43; }"
+	var material=ShaderMaterial.new()
+	material.shader=shader
+	contact_shadow.material_override=material
+	add_child(contact_shadow)
+
 func _setup_environment():
 	environment=WorldEnvironment.new()
 	var env=Environment.new()
-	env.background_mode=Environment.BG_COLOR
-	env.background_color=Color("bccdc8")
+	env.background_mode=Environment.BG_SKY
+	sky_material=ProceduralSkyMaterial.new()
+	sky_material.sky_top_color=Color("9bafa8")
+	sky_material.sky_horizon_color=Color("d9c9ad")
+	sky_material.ground_bottom_color=Color("718065")
+	sky_material.ground_horizon_color=Color("d9c9ad")
+	sky_material.sun_angle_max=8.0
+	var sky=Sky.new()
+	sky.sky_material=sky_material
+	env.sky=sky
 	env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color=Color("d5dfd1")
-	env.ambient_light_energy=.65
-	env.tonemap_mode=Environment.TONE_MAPPER_FILMIC
+	env.ambient_light_energy=.40
+	env.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	env.fog_enabled=true
 	env.fog_light_color=Color("c8d3c5")
-	env.fog_density=.0065
+	env.fog_density=.007
 	environment.environment=env
 	add_child(environment)
 	sun=DirectionalLight3D.new()
 	sun.light_color=Color("fff1d5")
-	sun.light_energy=1.65
+	sun.light_energy=.78
 	sun.rotation_degrees=Vector3(-48,-36,0)
 	sun.shadow_enabled=false
+	sun.directional_shadow_mode=DirectionalLight3D.SHADOW_ORTHOGONAL
+	sun.directional_shadow_max_distance=48.0
 	add_child(sun)
 
 func _reset_world(region:String,snow_tires:bool,progress:int):
@@ -83,8 +117,10 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	if progress>0 and progress<4:simulation.recover(state)
 	camera_mode=0
 	orbit=0
-	chunks.setup(region)
-	if scenery:scenery.queue_free()
+	chunks.setup(region,Vector3(state.x,state.y,state.z))
+	if scenery:
+		scenery.hide()
+		scenery.queue_free()
 	scenery=Node3D.new()
 	add_child(scenery)
 	anchors.clear()
@@ -92,7 +128,10 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	_build_scenery(region)
 	var snowy=region=="snow"
 	environment.environment.background_color=Color("b9c7dd") if snowy else Color("c7d5c8")
-	environment.environment.fog_light_color=Color("c2cce0") if snowy else Color("c4d0bd")
+	environment.environment.fog_light_color=Color("c2cce0") if snowy else Color("c1c6aa")
+	sky_material.sky_top_color=Color("9bafc5") if snowy else Color("9bafa8")
+	sky_material.sky_horizon_color=Color("d1dce2") if snowy else Color("d9c9ad")
+	sky_material.ground_horizon_color=sky_material.sky_horizon_color
 	environment.environment.ambient_light_color=Color("d0d8f1") if snowy else Color("d5dfd1")
 	sun.light_color=Color("e9f0ff") if snowy else Color("fff1d5")
 	vehicle.position=Vector3(state.x,state.y,state.z)
@@ -105,6 +144,7 @@ func _mat(color:Color,roughness:float=.85)->StandardMaterial3D:
 	var material=StandardMaterial3D.new()
 	material.albedo_color=color
 	material.roughness=roughness
+	material.metallic_specular=.15
 	material_cache[key]=material
 	return material
 
@@ -132,6 +172,7 @@ func _cone(parent:Node3D,position_:Vector3,radius:float,height:float,color:Color
 	return node
 
 func _build_scenery(region:String):
+	_build_terrain_safety(region)
 	var snowy=region=="snow"
 	var rng=RandomNumberGenerator.new()
 	rng.seed=6731
@@ -205,15 +246,57 @@ func _build_scenery(region:String):
 	water.position=Vector3(-55,.81,100)
 	scenery.add_child(water)
 
+func _build_terrain_safety(region:String):
+	# One inexpensive, always-resident silhouette under the streamed fine terrain.
+	# It is visual only: driving remains gated by ChunkTerrain.is_ready_at().
+	var tool=SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var snowy=region=="snow"
+	coarse_triangles=0
+	for z0 in range(-192,641,16):
+		for x0 in range(-288,289,16):
+			var points=[]
+			for offset in [Vector2(0,0),Vector2(16,0),Vector2(0,16),Vector2(16,16)]:
+				var x=float(x0)+offset.x
+				var z=float(z0)+offset.y
+				points.append(Vector3(x,TerrainMath.height_at(x,z,region)-3.4,z))
+			for triangle in [[0,2,1],[1,2,3]]:
+				var normal=(points[triangle[1]]-points[triangle[0]]).cross(points[triangle[2]]-points[triangle[0]]).normalized()
+				for index in [triangle[0],triangle[2],triangle[1]]:
+					var point=points[index]
+					var variation=sin(point.x*.051+point.z*.039)*.035
+					tool.set_color((Color("c5d5d9") if snowy else Color("a1ac7c")).lightened(variation))
+					tool.set_normal(normal)
+					tool.add_vertex(point)
+				coarse_triangles+=1
+	var material=StandardMaterial3D.new()
+	material.vertex_color_use_as_albedo=true
+	material.vertex_color_is_srgb=true
+	material.metallic_specular=0.0
+	material.roughness=1.0
+	tool.set_material(material)
+	terrain_safety=MeshInstance3D.new()
+	terrain_safety.name="ResidentTerrainSilhouette"
+	terrain_safety.mesh=tool.commit()
+	terrain_safety.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	scenery.add_child(terrain_safety)
+
+func _can_repair()->bool:
+	for cp in checkpoints:
+		if Vector2(state.x-cp.x-10,state.z-cp.z).length()<16.0:
+			return true
+	return false
+
 func _process(dt):
 	elapsed+=dt
-	var input={"throttle":0,"reverse":0,"steer":0,"brake":false,"reel":false,"active":false}
+	var input={"throttle":0,"reverse":0,"steer":0,"brake":false,"brakeValue":0.0,"reel":false,"active":false}
 	if js_enabled:
 		var parsed=JSON.parse_string(JavaScriptBridge.eval("JSON.stringify(window.ridgeboundInput || {})"))
 		if parsed is Dictionary:input.merge(parsed,true)
 		var commands=JSON.parse_string(JavaScriptBridge.eval("JSON.stringify((window.ridgeboundCommands || []).splice(0))"))
 		if commands is Array:
-			for command in commands:_command(command)
+			for command in commands:
+				if command is Dictionary:_command(command)
 	else:
 		input.active=true
 		input.throttle=1 if Input.is_physical_key_pressed(KEY_W) else 0
@@ -223,8 +306,26 @@ func _process(dt):
 		playing=true
 	var forward=Vector3(sin(state.yaw),0,cos(state.yaw))
 	chunks.update_stream(Vector3(state.x,state.y,state.z),forward*state.speed,dt)
+	quality_clock+=dt
+	if quality_clock>1.0:
+		quality_clock=0.0
+		var average_ms=float(chunks.get_stats().avgMs)
+		var target_scale=.6 if average_ms>60.0 else (.75 if average_ms>35.0 else .9)
+		get_viewport().scaling_3d_scale=target_scale
+	streaming_waiting=false
 	if input.active:
+		# Start slowing before the fine-terrain boundary; the final position guard
+		# below remains mandatory for a slow device, a cable pull or a large frame.
+		var travel_direction=forward*signf(float(state.speed))
+		var stopping_distance=3.2+state.speed*state.speed/14.0
+		var lookahead=Vector3(state.x,state.y,state.z)+travel_direction*stopping_distance
+		if absf(state.speed)>.35 and not chunks.is_ready_at(lookahead.x,lookahead.z):
+			streaming_waiting=true
+			input.throttle=0.0
+			input.reverse=0.0
+			input.brakeValue=maxf(float(input.brakeValue),.65)
 		previous_position=Vector3(state.x,state.y,state.z)
+		var previous_distance=float(state.distance)
 		var obstacles=chunks.get_obstacles().duplicate()
 		for anchor in anchors:
 			if absf(anchor.z-state.z)<15:obstacles.append(anchor)
@@ -235,10 +336,12 @@ func _process(dt):
 			state.z=previous_position.z
 			state.y=previous_position.y
 			state.speed=0.0
+			state.yVel=0.0
+			state.distance=previous_distance
 	else:blocked=false
-	state.repairAvailable=false
-	for cp in checkpoints:
-		if Vector2(state.x-cp.x-10,state.z-cp.z).length()<16:state.repairAvailable=true
+	state.steer=state.steering
+	state.repairAvailable=_can_repair()
+	throttle_value=float(input.throttle) if input.active else 0.0
 	_update_vehicle(dt)
 	_update_camera(dt)
 	_update_cable()
@@ -254,7 +357,13 @@ func _command(command:Dictionary):
 		"reset":
 			playing=command.get("playing",true)
 			_reset_world(command.get("region","forest"),command.get("snowTires",false),int(command.get("progress",0)))
-		"recover":simulation.recover(state)
+		"recover":
+			simulation.recover(state)
+			if not chunks.is_ready_at(state.x,state.z):
+				chunks.setup(state.region,Vector3(state.x,state.y,state.z))
+			vehicle.position=Vector3(state.x,state.y,state.z)
+			camera.position=vehicle.position+Vector3(0,6,-12)
+			target_camera=vehicle.position+Vector3(0,1,4)
 		"gear":state.lowGear=not state.lowGear
 		"awd":state.awd=not state.awd
 		"tires":state.snowTires=true
@@ -263,9 +372,10 @@ func _command(command:Dictionary):
 				if anchor.id==command.get("id",""):simulation.attach_winch(state,anchor)
 		"detach":simulation.detach_winch(state)
 		"camera":camera_mode=(camera_mode+1)%3;orbit=0
+		"photo":_take_photo()
 		"orbit":orbit+=float(command.get("delta",0))
 		"repair":
-			if state.repairAvailable:simulation.repair(state)
+			if _can_repair():simulation.repair(state)
 
 func _update_vehicle(dt):
 	vehicle.position=Vector3(state.x,state.y,state.z)
@@ -276,11 +386,23 @@ func _update_vehicle(dt):
 	for i in range(wheels.size()):
 		if wheels[i]:
 			wheels[i].rotation.x=float(state.wheelRotation)
-			wheels[i].rotation.y=state.steering*.4 if i<2 else 0
+			wheels[i].rotation.y=-state.steering*.4 if i<2 else 0
 			if state.has("wheelHeights"):wheels[i].position.y=state.wheelHeights[i]-state.y
-	if steering:steering.rotation.z=-state.steering*2.5
-	if speed_needle:speed_needle.rotation.z=-absf(state.speed)*.22
-	if rpm_needle:rpm_needle.rotation.z=-absf(state.speed)*.16-.15
+	# Blender local Z becomes local Y in the exported glTF coordinate system.
+	if steering:steering.rotation.y=state.steering*2.5
+	if speed_needle:speed_needle.rotation.y=-absf(state.speed)*.22
+	if rpm_needle:rpm_needle.rotation.y=-absf(state.speed)*.16-.15-throttle_value*.65
+	if contact_shadow:
+		var x=float(state.x)
+		var z=float(state.z)
+		var fx=sin(state.yaw)
+		var fz=cos(state.yaw)
+		var front=TerrainMath.height_at(x+fx,z+fz,state.region)
+		var back=TerrainMath.height_at(x-fx,z-fz,state.region)
+		var left=TerrainMath.height_at(x-fz,z+fx,state.region)
+		var right=TerrainMath.height_at(x+fz,z-fx,state.region)
+		contact_shadow.position=Vector3(x,TerrainMath.height_at(x,z,state.region)+.16,z)
+		contact_shadow.rotation=Vector3(-atan((front-back)*.5),state.yaw,atan((right-left)*.5))
 
 func _update_camera(dt):
 	var base=vehicle.position
@@ -326,12 +448,23 @@ func _update_cable():
 	geometry.surface_end()
 	cable.mesh=geometry
 
-func _report():
+func _take_photo():
 	if not js_enabled:return
+	await RenderingServer.frame_post_draw
+	var image=get_viewport().get_texture().get_image()
+	if image==null:return
+	var data_url="data:image/png;base64,"+Marshalls.raw_to_base64(image.save_png_to_buffer())
+	JavaScriptBridge.eval("window.onRidgePhoto && window.onRidgePhoto("+JSON.stringify(data_url)+");")
+
+func get_snapshot()->Dictionary:
 	var report=state.duplicate(true)
+	report["steer"]=state.steering
 	report["cameraMode"]=camera_mode
 	report["streaming"]=chunks.get_stats()
-	report["blocked"]=blocked
+	report["blocked"]=blocked or streaming_waiting
+	report["coarseTriangles"]=coarse_triangles
+	report["renderScale"]=get_viewport().scaling_3d_scale
+	report["playing"]=playing
 	var visible_anchors=[]
 	for anchor in anchors:
 		var distance=Vector2(anchor.x-state.x,anchor.z-state.z).length()
@@ -345,4 +478,9 @@ func _report():
 			a["visible"]=not camera.is_position_behind(point)
 			visible_anchors.append(a)
 	report["anchors"]=visible_anchors
+	return report
+
+func _report():
+	if not js_enabled:return
+	var report=get_snapshot()
 	JavaScriptBridge.eval("window.onRidgeState && window.onRidgeState("+JSON.stringify(report)+");")

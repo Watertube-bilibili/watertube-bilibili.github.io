@@ -151,7 +151,10 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 	var grip: float = (1.0 if state.awd else 0.62) * terrain_grip * tire_grip
 	var drive: float = throttle - reverse
 	var direction_brake: bool = (drive < 0.0 and state.speed > 0.3) or (drive > 0.0 and state.speed < -0.3)
-	var braking: bool = bool(input.get("brake", false)) or direction_brake or (throttle > 0.0 and reverse > 0.0)
+	var brake_value: float = clampf(float(input.get("brakeValue", 0.0)), 0.0, 1.0)
+	if bool(input.get("brake", false)) or direction_brake or (throttle > 0.0 and reverse > 0.0):
+		brake_value = 1.0
+	var braking: bool = brake_value > 0.01
 	if braking:
 		drive = 0.0
 	var terminal: float = max_speed * 0.54 if drive < 0.0 else max_speed
@@ -164,7 +167,7 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 		state.speed = 0.0
 		acceleration = 0.0
 	else:
-		var friction: float = rolling + (17.0 if braking else 0.0)
+		var friction: float = rolling + 17.0 * brake_value
 		if absf(state.speed) < friction * dt and absf(acceleration) < friction:
 			state.speed = 0.0
 		else:
@@ -175,7 +178,8 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 		state.speed = 0.0
 	if not is_zero_approx(drive) and absf(state.speed) < 0.06 and signf(state.speed) != signf(drive) and absf(slope_force) < torque + rolling:
 		state.speed = 0.0
-	var steer_rate: float = state.steering * winter_grip * steering_health * state.speed / 3.35 * (0.82 / (1.0 + absf(state.speed) * 0.08))
+	# In this +Z-forward, Y-up world, screen-right is world -X.
+	var steer_rate: float = -state.steering * winter_grip * steering_health * state.speed / 3.35 * (0.82 / (1.0 + absf(state.speed) * 0.08))
 	state.yaw += steer_rate * dt
 	var forward_x: float = sin(state.yaw)
 	var forward_z: float = cos(state.yaw)

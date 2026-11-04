@@ -18,6 +18,15 @@ func _initialize() -> void:
 	check(s.z > 5.0 and s.speed > 2.0, "forward motion")
 	advance(s, {"brake": true}, 1.0)
 	check(absf(s.speed) < 0.1, "braking")
+	# +Z is forward, so screen-right from the trailing camera is world -X.
+	var right_turn: Dictionary = physics.create_state()
+	right_turn.yaw = 0.0
+	advance(right_turn, {"throttle": 1.0, "steer": 1.0}, 3.0)
+	check(right_turn.yaw < 0.0 and right_turn.x < 0.0, "right input turns toward screen-right with +Z forward")
+	var left_turn: Dictionary = physics.create_state()
+	left_turn.yaw = 0.0
+	advance(left_turn, {"throttle": 1.0, "steer": -1.0}, 3.0)
+	check(left_turn.yaw > 0.0 and left_turn.x > 0.0, "left input turns toward screen-left with +Z forward")
 	var anchor: Dictionary = {"x": s.x + 3.0, "z": s.z + 18.0}
 	check(physics.attach_winch(s, anchor), "winch attaches")
 	var before: float = Vector2(anchor.x - s.x, anchor.z - s.z).length()
@@ -50,7 +59,7 @@ func _initialize() -> void:
 			var aim_z: float = drive.z + 5.0
 			var target: float = atan2(Terrain.route_x(aim_z) - drive.x, aim_z - drive.z)
 			var difference: float = atan2(sin(target - drive.yaw), cos(target - drive.yaw))
-			physics.step(drive, {"throttle": 1.0, "steer": clampf(difference * 2.0, -1.0, 1.0)}, 1.0 / 60.0)
+			physics.step(drive, {"throttle": 1.0, "steer": clampf(-difference * 2.0, -1.0, 1.0)}, 1.0 / 60.0)
 		check(drive.completed, region + " complete expedition")
 		check(is_finite(drive.y) and is_finite(drive.pitch) and is_finite(drive.roll), region + " suspension stays finite")
 	var crashed: Dictionary = physics.create_state()
