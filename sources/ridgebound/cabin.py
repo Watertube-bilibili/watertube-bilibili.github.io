@@ -1,5 +1,9 @@
-"""Original Ridgebound cockpit, built in Blender. Units map game (x,y,z) to (x,-z,y).
-SteeringWheel/SpeedNeedle/RPMNeedle are animatable local-Z pivots under fixed mounts.
+"""Original LEFT HAND DRIVE Ridgebound cockpit, built in Blender.
+
+The vehicle faces game +Z, so screen-left is game +X from the driver seat.
+Cabin authoring positions are reflected into that left-hand-drive layout without
+negative mesh scales; text glyphs and face winding remain unchanged.
+SteeringWheel/SpeedNeedle/RPMNeedle are animatable pivots under fixed mounts.
 """
 import bpy
 import math
@@ -9,7 +13,9 @@ from mathutils import Matrix
 def add_cabin(bodyParent, materials):
     m = materials
     def game(p):
-        return (p[0], -p[2], p[1])
+        # Reposition cabin parts across X only. This does not mirror their mesh data,
+        # preserving readable gauge text, normals and positive object scales.
+        return (-p[0], -p[2], p[1])
     def finish(obj, name, material, parent=bodyParent):
         obj.name = name
         obj.parent = parent
@@ -118,7 +124,7 @@ def add_cabin(bodyParent, materials):
             xx=center+math.sin(a)*rr
             yy=cy+math.cos(a)*rr
             tick=cube(name+' tick',(xx,yy,cz-.025),(.010,.019 if i%2==0 else .011,.004),m['cream'])
-            tick.rotation_euler[1]=-a
+            tick.rotation_euler[1]=a
         for i in range(0,7,2):
             a=math.radians(-130+260*i/6)
             label(name+' numeral '+str(i),str(round(max_value*i/6)),(center+math.sin(a)*.082,cy+math.cos(a)*.082,cz-.030),.025)
@@ -187,4 +193,4 @@ def add_cabin(bodyParent, materials):
     cube('Rear view mirror glass',(0,1.865,.505),(.30,.093,.006),m['glass'])
     for x in [-.47,.47]:
         cube('Folded sun visor',(x,1.97,.53),(.59,.12,.035),m['cream'],.012)
-    return {'steering':wheel, 'driver_camera':(-.47,1.58,-.12), 'steering_axis':'local Z', 'gauge_axis':'local Z'}
+    return {'steering':wheel, 'driver_camera':(.47,1.58,-.45), 'steering_axis':'local Z', 'gauge_axis':'local Z'}

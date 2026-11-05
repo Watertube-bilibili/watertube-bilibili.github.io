@@ -9,3 +9,5 @@
 - 网站与源码只在原GitHub项目，不使用Sites。
 
 最新验证信息见[VALIDATION.md](VALIDATION.md)。重新构建Web后，运行 `python3 sources/ridgebound/scripts/package-windows.py` 更新Windows完整包，防止它与线上引擎版本不一致。
+
+2026-11-05更新：16米地块按地面/树石分层加载；启动仅准备车身脚下地面，障碍物显示与碰撞同步启用。座舱改为左舵，手机绞盘可折叠，悬挂与车内相机减震已调整。`build-web.sh` 会自动运行 `prepare-web.py` 生成压缩资源并修补Godot启动器；手动导出后也必须执行，不能只覆盖原始engine文件。

@@ -6,6 +6,8 @@ export function createUI(actions = {}) {
   const keys = new Set();
   const pointers = new Map();
   let playing = false, paused = false, toastTimer, latestState, lastFocus;
+  let compactWinch = false, winchExpanded = true, suppressedReel = false;
+  const touchLayout = window.matchMedia('(pointer: coarse), (max-width: 900px)');
   const pauseDialog = $('pauseDialog'), victoryDialog = $('victoryDialog'), garageDialog = $('garage');
   let garageState = {coins:0,snowTires:false,snowUnlocked:false,region:'forest'};
   const call = name => actions[name]?.();
@@ -17,9 +19,10 @@ export function createUI(actions = {}) {
     input.reverse = active && (has('KeyS','ArrowDown') || held('reverse')) ? 1 : 0;
     input.steer = active ? Number(has('KeyD','ArrowRight') || held('right')) - Number(has('KeyA','ArrowLeft') || held('left')) : 0;
     input.brake = active && (has('Space') || held('brake'));
-    input.reel = active && (has('KeyF') || held('reel'));
+    input.reel = active && !suppressedReel && (has('KeyF') || held('reel'));
   }
   function resetInput() {
+    suppressedReel = false;
     keys.clear();
     pointers.forEach(({el}) => el.classList.remove('held'));
     pointers.clear();
@@ -58,6 +61,43 @@ export function createUI(actions = {}) {
     paused = false;
     resetInput();
   }
+  function releaseReel() {
+    if (keys.has('KeyF')) suppressedReel = true;
+    keys.delete('KeyF');
+    for (const [id,held] of [...pointers]) {
+      if (held.name !== 'reel') continue;
+      pointers.delete(id);
+      held.el.classList.remove('held');
+      try { if (held.el.hasPointerCapture(id)) held.el.releasePointerCapture(id); } catch {}
+    }
+    syncInput();
+  }
+  function renderWinchLayout() {
+    document.body.classList.toggle('compact-winch',compactWinch);
+    document.body.classList.toggle('winch-expanded',compactWinch && winchExpanded);
+    $('winch-panel').hidden = compactWinch && !winchExpanded;
+    $('winch-toggle').hidden = !compactWinch;
+    $('winch-close').hidden = !compactWinch;
+    $('winch-toggle').setAttribute('aria-expanded',String(winchExpanded));
+    $('winch-toggle').setAttribute('aria-label',winchExpanded?'收起绞盘控制':'展开绞盘控制');
+  }
+  function setWinchExpanded(value) {
+    winchExpanded = value;
+    if (!value) releaseReel();
+    renderWinchLayout();
+  }
+  function syncWinchLayout(cameraMode) {
+    const camera = Number(cameraMode) || 0;
+    document.body.dataset.camera = String(camera);
+    const nextCompact = camera === 2 && touchLayout.matches;
+    if (nextCompact && !compactWinch) {winchExpanded = false; releaseReel();}
+    if (!nextCompact) winchExpanded = true;
+    compactWinch = nextCompact;
+    renderWinchLayout();
+  }
+  touchLayout.addEventListener('change',()=>syncWinchLayout(latestState?.cameraMode));
+  $('winch-toggle').addEventListener('click',()=>setWinchExpanded(!winchExpanded));
+  $('winch-close').addEventListener('click',()=>{setWinchExpanded(false);$('winch-toggle').focus({preventScroll:true});});
   $('start').addEventListener('click', () => {if (!$('start').disabled) call('start');});
   $('pause').addEventListener('click', () => {call('pause'); setPaused(true);});
   $('help').addEventListener('click', () => {if (playing) call('pause'); setPaused(true);});
@@ -129,10 +169,10 @@ export function createUI(actions = {}) {
     }
     if (!playing || paused || document.querySelector('dialog[open]')) return;
     if (movement.has(event.code) || shortcuts[event.code]) event.preventDefault();
-    if (movement.has(event.code)) {keys.add(event.code);syncInput();}
+    if (movement.has(event.code) && !(event.code === 'KeyF' && suppressedReel)) {keys.add(event.code);syncInput();}
     if (!event.repeat && shortcuts[event.code]) call(shortcuts[event.code]);
   });
-  window.addEventListener('keyup', event => {keys.delete(event.code);syncInput();});
+  window.addEventListener('keyup', event => {keys.delete(event.code);if(event.code==='KeyF')suppressedReel=false;syncInput();});
   window.addEventListener('blur', resetInput);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {resetInput();if(playing && !paused && !victoryDialog.open){call('pause');setPaused(true);}}
@@ -140,6 +180,7 @@ export function createUI(actions = {}) {
   const surfaces = {trail:'林间土路',mud:'泥泞路段',water:'浅水',grass:'山野草地',rock:'岩石坡面',snow:'积雪路面',ice:'冰面'};
   function update(state, extra = {}) {
     latestState = state;
+    syncWinchLayout(state.cameraMode);
     const kmh = Math.round(Math.abs(state.speed || 0) * 3.6);
     $('speed').textContent = String(kmh).padStart(2,'0');
     setDamage(state.damage,state.repairAvailable);
@@ -161,6 +202,8 @@ export function createUI(actions = {}) {
     $('heading').textContent = ['N','NE','E','SE','S','SW','W','NW'][Math.round(yaw/45)%8];
     $('mission-hint').textContent = state.completed ? '自由探索，享受山野' : state.stuck > 3 ? '试试低速挡，或用绞盘借力' : '沿着山路，寻找下一个路标';
     const connected = !!state.winch;
+    $('winch-toggle-status').textContent = connected ? '已连接' : '待命';
+    $('winch-toggle').classList.toggle('connected',connected);
     document.querySelector('.winch-panel').classList.toggle('connected',connected);
     $('winch-status').textContent = connected ? `${Math.max(0,state.winch.length || 0).toFixed(1)} m` : '待命';
     $('winch-action').textContent = connected ? '已连接' : '连接锚点';
@@ -201,8 +244,8 @@ export function createUI(actions = {}) {
     $('snowMap').classList.toggle('locked',!snowUnlocked);
     $('snowMap').classList.toggle('selected',region === 'snow');
     $('forestMap').classList.toggle('selected',region !== 'snow');
-    $('snow-lock').textContent = snowUnlocked ? '积雪 · 冰面 · 高山挑战' : '完成山林路线后解锁';
-    $('garage-note').textContent = snowUnlocked && !snowTires ? '雪线已经开启。建议先装配雪地胎，改善冰雪抓地力。' : snowTires ? '雪地胎已就绪。去探索更高处的风景。' : '每抵达一个路标，获得 60 枚游戏金币。';
+    $('snow-lock').textContent = snowUnlocked ? '已解锁 · 普通胎也可进入' : '完成山林路线后解锁';
+    $('garage-note').textContent = snowUnlocked && !snowTires ? '雪线已解锁，普通胎也可进入。雪地胎可改善冰雪抓地力。' : snowTires ? '雪地胎已就绪。去探索更高处的风景。' : '每抵达一个路标，获得 60 枚游戏金币。';
     document.querySelector('.map-title > span').textContent = region === 'snow' ? '珠峰雪线' : '松风谷';
   }
   function setDamage(damage={},repairAvailable=false) {

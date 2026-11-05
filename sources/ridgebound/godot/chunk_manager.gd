@@ -7,22 +7,25 @@ extends Node3D
 signal streaming_ready
 
 const Terrain = preload("res://terrain_math.gd")
-const CHUNK_SIZE: float = 32.0
-const BUILD_BUDGET_US: int = 8000
+const CHUNK_SIZE: float = 16.0
+const BUILD_BUDGET_US: int = 3000
 const SUPPORT_MARGIN: float = 2.6
-const MAX_RADIUS: int = 3
+const MAX_RADIUS: int = 5
 const SKIRT_DEPTH: float = 5.0
 var _region: String = "forest"
 var _chunks: Dictionary = {}
 var _queue: Array[Vector2i] = []
 var _queued: Dictionary = {}
+var _props_queue: Array[Vector2i] = []
+var _props_queued: Dictionary = {}
+var _props_built_count: int = 0
 var _obstacles: Array = []
 var _obstacles_dirty: bool = true
 var _center: Vector2i = Vector2i(999999, 999999)
 var _player: Vector3 = Vector3.ZERO
 var _velocity: Vector3 = Vector3.ZERO
-var _radius: int = 1
-var _segments: int = 12
+var _radius: int = 2
+var _segments: int = 8
 var _avg_ms: float = 16.7
 var _build_ms: float = 0.0
 var _budget_overruns: int = 0
@@ -31,6 +34,7 @@ var _refresh_time: float = 0.0
 var _mobile: bool = false
 var _initialized: bool = false
 var _built_count: int = 0
+var _startup_chunks: int = 0
 var _terrain_material: StandardMaterial3D
 var _trunk_material: StandardMaterial3D
 var _foliage_material: StandardMaterial3D
@@ -49,26 +53,34 @@ func setup(region: String, initial_position: Vector3 = Vector3.ZERO) -> void:
 	_chunks.clear()
 	_queue.clear()
 	_queued.clear()
+	_props_queue.clear()
+	_props_queued.clear()
+	_props_built_count = 0
 	_obstacles.clear()
 	_obstacles_dirty = true
 	_mobile = OS.has_feature("mobile") or OS.has_feature("web_android") or OS.has_feature("web_ios")
-	_radius = 1
-	_segments = 8 if _mobile else 12
+	_radius = 2
+	_segments = 8
 	_avg_ms = 16.7
 	_adapt_time = 0.0
 	_refresh_time = 0.0
 	_build_ms = 0.0
 	_budget_overruns = 0
 	_built_count = 0
+	_startup_chunks = 0
 	_player = initial_position if initial_position.is_finite() else Vector3(Terrain.route_x(0.0), 0.0, 0.0)
 	_velocity = Vector3.ZERO
 	_center = _key_at(_player.x, _player.z)
 	_make_resources()
-	# This first ring is a loading operation, before a frame can be driven.
-	# A vehicle at a chunk boundary already has ground under all four wheels.
-	for dz: int in range(-1, 2):
-		for dx: int in range(-1, 2):
-			_build_chunk(_center + Vector2i(dx, dz))
+	# Build only the tiles beneath the complete vehicle footprint: one tile in
+	# the interior, two at an edge, four at a corner. The rest is queued below.
+	# The resident coarse horizon is present while these small neighbors stream.
+	var support: Dictionary = {}
+	for offset: Vector2 in [Vector2.ZERO, Vector2(-SUPPORT_MARGIN, -SUPPORT_MARGIN), Vector2(SUPPORT_MARGIN, -SUPPORT_MARGIN), Vector2(-SUPPORT_MARGIN, SUPPORT_MARGIN), Vector2(SUPPORT_MARGIN, SUPPORT_MARGIN)]:
+		support[_key_at(_player.x + offset.x, _player.z + offset.y)] = true
+	for key: Vector2i in support.keys():
+		_build_chunk(key)
+	_startup_chunks = _chunks.size()
 	_initialized = true
 	_refresh_queue()
 	streaming_ready.emit()
@@ -91,7 +103,7 @@ func update_stream(position: Vector3, velocity: Vector3, dt: float) -> void:
 		_refresh_queue()
 	var started: int = Time.get_ticks_usec()
 	# One bounded mesh build per rendered frame. Each chunk is deliberately small;
-	# if a device overruns 8ms, later chunks use fewer terrain subdivisions.
+	# the 3ms target never permits a second build in the same rendered frame.
 	if not _queue.is_empty() and Time.get_ticks_usec() - started < BUILD_BUDGET_US:
 		var key: Vector2i = _queue.pop_front()
 		_queued.erase(key)
@@ -101,6 +113,17 @@ func update_stream(position: Vector3, velocity: Vector3, dt: float) -> void:
 			if _build_ms > float(BUILD_BUDGET_US) / 1000.0:
 				_budget_overruns += 1
 				_segments = 8
+	elif not _props_queue.is_empty():
+		# Terrain always wins. Props get their own later frame and become solid
+		# only in the same operation that makes their meshes visible.
+		var key: Vector2i = _props_queue.pop_front()
+		_props_queued.erase(key)
+		if _chunks.has(key) and not bool(_chunks[key].propsReady):
+			if not _build_props(key):
+				_enqueue_props(key)
+			_build_ms = float(Time.get_ticks_usec() - started) / 1000.0
+			if _build_ms > float(BUILD_BUDGET_US) / 1000.0:
+				_budget_overruns += 1
 	_unload_distant()
 
 func is_ready_at(x: float, z: float) -> bool:
@@ -110,6 +133,29 @@ func is_ready_at(x: float, z: float) -> bool:
 	for offset: Vector2 in [Vector2.ZERO, Vector2(-SUPPORT_MARGIN, -SUPPORT_MARGIN), Vector2(SUPPORT_MARGIN, -SUPPORT_MARGIN), Vector2(-SUPPORT_MARGIN, SUPPORT_MARGIN), Vector2(SUPPORT_MARGIN, SUPPORT_MARGIN)]:
 		if not _chunks.has(_key_at(x + offset.x, z + offset.y)):
 			return false
+	return true
+
+func props_ready_at(x: float, z: float) -> bool:
+	if not _initialized or not is_finite(x) or not is_finite(z):
+		return false
+	var key: Vector2i = _key_at(x, z)
+	return _chunks.has(key) and bool(_chunks[key].propsReady)
+
+func _enqueue_props(key: Vector2i) -> void:
+	if not _props_queued.has(key):
+		_props_queue.append(key)
+		_props_queued[key] = true
+
+func _build_props(key: Vector2i) -> bool:
+	var entry: Dictionary = _chunks[key]
+	var details: Dictionary = _scatter_details(entry.node, key, float(key.x) * CHUNK_SIZE, float(key.y) * CHUNK_SIZE)
+	if bool(details.get("deferred", false)):
+		return false
+	entry.obstacles = details.obstacles
+	entry.objects = int(details.count) + 1
+	entry.propsReady = true
+	_props_built_count += 1
+	_obstacles_dirty = true
 	return true
 
 func get_obstacles() -> Array:
@@ -122,11 +168,17 @@ func get_obstacles() -> Array:
 
 func get_stats() -> Dictionary:
 	var objects: int = 0
+	var props_chunks: int = 0
 	for entry: Dictionary in _chunks.values():
 		objects += int(entry.objects)
+		if bool(entry.propsReady):
+			props_chunks += 1
 	return {
 		"chunks": _chunks.size(), "activeChunks": _chunks.size(),
-		"queued": _queue.size(), "objects": objects, "activeObjects": objects,
+		"chunkSize": CHUNK_SIZE, "startupChunks": _startup_chunks, "buildBudgetMs": float(BUILD_BUDGET_US) / 1000.0,
+		"queued": _queue.size() + _props_queue.size(), "objects": objects, "activeObjects": objects,
+		"groundChunks": _chunks.size(), "groundQueued": _queue.size(),
+		"propsChunks": props_chunks, "propsQueued": _props_queue.size(), "propsBuiltTotal": _props_built_count,
 		"radius": _radius, "avgMs": snappedf(_avg_ms, 0.1),
 		"fps": int(round(1000.0 / maxf(1.0, _avg_ms))),
 		"segments": _segments, "buildMs": snappedf(_build_ms, 0.1),
@@ -140,14 +192,18 @@ func _key_at(x: float, z: float) -> Vector2i:
 func _adapt_quality() -> void:
 	var previous_radius: int = _radius
 	# Hysteresis prevents quality/range oscillation around a frame-time boundary.
-	if _avg_ms > 26.0 and _adapt_time > 1.0:
+	if _avg_ms > 45.0 and _adapt_time > 1.0:
 		_radius = maxi(1, _radius - 1)
 		_segments = 8
 		_adapt_time = 0.0
+	elif _avg_ms > 26.0 and _adapt_time > 1.0:
+		_radius = maxi(2, _radius - 1)
+		_segments = 8
+		_adapt_time = 0.0
 	elif _avg_ms < 19.0 and _adapt_time > 5.0:
-		var ceiling: int = 2 if _mobile else MAX_RADIUS
+		var ceiling: int = 3 if _mobile else MAX_RADIUS
 		_radius = mini(ceiling, _radius + 1)
-		_segments = 8 if _mobile else (16 if _avg_ms < 15.0 and _build_ms < 4.0 else 12)
+		_segments = 12 if not _mobile and _avg_ms < 14.0 and _build_ms < 1.5 else 8
 		_adapt_time = 0.0
 	elif _avg_ms > 21.0:
 		_segments = 8
@@ -163,9 +219,10 @@ func _refresh_queue() -> void:
 	var planar: Vector2 = Vector2(_velocity.x, _velocity.z)
 	if planar.length_squared() < 0.1:
 		planar = Vector2(Terrain.route_x(_player.z + 3.0) - Terrain.route_x(_player.z), 3.0)
+	var ahead_count: int = 3 if planar.length() > 4.0 else 2
 	planar = planar.normalized()
-	# Preload two chunk widths along travel, with a one-chunk side shoulder.
-	for distance: int in range(1, 3):
+	# Preload two or three small chunks along travel, with side shoulders.
+	for distance: int in range(1, ahead_count + 1):
 		var point: Vector2 = (Vector2(_center) + Vector2(0.5, 0.5)) * CHUNK_SIZE + planar * CHUNK_SIZE * float(distance)
 		var ahead: Vector2i = _key_at(point.x, point.y)
 		_enqueue(ahead)
@@ -184,9 +241,12 @@ func _enqueue(key: Vector2i) -> void:
 func _priority(key: Vector2i, direction: Vector2) -> float:
 	var center_offset: Vector2 = Vector2(float(key.x) + 0.5, float(key.y) + 0.5) * CHUNK_SIZE - Vector2(_player.x, _player.z)
 	var distance: float = center_offset.length()
-	# Immediate support wins; after that, favor the forward corridor.
+	# The footprint always wins, then near neighbors, then the forward corridor.
+	var nearest: Vector2 = center_offset.abs() - Vector2.ONE * (CHUNK_SIZE * 0.5)
+	if nearest.x <= SUPPORT_MARGIN and nearest.y <= SUPPORT_MARGIN:
+		return distance - 10000.0
 	if absi(key.x - _center.x) <= 1 and absi(key.y - _center.y) <= 1:
-		return distance - 1000.0
+		return distance - 1000.0 - center_offset.normalized().dot(direction) * CHUNK_SIZE * 0.35
 	return distance - center_offset.normalized().dot(direction) * CHUNK_SIZE * 0.75
 
 func _unload_distant() -> void:
@@ -209,6 +269,8 @@ func _unload_distant() -> void:
 		node.hide()
 		node.queue_free()
 		_chunks.erase(key)
+		_props_queued.erase(key)
+		_props_queue.erase(key)
 		_obstacles_dirty = true
 
 func _make_resources() -> void:
@@ -328,9 +390,9 @@ func _build_chunk(key: Vector2i) -> void:
 	ground.mesh = tool.commit()
 	ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	group.add_child(ground)
-	var details: Dictionary = _scatter_details(group, key, x0, z0)
 	add_child(group)
-	_chunks[key] = {"node": group, "obstacles": details.obstacles, "objects": details.count + 1, "segments": _segments}
+	_chunks[key] = {"node": group, "obstacles": [], "objects": 1, "segments": _segments, "propsReady": false}
+	_enqueue_props(key)
 	_obstacles_dirty = true
 	_built_count += 1
 
@@ -341,7 +403,8 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 	var foliage: Array[Transform3D] = []
 	var stones: Array[Transform3D] = []
 	var obstacles: Array = []
-	for i: int in range(19):
+	# Density follows the 256m² tile area; small chunks must not quadruple trees.
+	for i: int in range(5):
 		var x: float = x0 + rng.randf_range(1.5, CHUNK_SIZE - 1.5)
 		var z: float = z0 + rng.randf_range(1.5, CHUNK_SIZE - 1.5)
 		if absf(x - Terrain.route_x(z)) < 6.0:
@@ -351,7 +414,7 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 			continue
 		var y: float = Terrain.height_at(x, z, _region)
 		var rotation: float = rng.randf_range(0.0, TAU)
-		if i < 14:
+		if i < 4:
 			var height: float = rng.randf_range(3.8, 7.5)
 			var width: float = rng.randf_range(1.0, 1.75)
 			trunks.append(Transform3D(Basis(Vector3.UP, rotation).scaled(Vector3(1.0, height * 0.7, 1.0)), Vector3(x, y + height * 0.35, z)))
@@ -362,6 +425,11 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 			var scale: Vector3 = Vector3(rng.randf_range(0.6, 1.5), rng.randf_range(0.4, 1.1), rng.randf_range(0.7, 1.6))
 			stones.append(Transform3D(Basis(Vector3.UP, rotation).scaled(scale), Vector3(x, y + scale.y * 0.25, z)))
 			obstacles.append({"x": x, "z": z, "r": maxf(scale.x, scale.z) * 0.7})
+	# Never materialize an obstacle around the car. Keep the whole props layer
+	# absent/non-colliding until the driver has left its safe appearance radius.
+	for obstacle: Dictionary in obstacles:
+		if Vector2(float(obstacle.x) - _player.x, float(obstacle.z) - _player.z).length() < float(obstacle.r) + 3.0:
+			return {"deferred": true}
 	_add_multimesh(group, _trunk_mesh, trunks, false)
 	_add_multimesh(group, _foliage_mesh, foliage, true)
 	_add_multimesh(group, _rock_mesh, stones, true)

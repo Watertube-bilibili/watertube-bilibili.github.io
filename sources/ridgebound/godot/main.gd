@@ -15,6 +15,7 @@ var sun:DirectionalLight3D
 var scenery:Node3D
 var cable:MeshInstance3D
 var anchors:Array=[]
+var _anchor_visuals:Dictionary={}
 var checkpoints:Array=[]
 var checkpoint_rings:Array=[]
 var playing=false
@@ -35,10 +36,21 @@ var target_camera=Vector3.ZERO
 var material_cache={}
 var model_scene=preload("res://assets/ridge-rover.glb")
 var js_enabled=false
+# Browser sets this small bootstrap before starting the engine. Native tests may
+# assign the same dictionary before adding the scene to the tree.
+var bootstrap_options:Dictionary={}
+var world_builds:int=0
+var initialization_ms:float=0.0
+var world_build_ms:float=0.0
+var chunks_build_ms:float=0.0
+var scenery_build_ms:float=0.0
+var terrain_safety_meshes:Dictionary={}
+var camera_up=Vector3.UP
 
 func _ready():
+	var initialized_at=Time.get_ticks_usec()
 	js_enabled=OS.has_feature("web")
-	state=simulation.create_state()
+	var bootstrap=_read_bootstrap()
 	checkpoints=TerrainMath.checkpoints()
 	_setup_environment()
 	chunks=ChunkTerrain.new()
@@ -61,9 +73,29 @@ func _ready():
 	cable=MeshInstance3D.new()
 	add_child(cable)
 	cable.material_override=_mat(Color("d8b770"))
-	_reset_world("forest",false,0)
+	_reset_world(bootstrap.region,bootstrap.snowTires,bootstrap.progress)
+	initialization_ms=float(Time.get_ticks_usec()-initialized_at)/1000.0
 	_report()
 	if js_enabled:JavaScriptBridge.eval("window.onRidgeReady && window.onRidgeReady();")
+
+func _normalize_bootstrap(raw:Variant)->Dictionary:
+	var result={"region":"forest","snowTires":false,"progress":0}
+	if not raw is Dictionary:return result
+	result.region="snow" if raw.get("region", "forest")=="snow" else "forest"
+	var equipped=raw.get("snowTires",false)
+	result.snowTires=equipped is bool and equipped
+	var progress=raw.get("progress",0)
+	if (progress is int or progress is float) and is_finite(float(progress)):
+		var checkpoint=int(floor(float(progress)))
+		# A completed expedition starts a fresh trip, matching the browser save UI.
+		result.progress=checkpoint if checkpoint>0 and checkpoint<4 else 0
+	return result
+
+func _read_bootstrap()->Dictionary:
+	var raw:Variant=bootstrap_options
+	if js_enabled:
+		raw=JSON.parse_string(JavaScriptBridge.eval("JSON.stringify(window.ridgeboundBootstrap || {})"))
+	return _normalize_bootstrap(raw)
 
 func _make_contact_shadow():
 	# A single soft contact patch gives the tires weight without shadow maps.
@@ -112,20 +144,27 @@ func _setup_environment():
 	add_child(sun)
 
 func _reset_world(region:String,snow_tires:bool,progress:int):
+	var build_started=Time.get_ticks_usec()
+	world_builds+=1
 	state=simulation.create_state(region,snow_tires)
 	state.checkpoint=clampi(progress,0,3)
 	if progress>0 and progress<4:simulation.recover(state)
 	camera_mode=0
 	orbit=0
+	var chunks_started=Time.get_ticks_usec()
 	chunks.setup(region,Vector3(state.x,state.y,state.z))
+	chunks_build_ms=float(Time.get_ticks_usec()-chunks_started)/1000.0
 	if scenery:
 		scenery.hide()
 		scenery.queue_free()
 	scenery=Node3D.new()
 	add_child(scenery)
 	anchors.clear()
+	_anchor_visuals.clear()
 	checkpoint_rings.clear()
+	var scenery_started=Time.get_ticks_usec()
 	_build_scenery(region)
+	scenery_build_ms=float(Time.get_ticks_usec()-scenery_started)/1000.0
 	var snowy=region=="snow"
 	environment.environment.background_color=Color("b9c7dd") if snowy else Color("c7d5c8")
 	environment.environment.fog_light_color=Color("c2cce0") if snowy else Color("c1c6aa")
@@ -137,6 +176,8 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	vehicle.position=Vector3(state.x,state.y,state.z)
 	camera.position=vehicle.position+Vector3(20,12,-23)
 	target_camera=vehicle.position+Vector3(-10,1,17)
+	camera_up=Vector3.UP
+	world_build_ms=float(Time.get_ticks_usec()-build_started)/1000.0
 
 func _mat(color:Color,roughness:float=.85)->StandardMaterial3D:
 	var key=color.to_html()+str(roughness)
@@ -155,6 +196,7 @@ func _box(parent:Node3D,position_:Vector3,size_:Vector3,color:Color)->MeshInstan
 	node.mesh=geometry
 	node.material_override=_mat(color)
 	node.position=position_
+	node.visibility_range_end=96.0
 	parent.add_child(node)
 	return node
 
@@ -168,6 +210,7 @@ func _cone(parent:Node3D,position_:Vector3,radius:float,height:float,color:Color
 	node.mesh=geometry
 	node.material_override=_mat(color)
 	node.position=position_
+	if height<15.0:node.visibility_range_end=96.0
 	parent.add_child(node)
 	return node
 
@@ -190,10 +233,7 @@ func _build_scenery(region:String):
 			var x=TerrainMath.route_x(z)+side*(7+rng.randf()*2)
 			var y=TerrainMath.height_at(x,z,region)
 			var h=4+rng.randf()*2
-			anchors.append({"id":"anchor-"+str(anchors.size()),"x":x,"y":y+.65,"z":z,"r":.45})
-			_box(scenery,Vector3(x,y+h*.25,z),Vector3(.26,h*.5,.26),Color("675b45"))
-			_cone(scenery,Vector3(x,y+h*.59,z),h*.3,h*.75,Color("718b96") if snowy else Color("3c5e49"))
-			_cone(scenery,Vector3(x,y+h*.85,z),h*.21,h*.56,Color("7b939d") if snowy else Color("4b6c50"))
+			anchors.append({"id":"anchor-"+str(anchors.size()),"x":x,"y":y+.65,"z":z,"r":.45,"height":h})
 	for i in range(checkpoints.size()):
 		var cp=checkpoints[i]
 		var cp_root=Node3D.new()
@@ -230,6 +270,7 @@ func _build_scenery(region:String):
 		label.pixel_size=.006
 		label.position=Vector3(0,2.5,-2.18)
 		label.rotation.y=PI
+		label.visibility_range_end=96.0
 		cabin.add_child(label)
 		_box(cabin,Vector3(0,.12,-3.2),Vector3(5.4,.24,2.5),Color("958a69"))
 	# A small base camp and the blue lake remain as distant navigation landmarks.
@@ -247,39 +288,76 @@ func _build_scenery(region:String):
 	scenery.add_child(water)
 
 func _build_terrain_safety(region:String):
-	# One inexpensive, always-resident silhouette under the streamed fine terrain.
-	# It is visual only: driving remains gated by ChunkTerrain.is_ready_at().
-	var tool=SurfaceTool.new()
-	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var snowy=region=="snow"
-	coarse_triangles=0
-	for z0 in range(-192,641,16):
-		for x0 in range(-288,289,16):
-			var points=[]
-			for offset in [Vector2(0,0),Vector2(16,0),Vector2(0,16),Vector2(16,16)]:
-				var x=float(x0)+offset.x
-				var z=float(z0)+offset.y
-				points.append(Vector3(x,TerrainMath.height_at(x,z,region)-3.4,z))
-			for triangle in [[0,2,1],[1,2,3]]:
-				var normal=(points[triangle[1]]-points[triangle[0]]).cross(points[triangle[2]]-points[triangle[0]]).normalized()
-				for index in [triangle[0],triangle[2],triangle[1]]:
-					var point=points[index]
-					var variation=sin(point.x*.051+point.z*.039)*.035
-					tool.set_color((Color("c5d5d9") if snowy else Color("a1ac7c")).lightened(variation))
-					tool.set_normal(normal)
-					tool.add_vertex(point)
-				coarse_triangles+=1
-	var material=StandardMaterial3D.new()
-	material.vertex_color_use_as_albedo=true
-	material.vertex_color_is_srgb=true
-	material.metallic_specular=0.0
-	material.roughness=1.0
-	tool.set_material(material)
+	# This opaque coarse horizon is required before driving. Cache the two region
+	# meshes and sample each shared grid point once instead of once per triangle.
+	var mesh:ArrayMesh
+	if terrain_safety_meshes.has(region):
+		mesh=terrain_safety_meshes[region]
+	else:
+		var tool=SurfaceTool.new()
+		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+		var snowy=region=="snow"
+		const COLUMNS=37
+		const ROWS=53
+		const STRIDE=COLUMNS+1
+		var points=PackedVector3Array()
+		var colors=PackedColorArray()
+		points.resize((COLUMNS+1)*(ROWS+1))
+		colors.resize(points.size())
+		for row in range(ROWS+1):
+			for column in range(COLUMNS+1):
+				var x=-288.0+column*16.0
+				var z=-192.0+row*16.0
+				var index=row*STRIDE+column
+				points[index]=Vector3(x,TerrainMath.height_at(x,z,region)-3.4,z)
+				var variation=sin(x*.051+z*.039)*.035
+				colors[index]=(Color("c5d5d9") if snowy else Color("a1ac7c")).lightened(variation)
+		for row in range(ROWS):
+			for column in range(COLUMNS):
+				var a=row*STRIDE+column
+				for triangle in [[a,a+STRIDE,a+1],[a+1,a+STRIDE,a+STRIDE+1]]:
+					var normal=(points[triangle[1]]-points[triangle[0]]).cross(points[triangle[2]]-points[triangle[0]]).normalized()
+					for index in [triangle[0],triangle[2],triangle[1]]:
+						tool.set_color(colors[index])
+						tool.set_normal(normal)
+						tool.add_vertex(points[index])
+		var material=StandardMaterial3D.new()
+		material.vertex_color_use_as_albedo=true
+		material.vertex_color_is_srgb=true
+		material.metallic_specular=0.0
+		material.roughness=1.0
+		tool.set_material(material)
+		mesh=tool.commit()
+		terrain_safety_meshes[region]=mesh
+	coarse_triangles=mesh.surface_get_array_len(0)/3
 	terrain_safety=MeshInstance3D.new()
 	terrain_safety.name="ResidentTerrainSilhouette"
-	terrain_safety.mesh=tool.commit()
+	terrain_safety.mesh=mesh
 	terrain_safety.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	scenery.add_child(terrain_safety)
+
+func _update_anchor_layers():
+	var snowy=state.region=="snow"
+	for anchor in anchors:
+		var id=anchor.id
+		var layer_ready=chunks.props_ready_at(anchor.x,anchor.z)
+		if _anchor_visuals.has(id):
+			if not layer_ready:
+				_anchor_visuals[id].hide()
+				_anchor_visuals[id].queue_free()
+				_anchor_visuals.erase(id)
+			continue
+		if not layer_ready or Vector2(anchor.x-state.x,anchor.z-state.z).length()<4.0:
+			continue
+		var group=Node3D.new()
+		group.name=id
+		group.position=Vector3(anchor.x,anchor.y-.65,anchor.z)
+		scenery.add_child(group)
+		var h=float(anchor.height)
+		_box(group,Vector3(0,h*.25,0),Vector3(.26,h*.5,.26),Color("675b45"))
+		_cone(group,Vector3(0,h*.59,0),h*.3,h*.75,Color("718b96") if snowy else Color("3c5e49"))
+		_cone(group,Vector3(0,h*.85,0),h*.21,h*.56,Color("7b939d") if snowy else Color("4b6c50"))
+		_anchor_visuals[id]=group
 
 func _can_repair()->bool:
 	for cp in checkpoints:
@@ -306,6 +384,7 @@ func _process(dt):
 		playing=true
 	var forward=Vector3(sin(state.yaw),0,cos(state.yaw))
 	chunks.update_stream(Vector3(state.x,state.y,state.z),forward*state.speed,dt)
+	_update_anchor_layers()
 	quality_clock+=dt
 	if quality_clock>1.0:
 		quality_clock=0.0
@@ -325,19 +404,18 @@ func _process(dt):
 			input.reverse=0.0
 			input.brakeValue=maxf(float(input.brakeValue),.65)
 		previous_position=Vector3(state.x,state.y,state.z)
-		var previous_distance=float(state.distance)
+		var previous_state=state.duplicate(true)
 		var obstacles=chunks.get_obstacles().duplicate()
 		for anchor in anchors:
-			if absf(anchor.z-state.z)<15:obstacles.append(anchor)
+			if _anchor_visuals.has(anchor.id) and absf(anchor.z-state.z)<15:obstacles.append(anchor)
 		simulation.step(state,input,minf(dt,.1),obstacles)
 		blocked=not chunks.is_ready_at(state.x,state.z)
 		if blocked:
-			state.x=previous_position.x
-			state.z=previous_position.z
-			state.y=previous_position.y
+			# Reject all effects of an unsafe step, including spring samples,
+			# checkpoint rewards, damage and cable length, not only coordinates.
+			state=previous_state
 			state.speed=0.0
 			state.yVel=0.0
-			state.distance=previous_distance
 	else:blocked=false
 	state.steer=state.steering
 	state.repairAvailable=_can_repair()
@@ -369,7 +447,7 @@ func _command(command:Dictionary):
 		"tires":state.snowTires=true
 		"attach":
 			for anchor in anchors:
-				if anchor.id==command.get("id",""):simulation.attach_winch(state,anchor)
+				if anchor.id==command.get("id","") and _anchor_visuals.has(anchor.id):simulation.attach_winch(state,anchor)
 		"detach":simulation.detach_winch(state)
 		"camera":camera_mode=(camera_mode+1)%3;orbit=0
 		"photo":_take_photo()
@@ -408,16 +486,23 @@ func _update_camera(dt):
 	var base=vehicle.position
 	var desired:Vector3
 	var target:Vector3
+	var desired_up=Vector3.UP
 	var forward=Vector3(sin(state.yaw),0,cos(state.yaw))
 	if not playing:
 		desired=base+Vector3(22,13,-23)
 		target=base+Vector3(-9,1,17)
 		camera.fov=52
 	elif camera_mode==2:
-		var local_camera=Vector3(-.47,1.58,-.45)
-		desired=body.to_global(local_camera) if body else vehicle.to_global(local_camera)
-		var basis_=vehicle.basis*body.basis if body else vehicle.basis
-		target=desired+basis_*Vector3(0,-.14,1)*20
+		var local_camera=Vector3(.47,1.58,-.45)
+		var yaw_basis=Basis(Vector3.UP,float(state.yaw))
+		# Keep road feel while damping suspension motion instead of rigidly
+		# inheriting the sprung body's full pitch, roll and head-position arc.
+		var pitch_sway=clampf(float(state.pitch)*.28,-.12,.12)
+		var roll_sway=clampf(float(state.roll)*.18,-.06,.06)
+		var head_basis=yaw_basis*Basis(Vector3.RIGHT,-pitch_sway)*Basis(Vector3.BACK,roll_sway)
+		desired=base+yaw_basis*local_camera
+		target=desired+head_basis*Vector3(0,-.14,1)*20
+		desired_up=head_basis*Vector3.UP
 		camera.fov=78
 	else:
 		var distance=22.0 if camera_mode==1 else 12.5
@@ -427,10 +512,11 @@ func _update_camera(dt):
 		desired.y=maxf(desired.y,TerrainMath.height_at(desired.x,desired.z,state.region)+2.5)
 		target=base+forward*4+Vector3(0,1.25,0)
 		camera.fov=52
-	var alpha=1-exp(-dt*(14 if camera_mode==2 else 4))
+	var alpha=1-exp(-dt*(6 if camera_mode==2 else 4))
 	camera.position=camera.position.lerp(desired,alpha)
 	target_camera=target_camera.lerp(target,alpha)
-	camera.look_at(target_camera,Vector3.UP)
+	camera_up=camera_up.lerp(desired_up,alpha).normalized()
+	camera.look_at(target_camera,camera_up)
 
 func _update_cable():
 	cable.visible=state.winch!=null
@@ -464,9 +550,11 @@ func get_snapshot()->Dictionary:
 	report["blocked"]=blocked or streaming_waiting
 	report["coarseTriangles"]=coarse_triangles
 	report["renderScale"]=get_viewport().scaling_3d_scale
+	report["startup"]={"worldBuilds":world_builds,"initializationMs":snappedf(initialization_ms,.01),"worldBuildMs":snappedf(world_build_ms,.01),"chunksMs":snappedf(chunks_build_ms,.01),"sceneryMs":snappedf(scenery_build_ms,.01)}
 	report["playing"]=playing
 	var visible_anchors=[]
 	for anchor in anchors:
+		if not _anchor_visuals.has(anchor.id):continue
 		var distance=Vector2(anchor.x-state.x,anchor.z-state.z).length()
 		if distance<24 and distance>2:
 			var point=Vector3(anchor.x,anchor.y+1.3,anchor.z)

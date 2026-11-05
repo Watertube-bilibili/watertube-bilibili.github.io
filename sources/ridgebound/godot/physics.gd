@@ -5,8 +5,9 @@ extends RefCounted
 ## Wheel order: front-left, front-right, rear-left, rear-right.
 const Terrain = preload("res://terrain_math.gd")
 const WHEEL_OFFSETS: Array[Vector2] = [Vector2(-1.06, 1.3), Vector2(1.06, 1.3), Vector2(-1.06, -1.3), Vector2(1.06, -1.3)]
-const SPRING_RATE: float = 110.0
-const DAMPING: float = 14.0
+# Healthy springs are close to critically damped; damaged dampers remain softer.
+const SPRING_RATE: float = 90.0
+const DAMPING: float = 20.0
 const SUSPENSION_TRAVEL: float = 0.30
 const WHEEL_RADIUS: float = 0.64
 var _checkpoints: Array = Terrain.checkpoints()
@@ -23,6 +24,7 @@ func create_state(region: String = "forest", snow_tires: bool = false) -> Dictio
 		"damage": {"body": 100.0, "tires": 100.0, "suspension": 100.0},
 		"impact": 0.0, "damageCooldown": 0.0, "repairAvailable": false,
 		"yVel": 0.0, "pitchVel": 0.0, "rollVel": 0.0,
+		"contactHeights": [0.0, 0.0, 0.0, 0.0], "contactVelocities": [0.0, 0.0, 0.0, 0.0],
 		"suspension": [0.0, 0.0, 0.0, 0.0], "wheelHeights": [0.0, 0.0, 0.0, 0.0],
 		"wheelContact": [true, true, true, true], "springForces": [0.0, 0.0, 0.0, 0.0]
 	}
@@ -92,18 +94,24 @@ func _wheel_ground(state: Dictionary, offset: Vector2) -> float:
 	var z: float = state.z - fx * offset.x + fz * offset.y
 	return Terrain.height_at(x, z, state.region)
 
+func _contact_ground(state: Dictionary, offset: Vector2) -> float:
+	# Tire footprint supports the chassis across small ripples rather than at a point.
+	return _wheel_ground(state, offset) * 0.5 + _wheel_ground(state, offset + Vector2(0.0, 0.6)) * 0.25 + _wheel_ground(state, offset - Vector2(0.0, 0.6)) * 0.25
+
 func _reset_suspension(state: Dictionary) -> void:
 	state.yVel = 0.0
 	state.pitchVel = 0.0
 	state.rollVel = 0.0
 	var grounds: Array[float] = []
 	for offset: Vector2 in WHEEL_OFFSETS:
-		grounds.append(_wheel_ground(state, offset))
+		grounds.append(_contact_ground(state, offset))
 	state.y = (grounds[0] + grounds[1] + grounds[2] + grounds[3]) * 0.25 + 0.65
 	state.pitch = atan(((grounds[0] + grounds[1]) - (grounds[2] + grounds[3])) / 5.2)
 	state.roll = atan(((grounds[1] + grounds[3]) - (grounds[0] + grounds[2])) / 4.24)
 	for i: int in range(4):
-		state.wheelHeights[i] = grounds[i] + WHEEL_RADIUS
+		state.contactHeights[i] = grounds[i]
+		state.contactVelocities[i] = 0.0
+		state.wheelHeights[i] = _wheel_ground(state, WHEEL_OFFSETS[i]) + WHEEL_RADIUS
 		state.suspension[i] = 0.0
 		state.wheelContact[i] = true
 		state.springForces[i] = 9.81
@@ -262,7 +270,13 @@ func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer
 	var ground_sum: float = 0.0
 	for i: int in range(4):
 		var offset: Vector2 = WHEEL_OFFSETS[i]
-		var ground: float = _wheel_ground(state, offset)
+		var raw_ground: float = _wheel_ground(state, offset)
+		var ground: float = _contact_ground(state, offset)
+		# Smooth only support velocity: wheels retain their individual raw ground heights.
+		# Dampers oppose compression velocity, not the vehicle's uphill world velocity.
+		var contact_velocity: float = clampf((ground - state.contactHeights[i]) / dt, -8.0, 8.0)
+		state.contactHeights[i] = ground
+		state.contactVelocities[i] = lerpf(state.contactVelocities[i], contact_velocity, 1.0 - exp(-dt * 3.0))
 		ground_sum += ground
 		var corner_height: float = state.y + sin(state.pitch) * offset.y + sin(state.roll) * offset.x
 		var corner_velocity: float = state.yVel + state.pitchVel * offset.y + state.rollVel * offset.x
@@ -271,11 +285,11 @@ func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer
 		max_compression = maxf(max_compression, compression)
 		# Each grounded corner contributes spring force and damper force independently.
 		# 9.81 preload balances body weight at the nominal ride height.
-		var force: float = maxf(0.0, spring_rate * clampf(compression, -travel, travel) - damping * corner_velocity + 9.81) if in_contact else 0.0
+		var force: float = maxf(0.0, spring_rate * clampf(compression, -travel, travel) - damping * (corner_velocity - state.contactVelocities[i]) + 9.81) if in_contact else 0.0
 		state.suspension[i] = clampf(compression, -travel, travel)
 		state.wheelContact[i] = in_contact
 		state.springForces[i] = force
-		state.wheelHeights[i] = ground + WHEEL_RADIUS if in_contact else corner_height - 0.01 - travel
+		state.wheelHeights[i] = raw_ground + WHEEL_RADIUS if in_contact else corner_height - 0.01 - travel
 		lift += force * 0.25
 		pitch_torque += force * offset.y / (4.0 * 1.3 * 1.3)
 		roll_torque += force * offset.x / (4.0 * 1.06 * 1.06)
@@ -285,8 +299,8 @@ func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer
 	elif absf(state.speed) > 3.2 and (absf(state.pitch) > 0.65 or absf(state.roll) > 0.6):
 		_apply_damage(state, 1.1, 0.15, 0.25, 0.5)
 	state.yVel += (lift - 9.81) * dt
-	state.pitchVel += (pitch_torque - acceleration * 0.75 - state.pitchVel * 1.5) * dt
-	state.rollVel += (roll_torque - steer_rate * state.speed * 0.65 - state.rollVel * 1.5) * dt
+	state.pitchVel += (pitch_torque - acceleration * 0.35 - state.pitchVel * 3.0) * dt
+	state.rollVel += (roll_torque - steer_rate * state.speed * 0.35 - state.rollVel * 4.0) * dt
 	state.y += state.yVel * dt
 	state.pitch = clampf(state.pitch + state.pitchVel * dt, -1.0, 1.0)
 	state.roll = clampf(state.roll + state.rollVel * dt, -1.0, 1.0)

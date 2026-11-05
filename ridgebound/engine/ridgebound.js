@@ -672,6 +672,15 @@ const Engine = (function () {
 		return loadPromise;
 	};
 
+	// RIDGEBOUND_RESPONSE_LOADER: validated bytes supplied by our compressed asset loader.
+	Engine.loadFromResponse = function (basePath, response) {
+		if (loadPromise == null) {
+			loadPath = basePath;
+			loadPromise = Promise.resolve(response);
+		}
+		return loadPromise;
+	};
+
 	/**
 	 * Unload the engine to free memory.
 	 *
@@ -891,6 +900,7 @@ const Engine = (function () {
 
 	// Closure compiler exported static methods.
 	SafeEngine['load'] = Engine.load;
+	SafeEngine['loadFromResponse'] = Engine.loadFromResponse;
 	SafeEngine['unload'] = Engine.unload;
 
 	// Feature-detection utilities.

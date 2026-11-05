@@ -29,7 +29,10 @@ func run() -> void:
 		all_wheels = all_wheels and wheel != null
 	check(all_wheels, "four separate wheel nodes are available for suspension")
 	check(game.steering != null and game.speed_needle != null and game.rpm_needle != null, "cockpit steering wheel and both instrument needles exist")
-	check(game.anchors.size() > 20 and game.checkpoints.size() == 4, "winch anchors and all four repair checkpoints are built")
+	check(game.anchors.size() == 46 and game.checkpoints.size() == 4, "all anchor coordinates and repair checkpoints remain available to streaming")
+	check(game._anchor_visuals.is_empty() and game.get_snapshot().anchors.is_empty(), "unrendered anchor data is absent from visuals and selection")
+	game._command({"type": "attach", "id": game.anchors[0].id})
+	check(game.state.winch == null, "winch cannot attach to an anchor whose props layer is not visible")
 	check(game.terrain_safety != null and game.terrain_safety.mesh != null and game.coarse_triangles > 0, "resident coarse terrain provides a permanent opaque horizon")
 	var coarse_arrays: Array = game.terrain_safety.mesh.surface_get_arrays(0)
 	var coarse_vertices: PackedVector3Array = coarse_arrays[Mesh.ARRAY_VERTEX]

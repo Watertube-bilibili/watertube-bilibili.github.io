@@ -1,5 +1,6 @@
 import {routeX,checkpoints,emptyState} from './world-data.mjs';
 import {createUI} from './ui.mjs';
+import {bootEngine,bootStats} from './boot.mjs';
 import {createControllers} from './controllers.mjs';
 const STORAGE='watertube-ridgebound-v1';
 const defaults=()=>({coins:0,snowTires:false,snowUnlocked:false,awards:[],progress:{forest:0,snow:0},region:'forest'});
@@ -8,6 +9,7 @@ const save=readSave();let state=emptyState(save.region,save.snowTires),ui,contro
 let audioEnabled=false,audioCtx,engineTone,engineGain;
 const canvas=document.createElement('canvas');canvas.id='game-canvas';canvas.tabIndex=-1;canvas.setAttribute('aria-label','山野之间 Godot 3D 场景');document.getElementById('viewport').append(canvas);
 window.ridgeboundInput={active:false};window.ridgeboundCommands=[];
+window.ridgeboundBootstrap={region:save.region,snowTires:save.snowTires,progress:save.progress[save.region]>0&&save.progress[save.region]<4?save.progress[save.region]:0};
 const send=(type,data={})=>window.ridgeboundCommands.push({type,...data});
 function persist(){try{localStorage.setItem(STORAGE,JSON.stringify(save));}catch{ui?.toast('浏览器未允许保存，本次探索仍可继续');}}
 function refreshGarage(){ui?.updateGarage({...save,region:state.region});}
@@ -18,7 +20,7 @@ function closeDialogs(){document.querySelectorAll('dialog[open]').forEach(d=>d.c
 function pause(){if(!playing)return;paused=true;clearInput();ui.setPaused(true);}
 function resume(){closeDialogs();paused=false;ui.setPaused(false);clearInput();}
 function resetWorld(region,progress=0,begin=true){resetPending={region,checkpoint:progress>0&&progress<4?progress:0};state=emptyState(region,save.snowTires);state.checkpoint=resetPending.checkpoint;selecting=false;won=false;playing=begin;paused=false;send('reset',{region,snowTires:save.snowTires,progress:resetPending.checkpoint,playing:begin});ui.showWinchTargets(false);ui.setPlaying(begin);clearInput();refreshGarage();}
-function switchMap(region){if(!ready)return;if(region==='snow'&&!save.snowUnlocked){ui.toast('先完成山林路线的四个检查点，发现隐藏雪线');return;}closeDialogs();save.region=region;resetWorld(region,0,true);persist();ui.toast(region==='snow'?(save.snowTires?'进入珠峰雪线 · 雪地胎已装配':'进入珠峰雪线 · 普通胎极易打滑，可到车库换雪地胎'):'驶入松风谷 · 沿土路探索');}
+function switchMap(region){if(!ready)return;if(region==='snow'&&!save.snowUnlocked){ui.toast('先完成山林路线的四个检查点，发现隐藏雪线');return;}closeDialogs();save.region=region;resetWorld(region,0,true);persist();ui.toast(region==='snow'?(save.snowTires?'进入珠峰雪线 · 雪地胎已装配':'普通胎进入珠峰 · 冰面易失控，碰撞会造成车损'):'驶入松风谷 · 沿土路探索');}
 function candidates(){return(state.anchors||[]).map(a=>({...a,f:(a.x-state.x)*Math.sin(state.yaw)+(a.z-state.z)*Math.cos(state.yaw)})).sort((a,b)=>(a.d-(a.f>0?10:0))-(b.d-(b.f>0?10:0))).slice(0,8);}
 function connect(anchor){send('attach',{id:anchor.id});selecting=false;ui.showWinchTargets(false);ui.toast('绞盘挂钩 · 按住 F 或「收绳」牵引，Q 释放');}
 function startAudio(){if(!audioEnabled)return;try{if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();engineTone=audioCtx.createOscillator();engineTone.type='sawtooth';const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=180;engineGain=audioCtx.createGain();engineGain.gain.value=.018;engineTone.connect(filter).connect(engineGain).connect(audioCtx.destination);engineTone.start();}audioCtx.resume();}catch{audioEnabled=false;ui.setAudio(false);}}
@@ -58,7 +60,7 @@ window.onRidgeState=next=>{
  if(state.blocked&&performance.now()-streamHint>6000){streamHint=performance.now();ui.toast('正在准备前方路段 · 已为你停稳');}
 };
 window.onRidgePhoto=data=>{const a=document.createElement('a');a.download='山野之间-'+(state.region==='snow'?'珠峰雪线':'松风谷')+'.png';a.href=data;a.click();ui.toast('风景照片已保存');};
-window.onRidgeReady=()=>{ready=true;resetWorld(save.region,save.progress[save.region],false);start.disabled=false;ui.setReady?.(true);loading.hidden=true;};
+window.onRidgeReady=()=>{ready=true;bootSync=false;resetPending=null;bootStats.readyMs=performance.now()-bootStats.startedAt;start.disabled=false;ui.setReady?.(true);loading.hidden=true;refreshGarage();};
 let drag=null;canvas.addEventListener('pointerdown',e=>{if(e.button===0){drag={id:e.pointerId,x:e.clientX};canvas.setPointerCapture(e.pointerId);}});canvas.addEventListener('pointermove',e=>{if(drag&&drag.id===e.pointerId&&playing&&!paused){send('orbit',{delta:(drag.x-e.clientX)*.006});drag.x=e.clientX;}});for(const name of['pointerup','pointercancel'])canvas.addEventListener(name,()=>drag=null);
 canvas.addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('blur',()=>{if(playing&&!paused)pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden){clearInput();if(playing&&!paused)pause();}});
@@ -69,10 +71,8 @@ function frame(now){requestAnimationFrame(frame);const dt=frameLast?Math.min((no
  if(engineTone&&audioEnabled){engineTone.frequency.setTargetAtTime(32+Math.abs(state.speed)*9+(window.ridgeboundInput.throttle?12:0),audioCtx.currentTime,.1);engineGain.gain.setTargetAtTime(active?.018:.003,audioCtx.currentTime,.1);}
 }
 requestAnimationFrame(frame);
-window.ridgebound={get state(){return structuredClone(state);},get save(){return structuredClone(save);},get status(){return{engine:'Godot 4.6',ready,playing,paused,selecting,resetPending,averageFps:fpsFrames/fpsTime,lastEngineReport};}};
+window.ridgebound={get state(){return structuredClone(state);},get save(){return structuredClone(save);},get status(){return{engine:'Godot 4.6',ready,playing,paused,selecting,resetPending,averageFps:fpsFrames/fpsTime,lastEngineReport,boot:structuredClone(bootStats)};}};
 function fail(error){console.error(error);ready=false;clearInput();loading.hidden=true;const panel=document.getElementById('error');panel.hidden=false;panel.innerHTML='<h2>山野暂时没有打开</h2><p>请使用支持 WebGL 2 的新版 Chrome、Safari 或 Edge。首次加载需要下载游戏文件，请检查网络后重试。</p><button id="retry-engine">重新载入</button><a href="../projects.html">返回项目</a>';document.getElementById('retry-engine').onclick=()=>location.reload();}
 try{
- await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='./engine/ridgebound.js';script.onload=resolve;script.onerror=()=>reject(new Error('引擎文件未能载入'));document.head.append(script);});
- const godot=new window.Engine({executable:'./engine/ridgebound',mainPack:'./engine/ridgebound.pck',canvas,canvasResizePolicy:2,focusCanvasOnStart:false,experimentalVK:false,onProgress(current,total){if(!ready)loadingText.textContent=total>0?' 正在加载越野世界 · '+Math.round(current/total*100)+'%':' 正在加载越野世界…';},onPrintError:message=>console.error('[Godot]',message)});
- await godot.startGame();
+ await bootEngine({canvas,report:message=>{if(!ready)loadingText.textContent=' '+message;},onError:message=>console.error('[Godot]',message)});
 }catch(error){fail(error);}
