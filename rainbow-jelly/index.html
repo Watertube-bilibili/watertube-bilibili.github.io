@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7f6fb" />
+  <meta name="description" content="给自己一点软乎乎的时间。拖拽、切割、钉住或融化彩虹果冻，在 Jelly Lab 随心玩耍。" />
+  <title>Jelly Lab · 彩虹果冻实验室</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='5' y='5' width='54' height='54' rx='20' fill='%238d74ec'/%3E%3Cpath d='M17 36q15 13 30 0M24 24v3m16-3v3' fill='none' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg class="svg-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V5a2 2 0 0 1 4 0v6-8a2 2 0 0 1 4 0v8-5a2 2 0 0 1 4 0v8c0 5-3 8-7 8-3 0-5-2-7-5l-3-4a2 2 0 0 1 3-3l2 2Z"/></symbol>
+    <symbol id="i-cut" viewBox="0 0 24 24"><circle cx="5" cy="6" r="3"/><circle cx="5" cy="18" r="3"/><path d="m7.5 7.5 13 13M7.5 16.5l13-13M12 12h.01"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="m16 3 5 5-4 2-3 5-5-5 5-3 2-4ZM9 10l-3 3 5 5 3-3M8.5 15.5 3 21"/></symbol>
+    <symbol id="i-fire" viewBox="0 0 24 24"><path d="M13 2c1 6-4 6-2 10 2-1 3-3 3-5 4 3 6 6 6 9a8 8 0 0 1-16 0c0-5 5-8 9-14Z"/><path d="M12 14c-5 4-2 8 1 7 4-1 2-5-1-7Z"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1 8M3 4v6h6"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4V4ZM16 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-mute" viewBox="0 0 24 24"><path d="M11 4 6 8H3v8h3l5 4V4Zm5 5 6 6m0-6-6 6"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .5-1.5 1-1.5 2M12 17h.01"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="m8 5 7 7-7 7"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  </defs></svg>
+  <header class="header shell">
+    <a class="brand" href="./" aria-label="Jelly Lab 首页"><span class="brand-mark"><i></i><i></i><b></b></span><span>jelly<span class="brand-light">lab</span><span class="brand-dot">®</span></span></a>
+    <span class="header-note"><a class="home-link" href="../">← 返回水管同学主页</a></span>
+    <div class="header-actions"><button id="sound" class="quiet-button" aria-pressed="false"><svg><use href="#i-mute"/></svg><span>音效关闭</span></button><span class="header-divider"></span><button id="help" class="quiet-button"><svg><use href="#i-help"/></svg><span>怎么玩</span></button></div>
+  </header>
+  <main class="shell">
+    <section class="intro">
+      <div><div class="eyebrow"><span></span> LITTLE EXPERIMENTS, BIG JOY</div><h1>给生活，加点<span class="rainbow-word">弹性<span class="underline"></span></span>。</h1><p>切一刀，戳一下，或者让它融化。没有规则，只有一点点快乐。</p></div>
+      <div class="intro-sticker"><svg><use href="#i-star"/></svg><span>放空一下<br/><b>随便玩玩</b></span><span class="sticker-arrow">↙</span></div>
+    </section>
+    <section class="playground" aria-label="彩虹果冻互动实验室">
+      <div class="canvas-area" id="canvas-area">
+        <canvas id="jelly-canvas" tabindex="0" aria-label="互动果冻。选择工具后拖动、点击或长按。键盘方向键移动果冻，空格揉捏；切割工具下按空格切割，钉住工具下按空格钉住，火烧工具下长按空格。"></canvas>
+        <div class="canvas-top"><span class="live-label"><i></i> 自由玩耍模式</span><button class="icon-button" id="reset" title="重新开始 (R)" aria-label="重置果冻"><svg><use href="#i-reset"/></svg></button></div>
+        <div class="tool-dock" role="toolbar" aria-label="互动工具">
+          <button class="tool active" data-tool="grab" aria-pressed="true" title="拖拽 (1)"><svg><use href="#i-hand"/></svg><span>拖拽</span><kbd>1</kbd></button>
+          <button class="tool" data-tool="cut" aria-pressed="false" title="切割 (2)"><svg><use href="#i-cut"/></svg><span>切割</span><kbd>2</kbd></button>
+          <button class="tool" data-tool="pin" aria-pressed="false" title="钉住 (3)"><svg><use href="#i-pin"/></svg><span>钉住</span><kbd>3</kbd></button>
+          <button class="tool" data-tool="fire" aria-pressed="false" title="火烧 (4)"><svg><use href="#i-fire"/></svg><span>火烧</span><kbd>4</kbd></button>
+        </div>
+        <div class="handwritten" id="canvas-note">来，捏一下我 <span>⤵</span></div>
+        <div class="canvas-bottom"><span class="canvas-hint" id="canvas-hint"><svg><use href="#i-hand"/></svg>按住果冻，拖动试试</span><span class="pieces"><i></i><span id="piece-count">1</span> 块快乐</span></div>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </div>
+      <aside class="settings">
+        <div class="settings-heading"><h2>你的果冻</h2><span>MAKE IT YOURS</span></div>
+        <div class="setting-group"><label>选个形状</label><div class="shape-options" role="group" aria-label="果冻形状"><button data-shape="blob" class="shape-option selected" aria-pressed="true"><span class="shape-art blob-art"></span>软团</button><button data-shape="square" class="shape-option" aria-pressed="false"><span class="shape-art square-art"></span>方块</button><button data-shape="round" class="shape-option" aria-pressed="false"><span class="shape-art round-art"></span>圆球</button></div></div>
+        <div class="setting-group"><label>今天是什么颜色？</label><div class="palette-options" role="group" aria-label="果冻颜色"><button data-palette="rainbow" class="swatch selected" aria-label="彩虹" aria-pressed="true"><span class="swatch-rainbow"></span></button><button data-palette="berry" class="swatch" aria-label="莓果" aria-pressed="false"><span class="swatch-berry"></span></button><button data-palette="ocean" class="swatch" aria-label="海盐" aria-pressed="false"><span class="swatch-ocean"></span></button><button data-palette="peach" class="swatch" aria-label="蜜桃" aria-pressed="false"><span class="swatch-peach"></span></button></div><div class="palette-caption"><span id="palette-name">彩虹糖</span><span>一点颜色，一点好心情</span></div></div>
+        <div class="setting-group elasticity"><div class="label-row"><label for="elasticity">Q 弹程度</label><output id="elasticity-value" for="elasticity">75%</output></div><input id="elasticity" type="range" min="10" max="100" value="75"/><div class="range-labels"><span>软绵绵</span><span>蹦蹦跳</span></div></div>
+        <div class="gravity-row"><div><label for="gravity">地心引力</label><p>让快乐落回地面</p></div><input type="checkbox" role="switch" id="gravity" checked/><label class="switch" for="gravity" aria-hidden="true"></label></div>
+        <div class="settings-footer"><button id="new-jelly" class="primary-button"><svg><use href="#i-star"/></svg>再来一块新果冻<svg class="arrow"><use href="#i-arrow"/></svg></button><p>随时重来，也是一种快乐。</p></div>
+      </aside>
+    </section>
+    <section class="mini-guide" aria-label="操作小贴士"><span class="guide-label">快乐使用说明</span><div><span class="guide-icon purple"><svg><use href="#i-hand"/></svg></span><p><b>揉揉捏捏</b><span>把压力拉长，再松手</span></p></div><div><span class="guide-icon pink"><svg><use href="#i-cut"/></svg></span><p><b>切出小快乐</b><span>划过果冻，快乐分成几份</span></p></div><div><span class="guide-icon blue"><svg><use href="#i-pin"/></svg></span><p><b>留住这一刻</b><span>点一下钉住，再点一下松开</span></p></div><div><span class="guide-icon orange"><svg><use href="#i-fire"/></svg></span><p><b>烦恼融化了</b><span>长按火烧，看它慢慢融化</span></p></div></section>
+  </main>
+  <footer class="shell footer"><a class="home-link" href="../">← 返回水管同学主页</a><span>不必有用，开心就好 <span class="footer-flower">✳</span></span></footer>
+  <dialog id="help-dialog"><button id="close-help" class="icon-button close-dialog" aria-label="关闭说明"><svg><use href="#i-close"/></svg></button><span class="dialog-emoji">✳</span><h2>快乐，没有标准答案。</h2><p>选一个工具，在果冻上试试看。</p><ul><li><b>1 · 拖拽</b>按住果冻并拖动，松开后弹回来。</li><li><b>2 · 切割</b>从果冻一侧划到另一侧，松手切开。</li><li><b>3 · 钉住</b>点击固定果冻，再点钉子即可拔出。</li><li><b>4 · 火烧</b>在果冻上持续按住，让它逐渐融化。</li></ul><p class="keyboard-help">键盘：数字 1–4 切换工具，R 重置。聚焦画布后，方向键移动果冻，空格使用当前工具。火烧时长按空格。</p><button id="start-play" class="primary-button">知道啦，开玩！</button></dialog>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
