@@ -1,0 +1,397 @@
+TAP version 13
+# Subtest: controller binds first, blocks operations during delayed imports, and initial load creates nothing
+ok 1 - controller binds first, blocks operations during delayed imports, and initial load creates nothing
+  ---
+  duration_ms: 28.240117
+  type: 'test'
+  ...
+# Subtest: both read-only lists must finish before readiness or copy controls appear
+ok 2 - both read-only lists must finish before readiness or copy controls appear
+  ---
+  duration_ms: 6.996926
+  type: 'test'
+  ...
+# Subtest: dependency rejection is visible and explicit retry only reinitializes
+ok 3 - dependency rejection is visible and explicit retry only reinitializes
+  ---
+  duration_ms: 0.626453
+  type: 'test'
+  ...
+# Subtest: localStorage SecurityError during initialization is visible and invokes no storage operation
+ok 4 - localStorage SecurityError during initialization is visible and invokes no storage operation
+  ---
+  duration_ms: 0.44836
+  type: 'test'
+  ...
+# Subtest: late completion of an obsolete failed listing cannot overwrite an active operation
+ok 5 - late completion of an obsolete failed listing cannot overwrite an active operation
+  ---
+  duration_ms: 1.463896
+  type: 'test'
+  ...
+# Subtest: fresh, copy, file and existing-link actions cannot compete with a pending create
+ok 6 - fresh, copy, file and existing-link actions cannot compete with a pending create
+  ---
+  duration_ms: 1.182131
+  type: 'test'
+  ...
+# Subtest: file.text holds the same operation lock before creation starts
+ok 7 - file.text holds the same operation lock before creation starts
+  ---
+  duration_ms: 0.532695
+  type: 'test'
+  ...
+# Subtest: oversize and failed file reads restore readiness without invoking creation
+ok 8 - oversize and failed file reads restore readiness without invoking creation
+  ---
+  duration_ms: 0.544222
+  type: 'test'
+  ...
+# Subtest: storage getter failure after readiness does not begin a create
+ok 9 - storage getter failure after readiness does not begin a create
+  ---
+  duration_ms: 0.416123
+  type: 'test'
+  ...
+# Subtest: confirmed cleanup returns ready but never retries creation automatically
+ok 10 - confirmed cleanup returns ready but never retries creation automatically
+  ---
+  duration_ms: 1.672143
+  type: 'test'
+  ...
+# Subtest: uncertain cleanup permanently blocks writes in this page, including synthetic events
+ok 11 - uncertain cleanup permanently blocks writes in this page, including synthetic events
+  ---
+  duration_ms: 0.491224
+  type: 'test'
+  ...
+# Subtest: unknown create errors require an explicit read-only recheck without asserting successful cleanup
+ok 12 - unknown create errors require an explicit read-only recheck without asserting successful cleanup
+  ---
+  duration_ms: 0.731377
+  type: 'test'
+  ...
+# Subtest: navigation rejection exposes the confirmed slot without allowing a duplicate create
+ok 13 - navigation rejection exposes the confirmed slot without allowing a duplicate create
+  ---
+  duration_ms: 0.379499
+  type: 'test'
+  ...
+# Subtest: per-entry validation errors remain read-only while valid source cards pass the exact source key
+ok 14 - per-entry validation errors remain read-only while valid source cards pass the exact source key
+  ---
+  duration_ms: 0.373721
+  type: 'test'
+  ...
+# AUTOAIR delivered-budget {"steps":140,"delivered":20,"used":20.00000000000955,"remaining":2379.9999999999905}
+# Subtest: original 0.12 s airborne gate resets on support or low altitude, and only Rocket automatically catches
+ok 15 - original 0.12 s airborne gate resets on support or low altitude, and only Rocket automatically catches
+  ---
+  duration_ms: 31.197414
+  type: 'test'
+  ...
+# Subtest: held driving axes and brake cannot request hover; release and fresh input control genuine air forces
+ok 16 - held driving axes and brake cannot request hover; release and fresh input control genuine air forces
+  ---
+  duration_ms: 2.160042
+  type: 'test'
+  ...
+# Subtest: automatic cushioning spends at most the original 20 m/s delivered allowance and the single air inventory
+ok 17 - automatic cushioning spends at most the original 20 m/s delivered allowance and the single air inventory
+  ---
+  duration_ms: 8.807294
+  type: 'test'
+  ...
+# Subtest: low gas consumes only delivered cushion, exhausted or dead vehicles receive no free lift
+ok 18 - low gas consumes only delivered cushion, exhausted or dead vehicles receive no free lift
+  ---
+  duration_ms: 9.268743
+  type: 'test'
+  ...
+# Subtest: autoair clone/reset and failed controller input preserve reserve and independently owned latches
+ok 19 - autoair clone/reset and failed controller input preserve reserve and independently owned latches
+  ---
+  duration_ms: 1.563894
+  type: 'test'
+  ...
+# AUTOAIR real-ramp {"firstAir":{"tick":142,"position":[6880.0000965619265,15.572407649998029,1576.5342807902061]},"landing":{"tick":264,"position":[6879.999999956423,12.069447797630518,1543.9582361190046]},"maxY":15.759567416393375,"maxStep":0.2783692038938082,"maxCushion":0.20567528705742708,"maxAllowanceUsed":14.160291530491262,"beforeGas":2400,"afterGas":2400,"contacts":[{"impact":2.791074806558273,"dynamic":false}],"finalSpeed":-2.0907107150983816e-8,"trace":[{"tick":0,"position":[6880.000000000006,12.075010579436203,1599.9998646350205],"speed":2.459488055794367e-8,"grounded":true,"mode":"road","automatic":false,"cushion":0,"remainingAllowance":20,"gas":2400},{"tick":30,"position":[6879.999999999783,12.07491696098286,1598.8308443247245],"speed":4.77765940954731,"grounded":true,"mode":"road","automatic":false,"cushion":0,"remainingAllowance":20,"gas":2400},{"tick":60,"position":[6879.999999999775,12.074963287061053,1595.20432462548],"speed":9.704925016592169,"grounded":true,"mode":"road","automatic":false,"cushion":0,"remainingAllowance":20,"gas":2400},{"tick":90,"position":[6879.999547796578,12.596513758370126,1589.2808124120984],"speed":13.104737404544087,"grounded":true,"mode":"road","automatic":false,"cushion":0,"remainingAllowance":20,"gas":2400},{"tick":120,"position":[6880.000026865335,14.398024880956482,1582.3268613663179],"speed":15.763242708037003,"grounded":true,"mode":"road","automatic":false,"cushion":0,"remainingAllowance":20,"gas":2400},{"tick":150,"position":[6880.000031002615,15.740012644015613,1574.4043868972883],"speed":16.279304359114093,"grounded":false,"mode":"landing","automatic":true,"cushion":0,"remainingAllowance":20,"gas":2399.7996884649106},{"tick":180,"position":[6879.999974205818,14.82819472579491,1566.3506278477491],"speed":16.191236529475876,"grounded":false,"mode":"landing","automatic":true,"cushion":0,"remainingAllowance":20,"gas":2399.5041772516524},{"tick":210,"position":[6879.9999894602815,13.114354228415502,1558.3046634250722],"speed":16.04486520366248,"grounded":false,"mode":"landing","automatic":true,"cushion":0.20545527936665375,"remainingAllowance":13.430803225485969,"gas":2392.8970794359634},{"tick":240,"position":[6879.999998218411,12.23010297710573,1550.3182892159361],"speed":15.906768866619592,"grounded":false,"mode":"landing","automatic":true,"cushion":0.1108101591073826,"remainingAllowance":6.931425521555129,"gas":2386.3907507159856}]}
+# AUTOAIR prior-terminal-fresh {"prior":"complete","observations":[{"label":"jump","mode":"landing","automatic":true,"requestAir":false,"status":"complete","serial":1,"position":[6880.000006019836,15.564593489783974,1576.5668555163718],"gas":2294.543633567391},{"label":"released","mode":"landing","automatic":true,"requestAir":false,"status":"complete","serial":1,"position":[6880.000005550122,15.594776324142053,1576.3016660555845],"gas":2294.5189492912646},{"label":"fresh","mode":"air","automatic":true,"requestAir":false,"status":"complete","serial":1,"position":[6880.0000051061115,15.62288127561042,1576.0357892434713],"gas":2294.389153343192}]}
+# AUTOAIR prior-terminal-final {"prior":"complete","observations":[{"label":"jump","mode":"landing","automatic":true,"requestAir":false,"status":"complete","serial":1,"position":[6880.000006019836,15.564593489783974,1576.5668555163718],"gas":2294.543633567391},{"label":"released","mode":"landing","automatic":true,"requestAir":false,"status":"complete","serial":1,"position":[6880.000005550122,15.594776324142053,1576.3016660555845],"gas":2294.5189492912646},{"label":"fresh","mode":"air","automatic":true,"requestAir":false,"status":"complete","serial":1,"position":[6880.0000051061115,15.62288127561042,1576.0357892434713],"gas":2294.389153343192},{"label":"release-after-fresh","mode":"landing","automatic":true,"requestAir":false,"status":"complete","serial":1,"position":[6880.000004686119,15.648775107365532,1575.7689914587188],"gas":2294.366135286412},{"label":"explicit-flight","mode":"air","automatic":false,"requestAir":true,"status":"complete","serial":1,"position":[6880.000003915006,15.695300123144248,1575.2349945855008],"gas":2294.033648287365},{"label":"landed","mode":"road","automatic":false,"requestAir":false,"status":"complete","serial":1,"position":[6879.9999999914,12.129075350376999,1558.8658708955702],"gas":2236.1802005175377}],"contacts":[{"impact":2.7888857749166176,"dynamic":false}]}
+# AUTOAIR prior-terminal-fresh {"prior":"cancelled","observations":[{"label":"jump","mode":"landing","automatic":true,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999788914,15.566024020225742,1576.560964134064],"gas":2320.140530218408},{"label":"released","mode":"landing","automatic":true,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999637247,15.596229632785372,1576.2957730909081],"gas":2320.1158646200083},{"label":"fresh","mode":"air","automatic":true,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999499814,15.62435732699842,1576.029772861235],"gas":2319.986195714693}]}
+# AUTOAIR prior-terminal-final {"prior":"cancelled","observations":[{"label":"jump","mode":"landing","automatic":true,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999788914,15.566024020225742,1576.560964134064],"gas":2320.140530218408},{"label":"released","mode":"landing","automatic":true,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999637247,15.596229632785372,1576.2957730909081],"gas":2320.1158646200083},{"label":"fresh","mode":"air","automatic":true,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999499814,15.62435732699842,1576.029772861235],"gas":2319.986195714693},{"label":"release-after-fresh","mode":"landing","automatic":true,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999375976,15.65027196729916,1575.7629739489955],"gas":2319.963193858957},{"label":"explicit-flight","mode":"air","automatic":false,"requestAir":true,"status":"cancelled","serial":2,"position":[6879.999999163558,15.696838549722102,1575.228975400298],"gas":2319.6308903325103},{"label":"landed","mode":"road","automatic":false,"requestAir":false,"status":"cancelled","serial":2,"position":[6879.999999995219,12.128835024963035,1558.8545166659826],"gas":2261.7769469281243}],"contacts":[{"impact":2.7888857413275594,"dynamic":false}]}
+# Subtest: real NCI ramp drive jumps, retains held W latch, uses bounded cushioning, lands then brakes
+ok 20 - real NCI ramp drive jumps, retains held W latch, uses bounded cushioning, lands then brakes
+  ---
+  duration_ms: 2529.260011
+  type: 'test'
+  ...
+# Subtest: fresh key release/repress takes over during a genuine jump, then release resumes automatic descent
+ok 21 - fresh key release/repress takes over during a genuine jump, then release resumes automatic descent
+  ---
+  duration_ms: 2264.780282
+  type: 'test'
+  ...
+# Subtest: real failed physics publication restores automatic allowance, latch, reserve and body before blocking saves
+ok 22 - real failed physics publication restores automatic allowance, latch, reserve and body before blocking saves
+  ---
+  duration_ms: 3814.945524
+  type: 'test'
+  ...
+# Subtest: prior complete maneuver cannot turn a fresh jump key into latched explicit flight
+ok 23 - prior complete maneuver cannot turn a fresh jump key into latched explicit flight
+  ---
+  duration_ms: 4020.556856
+  type: 'test'
+  ...
+# Subtest: prior cancelled maneuver cannot turn a fresh jump key into latched explicit flight
+ok 24 - prior cancelled maneuver cannot turn a fresh jump key into latched explicit flight
+  ---
+  duration_ms: 5403.529307
+  type: 'test'
+  ...
+# Subtest: all original Rocket actions are declared and run through original public request API
+ok 25 - all original Rocket actions are declared and run through original public request API
+  ---
+  duration_ms: 2.064241
+  type: 'test'
+  ...
+# RAPIER_VAULT vault-2 {"seconds":11.416666666666666,"minUp":0.9999999823818388,"maxStep":0.05273462421443341,"rollTravel":0,"landingUp":0.9999999977454318,"landingAngle":0,"phases":["lift","cross","land",""],"trace":[{"tick":121,"phase":"lift","status":"active","position":[6880.000000000006,12.07782105760695,1599.9998648463493],"angle":0,"code":"EXECUTING"},{"tick":230,"phase":"cross","status":"active","position":[6880.000000000022,15.443894653327638,1600.0000032476696],"angle":0,"code":"EXECUTING"},{"tick":552,"phase":"land","status":"active","position":[6880.000000000022,15.400124816901918,1585.8992952537235],"angle":0,"code":"EXECUTING"},{"tick":805,"phase":"","status":"complete","position":[6880.000000000024,12.105039865801407,1585.9994552424505],"angle":0,"code":"COMPLETE"}],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:1","trim":"rocket","mode":"road","jets":{"up":0,"down":0,"forward":0,"reverse":0,"right":0,"left":0,"pitchUp":0,"pitchDown":0,"rollRight":0,"rollLeft":0,"yawLeft":0,"yawRight":0},"heat":0,"automaticAirborne":false,"rollRate":5.787142576589754e-11,"airUnits":2283.9448250641226,"airCapacity":2400,"airPressure":1,"charge":95.16436771100511,"airSpraying":false,"airRefillEligible":false,"boost":0,"lift":0,"wing":0.8366666666666668,"wingPitch":0.29283333333333333,"altitude":0.03546932220458987,"verticalSpeed":-0.33025798201560974,"warning":"","autoStabilizing":false,"landingCushion":0,"maneuver":{"kind":"vault","phase":"","status":"complete","reason":"越障完成，已安全落地","progress":1,"serial":1,"angle":0,"code":"COMPLETE"}},"position":[6880.000000000024,12.105039865801407,1585.9994552424505],"contacts":0}
+# RAPIER_VAULT vault_spin-2 {"seconds":13.2,"minUp":-0.9995505054948749,"maxStep":0.07082364261645016,"rollTravel":7.935183832583334,"landingUp":0.9996670407673242,"landingAngle":6.31458993852884,"phases":["lift","cross","settle","land",""],"trace":[{"tick":121,"phase":"lift","status":"active","position":[6880.000000000006,12.07782105760695,1599.9998648463493],"angle":0,"code":"EXECUTING"},{"tick":262,"phase":"cross","status":"active","position":[6880.000000000022,17.05168464661383,1600.0000032608139],"angle":0,"code":"EXECUTING"},{"tick":584,"phase":"settle","status":"active","position":[6879.979839411177,17.000415139593283,1585.8992920404203],"angle":6.31458993852884,"code":"EXECUTING"},{"tick":585,"phase":"land","status":"active","position":[6879.981421661494,17.000372558406315,1585.8944092241525],"angle":6.31458993852884,"code":"EXECUTING"},{"tick":912,"phase":"","status":"complete","position":[6879.999999876152,12.105136186865808,1585.9994557748796],"angle":6.31458993852884,"code":"COMPLETE"}],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:2","trim":"rocket","mode":"road","jets":{"up":0,"down":0,"forward":0,"reverse":0,"right":0,"left":0,"pitchUp":0,"pitchDown":0,"rollRight":0,"rollLeft":0,"yawLeft":0,"yawRight":0},"heat":0,"automaticAirborne":false,"rollRate":-0.00000385821742391672,"airUnits":2264.4291316286462,"airCapacity":2400,"airPressure":1,"charge":94.35121381786026,"airSpraying":false,"airRefillEligible":false,"boost":0,"lift":0,"wing":0.8366666666666668,"wingPitch":0.29283333333333333,"altitude":0.03557327270507815,"verticalSpeed":-0.33068326115608215,"warning":"","autoStabilizing":false,"landingCushion":0,"maneuver":{"kind":"vault_spin","phase":"","status":"complete","reason":"越障转圈完成，已回正并安全落地","progress":1,"serial":1,"angle":6.31458993852884,"code":"COMPLETE"}},"position":[6879.999999876152,12.105136186865808,1585.9994557748796],"contacts":0}
+# RAPIER_VAULT vault_spin-3.4 {"seconds":14.783333333333333,"minUp":-0.9995505054948749,"maxStep":0.07082364261645016,"rollTravel":7.935183832583334,"landingUp":0.9996670407673242,"landingAngle":6.31458993852884,"phases":["lift","cross","settle","land",""],"trace":[{"tick":121,"phase":"lift","status":"active","position":[6880.000000000006,12.07782105760695,1599.9998648463493],"angle":0,"code":"EXECUTING"},{"tick":290,"phase":"cross","status":"active","position":[6880.000000000022,18.45274475098395,1600.0000032614896],"angle":0,"code":"EXECUTING"},{"tick":612,"phase":"settle","status":"active","position":[6879.979839411177,18.40041094342629,1585.8992920404203],"angle":6.31458993852884,"code":"EXECUTING"},{"tick":613,"phase":"land","status":"active","position":[6879.981421661494,18.400368362239323,1585.8944092241525],"angle":6.31458993852884,"code":"EXECUTING"},{"tick":1007,"phase":"","status":"complete","position":[6879.999999833566,12.10503509743605,1585.9994551633988],"angle":6.31458993852884,"code":"COMPLETE"}],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:3","trim":"rocket","mode":"road","jets":{"up":0,"down":0,"forward":0,"reverse":0,"right":0,"left":0,"pitchUp":0,"pitchDown":0,"rollRight":0,"rollLeft":0,"yawLeft":0,"yawRight":0},"heat":0,"automaticAirborne":false,"rollRate":-0.0000033135502652324807,"airUnits":2248.890314169029,"airCapacity":2400,"airPressure":1,"charge":93.7037630903762,"airSpraying":false,"airRefillEligible":false,"boost":0,"lift":0,"wing":0.8366666666666668,"wingPitch":0.29283333333333333,"altitude":0.03546646118164065,"verticalSpeed":-0.33038458228111267,"warning":"","autoStabilizing":false,"landingCushion":0,"maneuver":{"kind":"vault_spin","phase":"","status":"complete","reason":"越障转圈完成，已回正并安全落地","progress":1,"serial":1,"angle":6.31458993852884,"code":"COMPLETE"}},"position":[6879.999999833566,12.10503509743605,1585.9994551633988],"contacts":0}
+# RAPIER_VAULT no-obstacle {"state":{"kind":"vault_spin","phase":"","status":"rejected","reason":"前方 20 米内未识别到可越过的障碍","progress":0,"serial":1,"angle":0,"code":"NO_OBSTACLE"},"position":[6880.000000000006,12.075010579436222,1599.9998646349159]}
+# RAPIER_VAULT too-close {"state":{"kind":"vault_spin","phase":"","status":"rejected","reason":"离障碍太近，请后退留出起飞空间","progress":0,"serial":1,"angle":0,"code":"OBSTACLE_TOO_CLOSE"},"position":[6880.000000000006,12.075010579436222,1599.9998646349159]}
+# RAPIER_VAULT too-high {"state":{"kind":"vault_spin","phase":"","status":"rejected","reason":"障碍过高或上方有遮挡，无法安全越过","progress":0,"serial":1,"angle":0,"code":"OBSTACLE_TOO_HIGH"},"position":[6880.000000000006,12.075010579436222,1599.9998646349159]}
+# RAPIER_VAULT no-pad {"state":{"kind":"vault_spin","phase":"","status":"rejected","reason":"障碍后方没有可用的完整落地区域","progress":0,"serial":1,"angle":0,"code":"NO_LANDING_PAD"},"position":[6880.000000000006,12.075010579436222,1599.9998646349159]}
+# RAPIER_VAULT roll-clearance {"state":{"kind":"vault_spin","phase":"","status":"rejected","reason":"越障航线没有足够的整车转圈空间","progress":0,"serial":1,"angle":0,"code":"VAULT_SPIN_CLEARANCE"},"position":[6880.000000000006,12.075010579436222,1599.9998646349159]}
+# RAPIER_VAULT upright-narrow {"seconds":11.416666666666666,"minUp":0.9999999823818388,"maxStep":0.05273462421443341,"rollTravel":0,"landingUp":0.9999999977454318,"landingAngle":0,"phases":["lift","cross","land",""],"trace":[{"tick":121,"phase":"lift","status":"active","position":[6880.000000000006,12.07782105760695,1599.9998648463493],"angle":0,"code":"EXECUTING"},{"tick":230,"phase":"cross","status":"active","position":[6880.000000000022,15.443894653327638,1600.0000032476696],"angle":0,"code":"EXECUTING"},{"tick":552,"phase":"land","status":"active","position":[6880.000000000022,15.400124816901918,1585.8992952537235],"angle":0,"code":"EXECUTING"},{"tick":805,"phase":"","status":"complete","position":[6880.000000000024,12.105039865801407,1585.9994552424505],"angle":0,"code":"COMPLETE"}],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:9","trim":"rocket","mode":"road","jets":{"up":0,"down":0,"forward":0,"reverse":0,"right":0,"left":0,"pitchUp":0,"pitchDown":0,"rollRight":0,"rollLeft":0,"yawLeft":0,"yawRight":0},"heat":0,"automaticAirborne":false,"rollRate":5.787142576589754e-11,"airUnits":2283.9448250641226,"airCapacity":2400,"airPressure":1,"charge":95.16436771100511,"airSpraying":false,"airRefillEligible":false,"boost":0,"lift":0,"wing":0.8366666666666668,"wingPitch":0.29283333333333333,"altitude":0.03546932220458987,"verticalSpeed":-0.33025798201560974,"warning":"","autoStabilizing":false,"landingCushion":0,"maneuver":{"kind":"vault","phase":"","status":"complete","reason":"越障完成，已安全落地","progress":1,"serial":1,"angle":0,"code":"COMPLETE"}},"position":[6880.000000000024,12.105039865801407,1585.9994552424505],"contacts":0}
+# RAPIER_VAULT cancel {"seconds":0.016666666666666666,"minUp":-0.046289359961642726,"maxStep":0.0671206718607106,"rollTravel":0,"landingUp":1,"landingAngle":0,"phases":[],"trace":[],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:10","trim":"rocket","mode":"air","jets":{"up":0.0057035059118262284,"down":0,"forward":0,"reverse":1,"right":0,"left":1,"pitchUp":1.16301912689559e-7,"pitchDown":0,"rollRight":0,"rollLeft":1,"yawLeft":0,"yawRight":0.0000012840282668451946},"heat":0,"automaticAirborne":false,"rollRate":3.8901181221003145,"airUnits":2345.9973360098375,"airCapacity":2400,"airPressure":1,"charge":97.7498890004099,"airSpraying":true,"airRefillEligible":false,"boost":0,"lift":0.5441411354729078,"wing":1,"wingPitch":0.35,"altitude":4.9227030563354495,"verticalSpeed":0.004417017567902803,"warning":"","autoStabilizing":true,"landingCushion":0,"maneuver":{"kind":"vault_spin","phase":"","status":"cancelled","reason":"已取消，驾驶员接管","progress":0.5108189174107143,"serial":2,"angle":1.5147476285739254,"code":"CANCELLED"}},"position":[6879.280771787395,17.75110749871828,1592.6444095424722],"contacts":0}
+# RAPIER_VAULT manual {"seconds":0.016666666666666666,"minUp":-0.046289359961642726,"maxStep":0.0694421129191285,"rollTravel":0,"landingUp":1,"landingAngle":0,"phases":[],"trace":[],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:11","trim":"rocket","mode":"air","jets":{"up":0.005703761337147533,"down":0,"forward":0.874115301479724,"reverse":0,"right":0,"left":1,"pitchUp":1.1630191268952322e-7,"pitchDown":0,"rollRight":0,"rollLeft":1,"yawLeft":0,"yawRight":0.0000012840282668447988},"heat":0,"automaticAirborne":false,"rollRate":3.8901181221003145,"airUnits":2346.090592518347,"airCapacity":2400,"airPressure":1,"charge":97.75377468826446,"airSpraying":true,"airRefillEligible":false,"boost":0.599999999999815,"lift":0.54414113547274,"wing":1,"wingPitch":0.35,"altitude":4.9227030563354495,"verticalSpeed":0.004417017567902803,"warning":"","autoStabilizing":true,"landingCushion":0,"maneuver":{"kind":"vault_spin","phase":"","status":"cancelled","reason":"新的手动操作已接管","progress":0.5108189174107143,"serial":1,"angle":1.5147476285739254,"code":"MANUAL_OVERRIDE"}},"position":[6879.280771787395,17.75110749871828,1592.6413577846597],"contacts":0}
+# RAPIER_VAULT intruder {"seconds":0.11666666666666667,"minUp":-0.42519373597410276,"maxStep":0.07082364261645016,"rollTravel":0.31640645144170776,"landingUp":1,"landingAngle":0,"phases":["cross",""],"trace":[{"tick":423,"phase":"cross","status":"active","position":[6879.280899049908,17.753748918733738,1592.6420902032073],"angle":1.5795829306089306,"code":"EXECUTING"},{"tick":429,"phase":"","status":"cancelled","position":[6879.348326298887,18.0243630616787,1592.328003114668],"angle":1.9057502994977507,"code":"VAULT_SPIN_BLOCKED"}],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:12","trim":"rocket","mode":"air","jets":{"up":0,"down":0.138789904266154,"forward":0,"reverse":1,"right":0,"left":1,"pitchUp":5.52943765129828e-7,"pitchDown":0,"rollRight":0,"rollLeft":1,"yawLeft":0,"yawRight":7.176341661108439e-7},"heat":0,"automaticAirborne":false,"rollRate":3.9237678050985476,"airUnits":2344.967970276535,"airCapacity":2400,"airPressure":1,"charge":97.7069987615223,"airSpraying":true,"airRefillEligible":false,"boost":0,"lift":0.5441909817197463,"wing":1,"wingPitch":0.35,"altitude":4.9231608200073245,"verticalSpeed":0.004160665441304445,"warning":"","autoStabilizing":true,"landingCushion":0,"maneuver":{"kind":"vault_spin","phase":"","status":"cancelled","reason":"越障转圈航线出现障碍，已停止动作，请接管","progress":0.5243791852678572,"serial":1,"angle":1.9057502994977507,"code":"VAULT_SPIN_BLOCKED"}},"position":[6879.348326298887,18.0243630616787,1592.328003114668],"contacts":0}
+# RAPIER_VAULT landing-changed {"seconds":2.8,"minUp":-0.9995505054948749,"maxStep":0.07082364261645016,"rollTravel":6.1949466051232775,"landingUp":0.9996670407673242,"landingAngle":6.31458993852884,"phases":["cross","settle","land",""],"trace":[{"tick":423,"phase":"cross","status":"active","position":[6879.280899049908,17.753748918733738,1592.6420902032073],"angle":1.5795829306089306,"code":"EXECUTING"},{"tick":584,"phase":"settle","status":"active","position":[6879.979839411177,17.000415139593283,1585.8992920404203],"angle":6.31458993852884,"code":"EXECUTING"},{"tick":585,"phase":"land","status":"active","position":[6879.981421661494,17.000372558406315,1585.8944092241525],"angle":6.31458993852884,"code":"EXECUTING"},{"tick":590,"phase":"","status":"cancelled","position":[6879.988113427755,16.98206536453841,1585.8747558874732],"angle":6.31458993852884,"code":"CANCELLED"}],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:13","trim":"rocket","mode":"air","jets":{"up":0.4241422168403307,"down":0,"forward":0,"reverse":0.10344825841241419,"right":0,"left":0.025032860897116392,"pitchUp":0,"pitchDown":9.654224050392942e-9,"rollRight":0.02734902366816233,"rollLeft":0,"yawLeft":7.587938672113057e-9,"yawRight":0},"heat":0,"automaticAirborne":false,"rollRate":-0.10195329785380358,"airUnits":2315.2186282167545,"airCapacity":2400,"airPressure":1,"charge":96.46744284236478,"airSpraying":true,"airRefillEligible":false,"boost":0,"lift":0.6127508819434379,"wing":1,"wingPitch":0.35,"altitude":3.967582015991211,"verticalSpeed":-0.34843310713768005,"warning":"","autoStabilizing":true,"landingCushion":0,"maneuver":{"kind":"vault_spin","phase":"","status":"cancelled","reason":"航线出现障碍，已悬停，请接管","progress":0.7959193638392856,"serial":1,"angle":6.31458993852884,"code":"CANCELLED"}},"position":[6879.988113427755,16.98206536453841,1585.8747558874732],"contacts":0}
+# RAPIER_VAULT power {"seconds":0.016666666666666666,"minUp":-0.049673269987380815,"maxStep":0.06946525777213064,"rollTravel":0,"landingUp":1,"landingAngle":0,"phases":[],"trace":[],"final":{"source":"rapier-force-controller","vehicleInstanceId":"world:physics-test:14","trim":"rocket","mode":"unpowered","jets":{"up":0,"down":0,"forward":0,"reverse":0,"right":0,"left":0,"pitchUp":0,"pitchDown":0,"rollRight":0,"rollLeft":0,"yawLeft":0,"yawRight":0},"heat":0,"automaticAirborne":false,"rollRate":3.8901181221003145,"airUnits":2346.445513877047,"airCapacity":2400,"airPressure":1,"charge":97.76856307821028,"airSpraying":false,"airRefillEligible":false,"boost":0,"lift":0,"wing":0.9766666666666667,"wingPitch":0.3418333333333333,"altitude":4.9227030563354495,"verticalSpeed":0.004417017567902803,"warning":"动力损坏","autoStabilizing":false,"landingCushion":0,"maneuver":{"kind":"vault_spin","phase":"","status":"cancelled","reason":"动力中断，特技已取消","progress":0.5108189174107143,"serial":1,"angle":1.5147476285739254,"code":"NO_POWER"}},"position":[6879.280888824768,17.75201040563603,1592.6420902037396],"contacts":0}
+# RAPIER_VAULT rollback {"tick":423,"gas":2346.2732455928094,"status":"active","writes":0}
+# RAPIER_VAULT empty-tank {"seconds":30.033333333333335,"active":1801,"position":[6880.000000000001,12.075010579435935,1599.9998646364454],"gas":0.13333333333333333,"state":{"kind":"vault_spin","phase":"","status":"cancelled","reason":"动作超时，已转为悬停，请手动接管","progress":0,"serial":1,"angle":0,"code":"TIMEOUT"}}
+# Subtest: vault crosses actual 2m obstacle with real forces then settles and lands
+ok 26 - vault crosses actual 2m obstacle with real forces then settles and lands
+  ---
+  duration_ms: 2806.022027
+  type: 'test'
+  ...
+# Subtest: vault_spin crosses actual 2m obstacle with real forces then settles and lands
+ok 27 - vault_spin crosses actual 2m obstacle with real forces then settles and lands
+  ---
+  duration_ms: 2815.494456
+  type: 'test'
+  ...
+# Subtest: vault_spin crosses actual 3.4m obstacle with real forces then settles and lands
+ok 28 - vault_spin crosses actual 3.4m obstacle with real forces then settles and lands
+  ---
+  duration_ms: 4525.816002
+  type: 'test'
+  ...
+# Subtest: unsafe vault_spin refuses actual no-obstacle geometry and remains drivable
+ok 29 - unsafe vault_spin refuses actual no-obstacle geometry and remains drivable
+  ---
+  duration_ms: 2781.14086
+  type: 'test'
+  ...
+# Subtest: unsafe vault_spin refuses actual too-close geometry and remains drivable
+ok 30 - unsafe vault_spin refuses actual too-close geometry and remains drivable
+  ---
+  duration_ms: 4055.129027
+  type: 'test'
+  ...
+# Subtest: unsafe vault_spin refuses actual too-high geometry and remains drivable
+ok 31 - unsafe vault_spin refuses actual too-high geometry and remains drivable
+  ---
+  duration_ms: 2453.486597
+  type: 'test'
+  ...
+# Subtest: unsafe vault_spin refuses actual no-pad geometry and remains drivable
+ok 32 - unsafe vault_spin refuses actual no-pad geometry and remains drivable
+  ---
+  duration_ms: 3919.167231
+  type: 'test'
+  ...
+# Subtest: unsafe vault_spin refuses actual roll-clearance geometry and remains drivable
+ok 33 - unsafe vault_spin refuses actual roll-clearance geometry and remains drivable
+  ---
+  duration_ms: 2440.817999
+  type: 'test'
+  ...
+# Subtest: upright vault still fits the actual corridor which rejects rolling vault
+ok 34 - upright vault still fits the actual corridor which rejects rolling vault
+  ---
+  duration_ms: 3360.3315
+  type: 'test'
+  ...
+# Subtest: crossing interruption cancel never claims completed landing
+ok 35 - crossing interruption cancel never claims completed landing
+  ---
+  duration_ms: 2374.529931
+  type: 'test'
+  ...
+# Subtest: crossing interruption manual never claims completed landing
+ok 36 - crossing interruption manual never claims completed landing
+  ---
+  duration_ms: 3109.322319
+  type: 'test'
+  ...
+# Subtest: crossing interruption intruder never claims completed landing
+ok 37 - crossing interruption intruder never claims completed landing
+  ---
+  duration_ms: 2771.581934
+  type: 'test'
+  ...
+# Subtest: crossing interruption landing-changed never claims completed landing
+ok 38 - crossing interruption landing-changed never claims completed landing
+  ---
+  duration_ms: 2900.366525
+  type: 'test'
+  ...
+# Subtest: crossing interruption power never claims completed landing
+ok 39 - crossing interruption power never claims completed landing
+  ---
+  duration_ms: 3246.04705
+  type: 'test'
+  ...
+# Subtest: same action serial cannot restart crossing; failure restores nested planner and blocks staged save
+ok 40 - same action serial cannot restart crossing; failure restores nested planner and blocks staged save
+  ---
+  duration_ms: 2799.001502
+  type: 'test'
+  ...
+# Subtest: empty tank cannot lift over obstacle or manufacture reserve; only terminal grounded compressor can refill
+ok 41 - empty tank cannot lift over obstacle or manufacture reserve; only terminal grounded compressor can refill
+  ---
+  duration_ms: 3638.219007
+  type: 'test'
+  ...
+# Subtest: formal chooser resolves the deployed Rapier play path independent of the document URL
+ok 42 - formal chooser resolves the deployed Rapier play path independent of the document URL
+  ---
+  duration_ms: 0.810844
+  type: 'test'
+  ...
+# Subtest: module-relative URLs also support development copies and return to the same project root
+ok 43 - module-relative URLs also support development copies and return to the same project root
+  ---
+  duration_ms: 0.161758
+  type: 'test'
+  ...
+# Subtest: slot URL serialization cannot introduce a second query parameter
+ok 44 - slot URL serialization cannot introduce a second query parameter
+  ---
+  duration_ms: 0.708253
+  type: 'test'
+  ...
+# Subtest: prior Rapier storage identities remain unchanged across the entry relocation
+ok 45 - prior Rapier storage identities remain unchanged across the entry relocation
+  ---
+  duration_ms: 0.201627
+  type: 'test'
+  ...
+# Subtest: formal chooser points at the new runtime and does not import the Godot launcher
+ok 46 - formal chooser points at the new runtime and does not import the Godot launcher
+  ---
+  duration_ms: 1.066681
+  type: 'test'
+  ...
+# Subtest: the archived legacy chooser is byte-identical to the current 8dbbf2 formal homepage
+ok 47 - the archived legacy chooser is byte-identical to the current 8dbbf2 formal homepage
+  ---
+  duration_ms: 0.672941
+  type: 'test'
+  ...
+# Subtest: an original formal beta slot copies exact raw bytes, keeps all old keys and preserves extensions after a new save
+ok 48 - an original formal beta slot copies exact raw bytes, keeps all old keys and preserves extensions after a new save
+  ---
+  duration_ms: 13.123512
+  type: 'test'
+  ...
+# Subtest: reading an existing Rapier slot and rejecting a failed physics save do not write old or new progress
+ok 49 - reading an existing Rapier slot and rejecting a failed physics save do not write old or new progress
+  ---
+  duration_ms: 2.159561
+  type: 'test'
+  ...
+# SERVICE_MEASURE taxi {"reward":1200,"stages":2,"physicsTicks":166,"writes":2,"money":51200,"transactionRows":26,"sourceOriginalWrites":0,"scope":"fixture endpoint transitions, actual methods/physics/save/load; no driven route"}
+# Subtest: taxi stage completion pays once through a successful Rapier transaction and survives actual load
+ok 50 - taxi stage completion pays once through a successful Rapier transaction and survives actual load
+  ---
+  duration_ms: 3265.706564
+  type: 'test'
+  ...
+# SERVICE_MEASURE courier {"reward":1800,"stages":2,"physicsTicks":166,"writes":2,"money":51800,"transactionRows":26,"sourceOriginalWrites":0,"scope":"fixture endpoint transitions, actual methods/physics/save/load; no driven route"}
+# Subtest: courier stage completion pays once through a successful Rapier transaction and survives actual load
+ok 51 - courier stage completion pays once through a successful Rapier transaction and survives actual load
+  ---
+  duration_ms: 2233.880063
+  type: 'test'
+  ...
+# SERVICE_MEASURE race {"reward":4000,"stages":4,"physicsTicks":10,"writes":2,"money":54000,"transactionRows":26,"sourceOriginalWrites":0,"scope":"fixture endpoint transitions, actual methods/physics/save/load; no driven route"}
+# Subtest: race stage completion pays once through a successful Rapier transaction and survives actual load
+ok 52 - race stage completion pays once through a successful Rapier transaction and survives actual load
+  ---
+  duration_ms: 2492.97232
+  type: 'test'
+  ...
+# SERVICE_MEASURE patrol {"reward":1600,"stages":3,"physicsTicks":246,"writes":2,"money":51600,"transactionRows":26,"sourceOriginalWrites":0,"scope":"fixture endpoint transitions, actual methods/physics/save/load; no driven route"}
+# Subtest: patrol stage completion pays once through a successful Rapier transaction and survives actual load
+ok 53 - patrol stage completion pays once through a successful Rapier transaction and survives actual load
+  ---
+  duration_ms: 2732.179991
+  type: 'test'
+  ...
+# SERVICE_MEASURE freight-overload {"reward":3390,"integrity":85,"money":53390,"physicsTicks":366,"transactions":26,"scope":"fixture endpoints; actual payload and payout/save/load"}
+# Subtest: Semi freight loads payload, restores cargo state and settles the original damaged/overloaded payout once
+ok 54 - Semi freight loads payload, restores cargo state and settles the original damaged/overloaded payout once
+  ---
+  duration_ms: 2630.36679
+  type: 'test'
+  ...
+# SERVICE_MEASURE failed-career-step {"money":50000,"jobs":4,"writesInFailedStep":0,"physicsFailed":true,"originalWrites":0}
+# SERVICE_MEASURE police-pursuit-clear {"distance":53.937407180238544,"wantedCount":2,"retained":1,"remaining":1,"ticks":1380,"scope":"direct raiseWanted API, real patrol spawn and movement; no UI crime event"}
+# Subtest: career payout queued in a failing real physics step restores job and wallet with zero durable writes
+ok 55 - career payout queued in a failing real physics step restores job and wallet with zero durable writes
+  ---
+  duration_ms: 897.233587
+  type: 'test'
+  ...
+# Subtest: original police patrols and pursuit use actual Rapier movement, then clear wanted without deleting nearby actors
+ok 56 - original police patrols and pursuit use actual Rapier movement, then clear wanted without deleting nearby actors
+  ---
+  duration_ms: 1919.023067
+  type: 'test'
+  ...
+# SERVICE_MEASURE police-impact {"distance":11.325352563415949,"hits":8,"playerCondition":98.2354341251739,"policeCondition":98.2354341251739,"wanted":1,"unrelated":{"id":"world:2","condition":100,"battery":98},"scope":"fixture officer initial placement; real solver-driven impact"}
+# Subtest: police/car impact uses actual Rapier contact and original damage while unrelated identities stay unchanged
+ok 57 - police/car impact uses actual Rapier contact and original damage while unrelated identities stay unchanged
+  ---
+  duration_ms: 963.887568
+  type: 'test'
+  ...
+# RIDE_MEASURE taxi-approach {"phase":"waiting","approachTicks":626,"distance":63.33519959514462,"pickup":{"x":7,"z":182,"yaw":0},"position":[6.999999999389478,0.06499546525400335,183.66483375449067],"speed":0.5003487287150682,"reason":"即将停车"}
+# RIDE_MEASURE robotaxi-context {"approachTicks":626,"boardingTicks":390,"exitTicks":105,"money":50000,"personalId":"garage:s","taxiId":"world:1","sourceWrites":0,"scope":"direct service API, physical approach, native entry and cancel; no completed passenger trip/UI"}
+# Subtest: RoboTaxi physical pickup, boarding and cancellation preserve personal-car identity and save context
+ok 58 - RoboTaxi physical pickup, boarding and cancellation preserve personal-car identity and save context
+  ---
+  duration_ms: 3685.672515
+  type: 'test'
+  ...
+# RIDE_MEASURE autonomy-cancel {"workId":"world:1","personalId":"garage:s","drivenMetres":18.698346133089668,"stoppingTicks":90,"money":50000,"jobs":4,"scope":"direct service start, actual manual control motion/cancel; no full Pilot/takeover/reward completion"}
+# Subtest: autonomy-test company car genuinely drives and cancellation restores personal vehicle without payout
+ok 59 - autonomy-test company car genuinely drives and cancellation restores personal vehicle without payout
+  ---
+  duration_ms: 1135.200146
+  type: 'test'
+  ...
+1..59
+# tests 59
+# suites 0
+# pass 59
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 91588.807759

@@ -1,0 +1,63 @@
+import * as THREE from './vendor/three.module.js';
+import {C800_BRAKE} from './brake-fault.js';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function cube(parent,size,material,pos){const mesh=new THREE.Mesh(new THREE.BoxGeometry(...size),material);mesh.position.set(...pos);parent.add(mesh);return mesh;}
+export function createPedalRig(){
+ const root=new THREE.Group();root.name='C800 brake pedal assembly';
+ const metal=new THREE.MeshStandardMaterial({color:0x939ca5,metalness:.92,roughness:.24});
+ const rubber=new THREE.MeshStandardMaterial({color:0x131a20,roughness:.94});
+ const tear=new THREE.MeshStandardMaterial({color:0xe5b071,metalness:.72,roughness:.43});
+ cube(root,[.12,.075,.09],metal,[0,.66,0]);
+ const upper=cube(root,[.048,.20,.035],metal,[0,.54,.017]);upper.rotation.x=-.09;
+ const hinge=new THREE.Group();hinge.position.set(0,.45,.026);root.add(hinge);
+ const lower=new THREE.Group();hinge.add(lower);cube(lower,[.043,.27,.036],metal,[0,-.133,.028]);
+ const pad=cube(lower,[.215,.10,.06],rubber,[0,-.295,.072]);pad.rotation.x=-.2;
+ for(let i=-3;i<=3;i++)cube(lower,[.016,.075,.008],metal,[i*.028,-.295,.106]);
+ const shard=new THREE.Mesh(new THREE.ConeGeometry(.034,.043,3),tear);shard.rotation.z=Math.PI;shard.position.set(0,.431,.026);shard.visible=false;root.add(shard);
+ const lowerTear=new THREE.Mesh(new THREE.ConeGeometry(.027,.037,3),tear);lowerTear.position.set(0,0,.028);lowerTear.visible=false;lower.add(lowerTear);
+ return {root,hinge,lower,shard,lowerTear};
+}
+export function animatePedalRig(rig,fault,pressure=0){
+ const t=fault?.elapsed??0,broken=!!fault?.broken,bending=fault?.phase==='bending';
+ rig.hinge.rotation.x=broken?-.5:bending?-.18-clamp(t/C800_BRAKE.fracture,0,1)*.72:-pressure*.14;
+ rig.hinge.rotation.z=bending?clamp(t/C800_BRAKE.fracture,0,1)*.16:broken?.16:0;
+ rig.lower.position.set(0,0,0);rig.lower.rotation.set(0,0,0);rig.shard.visible=broken;rig.lowerTear.visible=broken;
+ if(broken){const drop=clamp((t-C800_BRAKE.fracture)/.72,0,1);rig.lower.position.set(.09*drop,-.28*drop*drop,.16*drop);rig.lower.rotation.set(-1.17*drop,.27*drop,.62*drop);}
+}
+export function attachBrakePedal(vehicle){
+ if(vehicle.model.id!=='c800'||vehicle.simple||vehicle.pedalRig)return;
+ const rig=createPedalRig();rig.root.scale.setScalar(.58);
+ rig.root.position.copy(vehicle.pedalMount??new THREE.Vector3(-.46,.29,-1.4));vehicle.chassis.add(rig.root);vehicle.pedalRig=rig;
+}
+export class BrakeCloseup{
+ constructor(game){
+  this.g=game;this.seen=null;this.dismissed=null;
+  this.panel=document.createElement('section');this.panel.id='brake-closeup';this.panel.hidden=true;this.panel.setAttribute('aria-label','C800 刹车踏板断裂特写');
+  this.panel.innerHTML='<header><span>CHENJING C800 <b>踏板特写</b></span><button type="button" aria-label="收起踏板特写">×</button></header><div class="brake-shot"></div><footer><strong></strong><span>虚构车辆 · 游戏故障演出</span></footer>';
+  document.body.append(this.panel);this.panel.querySelector('button').onclick=()=>{this.dismissed=this.g.vehicle.brakeFault;this.panel.hidden=true;};
+  this.warning=document.createElement('button');this.warning.id='brake-warning';this.warning.hidden=true;this.warning.textContent='⚠ 手动脚刹失效 · Pilot / 手刹可用 · 维修';this.warning.onclick=()=>this.g.ui.openGarage();document.body.append(this.warning);
+  this.scene=new THREE.Scene();this.scene.background=new THREE.Color(0x101a22);this.scene.add(new THREE.HemisphereLight(0xdce7ec,0x303444,2.6));const light=new THREE.DirectionalLight(0xffdfad,4);light.position.set(-1,2,3);this.scene.add(light);const blue=new THREE.PointLight(0x78c8df,2.3);blue.position.set(.6,.4,1);this.scene.add(blue);
+  const lining=new THREE.MeshStandardMaterial({color:0x26323c,roughness:.96}),trim=new THREE.MeshStandardMaterial({color:0x947a5d,metalness:.65,roughness:.35});
+  cube(this.scene,[1.25,.045,1.2],lining,[0,.015,.14]);cube(this.scene,[1.25,.94,.045],lining,[0,.48,-.11]);cube(this.scene,[.04,.025,.94],trim,[-.53,.06,.1]);
+  for(let i=0;i<18;i++)cube(this.scene,[1.1,.01,.016],lining,[0,.05,-.30+i*.044]);
+  this.rig=createPedalRig();this.rig.root.position.x=-.08;this.scene.add(this.rig.root);
+  const accelerator=cube(this.scene,[.105,.22,.055],lining,[.27,.20,.035]);accelerator.rotation.x=-.18;for(let i=0;i<3;i++)cube(this.scene,[.007,.16,.008],trim,[.245+i*.025,.20,.067]);
+  this.shoe=new THREE.Group();cube(this.shoe,[.18,.11,.34],new THREE.MeshStandardMaterial({color:0x382f2b,roughness:.72}),[0,0,0]);cube(this.shoe,[.19,.032,.355],lining,[0,-.065,0]);this.scene.add(this.shoe);
+  this.camera=new THREE.PerspectiveCamera(39,1,.01,6);this.camera.position.set(.66,.49,1.55);this.camera.lookAt(0,.37,.03);
+ }
+ update(){
+  const v=this.g.vehicle,f=v.brakeFault,active=v.model.id==='c800'&&f?.phase!=='healthy';
+  if(v.pedalRig)animatePedalRig(v.pedalRig,f,v.requestedBrakeAmount);
+  this.warning.hidden=!(active&&f.broken&&this.g.inCar);document.body.classList.toggle('brake-failed',!!(active&&f.broken&&this.g.inCar));
+  const show=active&&f.elapsed<C800_BRAKE.closeup&&this.dismissed!==f&&this.g.inCar&&!this.g.paused;
+  this.panel.hidden=!show;document.body.classList.toggle('brake-closeup-active',!!show);if(!show)return;
+  animatePedalRig(this.rig,f,v.requestedBrakeAmount);
+  const t=f.elapsed;this.shoe.position.set(-.075,.14,.34+(f.broken?clamp((t-.36)/.5,0,1)*.26:0));this.shoe.rotation.x=f.broken?.1:-.28-clamp(t/.36,0,1)*.14;
+  this.panel.querySelector('footer strong').textContent=f.broken?(t<1.2?'踏板断裂 · 正在掉落':'手动脚刹失效 · 电子制动正常'):'急刹受力 · 踏板弯折';
+ }
+ render(renderer){
+  if(this.panel.hidden)return;const rect=this.panel.querySelector('.brake-shot').getBoundingClientRect();if(!rect.width||!rect.height)return;
+  const old=renderer.getScissorTest();const viewport=renderer.getViewport(new THREE.Vector4()),scissor=renderer.getScissor(new THREE.Vector4());const auto=renderer.autoClear;
+  const y=innerHeight-rect.bottom;renderer.setScissor(rect.left,y,rect.width,rect.height);renderer.setViewport(rect.left,y,rect.width,rect.height);renderer.setScissorTest(true);renderer.autoClear=true;this.camera.aspect=rect.width/rect.height;this.camera.updateProjectionMatrix();renderer.render(this.scene,this.camera);renderer.autoClear=auto;renderer.setViewport(viewport);renderer.setScissor(scissor);renderer.setScissorTest(old);
+ }
+}

@@ -1,0 +1,3 @@
+Godot Engine 4.6.3; MIT license and bundled third-party notices are adjacent.
+The official WASM is byte-for-byte unchanged. NEON COAST patches the transport and tracked-response wrapper in Preloader.loadFetch in the official JS loader to download gzip and decompress using the standard browser DecompressionStream API. Initialization rejection propagation is also patched; reproducible sources are scripts/godot-init-errors.py and scripts/godot-gzip-transport.js in the source package.
+Verified content-addressed CacheStorage reuse of compressed WASM and project PCK is implemented in dist/godot-asset-cache.js, with streaming network fallback when storage is unavailable. Saves are not stored in this cache.

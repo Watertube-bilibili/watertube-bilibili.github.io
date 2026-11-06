@@ -1,0 +1,190 @@
+import {crossingOccupied} from './intersection-signals.js';
+import {getVehicleCollider,sweepBoxContact} from './vehicle-dynamics.js';
+import {planRoute, nearestRoad, WORLD_LIMIT, WORLD_MIN_X,groundHeight,roadEdgeAllowed,isRoadIntersection} from './streaming-world.js';
+import {PilotController} from './pilot.js';
+import {vehicleLongitudinalForces} from './vehicle-physics.js';
+import {safeVehicleExit,getActorFootOffset} from './ground-contact.js';
+import {createEntryAnimation,sampleEntryAnimation} from './entry-animation.js';
+import {setVehicleInteriorView,disposeVehicleInstruments} from './vehicle-instruments.js';
+import {disposeVehicleDamage} from './vehicle-damage.js';
+import {resetVehiclePose} from './render-motion.js';
+import {trafficAvoidance,activeTraffic} from './population-stream.js';
+
+export const ROBOTAXI_FLEET=Object.freeze([
+ {modelId:'s',brand:'VOLT',name:'VOLT GO',description:'安静舒适 · 城市轿车',color:0xa9c9c0},
+ {modelId:'m',brand:'MIRA',name:'MIRA CITY',description:'轻巧灵活 · 都市小车',color:0xc6d69f},
+ {modelId:'estate',brand:'NORD',name:'NORD WAY',description:'宽敞旅行车 · 城际接送',color:0x9bb8cf},
+ {modelId:'aria',brand:'SOLACE',name:'SOLACE LOUNGE',description:'舒适 MPV · 从容出发',color:0xc5b4d1},
+ {modelId:'vela',brand:'AURELIA',name:'AURELIA SELECT',description:'豪华轿车 · 海岸专车',color:0xd0b68d},
+ {modelId:'c800',brand:'CHENJING 宸境',name:'宸境礼宾',description:'六座旗舰 · 自动接送',color:0xd8c8ac}
+].map(Object.freeze));
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const distance=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
+const wrap=a=>Math.atan2(Math.sin(a),Math.cos(a));
+const point=p=>({x:p.x,y:p.y??0,z:p.z});
+const validPoint=p=>p&&Number.isFinite(p.x)&&Number.isFinite(p.z)&&p.x>=WORLD_MIN_X&&p.x<=WORLD_LIMIT-12&&Math.abs(p.z)<=WORLD_LIMIT-12;
+const HOLD={throttle:0,steer:0,brake:1,brakeSource:'pilot',electronicBrake:1};
+const LABELS={idle:'选择品牌与目的地',toPickup:'车辆正在前来接你',waiting:'车辆已到 · 靠近后上车',boarding:'正在上车',riding:'无人驾驶行程中',stopping:'正在安全停车',arrived:'已到达 · 可以下车',exiting:'正在下车',completed:'行程已完成',cancelled:'行程已取消',unavailable:'暂时无法完成接送'};
+
+/** Snap to a real roadside lane, away from the middle of an intersection. */
+export function taxiStop(pos,laneSide=1){
+ const r=nearestRoad(pos),vertical=Math.abs(pos.x-r.x)<=Math.abs(pos.z-r.z),stops=[];
+ for(const isVertical of [vertical,!vertical]){
+  let x,z,yaw;
+  if(isVertical){const side=(pos.x>=r.x?1:-1)*laneSide;x=r.x+side*7;z=pos.z;yaw=side>0?0:Math.PI;if(Math.abs(z-r.z)<21)z=r.z+(z>=r.z?22:-22);}
+  else{const side=(pos.z>=r.z?1:-1)*laneSide;z=r.z+side*7;x=pos.x;yaw=side>0?-Math.PI/2:Math.PI/2;if(Math.abs(x-r.x)<21)x=r.x+(x>=r.x?22:-22);}
+  const stop={x:clamp(x,-233,WORLD_LIMIT-14),z:clamp(z,-WORLD_LIMIT+25,WORLD_LIMIT-25),yaw};
+  const road=nearestRoad(stop),a=isVertical?{x:road.x,z:Math.floor(stop.z/80)*80}:{x:Math.floor(stop.x/80)*80,z:road.z},b=isVertical?{x:a.x,z:a.z+80}:{x:a.x+80,z:a.z};
+  if(roadEdgeAllowed(a,b)&&!(a.x===-80&&b.x===0&&a.z===80))stops.push(stop);
+ }
+ return stops[0]??null;
+}
+
+// Reuse the established filleted public-road geometry only. This NPC controller
+// deliberately uses map/engine geometry for avoidance, not synthetic camera data.
+class TaxiRouteDriver{
+ constructor(game,vehicle,route,destination){this.game=game;this.vehicle=vehicle;this.geometry=new PilotController({vehicle,destination});this.geometry.setRoute(route);this.target=destination;this.acceleration=0;this.lastSteer=0;this.remaining=Infinity;this.reason='道路行驶';this.arrived=false;this.offRoadTime=0;}
+ update(dt){
+  const g=this.game,v=this.vehicle,p=this.geometry,speed=Math.max(0,v.speed);
+  if(p.path.length<2){this.reason='路线不可用';return HOLD;}
+  const projected=p.project(v.pos,Math.max(0,p.segment-3));p.progress=Math.max(p.progress,projected.s);p.segment=projected.index;
+  this.remaining=Math.max(0,p.path.at(-1).s-p.progress);
+  if(this.remaining<3.4&&distance(v.pos,this.target)<5.5&&Math.abs(v.speed)<.65){this.arrived=true;return HOLD;}
+  const lookahead=clamp(4+speed*.48,4,11),aim=p.at(p.progress+lookahead),rear={x:v.pos.x+Math.sin(v.yaw)*v.rearAxle,z:v.pos.z+Math.cos(v.yaw)*v.rearAxle};
+  const angle=wrap(Math.atan2(-(aim.x-rear.x),-(aim.z-rear.z))-v.yaw),steer=clamp(Math.atan2(2*v.wheelBase*Math.sin(angle),Math.max(2.5,distance(aim,rear))),-v.maxSteer,v.maxSteer);
+  this.lastSteer+=clamp(steer-this.lastSteer,-1.35*dt,1.35*dt);
+  let target=13,reason='沿道路自动行驶';
+  const cap=(n,label)=>{if(n<target){target=Math.max(0,n);reason=label;}};
+  for(let i=p.segment;i<p.path.length&&p.path[i].s<p.progress+Math.max(40,speed*4.5);i++){const q=p.path[i],corner=Math.sqrt(3.1/Math.max(.001,q.curvature));cap(Math.sqrt(corner*corner+2*2.4*Math.max(0,q.s-p.progress-3)),'路口提前减速');}
+  cap(Math.sqrt(2*2.1*Math.max(0,this.remaining-2.25)),'即将停车');
+  if(Math.abs(angle)>.75)cap(3.5,'对准车道');
+  if(projected.distance>3)cap(5,'调整车道');
+  const event=p.crossings.find(e=>e.s>p.progress-24);
+  if(event){const until=event.s-p.progress,signal=g.signalState?.(event,v)??(g.signalGreen?.(event,v)!==false?'green':'red'),clear=!crossingOccupied(g,v,event),green=signal==='green'&&clear;if(p.crossingCommit&&p.crossingCommit!==event.key)p.crossingCommit=null;if(!p.crossingCommit&&clear&&until>-20&&((green&&until<22)||(signal==='amber'&&speed>1&&until<22+speed*speed/7+speed*.3)))p.crossingCommit=event.key;if(p.crossingCommit===event.key){cap(9,'通过路口');}else if(!green&&until>-20){cap(Math.sqrt(2*2.6*Math.max(0,until-22)),'红灯等待');}}
+  const avoid=trafficAvoidance(g,v,target);cap(avoid.targetSpeed,avoid.emergency?'紧急避让':'礼让车辆与行人');
+  if(avoid.blocked&&!g.inCar&&!g.robotaxi?.passenger&&g.playerPos){const dx=g.playerPos.x-v.pos.x,dz=g.playerPos.z-v.pos.z,forward=-dx*Math.sin(v.yaw)-dz*Math.cos(v.yaw),lateral=Math.abs(dx*Math.cos(v.yaw)-dz*Math.sin(v.yaw));if(forward>0&&forward<35&&lateral<(v.halfWidth??1)+1)reason='前方有人 · 请到接车光柱旁的路边等候';}
+  // World solids retain their collision authority. A stopped blocked taxi asks
+  // for cancellation instead of teleporting or silently driving through them.
+  for(let s=4;s<Math.min(40,this.remaining);s+=3){const q=p.at(p.progress+s);if(g.world?.colliders?.some(b=>Math.abs(q.x-b.x)<b.w+1.6&&Math.abs(q.z-b.z)<b.d+1.9)){cap(Math.sqrt(2*2.8*Math.max(0,s-5)),'道路受阻 · 可取消行程');break;}}
+  this.offRoadTime=projected.distance>10?this.offRoadTime+dt:0;if(this.offRoadTime>2)cap(0,'偏离路线 · 请取消后重新叫车');
+  const request=clamp((target-speed)*1.55,-4.2,3.2);this.acceleration+=clamp(request-this.acceleration,-6*dt,2.7*dt);
+  const forces=vehicleLongitudinalForces(v),a=this.acceleration+forces.dragDeceleration;
+  let throttle=clamp(a/Math.max(1,v.model.power),0,1),brake=a<0?clamp(-a/forces.serviceBrakeDeceleration,0,.85):0;
+  brake=Math.max(brake,avoid.brake);if(brake>0)throttle=0;if(target<.2&&speed<.6){throttle=0;brake=Math.max(.35,brake);}if(v.condition<=0){throttle=0;brake=1;reason='车辆损坏 · 请下车';}
+  this.reason=reason;return{throttle,steer:this.lastSteer,brake,brakeSource:'pilot',electronicBrake:brake};
+ }
+}
+
+/** One physical NPC ride at a time, with the player's own car retained by identity. */
+export class RoboTaxiService{
+ constructor(game,options={}){this.g=game;this.options=options;this.planner=options.planRoute??planRoute;this.phase='idle';this.taxi=null;this.originalVehicle=null;this.driver=null;this.pickup=null;this.destination=null;this.fleet=null;this.animation=null;this.cameraTransition=null;this.cancelRequested=false;this.outcome='completed';this.tripDistance=0;this.notice='';}
+ get active(){return ['toPickup','waiting','boarding','riding','stopping','arrived','exiting'].includes(this.phase);}
+ get passenger(){return !!this.originalVehicle;}
+ get status(){const near=this.taxi&&this.g.playerPos?distance(this.taxi.pos,this.g.playerPos):Infinity;return{phase:this.phase,label:LABELS[this.phase],detail:this.notice||this.driver?.reason||'',modelId:this.fleet?.modelId,name:this.fleet?.name,pickup:this.pickup?point(this.pickup):null,destination:this.destination?{...this.destination}:null,remaining:Number.isFinite(this.driver?.remaining)?Math.round(this.driver.remaining):null,distance:Math.round(this.tripDistance),canBoard:this.phase==='waiting'&&near<=8&&Math.abs(this.taxi.speed)<.6,canExit:this.passenger&&['arrived','riding','stopping'].includes(this.phase),free:true};}
+ snapshot(){return{...this.status,taxi:this.taxi?{model:this.taxi.model.id,...point(this.taxi.pos),yaw:this.taxi.yaw}:null,passenger:this.passenger};}
+ notify(message){this.g.ui?.toast?.(message);this.options.onChange?.(this.status);}
+ change(phase,notice=''){this.phase=phase;this.notice=notice;this.options.onChange?.(this.status);this.g.updateRoutePresentation?.();this.g.ui?.updateMission?.();if(this.g.ui?.phonePage==='nav'&&this.g.ui.isPhoneOpen?.())this.g.ui.renderPhone?.('nav');}
+ result(ok,reason=''){return{ok,reason,phase:this.phase};}
+ route(from,to,yaw){try{const r=this.planner(from,to,[],yaw);return Array.isArray(r)&&r.length&&r.every(validPoint)?r:null;}catch{return null;}}
+ clearAt(p,ignore=null,gap=9){return validPoint(p)&&!this.g.world?.colliders?.some(b=>Math.abs(p.x-b.x)<b.w+1.8&&Math.abs(p.z-b.z)<b.d+2.3)&&![this.g.vehicle,...this.g.traffic,...(this.g.police??[])].some(v=>v&&v!==ignore&&activeTraffic(v)&&distance(v.pos,p)<gap);}
+ routeClearOfParked(origin,route){
+  const parked=[...new Set([this.g.vehicle,...this.g.traffic,...(this.g.police??[])])].filter(v=>v&&activeTraffic(v)&&Math.abs(v.speed??0)<.2&&(v===this.g.vehicle||v.parked)).map(v=>getVehicleCollider(v));
+  // Sweep an oriented taxi envelope along each road leg. A circular radius
+  // based on car length falsely blocks cars parked beside a clear curb lane.
+  let a=origin;for(const b of route){if(distance(a,b)<.05){a=b;continue;}const yaw=Math.atan2(-(b.x-a.x),-(b.z-a.z)),proxy={halfWidth:1.4,halfLength:3.3,yaw,pos:a},before=getVehicleCollider(proxy),after=getVehicleCollider({...proxy,pos:b});for(const body of parked)if(sweepBoxContact(before,after,body))return false;a=b;}return true;
+ }
+ requestRide(modelId,destination){
+  if(this.g.aircraft?.active||this.g.aircraft?.pendingBoard||this.g.autonomyTest?.active)return this.result(false,'请先结束飞行或路测工作');
+  if(this.active)return this.result(false,'已有接送行程，请先完成或取消');
+  if(this.g.flight?.active)return this.result(false,'请在航程结束后叫车');
+  if(this.g.inCar||this.g.transition)return this.result(false,'请先停车下车，再从路边叫车');
+  if(!validPoint(destination))return this.result(false,'请先选择地图上的目的地');
+  const fleet=ROBOTAXI_FLEET.find(f=>f.modelId===modelId||f.brand===modelId);if(!fleet)return this.result(false,'该品牌暂未提供接送');
+  this.cleanupTaxi();this.fleet=fleet;this.cancelRequested=false;this.outcome='completed';this.tripDistance=0;
+  const destinationStop=taxiStop(destination);if(!destinationStop){this.change('unavailable','目的地附近没有公共道路，请选择其他地点');return this.result(false,this.notice);}this.destination={...destinationStop,name:String(destination.name??'地图目的地').slice(0,160)};
+  let pickup=null,spawn=null,route=null;
+  // A free pickup point is not enough: a parked personal car may sit across
+  // its incoming or outgoing lane. Try both legal road sides and validate
+  // both paths before accepting a physical pickup, without moving any car.
+  for(const side of [1,-1]){
+   const start=taxiStop(this.g.playerPos,side);if(!start)continue;const fx=-Math.sin(start.yaw),fz=-Math.cos(start.yaw);
+   for(const offset of [0,14,-14,26,-26,38,-38]){
+    const candidate={...start,x:start.x+fx*offset,z:start.z+fz*offset};
+    if(distance(candidate,this.g.playerPos)>65||isRoadIntersection(candidate,21)||!this.clearAt(candidate,null,6))continue;
+    const onward=this.route(candidate,this.destination,candidate.yaw);if(!onward||!this.routeClearOfParked(candidate,onward))continue;
+    for(const approach of [65,85,105,130,155,185]){const p={x:candidate.x-fx*approach,z:candidate.z-fz*approach};if(!this.clearAt(p))continue;const r=this.route(p,candidate,candidate.yaw);if(r&&this.routeClearOfParked(p,r)){pickup=candidate;spawn=p;route=r;break;}}
+    if(spawn)break;
+   }
+   if(spawn)break;
+  }
+  if(!spawn){this.change('unavailable','附近没有可安全驶入和离开的接车路线，请换一个路边位置');return this.result(false,this.notice);}this.pickup=pickup;
+  const v=this.g.makeVehicle(fleet.modelId,spawn.x,spawn.z,pickup.yaw,true,fleet.color);
+  Object.assign(v,{isRobotaxi:true,populationProtected:true,populationDormant:false,parked:false,condition:100,battery:100,id:'robotaxi',path:route,index:0,cruise:13,wait:0});
+  // simple=true deliberately bypasses garage condition and fault restoration.
+  v.pos.y=groundHeight(spawn.x,spawn.z);v.root.userData.robotaxi=true;this.taxi=v;this.g.traffic.push(v);this.driver=new TaxiRouteDriver(this.g,v,route,pickup);this.change('toPickup');this.notify(fleet.name+' 已出发 · 到接车点附近等候');return this.result(true);
+ }
+ board(){
+  if(this.phase!=='waiting')return this.result(false,'请等待车辆到达接车点');
+  if(distance(this.taxi.pos,this.g.playerPos)>8)return this.result(false,'请走近接送车辆后上车');
+  if(this.g.inCar||this.g.transition||Math.abs(this.taxi.speed)>.6)return this.result(false,'车辆停稳后才能上车');
+  const onward=this.route(this.taxi.pos,this.destination,this.taxi.yaw);if(!onward)return this.result(false,'路线暂不可用，请取消后选择其他目的地');
+  this.boardExit=safeVehicleExit(this.g,this.taxi);if(!this.boardExit)return this.result(false,'车旁空间不足，请取消并换一个接车点');this.g.rememberBrakeFault?.();this.originalVehicle=this.g.vehicle;this.originalFlags={parked:this.originalVehicle.parked,protected:this.originalVehicle.populationProtected,inTraffic:this.g.traffic.includes(this.originalVehicle)};
+  this.g.personalVehicle=this.originalVehicle;this.originalVehicle.parked=true;this.originalVehicle.populationProtected=true;if(!this.originalFlags.inTraffic)this.g.traffic.push(this.originalVehicle);
+  setVehicleInteriorView(this.originalVehicle,false);this.g.promoteVehicle?.(this.taxi);resetVehiclePose(this.taxi);this.taxi.isRobotaxi=true;this.taxi.parked=false;this.g.vehicle=this.taxi;this.g.inCar=false;this.g.autopilot=false;this.g.resetControls?.();this.g.pilot?.reset?.();this.g.sensor?.reset?.();this.driver=new TaxiRouteDriver(this.g,this.taxi,onward,this.destination);this.startAnimation(true);this.change('boarding');return this.result(true);
+ }
+ startAnimation(entering){
+  const g=this.g,v=this.taxi,root=g.person?.root,safeExit=entering?this.boardExit:safeVehicleExit(g,v);if(!safeExit){this.notice='车旁空间不足，暂时无法安全下车';return false;}
+  const animation=createEntryAnimation({entering,vehiclePosition:v.pos,vehicleYaw:v.yaw,driverPosition:v.driverPosition,exitPosition:safeExit.exitPosition,exactExitPosition:true,footOffset:getActorFootOffset(g.person),groundHeight:(x,z,yaw)=>g.walkingHeight?.(x,z,yaw)??groundHeight(x,z)+.012,halfWidth:v.halfWidth??1,halfLength:(v.wheelBase??2.8)*.5+1.1,height:v.height??1.5,startPosition:root?.position??g.playerPos,startYaw:g.playerYaw,kind:g.character==='mochi'?'cat':'human'});
+  this.animation={plan:animation,time:0,doorIndex:safeExit.side>0?1:0};this.cameraTransition={entering,time:0,duration:animation.duration,animation,pose:sampleEntryAnimation(animation,0),cameraWalkStart:(g.cameraAnchor??g.playerPos).clone(),cameraWalkOrigin:(root?.position??g.playerPos).clone(),cameraStart:g.camera?{position:g.camera.position.clone(),look:g.cameraLook?.clone(),fov:g.camera.fov}:null};this.animate(0);if(root)root.visible=true;if(g.gun)g.gun.visible=false;return true;
+ }
+ animate(dt){
+  const g=this.g,a=this.animation;a.time+=dt;const pose=sampleEntryAnimation(a.plan,a.time),root=g.person?.root;
+  if(this.cameraTransition){this.cameraTransition.time=a.time;this.cameraTransition.pose=pose;}
+  if(root){root.position.set(pose.position.x,pose.position.y,pose.position.z);root.rotation.set(pose.pitch,pose.yaw,0,'YXZ');root.scale.setScalar(1);for(const [limbs,angles]of [[g.person.arms??[],pose.arms],[g.person.legs??[],pose.legs]])limbs.forEach((limb,i)=>{if(angles[i])limb.rotation.set(angles[i].x,angles[i].y,angles[i].z);});}
+  g.playerPos.set(pose.position.x,pose.position.y,pose.position.z);g.playerYaw=pose.yaw;const door=this.taxi.doors?.[a.doorIndex??0];if(door)door.pivot.rotation.y=pose.doorAngle*(a.doorIndex===1?-1:1);
+  if(!pose.done)return;
+  if(door)door.pivot.rotation.y=0;this.animation=null;this.cameraTransition=null;
+  if(this.phase==='boarding'){g.inCar=true;if(root)root.visible=false;this.change(this.cancelRequested?'stopping':'riding');g.ui?.updateAll?.();}
+  else this.finishExit();
+ }
+ cancel(){
+  if(!this.active)return this.result(false,'没有正在进行的接送');
+  this.cancelRequested=true;this.outcome='cancelled';
+  if(!this.passenger){this.cleanupTaxi();this.change('cancelled');this.notify('接送已取消');}
+  else if(this.phase==='boarding'){this.notice='上车动作结束后会停车下车';}
+  else if(this.phase!=='exiting'){this.change('stopping','已取消 · 车辆停稳后下车');}
+  return this.result(true);
+ }
+ exit(){
+  if(!this.passenger)return this.result(false,'尚未登上接送车辆');
+  if(this.phase==='boarding'||this.phase==='exiting')return this.result(false,'请等待上下车动作完成');
+  if(this.phase==='arrived'||Math.abs(this.taxi.speed)<.35){if(this.phase!=='arrived')this.outcome='cancelled';if(!this.startAnimation(false))return this.result(false,this.notice);this.change('exiting');}
+  else{this.cancelRequested=true;this.outcome='cancelled';this.change('stopping','车辆正在停车，请稍候');}
+  return this.result(true);
+ }
+ update(dt){
+  if(!this.active||!this.taxi)return;dt=clamp(dt,0,.1);const g=this.g,v=this.taxi;
+  if(!this.passenger&&distance(g.position??g.playerPos,this.pickup)>450){this.cancel();this.notice='你已离开接车区域，请在新位置重新叫车';return;}
+  if(this.phase==='boarding'||this.phase==='exiting'){g.integrate(v,HOLD,dt,false);this.animate(dt);return;}
+  if(this.phase==='stopping'){g.integrate(v,HOLD,dt,false);if(Math.abs(v.speed)<.3){if(this.startAnimation(false))this.change('exiting');else this.change('arrived',this.notice);}return;}
+  if(this.phase==='waiting'||this.phase==='arrived'){g.integrate(v,HOLD,dt,false);return;}
+  const before=point(v.pos),input=this.driver.update(dt);g.integrate(v,input,dt,false);const travelled=g.physics?Math.abs(v.travelDistance??0):distance(v.pos,before);this.tripDistance+=travelled;v.battery=Math.max(0,v.battery-travelled*.0008);
+  if(this.passenger){g.playerPos.copy(v.pos);g.playerYaw=v.yaw;g.audio?.update?.(v.speed);}
+  if(this.driver.arrived||(this.phase==='toPickup'&&distance(v.pos,this.pickup)<9&&Math.abs(v.speed)<.5)){v.parked=true;if(this.phase==='toPickup'){this.change('waiting');this.notify(this.fleet.name+' 已到 · 靠近车辆后上车');}else{this.change('arrived');this.notify('已到达 '+this.destination.name+' · 可以下车');}}
+ }
+ finishExit(){
+  const g=this.g,original=this.originalVehicle,flags=this.originalFlags;setVehicleInteriorView(this.taxi,false);g.inCar=false;g.vehicle=original;g.personalVehicle=null;
+  original.parked=flags.parked;original.populationProtected=flags.protected;if(!flags.inTraffic)g.traffic=g.traffic.filter(c=>c!==original);
+  this.originalVehicle=null;this.originalFlags=null;g.autopilot=false;g.resetControls?.();g.pilot?.reset?.();g.sensor?.reset?.();
+  if(g.person){g.playerPos.y=g.walkingHeight?.(g.playerPos.x,g.playerPos.z)??groundHeight(g.playerPos.x,g.playerPos.z)+.012;g.person.root.position.copy(g.playerPos);g.person.root.visible=true;g.person.root.rotation.set(0,g.playerYaw,0);g.person.root.scale.setScalar(1);for(const limb of [...(g.person.arms??[]),...(g.person.legs??[])])limb.rotation.set(0,0,0);}
+  this.taxi.parked=true;if(g.destination)g.replan?.();this.change(this.outcome);g.ui?.updateAll?.();this.notify(this.outcome==='completed'?'行程完成 · 已下车':'行程已结束 · 已在当前位置下车');
+ }
+ saveContext(){
+  const g=this.g,v=this.originalVehicle??g.vehicle,exit=this.passenger?safeVehicleExit(g,this.taxi):null;
+  // Rides are ephemeral. Reload safely on foot at the current ride location,
+  // while retaining the actual personal car's model, position and health.
+  return{vehicle:v,inCar:this.passenger?false:g.inCar,player:this.passenger?(exit?.worldPosition??{...point(this.taxi.pos),x:this.taxi.pos.x+Math.cos(this.taxi.yaw)*(this.taxi.halfWidth+1.4),z:this.taxi.pos.z-Math.sin(this.taxi.yaw)*(this.taxi.halfWidth+1.4)}):point(g.playerPos),playerYaw:this.passenger?this.taxi.yaw:g.playerYaw};
+ }
+ cleanupTaxi(){if(!this.taxi)return;disposeVehicleInstruments(this.taxi);disposeVehicleDamage(this.taxi);this.g.scene?.remove?.(this.taxi.root);this.g.traffic=this.g.traffic.filter(v=>v!==this.taxi);this.taxi=null;this.driver=null;this.g._trafficSpatialIndex=null;}
+ reset(){if(this.passenger){const exit=safeVehicleExit(this.g,this.taxi);this.g.playerPos.copy(exit?.worldPosition??this.taxi.pos);this.finishExit();}this.cleanupTaxi();this.animation=null;this.cameraTransition=null;this.cancelRequested=false;this.change('idle');}
+}

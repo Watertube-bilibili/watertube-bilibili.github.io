@@ -1,0 +1,20 @@
+import * as THREE from './vendor/three.module.js';
+/** World-space guidance columns. Exclude these roots from perception captures. */
+export class LocationBeacon{
+ constructor(color=0xc4f580){
+  this.root=new THREE.Group();this.root.name='location-beacon';this.root.visible=false;this.color=color;this.root.userData.guidance=true;
+  const material=(opacity)=>new THREE.MeshBasicMaterial({color,transparent:true,opacity,depthWrite:false,fog:false,side:THREE.DoubleSide});
+  this.ring=new THREE.Mesh(new THREE.TorusGeometry(4,.13,6,48),material(.9));this.ring.rotation.x=-Math.PI/2;this.ring.position.y=.12;this.root.add(this.ring);
+  this.column=new THREE.Mesh(new THREE.CylinderGeometry(1.4,2.25,72,16,1,true),material(.18));this.column.position.y=36;this.root.add(this.column);
+  this.core=new THREE.Mesh(new THREE.CylinderGeometry(.075,.12,72,8,1,true),material(.72));this.core.position.y=36;this.root.add(this.core);
+  this.cap=new THREE.Mesh(new THREE.TorusGeometry(1.5,.1,5,32),material(.75));this.cap.rotation.x=-Math.PI/2;this.cap.position.y=72;this.root.add(this.cap);
+  this.canvas=document.createElement('canvas');this.canvas.width=768;this.canvas.height=128;this.texture=new THREE.CanvasTexture(this.canvas);this.texture.colorSpace=THREE.SRGBColorSpace;
+  this.label=new THREE.Sprite(new THREE.SpriteMaterial({map:this.texture,transparent:true,depthTest:false,depthWrite:false,fog:false}));this.label.position.y=75;this.label.renderOrder=9;this.root.add(this.label);
+ }
+ setLabel(text){text=String(text??'目的地').slice(0,34);if(text===this.text)return;this.text=text;const c=this.canvas.getContext('2d');c.clearRect(0,0,768,128);c.fillStyle='rgba(12,27,34,.88)';c.fillRect(0,0,768,128);c.fillStyle='#'+new THREE.Color(this.color).getHexString();c.fillRect(0,0,12,128);c.fillStyle='#f2f7ed';c.font='600 46px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(text,392,64,732);this.texture.needsUpdate=true;}
+ setTarget(target,height,label){this.root.visible=!!target;if(!target)return;this.root.position.set(target.x,height,target.z);this.setLabel(label);}
+ update(time,camera,viewportHeight=800){if(!this.root.visible)return;this.ring.scale.setScalar(1+.04*Math.sin(time*2));this.column.material.opacity=.16+.025*Math.sin(time*1.4);this.cap.rotation.z=time*.2;
+  if(camera){const horizontal=Math.hypot(camera.position.x-this.root.position.x,camera.position.z-this.root.position.z);this.label.position.y=Math.min(75,3.8+horizontal*.15);const location=this.root.position.clone().add(this.label.position),distance=camera.position.distanceTo(location),height=2*Math.tan((camera.fov??58)*Math.PI/360)*distance*(30/Math.max(300,viewportHeight));this.label.scale.set(Math.min(240,height*6),Math.min(40,height),1);}
+ }
+ dispose(){this.root.traverse(o=>{o.geometry?.dispose();if(o.material)o.material.dispose();});this.texture.dispose();this.root.removeFromParent();}
+}

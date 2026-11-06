@@ -1,0 +1,328 @@
+import {roadInfo} from './regions.js';
+import {observedRoadEdge,planObservedDetour,routeObstacleDistance} from './pilot-detour.js';
+import {vehicleLongitudinalForces} from './vehicle-physics.js';
+import {FOLLOW_GAP_PRESETS} from './assist-settings.js';
+import {getVehicleCollider} from './vehicle-dynamics.js';
+import {planRoute,nearestRoad,isRoadIntersection,WORLD_LIMIT} from './streaming-world.js';
+// Route geometry and control use the public road map; other road users and
+// obstacles come exclusively from the forward camera's measured tracks.
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+const wrap=a=>Math.atan2(Math.sin(a),Math.cos(a));
+const distance=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
+const GRID=80;
+const emptyControls=()=>({throttle:0,steer:0,brake:1,brakeSource:'pilot'});
+
+
+// Distance consumed while releasing positive acceleration into a bounded,
+// jerk-limited normal stop. Speed-only square-root envelopes are insufficient
+// when a car starts again just a few metres before a red stop line.
+function stoppingTravel(speed,acceleration,deceleration=3.5,jerk=6){
+ const a=clamp(acceleration,-deceleration,6.5),ramp=Math.max(0,(a+deceleration)/jerk);
+ const stop=(a+Math.sqrt(a*a+2*jerk*speed))/jerk,t=Math.min(ramp,stop);
+ const travelled=Math.max(0,speed*t+a*t*t/2-jerk*t*t*t/6),remaining=Math.max(0,speed+a*t-jerk*t*t/2);
+ return travelled+(stop>ramp?remaining*remaining/(2*deceleration):0);
+}
+
+function sampleRoute(origin,route){
+ const vertices=[{x:origin.x,z:origin.z,routeIndex:0}];
+ route.forEach((p,i)=>{if(Number.isFinite(p.x)&&Number.isFinite(p.z)&&distance(vertices.at(-1),p)>.12)vertices.push({...p,routeIndex:i});});
+ const points=[];
+ const add=p=>{const previous=points.at(-1);if(!previous){points.push({...p,s:0});return;}const length=distance(previous,p),steps=Math.max(1,Math.ceil(length/1.5));for(let i=1;i<=steps;i++)points.push({x:previous.x+(p.x-previous.x)*i/steps,z:previous.z+(p.z-previous.z)*i/steps,routeIndex:p.routeIndex,s:previous.s+length*i/steps});};
+ if(!vertices.length)return points;add(vertices[0]);
+ for(let i=1;i<vertices.length-1;i++){
+  const a=vertices[i-1],b=vertices[i],c=vertices[i+1],before=distance(a,b),after=distance(b,c);
+  const ux=(b.x-a.x)/before,uz=(b.z-a.z)/before,wx=(c.x-b.x)/after,wz=(c.z-b.z)/after;
+  const angle=Math.acos(clamp(ux*wx+uz*wz,-1,1)),sign=Math.sign(ux*wz-uz*wx);
+  if(angle<.08||angle>2.65||!sign){add(b);continue;}
+  // Fillets stay within the existing junction: trim at most 7.5 metres of
+  // each road leg, and never cut a diagonal through a building block.
+  const trim=Math.min(6.5*Math.tan(angle/2),7.5,before*.35,after*.35),radius=trim/Math.tan(angle/2);
+  const entry={x:b.x-ux*trim,z:b.z-uz*trim,routeIndex:b.routeIndex},center={x:entry.x-uz*sign*radius,z:entry.z+ux*sign*radius};
+  add(entry);const rx=entry.x-center.x,rz=entry.z-center.z,steps=Math.max(3,Math.ceil(angle*radius/.8));
+  for(let j=1;j<=steps;j++){const theta=sign*angle*j/steps;add({x:center.x+rx*Math.cos(theta)-rz*Math.sin(theta),z:center.z+rx*Math.sin(theta)+rz*Math.cos(theta),routeIndex:b.routeIndex});}
+ }
+ if(vertices.length>1)add(vertices.at(-1));
+ for(let i=0;i<points.length;i++){
+  const a=points[Math.max(0,i-2)],b=points[i],c=points[Math.min(points.length-1,i+2)];
+  const ab=distance(a,b),bc=distance(b,c),ac=distance(a,c),cross=(b.x-a.x)*(c.z-a.z)-(b.z-a.z)*(c.x-a.x);
+  points[i].curvature=ab*bc*ac>1e-6?Math.abs(2*cross/(ab*bc*ac)):0;
+ }
+ return points;
+}
+
+export class PilotController{
+ constructor(game){this.g=game;this.reset();}
+ reset(){if(this.g)this.g.pilotTelemetry=null;this.route=null;this.path=[];this.crossings=[];this.segment=0;this.progress=0;this.lastSteer=0;this.lastTarget=0;this.blockedTime=0;this.offRouteTime=0;this.lastReplan=-100;this.crossingCommit=null;this.committedCrossings=new Set();this.arrived=false;this.lastPosition=null;this.filteredTracks=new Map();this.blockRecovery=null;this.destinationKey=null;this.acceleration=0;this.followHeadway=null;this.followStandstill=null;this.mode=null;this.cruiseGeneration=0;this.detourCount=0;this.observedClosures=new Map();this.detourState=null;}
+ setRoute(route,mode=this.g.destination?'route':'cruise'){
+  this.mode=mode;
+  const destination=this.g.destination,key=destination?destination.x+','+destination.z:null;
+  // Internal replanning keeps the failed-obstacle history. A driver-selected
+  // different destination starts a new trip and clears its takeover hold.
+  if(key!==this.destinationKey){this.blockRecovery=null;this.lastReplan=-100;this.detourCount=0;this.detourState=null;this.destinationKey=key;}
+  this.route=route;this.path=sampleRoute(this.g.vehicle.pos,route??[]);this.segment=0;this.progress=0;this.lastSteer=this.g.vehicle.steer??0;this.blockedTime=0;this.offRouteTime=0;this.crossingCommit=null;this.committedCrossings=new Set();this.arrived=false;
+  this.crossings=[];let lastKey=null,lastS=-100;
+  for(let i=0;i<this.path.length;i++){
+   const p=this.path[i],x=Math.round(p.x/GRID)*GRID,z=Math.round(p.z/GRID)*GRID,key=x+','+z;
+   if(Math.abs(p.x-x)>11||Math.abs(p.z-z)>11||!isRoadIntersection({x,z}))continue;
+   if(key===lastKey){const event=this.crossings.at(-1);if(distance(p,{x,z})<event.error){event.s=p.s;event.error=distance(p,{x,z});}continue;}
+   if(p.s-lastS<25)continue;
+   this.crossings.push({x,z,key,s:p.s,error:distance(p,{x,z})});lastKey=key;lastS=p.s;
+  }
+  // Freeze each event's incoming axis before any turn curves through it.
+  for(const event of this.crossings){const approach=this.at(Math.max(0,event.s-25));event.axis=Math.abs(event.x-approach.x)>Math.abs(event.z-approach.z)?'ew':'ns';}
+  // Enabling assistance within a junction must complete the crossing instead
+  // of freezing in it when the phase changes or starts red.
+  const initial=this.crossings.find(e=>distance(this.g.vehicle.pos,e)<19);
+  if(initial){this.crossingCommit=initial.key;this.committedCrossings.add(initial.key);}
+ }
+ // A private rolling public-road corridor is distinct from navigation. It
+ // never installs a destination, changes the map route, or reports arrival.
+ startCruise(){
+  const g=this.g,v=g.vehicle;
+  if(g.destination){if(g.route?.length)this.setRoute(g.route,'route');return false;}
+  const road=nearestRoad(v.pos),fx=-Math.sin(v.yaw),fz=-Math.cos(v.yaw),vertical=Math.abs(fz)>=Math.abs(fx);
+  let hx=vertical?0:Math.sign(fx)||1,hz=vertical?(Math.sign(fz)||-1):0;
+  const minX=-3*GRID,max=WORLD_LIMIT-GRID;
+  let x=road.x,z=road.z;
+  const runway=hx>0?max-x:hx<0?x-minX:hz>0?max-z:z+max;
+  if(runway<GRID*2){
+   // Turn onto another public road before the finite world edge. Prefer a
+   // deterministic right turn; use left if right would leave the map.
+   const right={x:-hz,z:hx},rightRoom=right.x>0?max-x:right.x<0?x-minX:right.z>0?max-z:z+max;
+   const sign=rightRoom>=GRID*3?1:-1;hx=right.x*sign;hz=right.z*sign;
+  }
+  x=clamp(x+hx*GRID*6,minX,max);z=clamp(z+hz*GRID*6,-max,max);
+  const goal={x:x+(hz<0?4.5:hz>0?-4.5:0),z:z+(hx>0?4.5:hx<0?-4.5:0)};
+  const blocked=(g.blockedRoads??[]).filter(b=>b.until>g.time).map(b=>b.edge);
+  const route=planRoute(v.pos,goal,blocked,v.yaw),commit=this.crossingCommit;
+  this.setRoute(route,'cruise');this.crossingCommit??=commit;if(this.crossingCommit)this.committedCrossings.add(this.crossingCommit);this.cruiseGeneration++;
+  return route.length>0;
+ }
+ ensureCruise(){
+  if(this.g.destination)return false;
+  if(this.mode!=='cruise'||this.path.length<2||this.path.at(-1).s-this.progress<Math.max(100,Math.abs(this.g.vehicle.speed)*6))return this.startCruise();
+  return true;
+ }
+ at(s){
+  const path=this.path;if(!path.length)return{x:this.g.vehicle.pos.x,z:this.g.vehicle.pos.z,s:0,curvature:0};
+  s=clamp(s,0,path.at(-1).s);let lo=0,hi=path.length-1;
+  while(lo<hi){const mid=(lo+hi)>>1;if(path[mid].s<s)lo=mid+1;else hi=mid;}
+  const b=path[lo],a=path[Math.max(0,lo-1)],t=b.s>a.s?(s-a.s)/(b.s-a.s):0;
+  return{x:a.x+(b.x-a.x)*t,z:a.z+(b.z-a.z)*t,s,curvature:a.curvature+(b.curvature-a.curvature)*t,routeIndex:b.routeIndex};
+ }
+ project(pos,from=this.segment,to=Math.min(this.path.length-2,from+60)){
+  let best={distance:Infinity,s:this.progress,index:from,x:pos.x,z:pos.z};
+  for(let i=Math.max(0,from);i<=to;i++){
+   const a=this.path[i],b=this.path[i+1];if(!b)break;const dx=b.x-a.x,dz=b.z-a.z,l2=dx*dx+dz*dz;
+   const t=clamp(((pos.x-a.x)*dx+(pos.z-a.z)*dz)/Math.max(l2,1e-8),0,1),x=a.x+dx*t,z=a.z+dz*t,d=Math.hypot(pos.x-x,pos.z-z);
+   const s=a.s+(b.s-a.s)*t;if(s<this.progress-2)continue;
+   if(d<best.distance){best={distance:d,s,index:i,x,z};}
+  }return best;
+ }
+ sensorObject(track,v){
+  const f=-Math.sin(v.yaw),fz=-Math.cos(v.yaw),r=Math.cos(v.yaw),rz=-Math.sin(v.yaw);
+  return{x:Number.isFinite(track.worldX)?track.worldX:v.pos.x+f*track.distance+r*track.lateral,z:Number.isFinite(track.worldZ)?track.worldZ:v.pos.z+fz*track.distance+rz*track.lateral};
+ }
+ trackMotion(track,now){
+  const key=track.id,previous=key==null?null:this.filteredTracks.get(key);
+  const measured=track.visible!==false&&track.motionValid&&(track.motionConfidence??0)>=.15&&Number.isFinite(track.vx)&&Number.isFinite(track.vz);
+  const stamp=Number.isFinite(track.lastSeen)?track.lastSeen:now;
+  let vx=measured?track.vx:0,vz=measured?track.vz:0,valid=measured;
+  if(!valid&&previous?.valid&&now-previous.measuredAt<.4){vx=previous.vx;vz=previous.vz;valid=true;}
+  if(key!=null){
+   this.filteredTracks.set(key,{vx,vz,valid,measuredAt:measured?stamp:previous?.measuredAt??-100,seenAt:now});
+   for(const [id,memory] of this.filteredTracks)if(now-memory.seenAt>1)this.filteredTracks.delete(id);
+  }
+  return{vx,vz,valid};
+ }
+ update(dt=1/60){
+  const g=this.g,v=g.vehicle,s=g.sensor?.data??{},now=g.time??0;dt=clamp(dt,.001,.1);
+  const cruising=!g.destination;
+  if(cruising)this.ensureCruise();
+  else if(this.mode!=='route'||this.route!==g.route||this.path.length<2)this.setRoute(g.route??[],'route');
+  if(this.path.length<2){g.pilotStatus='道路路径不可用 · 请接管';g.pilotTelemetry={targetSpeed:0,reason:g.pilotStatus,takeoverRequired:true,mode:cruising?'cruise':'route',path:[]};return emptyControls();}
+  if(v.condition<=0){this.acceleration=0;g.pilotStatus='动力已损坏 · 停车待修';g.pilotTelemetry={targetSpeed:0,reason:g.pilotStatus,takeoverRequired:true,mode:cruising?'cruise':'route',path:[]};return emptyControls();}
+  const previous=this.lastPosition;this.lastPosition={x:v.pos.x,z:v.pos.z};
+  if(previous&&distance(previous,v.pos)>25){if(cruising)this.startCruise();else this.setRoute(g.route);this.lastSteer=0;}
+  let projected=this.project(v.pos,Math.max(0,this.segment-3));
+  this.progress=Math.max(this.progress,projected.s);this.segment=projected.index;if(!cruising)g.routeIndex=Math.min(g.route.length-1,this.path[Math.min(this.segment+1,this.path.length-1)]?.routeIndex??0);
+  const remaining=Math.max(0,this.path.at(-1).s-this.progress),goalDistance=cruising?Infinity:distance(v.pos,g.destination),speed=Math.max(0,v.speed);
+  const settings=g.assistSettings??{},sport=settings.driveStyle==='sport',configured=Number(settings.maxSpeedKmh);
+  const cruiseSpeed=Math.min(Number.isFinite(configured)&&configured>0?clamp(configured,10,220)/3.6:18,v.model.max??18),comfortDecel=sport?3.4:2.9;
+  const preset=FOLLOW_GAP_PRESETS[settings.followGap]??FOLLOW_GAP_PRESETS.medium;
+  this.followHeadway??=preset.headway;this.followStandstill??=preset.standstill;
+  this.followHeadway+=clamp(preset.headway-this.followHeadway,-.3*dt,.3*dt);
+  this.followStandstill+=clamp(preset.standstill-this.followStandstill,-.7*dt,.7*dt);
+  const body=getVehicleCollider(v),frontOverhang=Math.max(1.5,body.halfLength-(body.x-v.pos.x)*Math.sin(v.yaw)-(body.z-v.pos.z)*Math.cos(v.yaw));
+  if(!cruising&&(remaining<3.2||goalDistance<3.5)&&goalDistance<5.5&&Math.abs(v.speed)<.65){
+   if(!this.arrived){this.arrived=true;g.autopilot=false;g.arrivalShown=true;g.pilotStatus='已到达目的地';g.ui?.toast?.('已到达 '+g.destination.name);g.ui?.updatePilot?.();}
+   g.pilotTelemetry={targetSpeed:0,reason:'已到达目的地',turn:'到达',distance:goalDistance,leadDistance:null,timeGap:null};return emptyControls();
+  }
+  const lookahead=clamp(4+speed*.48,4,12),targetPoint=this.at(this.progress+lookahead),dx=targetPoint.x-v.pos.x,dz=targetPoint.z-v.pos.z;
+  const angle=wrap(Math.atan2(-dx,-dz)-v.yaw),reach=Math.max(2.5,Math.hypot(dx,dz));
+  // The bicycle model is centred between axles; aim the rear axle's pursuit
+  // ray from its actual location to avoid oscillation on tight curves.
+  const rear={x:v.pos.x+Math.sin(v.yaw)*v.rearAxle,z:v.pos.z+Math.cos(v.yaw)*v.rearAxle};
+  const rearDX=targetPoint.x-rear.x,rearDZ=targetPoint.z-rear.z,rearAngle=wrap(Math.atan2(-rearDX,-rearDZ)-v.yaw);
+  let steering=clamp(Math.atan2(2*v.wheelBase*Math.sin(rearAngle),Math.max(2.5,Math.hypot(rearDX,rearDZ))),-v.maxSteer,v.maxSteer);
+  this.lastSteer+=clamp(steering-this.lastSteer,-1.4*dt,1.4*dt);steering=this.lastSteer;
+  const turn=angle>.12?'左转':angle<-.12?'右转':'直行';
+  let target=cruiseSpeed,reason=this.detourState==='active'?'道路绕行 · 保持车道':cruising?'道路巡航 · 保持车道':'路线跟随 · 稳定巡航',waitingSignal=false,yielding=false,leadDistance=null,timeGap=null,stopAtDistance=Infinity;
+  const cap=(value,why)=>{if(value<target){target=Math.max(0,value);reason=why;}};
+  cap(roadInfo(v.pos).speedLimit,'道路限速 · 稳定巡航');
+  // Evaluate curvature ahead and a comfortable braking envelope, rather than
+  // only slowing after the steering wheel already reaches its turning angle.
+  const preview=Math.max(40,speed*speed/(2*comfortDecel)+speed*.8+15),lateral=Math.min(sport?4.5:3.8,v.lateralGrip*(sport?.5:.43));
+  for(let i=this.segment;i<this.path.length&&this.path[i].s<this.progress+preview;i++){
+   const p=this.path[i],roadLimit=roadInfo(p).speedLimit,curveLimit=Math.sqrt(lateral/Math.max(.001,p.curvature)),curveSpeed=Math.min(cruiseSpeed,roadLimit,curveLimit);
+   cap(Math.sqrt(curveSpeed*curveSpeed+2*comfortDecel*Math.max(0,p.s-this.progress-Math.max(2,speed*.5))),roadLimit<curveLimit?'前方限速 · 提前减速':p.s-this.progress>12?'前方转弯 · 提前减速':'路口转向 · 平顺通过');
+  }
+  if(Math.abs(angle)>.75)cap(Math.max(2.4,6*(1-Math.abs(angle)/Math.PI)),'重新对准车道');
+  if(!cruising){stopAtDistance=Math.max(0,remaining-2.1);cap(Math.sqrt(2*2.6*Math.max(0,stopAtDistance-speed*.5)),'接近目的地 · 准备停车');}
+  if(projected.distance>3)cap(6,'调整车道位置');
+  // A clear green straight does not impose an unrelated 40 km/h ceiling.
+  // Inspect the next stop line even while clearing the previous junction;
+  // otherwise the short city blocks expose the red light too late at 80.
+  this.crossingCommit=null;
+  for(const event of this.crossings){
+   const until=event.s-this.progress;
+   if(until<-20){this.committedCrossings.delete(event.key);continue;}
+   if(until>preview+30)break;
+   const signal=g.signalState?.(event,v)??(g.signalGreen?.(event,v)!==false?'green':'red'),green=signal==='green';
+   const dilemma=21+speed*speed/(2*comfortDecel)+speed*(.5+Math.max(0,this.acceleration)/6);
+   // A commitment only covers the dilemma zone or the actual crossing. A
+   // traffic stop before the line restores our ability to obey a new red.
+   if(!green&&(until>dilemma+1||(speed<.5&&until>22)))this.committedCrossings.delete(event.key);
+   if((green&&until<22)||(signal==='amber'&&speed>1&&until<dilemma))this.committedCrossings.add(event.key);
+   if(this.committedCrossings.has(event.key)){this.crossingCommit??=event.key;continue;}
+   if(!green){
+    const stopDistance=Math.max(0,until-21);stopAtDistance=Math.min(stopAtDistance,stopDistance);
+    cap(Math.sqrt(2*comfortDecel*Math.max(0,stopDistance-speed*.5)),signal==='amber'?'黄灯 · 停线前减速':'红灯 · 停线前等待');waitingSignal=true;
+    if(stopDistance<.6)cap(0,'红灯等待');
+   }
+  }
+  const freshness=now-(s.timestamp??-100),confidence=s.confidence??0;
+  if(freshness>1.2||confidence<.08){cap(freshness>2?0:3,'视野不足 · 减速观察');}
+  else if(confidence<.2)cap(7,'视野受限 · 谨慎通行');
+  const tracks=Array.isArray(s.tracks)?s.tracks:[];
+  for(const track of tracks){
+   if((track.confidence??0)<.22||track.age>.35||track.distance<.4||track.distance>115)continue;
+   const world=this.sensorObject(track,v),onPath=this.project(world,Math.max(0,this.segment-1),Math.min(this.path.length-2,this.segment+110));
+   const ahead=onPath.s-this.progress;if(ahead<.5||ahead>110)continue;
+   const pedestrian=track.cls===4,width=clamp(track.width??(pedestrian?.6:1.9),.3,8),radius=body.halfWidth+width*.5+.12;
+   const motion=this.trackMotion(track,now),tangentA=this.at(onPath.s),tangentB=this.at(onPath.s+2),len=Math.max(.01,distance(tangentA,tangentB));
+   const tx=(tangentB.x-tangentA.x)/len,tz=(tangentB.z-tangentA.z)/len;
+   const objectSpeed=motion.valid?motion.vx*tx+motion.vz*tz:0,sideSpeed=motion.valid?Math.abs(motion.vx*tz-motion.vz*tx):0;
+   let intersect=onPath.distance<radius,predictedAhead=ahead;
+   if(motion.valid&&(pedestrian||sideSpeed>.4)){
+    let crossing=false;
+    for(let t=.15;t<=3;t+=.15){
+     const predicted=this.project({x:world.x+motion.vx*t,z:world.z+motion.vz*t},Math.max(0,this.segment-1),Math.min(this.path.length-2,this.segment+110));
+     const relative=predicted.s-this.progress-speed*t;
+     if(predicted.distance<radius&&relative>-frontOverhang&&relative<(pedestrian?frontOverhang+1.2:this.followStandstill+speed*this.followHeadway)){
+      crossing=true;predictedAhead=Math.min(predictedAhead,predicted.s-this.progress);break;
+     }
+    }
+    // A moving road user who clears before our arrival is not a parked lead.
+    if(pedestrian)intersect=crossing||intersect&&ahead<frontOverhang+2;
+    else if(!intersect)intersect=crossing;
+    else if(sideSpeed>.8&&!crossing&&ahead>frontOverhang+speed*.5)intersect=false;
+   }
+   if(!intersect)continue;
+   // The camera locates the visible rear edge, so do not subtract a hidden
+   // second half-car length. Only the ego front overhang precedes its origin.
+   const gap=Math.max(0,predictedAhead-frontOverhang);
+   if(pedestrian){
+    stopAtDistance=Math.min(stopAtDistance,Math.max(0,gap-2));
+    cap(Math.sqrt(2*3.2*Math.max(0,gap-2-speed*.45)),'行人横穿 · 提前让行');yielding=true;
+    if(gap<2.1)cap(0,'等待行人通过');
+   }else{
+    const leadSpeed=Math.max(0,objectSpeed),desiredGap=this.followStandstill+speed*this.followHeadway;
+    if(leadSpeed<.2)stopAtDistance=Math.min(stopAtDistance,Math.max(0,gap-this.followStandstill));
+    let following=Math.max(0,leadSpeed+(gap-desiredGap)/Math.max(.8,this.followHeadway+.25));
+    // A clearly receding lead causes no braking. A small bounded speed
+    // deficit can still restore a newly selected larger following gap.
+    if(motion.valid&&leadSpeed>speed+.3&&gap>this.followStandstill)following=Math.max(Math.min(speed,leadSpeed-1.5),following);
+    const stopping=Math.sqrt(leadSpeed*leadSpeed+2*3.5*Math.max(0,gap-this.followStandstill-speed*.4));
+    cap(Math.min(following,stopping),'自适应跟车 · 保持车距');
+    if(leadDistance===null||gap<leadDistance){leadDistance=gap;timeGap=gap/Math.max(.1,speed);}
+   }
+  }
+  let blockedPoint=null,blockedDistance=Infinity,blockedWidth=.6,blockedTangent=null;
+  for(const obstacle of s.staticObstacles??[]){
+   if((obstacle.confidence??0)<.35||obstacle.visible===false||(obstacle.age??0)>.35||obstacle.distance<1||obstacle.distance>65)continue;
+   const world=this.sensorObject(obstacle,v),onPath=this.project(world,Math.max(0,this.segment-1),Math.min(this.path.length-2,this.segment+75));
+   const ahead=onPath.s-this.progress;if(ahead<0||onPath.distance>body.halfWidth+.15+(obstacle.width??.6)/2)continue;
+   stopAtDistance=Math.min(stopAtDistance,Math.max(0,ahead-frontOverhang-this.followStandstill));
+   cap(Math.sqrt(2*3*Math.max(0,ahead-frontOverhang-this.followStandstill-speed*.45)),'车道障碍 · 减速停车');
+   if(freshness<.45&&confidence>.2&&ahead<65){if(ahead<blockedDistance){blockedDistance=ahead;blockedPoint=world;blockedWidth=obstacle.width??.6;const a=this.at(onPath.s),b=this.at(onPath.s+2);blockedTangent={x:b.x-a.x,z:b.z-a.z};}}
+  }
+  // A legacy camera may only expose an obstacle range. New semantic-camera
+  // output uses explicit projected static components to avoid stopping for a
+  // roadside facade that happens to occupy the centre of a turning image.
+  if(!Array.isArray(s.staticObstacles)&&!tracks.length&&Number.isFinite(s.obstacle)&&s.obstacle<60)cap(Math.sqrt(2*3*Math.max(0,s.obstacle-5.5)),'前方障碍 · 减速观察');
+  const observedEdge=blockedPoint&&blockedTangent?observedRoadEdge(blockedPoint,blockedTangent):null;
+  if(observedEdge&&!this.blockRecovery?.held){
+   // Preserve the last legal turn while the camera confirms persistence.
+   // Otherwise 1.2 seconds at road speed can consume the remaining junction.
+   const junction=this.crossings.filter(e=>e.s>this.progress+1&&e.s<this.progress+blockedDistance-8).at(-1);
+   if(junction){const decisionDistance=Math.max(0,junction.s-this.progress-11);stopAtDistance=Math.min(stopAtDistance,decisionDistance);cap(Math.sqrt(2*comfortDecel*Math.max(0,decisionDistance-speed*.5)),'观察前方障碍 · 保留绕行路口');}
+  }
+  if(blockedPoint&&observedEdge){
+   if(!this.blockRecovery||this.blockRecovery.edge!==observedEdge||distance(this.blockRecovery.point,blockedPoint)>6)this.blockRecovery={point:{...blockedPoint},edge:observedEdge,width:blockedWidth,attempts:0,held:false,clearTime:0,observedTime:0,lastObserved:now};
+   else{if(now-this.blockRecovery.lastObserved>.4)this.blockRecovery.observedTime=0;this.blockRecovery.lastObserved=now;this.blockRecovery.point={...blockedPoint};this.blockRecovery.width=blockedWidth;this.blockRecovery.clearTime=0;}
+   if(!waitingSignal&&!yielding&&leadDistance===null)this.blockRecovery.observedTime+=dt;
+   else this.blockRecovery.observedTime=0;
+  }else if(this.blockRecovery&&freshness<.45&&confidence>.35&&!waitingSignal&&!yielding&&leadDistance===null){
+   const remembered=this.blockRecovery.point,dx=remembered.x-v.pos.x,dz=remembered.z-v.pos.z,forward=-dx*Math.sin(v.yaw)-dz*Math.cos(v.yaw),side=dx*Math.cos(v.yaw)-dz*Math.sin(v.yaw);
+   // Clear a hold only with a fresh unobstructed view of its remembered area.
+   // Turning away or a moving lead hiding it is not evidence it disappeared.
+   const stillSeen=(s.staticObstacles??[]).some(o=>o.visible!==false&&(o.confidence??0)>.35&&distance(this.sensorObject(o,v),remembered)<6);
+   if(forward>0&&forward<60&&Math.abs(side)<forward*.55+1&&!stillSeen){
+    this.blockRecovery.clearTime+=dt;
+    if(this.blockRecovery.clearTime>1.25){const edge=this.blockRecovery.edge;this.observedClosures.delete(edge);g.blockedRoads=(g.blockedRoads??[]).filter(b=>b.edge!==edge||b.source!=='pilot-camera');this.blockRecovery=null;this.blockedTime=0;this.detourState=null;}
+   }else this.blockRecovery.clearTime=0;
+  }
+  this.blockedTime=this.blockRecovery?.observedTime??0;
+  this.offRouteTime=projected.distance>9?this.offRouteTime+dt:0;
+  if(observedEdge&&this.blockRecovery?.observedTime>=1.2&&!this.blockRecovery.attempts&&!this.blockRecovery.held){
+   const recovery=this.blockRecovery;recovery.attempts=1;this.lastReplan=now;
+   const closure={point:{...recovery.point},width:recovery.width,edge:observedEdge,until:now+300};this.observedClosures.set(observedEdge,closure);
+   g.blockedRoads=(g.blockedRoads??[]).filter(b=>b.until>now&&b.edge!==observedEdge);
+   g.blockedRoads.push({edge:observedEdge,until:closure.until,source:'pilot-camera'});
+   for(const [edge,observation]of this.observedClosures)if(observation.until<now)this.observedClosures.delete(edge);
+   const goal=cruising?this.route?.at(-1):g.destination;
+   const result=goal&&this.detourCount<4?planObservedDetour({position:v.pos,goal,yaw:v.yaw,blocked:g.blockedRoads.map(b=>b.edge),observations:[...this.observedClosures.values()],halfWidth:body.halfWidth}):{route:[],reason:'detour-budget'};
+   if(result.route.length){
+    const sampled=sampleRoute(v.pos,result.route);
+    if([...this.observedClosures.values()].some(o=>routeObstacleDistance(v.pos,sampled,o.point)<body.halfWidth+Math.min(8,Math.max(.3,o.width))/2+.5)){result.route=[];result.reason='blocked-turn';}
+   }
+   if(result.route.length){
+    this.detourCount++;this.detourState='active';this.blockRecovery=null;
+    if(cruising)this.setRoute(result.route,'cruise');
+    else{g.replan?.(result.route);if(g.route!==result.route)g.route=result.route;this.setRoute(result.route,'route');}
+    g.ui?.toast?.('已避开受阻路段 · 沿道路自动绕行');
+    return this.update(dt);
+   }
+   recovery.held=true;recovery.failure=result.reason;this.detourState='waiting';
+   g.ui?.toast?.('前路受阻，当前无安全绕行路口 · 请接管或等待道路恢复');
+  }else if(this.offRouteTime>2.5&&now-this.lastReplan>15&&!this.blockRecovery?.held){
+   this.lastReplan=now;if(cruising)this.startCruise();else{g.replan?.();this.setRoute(g.route);}return this.update(dt);
+  }
+  if(this.blockRecovery?.held){target=0;reason='道路受阻 · 请接管';}
+  const stationaryHold=target<.2&&speed<.08;if(stationaryHold)this.acceleration=0;
+  let requestedAcceleration=clamp((target-speed)*(sport?1.8:1.55),-4.2,sport?6.5:3.6),forces=vehicleLongitudinalForces(v),drag=forces.dragDeceleration;
+  const nextAcceleration=this.acceleration+clamp(requestedAcceleration-this.acceleration,-6*dt,(sport?6:2.7)*dt);
+  if(!stationaryHold&&Number.isFinite(stopAtDistance)&&stoppingTravel(speed,nextAcceleration)+.35>=stopAtDistance)requestedAcceleration=Math.min(requestedAcceleration,-3.5);
+  // Limit normal longitudinal jerk. A green light or a disappearing speed
+  // cap should release the brake and apply power progressively, never jump
+  // from full comfortable deceleration to maximum acceleration in one tick.
+  this.acceleration+=clamp(requestedAcceleration-this.acceleration,-6*dt,(sport?6:2.7)*dt);
+  const desiredAcceleration=this.acceleration;
+  let throttle=clamp((desiredAcceleration+drag)/Math.max(1,v.model.power),0,1),brake=desiredAcceleration+drag<0?clamp((-desiredAcceleration-drag)/forces.serviceBrakeDeceleration,0,.8):0;
+  if(target<.2&&speed<.6){throttle=0;brake=.3;}
+  if(v.speed<-.2){throttle=0;brake=.5;}
+  g.pilotStatus=reason;g.pilotTelemetry={targetSpeed:target,setSpeedKmh:cruiseSpeed*3.6,roadSpeedLimitKmh:roadInfo(v.pos).speedLimit*3.6,driveStyle:sport?'sport':'normal',followGap:settings.followGap??'medium',desiredHeadway:this.followHeadway,desiredStandstillGap:this.followStandstill,mode:cruising?'cruise':'route',reason,turn,lookahead,remaining,leadDistance,timeGap,perceptionAge:Math.max(0,freshness),pathError:projected.distance,crossingCommitted:!!this.crossingCommit,waitingSignal,yielding,takeoverRequired:!!this.blockRecovery?.held,rerouteAttempts:this.detourCount+(this.blockRecovery?.attempts??0),detourState:this.detourState,blockedEdge:this.blockRecovery?.edge??null};
+  g.pilotTelemetry.path=Array.from({length:19},(_,i)=>this.at(Math.min(this.path.at(-1).s,this.progress+i*3)));this.lastTarget=target;return{throttle,steer:steering,brake,brakeSource:'pilot'};
+ }
+}

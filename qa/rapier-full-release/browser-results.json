@@ -1,0 +1,776 @@
+{
+  "scope": "Producer local Chromium/SwiftShader results. Normal-frame and controlled fixed-step cases are distinct; not public CDN gameplay or iPhone performance. Full original records and failures retained at producer paths.",
+  "results": [
+    {
+      "name": "normal-original-car-mica",
+      "producer_record": "/workspace/scratch/rapier-full-release/city-browser/run1/result.json",
+      "checks": [
+        {
+          "name": "cold chooser normal fresh creates original S on foot at $12500",
+          "pass": true
+        },
+        {
+          "name": "actual ready official Rapier 0.21.0",
+          "pass": true
+        },
+        {
+          "name": "original player and 30 NPCs are real independent 62-bone skins",
+          "pass": true
+        },
+        {
+          "name": "original traffic and police entities retained",
+          "pass": true
+        },
+        {
+          "name": "focus-walking: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "actual W normal-frame walking moves player",
+          "pass": true
+        },
+        {
+          "name": "focus-walked-back: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "focus-car-entry: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "actual E entry hides original avatar inside car",
+          "pass": true
+        },
+        {
+          "name": "focus-car-driving: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "actual original S accelerates in normal Rapier frames",
+          "pass": true
+        },
+        {
+          "name": "focus-car-braked: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "actual original S brake returns to rest",
+          "pass": true
+        },
+        {
+          "name": "focus-car-exit: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "actual E car exit restores original avatar",
+          "pass": true
+        },
+        {
+          "name": "actual garage MICA purchase costs $3800 and preserves original avatar",
+          "pass": true
+        },
+        {
+          "name": "actual original skeleton has motorcycle IK pose",
+          "pass": true
+        },
+        {
+          "name": "focus-mica-riding: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "MICA actual W drives Rapier rigid body",
+          "pass": true
+        },
+        {
+          "name": "focus-mica-braked: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "MICA brake returns to rest",
+          "pass": true
+        },
+        {
+          "name": "focus-mica-exit: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "MICA actual E exit restores walking",
+          "pass": true
+        },
+        {
+          "name": "focus-mica-reentry: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "focus-save: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "F5 and ordinary refresh preserve MICA instance/money/owned/character",
+          "pass": true
+        },
+        {
+          "name": "refresh preserved vehicle energy and numeric damage",
+          "pass": true
+        },
+        {
+          "name": "focus-restored-mica-driving: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "focus-restored-mica-braked: canvas pointer gives keyboard input to the game",
+          "pass": true
+        },
+        {
+          "name": "restored real body steps with finite velocity and orientation",
+          "pass": true
+        },
+        {
+          "name": "original slot/index/backup remain byte-identical with zero attempted/actual writes",
+          "pass": true
+        },
+        {
+          "name": "no uncaught page errors",
+          "pass": true
+        },
+        {
+          "name": "all 6 original character GLBs response bytes match current source",
+          "pass": true
+        },
+        {
+          "name": "no character request failed during active normal workflows",
+          "pass": true
+        },
+        {
+          "name": "context close received zero protected original storage attempts/mutations",
+          "pass": true
+        }
+      ],
+      "success": true,
+      "sha256": "34cb3d4b7eeee86d525b6d8a1f3d8103cccaa05ed8ab113d21ce168418a72131"
+    },
+    {
+      "name": "formal-root-start-refresh",
+      "producer_record": "/workspace/scratch/rapier-full-release/city-browser/formal-run1/result.json",
+      "checks": [
+        {
+          "name": "formal root fresh chooser initializes once",
+          "pass": true
+        },
+        {
+          "name": "cold formal runtime actually uses Rapier 0.21.0",
+          "pass": true
+        },
+        {
+          "name": "cold original model, traffic and NPC/police entities",
+          "pass": true
+        },
+        {
+          "name": "cold unmodified fresh game values",
+          "pass": true
+        },
+        {
+          "name": "cold actual body is finite",
+          "pass": true
+        },
+        {
+          "name": "actual F5 writes complete snapshot",
+          "pass": true
+        },
+        {
+          "name": "refreshed formal runtime actually uses Rapier 0.21.0",
+          "pass": true
+        },
+        {
+          "name": "refreshed original model, traffic and NPC/police entities",
+          "pass": true
+        },
+        {
+          "name": "refreshed unmodified fresh game values",
+          "pass": true
+        },
+        {
+          "name": "refreshed actual body is finite",
+          "pass": true
+        },
+        {
+          "name": "normal physical frames continue after refresh",
+          "pass": true
+        },
+        {
+          "name": "save/refresh retains identity/wallet/player",
+          "pass": true
+        },
+        {
+          "name": "no writes to original or unrelated storage keys",
+          "pass": true
+        },
+        {
+          "name": "no uncaught exceptions",
+          "pass": true
+        },
+        {
+          "name": "no failed local game requests in cold/refresh",
+          "pass": true
+        },
+        {
+          "name": "requested character and Rapier source bodies all match",
+          "pass": true
+        }
+      ],
+      "success": true,
+      "sha256": "72bcc1681307e6639de485a14083e8892ea672b3f2fd30736c44a2465046a48a"
+    },
+    {
+      "name": "aircraft",
+      "producer_record": "/workspace/scratch/rapier-full-release/browser-services/aircraft-attempt2/aircraft-browser.json",
+      "checks": [
+        {
+          "name": "actual Game/session booted",
+          "pass": true
+        },
+        {
+          "name": "real Rapier aircraft capability enabled",
+          "pass": true
+        },
+        {
+          "name": "actual scene rendered before RAF suspension",
+          "pass": true
+        },
+        {
+          "name": "real phone flights button requested trainer",
+          "pass": true
+        },
+        {
+          "name": "original service boarded the settled plane",
+          "pass": true
+        },
+        {
+          "name": "parked: actual render without extra physics step",
+          "pass": true
+        },
+        {
+          "name": "parked: every original key retains exact bytes",
+          "pass": true
+        },
+        {
+          "name": "parked: zero original storage mutations excluding seed",
+          "pass": true
+        },
+        {
+          "name": "takeoff reached airborne within simulation budget",
+          "pass": true
+        },
+        {
+          "name": "keyboard D produces signed body angular response",
+          "pass": true
+        },
+        {
+          "name": "touch yawLeft produces signed body angular response",
+          "pass": true
+        },
+        {
+          "name": "airborne: actual render without extra physics step",
+          "pass": true
+        },
+        {
+          "name": "actual in-flight save uses original parked resume semantics",
+          "pass": true
+        },
+        {
+          "name": "in-flight save keeps personal car and full original extensions",
+          "pass": true
+        },
+        {
+          "name": "airborne: every original key retains exact bytes",
+          "pass": true
+        },
+        {
+          "name": "airborne: zero original storage mutations excluding seed",
+          "pass": true
+        },
+        {
+          "name": "land reached stopped within simulation budget",
+          "pass": true
+        },
+        {
+          "name": "landed: actual render without extra physics step",
+          "pass": true
+        },
+        {
+          "name": "actual touchdown and stop stayed on original NCI runway",
+          "pass": true
+        },
+        {
+          "name": "landed candidate save confirmed",
+          "pass": true
+        },
+        {
+          "name": "landed: every original key retains exact bytes",
+          "pass": true
+        },
+        {
+          "name": "landed: zero original storage mutations excluding seed",
+          "pass": true
+        },
+        {
+          "name": "trajectory used no teleport command",
+          "pass": true
+        },
+        {
+          "name": "trajectory retained original personal-car identity and money",
+          "pass": true
+        },
+        {
+          "name": "actual Game/session booted",
+          "pass": true
+        },
+        {
+          "name": "reload restores parked-at-runway semantics and the same personal car",
+          "pass": true
+        },
+        {
+          "name": "reload preserves original opaque extensions and full ledger",
+          "pass": true
+        },
+        {
+          "name": "reload: every original key retains exact bytes",
+          "pass": true
+        },
+        {
+          "name": "reload: zero original storage mutations excluding seed",
+          "pass": true
+        },
+        {
+          "name": "no runtime page errors",
+          "pass": true
+        },
+        {
+          "name": "no localhost HTTP failures",
+          "pass": true
+        }
+      ],
+      "success": true,
+      "sha256": "f52d3e73a9a83a3f399826a2ec7f5b4c0eced8c39469ff7b23c1b41b3c64a8d7"
+    },
+    {
+      "name": "pilot",
+      "producer_record": "/workspace/scratch/rapier-full-release/browser-services/pilot-current.json",
+      "checks": [],
+      "success": true,
+      "sha256": "1d4017144fda0f93cbf63be02eefe257a422b2eb14606db53774d864635b3933",
+      "arrived": true,
+      "progress": {
+        "reason": "native_arrival_threshold_held",
+        "sim": 22.333333333333336,
+        "steps": 1340,
+        "captures": 125,
+        "distanceTravelled": 92.6978672130762,
+        "arrivalHold": 1.0000000000000013
+      },
+      "source_body_hashes_verified": true,
+      "zero_original_writes": true
+    },
+    {
+      "name": "ember",
+      "producer_record": "/workspace/scratch/rapier-full-release/city-browser/ember-run1/ember.json",
+      "checks": [
+        {
+          "name": "selected original GLB and authored manifest retain their recorded provenance",
+          "pass": true
+        },
+        {
+          "name": "fixture writes are fully observed before protected phase",
+          "pass": true
+        },
+        {
+          "name": "real original city and Rapier ready",
+          "pass": true
+        },
+        {
+          "name": "unselected motorcycle GLBs absent from cold original boot",
+          "pass": true
+        },
+        {
+          "name": "settled: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "actual garage purchase deducts exact price and retains stable ID",
+          "pass": true
+        },
+        {
+          "name": "real authored two-wheel model and visible rider rendered",
+          "pass": true
+        },
+        {
+          "name": "only selected motorcycle model was fetched",
+          "pass": true
+        },
+        {
+          "name": "manual steering changes actual body heading",
+          "pass": true
+        },
+        {
+          "name": "manual acceleration moves bike and consumes its energy",
+          "pass": true
+        },
+        {
+          "name": "actual braking reaches safe boarding speed",
+          "pass": true
+        },
+        {
+          "name": "bounded manual reverse works",
+          "pass": true
+        },
+        {
+          "name": "stopped before exit",
+          "pass": true
+        },
+        {
+          "name": "bounded real driving reaches an original collider and lowers condition without destroying bike",
+          "pass": true
+        },
+        {
+          "name": "actual brake stops safely after the collision leg",
+          "pass": true
+        },
+        {
+          "name": "actual body planar speed is safe after collision braking",
+          "pass": true
+        },
+        {
+          "name": "actual exit ends on foot with visible original person",
+          "pass": true
+        },
+        {
+          "name": "actual boarding restores same motorcycle instance",
+          "pass": true
+        },
+        {
+          "name": "save contains exact selected vehicle identity and independent garage record",
+          "pass": true
+        },
+        {
+          "name": "original history and root extension retained after purchase/save",
+          "pass": true
+        },
+        {
+          "name": "restored: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "refresh restores motorcycle identity, condition, energy and money",
+          "pass": true
+        },
+        {
+          "name": "car/bike switching does not transfer another vehicle energy or pay twice",
+          "pass": true
+        },
+        {
+          "name": "all live instance IDs unique",
+          "pass": true
+        },
+        {
+          "name": "original traffic and pedestrians remain populated",
+          "pass": true
+        },
+        {
+          "name": "intentional physics failure pauses and cannot overwrite last valid candidate progress",
+          "pass": true
+        },
+        {
+          "name": "original slot/index/backup have zero attempted writes and zero CDP mutations",
+          "pass": true
+        },
+        {
+          "name": "final: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "no runtime or localhost asset errors",
+          "pass": true
+        },
+        {
+          "name": "every observed code/WASM/GLB response matches actual source",
+          "pass": true
+        }
+      ],
+      "success": true,
+      "sha256": "acd76e1374587fb50069dd90a6d3abce366e22223884d7af006b9a75f529741e",
+      "model": {
+        "model": "ember_street",
+        "glb_bytes": 1283044,
+        "glb_sha256": "1c821e574c5f87ee59872b2e455037994cd7a35f75eb872ce46bc37f1741061f"
+      },
+      "source_unchanged": true
+    },
+    {
+      "name": "ridge",
+      "producer_record": "/workspace/scratch/rapier-full-release/city-browser/ridge-run1/ridge.json",
+      "checks": [
+        {
+          "name": "selected original GLB and authored manifest retain their recorded provenance",
+          "pass": true
+        },
+        {
+          "name": "fixture writes are fully observed before protected phase",
+          "pass": true
+        },
+        {
+          "name": "real original city and Rapier ready",
+          "pass": true
+        },
+        {
+          "name": "unselected motorcycle GLBs absent from cold original boot",
+          "pass": true
+        },
+        {
+          "name": "settled: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "actual garage purchase deducts exact price and retains stable ID",
+          "pass": true
+        },
+        {
+          "name": "real authored two-wheel model and visible rider rendered",
+          "pass": true
+        },
+        {
+          "name": "only selected motorcycle model was fetched",
+          "pass": true
+        },
+        {
+          "name": "touch controls selected through actual UI",
+          "pass": true
+        },
+        {
+          "name": "touch steering changes actual body heading",
+          "pass": true
+        },
+        {
+          "name": "manual acceleration moves bike and consumes its energy",
+          "pass": true
+        },
+        {
+          "name": "actual braking reaches safe boarding speed",
+          "pass": true
+        },
+        {
+          "name": "bounded manual reverse works",
+          "pass": true
+        },
+        {
+          "name": "stopped before exit",
+          "pass": true
+        },
+        {
+          "name": "bounded real driving reaches an original collider and lowers condition without destroying bike",
+          "pass": true
+        },
+        {
+          "name": "actual brake stops safely after the collision leg",
+          "pass": true
+        },
+        {
+          "name": "actual body planar speed is safe after collision braking",
+          "pass": true
+        },
+        {
+          "name": "actual exit ends on foot with visible original person",
+          "pass": true
+        },
+        {
+          "name": "actual boarding restores same motorcycle instance",
+          "pass": true
+        },
+        {
+          "name": "save contains exact selected vehicle identity and independent garage record",
+          "pass": true
+        },
+        {
+          "name": "original history and root extension retained after purchase/save",
+          "pass": true
+        },
+        {
+          "name": "restored: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "refresh restores motorcycle identity, condition, energy and money",
+          "pass": true
+        },
+        {
+          "name": "car/bike switching does not transfer another vehicle energy or pay twice",
+          "pass": true
+        },
+        {
+          "name": "all live instance IDs unique",
+          "pass": true
+        },
+        {
+          "name": "original traffic and pedestrians remain populated",
+          "pass": true
+        },
+        {
+          "name": "intentional physics failure pauses and cannot overwrite last valid candidate progress",
+          "pass": true
+        },
+        {
+          "name": "original slot/index/backup have zero attempted writes and zero CDP mutations",
+          "pass": true
+        },
+        {
+          "name": "final: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "no runtime or localhost asset errors",
+          "pass": true
+        },
+        {
+          "name": "every observed code/WASM/GLB response matches actual source",
+          "pass": true
+        }
+      ],
+      "success": true,
+      "sha256": "76a9f5344204de8a0b0fc75776f2faf0daf47c2495a9edfcb544e3b14ff44e21",
+      "model": {
+        "model": "ridge_dual",
+        "glb_bytes": 1812732,
+        "glb_sha256": "e8d51461115522d296b6605f4e8304304c5a3bd31bd09ee55ecfcb882ac007e0"
+      },
+      "source_unchanged": true
+    },
+    {
+      "name": "mica-fixed-collision-model",
+      "producer_record": "/workspace/scratch/rapier-full-release/city-browser/mica-fixed-run1/mica.json",
+      "checks": [
+        {
+          "name": "selected original GLB and authored manifest retain their recorded provenance",
+          "pass": true
+        },
+        {
+          "name": "fixture writes are fully observed before protected phase",
+          "pass": true
+        },
+        {
+          "name": "real original city and Rapier ready",
+          "pass": true
+        },
+        {
+          "name": "unselected motorcycle GLBs absent from cold original boot",
+          "pass": true
+        },
+        {
+          "name": "settled: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "actual garage purchase deducts exact price and retains stable ID",
+          "pass": true
+        },
+        {
+          "name": "real authored two-wheel model and visible rider rendered",
+          "pass": true
+        },
+        {
+          "name": "only selected motorcycle model was fetched",
+          "pass": true
+        },
+        {
+          "name": "manual steering changes actual body heading",
+          "pass": true
+        },
+        {
+          "name": "manual acceleration moves bike and consumes its energy",
+          "pass": true
+        },
+        {
+          "name": "actual braking reaches safe boarding speed",
+          "pass": true
+        },
+        {
+          "name": "bounded manual reverse works",
+          "pass": true
+        },
+        {
+          "name": "stopped before exit",
+          "pass": true
+        },
+        {
+          "name": "bounded real driving reaches an original collider and lowers condition without destroying bike",
+          "pass": true
+        },
+        {
+          "name": "actual brake stops safely after the collision leg",
+          "pass": true
+        },
+        {
+          "name": "actual body planar speed is safe after collision braking",
+          "pass": true
+        },
+        {
+          "name": "actual exit ends on foot with visible original person",
+          "pass": true
+        },
+        {
+          "name": "actual boarding restores same motorcycle instance",
+          "pass": true
+        },
+        {
+          "name": "save contains exact selected vehicle identity and independent garage record",
+          "pass": true
+        },
+        {
+          "name": "original history and root extension retained after purchase/save",
+          "pass": true
+        },
+        {
+          "name": "restored: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "refresh restores motorcycle identity, condition, energy and money",
+          "pass": true
+        },
+        {
+          "name": "car/bike switching does not transfer another vehicle energy or pay twice",
+          "pass": true
+        },
+        {
+          "name": "all live instance IDs unique",
+          "pass": true
+        },
+        {
+          "name": "original traffic and pedestrians remain populated",
+          "pass": true
+        },
+        {
+          "name": "intentional physics failure pauses and cannot overwrite last valid candidate progress",
+          "pass": true
+        },
+        {
+          "name": "original slot/index/backup have zero attempted writes and zero CDP mutations",
+          "pass": true
+        },
+        {
+          "name": "final: exact authored model geometry, two-wheel rig and original GLB bodies verified",
+          "pass": true
+        },
+        {
+          "name": "no runtime or localhost asset errors",
+          "pass": true
+        },
+        {
+          "name": "every observed code/WASM/GLB response matches actual source",
+          "pass": true
+        }
+      ],
+      "success": true,
+      "source_unchanged": true,
+      "sha256": "a9823a708e7cd92352918289687547b3d5995c5e097e135985f81155ad9ede88"
+    }
+  ]
+}

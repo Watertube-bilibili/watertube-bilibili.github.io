@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN" data-neon-beta-entry="true" data-sunrise-hub="true">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5f0e6">
+  <link rel="icon" href="./neon-2-0-icon.ico?v=464eb02e1eba" sizes="16x16 32x32 64x64">
+<link rel="icon" type="image/png" sizes="32x32" href="./neon-2-0-icon.png?v=2fd8fed1b8cc">
+<link rel="icon" type="image/svg+xml" sizes="any" href="./neon-2-0-icon.svg?v=648e15bd548e">
+<link rel="apple-touch-icon" sizes="180x180" href="./neon-2-0-icon-apple.png?v=aa1e159903ad">
+<title>SUNRISE COAST · 原日出城市与新地图入口</title>
+  <meta name="description" content="SUNRISE COAST：继续原日出城市已有进度，或单独体验新地图 Rapier 迁移验证版；不是原城市全功能替换。">
+  <link rel="stylesheet" href="./beta-launcher.css?v=e41e31cc67ed">
+<style>
+/* Canonical-site notice: normal document flow, no gameplay overlay. */
+.canonical-notice{display:flex;align-items:flex-start;gap:12px;box-sizing:border-box;min-width:0;margin:24px 0;padding:14px 16px;border:1px solid #cba59a;border-left:4px solid #a43c28;border-radius:3px;background:#f5f0e6;color:#142b38;font:14px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;letter-spacing:normal}
+.canonical-notice-icon{display:flex;align-items:center;justify-content:center;flex:0 0 24px;width:24px;height:24px;margin-top:1px;border-radius:50%;background:#a43c28;color:#fff;font-size:18px;font-weight:800;line-height:1}
+.canonical-notice-copy{min-width:0;overflow-wrap:anywhere}
+.canonical-notice .canonical-notice-link{display:inline-block;box-sizing:border-box;max-width:100%;min-height:44px;margin:0;padding:9px 0;border:0;border-radius:0;background:transparent;color:#8f3024;font:inherit;line-height:1.75;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere;vertical-align:middle}
+.canonical-notice-link:focus-visible{outline:3px solid #142b38;outline-offset:3px}
+@media(max-width:480px){.canonical-notice{gap:10px;padding:12px;margin:20px 0}}
+.estuary-launch{margin-bottom:26px;padding-bottom:20px;border-bottom:1px solid #cba59a}.estuary-primary{display:block;box-sizing:border-box;max-width:100%;padding:16px;background:#142b38;color:#fff;text-decoration:none;text-align:center;min-height:48px}.estuary-primary:focus-visible{outline:3px solid #a43c28;outline-offset:3px}</style>
+<link rel="manifest" href="./manifest.webmanifest?v=b49049557edd">
+</head>
+<body>
+  <main>
+    <header class="entry-header">
+      <a class="brand" href="./" aria-label="SUNRISE COAST 首页">SUNRISE <span>COAST</span></a>
+      <span class="version">原日出城市与新地图入口</span>
+    </header>
+    <aside class="canonical-notice" aria-label="网站提示"><span class="canonical-notice-icon" aria-hidden="true">!</span><span class="canonical-notice-copy">SUNRISE COAST 官方项目入口：<a class="canonical-notice-link" href="https://watertube-bilibili.github.io/sunset-coast/">https://watertube-bilibili.github.io/sunset-coast/</a></span></aside>
+    <div class="entry-layout">
+      <section class="entry-overview" aria-labelledby="entry-title">
+        <h1 id="entry-title">回到原来的城市。</h1>
+        <p class="intro">原城市与新海岸、弧湾是不同的世界。请在右侧继续原日出已有进度；新地图并未包含原城市全部地标与玩法。</p>
+        <dl class="entry-facts">
+          <div><dt>版本状态</dt><dd>原城市保留；新地图迁移尚未完成</dd></div>
+          <div><dt>存档方式</dt><dd>原城市与两张新地图分别保存</dd></div>
+          <div><dt>保存位置</dt><dd>当前浏览器的本地存储</dd></div>
+        </dl>
+      </section>
+      <section class="entry-selection" aria-labelledby="save-title">
+        <h2 id="save-title">原完整城市（旧版 / Godot）</h2>
+        <p>原日出海滨、城市街区、港口、高速与高原等内容在这个入口；使用原来的存档，不会转换为新地图坐标。</p>
+        <p class="note">旧运行器仍依赖 Godot，首次下载可能较慢。下方“继续原城市已有进度”只在找到可校验的已有进度时显示；找旧进度请先展开存档列表，不要用“新建”替代。</p>
+        <p id="beta-status" role="status" aria-live="polite">正在检查本浏览器的旧城进度…</p>
+        <section id="beta-actions" aria-label="选择测试存档">
+          <button id="beta-continue" hidden>继续原城市已有进度</button>
+          <button id="beta-copy">复制标准版存档进入</button>
+          <button id="beta-new" class="secondary">新建旧城存档</button>
+          <a class="cancel" href="../projects.html">返回项目列表</a>
+        </section>
+        <details id="beta-saved">
+          <summary>选择原城市已有进度（不新建）</summary>
+          <div id="beta-slots"></div>
+        </details>
+        <section class="estuary-launch" aria-labelledby="estuary-title" style="margin-top:30px">
+          <h2 id="estuary-title">海岸 ESTUARY / 弧湾 CRESCENT · 新地图 Rapier 验证版</h2>
+          <p>这是另外两张新地图，不是原城市换引擎后的完整版本。当前没有原城市的人流、车流、警察、自动驾驶、原机场与全部职业。</p>
+          <a href="/sunset-coast/releases/browser-v14-rapier-c110f76f/">单独进入新地图 / Rapier 验证版</a>
+          <p class="note">三款摩托、Rocket 手动起降与通用相机等已接入；海岸有外卖，弧湾职业尚未适配。飞机、自动特技、结构掉轮未开放。各地图保留独立进度，不读取或覆盖原城市槽。</p>
+          <p class="note">同范围 JS/MJS/WASM 的 gzip9 估算较 v13 仍增加 1.57%，不代表整游戏更小或手机性能改善。</p>
+          <p><a href="/sunset-coast/releases/browser-v13-3aeca5247940/">此前新地图 v13 运行器（保留）</a>：与新地图 v14 共用浏览器槽；这不是原城市。切换前请导出备份。</p>
+          <p><a href="../sunrise-browser-preview/">此前浏览器测试版（保留）</a>：独立旧入口及其共享进度保留。</p>
+        </section>
+      </section>
+    </div>
+    <footer class="entry-notes" aria-label="测试存档说明">
+      <h2>出发前，了解存档</h2>
+      <p class="note">每次复制不同的标准版进度，都会新建一个测试副本。重复复制同一进度，会继续对应副本，不会覆盖它后来的进度。标准版与已有测试进度都会保留，初始副本另有完整校验备份。</p>
+      <p class="note">存档和校验备份均只保存在此浏览器。清除网站数据会删除本地存档，请定期在游戏中导出备份。需要支持本地存储和 Web Locks 的新版浏览器。</p>
+    </footer>
+  </main>
+  <script type="module" src="./sunrise-hub-launcher.a0e555ba5ecb8629.js"></script>
+</body>
+</html>

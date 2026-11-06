@@ -1,0 +1,5450 @@
+{
+  "scope": "Reconstructed full reachable JS+WASM resource budget, including all literal lazy imports; unique files once, per-file gzip level9. NOT measured network transfer/startup time. Original baseline legacy homepage+formal Godot play vs current complete-city Rapier chooser+play. GLB/textures/fonts/CSS/HTML excluded from JS+WASM; new high-detail people/bikes are additional content, so not an equal-asset total-game claim. Godot explicitly loaded worklets included conservatively; engine PCK separate.",
+  "baseline": {
+    "entries": [
+      "sunset-coast/legacy.html",
+      "sunset-coast/play/index.html"
+    ],
+    "records": [
+      {
+        "file": "sunset-coast/play/aircraft-ui.js",
+        "type": "JS",
+        "storedBytes": 4203,
+        "rawBytes": 4203,
+        "gzip9Bytes": 1782,
+        "sha256": "f43b76827ded6de74e253a504940fe77bf785f7b46a232e854de3b1b42d9441a"
+      },
+      {
+        "file": "sunset-coast/play/asset-car.js",
+        "type": "JS",
+        "storedBytes": 8599,
+        "rawBytes": 8599,
+        "gzip9Bytes": 3251,
+        "sha256": "bd1fe9908924d9fc29b776a7edb27bc06758d69671f65f42ba1bd680f4adec8e"
+      },
+      {
+        "file": "sunset-coast/play/assets/g9/g9-display-art.js",
+        "type": "JS",
+        "storedBytes": 2901,
+        "rawBytes": 2901,
+        "gzip9Bytes": 1069,
+        "sha256": "b65bbb7ff7c713718d525de6a5475da98c2974977e4e8cc3190c83ebdb062a40"
+      },
+      {
+        "file": "sunset-coast/play/assets/g9/g9-materials.js",
+        "type": "JS",
+        "storedBytes": 1475,
+        "rawBytes": 1475,
+        "gzip9Bytes": 536,
+        "sha256": "c80772797a5b16fecf0296c21c5dd7466a55d6093e5c9dc4dd4239073dbe4fe3"
+      },
+      {
+        "file": "sunset-coast/play/assets/g9/g9-mesh-data.js",
+        "type": "JS",
+        "storedBytes": 1791318,
+        "rawBytes": 1791318,
+        "gzip9Bytes": 631450,
+        "sha256": "b9412bb4acd3a522d1e98b5dfe68a84ff9155e8f3b3de576df009b56fbb62772"
+      },
+      {
+        "file": "sunset-coast/play/assist-settings.js",
+        "type": "JS",
+        "storedBytes": 2931,
+        "rawBytes": 2931,
+        "gzip9Bytes": 1206,
+        "sha256": "b280d1f2d3bffb8ad4d5524f4fd2af6f8208092d0cdb73beeb358ccbb652e23e"
+      },
+      {
+        "file": "sunset-coast/play/assist-status.js",
+        "type": "JS",
+        "storedBytes": 1027,
+        "rawBytes": 1027,
+        "gzip9Bytes": 605,
+        "sha256": "ff81d9f9b131e518327562d1da5cbf6ce95b3c2234cd98bababb5cf9e4e98a4e"
+      },
+      {
+        "file": "sunset-coast/play/audio.js",
+        "type": "JS",
+        "storedBytes": 1826,
+        "rawBytes": 1826,
+        "gzip9Bytes": 732,
+        "sha256": "d2a7c030ba795cce7099bb6792f9708e098715d7b17fc679e24d1dfef4e12653"
+      },
+      {
+        "file": "sunset-coast/play/autonomy-test-job.js",
+        "type": "JS",
+        "storedBytes": 19822,
+        "rawBytes": 19822,
+        "gzip9Bytes": 7440,
+        "sha256": "05d7af68b2dc5409221cfd30ed3bc8033115dd2a0ec7b95b0b876f5a772de16f"
+      },
+      {
+        "file": "sunset-coast/play/axle-fault.js",
+        "type": "JS",
+        "storedBytes": 3943,
+        "rawBytes": 3943,
+        "gzip9Bytes": 1468,
+        "sha256": "1feb3541ffbeb9163a74bca92fb0c907d035bcbc3c6d01d3f4385d461bb0c2af"
+      },
+      {
+        "file": "sunset-coast/play/beta-runtime-entry.js",
+        "type": "JS",
+        "storedBytes": 3185,
+        "rawBytes": 3185,
+        "gzip9Bytes": 1505,
+        "sha256": "3b4b7440afa73e5dd0ddbb59f1e593dd848056161ebac0427b87c4995f0f40ae"
+      },
+      {
+        "file": "sunset-coast/play/beta-save-slots.js",
+        "type": "JS",
+        "storedBytes": 15512,
+        "rawBytes": 15512,
+        "gzip9Bytes": 5714,
+        "sha256": "aee2122476345e9ab41de714aa10c383bdc7ba20128be9a4ce28bb9f0165b135"
+      },
+      {
+        "file": "sunset-coast/play/brake-closeup.js",
+        "type": "JS",
+        "storedBytes": 6405,
+        "rawBytes": 6405,
+        "gzip9Bytes": 2589,
+        "sha256": "cc6b436eec7eb1f61bcd83ee9d1707c1563f74bcf34a172a46e0d978e6f3ad40"
+      },
+      {
+        "file": "sunset-coast/play/brake-fault.js",
+        "type": "JS",
+        "storedBytes": 3626,
+        "rawBytes": 3626,
+        "gzip9Bytes": 1383,
+        "sha256": "790b31e9613a908ef62b33b1c4256b50032187ed793df2df4533690e0be0dcb4"
+      },
+      {
+        "file": "sunset-coast/play/camera-controls.js",
+        "type": "JS",
+        "storedBytes": 2772,
+        "rawBytes": 2772,
+        "gzip9Bytes": 1132,
+        "sha256": "6d1a26684d24c8b654288b07bd4dd45fd84c7b23aaeacc26685b1819e50ebb9d"
+      },
+      {
+        "file": "sunset-coast/play/cargo-career.js",
+        "type": "JS",
+        "storedBytes": 8796,
+        "rawBytes": 8796,
+        "gzip9Bytes": 3641,
+        "sha256": "80212f08dbb7ef43b8a86e1c3c460dd9fcd72bc9163d78da283e79787a5758db"
+      },
+      {
+        "file": "sunset-coast/play/cockpit-profiles.js",
+        "type": "JS",
+        "storedBytes": 1928,
+        "rawBytes": 1928,
+        "gzip9Bytes": 1121,
+        "sha256": "5f13b6699f584e6076d5826bcf8d5de07b9ecedb263534e8dee7e1b29ef5a86b"
+      },
+      {
+        "file": "sunset-coast/play/cockpit.js",
+        "type": "JS",
+        "storedBytes": 33251,
+        "rawBytes": 33251,
+        "gzip9Bytes": 10378,
+        "sha256": "0150d372edcfff73b5b6db897fd623c1172e03612ee7f026e9fbad38c382fa22"
+      },
+      {
+        "file": "sunset-coast/play/control-size.js",
+        "type": "JS",
+        "storedBytes": 1374,
+        "rawBytes": 1374,
+        "gzip9Bytes": 626,
+        "sha256": "5446274a2661e843c259fe42393398efdf4abf247efd8dc1561537b10e045715"
+      },
+      {
+        "file": "sunset-coast/play/driving-assist.js",
+        "type": "JS",
+        "storedBytes": 13701,
+        "rawBytes": 13701,
+        "gzip9Bytes": 5372,
+        "sha256": "5c4dd83780b417b6429b5b5cfe0ea2cf685455478b7f79c4dd226da647830d96"
+      },
+      {
+        "file": "sunset-coast/play/entry-animation.js",
+        "type": "JS",
+        "storedBytes": 11805,
+        "rawBytes": 11805,
+        "gzip9Bytes": 4455,
+        "sha256": "bff2d80a9826bb4aa6252c35a1b58bf31b2b292976522c6549e5be1b929df261"
+      },
+      {
+        "file": "sunset-coast/play/flight-travel.js",
+        "type": "JS",
+        "storedBytes": 4641,
+        "rawBytes": 4641,
+        "gzip9Bytes": 2159,
+        "sha256": "9ec62b57456535227602489e0f78d0c63a3f4c8632f4d6a6fa919ebb7fa16aa6"
+      },
+      {
+        "file": "sunset-coast/play/flyable-aircraft.js",
+        "type": "JS",
+        "storedBytes": 31210,
+        "rawBytes": 31210,
+        "gzip9Bytes": 10691,
+        "sha256": "c48fcce441126209ac871a515acaed7319d0b43d0e428acacf22720dc1e5165e"
+      },
+      {
+        "file": "sunset-coast/play/g9-asset.js",
+        "type": "JS",
+        "storedBytes": 1494,
+        "rawBytes": 1494,
+        "gzip9Bytes": 742,
+        "sha256": "741d30d8d2fc0ddd37d330b78ab1fdab8c78666d612881061021552bd459530d"
+      },
+      {
+        "file": "sunset-coast/play/g9-displays.js",
+        "type": "JS",
+        "storedBytes": 1843,
+        "rawBytes": 1843,
+        "gzip9Bytes": 1070,
+        "sha256": "fff950ef6fe11f4c55148c7f2611d234e978ea229c8aea669bb3a52e73598919"
+      },
+      {
+        "file": "sunset-coast/play/g9-navigation.js",
+        "type": "JS",
+        "storedBytes": 9018,
+        "rawBytes": 9018,
+        "gzip9Bytes": 3753,
+        "sha256": "afbf87b69c5cf357740605adda83fbd211200d20be629b2f22439bf7c6769eac"
+      },
+      {
+        "file": "sunset-coast/play/g9-vehicle.js",
+        "type": "JS",
+        "storedBytes": 5985,
+        "rawBytes": 5985,
+        "gzip9Bytes": 2878,
+        "sha256": "8b110233010630787be38346f22cf7d63a77860744e0b12f6213c7e62a057f0c"
+      },
+      {
+        "file": "sunset-coast/play/game.js",
+        "type": "JS",
+        "storedBytes": 78985,
+        "rawBytes": 78985,
+        "gzip9Bytes": 24860,
+        "sha256": "9419b62a1cce9df42cd70987bd66a728b16121e4f60d52f74e738613fcaea026"
+      },
+      {
+        "file": "sunset-coast/play/godot-asset-cache.js",
+        "type": "JS",
+        "storedBytes": 4139,
+        "rawBytes": 4139,
+        "gzip9Bytes": 1838,
+        "sha256": "e647c9a593d4cc2752be803c03d35407b87b5611f9a4e04bddf8fddabded8ce6"
+      },
+      {
+        "file": "sunset-coast/play/godot-physics.js",
+        "type": "JS",
+        "storedBytes": 21190,
+        "rawBytes": 21190,
+        "gzip9Bytes": 7866,
+        "sha256": "6ca3bea674c4e0e881a1cd5e169cc6c95c2a5467927321cfeefab526612f17d9"
+      },
+      {
+        "file": "sunset-coast/play/godot-startup-diagnostics.js",
+        "type": "JS",
+        "storedBytes": 1746,
+        "rawBytes": 1746,
+        "gzip9Bytes": 918,
+        "sha256": "4bc2619f96a2e4453f49a46c20927fd9ff24689d68009b39ec6cc09f58e124d4"
+      },
+      {
+        "file": "sunset-coast/play/ground-contact.js",
+        "type": "JS",
+        "storedBytes": 13103,
+        "rawBytes": 13103,
+        "gzip9Bytes": 4945,
+        "sha256": "acbab580e83e8b3e1883c320827d8cc211734906f0d2f85285a376de9ef9397c"
+      },
+      {
+        "file": "sunset-coast/play/hidden-cheat-entry.js",
+        "type": "JS",
+        "storedBytes": 843,
+        "rawBytes": 843,
+        "gzip9Bytes": 486,
+        "sha256": "8d2805a9866fc1d199ce1abcc09c5f064a193a09e10539332688e90d6e55c74b"
+      },
+      {
+        "file": "sunset-coast/play/impact-damage.js",
+        "type": "JS",
+        "storedBytes": 4515,
+        "rawBytes": 4515,
+        "gzip9Bytes": 1953,
+        "sha256": "75d7d9a8970ff97b60a71581c781ee17f6f5d05fcb6f90e6980cc4a8aeae8f08"
+      },
+      {
+        "file": "sunset-coast/play/interface-view.js",
+        "type": "JS",
+        "storedBytes": 6473,
+        "rawBytes": 6473,
+        "gzip9Bytes": 2643,
+        "sha256": "c169d054d5873c252d8c6e605c94a91bfa03999071acfe1c4c27aedd9e10ab88"
+      },
+      {
+        "file": "sunset-coast/play/intersection-signals.js",
+        "type": "JS",
+        "storedBytes": 1905,
+        "rawBytes": 1905,
+        "gzip9Bytes": 913,
+        "sha256": "ee595e506d6063f15c3a2a001a8787f8f5b0a7de3b0bba88ad73a91caf20acf6"
+      },
+      {
+        "file": "sunset-coast/play/lane-change.js",
+        "type": "JS",
+        "storedBytes": 5057,
+        "rawBytes": 5057,
+        "gzip9Bytes": 2141,
+        "sha256": "644e0b80a9198e958053335991e24ec194e6d4a8975037ebb34c15cd32017b5b"
+      },
+      {
+        "file": "sunset-coast/play/loading-progress.js",
+        "type": "JS",
+        "storedBytes": 514,
+        "rawBytes": 514,
+        "gzip9Bytes": 347,
+        "sha256": "97a7326e32aeb39c4b82e3bf217da411470e63191fbd7dfde05cd4acda73e0f3"
+      },
+      {
+        "file": "sunset-coast/play/location-beacons.js",
+        "type": "JS",
+        "storedBytes": 2893,
+        "rawBytes": 2893,
+        "gzip9Bytes": 1225,
+        "sha256": "78d925d4084caa684ed23f3074b2eaa73f659894907ae02d229b34b8083895da"
+      },
+      {
+        "file": "sunset-coast/play/location-teleport.js",
+        "type": "JS",
+        "storedBytes": 9128,
+        "rawBytes": 9128,
+        "gzip9Bytes": 4009,
+        "sha256": "d34b51aaf6dad281cf7a47bbc272bb927f581ca5999506c2154773ac9f6ac616"
+      },
+      {
+        "file": "sunset-coast/play/map-ui.js",
+        "type": "JS",
+        "storedBytes": 17271,
+        "rawBytes": 17271,
+        "gzip9Bytes": 6428,
+        "sha256": "c8826bf60927b8683b69378a090a56199f46160f6e33e2f6c14e42cb27797fb3"
+      },
+      {
+        "file": "sunset-coast/play/mobile-ui.js",
+        "type": "JS",
+        "storedBytes": 26850,
+        "rawBytes": 26850,
+        "gzip9Bytes": 7846,
+        "sha256": "0bd92c1cfabc47e47e52940d592deb19090b4daa52eaa772d73f179cae01aab1"
+      },
+      {
+        "file": "sunset-coast/play/mountain-barriers.js",
+        "type": "JS",
+        "storedBytes": 1416,
+        "rawBytes": 1416,
+        "gzip9Bytes": 789,
+        "sha256": "dc826dcef12ab68db820a2d06459883aac903d44ecdc18abe5f8317464321795"
+      },
+      {
+        "file": "sunset-coast/play/navigation-guidance.js",
+        "type": "JS",
+        "storedBytes": 6095,
+        "rawBytes": 6095,
+        "gzip9Bytes": 2791,
+        "sha256": "213bebd410e43156dc410a302c7682747a85154f4ba33aab6a6da5e6983153a0"
+      },
+      {
+        "file": "sunset-coast/play/navigation-ui.js",
+        "type": "JS",
+        "storedBytes": 5436,
+        "rawBytes": 5436,
+        "gzip9Bytes": 2381,
+        "sha256": "b57025c637f2477e6b784cdd24876d8f432e99a25bb27fb6d3c1530160cae90a"
+      },
+      {
+        "file": "sunset-coast/play/panel-drag.js",
+        "type": "JS",
+        "storedBytes": 4668,
+        "rawBytes": 4668,
+        "gzip9Bytes": 1937,
+        "sha256": "99e858db44aaeff56f68dc2ba989db9ad4aaeecd740233c0ff19e8748dfc3b02"
+      },
+      {
+        "file": "sunset-coast/play/performance-profile.js",
+        "type": "JS",
+        "storedBytes": 1845,
+        "rawBytes": 1845,
+        "gzip9Bytes": 894,
+        "sha256": "4d42625b1ef7801f7a8581bbf0f7fa5b3b7b3fdfd9fccfbd84a8056cc2c1257c"
+      },
+      {
+        "file": "sunset-coast/play/physics-surfaces.js",
+        "type": "JS",
+        "storedBytes": 3371,
+        "rawBytes": 3371,
+        "gzip9Bytes": 1455,
+        "sha256": "dd2908d2b5b24bba3f8abbfa5d02854016b191dccaf4182b29fa799a0db07691"
+      },
+      {
+        "file": "sunset-coast/play/physics/neon-physics.audio.position.worklet.js",
+        "type": "JS",
+        "storedBytes": 2973,
+        "rawBytes": 2973,
+        "gzip9Bytes": 1168,
+        "sha256": "be33985bc7160d6bf9646f259cd86b259cd67b02ccb297ee5c44f8ac84327bc8"
+      },
+      {
+        "file": "sunset-coast/play/physics/neon-physics.audio.worklet.js",
+        "type": "JS",
+        "storedBytes": 7298,
+        "rawBytes": 7298,
+        "gzip9Bytes": 2195,
+        "sha256": "5b476a9c9ce642c0ee4256436d1bc31d9c38f868aca0f9a8e2a57c18d2dec2a3"
+      },
+      {
+        "file": "sunset-coast/play/physics/neon-physics.js",
+        "type": "JS",
+        "storedBytes": 319268,
+        "rawBytes": 319268,
+        "gzip9Bytes": 80206,
+        "sha256": "2f7f0e4757840eeed47766fc05ad49a4c717019a677e37a31e2fb287535d1573"
+      },
+      {
+        "file": "sunset-coast/play/pilot-detour.js",
+        "type": "JS",
+        "storedBytes": 2984,
+        "rawBytes": 2984,
+        "gzip9Bytes": 1323,
+        "sha256": "b25ae1b72063da9cf1558d8c4d6cc2ac18a7e8ca1268525106432ac7d4fc59d9"
+      },
+      {
+        "file": "sunset-coast/play/pilot.js",
+        "type": "JS",
+        "storedBytes": 27121,
+        "rawBytes": 27121,
+        "gzip9Bytes": 9689,
+        "sha256": "ee102c208fa9f1af1ca0374e41f626117e9f2b7c3e6652b77ea42d25e89277ac"
+      },
+      {
+        "file": "sunset-coast/play/police-response.js",
+        "type": "JS",
+        "storedBytes": 7397,
+        "rawBytes": 7397,
+        "gzip9Bytes": 2929,
+        "sha256": "4a4d0395efb075aa8fea51af7c5e2212a252f389451a74e2aeedb7760c2de125"
+      },
+      {
+        "file": "sunset-coast/play/population-stream.js",
+        "type": "JS",
+        "storedBytes": 8955,
+        "rawBytes": 8955,
+        "gzip9Bytes": 3645,
+        "sha256": "e677e18c2606c235b0ac3bc6cbb7d93b5a9d87ac33a340c55ae56b12377a0f37"
+      },
+      {
+        "file": "sunset-coast/play/realistic-visuals.js",
+        "type": "JS",
+        "storedBytes": 5123,
+        "rawBytes": 5123,
+        "gzip9Bytes": 2127,
+        "sha256": "9bcfbc6a4facd185999aa504dbdfa95aa5e520fe10fabdba91f450cffe849108"
+      },
+      {
+        "file": "sunset-coast/play/region-scenery.js",
+        "type": "JS",
+        "storedBytes": 9133,
+        "rawBytes": 9133,
+        "gzip9Bytes": 3540,
+        "sha256": "cd10ed1fae717148eb83bc52ee1d32b1dd958def678b7d6fa526b12ea1bc2c1c"
+      },
+      {
+        "file": "sunset-coast/play/regions.js",
+        "type": "JS",
+        "storedBytes": 10535,
+        "rawBytes": 10535,
+        "gzip9Bytes": 4201,
+        "sha256": "e376e47c3a8408547dc99ccf0fcffe277c7bc78118e19b6d542aaed4d28dbfa7"
+      },
+      {
+        "file": "sunset-coast/play/release-notes.js",
+        "type": "JS",
+        "storedBytes": 9133,
+        "rawBytes": 9133,
+        "gzip9Bytes": 4935,
+        "sha256": "8f95c79df88bb0a6a7838dcab93287b05f8e667d42c0ae66604dd97344aadb92"
+      },
+      {
+        "file": "sunset-coast/play/release-ui.js",
+        "type": "JS",
+        "storedBytes": 2404,
+        "rawBytes": 2404,
+        "gzip9Bytes": 1325,
+        "sha256": "315ef939ce3b1cafeea6d9efb563468e8e9522592cee32b0af145da8f1f2f545"
+      },
+      {
+        "file": "sunset-coast/play/render-motion.js",
+        "type": "JS",
+        "storedBytes": 3613,
+        "rawBytes": 3613,
+        "gzip9Bytes": 1227,
+        "sha256": "9734ed7ba7a4a0ae4d5e5b3a049086b6c13e36966a7938f4da3617a9e987ce9a"
+      },
+      {
+        "file": "sunset-coast/play/roadster-aero.js",
+        "type": "JS",
+        "storedBytes": 4353,
+        "rawBytes": 4353,
+        "gzip9Bytes": 1900,
+        "sha256": "653b974cbfc83a9879f81e5fbd2438fea780feb2c74e90ad15487c204d00885e"
+      },
+      {
+        "file": "sunset-coast/play/roadster-air-display.js",
+        "type": "JS",
+        "storedBytes": 974,
+        "rawBytes": 974,
+        "gzip9Bytes": 638,
+        "sha256": "0b84ec9872d31ca6d6bb84eb9c1395475fb0d6439ad229c0313d21db8e93d9a9"
+      },
+      {
+        "file": "sunset-coast/play/roadster-air-ledger.js",
+        "type": "JS",
+        "storedBytes": 2985,
+        "rawBytes": 2985,
+        "gzip9Bytes": 1172,
+        "sha256": "f232a3031664bf439ff88ce9d3bfdc89966bafd1af7792db7663a5ed5600b949"
+      },
+      {
+        "file": "sunset-coast/play/roadster-asset.js",
+        "type": "JS",
+        "storedBytes": 7145,
+        "rawBytes": 7145,
+        "gzip9Bytes": 3180,
+        "sha256": "a72c476317785281d5545cf091ecd8aa5265664a74009aa12cf344be08ee0747"
+      },
+      {
+        "file": "sunset-coast/play/roadster-controls.js",
+        "type": "JS",
+        "storedBytes": 14285,
+        "rawBytes": 14285,
+        "gzip9Bytes": 4948,
+        "sha256": "818458049b69e739442b87c1f87a442a370e527890e1d7f66c914c9da7c2f811"
+      },
+      {
+        "file": "sunset-coast/play/roadster-displays.js",
+        "type": "JS",
+        "storedBytes": 13152,
+        "rawBytes": 13152,
+        "gzip9Bytes": 5005,
+        "sha256": "5b62863120a2a14fbbbda6389190b0ec42a55088522ae55d661576d7aea62a17"
+      },
+      {
+        "file": "sunset-coast/play/roadster-jets.js",
+        "type": "JS",
+        "storedBytes": 9394,
+        "rawBytes": 9394,
+        "gzip9Bytes": 3580,
+        "sha256": "f9547163539d74e1e5c1a99068ef6b997129732ed96dd8eaeada9058ff32639a"
+      },
+      {
+        "file": "sunset-coast/play/roadster-tire-telemetry.js",
+        "type": "JS",
+        "storedBytes": 1152,
+        "rawBytes": 1152,
+        "gzip9Bytes": 561,
+        "sha256": "c68bd872de434e95fc35906708c5171def4a923f7bee3af2f676008aa6a7cf8f"
+      },
+      {
+        "file": "sunset-coast/play/roadster-ui.js",
+        "type": "JS",
+        "storedBytes": 14910,
+        "rawBytes": 14910,
+        "gzip9Bytes": 5032,
+        "sha256": "d9950892512a82e6d20444287a56b790527cf0a1bb3b4894a0b598474bd8d995"
+      },
+      {
+        "file": "sunset-coast/play/roadster-vehicle.js",
+        "type": "JS",
+        "storedBytes": 1493,
+        "rawBytes": 1493,
+        "gzip9Bytes": 949,
+        "sha256": "8932d96570331547038af1e0906b2f56e188c60b71dfdcddc58150229504ca0f"
+      },
+      {
+        "file": "sunset-coast/play/robotaxi.js",
+        "type": "JS",
+        "storedBytes": 21661,
+        "rawBytes": 21661,
+        "gzip9Bytes": 8198,
+        "sha256": "b30fc358489278601294fcd36252e526fa371ed4b44d1265e9a4a065ab141cef"
+      },
+      {
+        "file": "sunset-coast/play/route-view.js",
+        "type": "JS",
+        "storedBytes": 1033,
+        "rawBytes": 1033,
+        "gzip9Bytes": 585,
+        "sha256": "d3d9acdb7d6157a0d474bf1b55c89fefffb02b464667eeb11db7698ff07630b6"
+      },
+      {
+        "file": "sunset-coast/play/save-validation.js",
+        "type": "JS",
+        "storedBytes": 5808,
+        "rawBytes": 5808,
+        "gzip9Bytes": 1956,
+        "sha256": "1fd637e06a10199f051cee8de360fda9fe4dc15235fcd5d571a15799a80bdb8c"
+      },
+      {
+        "file": "sunset-coast/play/semi-asset.js",
+        "type": "JS",
+        "storedBytes": 5214,
+        "rawBytes": 5214,
+        "gzip9Bytes": 2467,
+        "sha256": "147ce23f2fc55f5ed9999f7b7f1f7b586c4dd690ffa061229be37fecb0736d8f"
+      },
+      {
+        "file": "sunset-coast/play/semi-displays.js",
+        "type": "JS",
+        "storedBytes": 4393,
+        "rawBytes": 4393,
+        "gzip9Bytes": 2051,
+        "sha256": "e823c5fe5a2dadc5172914c3f64a8aa659cae5ca4ab9188860006d6de7c93c5b"
+      },
+      {
+        "file": "sunset-coast/play/semi-powertrain.js",
+        "type": "JS",
+        "storedBytes": 1391,
+        "rawBytes": 1391,
+        "gzip9Bytes": 747,
+        "sha256": "22a02bde51a298ecbd999f1bf498007cc01e2e1eb38d46e6198230e32ab09880"
+      },
+      {
+        "file": "sunset-coast/play/semi-trailer.js",
+        "type": "JS",
+        "storedBytes": 21896,
+        "rawBytes": 21896,
+        "gzip9Bytes": 8297,
+        "sha256": "7be0818d4b3916aebb7f139e26bf21d7139cbc3050759ec52d4225246cc22903"
+      },
+      {
+        "file": "sunset-coast/play/semi-vehicle.js",
+        "type": "JS",
+        "storedBytes": 751,
+        "rawBytes": 751,
+        "gzip9Bytes": 666,
+        "sha256": "698a1d2c73497049d8c4a474e3dfc1f8bb125b0e768f57edcda220a59ac81c4b"
+      },
+      {
+        "file": "sunset-coast/play/sensor.js",
+        "type": "JS",
+        "storedBytes": 18625,
+        "rawBytes": 18625,
+        "gzip9Bytes": 6800,
+        "sha256": "35d75d3c9af9fe654168cfb7260db14a0f6aa8d5b18596cae7be31d2d2b4f5c3"
+      },
+      {
+        "file": "sunset-coast/play/standard-save-keys.js",
+        "type": "JS",
+        "storedBytes": 515,
+        "rawBytes": 515,
+        "gzip9Bytes": 289,
+        "sha256": "6841b883df448fe54f63aff19cbe877f9c4f30b65db5b69f39a392d5609bb02f"
+      },
+      {
+        "file": "sunset-coast/play/storage-keys.js",
+        "type": "JS",
+        "storedBytes": 2093,
+        "rawBytes": 2093,
+        "gzip9Bytes": 1084,
+        "sha256": "0e467f1a388598d63377eeec6c029575ea006c8a2c5d351e997787b72a8d029c"
+      },
+      {
+        "file": "sunset-coast/play/streaming-world.js",
+        "type": "JS",
+        "storedBytes": 32459,
+        "rawBytes": 32459,
+        "gzip9Bytes": 11787,
+        "sha256": "c410cbb07d5f0268ef1e3c8bf2b86ada2ec7702642e8723418b81e2a38c4e576"
+      },
+      {
+        "file": "sunset-coast/play/surface-layout.js",
+        "type": "JS",
+        "storedBytes": 2647,
+        "rawBytes": 2647,
+        "gzip9Bytes": 1224,
+        "sha256": "1ad1040d94fd7456f3196036802473d3d72cd38a99812ca8e495b5c37e88a57c"
+      },
+      {
+        "file": "sunset-coast/play/touch-selection.js",
+        "type": "JS",
+        "storedBytes": 1245,
+        "rawBytes": 1245,
+        "gzip9Bytes": 679,
+        "sha256": "81d3c3721ce6a36348b5e01c9a7eb44049e2e826820c4660d0550bcb88904e0f"
+      },
+      {
+        "file": "sunset-coast/play/touch-transmission.js",
+        "type": "JS",
+        "storedBytes": 3972,
+        "rawBytes": 3972,
+        "gzip9Bytes": 1616,
+        "sha256": "c35f5e14e79c048977a606de90bf5fc17f17dbbc93b828afe93ab967f1041feb"
+      },
+      {
+        "file": "sunset-coast/play/traffic-controller.js",
+        "type": "JS",
+        "storedBytes": 4384,
+        "rawBytes": 4384,
+        "gzip9Bytes": 1796,
+        "sha256": "978e349338058fe1afaa59cf4bba433a3ef593a38f111f8faedfb3743a82376a"
+      },
+      {
+        "file": "sunset-coast/play/ui.js",
+        "type": "JS",
+        "storedBytes": 50924,
+        "rawBytes": 50924,
+        "gzip9Bytes": 17925,
+        "sha256": "fa4fd19a55dbb567c99c1a2efd2c814b7900a763ebfb676766d83c70b4439546"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-asset-flow.js",
+        "type": "JS",
+        "storedBytes": 1866,
+        "rawBytes": 1866,
+        "gzip9Bytes": 889,
+        "sha256": "e496d59be64cc15ea2e4098106dfa7d723ac9bf693440b82e4bf9a53460f403e"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-asset-registry.js",
+        "type": "JS",
+        "storedBytes": 2371,
+        "rawBytes": 2371,
+        "gzip9Bytes": 1129,
+        "sha256": "527b7a6a93e224b02a92c949988277441080e519553b1938febb2a49fb96a400"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-catalog.js",
+        "type": "JS",
+        "storedBytes": 6154,
+        "rawBytes": 6154,
+        "gzip9Bytes": 2767,
+        "sha256": "04e4c1d1ee9875e08a899c924360be14d693f28439a4ac09c5657cc177b57833"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-damage.js",
+        "type": "JS",
+        "storedBytes": 30087,
+        "rawBytes": 30087,
+        "gzip9Bytes": 9986,
+        "sha256": "5e102b2ae5e5d2bc92757ba34368db32fcecd5f75458b12fdb8ac7f977d5050a"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-design.js",
+        "type": "JS",
+        "storedBytes": 63607,
+        "rawBytes": 63607,
+        "gzip9Bytes": 19743,
+        "sha256": "410d5f09a99ec88e520f1cb3e7c87b89f7575b95912b4edd95cbc6880a6561eb"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-dynamics.js",
+        "type": "JS",
+        "storedBytes": 14795,
+        "rawBytes": 14795,
+        "gzip9Bytes": 5160,
+        "sha256": "a5abb8dbd67325f89d31217f58b3fd4444faa46046d612689de916e2da456d2c"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-environment.js",
+        "type": "JS",
+        "storedBytes": 1663,
+        "rawBytes": 1663,
+        "gzip9Bytes": 803,
+        "sha256": "bc76ba38ebbe0d1b19d7bbba97a38b3c0fbf4d3d40bf1889902eafc984a30caf"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-infotainment.js",
+        "type": "JS",
+        "storedBytes": 5637,
+        "rawBytes": 5637,
+        "gzip9Bytes": 2300,
+        "sha256": "b5ba15f9a0e0be005b1ea3021e424627cc6a578331c37fc543e3fdd2d03644ac"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-instruments.js",
+        "type": "JS",
+        "storedBytes": 8286,
+        "rawBytes": 8286,
+        "gzip9Bytes": 3046,
+        "sha256": "96ce16fcffc3720da98686c552ba94bf1b80605110060cf540291d5642ad24e5"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-lights.js",
+        "type": "JS",
+        "storedBytes": 10743,
+        "rawBytes": 10743,
+        "gzip9Bytes": 4030,
+        "sha256": "52c49146af811198164b2f025bf95a3a2598ac20fe8dc08dc08aa28aaa723a82"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-panel-layouts.js",
+        "type": "JS",
+        "storedBytes": 1154,
+        "rawBytes": 1154,
+        "gzip9Bytes": 531,
+        "sha256": "b4090fd35f87e3d516b7105225ea1371ce2be6a374467214e90745c1949b1b56"
+      },
+      {
+        "file": "sunset-coast/play/vehicle-physics.js",
+        "type": "JS",
+        "storedBytes": 10330,
+        "rawBytes": 10330,
+        "gzip9Bytes": 3871,
+        "sha256": "17a6b089c1e085a8be3ac33469b88836fe1bb04fec0ab4b087394a9c354ccc0c"
+      },
+      {
+        "file": "sunset-coast/play/vendor/BufferGeometryUtils.js",
+        "type": "JS",
+        "storedBytes": 35551,
+        "rawBytes": 35551,
+        "gzip9Bytes": 8012,
+        "sha256": "248b3e8420bd3de805ca01845c1b0cc62aa2766f3c56bdcead265e306f8e715c"
+      },
+      {
+        "file": "sunset-coast/play/vendor/GLTFLoader.js",
+        "type": "JS",
+        "storedBytes": 114744,
+        "rawBytes": 114744,
+        "gzip9Bytes": 24719,
+        "sha256": "2904f2823e23d5bc1d64512bf4c0d777ac44d728d47c34a9e3d48ce8ef6b761d"
+      },
+      {
+        "file": "sunset-coast/play/vendor/three.core.js",
+        "type": "JS",
+        "storedBytes": 1403455,
+        "rawBytes": 1403455,
+        "gzip9Bytes": 277321,
+        "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20"
+      },
+      {
+        "file": "sunset-coast/play/vendor/three.module.js",
+        "type": "JS",
+        "storedBytes": 603113,
+        "rawBytes": 603113,
+        "gzip9Bytes": 117877,
+        "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+      },
+      {
+        "file": "sunset-coast/play/world.js",
+        "type": "JS",
+        "storedBytes": 18137,
+        "rawBytes": 18137,
+        "gzip9Bytes": 7320,
+        "sha256": "679d1ef9f9a5e4911fec8df87167b4998a20f930237a5cc0cb94ad6174572b3e"
+      },
+      {
+        "file": "sunset-coast/sunrise-hub-launcher.a0e555ba5ecb8629.js",
+        "type": "JS",
+        "storedBytes": 3506,
+        "rawBytes": 3506,
+        "gzip9Bytes": 1557,
+        "sha256": "a0e555ba5ecb86294ffa6d02216293208d2ffa13c5ceb28474a0f57ff4367c8e"
+      },
+      {
+        "file": "sunset-coast/play/physics/neon-physics.wasm.gz",
+        "type": "WASM",
+        "storedBytes": 9382282,
+        "rawBytes": 37700666,
+        "gzip9Bytes": 9471510,
+        "sha256": "9352825a316f4449b81d326706e78be95ed5a81c0e797f35879ef8b39bc505bd"
+      }
+    ],
+    "edges": [
+      {
+        "from": "sunset-coast/play/beta-runtime-entry.js",
+        "to": "sunset-coast/play/beta-save-slots.js"
+      },
+      {
+        "from": "sunset-coast/play/beta-runtime-entry.js",
+        "to": "sunset-coast/play/save-validation.js"
+      },
+      {
+        "from": "sunset-coast/play/beta-runtime-entry.js",
+        "to": "sunset-coast/play/mobile-ui.js"
+      },
+      {
+        "from": "sunset-coast/play/mobile-ui.js",
+        "to": "sunset-coast/play/game.js"
+      },
+      {
+        "from": "sunset-coast/play/mobile-ui.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/semi-trailer.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-panel-layouts.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/lane-change.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/police-response.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/realistic-visuals.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-lights.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/roadster-jets.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/save-validation.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/roadster-ui.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/flyable-aircraft.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/aircraft-ui.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/autonomy-test-job.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/godot-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/camera-controls.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/performance-profile.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/world.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/roadster-asset.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-asset-flow.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-environment.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/cockpit.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/sensor.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/audio.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/ui.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/brake-closeup.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/location-beacons.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/location-teleport.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/traffic-controller.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/flight-travel.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/robotaxi.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/release-ui.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/impact-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/driving-assist.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/entry-animation.js"
+      },
+      {
+        "from": "sunset-coast/play/game.js",
+        "to": "sunset-coast/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/play/driving-assist.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/driving-assist.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/driving-assist.js",
+        "to": "sunset-coast/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/play/assist-settings.js",
+        "to": "sunset-coast/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/play/storage-keys.js",
+        "to": "sunset-coast/play/beta-save-slots.js"
+      },
+      {
+        "from": "sunset-coast/play/beta-save-slots.js",
+        "to": "sunset-coast/play/standard-save-keys.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-dynamics.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/vendor/three.module.js",
+        "to": "sunset-coast/play/vendor/three.core.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-physics.js",
+        "to": "sunset-coast/play/roadster-tire-telemetry.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-physics.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-physics.js",
+        "to": "sunset-coast/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-physics.js",
+        "to": "sunset-coast/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-physics.js",
+        "to": "sunset-coast/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-physics.js",
+        "to": "sunset-coast/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-controls.js",
+        "to": "sunset-coast/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-controls.js",
+        "to": "sunset-coast/play/roadster-jets.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-controls.js",
+        "to": "sunset-coast/play/roadster-aero.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-jets.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/cargo-career.js",
+        "to": "sunset-coast/play/semi-powertrain.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-damage.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/release-ui.js",
+        "to": "sunset-coast/play/interface-view.js"
+      },
+      {
+        "from": "sunset-coast/play/release-ui.js",
+        "to": "sunset-coast/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/play/release-ui.js",
+        "to": "sunset-coast/play/release-notes.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/entry-animation.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/play/robotaxi.js",
+        "to": "sunset-coast/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/play/population-stream.js",
+        "to": "sunset-coast/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/population-stream.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/population-stream.js",
+        "to": "sunset-coast/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/play/population-stream.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/population-stream.js",
+        "to": "sunset-coast/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/population-stream.js",
+        "to": "sunset-coast/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/streaming-world.js",
+        "to": "sunset-coast/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/play/streaming-world.js",
+        "to": "sunset-coast/play/realistic-visuals.js"
+      },
+      {
+        "from": "sunset-coast/play/streaming-world.js",
+        "to": "sunset-coast/play/mountain-barriers.js"
+      },
+      {
+        "from": "sunset-coast/play/streaming-world.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/streaming-world.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/streaming-world.js",
+        "to": "sunset-coast/play/region-scenery.js"
+      },
+      {
+        "from": "sunset-coast/play/streaming-world.js",
+        "to": "sunset-coast/play/surface-layout.js"
+      },
+      {
+        "from": "sunset-coast/play/region-scenery.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/region-scenery.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/region-scenery.js",
+        "to": "sunset-coast/play/surface-layout.js"
+      },
+      {
+        "from": "sunset-coast/play/mountain-barriers.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/realistic-visuals.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-instruments.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-instruments.js",
+        "to": "sunset-coast/play/semi-displays.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-instruments.js",
+        "to": "sunset-coast/play/vehicle-infotainment.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-instruments.js",
+        "to": "sunset-coast/play/g9-navigation.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-instruments.js",
+        "to": "sunset-coast/play/roadster-displays.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-instruments.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-displays.js",
+        "to": "sunset-coast/play/roadster-air-display.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-displays.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-displays.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-displays.js",
+        "to": "sunset-coast/play/roadster-aero.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-displays.js",
+        "to": "sunset-coast/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-air-display.js",
+        "to": "sunset-coast/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-navigation.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-navigation.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-navigation.js",
+        "to": "sunset-coast/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/play/navigation-guidance.js",
+        "to": "sunset-coast/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-infotainment.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-infotainment.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-infotainment.js",
+        "to": "sunset-coast/play/cockpit-profiles.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-displays.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-displays.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/ground-contact.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/ground-contact.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/ground-contact.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot.js",
+        "to": "sunset-coast/play/pilot-detour.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot.js",
+        "to": "sunset-coast/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot-detour.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/pilot-detour.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/flight-travel.js",
+        "to": "sunset-coast/play/region-scenery.js"
+      },
+      {
+        "from": "sunset-coast/play/flight-travel.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/traffic-controller.js",
+        "to": "sunset-coast/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/play/traffic-controller.js",
+        "to": "sunset-coast/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/play/traffic-controller.js",
+        "to": "sunset-coast/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/play/traffic-controller.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/location-teleport.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/location-teleport.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/location-teleport.js",
+        "to": "sunset-coast/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/play/location-teleport.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/location-teleport.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/location-teleport.js",
+        "to": "sunset-coast/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/play/location-beacons.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/brake-closeup.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/brake-closeup.js",
+        "to": "sunset-coast/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/hidden-cheat-entry.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/control-size.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/interface-view.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/vehicle-asset-flow.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/assist-status.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/robotaxi.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/map-ui.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/navigation-ui.js"
+      },
+      {
+        "from": "sunset-coast/play/ui.js",
+        "to": "sunset-coast/play/world.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/semi-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/semi-asset.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/realistic-visuals.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/vehicle-catalog.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/vehicle-design.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/vehicle-lights.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/asset-car.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/g9-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/roadster-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/roadster-asset.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/world.js",
+        "to": "sunset-coast/play/surface-layout.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-asset.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-asset.js",
+        "to": "sunset-coast/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-asset.js",
+        "to": "sunset-coast/play/vendor/BufferGeometryUtils.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-asset.js",
+        "to": "sunset-coast/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-asset.js",
+        "to": "sunset-coast/play/roadster-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/play/vendor/BufferGeometryUtils.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/vendor/GLTFLoader.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/vendor/GLTFLoader.js",
+        "to": "sunset-coast/play/vendor/BufferGeometryUtils.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-vehicle.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-vehicle.js",
+        "to": "sunset-coast/play/g9-displays.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-vehicle.js",
+        "to": "sunset-coast/play/assets/g9/g9-materials.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-vehicle.js",
+        "to": "sunset-coast/play/g9-asset.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-asset.js",
+        "to": "sunset-coast/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-asset.js",
+        "to": "sunset-coast/play/assets/g9/g9-mesh-data.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-displays.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/g9-displays.js",
+        "to": "sunset-coast/play/assets/g9/g9-display-art.js"
+      },
+      {
+        "from": "sunset-coast/play/asset-car.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/asset-car.js",
+        "to": "sunset-coast/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/play/asset-car.js",
+        "to": "sunset-coast/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/play/asset-car.js",
+        "to": "sunset-coast/play/loading-progress.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-lights.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-design.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-design.js",
+        "to": "sunset-coast/play/vehicle-catalog.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-catalog.js",
+        "to": "sunset-coast/play/roadster-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-asset.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-asset.js",
+        "to": "sunset-coast/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-asset.js",
+        "to": "sunset-coast/play/performance-profile.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-asset.js",
+        "to": "sunset-coast/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/play/performance-profile.js",
+        "to": "sunset-coast/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/play/navigation-ui.js",
+        "to": "sunset-coast/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/play/navigation-ui.js",
+        "to": "sunset-coast/play/map-ui.js"
+      },
+      {
+        "from": "sunset-coast/play/map-ui.js",
+        "to": "sunset-coast/play/interface-view.js"
+      },
+      {
+        "from": "sunset-coast/play/map-ui.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/map-ui.js",
+        "to": "sunset-coast/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/play/map-ui.js",
+        "to": "sunset-coast/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/play/map-ui.js",
+        "to": "sunset-coast/play/world.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-asset-flow.js",
+        "to": "sunset-coast/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/play/sensor.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/semi-displays.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/vehicle-infotainment.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/cockpit-profiles.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/g9-navigation.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/roadster-displays.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/assist-status.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/vehicle-environment.js"
+      },
+      {
+        "from": "sunset-coast/play/cockpit.js",
+        "to": "sunset-coast/play/world.js"
+      },
+      {
+        "from": "sunset-coast/play/vehicle-environment.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/roadster-tire-telemetry.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/godot-asset-cache.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/godot-startup-diagnostics.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/physics-surfaces.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/release-notes.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/impact-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/godot-physics.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/physics-surfaces.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/robotaxi.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/autonomy-test-job.js",
+        "to": "sunset-coast/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/play/aircraft-ui.js",
+        "to": "sunset-coast/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/play/aircraft-ui.js",
+        "to": "sunset-coast/play/flyable-aircraft.js"
+      },
+      {
+        "from": "sunset-coast/play/flyable-aircraft.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/flyable-aircraft.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/flyable-aircraft.js",
+        "to": "sunset-coast/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/play/flyable-aircraft.js",
+        "to": "sunset-coast/play/impact-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-ui.js",
+        "to": "sunset-coast/play/roadster-air-display.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-ui.js",
+        "to": "sunset-coast/play/panel-drag.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-ui.js",
+        "to": "sunset-coast/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-ui.js",
+        "to": "sunset-coast/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/play/roadster-ui.js",
+        "to": "sunset-coast/play/roadster-aero.js"
+      },
+      {
+        "from": "sunset-coast/play/save-validation.js",
+        "to": "sunset-coast/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/play/save-validation.js",
+        "to": "sunset-coast/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/play/save-validation.js",
+        "to": "sunset-coast/play/beta-save-slots.js"
+      },
+      {
+        "from": "sunset-coast/play/save-validation.js",
+        "to": "sunset-coast/play/world.js"
+      },
+      {
+        "from": "sunset-coast/play/save-validation.js",
+        "to": "sunset-coast/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/save-validation.js",
+        "to": "sunset-coast/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/play/save-validation.js",
+        "to": "sunset-coast/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/play/police-response.js",
+        "to": "sunset-coast/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/play/police-response.js",
+        "to": "sunset-coast/play/traffic-controller.js"
+      },
+      {
+        "from": "sunset-coast/play/police-response.js",
+        "to": "sunset-coast/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/play/police-response.js",
+        "to": "sunset-coast/play/world.js"
+      },
+      {
+        "from": "sunset-coast/play/police-response.js",
+        "to": "sunset-coast/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/play/lane-change.js",
+        "to": "sunset-coast/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-trailer.js",
+        "to": "sunset-coast/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/play/semi-trailer.js",
+        "to": "sunset-coast/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/sunrise-hub-launcher.a0e555ba5ecb8629.js",
+        "to": "sunset-coast/play/save-validation.js"
+      },
+      {
+        "from": "sunset-coast/sunrise-hub-launcher.a0e555ba5ecb8629.js",
+        "to": "sunset-coast/play/beta-save-slots.js"
+      }
+    ],
+    "total": {
+      "rawBytes": 42912690,
+      "gzip9Bytes": 10963626
+    },
+    "additionalEnginePack": [
+      {
+        "file": "sunset-coast/play/physics/neon-physics.pck",
+        "type": "PCK",
+        "storedBytes": 61304,
+        "rawBytes": 61304,
+        "gzip9Bytes": 58826,
+        "sha256": "166265ac7c420134f2c7059fdc1fd9d168bc1d27f7002029a08b6071dec08cb3"
+      }
+    ]
+  },
+  "rapier": {
+    "entries": [
+      "sunset-coast/index.html",
+      "sunset-coast/rapier/play/index.html"
+    ],
+    "records": [
+      {
+        "file": "sunset-coast/rapier/play/aircraft-ui.js",
+        "type": "JS",
+        "storedBytes": 4220,
+        "rawBytes": 4220,
+        "gzip9Bytes": 1804,
+        "sha256": "3b8af495a5b1416a80484dd492ea7c86427c41111ab61eab15dee35fd165a6bc"
+      },
+      {
+        "file": "sunset-coast/rapier/play/asset-car.js",
+        "type": "JS",
+        "storedBytes": 8599,
+        "rawBytes": 8599,
+        "gzip9Bytes": 3251,
+        "sha256": "bd1fe9908924d9fc29b776a7edb27bc06758d69671f65f42ba1bd680f4adec8e"
+      },
+      {
+        "file": "sunset-coast/rapier/play/assets/g9/g9-display-art.js",
+        "type": "JS",
+        "storedBytes": 2901,
+        "rawBytes": 2901,
+        "gzip9Bytes": 1069,
+        "sha256": "b65bbb7ff7c713718d525de6a5475da98c2974977e4e8cc3190c83ebdb062a40"
+      },
+      {
+        "file": "sunset-coast/rapier/play/assets/g9/g9-materials.js",
+        "type": "JS",
+        "storedBytes": 1475,
+        "rawBytes": 1475,
+        "gzip9Bytes": 536,
+        "sha256": "c80772797a5b16fecf0296c21c5dd7466a55d6093e5c9dc4dd4239073dbe4fe3"
+      },
+      {
+        "file": "sunset-coast/rapier/play/assets/g9/g9-mesh-data.js",
+        "type": "JS",
+        "storedBytes": 1791318,
+        "rawBytes": 1791318,
+        "gzip9Bytes": 631450,
+        "sha256": "b9412bb4acd3a522d1e98b5dfe68a84ff9155e8f3b3de576df009b56fbb62772"
+      },
+      {
+        "file": "sunset-coast/rapier/play/assist-settings.js",
+        "type": "JS",
+        "storedBytes": 2931,
+        "rawBytes": 2931,
+        "gzip9Bytes": 1206,
+        "sha256": "b280d1f2d3bffb8ad4d5524f4fd2af6f8208092d0cdb73beeb358ccbb652e23e"
+      },
+      {
+        "file": "sunset-coast/rapier/play/assist-status.js",
+        "type": "JS",
+        "storedBytes": 1027,
+        "rawBytes": 1027,
+        "gzip9Bytes": 605,
+        "sha256": "ff81d9f9b131e518327562d1da5cbf6ce95b3c2234cd98bababb5cf9e4e98a4e"
+      },
+      {
+        "file": "sunset-coast/rapier/play/audio.js",
+        "type": "JS",
+        "storedBytes": 1826,
+        "rawBytes": 1826,
+        "gzip9Bytes": 732,
+        "sha256": "d2a7c030ba795cce7099bb6792f9708e098715d7b17fc679e24d1dfef4e12653"
+      },
+      {
+        "file": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "type": "JS",
+        "storedBytes": 19822,
+        "rawBytes": 19822,
+        "gzip9Bytes": 7440,
+        "sha256": "05d7af68b2dc5409221cfd30ed3bc8033115dd2a0ec7b95b0b876f5a772de16f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/axle-fault.js",
+        "type": "JS",
+        "storedBytes": 3943,
+        "rawBytes": 3943,
+        "gzip9Bytes": 1468,
+        "sha256": "1feb3541ffbeb9163a74bca92fb0c907d035bcbc3c6d01d3f4385d461bb0c2af"
+      },
+      {
+        "file": "sunset-coast/rapier/play/beta-save-slots.js",
+        "type": "JS",
+        "storedBytes": 15586,
+        "rawBytes": 15586,
+        "gzip9Bytes": 5740,
+        "sha256": "d8b224372fc4d700513ffadd6d508dc14e4181273eacf55f4cc4967159965773"
+      },
+      {
+        "file": "sunset-coast/rapier/play/brake-closeup.js",
+        "type": "JS",
+        "storedBytes": 6405,
+        "rawBytes": 6405,
+        "gzip9Bytes": 2589,
+        "sha256": "cc6b436eec7eb1f61bcd83ee9d1707c1563f74bcf34a172a46e0d978e6f3ad40"
+      },
+      {
+        "file": "sunset-coast/rapier/play/brake-fault.js",
+        "type": "JS",
+        "storedBytes": 3626,
+        "rawBytes": 3626,
+        "gzip9Bytes": 1383,
+        "sha256": "790b31e9613a908ef62b33b1c4256b50032187ed793df2df4533690e0be0dcb4"
+      },
+      {
+        "file": "sunset-coast/rapier/play/browser-motorcycle-rigidbody.js",
+        "type": "JS",
+        "storedBytes": 14387,
+        "rawBytes": 14387,
+        "gzip9Bytes": 5284,
+        "sha256": "2c53ee7ba8821b29673f1a2cabd36c795cf587116d3e3c53d9c315d74b9fe677"
+      },
+      {
+        "file": "sunset-coast/rapier/play/browser-roadster-air.js",
+        "type": "JS",
+        "storedBytes": 15803,
+        "rawBytes": 15803,
+        "gzip9Bytes": 5484,
+        "sha256": "0e84b9cb8bcf5a7fcfb6568e0ba011e57691cef2b876e5425cf3af592bc90eaf"
+      },
+      {
+        "file": "sunset-coast/rapier/play/browser-roadster-controls.js",
+        "type": "JS",
+        "storedBytes": 1526,
+        "rawBytes": 1526,
+        "gzip9Bytes": 673,
+        "sha256": "7cb671066c924ec2eec97b63949578bd593b8de118aaa4db5c55603e4abd9161"
+      },
+      {
+        "file": "sunset-coast/rapier/play/camera-controls.js",
+        "type": "JS",
+        "storedBytes": 2772,
+        "rawBytes": 2772,
+        "gzip9Bytes": 1132,
+        "sha256": "6d1a26684d24c8b654288b07bd4dd45fd84c7b23aaeacc26685b1819e50ebb9d"
+      },
+      {
+        "file": "sunset-coast/rapier/play/cargo-career.js",
+        "type": "JS",
+        "storedBytes": 8796,
+        "rawBytes": 8796,
+        "gzip9Bytes": 3641,
+        "sha256": "80212f08dbb7ef43b8a86e1c3c460dd9fcd72bc9163d78da283e79787a5758db"
+      },
+      {
+        "file": "sunset-coast/rapier/play/character-asset-status.js",
+        "type": "JS",
+        "storedBytes": 3138,
+        "rawBytes": 3138,
+        "gzip9Bytes": 1373,
+        "sha256": "55fa569e3c1af66e9ef4f158d49cb638fabb09b2e957a18a4561878dd2ed4c94"
+      },
+      {
+        "file": "sunset-coast/rapier/play/character-assets.js",
+        "type": "JS",
+        "storedBytes": 24503,
+        "rawBytes": 24503,
+        "gzip9Bytes": 7702,
+        "sha256": "d05a521d300590f2ec0e3c61bfed7e3f13f9c1832d0319f2d3398dcd0f1be143"
+      },
+      {
+        "file": "sunset-coast/rapier/play/city-chooser.js",
+        "type": "JS",
+        "storedBytes": 6143,
+        "rawBytes": 6143,
+        "gzip9Bytes": 2545,
+        "sha256": "64e71d5851ff38a4ffcde7861876c43b64ece1fa4abaee5b1849277eb676cfe3"
+      },
+      {
+        "file": "sunset-coast/rapier/play/city-frame.js",
+        "type": "JS",
+        "storedBytes": 4359,
+        "rawBytes": 4359,
+        "gzip9Bytes": 1716,
+        "sha256": "aabaa54b83a117e868330cb0adb512ae9f11bdeff7cfca6fb64160d949cfafff"
+      },
+      {
+        "file": "sunset-coast/rapier/play/city-lifecycle.js",
+        "type": "JS",
+        "storedBytes": 1392,
+        "rawBytes": 1392,
+        "gzip9Bytes": 729,
+        "sha256": "ebd5a45a9600c0193adf3eac5507b2ee35fa47af255f1a20edff632b2bef2c81"
+      },
+      {
+        "file": "sunset-coast/rapier/play/city-runtime-entry.js",
+        "type": "JS",
+        "storedBytes": 3802,
+        "rawBytes": 3802,
+        "gzip9Bytes": 1782,
+        "sha256": "533cbb311a9d79310bb604132ea5297f7da0019458c17f72cbac9bd3487665e9"
+      },
+      {
+        "file": "sunset-coast/rapier/play/city-save-store.js",
+        "type": "JS",
+        "storedBytes": 15716,
+        "rawBytes": 15716,
+        "gzip9Bytes": 5545,
+        "sha256": "abba2f6ef89d62b1fb9438c0c9a1a710bd40cd73d4b1cca7bde8f3e6b3302fec"
+      },
+      {
+        "file": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "type": "JS",
+        "storedBytes": 7968,
+        "rawBytes": 7968,
+        "gzip9Bytes": 3087,
+        "sha256": "440cf3197793e8c4bc01c24605057b34585ca0baf09670cda62a38390fbf621b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/cockpit-profiles.js",
+        "type": "JS",
+        "storedBytes": 1928,
+        "rawBytes": 1928,
+        "gzip9Bytes": 1121,
+        "sha256": "5f13b6699f584e6076d5826bcf8d5de07b9ecedb263534e8dee7e1b29ef5a86b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/cockpit.js",
+        "type": "JS",
+        "storedBytes": 33251,
+        "rawBytes": 33251,
+        "gzip9Bytes": 10378,
+        "sha256": "0150d372edcfff73b5b6db897fd623c1172e03612ee7f026e9fbad38c382fa22"
+      },
+      {
+        "file": "sunset-coast/rapier/play/control-size.js",
+        "type": "JS",
+        "storedBytes": 1374,
+        "rawBytes": 1374,
+        "gzip9Bytes": 626,
+        "sha256": "5446274a2661e843c259fe42393398efdf4abf247efd8dc1561537b10e045715"
+      },
+      {
+        "file": "sunset-coast/rapier/play/driving-assist.js",
+        "type": "JS",
+        "storedBytes": 13701,
+        "rawBytes": 13701,
+        "gzip9Bytes": 5372,
+        "sha256": "5c4dd83780b417b6429b5b5cfe0ea2cf685455478b7f79c4dd226da647830d96"
+      },
+      {
+        "file": "sunset-coast/rapier/play/entry-animation.js",
+        "type": "JS",
+        "storedBytes": 12626,
+        "rawBytes": 12626,
+        "gzip9Bytes": 4702,
+        "sha256": "c43382259b996b5363f13705847c24e3115f94063e615239c44b75b43534338a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/fixed-step-clock.mjs",
+        "type": "JS",
+        "storedBytes": 1031,
+        "rawBytes": 1031,
+        "gzip9Bytes": 459,
+        "sha256": "c01da1b83f79eb54abc14b0bcb09573bbb65e329061c360633e1621c65f07e7f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/flight-travel.js",
+        "type": "JS",
+        "storedBytes": 4641,
+        "rawBytes": 4641,
+        "gzip9Bytes": 2159,
+        "sha256": "9ec62b57456535227602489e0f78d0c63a3f4c8632f4d6a6fa919ebb7fa16aa6"
+      },
+      {
+        "file": "sunset-coast/rapier/play/flyable-aircraft.js",
+        "type": "JS",
+        "storedBytes": 31892,
+        "rawBytes": 31892,
+        "gzip9Bytes": 10897,
+        "sha256": "3877a722faebbde4035e9dbc5f66d206ed4b679fdb0a7229f8251918ed7c8a8a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/g9-asset.js",
+        "type": "JS",
+        "storedBytes": 1494,
+        "rawBytes": 1494,
+        "gzip9Bytes": 742,
+        "sha256": "741d30d8d2fc0ddd37d330b78ab1fdab8c78666d612881061021552bd459530d"
+      },
+      {
+        "file": "sunset-coast/rapier/play/g9-displays.js",
+        "type": "JS",
+        "storedBytes": 1843,
+        "rawBytes": 1843,
+        "gzip9Bytes": 1070,
+        "sha256": "fff950ef6fe11f4c55148c7f2611d234e978ea229c8aea669bb3a52e73598919"
+      },
+      {
+        "file": "sunset-coast/rapier/play/g9-navigation.js",
+        "type": "JS",
+        "storedBytes": 9018,
+        "rawBytes": 9018,
+        "gzip9Bytes": 3753,
+        "sha256": "afbf87b69c5cf357740605adda83fbd211200d20be629b2f22439bf7c6769eac"
+      },
+      {
+        "file": "sunset-coast/rapier/play/g9-vehicle.js",
+        "type": "JS",
+        "storedBytes": 5985,
+        "rawBytes": 5985,
+        "gzip9Bytes": 2878,
+        "sha256": "8b110233010630787be38346f22cf7d63a77860744e0b12f6213c7e62a057f0c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/game.js",
+        "type": "JS",
+        "storedBytes": 77458,
+        "rawBytes": 77458,
+        "gzip9Bytes": 24467,
+        "sha256": "b606a5bbf5e7c9a765809bcd8b23cf4e34b50302ae50fab7edb6be2a4fd8b075"
+      },
+      {
+        "file": "sunset-coast/rapier/play/ground-contact.js",
+        "type": "JS",
+        "storedBytes": 13703,
+        "rawBytes": 13703,
+        "gzip9Bytes": 5173,
+        "sha256": "4c78d7b664ae571f76a5fc0886a6c62eecab7db1f0ab651781da93b7cada8cf2"
+      },
+      {
+        "file": "sunset-coast/rapier/play/hidden-cheat-entry.js",
+        "type": "JS",
+        "storedBytes": 843,
+        "rawBytes": 843,
+        "gzip9Bytes": 486,
+        "sha256": "8d2805a9866fc1d199ce1abcc09c5f064a193a09e10539332688e90d6e55c74b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/impact-damage.js",
+        "type": "JS",
+        "storedBytes": 4515,
+        "rawBytes": 4515,
+        "gzip9Bytes": 1953,
+        "sha256": "75d7d9a8970ff97b60a71581c781ee17f6f5d05fcb6f90e6980cc4a8aeae8f08"
+      },
+      {
+        "file": "sunset-coast/rapier/play/interface-view.js",
+        "type": "JS",
+        "storedBytes": 6473,
+        "rawBytes": 6473,
+        "gzip9Bytes": 2643,
+        "sha256": "c169d054d5873c252d8c6e605c94a91bfa03999071acfe1c4c27aedd9e10ab88"
+      },
+      {
+        "file": "sunset-coast/rapier/play/intersection-signals.js",
+        "type": "JS",
+        "storedBytes": 1905,
+        "rawBytes": 1905,
+        "gzip9Bytes": 913,
+        "sha256": "ee595e506d6063f15c3a2a001a8787f8f5b0a7de3b0bba88ad73a91caf20acf6"
+      },
+      {
+        "file": "sunset-coast/rapier/play/lane-change.js",
+        "type": "JS",
+        "storedBytes": 5057,
+        "rawBytes": 5057,
+        "gzip9Bytes": 2141,
+        "sha256": "644e0b80a9198e958053335991e24ec194e6d4a8975037ebb34c15cd32017b5b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/loading-progress.js",
+        "type": "JS",
+        "storedBytes": 514,
+        "rawBytes": 514,
+        "gzip9Bytes": 347,
+        "sha256": "97a7326e32aeb39c4b82e3bf217da411470e63191fbd7dfde05cd4acda73e0f3"
+      },
+      {
+        "file": "sunset-coast/rapier/play/location-beacons.js",
+        "type": "JS",
+        "storedBytes": 2893,
+        "rawBytes": 2893,
+        "gzip9Bytes": 1225,
+        "sha256": "78d925d4084caa684ed23f3074b2eaa73f659894907ae02d229b34b8083895da"
+      },
+      {
+        "file": "sunset-coast/rapier/play/location-teleport.js",
+        "type": "JS",
+        "storedBytes": 9128,
+        "rawBytes": 9128,
+        "gzip9Bytes": 4009,
+        "sha256": "d34b51aaf6dad281cf7a47bbc272bb927f581ca5999506c2154773ac9f6ac616"
+      },
+      {
+        "file": "sunset-coast/rapier/play/map-ui.js",
+        "type": "JS",
+        "storedBytes": 17271,
+        "rawBytes": 17271,
+        "gzip9Bytes": 6428,
+        "sha256": "c8826bf60927b8683b69378a090a56199f46160f6e33e2f6c14e42cb27797fb3"
+      },
+      {
+        "file": "sunset-coast/rapier/play/mobile-ui.js",
+        "type": "JS",
+        "storedBytes": 26920,
+        "rawBytes": 26920,
+        "gzip9Bytes": 7888,
+        "sha256": "cc4fa6803f5bee7f09d0d0fb0ac2892e86a1c1ea77054f73f938c2808c5a6200"
+      },
+      {
+        "file": "sunset-coast/rapier/play/motorcycle-asset.js",
+        "type": "JS",
+        "storedBytes": 7180,
+        "rawBytes": 7180,
+        "gzip9Bytes": 3108,
+        "sha256": "7c32c5d036be28559a8a1781a850a9fc7d5146f011b8a81fdf64178cef0b610c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/motorcycle-download.js",
+        "type": "JS",
+        "storedBytes": 3496,
+        "rawBytes": 3496,
+        "gzip9Bytes": 1490,
+        "sha256": "3ea3370209f983721c5d7ca3cd8fe361d5cf782490c70e04f88d9e130408f123"
+      },
+      {
+        "file": "sunset-coast/rapier/play/motorcycle-manifests.js",
+        "type": "JS",
+        "storedBytes": 7843,
+        "rawBytes": 7843,
+        "gzip9Bytes": 1958,
+        "sha256": "aaa5e85a6dacebe7ea617d7a77e8fa37e6b81959767af8878c1c49f1d3089a4b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/motorcycle-rider.js",
+        "type": "JS",
+        "storedBytes": 3427,
+        "rawBytes": 3427,
+        "gzip9Bytes": 1459,
+        "sha256": "35b2ed29aa6bbc21e972d88124f339e86f0e016a8e3b7078ab48fea9e14989af"
+      },
+      {
+        "file": "sunset-coast/rapier/play/mountain-barriers.js",
+        "type": "JS",
+        "storedBytes": 1416,
+        "rawBytes": 1416,
+        "gzip9Bytes": 789,
+        "sha256": "dc826dcef12ab68db820a2d06459883aac903d44ecdc18abe5f8317464321795"
+      },
+      {
+        "file": "sunset-coast/rapier/play/navigation-guidance.js",
+        "type": "JS",
+        "storedBytes": 6095,
+        "rawBytes": 6095,
+        "gzip9Bytes": 2791,
+        "sha256": "213bebd410e43156dc410a302c7682747a85154f4ba33aab6a6da5e6983153a0"
+      },
+      {
+        "file": "sunset-coast/rapier/play/navigation-ui.js",
+        "type": "JS",
+        "storedBytes": 5436,
+        "rawBytes": 5436,
+        "gzip9Bytes": 2381,
+        "sha256": "b57025c637f2477e6b784cdd24876d8f432e99a25bb27fb6d3c1530160cae90a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/panel-drag.js",
+        "type": "JS",
+        "storedBytes": 4668,
+        "rawBytes": 4668,
+        "gzip9Bytes": 1937,
+        "sha256": "99e858db44aaeff56f68dc2ba989db9ad4aaeecd740233c0ff19e8748dfc3b02"
+      },
+      {
+        "file": "sunset-coast/rapier/play/performance-profile.js",
+        "type": "JS",
+        "storedBytes": 1845,
+        "rawBytes": 1845,
+        "gzip9Bytes": 894,
+        "sha256": "4d42625b1ef7801f7a8581bbf0f7fa5b3b7b3fdfd9fccfbd84a8056cc2c1257c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/physics-surfaces.js",
+        "type": "JS",
+        "storedBytes": 3371,
+        "rawBytes": 3371,
+        "gzip9Bytes": 1455,
+        "sha256": "dd2908d2b5b24bba3f8abbfa5d02854016b191dccaf4182b29fa799a0db07691"
+      },
+      {
+        "file": "sunset-coast/rapier/play/physics-transaction.js",
+        "type": "JS",
+        "storedBytes": 2738,
+        "rawBytes": 2738,
+        "gzip9Bytes": 1123,
+        "sha256": "808009d6aa5ffe2247a17e69c7df881240d39ebbeb3cf2c4b2f8fa559988f761"
+      },
+      {
+        "file": "sunset-coast/rapier/play/pilot-detour.js",
+        "type": "JS",
+        "storedBytes": 2984,
+        "rawBytes": 2984,
+        "gzip9Bytes": 1323,
+        "sha256": "b25ae1b72063da9cf1558d8c4d6cc2ac18a7e8ca1268525106432ac7d4fc59d9"
+      },
+      {
+        "file": "sunset-coast/rapier/play/pilot.js",
+        "type": "JS",
+        "storedBytes": 27121,
+        "rawBytes": 27121,
+        "gzip9Bytes": 9689,
+        "sha256": "ee102c208fa9f1af1ca0374e41f626117e9f2b7c3e6652b77ea42d25e89277ac"
+      },
+      {
+        "file": "sunset-coast/rapier/play/police-response.js",
+        "type": "JS",
+        "storedBytes": 7397,
+        "rawBytes": 7397,
+        "gzip9Bytes": 2929,
+        "sha256": "4a4d0395efb075aa8fea51af7c5e2212a252f389451a74e2aeedb7760c2de125"
+      },
+      {
+        "file": "sunset-coast/rapier/play/population-stream.js",
+        "type": "JS",
+        "storedBytes": 8955,
+        "rawBytes": 8955,
+        "gzip9Bytes": 3645,
+        "sha256": "e677e18c2606c235b0ac3bc6cbb7d93b5a9d87ac33a340c55ae56b12377a0f37"
+      },
+      {
+        "file": "sunset-coast/rapier/play/rapier-aircraft.js",
+        "type": "JS",
+        "storedBytes": 11621,
+        "rawBytes": 11621,
+        "gzip9Bytes": 4119,
+        "sha256": "4ef7e5e513d555da8793c085c6a27195effaa20f6f899b953d0b62580354d57c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/rapier-motorcycle.js",
+        "type": "JS",
+        "storedBytes": 5988,
+        "rawBytes": 5988,
+        "gzip9Bytes": 2483,
+        "sha256": "162ba84c0627528d9443724684d2fe5eb8d210e7d6c9d37410f7e1fb51197a47"
+      },
+      {
+        "file": "sunset-coast/rapier/play/rapier-physics.js",
+        "type": "JS",
+        "storedBytes": 23707,
+        "rawBytes": 23707,
+        "gzip9Bytes": 8575,
+        "sha256": "c629328e40a36043ae1480791fdc22792c699ad3c5489225e74249fc75de9811"
+      },
+      {
+        "file": "sunset-coast/rapier/play/rapier-roadster-maneuver.js",
+        "type": "JS",
+        "storedBytes": 17045,
+        "rawBytes": 17045,
+        "gzip9Bytes": 6182,
+        "sha256": "fd8aa16a7c5fe6164e6fdaeee46a23779d19309bfb9b851548f2f0856fd384c6"
+      },
+      {
+        "file": "sunset-coast/rapier/play/rapier-wheels.js",
+        "type": "JS",
+        "storedBytes": 7424,
+        "rawBytes": 7424,
+        "gzip9Bytes": 3081,
+        "sha256": "df461e3d4fa71dfab645793dc42316bd7691d78dba34a1648b0cebb95dedcdb5"
+      },
+      {
+        "file": "sunset-coast/rapier/play/rapier-world.js",
+        "type": "JS",
+        "storedBytes": 5843,
+        "rawBytes": 5843,
+        "gzip9Bytes": 2248,
+        "sha256": "140f5f938b47f7aebc4683b468d47f998dc2c7473a098245f790c5fe47b67360"
+      },
+      {
+        "file": "sunset-coast/rapier/play/realistic-visuals.js",
+        "type": "JS",
+        "storedBytes": 5123,
+        "rawBytes": 5123,
+        "gzip9Bytes": 2127,
+        "sha256": "9bcfbc6a4facd185999aa504dbdfa95aa5e520fe10fabdba91f450cffe849108"
+      },
+      {
+        "file": "sunset-coast/rapier/play/region-scenery.js",
+        "type": "JS",
+        "storedBytes": 9133,
+        "rawBytes": 9133,
+        "gzip9Bytes": 3540,
+        "sha256": "cd10ed1fae717148eb83bc52ee1d32b1dd958def678b7d6fa526b12ea1bc2c1c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/regions.js",
+        "type": "JS",
+        "storedBytes": 10535,
+        "rawBytes": 10535,
+        "gzip9Bytes": 4201,
+        "sha256": "e376e47c3a8408547dc99ccf0fcffe277c7bc78118e19b6d542aaed4d28dbfa7"
+      },
+      {
+        "file": "sunset-coast/rapier/play/release-notes.js",
+        "type": "JS",
+        "storedBytes": 9753,
+        "rawBytes": 9753,
+        "gzip9Bytes": 5225,
+        "sha256": "2aeda577b9e0babfb2a6cfe5cdb493a4faf8f61a5981ee913a6b484961a9d587"
+      },
+      {
+        "file": "sunset-coast/rapier/play/release-ui.js",
+        "type": "JS",
+        "storedBytes": 2404,
+        "rawBytes": 2404,
+        "gzip9Bytes": 1325,
+        "sha256": "315ef939ce3b1cafeea6d9efb563468e8e9522592cee32b0af145da8f1f2f545"
+      },
+      {
+        "file": "sunset-coast/rapier/play/render-motion.js",
+        "type": "JS",
+        "storedBytes": 4435,
+        "rawBytes": 4435,
+        "gzip9Bytes": 1434,
+        "sha256": "95dc7d45270e726b6ab98fa0787060893a108bfc2f9ee6f935a6dfd98ea098ba"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-aero.js",
+        "type": "JS",
+        "storedBytes": 4353,
+        "rawBytes": 4353,
+        "gzip9Bytes": 1900,
+        "sha256": "653b974cbfc83a9879f81e5fbd2438fea780feb2c74e90ad15487c204d00885e"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-air-display.js",
+        "type": "JS",
+        "storedBytes": 974,
+        "rawBytes": 974,
+        "gzip9Bytes": 638,
+        "sha256": "0b84ec9872d31ca6d6bb84eb9c1395475fb0d6439ad229c0313d21db8e93d9a9"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-air-ledger.js",
+        "type": "JS",
+        "storedBytes": 4129,
+        "rawBytes": 4129,
+        "gzip9Bytes": 1541,
+        "sha256": "395f8c40ce1a08c4a1be6a253f4614828d59cfbf84ba2a6d4126436e5ffb2d2d"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-asset.js",
+        "type": "JS",
+        "storedBytes": 7145,
+        "rawBytes": 7145,
+        "gzip9Bytes": 3180,
+        "sha256": "a72c476317785281d5545cf091ecd8aa5265664a74009aa12cf344be08ee0747"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-controls.js",
+        "type": "JS",
+        "storedBytes": 14998,
+        "rawBytes": 14998,
+        "gzip9Bytes": 5218,
+        "sha256": "15f4eb473ac94f598e315a54ca0f1ab58911bfa5d7244874ba2e2ce66bdd8b87"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-displays.js",
+        "type": "JS",
+        "storedBytes": 13152,
+        "rawBytes": 13152,
+        "gzip9Bytes": 5005,
+        "sha256": "5b62863120a2a14fbbbda6389190b0ec42a55088522ae55d661576d7aea62a17"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-jets.js",
+        "type": "JS",
+        "storedBytes": 9394,
+        "rawBytes": 9394,
+        "gzip9Bytes": 3580,
+        "sha256": "f9547163539d74e1e5c1a99068ef6b997129732ed96dd8eaeada9058ff32639a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-tire-telemetry.js",
+        "type": "JS",
+        "storedBytes": 1174,
+        "rawBytes": 1174,
+        "gzip9Bytes": 572,
+        "sha256": "9a24428f30520b78ec7d4463a7f2035fb7e9c64450640b238b385855b8ce0589"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-ui.js",
+        "type": "JS",
+        "storedBytes": 15372,
+        "rawBytes": 15372,
+        "gzip9Bytes": 5231,
+        "sha256": "c4bdf9187e410784c0e78672109ae2982eea04182ae96bd43b495b5751ef1f7d"
+      },
+      {
+        "file": "sunset-coast/rapier/play/roadster-vehicle.js",
+        "type": "JS",
+        "storedBytes": 1493,
+        "rawBytes": 1493,
+        "gzip9Bytes": 949,
+        "sha256": "8932d96570331547038af1e0906b2f56e188c60b71dfdcddc58150229504ca0f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/robotaxi.js",
+        "type": "JS",
+        "storedBytes": 21661,
+        "rawBytes": 21661,
+        "gzip9Bytes": 8198,
+        "sha256": "b30fc358489278601294fcd36252e526fa371ed4b44d1265e9a4a065ab141cef"
+      },
+      {
+        "file": "sunset-coast/rapier/play/route-view.js",
+        "type": "JS",
+        "storedBytes": 1033,
+        "rawBytes": 1033,
+        "gzip9Bytes": 585,
+        "sha256": "d3d9acdb7d6157a0d474bf1b55c89fefffb02b464667eeb11db7698ff07630b6"
+      },
+      {
+        "file": "sunset-coast/rapier/play/save-identity-json.js",
+        "type": "JS",
+        "storedBytes": 1736,
+        "rawBytes": 1736,
+        "gzip9Bytes": 845,
+        "sha256": "d029408102fc61f73a414ecedbc11a949d06113748b88648fbef57e8905f67e7"
+      },
+      {
+        "file": "sunset-coast/rapier/play/save-validation.js",
+        "type": "JS",
+        "storedBytes": 6306,
+        "rawBytes": 6306,
+        "gzip9Bytes": 2088,
+        "sha256": "d107d2d8ab81bf675eaa333b18f0e0338ecb02f0fa7eec296610d456747c556c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/semi-asset.js",
+        "type": "JS",
+        "storedBytes": 5214,
+        "rawBytes": 5214,
+        "gzip9Bytes": 2467,
+        "sha256": "147ce23f2fc55f5ed9999f7b7f1f7b586c4dd690ffa061229be37fecb0736d8f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/semi-displays.js",
+        "type": "JS",
+        "storedBytes": 4393,
+        "rawBytes": 4393,
+        "gzip9Bytes": 2051,
+        "sha256": "e823c5fe5a2dadc5172914c3f64a8aa659cae5ca4ab9188860006d6de7c93c5b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/semi-powertrain.js",
+        "type": "JS",
+        "storedBytes": 1391,
+        "rawBytes": 1391,
+        "gzip9Bytes": 747,
+        "sha256": "22a02bde51a298ecbd999f1bf498007cc01e2e1eb38d46e6198230e32ab09880"
+      },
+      {
+        "file": "sunset-coast/rapier/play/semi-trailer.js",
+        "type": "JS",
+        "storedBytes": 21896,
+        "rawBytes": 21896,
+        "gzip9Bytes": 8297,
+        "sha256": "7be0818d4b3916aebb7f139e26bf21d7139cbc3050759ec52d4225246cc22903"
+      },
+      {
+        "file": "sunset-coast/rapier/play/semi-vehicle.js",
+        "type": "JS",
+        "storedBytes": 751,
+        "rawBytes": 751,
+        "gzip9Bytes": 666,
+        "sha256": "698a1d2c73497049d8c4a474e3dfc1f8bb125b0e768f57edcda220a59ac81c4b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/sensor.js",
+        "type": "JS",
+        "storedBytes": 18625,
+        "rawBytes": 18625,
+        "gzip9Bytes": 6800,
+        "sha256": "35d75d3c9af9fe654168cfb7260db14a0f6aa8d5b18596cae7be31d2d2b4f5c3"
+      },
+      {
+        "file": "sunset-coast/rapier/play/standard-save-keys.js",
+        "type": "JS",
+        "storedBytes": 515,
+        "rawBytes": 515,
+        "gzip9Bytes": 289,
+        "sha256": "6841b883df448fe54f63aff19cbe877f9c4f30b65db5b69f39a392d5609bb02f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/storage-keys.js",
+        "type": "JS",
+        "storedBytes": 1713,
+        "rawBytes": 1713,
+        "gzip9Bytes": 866,
+        "sha256": "ef60170927f1870bf6833acd551b5d78ee735a36c81f1334d78d9f33be66e0b2"
+      },
+      {
+        "file": "sunset-coast/rapier/play/streaming-world.js",
+        "type": "JS",
+        "storedBytes": 32459,
+        "rawBytes": 32459,
+        "gzip9Bytes": 11787,
+        "sha256": "c410cbb07d5f0268ef1e3c8bf2b86ada2ec7702642e8723418b81e2a38c4e576"
+      },
+      {
+        "file": "sunset-coast/rapier/play/surface-layout.js",
+        "type": "JS",
+        "storedBytes": 2647,
+        "rawBytes": 2647,
+        "gzip9Bytes": 1224,
+        "sha256": "1ad1040d94fd7456f3196036802473d3d72cd38a99812ca8e495b5c37e88a57c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/touch-selection.js",
+        "type": "JS",
+        "storedBytes": 1245,
+        "rawBytes": 1245,
+        "gzip9Bytes": 679,
+        "sha256": "81d3c3721ce6a36348b5e01c9a7eb44049e2e826820c4660d0550bcb88904e0f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/touch-transmission.js",
+        "type": "JS",
+        "storedBytes": 3972,
+        "rawBytes": 3972,
+        "gzip9Bytes": 1616,
+        "sha256": "c35f5e14e79c048977a606de90bf5fc17f17dbbc93b828afe93ab967f1041feb"
+      },
+      {
+        "file": "sunset-coast/rapier/play/traffic-controller.js",
+        "type": "JS",
+        "storedBytes": 4384,
+        "rawBytes": 4384,
+        "gzip9Bytes": 1796,
+        "sha256": "978e349338058fe1afaa59cf4bba433a3ef593a38f111f8faedfb3743a82376a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/ui.js",
+        "type": "JS",
+        "storedBytes": 51627,
+        "rawBytes": 51627,
+        "gzip9Bytes": 18108,
+        "sha256": "58676bcab075286b30a6ee5d3f40a6ed7057b752a04556fcf8e52c1ee1b2a4dc"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-asset-flow.js",
+        "type": "JS",
+        "storedBytes": 1866,
+        "rawBytes": 1866,
+        "gzip9Bytes": 889,
+        "sha256": "e496d59be64cc15ea2e4098106dfa7d723ac9bf693440b82e4bf9a53460f403e"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-asset-registry.js",
+        "type": "JS",
+        "storedBytes": 2712,
+        "rawBytes": 2712,
+        "gzip9Bytes": 1299,
+        "sha256": "6d103dc79a8bde388b92db7d35db41ac3d78244472695937556e9e8eb4d1fc6f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-catalog.js",
+        "type": "JS",
+        "storedBytes": 6154,
+        "rawBytes": 6154,
+        "gzip9Bytes": 2767,
+        "sha256": "04e4c1d1ee9875e08a899c924360be14d693f28439a4ac09c5657cc177b57833"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-damage.js",
+        "type": "JS",
+        "storedBytes": 30087,
+        "rawBytes": 30087,
+        "gzip9Bytes": 9986,
+        "sha256": "5e102b2ae5e5d2bc92757ba34368db32fcecd5f75458b12fdb8ac7f977d5050a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-design.js",
+        "type": "JS",
+        "storedBytes": 63607,
+        "rawBytes": 63607,
+        "gzip9Bytes": 19743,
+        "sha256": "410d5f09a99ec88e520f1cb3e7c87b89f7575b95912b4edd95cbc6880a6561eb"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-dynamics.js",
+        "type": "JS",
+        "storedBytes": 16139,
+        "rawBytes": 16139,
+        "gzip9Bytes": 5545,
+        "sha256": "05fd8992ef3068876da7896c811f765a7fd4dffbb17b2a7f655c83d388e846ff"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-entity-state.js",
+        "type": "JS",
+        "storedBytes": 8613,
+        "rawBytes": 8613,
+        "gzip9Bytes": 3004,
+        "sha256": "01646c842ff0dde3894e544af61d42c9b0a8968d260d744c45d11d7b2f9ca83d"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-environment.js",
+        "type": "JS",
+        "storedBytes": 1663,
+        "rawBytes": 1663,
+        "gzip9Bytes": 803,
+        "sha256": "bc76ba38ebbe0d1b19d7bbba97a38b3c0fbf4d3d40bf1889902eafc984a30caf"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-factory-ownership.js",
+        "type": "JS",
+        "storedBytes": 2140,
+        "rawBytes": 2140,
+        "gzip9Bytes": 844,
+        "sha256": "43f21998b6a1a37941019e3a437ca6d9ac0f53f8c6db097f112aa19067ddcc83"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-identity.js",
+        "type": "JS",
+        "storedBytes": 6866,
+        "rawBytes": 6866,
+        "gzip9Bytes": 2444,
+        "sha256": "06769db86c9b0e7da1ae07c13c18cfd5a05bfb29633ec63d0452dd1645c5b2ca"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-infotainment.js",
+        "type": "JS",
+        "storedBytes": 5637,
+        "rawBytes": 5637,
+        "gzip9Bytes": 2300,
+        "sha256": "b5ba15f9a0e0be005b1ea3021e424627cc6a578331c37fc543e3fdd2d03644ac"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-instruments.js",
+        "type": "JS",
+        "storedBytes": 8392,
+        "rawBytes": 8392,
+        "gzip9Bytes": 3104,
+        "sha256": "9dc400312d2fa5656c2329103c3f2a6e61d953ff749976020e172a5d0878cfe7"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-lights.js",
+        "type": "JS",
+        "storedBytes": 10743,
+        "rawBytes": 10743,
+        "gzip9Bytes": 4030,
+        "sha256": "52c49146af811198164b2f025bf95a3a2598ac20fe8dc08dc08aa28aaa723a82"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-panel-layouts.js",
+        "type": "JS",
+        "storedBytes": 1154,
+        "rawBytes": 1154,
+        "gzip9Bytes": 531,
+        "sha256": "b4090fd35f87e3d516b7105225ea1371ce2be6a374467214e90745c1949b1b56"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vehicle-physics.js",
+        "type": "JS",
+        "storedBytes": 10508,
+        "rawBytes": 10508,
+        "gzip9Bytes": 3926,
+        "sha256": "d4e89e57bec5b4485bf0b7a8387c6c90661d1858e47847a78d1b99a2a870d086"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/BufferGeometryUtils.js",
+        "type": "JS",
+        "storedBytes": 35551,
+        "rawBytes": 35551,
+        "gzip9Bytes": 8012,
+        "sha256": "248b3e8420bd3de805ca01845c1b0cc62aa2766f3c56bdcead265e306f8e715c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/GLTFLoader.js",
+        "type": "JS",
+        "storedBytes": 114744,
+        "rawBytes": 114744,
+        "gzip9Bytes": 24719,
+        "sha256": "2904f2823e23d5bc1d64512bf4c0d777ac44d728d47c34a9e3d48ce8ef6b761d"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/coarena.js",
+        "type": "JS",
+        "storedBytes": 1714,
+        "rawBytes": 1714,
+        "gzip9Bytes": 587,
+        "sha256": "4d8359bbe5d597b808ad00261af9c750cab74988807808d8728d70a8091ae295"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/control/character_controller.js",
+        "type": "JS",
+        "storedBytes": 11246,
+        "rawBytes": 11246,
+        "gzip9Bytes": 2528,
+        "sha256": "0df48fd4d1df85cb065c0b19980a30a1c95f0a53bccb530dcfa05641dd59a32f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/control/index.js",
+        "type": "JS",
+        "storedBytes": 152,
+        "rawBytes": 152,
+        "gzip9Bytes": 108,
+        "sha256": "3a3c32c59716a2a60d42356d46f931104e3e2ab0f741cb80d8b42a5ade656e88"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/control/pid_controller.js",
+        "type": "JS",
+        "storedBytes": 3609,
+        "rawBytes": 3609,
+        "gzip9Bytes": 971,
+        "sha256": "0b978b6c693c3081967bd3eb2f6f220ae94e5e35d0b03e04989c041a3aaf680c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/control/ray_cast_vehicle_controller.js",
+        "type": "JS",
+        "storedBytes": 13947,
+        "rawBytes": 13947,
+        "gzip9Bytes": 2474,
+        "sha256": "16a291cdaae6009c7d1794f41785eedfbe99eb86c1abd541a6c842481238e817"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/ccd_solver.js",
+        "type": "JS",
+        "storedBytes": 542,
+        "rawBytes": 542,
+        "gzip9Bytes": 325,
+        "sha256": "d5487a691edd7e3ab2d99dcc063e06d32526ef08c49161bf19ceffa1a002cfae"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/coefficient_combine_rule.js",
+        "type": "JS",
+        "storedBytes": 628,
+        "rawBytes": 628,
+        "gzip9Bytes": 269,
+        "sha256": "d0922f630a62711af10f3a67efb6ef5fbdee4c91cbf420c5ceb87e1d4a4ee425"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint.js",
+        "type": "JS",
+        "storedBytes": 23680,
+        "rawBytes": 23680,
+        "gzip9Bytes": 4007,
+        "sha256": "2eaaa017e8107adec0730ceaf50837ada33695be7b7f170ddaefe4964b215b1d"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint_set.js",
+        "type": "JS",
+        "storedBytes": 4045,
+        "rawBytes": 4045,
+        "gzip9Bytes": 1272,
+        "sha256": "18fc578b09f1adb0a63c9b77d68565f00baa5a87504e054bea54af13209f84dc"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "type": "JS",
+        "storedBytes": 456,
+        "rawBytes": 456,
+        "gzip9Bytes": 159,
+        "sha256": "5d64b728bcc65bede712e027ffe1dfac73d7b35d0d5bd5272848bbb728bb30dd"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/integration_parameters.js",
+        "type": "JS",
+        "storedBytes": 5705,
+        "rawBytes": 5705,
+        "gzip9Bytes": 1448,
+        "sha256": "beb65baa55e32006d6b16e81f755e9c1f2cc103f8a7c827f1f07970a5a2fa396"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/island_manager.js",
+        "type": "JS",
+        "storedBytes": 897,
+        "rawBytes": 897,
+        "gzip9Bytes": 469,
+        "sha256": "b173881e163545c1a057c04a942b9336eac8faa7eb5d04bcd178be25d5207b18"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint.js",
+        "type": "JS",
+        "storedBytes": 3913,
+        "rawBytes": 3913,
+        "gzip9Bytes": 908,
+        "sha256": "9485ea03a24138c04ca92cdfa898113e9a405f5c23b2357f970c92f97a15fd87"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint_set.js",
+        "type": "JS",
+        "storedBytes": 3818,
+        "rawBytes": 3818,
+        "gzip9Bytes": 1190,
+        "sha256": "b47379a936c5b5fda575a9503d2c986c40d18e4660a44116414ac3fbf0227da2"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body.js",
+        "type": "JS",
+        "storedBytes": 46346,
+        "rawBytes": 46346,
+        "gzip9Bytes": 7287,
+        "sha256": "cd1482a905231705a975be32f0a22aaa54d01d1d5615dc08f8b7005f6f61f257"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body_set.js",
+        "type": "JS",
+        "storedBytes": 6440,
+        "rawBytes": 6440,
+        "gzip9Bytes": 1829,
+        "sha256": "b65c440b6f82634cb1ee11b421a053aba3ac98a00cfe842cb4e126c3253b1c15"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body.js",
+        "type": "JS",
+        "storedBytes": 55443,
+        "rawBytes": 55443,
+        "gzip9Bytes": 10905,
+        "sha256": "5908b6c7500003616f6aca7fe9e87b486856289cea5a9382a5f0e3ee028a7c86"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body_set.js",
+        "type": "JS",
+        "storedBytes": 7131,
+        "rawBytes": 7131,
+        "gzip9Bytes": 1913,
+        "sha256": "c86b9b5609093768df8313b549b2210f0b77a184a0e2fa6d6216765a5c32dc28"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "type": "JS",
+        "storedBytes": 971,
+        "rawBytes": 971,
+        "gzip9Bytes": 451,
+        "sha256": "cd9c74d09723ee1aab33f35f53c4aa9630e99d0c2f19769b8b40e549328a541f"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/broad_phase.js",
+        "type": "JS",
+        "storedBytes": 14739,
+        "rawBytes": 14739,
+        "gzip9Bytes": 2576,
+        "sha256": "c69cb9cb0f82b921603df436686cee66f2d2c3e0158e8211f11df071d55fbbcc"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "type": "JS",
+        "storedBytes": 58217,
+        "rawBytes": 58217,
+        "gzip9Bytes": 10454,
+        "sha256": "08089b96cb1d606305ec7c7d6e9fc7d5424ecd91a85e120f09daa7e6032ca3bc"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/collider_set.js",
+        "type": "JS",
+        "storedBytes": 8304,
+        "rawBytes": 8304,
+        "gzip9Bytes": 2086,
+        "sha256": "53287e6edaa361290fd89ea0d03de072c1f1dc4b8d9eca74a4d81092ccf7923c"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/contact.js",
+        "type": "JS",
+        "storedBytes": 1527,
+        "rawBytes": 1527,
+        "gzip9Bytes": 543,
+        "sha256": "c3a5412030df8951c870c757d9c5ce3a642ae6dfd80c2eb6212400a72941d23a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/feature.js",
+        "type": "JS",
+        "storedBytes": 325,
+        "rawBytes": 325,
+        "gzip9Bytes": 169,
+        "sha256": "56c0ecdbf0ae0aea5358743a9797ecfdd0ddd24cff0eea896b12247814b52cf7"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "type": "JS",
+        "storedBytes": 344,
+        "rawBytes": 344,
+        "gzip9Bytes": 129,
+        "sha256": "9a77e1519319851d9d66ff53f68afcab4a3f13a16b0da2464555ae72a8991d3e"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/interaction_groups.js",
+        "type": "JS",
+        "storedBytes": 11,
+        "rawBytes": 11,
+        "gzip9Bytes": 31,
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/narrow_phase.js",
+        "type": "JS",
+        "storedBytes": 8057,
+        "rawBytes": 8057,
+        "gzip9Bytes": 1735,
+        "sha256": "b1e79571944296a02d1077c53b007143495dde44987c51874d2c2bcf96effe18"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/point.js",
+        "type": "JS",
+        "storedBytes": 2512,
+        "rawBytes": 2512,
+        "gzip9Bytes": 675,
+        "sha256": "c67a4842acaab022d517bf617322ed0e2eafb5bc2634e789d1f3cb587c454ea4"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/ray.js",
+        "type": "JS",
+        "storedBytes": 4145,
+        "rawBytes": 4145,
+        "gzip9Bytes": 931,
+        "sha256": "78f8f29710f554ceb9ac11643d596f4f7e61c4f1cf821e4d3c485e5d9e01c098"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js",
+        "type": "JS",
+        "storedBytes": 42879,
+        "rawBytes": 42879,
+        "gzip9Bytes": 7270,
+        "sha256": "bd11b31cbdcae52a6437bc9cfc90be6cec89c89d856937bcc7b32c57408eaffc"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/geometry/toi.js",
+        "type": "JS",
+        "storedBytes": 3482,
+        "rawBytes": 3482,
+        "gzip9Bytes": 860,
+        "sha256": "29b61ab6b8c795c66144096943d55cae9994d1dc0ccb6c6d103ee9f3f3b2a770"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/init.js",
+        "type": "JS",
+        "storedBytes": 11,
+        "rawBytes": 11,
+        "gzip9Bytes": 31,
+        "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/math.js",
+        "type": "JS",
+        "storedBytes": 3959,
+        "rawBytes": 3959,
+        "gzip9Bytes": 871,
+        "sha256": "13faa43f3c1f12153e31cda2815fc6bebf1e7db681b99a377d3a7715dd12c83a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/debug_render_pipeline.js",
+        "type": "JS",
+        "storedBytes": 1287,
+        "rawBytes": 1287,
+        "gzip9Bytes": 539,
+        "sha256": "cc34d0674432b89d298a20f1c2171e682d740427159862aedbe1d47e836b8539"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/event_queue.js",
+        "type": "JS",
+        "storedBytes": 5189,
+        "rawBytes": 5189,
+        "gzip9Bytes": 1597,
+        "sha256": "6c8a3f82447313b9272b3c2fc6c084a8424043293a41226f4c894e58edf705ac"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "type": "JS",
+        "storedBytes": 263,
+        "rawBytes": 263,
+        "gzip9Bytes": 120,
+        "sha256": "6615d9b266bb5f3fd73da9f8472d4e7c05fad60235171e32a1718d6f77b577bb"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/physics_hooks.js",
+        "type": "JS",
+        "storedBytes": 602,
+        "rawBytes": 602,
+        "gzip9Bytes": 271,
+        "sha256": "19cc1b99d068061b0157ffe7703dd51cc1d43aaf9358f87295f4d4f8453450e4"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/physics_pipeline.js",
+        "type": "JS",
+        "storedBytes": 1153,
+        "rawBytes": 1153,
+        "gzip9Bytes": 423,
+        "sha256": "e87bfd3589906b58bf3ae58a72cc07da46bb0b282e5cc2c0219da9b042072256"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/query_pipeline.js",
+        "type": "JS",
+        "storedBytes": 1702,
+        "rawBytes": 1702,
+        "gzip9Bytes": 456,
+        "sha256": "a219ca80ea34816034c95ad6a9e7a19bb9d50501a52cf7c1831692a6d2113c59"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/serialization_pipeline.js",
+        "type": "JS",
+        "storedBytes": 2059,
+        "rawBytes": 2059,
+        "gzip9Bytes": 718,
+        "sha256": "da3b2dd16ec4d5e625e7b7ec0e8daa252d3781d72f31a042c3341ffcad29ec09"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "type": "JS",
+        "storedBytes": 44265,
+        "rawBytes": 44265,
+        "gzip9Bytes": 8423,
+        "sha256": "d1f2e8b2fbe72833bcf9dcb1b2ea0b1f014b1fc3afd1654bb35973080a4525c1"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/rapier.js",
+        "type": "JS",
+        "storedBytes": 93,
+        "rawBytes": 93,
+        "gzip9Bytes": 75,
+        "sha256": "c50b4e94d965031e7d4c86e47223633e7d22c36b1bf3077b333c2f410dfc60d3"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/rapier_wasm3d.js",
+        "type": "JS",
+        "storedBytes": 923,
+        "rawBytes": 923,
+        "gzip9Bytes": 498,
+        "sha256": "0d0df453bddd961295ce723a60dcaeff0939c1f6d12651486a3f3673b48972c3"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/rapier_wasm3d_bg.js",
+        "type": "JS",
+        "storedBytes": 338179,
+        "rawBytes": 338179,
+        "gzip9Bytes": 33724,
+        "sha256": "2f2f665915207d821c41035abaf17909085d8aaeba9496c854797861f25260d5"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/raw.js",
+        "type": "JS",
+        "storedBytes": 36,
+        "rawBytes": 36,
+        "gzip9Bytes": 56,
+        "sha256": "87b313c00e53c0acb0f76d350dc98429cbb330bf46ed005bf7d70cc816fee7ff"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/three.core.js",
+        "type": "JS",
+        "storedBytes": 1403455,
+        "rawBytes": 1403455,
+        "gzip9Bytes": 277321,
+        "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/three.module.js",
+        "type": "JS",
+        "storedBytes": 603113,
+        "rawBytes": 603113,
+        "gzip9Bytes": 117877,
+        "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+      },
+      {
+        "file": "sunset-coast/rapier/play/world-fleet-state.js",
+        "type": "JS",
+        "storedBytes": 2020,
+        "rawBytes": 2020,
+        "gzip9Bytes": 963,
+        "sha256": "156fa5fcc39e39b857c941b24d102263cb41d04933453986f01d196f58f95b59"
+      },
+      {
+        "file": "sunset-coast/rapier/play/world-fleet.js",
+        "type": "JS",
+        "storedBytes": 5782,
+        "rawBytes": 5782,
+        "gzip9Bytes": 2245,
+        "sha256": "5ffc90ef864dd8d215da5b18805d7d5c0fd702295fc640868b9525688fb4c48b"
+      },
+      {
+        "file": "sunset-coast/rapier/play/world.js",
+        "type": "JS",
+        "storedBytes": 18539,
+        "rawBytes": 18539,
+        "gzip9Bytes": 7443,
+        "sha256": "ad95fdaf8a9a51cd0f077f425d6ab9bd051e9559fd01bb5d6479028655cd5682"
+      },
+      {
+        "file": "sunset-coast/rapier/play/vendor/rapier/rapier_wasm3d_bg.wasm",
+        "type": "WASM",
+        "storedBytes": 3082103,
+        "rawBytes": 3082103,
+        "gzip9Bytes": 1175669,
+        "sha256": "17cfa80eebd8de0291b948496dbffba724b98b489687f8272ca236a7bbf1dd4b"
+      }
+    ],
+    "edges": [
+      {
+        "from": "sunset-coast/rapier/play/city-runtime-entry.js",
+        "to": "sunset-coast/rapier/play/city-save-store.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-runtime-entry.js",
+        "to": "sunset-coast/rapier/play/save-validation.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-runtime-entry.js",
+        "to": "sunset-coast/rapier/play/mobile-ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/mobile-ui.js",
+        "to": "sunset-coast/rapier/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/mobile-ui.js",
+        "to": "sunset-coast/rapier/play/game.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/mobile-ui.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/motorcycle-rider.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/character-asset-status.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/world-fleet.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-factory-ownership.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-identity.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/semi-trailer.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-panel-layouts.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/lane-change.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/police-response.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/realistic-visuals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-lights.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/roadster-jets.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/save-validation.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/roadster-ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/flyable-aircraft.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/aircraft-ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/autonomy-test-job.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/rapier-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/physics-transaction.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/city-vehicle-purchase.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/city-frame.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/city-lifecycle.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/camera-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/performance-profile.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/roadster-asset.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-flow.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-environment.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/cockpit.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/sensor.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/audio.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/brake-closeup.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/location-beacons.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/location-teleport.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/traffic-controller.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/flight-travel.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/robotaxi.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/release-ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/impact-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/driving-assist.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/entry-animation.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/game.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/entry-animation.js",
+        "to": "sunset-coast/rapier/play/motorcycle-rider.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/motorcycle-rider.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/three.module.js",
+        "to": "sunset-coast/rapier/play/vendor/three.core.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/driving-assist.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/driving-assist.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/driving-assist.js",
+        "to": "sunset-coast/rapier/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/assist-settings.js",
+        "to": "sunset-coast/rapier/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/storage-keys.js",
+        "to": "sunset-coast/rapier/play/city-save-store.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-save-store.js",
+        "to": "sunset-coast/rapier/play/beta-save-slots.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-save-store.js",
+        "to": "sunset-coast/rapier/play/standard-save-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-save-store.js",
+        "to": "sunset-coast/rapier/play/vehicle-identity.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-save-store.js",
+        "to": "sunset-coast/rapier/play/world-fleet-state.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-identity.js",
+        "to": "sunset-coast/rapier/play/world-fleet-state.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/beta-save-slots.js",
+        "to": "sunset-coast/rapier/play/save-identity-json.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/beta-save-slots.js",
+        "to": "sunset-coast/rapier/play/standard-save-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-dynamics.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-physics.js",
+        "to": "sunset-coast/rapier/play/roadster-tire-telemetry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-physics.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-physics.js",
+        "to": "sunset-coast/rapier/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-physics.js",
+        "to": "sunset-coast/rapier/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-physics.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-physics.js",
+        "to": "sunset-coast/rapier/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-physics.js",
+        "to": "sunset-coast/rapier/play/motorcycle-asset.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/motorcycle-asset.js",
+        "to": "sunset-coast/rapier/play/vehicle-factory-ownership.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/motorcycle-asset.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/motorcycle-asset.js",
+        "to": "sunset-coast/rapier/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/motorcycle-asset.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/motorcycle-asset.js",
+        "to": "sunset-coast/rapier/play/motorcycle-manifests.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/motorcycle-asset.js",
+        "to": "sunset-coast/rapier/play/motorcycle-download.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/GLTFLoader.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/GLTFLoader.js",
+        "to": "sunset-coast/rapier/play/vendor/BufferGeometryUtils.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/BufferGeometryUtils.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-controls.js",
+        "to": "sunset-coast/rapier/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-controls.js",
+        "to": "sunset-coast/rapier/play/roadster-jets.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-controls.js",
+        "to": "sunset-coast/rapier/play/roadster-aero.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-jets.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-air-ledger.js",
+        "to": "sunset-coast/rapier/play/vehicle-identity.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cargo-career.js",
+        "to": "sunset-coast/rapier/play/semi-powertrain.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-damage.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/release-ui.js",
+        "to": "sunset-coast/rapier/play/interface-view.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/release-ui.js",
+        "to": "sunset-coast/rapier/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/release-ui.js",
+        "to": "sunset-coast/rapier/play/release-notes.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/entry-animation.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/robotaxi.js",
+        "to": "sunset-coast/rapier/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/population-stream.js",
+        "to": "sunset-coast/rapier/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/population-stream.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/population-stream.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/population-stream.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/population-stream.js",
+        "to": "sunset-coast/rapier/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/population-stream.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/streaming-world.js",
+        "to": "sunset-coast/rapier/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/streaming-world.js",
+        "to": "sunset-coast/rapier/play/realistic-visuals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/streaming-world.js",
+        "to": "sunset-coast/rapier/play/mountain-barriers.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/streaming-world.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/streaming-world.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/streaming-world.js",
+        "to": "sunset-coast/rapier/play/region-scenery.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/streaming-world.js",
+        "to": "sunset-coast/rapier/play/surface-layout.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/region-scenery.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/region-scenery.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/region-scenery.js",
+        "to": "sunset-coast/rapier/play/surface-layout.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/mountain-barriers.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/realistic-visuals.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-instruments.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-instruments.js",
+        "to": "sunset-coast/rapier/play/semi-displays.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-instruments.js",
+        "to": "sunset-coast/rapier/play/vehicle-infotainment.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-instruments.js",
+        "to": "sunset-coast/rapier/play/g9-navigation.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-instruments.js",
+        "to": "sunset-coast/rapier/play/roadster-displays.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-instruments.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-displays.js",
+        "to": "sunset-coast/rapier/play/roadster-air-display.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-displays.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-displays.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-displays.js",
+        "to": "sunset-coast/rapier/play/roadster-aero.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-displays.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-air-display.js",
+        "to": "sunset-coast/rapier/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-navigation.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-navigation.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-navigation.js",
+        "to": "sunset-coast/rapier/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/navigation-guidance.js",
+        "to": "sunset-coast/rapier/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-infotainment.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-infotainment.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-infotainment.js",
+        "to": "sunset-coast/rapier/play/cockpit-profiles.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-displays.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-displays.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ground-contact.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ground-contact.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ground-contact.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot.js",
+        "to": "sunset-coast/rapier/play/pilot-detour.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot.js",
+        "to": "sunset-coast/rapier/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot-detour.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/pilot-detour.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/flight-travel.js",
+        "to": "sunset-coast/rapier/play/region-scenery.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/flight-travel.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/traffic-controller.js",
+        "to": "sunset-coast/rapier/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/traffic-controller.js",
+        "to": "sunset-coast/rapier/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/traffic-controller.js",
+        "to": "sunset-coast/rapier/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/traffic-controller.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/location-teleport.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/location-teleport.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/location-teleport.js",
+        "to": "sunset-coast/rapier/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/location-teleport.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/location-teleport.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/location-teleport.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/location-beacons.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/brake-closeup.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/brake-closeup.js",
+        "to": "sunset-coast/rapier/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/motorcycle-rider.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/hidden-cheat-entry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/control-size.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/interface-view.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-flow.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/assist-status.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/robotaxi.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/map-ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/navigation-ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/ui.js",
+        "to": "sunset-coast/rapier/play/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/character-assets.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/motorcycle-asset.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/vehicle-factory-ownership.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/semi-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/semi-asset.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/intersection-signals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/realistic-visuals.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/vehicle-catalog.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/vehicle-design.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/vehicle-lights.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/asset-car.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/g9-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/roadster-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/roadster-asset.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world.js",
+        "to": "sunset-coast/rapier/play/surface-layout.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-asset.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-asset.js",
+        "to": "sunset-coast/rapier/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-asset.js",
+        "to": "sunset-coast/rapier/play/vendor/BufferGeometryUtils.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-asset.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-asset.js",
+        "to": "sunset-coast/rapier/play/roadster-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-vehicle.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-vehicle.js",
+        "to": "sunset-coast/rapier/play/g9-displays.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-vehicle.js",
+        "to": "sunset-coast/rapier/play/assets/g9/g9-materials.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-vehicle.js",
+        "to": "sunset-coast/rapier/play/g9-asset.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-asset.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-asset.js",
+        "to": "sunset-coast/rapier/play/assets/g9/g9-mesh-data.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-displays.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/g9-displays.js",
+        "to": "sunset-coast/rapier/play/assets/g9/g9-display-art.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/asset-car.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/asset-car.js",
+        "to": "sunset-coast/rapier/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/asset-car.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/asset-car.js",
+        "to": "sunset-coast/rapier/play/loading-progress.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-lights.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-design.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-design.js",
+        "to": "sunset-coast/rapier/play/vehicle-catalog.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-catalog.js",
+        "to": "sunset-coast/rapier/play/roadster-vehicle.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-asset.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-asset.js",
+        "to": "sunset-coast/rapier/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-asset.js",
+        "to": "sunset-coast/rapier/play/performance-profile.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-asset.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/performance-profile.js",
+        "to": "sunset-coast/rapier/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/character-assets.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/character-assets.js",
+        "to": "sunset-coast/rapier/play/vendor/GLTFLoader.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/navigation-ui.js",
+        "to": "sunset-coast/rapier/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/navigation-ui.js",
+        "to": "sunset-coast/rapier/play/map-ui.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/map-ui.js",
+        "to": "sunset-coast/rapier/play/interface-view.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/map-ui.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/map-ui.js",
+        "to": "sunset-coast/rapier/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/map-ui.js",
+        "to": "sunset-coast/rapier/play/navigation-guidance.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/map-ui.js",
+        "to": "sunset-coast/rapier/play/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-asset-flow.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/sensor.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/semi-displays.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/vehicle-infotainment.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/cockpit-profiles.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/g9-navigation.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/roadster-displays.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/storage-keys.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/route-view.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/assist-status.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/assist-settings.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/vehicle-environment.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/cockpit.js",
+        "to": "sunset-coast/rapier/play/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-environment.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-frame.js",
+        "to": "sunset-coast/rapier/play/motorcycle-rider.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-frame.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-frame.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-frame.js",
+        "to": "sunset-coast/rapier/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-frame.js",
+        "to": "sunset-coast/rapier/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-frame.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vehicle-factory-ownership.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-registry.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vehicle-asset-flow.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/driving-assist.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vehicle-lights.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/roadster-jets.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-vehicle-purchase.js",
+        "to": "sunset-coast/rapier/play/world-fleet.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/vehicle-identity.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/world-fleet-state.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/world-fleet.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/physics-transaction.js",
+        "to": "sunset-coast/rapier/play/vehicle-entity-state.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-entity-state.js",
+        "to": "sunset-coast/rapier/play/flyable-aircraft.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vehicle-entity-state.js",
+        "to": "sunset-coast/rapier/play/vehicle-identity.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/flyable-aircraft.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/flyable-aircraft.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/flyable-aircraft.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/flyable-aircraft.js",
+        "to": "sunset-coast/rapier/play/impact-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/rapier.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/rapier_wasm3d.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/fixed-step-clock.mjs"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/rapier-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/rapier-aircraft.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/browser-roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/rapier-wheels.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/browser-motorcycle-rigidbody.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/rapier-motorcycle.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/browser-roadster-air.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/rapier-roadster-maneuver.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/vehicle-physics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-physics.js",
+        "to": "sunset-coast/rapier/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-roadster-maneuver.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/browser-roadster-air.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/browser-roadster-air.js",
+        "to": "sunset-coast/rapier/play/rapier-roadster-maneuver.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-motorcycle.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/browser-motorcycle-rigidbody.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-wheels.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/browser-roadster-controls.js",
+        "to": "sunset-coast/rapier/play/touch-transmission.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/browser-roadster-controls.js",
+        "to": "sunset-coast/rapier/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/browser-roadster-controls.js",
+        "to": "sunset-coast/rapier/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/browser-roadster-controls.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-aircraft.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-world.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-world.js",
+        "to": "sunset-coast/rapier/play/physics-surfaces.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/rapier-world.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/physics-surfaces.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/rapier_wasm3d.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/rapier_wasm3d_bg.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/rapier.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/exports.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/init.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/exports.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/control/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/control/character_controller.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/control/pid_controller.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/control/ray_cast_vehicle_controller.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/ray_cast_vehicle_controller.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/ray_cast_vehicle_controller.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/math.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/raw.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/rapier_wasm3d.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/pid_controller.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/pid_controller.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/character_controller.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/control/character_controller.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/physics_pipeline.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/serialization_pipeline.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/event_queue.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/physics_hooks.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/debug_render_pipeline.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/query_pipeline.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/debug_render_pipeline.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/event_queue.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/event_queue.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/event_queue.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body_set.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/integration_parameters.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint_set.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint_set.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/coefficient_combine_rule.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/ccd_solver.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/island_manager.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body_set.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/coarena.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/broad_phase.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/narrow_phase.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/collider_set.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/feature.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/ray.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/point.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/toi.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/interaction_groups.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/contact.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/contact.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/toi.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/point.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/point.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/feature.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/ray.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/ray.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/feature.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/coarena.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/ray.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/point.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/toi.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/collider.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/contact.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/contact.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/point.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/ray.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/shape.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/toi.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/narrow_phase.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/narrow_phase.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/broad_phase.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/broad_phase.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/ray.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/broad_phase.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/broad_phase.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/point.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/geometry/broad_phase.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/toi.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/island_manager.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/ccd_solver.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/coarena.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/multibody_joint.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/coarena.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/impulse_joint.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/integration_parameters.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/integration_parameters.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/soft_body.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/coarena.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body_set.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/dynamics/rigid_body.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/serialization_pipeline.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/serialization_pipeline.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/serialization_pipeline.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/geometry/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/dynamics/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/physics_pipeline.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/serialization_pipeline.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/pipeline/debug_render_pipeline.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/world.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/control/index.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/physics_pipeline.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/raw.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/vendor/rapier/pipeline/physics_pipeline.js",
+        "to": "sunset-coast/rapier/play/vendor/rapier/math.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/robotaxi.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/pilot.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/ground-contact.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/vehicle-instruments.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/autonomy-test-job.js",
+        "to": "sunset-coast/rapier/play/render-motion.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/aircraft-ui.js",
+        "to": "sunset-coast/rapier/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/aircraft-ui.js",
+        "to": "sunset-coast/rapier/play/flyable-aircraft.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-ui.js",
+        "to": "sunset-coast/rapier/play/roadster-air-display.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-ui.js",
+        "to": "sunset-coast/rapier/play/panel-drag.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-ui.js",
+        "to": "sunset-coast/rapier/play/touch-selection.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-ui.js",
+        "to": "sunset-coast/rapier/play/roadster-controls.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/roadster-ui.js",
+        "to": "sunset-coast/rapier/play/roadster-aero.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/world-fleet-state.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/vehicle-identity.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/roadster-air-ledger.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/beta-save-slots.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/brake-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/axle-fault.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/save-validation.js",
+        "to": "sunset-coast/rapier/play/vehicle-damage.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/police-response.js",
+        "to": "sunset-coast/rapier/play/population-stream.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/police-response.js",
+        "to": "sunset-coast/rapier/play/traffic-controller.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/police-response.js",
+        "to": "sunset-coast/rapier/play/streaming-world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/police-response.js",
+        "to": "sunset-coast/rapier/play/world.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/police-response.js",
+        "to": "sunset-coast/rapier/play/vehicle-dynamics.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/lane-change.js",
+        "to": "sunset-coast/rapier/play/regions.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-trailer.js",
+        "to": "sunset-coast/rapier/play/vendor/three.module.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/semi-trailer.js",
+        "to": "sunset-coast/rapier/play/cargo-career.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/character-asset-status.js",
+        "to": "sunset-coast/rapier/play/character-assets.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-chooser.js",
+        "to": "sunset-coast/rapier/play/city-save-store.js"
+      },
+      {
+        "from": "sunset-coast/rapier/play/city-chooser.js",
+        "to": "sunset-coast/rapier/play/save-validation.js"
+      }
+    ],
+    "total": {
+      "rawBytes": 8896717,
+      "gzip9Bytes": 2770055
+    },
+    "additionalEnginePack": []
+  }
+}

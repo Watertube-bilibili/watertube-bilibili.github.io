@@ -1,0 +1,111 @@
+import {populationRoadCandidates,populationSpawnClear} from './population-stream.js';
+import {trafficControls} from './traffic-controller.js';
+import {planRoute,groundHeight,nearestRoad,roadEdgeAllowed} from './streaming-world.js';
+import {box,mat} from './world.js';
+import {vehicleVelocity} from './vehicle-dynamics.js';
+
+const distance=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
+const level=game=>Math.max(0,Math.min(5,Math.floor(Number(game.wanted)||0)));
+const PATROL_LIGHT=mat(0x627ade,{emissive:0x253fff,emissiveIntensity:.15});
+const BLUE_LIGHT=mat(0x627ade,{emissive:0x253fff,emissiveIntensity:1.5});
+const RED_LIGHT=mat(0xef5a5a,{emissive:0xff2222,emissiveIntensity:1.5});
+const HOLD={throttle:0,steer:0,brake:1,brakeSource:'pilot',electronicBrake:1};
+const DETAIN_STOP_SPEED=1,GROUND_CLEARANCE=.65;
+function onLocalGround(game,position,vehicle=null){
+ if(vehicle?.grounded===false||!Number.isFinite(position?.y))return false;
+ // A wheel ray can report grounded on a police car's roof. Only the road /
+ // terrain floor counts as a place where a ground patrol can detain someone.
+ const floor=game.groundContact?.heightAt(position.x,position.z)??game.world?.groundHeight?.(position.x,position.z)??groundHeight(position.x,position.z);
+ return Number.isFinite(floor)&&Math.abs(position.y-floor)<=GROUND_CLEARANCE;
+}
+function stoppedForDetention(vehicle){
+ const velocity=vehicleVelocity(vehicle);
+ // Godot's speed is the forward component, not total movement: a sideways
+ // slide or a vertical landing must not masquerade as a stopped vehicle.
+ return Math.hypot(velocity.x,velocity.z,vehicle.roadsterState?.verticalSpeed??0)<DETAIN_STOP_SPEED;
+}
+function groundDetentionTarget(game){
+ if(game.transition||game.aircraft?.active||game.flight?.active||game.jump>0)return null;
+ const vehicle=game.inCar?game.vehicle:null,position=game.position;
+ if(vehicle&&!stoppedForDetention(vehicle))return null;
+ return onLocalGround(game,position,vehicle)?position:null;
+}
+export function policeTargetCount(game){
+ const q=game.performanceProfile?.quality??game.quality;
+ const counts=q==='ultralow'||q==='ultra-low'?[1,1,2,2,3,4]:q==='low'?[1,2,3,4,5,6]:[2,3,4,6,8,10];
+ return counts[level(game)];
+}
+export function resetPolice(game){
+ for(const car of [...(game.police??[])])game.removeVehicle(car);
+ game.police=[];game.arrestTimer=0;game.policeDispatchAt=game.time??0;game.policePlanAt=0;
+}
+export function raiseWanted(game,amount){
+ const before=level(game);game.wanted=Math.max(0,Math.min(5,before+Math.max(0,Math.floor(Number(amount)||0))));
+ game.heat=45+game.wanted*15;game.policeDispatchAt=Math.min(game.policeDispatchAt??0,game.time);
+ game.ui.updateWanted();if(before===0&&game.wanted>0)game.ui.toast('警方正在寻找你 · 离开现场降低通缉','error');
+}
+function spawnOfficer(game){
+ const seed=game.policeSerial??0;
+ const spawn=populationRoadCandidates(game.position,seed).find(p=>distance(p,game.position)<260&&populationSpawnClear(game,p,null,70));
+ if(!spawn)return false;
+ const car=game.makeVehicle('s',spawn.x,spawn.z,spawn.yaw,true,0x233844);
+ car.pos.y=groundHeight(spawn.x,spawn.z);car.root.position.copy(car.pos);
+ Object.assign(car,{isPolice:true,policeId:seed,path:spawn.path,patrolPath:spawn.path,index:spawn.index,cruise:8,wait:.5,policeMode:'patrol',nextPolicePlan:0});
+ car.siren=box(car.root,1,.15,.3,PATROL_LIGHT,0,1.72,.2);
+ game.police.push(car);game.policeSerial=seed+1;return true;
+}
+// Pursuit ends on the nearest public-road lane, never the player's exact
+// off-road position. A* honors bridges, missing links and blocked roads.
+export function policeRoadTarget(position){
+ const node=nearestRoad(position),slots=[];
+ for(const end of [{x:node.x+80,z:node.z},{x:node.x-80,z:node.z},{x:node.x,z:node.z+80},{x:node.x,z:node.z-80}]){
+  if(!roadEdgeAllowed(node,end))continue;
+  const dx=end.x-node.x,dz=end.z-node.z,t=Math.max(.12,Math.min(.88,((position.x-node.x)*dx+(position.z-node.z)*dz)/6400));
+  for(const lane of [-4.5,4.5])slots.push({x:node.x+dx*t+(dz?lane:0),z:node.z+dz*t+(dx?lane:0)});
+ }
+ slots.sort((a,b)=>distance(a,position)-distance(b,position));return slots[0]??null;
+}
+export function updatePolice(game,dt){
+ game.police??=[];const wanted=level(game),target=policeTargetCount(game),now=game.time;
+ // Only recycle outside the local scene. Existing pursuers are never warped.
+ for(const car of [...game.police])if(distance(car.pos,game.position)>420||(game.police.length>target&&distance(car.pos,game.position)>85))game.removeVehicle(car);
+ if(game.police.length<target&&now>=(game.policeDispatchAt??0)){
+  spawnOfficer(game);game.policeDispatchAt=now+(wanted>=4?1.5:3);
+ }
+ let canPlan=now>=(game.policePlanAt??0),arrestContact=false;
+ const arrestTarget=wanted?groundDetentionTarget(game):null;
+ const nextPlanner=wanted?game.police.reduce((best,c)=>!best||(c.nextPolicePlan??0)<(best.nextPolicePlan??0)?c:best,null):null;
+ for(const car of game.police){
+  const pursuing=wanted>0;
+  if(pursuing&&car===nextPlanner&&canPlan&&now>=(car.nextPolicePlan??0)){
+   const targetPoint=policeRoadTarget(game.position);
+   const route=targetPoint?planRoute(car.pos,targetPoint,game.blockedRoads??[],car.yaw):[];
+   if(route.length>=1){car.path=route;car.index=0;car.finiteTrafficRoute=true;delete car.trafficRoute;car.policeMode='pursuit';}
+   else{car.policeMode='search';car.finiteTrafficRoute=false;car.path=car.patrolPath;delete car.trafficRoute;}
+   car.nextPolicePlan=now+3+(car.policeId%3)*.2;game.policePlanAt=now+.35;canPlan=false;
+  }else if(!pursuing&&car.policeMode!=='patrol'&&car.policeMode!=='return'&&canPlan){
+   // Return via a valid A* corridor before continuing the original patrol loop.
+   const route=planRoute(car.pos,car.patrolPath[0],game.blockedRoads??[],car.yaw);
+   if(route.length>=1){car.path=route;car.index=0;car.finiteTrafficRoute=true;delete car.trafficRoute;car.policeMode='return';}else{car.path=[];delete car.trafficRoute;}
+   game.policePlanAt=now+.35;canPlan=false;
+  }
+  if(!pursuing&&car.policeMode==='return'){
+   if(distance(car.pos,car.patrolPath[0])<9){car.path=car.patrolPath;car.index=1;car.finiteTrafficRoute=false;delete car.trafficRoute;car.policeMode='patrol';}
+  }
+  car.cruise=pursuing?10+wanted:8;
+  const near=distance(car.pos,game.position)<9;
+  game.integrate(car,pursuing&&near?HOLD:trafficControls(game,car,dt),dt);
+  if(arrestTarget&&distance(car.pos,arrestTarget)<7&&Math.abs(car.pos.y-arrestTarget.y)<3&&stoppedForDetention(car)&&onLocalGround(game,car.pos,car))arrestContact=true;
+  if(car.siren){const flash=pursuing&&Math.sin(now*9+car.policeId)>0;car.siren.material=pursuing?(flash?RED_LIGHT:BLUE_LIGHT):PATROL_LIGHT;}
+ }
+ // One continuous ground-detainment timer, independent of officer count.
+ // Taking off, sliding away, a roof touch or changing actor context resets it.
+ game.arrestTimer=arrestContact?(game.arrestTimer??0)+dt:0;
+ if(game.arrestTimer>5){game.respawn(true);return;}
+ game.policeStats={wanted,target,active:game.police.length,patrol:game.police.filter(c=>c.policeMode==='patrol').length,pursuit:game.police.filter(c=>c.policeMode==='pursuit').length};
+}
+export function updateWantedHeat(game,dt){
+ if(level(game)===0)return;
+ game.heat=Math.max(0,(Number.isFinite(game.heat)?game.heat:45+level(game)*15)-dt);
+ if(game.heat===0){game.wanted=level(game)-1;game.heat=game.wanted?20:0;game.ui.updateWanted();if(game.wanted===0)game.ui.toast('通缉已解除');}
+}

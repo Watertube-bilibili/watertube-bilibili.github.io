@@ -1,0 +1,49 @@
+/** Visual shoulders sit above (not on or under) the unchanged physics terrain. */
+export const SHOULDER_TOP=.03;
+export const CORE_ROAD_LINES=[-240,-160,-80,0,80,160,240];
+export const CORE_SHOULDERS=[
+ ...CORE_ROAD_LINES.map(x=>[x,SHOULDER_TOP-.1,0,28,.2,650,0xa9a9a1]),
+ ...CORE_ROAD_LINES.map(z=>[0,SHOULDER_TOP-.1,z,650,.2,28,0xaba9a0])
+];
+// Constant depth units only: no slope-scaled displacement or camera clipping
+// changes. This keeps visual layers ordered on lower-precision depth buffers
+// without moving the physical terrain, road vertices, or foot-contact meshes.
+export const SURFACE_DEPTH_BIAS={
+ underlay:{polygonOffset:true,polygonOffsetFactor:0,polygonOffsetUnits:1},
+ shoulder:{polygonOffset:true,polygonOffsetFactor:0,polygonOffsetUnits:-1},
+ road:{polygonOffset:true,polygonOffsetFactor:0,polygonOffsetUnits:-2},
+ paint:{polygonOffset:true,polygonOffsetFactor:0,polygonOffsetUnits:-3}
+};
+
+/** Remove positive-area overlaps between axis-aligned slabs at the same height.
+ * Items use the world's [x,y,z,w,h,d,color,yaw] layout. The first strip owns an
+ * intersection; later strips keep only their uncovered rectangles. Shared
+ * edges remain exact, and different-height layers such as paint are preserved.
+ * Run before terrain tessellation, so every remaining face still follows the
+ * same 10 m triangles as Godot rather than bridging a road or chunk boundary.
+ */
+export function removeCoplanarSurfaceOverlaps(items,coveredItems=[]){
+ const result=[],layers=new Map();
+ for(const [x,y,z,w,h,d] of coveredItems){const key=Math.round((y+h/2)*1e9),covered=layers.get(key)??[];covered.push([x-w/2,x+w/2,z-d/2,z+d/2]);layers.set(key,covered);}
+ for(const item of items){
+  const [x,y,z,w,h,d,,yaw=0]=item;
+  if(h>1||y>.25||yaw!==0){result.push(item);continue;}
+  const key=Math.round((y+h/2)*1e9),covered=layers.get(key)??[],rectangle=[x-w/2,x+w/2,z-d/2,z+d/2];
+  let pieces=[rectangle];
+  for(const [cl,cr,ct,cb] of covered){
+   const next=[];
+   for(const [left,right,top,bottom] of pieces){
+    const l=Math.max(left,cl),r=Math.min(right,cr),t=Math.max(top,ct),b=Math.min(bottom,cb);
+    if(l>=r||t>=b){next.push([left,right,top,bottom]);continue;}
+    if(left<l)next.push([left,l,top,bottom]);
+    if(r<right)next.push([r,right,top,bottom]);
+    if(top<t)next.push([l,r,top,t]);
+    if(b<bottom)next.push([l,r,b,bottom]);
+   }
+   pieces=next;if(!pieces.length)break;
+  }
+  for(const [left,right,top,bottom] of pieces){const piece=[...item];piece[0]=(left+right)/2;piece[2]=(top+bottom)/2;piece[3]=right-left;piece[5]=bottom-top;result.push(piece);}
+  covered.push(rectangle);layers.set(key,covered);
+ }
+ return result;
+}

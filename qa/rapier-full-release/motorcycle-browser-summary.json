@@ -1,0 +1,182 @@
+{
+  "ordinaryCandidate": {
+    "checks": 35,
+    "passed": 35,
+    "report": "/workspace/scratch/rapier-full-release/city-browser/run1/result.json",
+    "limits": "Two blocked external fonts; one chooser script body read after navigation lost, retained. All two-game-load original character bodies verified. No collision triggered in this normal-frame flow."
+  },
+  "formalEntry": {
+    "checks": 16,
+    "passed": 16,
+    "report": "/workspace/scratch/rapier-full-release/city-browser/formal-run1/result.json",
+    "resourceMap": "/workspace/scratch/rapier-full-release/city-browser/formal-resource-map.json",
+    "limits": "Localhost normal frames, not deployed CDN or real iPhone; external Google fonts blocked. 16 critical bodies verified, no body errors."
+  },
+  "motorcycles": [
+    {
+      "model": "mica_scooter",
+      "method": "real UI keyboard; fixed 1/60 Rapier steps; normal reload; isolated fresh original API fixture, default $12500, opaque extension and 23 history entries seeded before protected boundary",
+      "success": true,
+      "checks": 30,
+      "passed": 30,
+      "source_unchanged": true,
+      "sourceFiles": 339,
+      "moneyAfterPurchase": 8700,
+      "instanceId": "garage:mica_scooter",
+      "collisionConditionBefore": 100,
+      "collisionConditionAfter": 98.87608780872569,
+      "collisionDriveSteps": 420,
+      "collisionContacts": 2,
+      "GLBbytes": 1235652,
+      "GLBsha256": "11d13175da613d25094d6bd4172ebf2cacd0f84686b45357946e91a47ea5cc24",
+      "modelRequests": [
+        {
+          "requestId": "11837.392",
+          "loaderId": "0D26D95A0BAC6ACC8D024965BDF10364",
+          "url": "http://127.0.0.1:44369/sunset-coast/rapier/play/assets/motorcycle-scooter.glb?v=11d13175da613d25094d6bd4172ebf2cacd0f84686b45357946e91a47ea5cc24",
+          "sha256": "11d13175da613d25094d6bd4172ebf2cacd0f84686b45357946e91a47ea5cc24",
+          "sourceMatch": true,
+          "bytes": 1235652
+        },
+        {
+          "requestId": "11837.607",
+          "loaderId": "DF9E0EDE5D9ACF8B4536BEDC6717497C",
+          "url": "http://127.0.0.1:44369/sunset-coast/rapier/play/assets/motorcycle-scooter.glb?v=11d13175da613d25094d6bd4172ebf2cacd0f84686b45357946e91a47ea5cc24",
+          "sha256": "11d13175da613d25094d6bd4172ebf2cacd0f84686b45357946e91a47ea5cc24",
+          "sourceMatch": true,
+          "bytes": 1235652
+        }
+      ],
+      "verifiedResponses": 452,
+      "observedScopedResponses": 452,
+      "postCloseProtectedWriteAttempts": [],
+      "postCloseProtectedMutations": [],
+      "originalBytesUnchanged": true,
+      "intentionalPhysicsFailure": {
+        "step": false,
+        "saved": false,
+        "failed": true,
+        "paused": true,
+        "unchanged": true
+      },
+      "recallBodyVelocity": {
+        "x": 1.674967643339187e-05,
+        "y": -0.02722400799393654,
+        "z": 0.000735785870347172
+      },
+      "externalRequestsComplete": false,
+      "report": "/workspace/scratch/rapier-full-release/city-browser/mica-fixed-run1/mica.json"
+    },
+    {
+      "model": "ember_street",
+      "method": "real UI keyboard; fixed 1/60 Rapier steps; normal reload; isolated fresh original API fixture, default $12500, opaque extension and 23 history entries seeded before protected boundary",
+      "success": true,
+      "checks": 30,
+      "passed": 30,
+      "source_unchanged": true,
+      "sourceFiles": 339,
+      "moneyAfterPurchase": 5700,
+      "instanceId": "garage:ember_street",
+      "collisionConditionBefore": 100,
+      "collisionConditionAfter": 86.60254328017352,
+      "collisionDriveSteps": 330,
+      "collisionContacts": 2,
+      "GLBbytes": 1283044,
+      "GLBsha256": "1c821e574c5f87ee59872b2e455037994cd7a35f75eb872ce46bc37f1741061f",
+      "modelRequests": [
+        {
+          "requestId": "10302.392",
+          "loaderId": "5F96740E32720D7872532CA90197FE90",
+          "url": "http://127.0.0.1:34489/sunset-coast/rapier/play/assets/motorcycle-street.glb?v=1c821e574c5f87ee59872b2e455037994cd7a35f75eb872ce46bc37f1741061f",
+          "sha256": "1c821e574c5f87ee59872b2e455037994cd7a35f75eb872ce46bc37f1741061f",
+          "sourceMatch": true,
+          "bytes": 1283044
+        },
+        {
+          "requestId": "10302.607",
+          "loaderId": "93E2BFD7BDEA2CCA09EF9748FB34CE7C",
+          "url": "http://127.0.0.1:34489/sunset-coast/rapier/play/assets/motorcycle-street.glb?v=1c821e574c5f87ee59872b2e455037994cd7a35f75eb872ce46bc37f1741061f",
+          "sha256": "1c821e574c5f87ee59872b2e455037994cd7a35f75eb872ce46bc37f1741061f",
+          "sourceMatch": true,
+          "bytes": 1283044
+        }
+      ],
+      "verifiedResponses": 452,
+      "observedScopedResponses": 452,
+      "postCloseProtectedWriteAttempts": [],
+      "postCloseProtectedMutations": [],
+      "originalBytesUnchanged": true,
+      "intentionalPhysicsFailure": {
+        "step": false,
+        "saved": false,
+        "failed": true,
+        "paused": true,
+        "unchanged": true
+      },
+      "recallBodyVelocity": {
+        "x": -9.894596947335188e-11,
+        "y": -0.027673721313476562,
+        "z": -1.2859177611623807e-10
+      },
+      "externalRequestsComplete": false,
+      "report": "/workspace/scratch/rapier-full-release/city-browser/ember-run1/ember.json"
+    },
+    {
+      "model": "ridge_dual",
+      "method": "real UI touch emulation; fixed 1/60 Rapier steps; normal reload; isolated fresh original API fixture, default $12500, opaque extension and 23 history entries seeded before protected boundary",
+      "success": true,
+      "checks": 31,
+      "passed": 31,
+      "source_unchanged": true,
+      "sourceFiles": 339,
+      "moneyAfterPurchase": 4300,
+      "instanceId": "garage:ridge_dual",
+      "collisionConditionBefore": 100,
+      "collisionConditionAfter": 91.68848072260556,
+      "collisionDriveSteps": 330,
+      "collisionContacts": 2,
+      "GLBbytes": 1812732,
+      "GLBsha256": "e8d51461115522d296b6605f4e8304304c5a3bd31bd09ee55ecfcb882ac007e0",
+      "modelRequests": [
+        {
+          "requestId": "11110.392",
+          "loaderId": "3F084A0025F70A2EF7968F262CAEF71F",
+          "url": "http://127.0.0.1:45127/sunset-coast/rapier/play/assets/motorcycle-dual.glb?v=e8d51461115522d296b6605f4e8304304c5a3bd31bd09ee55ecfcb882ac007e0",
+          "sha256": "e8d51461115522d296b6605f4e8304304c5a3bd31bd09ee55ecfcb882ac007e0",
+          "sourceMatch": true,
+          "bytes": 1812732
+        },
+        {
+          "requestId": "11110.607",
+          "loaderId": "0E6E340DF1F3AC56CC475C60D1D512B6",
+          "url": "http://127.0.0.1:45127/sunset-coast/rapier/play/assets/motorcycle-dual.glb?v=e8d51461115522d296b6605f4e8304304c5a3bd31bd09ee55ecfcb882ac007e0",
+          "sha256": "e8d51461115522d296b6605f4e8304304c5a3bd31bd09ee55ecfcb882ac007e0",
+          "sourceMatch": true,
+          "bytes": 1812732
+        }
+      ],
+      "verifiedResponses": 452,
+      "observedScopedResponses": 452,
+      "postCloseProtectedWriteAttempts": [],
+      "postCloseProtectedMutations": [],
+      "originalBytesUnchanged": true,
+      "intentionalPhysicsFailure": {
+        "step": false,
+        "saved": false,
+        "failed": true,
+        "paused": true,
+        "unchanged": true
+      },
+      "recallBodyVelocity": {
+        "x": 4.218161930857889e-10,
+        "y": -0.027003847062587738,
+        "z": -4.214670834556955e-10
+      },
+      "externalRequestsComplete": false,
+      "report": "/workspace/scratch/rapier-full-release/city-browser/ridge-run1/ridge.json"
+    }
+  ],
+  "frozenRuntimeFiles": 339,
+  "runtimeChangedSinceFormalStart": [],
+  "allOwnedBrowsersClosed": true
+}

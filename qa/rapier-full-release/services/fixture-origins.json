@@ -1,0 +1,29 @@
+{
+  "basis": "Historical tested fixtures, relocated to current release runtime. UI/canvas only stubbed. Added export method and preserve storage event audit across restore. No production mutation.",
+  "files": [
+    {
+      "source": "qa/original-city/physics-fixture.mjs",
+      "sourceSHA256": "b2b5c9a738c61ff0fc5a77d3536d8b3589d8a8f17e6f268b919663759c66c797",
+      "dest": "physics-fixture.mjs",
+      "destSHA256": "826a68829efb7bd57d1a6bc9efa4a5b8609b36afb996503a07c9709220749224"
+    },
+    {
+      "source": "qa/original-city-phase5/motorcycle-game-fixture.mjs",
+      "sourceSHA256": "a45d8e627e9846ce465bf315c93cc8ae2c3a3f1660b8dabdb89844ff84af5b3a",
+      "dest": "factory-fixture.mjs",
+      "destSHA256": "b7dbdf324f31e2f931fffe3622f0c36e9be4d0c08b137cfda13cf5d8abf87cc6"
+    },
+    {
+      "source": "qa/original-city-phase5/motorcycle-test-env.mjs",
+      "sourceSHA256": "e68ffc1501d5cccc2ae68ba5bac799a5a44be455122518990d20142556f6d5e2",
+      "dest": "test-env.mjs",
+      "destSHA256": "e68ffc1501d5cccc2ae68ba5bac799a5a44be455122518990d20142556f6d5e2"
+    },
+    {
+      "source": "qa/original-city-phase5/character-restore/mixed-garage-fixture.mjs",
+      "sourceSHA256": "9fa27d90193d7101167ccb531c682aed116b44d976c16da1e402f005e8af7aef",
+      "dest": "services-fixture.mjs",
+      "destSHA256": "1af02f80ddd6a10f0515e3e9bb7dea5b0645657a1017fe4b86267d9a8d3587c4"
+    }
+  ]
+}

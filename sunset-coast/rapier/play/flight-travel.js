@@ -1,0 +1,38 @@
+import {createPassengerJet,animatePassengerJet} from './region-scenery.js';
+import {getRegionTravel,airportAt,groundHeight} from './regions.js';
+const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+const smooth=t=>{const x=clamp(t);return x*x*(3-2*x);};
+/** Compressed passenger travel, not rigid-body flight. The six-second shots
+ * preserve wheel contact, rotation, flare and gear sequencing rather than
+ * pretending to simulate a complete flight at real elapsed time. */
+export function sampleFlight(origin,destination,time){
+ const clock=Number.isFinite(time)?Math.max(0,time):0,arrival=clock>=6,a=arrival?destination:origin,t=clamp(arrival?clock-6:clock,0,6),r=a.runway;
+ let distance,height,pitch,gear,speed,phase;
+ if(!arrival){
+  const roll=Math.min(t,2.5),air=Math.max(0,t-2.5);
+  distance=12*roll*roll+60*air;speed=t<2.5?24*t:60;
+  pitch=.12*smooth((t-1.9)/.6);
+  height=6*(air-.45*(1-Math.exp(-air/.45)));
+  gear=1-smooth((t-3.3)/1.5);phase=t<1.9?'roll':t<2.5?'rotate':'climb';
+ }else{
+  const touchdown=3.7,roll=clamp(t-touchdown,0,2.3),flare=clamp((t-2.5)/1.2);
+  distance=60*Math.min(t,touchdown)+60*(roll-roll*roll/4.6);speed=t<touchdown?60:60*(1-roll/2.3);
+  height=t<2.5?3.6+6*(2.5-t):3.6*(1-flare)**2;
+  pitch=t<touchdown?-.045+.105*smooth(flare):.06*(1-smooth(roll/.9));
+  gear=smooth((t-.3)/1.5);phase=t<2.5?'approach':t<touchdown?'flare':'rollout';
+ }
+ // Rotate about the main wheels during takeoff/landing. The visual root is
+ // not a wheel contact point; a fixed root height pushes tyres underground.
+ const mainBottom=.65*Math.cos(pitch)-5.55*Math.sin(pitch)-.65;
+ const noseBottom=.5*Math.cos(pitch)+18*Math.sin(pitch)-.48;
+ const groundOffset=.025+Math.max(0,-mainBottom,-noseBottom);
+ return{position:{x:r.x,y:a.altitude+height+groundOffset,z:r.z+(arrival?350:500)-distance},pitch,gear,speed,phase,arrival,done:clock>=12,opacity:Math.max(1-smooth(clock/.6),1-smooth(Math.abs(clock-6)/.5),smooth((clock-11.5)/.5)),label:arrival?(phase==='rollout'?'着陆滑跑 · ':'正在降落 · ')+a.name:(phase==='roll'?'跑道加速 · ':'起飞 · ')+a.name};
+}
+export class FlightTravel{
+ constructor(game){this.game=game;this.active=false;}
+ start(regionId){const g=this.game,origin=airportAt(g.position),target=getRegionTravel(regionId);if(g.aircraft?.active||g.aircraft?.pendingBoard||g.autonomyTest?.active)return{ok:false,reason:'请先结束教练机驾驶或路测工作'};if(this.active)return{ok:false,reason:'航程正在进行'};if(!origin)return{ok:false,reason:'请先到机场公共道路的航站楼入口'};if(!target||target.airport.id===origin.id)return{ok:false,reason:'请选择另一个地区'};if(g.robotaxi?.active||g.transition)return{ok:false,reason:'请先完成当前乘车行程'};if(g.inCar&&Math.abs(g.vehicle.speed)>.5)return{ok:false,reason:'请先停车后登机'};g.resetControls();g.autopilot=false;g.pilot?.reset();g.sensor?.reset?.();g.assistTelemetry=null;g.vehicle.speed=0;this.active=true;document.body.classList.add('flight-active');this.time=0;this.origin=origin;this.target=target;this.wasInCar=g.inCar;this.plane=createPassengerJet();g.scene.add(this.plane);g.vehicle.root.visible=false;g.person.root.visible=false;g.ui.closePhone();g.ui.closeModal();this.update(0);return{ok:true};}
+ update(dt){if(!this.active)return;this.time+=dt;const pose=sampleFlight(this.origin,this.target.airport,this.time);this.pose=pose;this.plane.position.set(pose.position.x,pose.position.y,pose.position.z);this.plane.rotation.x=pose.pitch;animatePassengerJet(this.plane,pose,dt);this.game.vehicle.root.visible=false;this.game.person.root.visible=false;if(pose.done)this.finish();}
+ finish(){if(!this.active)return;const g=this.game,p=this.target.position;g.vehicle.pos.set(p.x,groundHeight(p.x,p.z)+.02,p.z);g.vehicle.yaw=this.target.yaw;g.vehicle.root.rotation.y=g.vehicle.yaw;g.playerPos.set(p.x-3,groundHeight(p.x-3,p.z),p.z);g.playerYaw=g.vehicle.yaw;g.inCar=this.wasInCar;this.dispose();g.resetAfterTravel?.();g.ui.toast('已抵达 '+this.target.region.name+' · 车辆已随行托运');g.save(false);}
+ cancel(){if(!this.active)return;this.dispose();this.game.resetAfterTravel?.();}
+ dispose(){this.active=false;document.body.classList.remove('flight-active');if(this.plane){const geometries=new Set(),materials=new Set();this.plane.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)for(const m of Array.isArray(o.material)?o.material:[o.material])materials.add(m);});this.plane.removeFromParent();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());this.plane=null;}this.game.vehicle.root.visible=true;this.game.person.root.visible=!this.game.inCar;}
+}
