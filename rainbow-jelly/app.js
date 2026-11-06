@@ -1,9 +1,12 @@
 import { polygonArea, centroid, pointInPolygon, splitPolygon } from './geometry.js';
+import { JellyRenderer } from './renderer.js';
 
 const $ = (s) => document.querySelector(s);
 const $$ = (s) => [...document.querySelectorAll(s)];
 const canvas = $('#jelly-canvas');
-const ctx = canvas.getContext('2d');
+const renderer = new JellyRenderer(canvas, { onError(message) {
+  const error = $('#render-error'); error.hidden = false; $('#render-error-message').textContent = message;
+} });
 const area = $('#canvas-area');
 const palettes = {
   rainbow: ['#f18fae', '#f3ad8b', '#f1d586', '#acd599', '#80c9c7', '#9cafe1', '#b296dd'],
@@ -12,13 +15,13 @@ const palettes = {
   peach: ['#f4d593', '#f5bd92', '#f1a298', '#ee9bb5']
 };
 const paletteNames = { rainbow: '彩虹糖', berry: '莓果梦', ocean: '海盐汽水', peach: '蜜桃乌龙' };
-const hints = { grab: '按住果冻，拖动试试', cut: '划过整块果冻，松手切开', pin: '点击钉住，再点钉子松开', fire: '在果冻上长按，让烦恼融化' };
-const icons = { grab: 'hand', cut: 'cut', pin: 'pin', fire: 'fire' };
+const hints = { grab: '按住果冻，拖动试试', cut: '划过整块果冻，松手切开', pin: '点击钉住，再点钉子松开', fire: '在果冻上长按，让烦恼融化', view: '拖动转动视角，空格恢复正面' };
+const icons = { grab: 'hand', cut: 'cut', pin: 'pin', fire: 'fire', view: 'view' };
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let width = 0, height = 0, floor = 0, size = 150, tool = 'grab', shape = 'blob', palette = 'rainbow';
-let bodies = [], particles = [], puddles = [], pins = [], cuts = [], bodyId = 0;
+let bodies = [], puddles = [], pins = [], cuts = [], bodyId = 0;
 let elasticity = .75, gravity = true, sound = false, audioContext, toastTimer, last = 0, time = 0, started = false;
-let pointer = { x: 0, y: 0, down: false, inside: false, id: null }, gesture = null, drag = null;
+let pointer = { x: 0, y: 0, down: false, inside: false, id: null }, gesture = null, drag = null, viewDrag = null;
 let keyboardFire = false, lastSound = 0;
 
 function notify(message) {
@@ -63,12 +66,14 @@ function makeBody(points, options = {}) {
     sx: 1, sy: 1, ...options
   };
   body.area = polygonArea(body.vertices);
+  body.depth ??= Math.max(30, Math.min(155, Math.sqrt(body.area) * .54));
   return body;
 }
 
 function reset(message = true) {
   pointer.down = false; keyboardFire = false; gesture = drag = null;
-  pins = []; particles = []; puddles = []; cuts = [];
+  pins = []; puddles = []; cuts = [];
+  viewDrag = null; renderer.resetView();
   const x = width < 550 ? width * .52 : width * .56;
   const y = floor - size * .82 - 9;
   const points = [];
@@ -82,7 +87,7 @@ function reset(message = true) {
     const localY = Math.sign(sin) * Math.abs(sin) ** exponent * ry;
     points.push({ x: x + localX, y: y + localY, u: localX / size, v: localY / size });
   }
-  bodies = [makeBody(points, { vy: -20, wobble: .045 })];
+  bodies = [makeBody(points, { vy: -20, wobble: .045, depth: size * (shape === 'round' ? 1.88 : shape === 'square' ? 1.65 : 1.3), roundness: shape === 'round' ? 1 : .28 })];
   updateCount();
   if (message) { notify('新鲜出炉，快乐继续。'); tone(); }
 }
@@ -93,15 +98,13 @@ function resize() {
   width = rect.width; height = rect.height;
   floor = width < 550 ? height - 125 : height - 88;
   size = Math.min(153, width * (width < 550 ? .29 : .205), height * .29);
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  renderer.resize(width, height, floor);
   if (!oldWidth || !bodies.length) reset(false);
   else {
     const scale = Math.min(1, width / oldWidth);
     bodies.forEach(b => {
       b.x *= width / oldWidth; b.y += floor - oldFloor;
-      if (scale < 1) b.vertices.forEach(p => { p.x *= scale; p.y *= scale; });
+      if (scale < 1) { b.vertices.forEach(p => { p.x *= scale; p.y *= scale; }); b.depth *= scale; b.area = polygonArea(b.vertices); }
     });
     pins.forEach(p => { p.x *= width / oldWidth; p.y += floor - oldFloor; p.local.x *= scale; p.local.y *= scale; });
     puddles.forEach(p => { p.x *= width / oldWidth; p.y += floor - oldFloor; });
@@ -124,7 +127,7 @@ function updateCount() { $('#piece-count').textContent = bodies.length; }
 
 function selectTool(value) {
   if (!hints[value]) return;
-  pointer.down = false; drag = gesture = null; keyboardFire = false;
+  pointer.down = false; drag = gesture = viewDrag = null; keyboardFire = false;
   tool = value; canvas.dataset.tool = value;
   $$('.tool').forEach(b => { const active = b.dataset.tool === tool; b.classList.toggle('active', active); b.setAttribute('aria-pressed', String(active)); });
   $('#canvas-hint').innerHTML = `<svg><use href="#i-${icons[tool]}"/></svg>${hints[tool]}`;
@@ -144,7 +147,7 @@ function cutBodies(start, end) {
     const children = result.map((points, i) => makeBody(points, {
       vx: body.vx + nx * (i ? -1 : 1) * 75,
       vy: body.vy + ny * (i ? -1 : 1) * 60 - 28,
-      av: (i ? -.17 : .17), wobble: .055, heat: body.heat, melt: body.melt
+      av: (i ? -.17 : .17), wobble: .055, heat: body.heat, melt: body.melt, depth: body.depth, roundness: body.roundness
     }));
     pins.filter(pin => pin.bodyId === body.id).forEach(pin => {
       const child = children.find(b => pointInPolygon({ x: pin.x - b.x, y: pin.y - b.y }, b.vertices));
@@ -172,7 +175,7 @@ function pinAt(point) {
 
 function pointerPosition(event) {
   const rect = canvas.getBoundingClientRect();
-  return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  return renderer.screenToWorld({ x: event.clientX - rect.left, y: event.clientY - rect.top });
 }
 function engage() { started = true; $('#canvas-note').style.opacity = '0'; }
 canvas.addEventListener('pointerdown', event => {
@@ -180,7 +183,10 @@ canvas.addEventListener('pointerdown', event => {
   event.preventDefault(); canvas.focus({ preventScroll: true }); canvas.setPointerCapture(event.pointerId);
   Object.assign(pointer, pointerPosition(event), { down: true, inside: true, id: event.pointerId });
   engage();
-  if (tool === 'grab') {
+  if (tool === 'view') {
+    viewDrag = { x: event.clientX, y: event.clientY };
+    canvas.style.cursor = 'grabbing';
+  } else if (tool === 'grab') {
     const body = hitTest(pointer);
     if (body) { drag = { id: body.id, local: localPoint(body, pointer) }; body.wobbleV += .8; tone(); canvas.style.cursor = 'grabbing'; }
   } else if (tool === 'cut') gesture = { start: { x: pointer.x, y: pointer.y }, end: { x: pointer.x, y: pointer.y } };
@@ -188,6 +194,10 @@ canvas.addEventListener('pointerdown', event => {
 });
 canvas.addEventListener('pointermove', event => {
   if (pointer.down && event.pointerId !== pointer.id) return;
+  if (viewDrag && pointer.down && tool === 'view') {
+    renderer.rotateView(event.clientX - viewDrag.x, event.clientY - viewDrag.y);
+    viewDrag = { x: event.clientX, y: event.clientY };
+  }
   Object.assign(pointer, pointerPosition(event), { inside: true });
   if (gesture) gesture.end = { x: pointer.x, y: pointer.y };
 });
@@ -195,14 +205,14 @@ function endPointer(event, cancel = false) {
   if (event.pointerId !== pointer.id) return;
   if (!cancel && gesture) cutBodies(gesture.start, pointerPosition(event));
   if (drag) tone();
-  pointer.down = false; gesture = null; drag = null; pointer.id = null; canvas.style.cursor = '';
+  pointer.down = false; gesture = null; drag = viewDrag = null; pointer.id = null; canvas.style.cursor = '';
   if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
 }
 canvas.addEventListener('pointerup', event => endPointer(event));
 canvas.addEventListener('pointercancel', event => endPointer(event, true));
-canvas.addEventListener('lostpointercapture', () => { pointer.down = false; gesture = drag = null; canvas.style.cursor = ''; });
+canvas.addEventListener('lostpointercapture', () => { pointer.down = false; gesture = drag = viewDrag = null; canvas.style.cursor = ''; });
 canvas.addEventListener('pointerleave', () => { if (!pointer.down) pointer.inside = false; });
-window.addEventListener('blur', () => { pointer.down = false; keyboardFire = false; gesture = drag = null; canvas.style.cursor = ''; });
+window.addEventListener('blur', () => { pointer.down = false; keyboardFire = false; gesture = drag = viewDrag = null; canvas.style.cursor = ''; });
 
 function heatAt(point, dt) {
   const body = hitTest(point) || [...bodies].reverse().find(candidate => {
@@ -213,17 +223,10 @@ function heatAt(point, dt) {
       return Math.hypot(point.x - a.x - t * dx, point.y - a.y - t * dy) < 22;
     });
   });
-  for (let i = 0; i < 3; i++) {
-    particles.push({ x: point.x + (Math.random() - .5) * 23, y: point.y + 8, vx: (Math.random() - .5) * 27, vy: -35 - Math.random() * 85, life: .3 + Math.random() * .4, maxLife: .7, r: 3 + Math.random() * 9, type: 'flame', hue: 20 + Math.random() * 32 });
-  }
   if (!body) return;
   body.heat = Math.min(1, body.heat + dt * .55);
   body.melt = Math.min(.95, body.melt + dt * (.035 + body.heat * .085));
   body.wobbleV += (Math.random() - .5) * dt * 2;
-  if (Math.random() < dt * 13) {
-    const color = palettes[palette][Math.floor(Math.random() * palettes[palette].length)];
-    particles.push({ x: point.x, y: point.y + 12, vx: (Math.random() - .5) * 40, vy: 25, life: 1.5, maxLife: 1.5, r: 3 + Math.random() * 5, type: 'drop', color });
-  }
   if (time - lastSound > .22) { tone('fire'); lastSound = time; }
 }
 
@@ -339,125 +342,14 @@ function update(dt) {
     }
   }
   resolveCollisions();
-  particles.forEach(p => {
-    p.life -= dt; p.x += p.vx * dt; p.y += p.vy * dt;
-    if (p.type === 'drop') {
-      p.vy += 290 * dt;
-      if (p.y > floor) { p.life = 0; puddles.push({ x: p.x, y: floor + 3 + Math.random() * 7, r: p.r * 2, color: p.color, alpha: .45 }); }
-    }
-  });
-  particles = particles.filter(p => p.life > 0).slice(-280);
   puddles = puddles.slice(-80);
   cuts.forEach(c => c.life -= dt); cuts = cuts.filter(c => c.life > 0);
 }
 
-function path(points) { ctx.beginPath(); points.forEach((p, i) => i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y)); ctx.closePath(); }
-
-function materialGradient(body) {
-  const pts = body.vertices;
-  const p = pts[0]; let q, r, determinant;
-  for (let i = 1; i < pts.length - 1; i++) {
-    q = pts[i]; r = pts[i + 1];
-    determinant = (q.x - p.x) * (r.y - p.y) - (r.x - p.x) * (q.y - p.y);
-    if (Math.abs(determinant) > .01) break;
-  }
-  const value = point => point.u * .79 + point.v * .43;
-  const v0 = value(p), v1 = value(q) - v0, v2 = value(r) - v0;
-  const a = (v1 * (r.y - p.y) - v2 * (q.y - p.y)) / determinant;
-  const b = ((q.x - p.x) * v2 - (r.x - p.x) * v1) / determinant;
-  const c = v0 - a * p.x - b * p.y, norm = a * a + b * b;
-  const start = (-1.08 - c) / norm, end = (1.08 - c) / norm;
-  const gradient = ctx.createLinearGradient(a * start, b * start, a * end, b * end);
-  palettes[palette].forEach((color, i, colors) => gradient.addColorStop(i / (colors.length - 1), color));
-  return gradient;
-}
-
-function drawBody(body) {
-  const points = body.vertices;
-  const xs = points.map(p => p.x), ys = points.map(p => p.y);
-  const left = Math.min(...xs), right = Math.max(...xs), top = Math.min(...ys), bottom = Math.max(...ys);
-  const w = right - left, h = bottom - top;
-  const centerX = (left + right) / 2, centerY = (top + bottom) / 2;
-  // A tinted contact shadow gives each piece its own weight on the table.
-  ctx.save();
-  const shadowY = floor + 19;
-  const shadowRadius = Math.max(15, w * body.sx * .49);
-  const lift = Math.max(0, floor - (body.y + bottom * body.sy));
-  ctx.translate(body.x, shadowY); ctx.scale(1, .14);
-  const shadow = ctx.createRadialGradient(0, 0, 0, 0, 0, shadowRadius * 1.25);
-  shadow.addColorStop(0, `rgba(127,105,166,${Math.max(.03, .2 - lift * .0005)})`);
-  shadow.addColorStop(.55, 'rgba(153,130,181,.08)'); shadow.addColorStop(1, 'rgba(153,130,181,0)');
-  ctx.fillStyle = shadow; ctx.beginPath(); ctx.arc(0, 0, shadowRadius * 1.25, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-  ctx.save(); ctx.translate(body.x, body.y); ctx.rotate(body.angle); ctx.scale(body.sx, body.sy);
-  path(points);
-  ctx.fillStyle = materialGradient(body); ctx.globalAlpha = .92; ctx.fill(); ctx.globalAlpha = 1;
-  ctx.save(); ctx.clip();
-  // Rounded translucent edges and broad studio reflections.
-  const shade = ctx.createRadialGradient(centerX - w * .1, centerY - h * .16, w * .08, centerX, centerY, Math.max(w, h) * .62);
-  shade.addColorStop(0, '#ffffff3d'); shade.addColorStop(.58, '#ffffff00'); shade.addColorStop(.82, '#6c498720'); shade.addColorStop(1, '#68448685');
-  ctx.fillStyle = shade; ctx.fillRect(left - 2, top - 2, w + 4, h + 4);
-  const bottomShade = ctx.createLinearGradient(0, top, 0, bottom);
-  bottomShade.addColorStop(0, '#ffffff55'); bottomShade.addColorStop(.2, '#ffffff00'); bottomShade.addColorStop(.72, '#ffffff00'); bottomShade.addColorStop(1, '#6a4d884d');
-  ctx.fillStyle = bottomShade; ctx.fillRect(left, top, w, h);
-  const shine = ctx.createRadialGradient(left + w * .27, top + h * .22, 0, left + w * .27, top + h * .22, Math.max(w, h) * .37);
-  shine.addColorStop(0, '#ffffffa0'); shine.addColorStop(.35, '#ffffff35'); shine.addColorStop(1, '#ffffff00');
-  ctx.fillStyle = shine; ctx.fillRect(left, top, w, h);
-  // Tiny trapped bubbles stay in material coordinates after a cut.
-  for (let i = 0; i < 22; i++) {
-    const x = left + ((Math.sin(i * 17.31 + body.id) + 1) / 2) * w;
-    const y = top + ((Math.cos(i * 8.73 + body.id) + 1) / 2) * h;
-    const r = 1.1 + (i % 4) * .6;
-    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.strokeStyle = '#ffffff35'; ctx.lineWidth = .7; ctx.stroke();
-    ctx.beginPath(); ctx.arc(x - .6, y - .7, .65, 0, Math.PI * 2); ctx.fillStyle = '#ffffff60'; ctx.fill();
-  }
-  // The curved reflection is clipped into each actual polygon, including cut edges.
-  ctx.beginPath(); ctx.moveTo(left + w * .13, top + h * .29);
-  ctx.bezierCurveTo(left + w * .13, top + h * .1, left + w * .34, top + h * .06, left + w * .47, top + h * .1);
-  ctx.strokeStyle = '#ffffff7d'; ctx.lineWidth = Math.min(8, w * .026); ctx.lineCap = 'round'; ctx.stroke();
-  ctx.beginPath(); ctx.ellipse(left + w * .22, top + h * .17, w * .037, h * .015, -.5, 0, 6.28); ctx.fillStyle = '#ffffffa0'; ctx.fill();
-  if (body.heat > .08) {
-    ctx.fillStyle = `rgba(231,124,70,${body.heat * .19})`; ctx.fillRect(left, top, w, h);
-    for (let i = 0; i < 7; i++) {
-      const x = centerX + Math.sin(i * 6.7) * w * .35, y = bottom - ((time * 35 + i * 19) % h);
-      ctx.beginPath(); ctx.arc(x, y, (2 + i % 4) * body.heat, 0, 6.28); ctx.strokeStyle = '#fff8'; ctx.lineWidth = 1; ctx.stroke();
-    }
-  }
-  ctx.restore();
-  path(points); ctx.strokeStyle = '#ffffff66'; ctx.lineWidth = 1.6; ctx.stroke();
-  ctx.restore();
-}
-
 function draw() {
-  ctx.clearRect(0, 0, width, height);
-  // The faint ellipse is the play surface, not a hard container.
-  const glow = ctx.createRadialGradient(width * .56, floor + 13, 10, width * .56, floor + 13, size * 1.6);
-  glow.addColorStop(0, '#ddcdec25'); glow.addColorStop(1, '#ddcdec00');
-  ctx.save(); ctx.translate(0, floor * .75); ctx.scale(1, .25); ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height * 2); ctx.restore();
-  puddles.forEach(p => { ctx.beginPath(); ctx.ellipse(p.x, p.y, p.r, Math.max(2, p.r * .14), 0, 0, Math.PI * 2); ctx.globalAlpha = p.alpha; ctx.fillStyle = p.color; ctx.fill(); ctx.globalAlpha = 1; });
-  bodies.forEach(drawBody);
-  for (const pin of pins) {
-    ctx.save(); ctx.translate(pin.x, pin.y); ctx.rotate(-.35);
-    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -14); ctx.strokeStyle = '#888097'; ctx.lineWidth = 2; ctx.stroke();
-    ctx.beginPath(); ctx.ellipse(0, -16, 8, 5.5, 0, 0, Math.PI * 2);
-    const pinGradient = ctx.createLinearGradient(-6, -23, 5, -10); pinGradient.addColorStop(0, '#e8cbff'); pinGradient.addColorStop(.6, '#ac86cb'); pinGradient.addColorStop(1, '#8564ad');
-    ctx.fillStyle = pinGradient; ctx.shadowColor = '#6f49804d'; ctx.shadowBlur = 5; ctx.shadowOffsetY = 3; ctx.fill();
-    ctx.shadowBlur = 0; ctx.shadowOffsetY = 0; ctx.beginPath(); ctx.ellipse(-2, -18, 3, 1.3, 0, 0, 6.28); ctx.fillStyle = '#fff9'; ctx.fill(); ctx.restore();
-  }
-  particles.forEach(p => {
-    ctx.globalAlpha = Math.max(0, Math.min(1, p.life / p.maxLife));
-    ctx.fillStyle = p.type === 'flame' ? `hsl(${p.hue} 100% 67%)` : p.color;
-    ctx.beginPath(); ctx.ellipse(p.x, p.y, p.r * (p.type === 'flame' ? .65 : 1), p.r, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
-  });
-  for (const cut of cuts) { ctx.beginPath(); ctx.moveTo(cut.start.x, cut.start.y); ctx.lineTo(cut.end.x, cut.end.y); ctx.strokeStyle = `rgba(255,255,255,${cut.life * 2})`; ctx.lineWidth = 3; ctx.stroke(); }
-  if (gesture) {
-    ctx.save(); ctx.setLineDash([5, 6]); ctx.beginPath(); ctx.moveTo(gesture.start.x, gesture.start.y); ctx.lineTo(gesture.end.x, gesture.end.y); ctx.strokeStyle = '#b68ab8'; ctx.lineWidth = 1.5; ctx.stroke(); ctx.restore();
-    [gesture.start, gesture.end].forEach(p => { ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, 6.28); ctx.fillStyle = '#b68ab8'; ctx.fill(); });
-  }
-  if (pointer.inside && tool === 'fire') { ctx.beginPath(); ctx.arc(pointer.x, pointer.y, 17, 0, 6.28); ctx.strokeStyle = '#dc9f7977'; ctx.lineWidth = 1; ctx.stroke(); }
-  if (!bodies.length) {
-    ctx.textAlign = 'center'; ctx.fillStyle = '#b6a8c6'; ctx.font = '13px "Noto Sans SC", sans-serif';
-    ctx.fillText('烦恼都融化了。再来一块吧 ✳', width * .53, height * .46);
-  }
+  renderer.render({ bodies, pins, puddles, cuts, gesture, pointer, tool, palette, palettes, time,
+    burning: (pointer.down && tool === 'fire') || keyboardFire });
+  $('#empty-note').hidden = bodies.length > 0;
 }
 
 function frame(timestamp) {
@@ -488,6 +380,7 @@ $('#gravity').addEventListener('change', event => {
   notify(gravity ? '落地，也可以软软的。' : '轻飘飘，自由自在。');
 });
 $('#reset').addEventListener('click', () => reset());
+$('#retry-render').addEventListener('click', () => window.location.reload());
 $('#new-jelly').addEventListener('click', () => { reset(); $('#canvas-note').style.opacity = started ? '0' : '1'; });
 $('#sound').addEventListener('click', () => { sound = !sound; updateSound(); if (sound) tone(); });
 const helpDialog = $('#help-dialog');
@@ -497,9 +390,17 @@ $('#start-play').addEventListener('click', () => { helpDialog.close(); canvas.fo
 helpDialog.addEventListener('click', event => { if (event.target === helpDialog) { const r = helpDialog.getBoundingClientRect(); if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) helpDialog.close(); } });
 document.addEventListener('keydown', event => {
   if (helpDialog.open || event.ctrlKey || event.metaKey || event.altKey || /INPUT|TEXTAREA|SELECT/.test(event.target.tagName)) return;
-  if (['1', '2', '3', '4'].includes(event.key)) { event.preventDefault(); selectTool(['grab', 'cut', 'pin', 'fire'][Number(event.key) - 1]); }
+  if (['1', '2', '3', '4', '5'].includes(event.key)) { event.preventDefault(); selectTool(['grab', 'cut', 'pin', 'fire', 'view'][Number(event.key) - 1]); }
   if (event.key.toLowerCase() === 'r') reset();
   if (event.target !== canvas || !bodies.length) return;
+  if (tool === 'view') {
+    if (event.key.startsWith('Arrow')) {
+      event.preventDefault();
+      renderer.rotateView(event.key === 'ArrowLeft' ? -12 : event.key === 'ArrowRight' ? 12 : 0, event.key === 'ArrowUp' ? -12 : event.key === 'ArrowDown' ? 12 : 0);
+    }
+    if (event.code === 'Space') { event.preventDefault(); renderer.resetView(); }
+    return;
+  }
   const body = bodies[0];
   if (event.key.startsWith('Arrow')) {
     event.preventDefault(); engage();
@@ -519,6 +420,6 @@ document.addEventListener('keydown', event => {
   }
 });
 document.addEventListener('keyup', event => { if (event.code === 'Space') keyboardFire = false; });
-document.addEventListener('visibilitychange', () => { last = 0; if (document.hidden) { pointer.down = false; keyboardFire = false; drag = gesture = null; } });
+document.addEventListener('visibilitychange', () => { last = 0; if (document.hidden) { pointer.down = false; keyboardFire = false; drag = gesture = viewDrag = null; } });
 new ResizeObserver(resize).observe(area);
 resize(); requestAnimationFrame(frame);
