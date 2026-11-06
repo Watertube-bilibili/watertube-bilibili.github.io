@@ -121,7 +121,7 @@ func run() -> void:
 	manager.update_stream(Vector3(NAN, 0.0, 0.0), Vector3.ZERO, 1.0 / 60.0)
 	check(manager.get_stats().builtTotal == before_invalid, "invalid streaming request cannot mutate world")
 	var old_count: int = manager.get_stats().chunks
-	var destination: Vector3 = Vector3(1024.0, 0.0, 1024.0)
+	var destination: Vector3 = Vector3(768.0, 0.0, 2048.0)
 	manager.update_stream(destination, Vector3.ZERO, 1.0 / 60.0)
 	check(manager.get_stats().chunks >= old_count, "old ring remains resident while teleport destination is building")
 	check(manager.is_ready_at(10.0, 35.0), "old vehicle footprint remains supported before replacement is ready")
@@ -131,12 +131,25 @@ func run() -> void:
 	check(manager.is_ready_at(destination.x, destination.z), "destination becomes driveable only after support tiles load")
 	check(not manager.is_ready_at(10.0, 35.0), "distant old ring is retired after replacement support exists")
 	check(manager.get_stats().chunks < 25, "retained chunk count stays bounded after a long jump")
-	var saved_spawn: Vector3 = Vector3(Terrain.route_x(240.0), 15.0, 240.0)
+	var saved_checkpoint: Dictionary = Terrain.checkpoints()[2]
+	var saved_spawn: Vector3 = Vector3(saved_checkpoint.x, 15.0, saved_checkpoint.z)
 	manager.setup("snow", saved_spawn)
 	check(manager.get_stats().chunks >= 1 and manager.get_stats().chunks <= 4 and manager.get_stats().chunks == manager.get_stats().startupChunks and manager.get_stats().region == "snow", "map switch builds only the new spawn footprint without old-generation leakage")
 	check(manager.is_ready_at(saved_spawn.x, saved_spawn.z), "saved checkpoint gets synchronous ground at its actual position")
 	check(not manager.is_ready_at(0.0, 0.0), "saved checkpoint setup does not waste initial ring at origin")
 	check(manager.get_stats().objects >= manager.get_stats().chunks and manager.get_stats().groundReady, "diagnostics count loaded surfaces and supported player")
+	for branch_index: int in range(Terrain.branch_routes().size()):
+		var branch: Dictionary = Terrain.branch_routes()[branch_index]
+		var z: float = (float(branch.start) + float(branch.end)) * 0.5
+		var position_: Vector3 = Vector3(Terrain.branch_x(branch_index, z), 0.0, z)
+		manager.setup("forest", position_)
+		check(manager.is_ready_at(position_.x, position_.z) and manager.get_stats().startupChunks <= 4, "branch %d receives footprint-only synchronous ground" % branch_index)
+		for frame: int in range(90):
+			manager.update_stream(position_, Vector3.ZERO, 1.0 / 60.0)
+		var corridor_clear: bool = not manager.get_obstacles().is_empty()
+		for obstacle: Dictionary in manager.get_obstacles():
+			corridor_clear = corridor_clear and Terrain.road_distance(obstacle.x, obstacle.z) >= 6.0
+		check(corridor_clear, "branch %d background trees and rocks leave every connected road corridor clear" % branch_index)
 	manager.queue_free()
 	await process_frame
 	# Exercise the production position-acceptance guard while generation stalls.
@@ -157,7 +170,7 @@ func run() -> void:
 	game.simulation = UnsafeStepPhysics.new()
 	game.state.checkpoint = 3
 	game.state.completed = false
-	game.state.winch = {"anchor": {"x": 25.0, "y": 5.0, "z": 0.0}, "length": 12.0, "tension": 0.0}
+	game.state.winch = {"anchor": {"id": "test-rollback-anchor", "height": 5.0, "x": 25.0, "y": 5.0, "z": 0.0}, "length": 12.0, "tension": 0.0}
 	var protected_state: Dictionary = game.state.duplicate(true)
 	var safe_position: Vector3 = Vector3(game.state.x, game.state.y, game.state.z)
 	check(stalled.is_ready_at(safe_position.x, safe_position.z), "edge-stop scenario begins on fully supported ground")

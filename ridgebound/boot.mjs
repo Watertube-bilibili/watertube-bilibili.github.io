@@ -1,4 +1,4 @@
-import assets from './engine/assets.mjs';
+import assets from './engine/assets.mjs?v=66af985f7e1882e6';
 const CACHE='ridgebound-assets-v1';
 const root=new URL('./engine/',import.meta.url);
 const MB=n=>(n/1e6).toFixed(1);

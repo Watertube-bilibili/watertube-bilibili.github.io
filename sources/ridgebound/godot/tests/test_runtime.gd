@@ -29,7 +29,16 @@ func run() -> void:
 		all_wheels = all_wheels and wheel != null
 	check(all_wheels, "four separate wheel nodes are available for suspension")
 	check(game.steering != null and game.speed_needle != null and game.rpm_needle != null, "cockpit steering wheel and both instrument needles exist")
-	check(game.anchors.size() == 46 and game.checkpoints.size() == 4, "all anchor coordinates and repair checkpoints remain available to streaming")
+	check(game.anchors.size() > 0 and game.anchors.size() < 80 and game.checkpoints.size() == 4, "nearby anchor pool stays bounded while all four expedition checkpoints exist")
+	check(Terrain.repair_sites().size() == 7, "expanded main road and branches expose seven repair sites")
+	var initial_anchor_ids: Array = []
+	for anchor: Dictionary in game.anchors:
+		initial_anchor_ids.append(anchor.id)
+	game._refresh_nearby_anchors(true)
+	var refreshed_anchor_ids: Array = []
+	for anchor: Dictionary in game.anchors:
+		refreshed_anchor_ids.append(anchor.id)
+	check(initial_anchor_ids == refreshed_anchor_ids, "refreshing a stationary anchor pool preserves stable IDs")
 	check(game._anchor_visuals.is_empty() and game.get_snapshot().anchors.is_empty(), "unrendered anchor data is absent from visuals and selection")
 	game._command({"type": "attach", "id": game.anchors[0].id})
 	check(game.state.winch == null, "winch cannot attach to an anchor whose props layer is not visible")
@@ -66,20 +75,20 @@ func run() -> void:
 	check(game.camera.position.distance_to(game.vehicle.position) < 5.0, "cockpit camera is physically inside the car")
 	check(view_direction.dot(game.vehicle.global_basis.z) > 0.7, "cockpit camera looks through the forward windshield")
 	game._command({"type": "reset", "region": "forest", "snowTires": false, "progress": 2, "playing": true})
-	check(game.state.checkpoint == 2 and game.state.z > 145.0, "reset restores the saved checkpoint")
+	check(game.state.checkpoint == 2 and absf(game.state.z - float(Terrain.checkpoints()[1].z)) < 8.0, "reset restores the saved checkpoint")
 	check(game.chunks.is_ready_at(game.state.x, game.state.z), "saved checkpoint has synchronous ground before the first drive frame")
 	var forest_damage: Dictionary = {"body": 24.0, "tires": 35.0, "suspension": 48.0}
 	game.state.damage = forest_damage.duplicate()
-	game.state.x = Terrain.route_x(0.0)
-	game.state.z = 0.0
-	game.state.y = Terrain.height_at(game.state.x, 0.0) + 0.65
+	game.state.x = -900.0
+	game.state.z = -150.0
+	game.state.y = Terrain.height_at(game.state.x, game.state.z) + 0.65
 	game.state.speed = 0.0
 	game.state.repairAvailable = false
 	game._command({"type": "repair"})
 	check(game.state.damage.body == 24.0, "repair request outside an available hut cannot repair")
-	var cp: Dictionary = game.checkpoints[1]
-	game.state.x = float(cp.x) + 10.0
-	game.state.z = float(cp.z)
+	var repair_site: Dictionary = Terrain.repair_sites()[1]
+	game.state.x = float(repair_site.x)
+	game.state.z = float(repair_site.z)
 	game.state.y = Terrain.height_at(game.state.x, game.state.z, "forest") + 0.65
 	game.state.speed = 0.0
 	game._process(0.0)
@@ -89,7 +98,7 @@ func run() -> void:
 	game._command({"type": "reset", "region": "snow", "snowTires": true, "progress": 3, "playing": true})
 	check(game.state.region == "snow" and game.state.snowTires, "map command restores winter tire equipment")
 	check(game.chunks.get_stats().region == "snow" and game.chunks.is_ready_at(game.state.x, game.state.z), "snow map and restored position share the same loaded terrain generation")
-	game.chunks.setup("snow", Vector3(1024.0, 0.0, 1024.0))
+	game.chunks.setup("snow", Vector3(768.0, 0.0, 2048.0))
 	game._command({"type": "recover"})
 	check(game.chunks.is_ready_at(game.state.x, game.state.z), "recovery synchronously restores unloaded checkpoint support")
 	var snapshot: Dictionary = game.get_snapshot()
@@ -107,6 +116,32 @@ func run() -> void:
 		physics.step(gentle, {"brakeValue": 0.2}, 1.0 / 60.0)
 		physics.step(strong, {"brakeValue": 1.0}, 1.0 / 60.0)
 	check(strong.speed + 0.5 < gentle.speed, "analog pedal brake values produce graded braking")
+	for branch_index: int in range(Terrain.branch_routes().size()):
+		var branch: Dictionary = Terrain.branch_routes()[branch_index]
+		game.state.z = (float(branch.start) + float(branch.end)) * 0.5
+		game.state.x = Terrain.branch_x(branch_index, game.state.z)
+		game._refresh_nearby_anchors(true)
+		var local_pool: bool = game.anchors.size() > 0 and game.anchors.size() < 80
+		for anchor: Dictionary in game.anchors:
+			local_pool = local_pool and Vector2(anchor.x - game.state.x, anchor.z - game.state.z).length() <= 96.01 and Terrain.road_distance(anchor.x, anchor.z) >= 6.0
+		check(local_pool, "branch %d anchors remain bounded nearby and outside driving corridors" % branch_index)
+	var nearest: Dictionary = {}
+	var nearest_distance: float = INF
+	for anchor: Dictionary in game.anchors:
+		var distance: float = Vector2(anchor.x - game.state.x, anchor.z - game.state.z).length()
+		if distance < nearest_distance:
+			nearest_distance = distance
+			nearest = anchor
+	if not nearest.is_empty():
+		game.state.winch = {"anchor": nearest.duplicate(), "length": nearest_distance, "tension": 0.0}
+		game.state.x += 10.0
+		game._refresh_nearby_anchors(true)
+		var kept: bool = false
+		for anchor: Dictionary in game.anchors:
+			kept = kept or anchor.id == nearest.id
+		check(kept and game.state.winch.anchor.id == nearest.id, "moving the local anchor window preserves an attached nearby anchor ID")
+	else:
+		check(false, "moving the local anchor window preserves an attached nearby anchor ID")
 	game.queue_free()
 	await process_frame
 	print("RUNTIME_CHECKS ", checks, " FAILURES ", failures)

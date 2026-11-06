@@ -238,9 +238,9 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 				_apply_damage(state, crash_speed, minf(18.0, severity * 1.8), minf(8.0, severity * 0.75), minf(12.0, severity * 1.1))
 			state.speed *= 0.18
 			state.collision = true
-	if state.x < -139.0 or state.x > 139.0 or state.z < -79.0 or state.z > 429.0:
-		state.x = clampf(state.x, -139.0, 139.0)
-		state.z = clampf(state.z, -79.0, 429.0)
+	if state.x < Terrain.MIN_X or state.x > Terrain.MAX_X or state.z < Terrain.MIN_Z or state.z > Terrain.MAX_Z:
+		state.x = clampf(state.x, Terrain.MIN_X, Terrain.MAX_X)
+		state.z = clampf(state.z, Terrain.MIN_Z, Terrain.MAX_Z)
 		state.speed *= 0.2
 	_update_suspension(state, dt, acceleration, steer_rate)
 	state.tilt = rad_to_deg(maxf(absf(state.pitch), absf(state.roll)))

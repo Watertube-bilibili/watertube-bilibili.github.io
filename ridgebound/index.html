@@ -7,7 +7,7 @@
   <meta name="description" content="山野之间，一段属于你的越野旅程。驾驶复古四驱车穿越山林，使用绞盘脱困，抵达山顶。支持键盘与手机触屏。">
   <title>山野之间 · RIDGEBOUND</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23353e36'/%3E%3Cpath d='M8 47 27 17l10 16 6-9 15 23Z' fill='none' stroke='%23e8dec5' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./style.css?v=e800daaeb2234081">
 </head>
 <body>
   <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -52,7 +52,7 @@
       <h1 id="game-title">山野<br><span>之间。</span></h1>
       <p class="english-title">INTO THE QUIET WILD</p>
       <div class="intro-rule"></div>
-      <p class="intro">把城市留在身后。<br>循着车辙，去看看山的另一边。</p>
+      <p class="intro">把城市留在身后。<br>循着车辙，去看看山的另一边。</p><p class="route-info">8 km² 山野 · 主线约 3.5 km · 3 条岔路</p>
       <button class="start-button" id="start" disabled aria-busy="true"><span>启程探索<small>START EXPLORING</small></span><svg><use href="#i-arrow"/></svg></button>
       <p class="input-note"><span class="desktop-note"><kbd>W A S D</kbd> 驾驶 <span class="note-dot">·</span> <kbd>E</kbd> 绞盘</span><span class="mobile-note">双手操控 · 支持多点触屏</span></p>
     </section>
@@ -60,8 +60,8 @@
     <div class="scene-caption" id="scene-caption"><span class="caption-number">01</span><div><strong>松风谷</strong><small>PINE VALLEY · 自由山野</small></div><span class="caption-line"></span></div>
     <div class="edition" id="edition"><span class="status-dot"></span> WATERTUBE · 原创越野探索 <span>/</span> WEB EDITION 01</div>
 
-    <section class="mission play-only" aria-label="探索进度"><div class="mission-label"><span>本次旅程</span><span id="checkpoint-count">00 / 04</span></div><div class="mission-target"><svg><use href="#i-pin"/></svg><strong id="target-name">林间泥径</strong><span id="target-distance">70 m</span></div><div class="progress-track"><i id="journey-progress"></i></div><p id="mission-hint">沿着山路，寻找下一个路标</p></section>
-    <section class="map-panel play-only" aria-label="路线小地图"><div class="map-title"><span>松风谷</span><span>N ↑</span></div><canvas id="minimap" width="320" height="320" aria-label="地图显示车辆位置和检查点"></canvas><div class="map-footer"><span>TRAIL 01</span><span id="altitude">海拔 0 m</span></div></section>
+    <section class="mission play-only" aria-label="探索进度"><div class="mission-label"><span id="current-area">松林起点</span><span id="checkpoint-count">00 / 04</span></div><div class="mission-target"><svg><use href="#i-pin"/></svg><strong id="target-name">林间泥径</strong><span id="target-distance" title="至下一路标的直线距离">700 m</span></div><div class="progress-track"><i id="journey-progress"></i></div><p id="mission-hint">主线约 3.5 km · 3 条岔路可探索</p></section>
+    <section class="map-panel play-only" aria-label="导航地图"><div class="map-title"><span>松风谷</span><span>N ↑</span></div><button id="map-toggle" class="map-toggle" aria-pressed="false" aria-label="当前为跟车局部图，点按查看全图"><canvas id="minimap" width="320" height="320" aria-label="实线主路，虚线岔路，圆点路标，房屋维修站"></canvas><span id="map-mode" class="map-mode">局部 · 看全图</span></button><div class="map-footer"><span id="map-scale">100 m</span><span id="altitude">海拔 0 m</span></div><p id="map-target-direction" class="map-target-direction" hidden>路标在北</p></section>
 
     <section class="dashboard play-only" aria-label="车辆状态"><div class="speed"><span id="speed">00</span><span class="speed-unit">KM/H<small id="gear-display">D · 自动</small></span></div><div class="vehicle-state"><span><i id="traction-dot"></i><b id="surface">林间土路</b></span><span class="tilt-label">坡度 <b id="pitch">0°</b></span></div><div class="dashboard-line"><i id="speed-bar"></i></div><div class="damage-summary" id="damage-summary"><span>车身 <b id="body-health">100%</b></span><span>轮胎 <b id="tires-health">100%</b></span><span>悬挂 <b id="suspension-health">100%</b></span></div><button class="repair-button" id="repair" title="小屋维修 · T" hidden disabled>小屋维修 (T)</button></section>
     <div class="equipment play-only" aria-label="传动与救援">
@@ -83,9 +83,9 @@
   <div class="loading" id="loading"><span class="loading-spinner"></span>正在唤醒山林…</div>
   <dialog id="pauseDialog" class="dialog">
     <button class="dialog-close icon-button" id="close-dialog" aria-label="关闭操作指南"><svg><use href="#i-close"/></svg></button>
-    <h2 id="pause-title">在山野，慢一点。</h2><p class="dialog-intro">循着土路抵达四个路标。遇到泥地或陡坡，试试低速挡与绞盘。</p>
+    <h2 id="pause-title">在山野，慢一点。</h2><p class="dialog-intro">约 3.5 km 主线串起四个路标，三条岔路会接回主路。遇到泥地或陡坡，试试低速挡与绞盘。</p>
     <div class="instructions"><div><kbd>W A S D / 方向键</kbd><span>驾驶与倒车</span></div><div><kbd>空格</kbd><span>刹车</span></div><div><kbd>L / X</kbd><span>低速挡 / 四驱</span></div><div><kbd>E</kbd><span>连接附近锚点</span></div><div><kbd>F</kbd><span>按住收绳</span></div><div><kbd>Q</kbd><span>释放绞盘</span></div><div><kbd>C / R</kbd><span>切换视角 / 脱困</span></div><div><kbd>T / Esc</kbd><span>小屋维修 / 暂停</span></div></div>
-    <p class="help-note">手机：按住左右方向和油门可以同时操作。绞盘挂上后，持续按住「收绳」拉动车辆。横屏视野更开阔。</p>
+    <p class="help-note">点按地图切换局部 / 全图：实线是主路，虚线是岔路，房屋标记可免费维修。手机：按住左右方向和油门可以同时操作。绞盘挂上后，持续按住「收绳」拉动车辆。横屏视野更开阔。</p>
     <div class="dialog-actions"><button class="primary-button" id="resume">继续旅程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="dialog-recover">返回检查点</button></div><div class="pause-tools"><button id="dialog-camera" class="secondary-button">切换驾驶视角</button><button id="dialog-controllers" class="secondary-button">控制器与踏板</button><button id="dialog-photo" class="secondary-button">保存风景照片</button><button id="dialog-fullscreen" class="secondary-button">全屏显示</button></div><a class="home-link" href="../projects.html">← 返回我的项目</a>
   </dialog>
   <dialog id="victoryDialog" class="dialog victory-dialog"><div class="victory-mark"><svg><use href="#i-mountain"/></svg></div><h2>山顶，见。</h2><p class="dialog-intro">你越过了泥泞与陡坡。现在，把这一刻留给自己。</p><div class="journey-stats"><div><strong id="result-time">00:00</strong><span>旅程用时</span></div><div><strong id="result-distance">0 m</strong><span>行驶里程</span></div><div><strong>4 / 4</strong><span>探索路标</span></div></div><button class="primary-button" id="restart">再走一程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="discover-snow" hidden>发现隐藏雪线 ↗</button><button class="secondary-button" id="victory-continue">留在山野</button></dialog>
@@ -93,9 +93,9 @@
     <button class="dialog-close icon-button" id="close-garage" aria-label="关闭车库"><svg><use href="#i-close"/></svg></button>
     <h2>旅途车库</h2>
     <div class="coin-row"><span>旅途金币</span><strong><span class="coin-icon">◇</span> <span id="coinBalance">0</span></strong></div>
-    <p class="garage-caption">游戏金币 · 通过路线检查点获得</p>
+    <p class="garage-caption">8 km² 山野 · 主线约 3.5 km · 3 条岔路<br>游戏金币通过四个路线检查点获得，沿途七处小屋可免费维修。</p>
     <div class="upgrade-card"><svg class="tire-icon" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="21"/><circle cx="26" cy="26" r="12"/><path d="m15 8 2 8M8 17l8 2m-9 11 9-1m-4 13 7-7m9 12-2-9m14 3-6-7m12-11-9 2m3-14-6 7M26 5v8"/></svg><div><strong>雪地越野胎</strong><p>增强冰雪路面抓地力，挑战隐藏雪线。</p></div><button id="buyTires" class="upgrade-buy">◇ 180<small>装配雪地胎</small></button></div>
-    <p class="map-section-label">选择旅程</p><div class="region-options"><button id="forestMap" class="region-card selected"><span>01 / 森林</span><strong>松风谷</strong><small>泥径 · 山坡 · 林间探索</small></button><button id="snowMap" class="region-card locked" disabled><span>02 / 隐藏雪线</span><strong>珠峰雪线</strong><small id="snow-lock">完成山林路线后解锁</small></button></div>
+    <p class="map-section-label">选择旅程</p><div class="region-options"><button id="forestMap" class="region-card selected"><span>01 / 森林</span><strong>松风谷</strong><small>湖畔、岩脊与高山三条岔路</small></button><button id="snowMap" class="region-card locked" disabled><span>02 / 隐藏雪线</span><strong>珠峰雪线</strong><small id="snow-lock">完成山林路线后解锁</small></button></div>
     <p class="garage-note" id="garage-note">每抵达一个路标，获得 60 枚游戏金币。</p>
     <button class="primary-button" id="garage-resume">返回旅程<svg><use href="#i-arrow"/></svg></button>
   </dialog>
@@ -112,6 +112,6 @@
   </dialog>
   <div class="error-panel" id="error" hidden><h2>暂时无法打开山野</h2><p id="error-message">请使用支持 WebGL 的浏览器，并开启硬件加速后重试。</p><button onclick="location.reload()">重新载入</button><a href="../projects.html">返回项目</a></div>
   <noscript><div class="error-panel"><h2>需要开启 JavaScript</h2><p>开启后即可进入三维山野。</p></div></noscript>
-  <script type="module" src="./game.mjs"></script>
+  <script type="module" src="./game.mjs?v=abe14b6c1a7b9579"></script>
 </body>
 </html>

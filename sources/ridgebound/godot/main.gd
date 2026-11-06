@@ -16,6 +16,13 @@ var scenery:Node3D
 var cable:MeshInstance3D
 var anchors:Array=[]
 var _anchor_visuals:Dictionary={}
+var _anchor_center=Vector2(INF,INF)
+const ANCHOR_RADIUS=96.0
+const ANCHOR_SPACING=15.0
+const SAFETY_COLUMNS=32
+const SAFETY_ROWS=64
+const SAFETY_MARGIN=256.0
+var repair_sites:Array=[]
 var checkpoints:Array=[]
 var checkpoint_rings:Array=[]
 var playing=false
@@ -52,6 +59,7 @@ func _ready():
 	js_enabled=OS.has_feature("web")
 	var bootstrap=_read_bootstrap()
 	checkpoints=TerrainMath.checkpoints()
+	repair_sites=TerrainMath.repair_sites()
 	_setup_environment()
 	chunks=ChunkTerrain.new()
 	add_child(chunks)
@@ -161,6 +169,7 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	add_child(scenery)
 	anchors.clear()
 	_anchor_visuals.clear()
+	_anchor_center=Vector2(INF,INF)
 	checkpoint_rings.clear()
 	var scenery_started=Time.get_ticks_usec()
 	_build_scenery(region)
@@ -219,21 +228,17 @@ func _build_scenery(region:String):
 	var snowy=region=="snow"
 	var rng=RandomNumberGenerator.new()
 	rng.seed=6731
-	for i in range(24):
-		var angle=i*TAU/24.0
-		var radius=280+rng.randf()*100
-		var h=50+rng.randf()*100
-		var pos=Vector3(sin(angle)*radius,h*.36-12,150+cos(angle)*radius)
-		_cone(scenery,pos,45+rng.randf()*45,h,Color("97adc0") if snowy else Color("98ad98"),5)
-		if snowy:
-			_cone(scenery,pos+Vector3(0,h*.33,0),18,h*.35,Color("e6ebef"),5)
-	for z0 in range(8,351,15):
+	# A bounded set of silhouettes surrounds the whole valley, not only its start.
+	for z0 in range(-150,4001,450):
 		for side in [-1,1]:
-			var z=float(z0)+rng.randf()*2
-			var x=TerrainMath.route_x(z)+side*(7+rng.randf()*2)
-			var y=TerrainMath.height_at(x,z,region)
-			var h=4+rng.randf()*2
-			anchors.append({"id":"anchor-"+str(anchors.size()),"x":x,"y":y+.65,"z":z,"r":.45,"height":h})
+			var x=side*(TerrainMath.MAX_X+120+rng.randf()*110)
+			var z=float(z0)+rng.randf()*100
+			var h=90+rng.randf()*100
+			var pos=Vector3(x,TerrainMath.height_at(x,z,region)+h*.42-12,z)
+			_cone(scenery,pos,85+rng.randf()*60,h,Color("97adc0") if snowy else Color("98ad98"),5)
+			if snowy:
+				_cone(scenery,pos+Vector3(0,h*.33,0),32,h*.35,Color("e6ebef"),5)
+	_refresh_nearby_anchors(true)
 	for i in range(checkpoints.size()):
 		var cp=checkpoints[i]
 		var cp_root=Node3D.new()
@@ -251,10 +256,12 @@ func _build_scenery(region:String):
 		ring.mesh=torus
 		ring.material_override=_mat(Color("e0bf76"))
 		ring.position.y=.18
+		ring.visibility_range_end=96.0
 		cp_root.add_child(ring)
 		checkpoint_rings.append(ring)
+	for site in repair_sites:
 		var cabin=Node3D.new()
-		cabin.position=Vector3(cp.x+10,TerrainMath.height_at(cp.x+10,cp.z,region),cp.z)
+		cabin.position=Vector3(site.x,TerrainMath.height_at(site.x,site.z,region),site.z)
 		scenery.add_child(cabin)
 		_box(cabin,Vector3(0,1.5,0),Vector3(5,3,4),Color("746c53"))
 		for side in [-1,1]:
@@ -278,18 +285,18 @@ func _build_scenery(region:String):
 	_cone(scenery,Vector3(-10,camp_y+1.5,0),2.8,3,Color("be8857"),3)
 	var water=MeshInstance3D.new()
 	var disk=CylinderMesh.new()
-	disk.top_radius=22
-	disk.bottom_radius=22
+	disk.top_radius=TerrainMath.LAKE_RADIUS
+	disk.bottom_radius=TerrainMath.LAKE_RADIUS
 	disk.height=.04
 	disk.radial_segments=48
 	water.mesh=disk
 	water.material_override=_mat(Color("8daec6") if snowy else Color("71a6ab"),.25)
-	water.position=Vector3(-55,.81,100)
+	water.position=Vector3(TerrainMath.LAKE_X,TerrainMath.LAKE_WATER_Y+.01,TerrainMath.LAKE_Z)
 	scenery.add_child(water)
 
 func _build_terrain_safety(region:String):
-	# This opaque coarse horizon is required before driving. Cache the two region
-	# meshes and sample each shared grid point once instead of once per triangle.
+	# Fixed 4096 triangles cover all 8 km² plus an outer skirt. The fine 16 m
+	# layer remains the only drivable ground; distant coverage never grows with tiles.
 	var mesh:ArrayMesh
 	if terrain_safety_meshes.has(region):
 		mesh=terrain_safety_meshes[region]
@@ -297,25 +304,55 @@ func _build_terrain_safety(region:String):
 		var tool=SurfaceTool.new()
 		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 		var snowy=region=="snow"
-		const COLUMNS=37
-		const ROWS=53
-		const STRIDE=COLUMNS+1
+		var stride=SAFETY_COLUMNS+1
+		var x_min=TerrainMath.MIN_X-SAFETY_MARGIN
+		var z_min=TerrainMath.MIN_Z-SAFETY_MARGIN
+		var x_step=(TerrainMath.MAX_X-TerrainMath.MIN_X+SAFETY_MARGIN*2)/SAFETY_COLUMNS
+		var z_step=(TerrainMath.MAX_Z-TerrainMath.MIN_Z+SAFETY_MARGIN*2)/SAFETY_ROWS
 		var points=PackedVector3Array()
 		var colors=PackedColorArray()
-		points.resize((COLUMNS+1)*(ROWS+1))
+		points.resize((SAFETY_COLUMNS+1)*(SAFETY_ROWS+1))
 		colors.resize(points.size())
-		for row in range(ROWS+1):
-			for column in range(COLUMNS+1):
-				var x=-288.0+column*16.0
-				var z=-192.0+row*16.0
-				var index=row*STRIDE+column
-				points[index]=Vector3(x,TerrainMath.height_at(x,z,region)-3.4,z)
+		for row in range(SAFETY_ROWS+1):
+			for column in range(SAFETY_COLUMNS+1):
+				var x=x_min+column*x_step
+				var z=z_min+row*z_step
+				var index=row*stride+column
+				points[index]=Vector3(x,TerrainMath.height_at(x,z,region)-5.0,z)
 				var variation=sin(x*.051+z*.039)*.035
 				colors[index]=(Color("c5d5d9") if snowy else Color("a1ac7c")).lightened(variation)
-		for row in range(ROWS):
-			for column in range(COLUMNS):
-				var a=row*STRIDE+column
-				for triangle in [[a,a+STRIDE,a+1],[a+1,a+STRIDE,a+STRIDE+1]]:
+		# A coarse face must not bridge a valley above its actual road. Conservatively
+		# lower shared corners to the local centre and every road's sampled corridor.
+		var samples=points.duplicate()
+		for row in range(SAFETY_ROWS):
+			for column in range(SAFETY_COLUMNS):
+				var index=row*stride+column
+				var x=x_min+(column+.5)*x_step
+				var z=z_min+(row+.5)*z_step
+				var minimum=TerrainMath.height_at(x,z,region)-5.0
+				for corner in [index,index+1,index+stride,index+stride+1]:
+					minimum=minf(minimum,samples[corner].y)
+				for corner in [index,index+1,index+stride,index+stride+1]:
+					points[corner].y=minf(points[corner].y,minimum)
+		for road in range(-1,TerrainMath.BRANCHES.size()):
+			var start=TerrainMath.MIN_Z if road<0 else float(TerrainMath.BRANCHES[road].start)
+			var finish=TerrainMath.MAX_Z if road<0 else float(TerrainMath.BRANCHES[road].end)
+			var z=start
+			while z<=finish:
+				var center=TerrainMath.route_x(z) if road<0 else TerrainMath.branch_x(road,z)
+				for offset in [-7.0,0.0,7.0]:
+					var x=center+offset
+					var column=clampi(int(floor((x-x_min)/x_step)),0,SAFETY_COLUMNS-1)
+					var row=clampi(int(floor((z-z_min)/z_step)),0,SAFETY_ROWS-1)
+					var index=row*stride+column
+					var height=TerrainMath.height_at(x,z,region)-3.4
+					for corner in [index,index+1,index+stride,index+stride+1]:
+						points[corner].y=minf(points[corner].y,height)
+				z+=8.0
+		for row in range(SAFETY_ROWS):
+			for column in range(SAFETY_COLUMNS):
+				var a=row*stride+column
+				for triangle in [[a,a+stride,a+1],[a+1,a+stride,a+stride+1]]:
 					var normal=(points[triangle[1]]-points[triangle[0]]).cross(points[triangle[2]]-points[triangle[0]]).normalized()
 					for index in [triangle[0],triangle[2],triangle[1]]:
 						tool.set_color(colors[index])
@@ -336,7 +373,47 @@ func _build_terrain_safety(region:String):
 	terrain_safety.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	scenery.add_child(terrain_safety)
 
+func _refresh_nearby_anchors(force:bool=false):
+	var position_=Vector2(state.x,state.z)
+	if not force and _anchor_center.is_finite() and position_.distance_squared_to(_anchor_center)<144.0:return
+	_anchor_center=position_
+	var next:Array=[]
+	var ids:Dictionary={}
+	var first=int(floor((state.z-ANCHOR_RADIUS)/ANCHOR_SPACING))
+	var last=int(ceil((state.z+ANCHOR_RADIUS)/ANCHOR_SPACING))
+	# Only about 14 longitudinal samples per nearby road, independent of map size.
+	for road in range(-1,TerrainMath.BRANCHES.size()):
+		for sample in range(first,last+1):
+			var rng=RandomNumberGenerator.new()
+			rng.seed=(sample*73856093) ^ ((road+2)*19349663) ^ 6731
+			var z=sample*ANCHOR_SPACING+8.0+rng.randf()*2
+			if z<TerrainMath.MIN_Z or z>TerrainMath.MAX_Z:continue
+			if road>=0 and (z<TerrainMath.BRANCHES[road].start or z>TerrainMath.BRANCHES[road].end):continue
+			var x0=TerrainMath.route_x(z) if road<0 else TerrainMath.branch_x(road,z)
+			var x1=TerrainMath.route_x(z+1) if road<0 else TerrainMath.branch_x(road,z+1)
+			var shoulder=sqrt(1.0+pow(x1-x0,2.0))
+			for side in [-1,1]:
+				var x=x0+side*(7.5+rng.randf()*2)*shoulder
+				var h=4+rng.randf()*2
+				if position_.distance_squared_to(Vector2(x,z))>ANCHOR_RADIUS*ANCHOR_RADIUS:continue
+				if TerrainMath.road_distance(x,z)<6.0 or TerrainMath.surface_at(x,z,state.region)=="water":continue
+				var id="anchor-%d-%d-%d" % [road,sample,side]
+				ids[id]=true
+				next.append({"id":id,"x":x,"y":TerrainMath.height_at(x,z,state.region)+.65,"z":z,"r":.45,"height":h})
+	if state.winch!=null:
+		var attached=state.winch.anchor
+		if not ids.has(attached.id) and position_.distance_to(Vector2(attached.x,attached.z))<64.0:
+			ids[attached.id]=true
+			next.append(attached.duplicate())
+	for id in _anchor_visuals.keys():
+		if not ids.has(id):
+			_anchor_visuals[id].hide()
+			_anchor_visuals[id].queue_free()
+			_anchor_visuals.erase(id)
+	anchors=next
+
 func _update_anchor_layers():
+	_refresh_nearby_anchors()
 	var snowy=state.region=="snow"
 	for anchor in anchors:
 		var id=anchor.id
@@ -360,8 +437,8 @@ func _update_anchor_layers():
 		_anchor_visuals[id]=group
 
 func _can_repair()->bool:
-	for cp in checkpoints:
-		if Vector2(state.x-cp.x-10,state.z-cp.z).length()<16.0:
+	for site in repair_sites:
+		if Vector2(state.x-site.x,state.z-site.z).length()<16.0:
 			return true
 	return false
 
@@ -549,6 +626,8 @@ func get_snapshot()->Dictionary:
 	report["streaming"]=chunks.get_stats()
 	report["blocked"]=blocked or streaming_waiting
 	report["coarseTriangles"]=coarse_triangles
+	report["areaName"]=TerrainMath.area_name(state.x,state.z,state.region)
+	report["nearbyAnchors"]=anchors.size()
 	report["renderScale"]=get_viewport().scaling_3d_scale
 	report["startup"]={"worldBuilds":world_builds,"initializationMs":snappedf(initialization_ms,.01),"worldBuildMs":snappedf(world_build_ms,.01),"chunksMs":snappedf(chunks_build_ms,.01),"sceneryMs":snappedf(scenery_build_ms,.01)}
 	report["playing"]=playing

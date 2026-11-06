@@ -1,6 +1,6 @@
-import {routeX,checkpoints,emptyState} from './world-data.mjs';
-import {createUI} from './ui.mjs';
-import {bootEngine,bootStats} from './boot.mjs';
+import {routeX,checkpoints,emptyState,worldBounds,branches,branchX,repairStations,lake,riverX,areaNameAt,formatDistance} from './world-data.mjs?v=7e701208d4f3ba05';
+import {createUI} from './ui.mjs?v=f114600f86cffde3';
+import {bootEngine,bootStats} from './boot.mjs?v=ac95ed60b19461bb';
 import {createControllers} from './controllers.mjs';
 const STORAGE='watertube-ridgebound-v1';
 const defaults=()=>({coins:0,snowTires:false,snowUnlocked:false,awards:[],progress:{forest:0,snow:0},region:'forest'});
@@ -47,15 +47,58 @@ const start=document.getElementById('start');start.disabled=true;
 const loading=document.getElementById('loading');let loadingText=loading.lastChild;loadingText.textContent=' 正在加载越野世界…';
 const targets=document.createElement('div');targets.id='anchorTargets';targets.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:12';document.body.append(targets);
 function drawAnchors(){if(!selecting){targets.replaceChildren();return;}const list=candidates(),ids=list.map(a=>a.id).join();if(targets.dataset.ids!==ids||!targets.children.length){targets.replaceChildren();targets.dataset.ids=ids;list.forEach((a,i)=>{const b=document.createElement('button');b.className='anchor-marker';b.style.cssText='position:absolute;pointer-events:auto;transform:translate(-50%,-50%);border:2px solid #ffe1a3;border-radius:50%;background:#254534ee;color:#ffe4ad;width:48px;height:48px;font:600 12px sans-serif;touch-action:manipulation';b.setAttribute('aria-label','连接锚点 '+(i+1));b.addEventListener('click',()=>connect(a));targets.append(b);});}list.forEach((a,i)=>{const b=targets.children[i];if(!b)return;b.style.display=a.visible&&a.sx>.02&&a.sx<.98&&a.sy>.08&&a.sy<.85?'block':'none';b.style.left=a.sx*innerWidth+'px';b.style.top=a.sy*innerHeight+'px';b.textContent=Math.round(a.d)+'m';});}
-const map=document.getElementById('minimap'),ctx=map.getContext('2d');map.width=240;map.height=240;
-function drawMap(){ctx.clearRect(0,0,240,240);ctx.fillStyle=state.region==='snow'?'#344452':'#394b3d';ctx.fillRect(0,0,240,240);const xy=(x,z)=>[120-x*.95,218-z*.57];ctx.strokeStyle='#63715e';ctx.lineWidth=.7;for(let j=0;j<9;j++){ctx.beginPath();for(let i=0;i<120;i++){const x=i*2,y=22+j*26+Math.sin(i*.065+j)*9;i?ctx.lineTo(x,y):ctx.moveTo(x,y);}ctx.stroke();}ctx.fillStyle=state.region==='snow'?'#7d9dad':'#729e9a';const lake=xy(-55,100);ctx.beginPath();ctx.ellipse(...lake,19,12,-.2,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#d3ba83';ctx.lineWidth=2;ctx.beginPath();for(let z=-10;z<=340;z+=3){const[x,y]=xy(routeX(z),z);z===-10?ctx.moveTo(x,y):ctx.lineTo(x,y);}ctx.stroke();checkpoints.forEach((cp,i)=>{const[x,y]=xy(cp.x,cp.z);ctx.fillStyle=i<state.checkpoint?'#9ab384':i===state.checkpoint?'#edbf76':'#7e8974';ctx.beginPath();ctx.arc(x,y,i===state.checkpoint?5:3,0,Math.PI*2);ctx.fill();});const[x,y]=xy(state.x,state.z);ctx.save();ctx.translate(x,y);ctx.rotate(-state.yaw);ctx.fillStyle='#fcf4df';ctx.beginPath();ctx.moveTo(0,-7);ctx.lineTo(-4,5);ctx.lineTo(0,3);ctx.lineTo(4,5);ctx.closePath();ctx.fill();ctx.restore();ctx.fillStyle='#e6e5d5';ctx.font='10px sans-serif';ctx.fillText('N ↑',17,22);ctx.fillStyle='#c2cebd';ctx.fillText('0       100 m',15,227);}
+const map=document.getElementById('minimap'),ctx=map.getContext('2d');map.width=320;map.height=320;
+const mapButton=document.getElementById('map-toggle');let mapOverview=false;
+const mainRoute=[];for(let z=0;z<=3300;z+=10)mainRoute.push({x:routeX(z),z});
+const branchRoutes=branches.map((branch,index)=>{const points=[];for(let z=branch.start;z<branch.end;z+=10)points.push({x:branchX(index,z),z});points.push({x:routeX(branch.end),z:branch.end});return points;});
+mapButton.addEventListener('click',()=>{mapOverview=!mapOverview;drawMap();});
+function drawMap(){
+ if(!ctx)return;const size=320,pad=22,center=size/2;
+ const centerX=mapOverview?(worldBounds.minX+worldBounds.maxX)/2:state.x;
+ const centerZ=mapOverview?(worldBounds.minZ+worldBounds.maxZ)/2:state.z;
+ const span=mapOverview?Math.max(worldBounds.maxX-worldBounds.minX,worldBounds.maxZ-worldBounds.minZ):640;
+ const scale=(size-pad*2)/span,xy=(x,z)=>[center-(x-centerX)*scale,center-(z-centerZ)*scale];
+ const within=([x,y],margin=14)=>x>=margin&&x<=size-margin&&y>=margin&&y<=size-margin;
+ ctx.clearRect(0,0,size,size);ctx.fillStyle=state.region==='snow'?'#344452':'#344838';ctx.fillRect(0,0,size,size);
+ ctx.save();ctx.beginPath();ctx.rect(8,8,size-16,size-16);ctx.clip();
+ // A metric grid gives both modes the same orientation and scale.
+ const grid=mapOverview?500:100;ctx.strokeStyle=state.region==='snow'?'#546474':'#50604b';ctx.lineWidth=1;
+ const minX=mapOverview?worldBounds.minX:centerX-span/2-50,maxX=mapOverview?worldBounds.maxX:centerX+span/2+50;
+ const minZ=mapOverview?worldBounds.minZ:centerZ-span/2-50,maxZ=mapOverview?worldBounds.maxZ:centerZ+span/2+50;
+ for(let x=Math.ceil(minX/grid)*grid;x<=maxX;x+=grid){const a=xy(x,minZ),b=xy(x,maxZ);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}
+ for(let z=Math.ceil(minZ/grid)*grid;z<=maxZ;z+=grid){const a=xy(minX,z),b=xy(maxX,z);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}
+ if(mapOverview){const a=xy(worldBounds.maxX,worldBounds.maxZ),b=xy(worldBounds.minX,worldBounds.minZ);ctx.strokeStyle='#8e9b7c';ctx.lineWidth=1.5;ctx.strokeRect(a[0],a[1],b[0]-a[0],b[1]-a[1]);}
+ const lakePoint=xy(lake.x,lake.z);ctx.fillStyle=state.region==='snow'?'#7799aa':'#729d99';ctx.beginPath();ctx.arc(...lakePoint,lake.radius*scale,0,Math.PI*2);ctx.fill();
+ ctx.strokeStyle=state.region==='snow'?'#7899ab':'#729d99';ctx.lineWidth=Math.max(3,18*scale);ctx.beginPath();for(let z=1700;z<=2200;z+=10){const p=xy(riverX(z),z);z===1700?ctx.moveTo(...p):ctx.lineTo(...p);}ctx.stroke();
+ function pathLine(points,color,width,dash=[]){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.beginPath();points.forEach((point,index)=>{const p=xy(point.x,point.z);index?ctx.lineTo(...p):ctx.moveTo(...p);});ctx.stroke();ctx.setLineDash([]);}
+ branchRoutes.forEach(points=>pathLine(points,'#c5cea8',mapOverview?2.7:3.2,[5,4]));
+ pathLine(mainRoute,'#e2bd7d',mapOverview?3.5:4.4);
+ // Houses are service points; offset overlapping checkpoint symbols with a short leader.
+ for(const station of repairStations){const actual=xy(station.x,station.z);if(!within(actual,7))continue;let [x,y]=actual;
+  if(checkpoints.some(cp=>Math.hypot(...xy(cp.x,cp.z).map((v,i)=>v-actual[i]))<17)){x+=18;y+=7;ctx.strokeStyle='#d4e1c6';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(...actual);ctx.lineTo(x,y);ctx.stroke();}
+  ctx.fillStyle='#cde4bd';ctx.strokeStyle='#24362a';ctx.lineWidth=1.4;ctx.beginPath();ctx.moveTo(x-6,y);ctx.lineTo(x,y-6);ctx.lineTo(x+6,y);ctx.lineTo(x+5,y);ctx.lineTo(x+5,y+7);ctx.lineTo(x-5,y+7);ctx.lineTo(x-5,y);ctx.closePath();ctx.fill();ctx.stroke();ctx.fillStyle='#344838';ctx.fillRect(x-1,y+2,3,5);
+ }
+ checkpoints.forEach((cp,index)=>{const point=xy(cp.x,cp.z);if(!within(point,7))return;ctx.fillStyle=index<state.checkpoint?'#a9ce91':index===state.checkpoint?'#f4c784':'#869376';ctx.strokeStyle='#24372b';ctx.lineWidth=2;ctx.beginPath();ctx.arc(...point,index===state.checkpoint?8:6,0,Math.PI*2);ctx.fill();ctx.stroke();});
+ const vehicle=xy(state.x,state.z);ctx.save();ctx.translate(...vehicle);ctx.rotate(-state.yaw);ctx.fillStyle='#fff8df';ctx.strokeStyle='#344838';ctx.lineWidth=1.7;ctx.beginPath();ctx.moveTo(0,-11);ctx.lineTo(-7,8);ctx.lineTo(0,4);ctx.lineTo(7,8);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
+ const target=checkpoints[Math.min(state.checkpoint,checkpoints.length-1)],targetPoint=xy(target.x,target.z),offscreen=!mapOverview&&!state.completed&&!within(targetPoint,26);
+ if(offscreen){const dx=targetPoint[0]-center,dy=targetPoint[1]-center,t=(center-22)/Math.max(Math.abs(dx),Math.abs(dy));ctx.save();ctx.translate(center+dx*t,center+dy*t);ctx.rotate(Math.atan2(dx,-dy));ctx.fillStyle='#ffd28d';ctx.strokeStyle='#2a3f31';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-10);ctx.lineTo(-7,6);ctx.lineTo(0,2);ctx.lineTo(7,6);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();}
+ ctx.restore();
+ // The line length is derived from meters per pixel, rather than a decorative fixed label.
+ const scaleMeters=mapOverview?1000:100,scalePixels=scaleMeters*scale;ctx.strokeStyle='#edf1df';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(18,size-18);ctx.lineTo(18+scalePixels,size-18);ctx.moveTo(18,size-23);ctx.lineTo(18,size-14);ctx.moveTo(18+scalePixels,size-23);ctx.lineTo(18+scalePixels,size-14);ctx.stroke();
+ document.getElementById('map-scale').textContent=formatDistance(scaleMeters);
+ document.getElementById('map-mode').textContent=mapOverview?'全图 · 跟随车':'局部 · 看全图';
+ mapButton.setAttribute('aria-pressed',String(mapOverview));mapButton.setAttribute('aria-label',mapOverview?'当前为全图，点按切换跟车局部图':'当前为跟车局部图，点按查看全图');
+ const direction=document.getElementById('map-target-direction');direction.hidden=!offscreen;
+ if(offscreen){const angle=(Math.atan2(-(target.x-state.x),target.z-state.z)*180/Math.PI+360)%360;const bearing=['北','东北','东','东南','南','西南','西','西北'][Math.round(angle/45)%8];direction.textContent='路标在'+bearing;direction.title=targetName(state.checkpoint)+' · '+formatDistance(Math.hypot(target.x-state.x,target.z-state.z));}
+ map.dataset.mode=mapOverview?'overview':'local';map.dataset.metersPerPixel=String(1/scale);map.dataset.centerX=String(centerX);map.dataset.centerZ=String(centerZ);
+}
 window.onRidgeState=next=>{
  lastEngineReport=performance.now();const previous=state;
  state=next;
  if(resetPending){if(next.region===resetPending.region&&next.checkpoint===resetPending.checkpoint){resetPending=null;bootSync=false;}else return;}
  if(ready&&!bootSync&&next.region===previous.region&&next.checkpoint>previous.checkpoint)rewardCheckpoints(previous.checkpoint);
  if(playing&&next.completed&&!won){won=true;paused=true;clearInput();refreshGarage();ui.showVictory(state);}
- const cp=checkpoints[Math.min(state.checkpoint,3)];ui.update(state,{targetName:targetName(state.checkpoint),targetDistance:Math.hypot(state.x-cp.x,state.z-cp.z),heading:-state.yaw,altitude:Math.round((state.region==='snow'?5200:1240)+state.y*(state.region==='snow'?35:8)),elapsed:state.time});drawMap();drawAnchors();
+ const cp=checkpoints[Math.min(state.checkpoint,3)];ui.update(state,{targetName:targetName(state.checkpoint),targetDistance:Math.hypot(state.x-cp.x,state.z-cp.z),heading:-state.yaw,altitude:Math.round((state.region==='snow'?5200:1240)+state.y*(state.region==='snow'?35:8)),elapsed:state.time,areaName:state.areaName||state.segmentName||areaNameAt(state.z)});drawMap();drawAnchors();
  if(playing&&!paused&&state.stuck>4&&state.time-stuckHint>15){stuckHint=state.time;ui.toast(state.region==='snow'&&!state.snowTires?'冰面抓地不足 · 可在车库用金币换雪地胎':'试试低速挡 L，或 E 连接锚点、F 收绳脱困');}
  if(state.blocked&&performance.now()-streamHint>6000){streamHint=performance.now();ui.toast('正在准备前方路段 · 已为你停稳');}
 };

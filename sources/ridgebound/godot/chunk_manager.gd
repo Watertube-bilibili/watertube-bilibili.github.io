@@ -317,7 +317,7 @@ func _surface_color(x: float, z: float) -> Color:
 	var color: Color
 	var surface: String = Terrain.surface_at(x, z, _region)
 	if _region == "snow":
-		color = Color("d5e2dd") if absf(x - Terrain.route_x(z)) >= 3.5 else Color("acbec0")
+		color = Color("d5e2dd") if Terrain.road_distance(x, z) >= 3.5 else Color("acbec0")
 		if surface == "ice":
 			color = Color("91b6be")
 	else:
@@ -326,7 +326,7 @@ func _surface_color(x: float, z: float) -> Color:
 			"water": color = Color("688f89")
 			"rock": color = Color("96998a")
 			_: color = Color("a5ad76")
-		if absf(x - Terrain.route_x(z)) < 3.5 and surface != "mud":
+		if Terrain.road_distance(x, z) < 3.5 and surface not in ["mud", "rock", "water"]:
 			color = Color("c9b18b")
 	var variation: float = sin(x * 0.34 + z * 0.18) * 0.035 + cos(z * 0.27 - x * 0.13) * 0.025
 	return color.lightened(variation) if variation >= 0.0 else color.darkened(-variation)
@@ -407,7 +407,7 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 	for i: int in range(5):
 		var x: float = x0 + rng.randf_range(1.5, CHUNK_SIZE - 1.5)
 		var z: float = z0 + rng.randf_range(1.5, CHUNK_SIZE - 1.5)
-		if absf(x - Terrain.route_x(z)) < 6.0:
+		if Terrain.road_distance(x, z) < 6.0:
 			continue
 		var surface: String = Terrain.surface_at(x, z, _region)
 		if surface == "water" or surface == "ice":

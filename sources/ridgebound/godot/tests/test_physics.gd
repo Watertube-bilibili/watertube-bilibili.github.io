@@ -99,8 +99,8 @@ func _initialize() -> void:
 	check(rebound > -0.003, "healthy suspension absorbs a 25 cm bump without repeated rebound")
 	check(absf(settling.y - ride) < 0.01 and absf(settling.yVel) < 0.025, "healthy suspension settles after bump within 1.5 seconds")
 	check(absf(settling.y - ride) < 0.08 and absf(settling.yVel) < 0.1, "spring/damper heave settles")
-	settling.x = Terrain.route_x(141.0) + 9.0
-	settling.z = 141.0
+	settling.x = Terrain.route_x(1410.0) + 18.0
+	settling.z = 1410.0
 	settling.y = Terrain.height_at(settling.x, settling.z) + 0.65
 	advance(settling, {}, 2.5)
 	check(absf(settling.wheelHeights[0] - settling.wheelHeights[3]) > 0.1, "independent wheel heights")
@@ -108,7 +108,7 @@ func _initialize() -> void:
 	for region: String in ["forest", "snow"]:
 		var drive: Dictionary = physics.create_state(region, true)
 		drive.lowGear = true
-		for i: int in range(60 * 160):
+		for i: int in range(60 * 1800):
 			if drive.completed:
 				break
 			var aim_z: float = drive.z + 5.0

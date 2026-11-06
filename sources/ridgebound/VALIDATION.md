@@ -1,5 +1,13 @@
 # 验证记录
 
+## 2026-11-06：扩大探索区域
+
+- Godot针对回归共178项，0失败：物理31项、扩图29项、分块51项、启动31项、场景集成36项。两张地图的主线与三条支路均按现有低速挡实际模拟驾驶完成，车速和悬挂未因扩图调整；检查点、支线连接、远端3520米处通行和新边界有效。
+- 2×4公里区域内主线弧长约3509米，三条支路合计约3203米；7维修站坐标与前端一致。启动仍只构建车身支撑的1–4块地面，树石与碰撞随后分层启用。96米内按需生成锚点，全图细地形不常驻。
+- 固定4096三角粗底覆盖地图及外沿。两地图以16米网格扫描，粗底始终位于真实地面下方；沿所有道路单独采样未发现覆盖细路面的情况。原生冷启动场景初始化约50毫秒，仅为CPU场景构建计时，不代表网页端到端加载时间。
+- 手机390×844与844×390的界面检查通过：跟车图/全图切换、等比例坐标、100米/1公里比例尺、视野外目标方向、公里距离、绞盘折叠与按键互不重叠。旧存档的金币、装备、解锁、进度和奖励记录保持兼容。
+- 最终Web导出在真实Chromium验证山林起点、山林2400米存档和雪地2400米存档：均只构建一次世界、启动1–4块地面且树石为0，随后分层补齐；可继续向前驾驶，无页面/Godot错误。旧金币与普通胎状态保留，手机横竖屏可切换局部/全图，初次请求使用带版本的前端模块和游戏包清单。
+
 ## 2026-11-05：启动、座舱与悬挂修正
 
 - Godot针对回归共131项，0失败：分块45项、启动25项、场景集成30项、物理31项。覆盖16米地块、启动仅车身支撑的1–4块地面、先地面后树石、障碍物显示与碰撞同步、车旁物体延后出现、分块卸载，以及未加载边界处回滚全部车辆状态。
@@ -36,8 +44,10 @@
 ```sh
 godot --headless --editor --path sources/ridgebound/godot --import --quit
 godot --headless --path sources/ridgebound/godot --script tests/test_physics.gd
+godot --headless --path sources/ridgebound/godot --script tests/test_world.gd
 godot --headless --path sources/ridgebound/godot --script tests/test_streaming.gd
 godot --headless --path sources/ridgebound/godot --script tests/test_runtime.gd
+godot --headless --path sources/ridgebound/godot --script tests/test_startup.gd
 g++ -std=c++17 -O2 sources/ridgebound/windows-bridge/tests/core_test.cpp -o /tmp/ridgebound-bridge-test
 /tmp/ridgebound-bridge-test
 ```

@@ -1,4 +1,5 @@
 const $ = id => document.getElementById(id);
+const distanceText = meters => {const value=Math.max(0,Number(meters)||0);return value>=1000?`${(value/1000).toFixed(1)} km`:`${Math.round(value)} m`;};
 const seconds = n => `${Math.floor(n / 60).toString().padStart(2, '0')}:${Math.floor(n % 60).toString().padStart(2, '0')}`;
 
 export function createUI(actions = {}) {
@@ -168,6 +169,7 @@ export function createUI(actions = {}) {
       return;
     }
     if (!playing || paused || document.querySelector('dialog[open]')) return;
+    if (event.target.closest?.('#map-toggle') && ['Space','Enter'].includes(event.code)) return;
     if (movement.has(event.code) || shortcuts[event.code]) event.preventDefault();
     if (movement.has(event.code) && !(event.code === 'KeyF' && suppressedReel)) {keys.add(event.code);syncInput();}
     if (!event.repeat && shortcuts[event.code]) call(shortcuts[event.code]);
@@ -196,11 +198,13 @@ export function createUI(actions = {}) {
     $('checkpoint-count').textContent = `${String(state.checkpoint || 0).padStart(2,'0')} / 04`;
     $('journey-progress').style.width = `${Math.min((state.checkpoint || 0)/4*100,100)}%`;
     $('target-name').textContent = state.completed ? '旅程已完成' : extra.targetName || '下一处路标';
-    $('target-distance').textContent = state.completed ? '✓' : `${Math.round(extra.targetDistance || 0)} m`;
+    $('target-distance').textContent = state.completed ? '✓' : distanceText(extra.targetDistance);
+    $('current-area').textContent = extra.areaName || state.areaName || state.segmentName || (state.region==='snow'?'珠峰雪线':'松风谷');
+    $('current-area').title = $('current-area').textContent;
     $('altitude').textContent = `海拔 ${Math.round(extra.altitude ?? (state.y || 0))} m`;
     const yaw = ((extra.heading ?? state.yaw ?? 0) * 180/Math.PI % 360 + 360) % 360;
     $('heading').textContent = ['N','NE','E','SE','S','SW','W','NW'][Math.round(yaw/45)%8];
-    $('mission-hint').textContent = state.completed ? '自由探索，享受山野' : state.stuck > 3 ? '试试低速挡，或用绞盘借力' : '沿着山路，寻找下一个路标';
+    $('mission-hint').textContent = state.completed ? '自由探索，享受山野' : state.stuck > 3 ? '试试低速挡，或用绞盘借力' : '主线约 3.5 km · 3 条岔路可探索';
     const connected = !!state.winch;
     $('winch-toggle-status').textContent = connected ? '已连接' : '待命';
     $('winch-toggle').classList.toggle('connected',connected);
@@ -217,7 +221,7 @@ export function createUI(actions = {}) {
     if(pauseDialog.open) pauseDialog.close();
     $('discover-snow').hidden = state?.region === 'snow';
     $('result-time').textContent=seconds(state?.time || 0);
-    $('result-distance').textContent=`${Math.round(state?.distance || 0)} m`;
+    $('result-distance').textContent=distanceText(state?.distance);
     if(!victoryDialog.open) victoryDialog.showModal();
   }
   function setAudio(enabled) {
