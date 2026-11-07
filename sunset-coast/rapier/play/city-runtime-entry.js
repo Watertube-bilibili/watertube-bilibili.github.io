@@ -2,9 +2,21 @@ import {CITY_PREFIX,parseCitySlot,readCitySlot,createCitySession} from './city-s
 
 export const cityHomeURL=(moduleURL=import.meta.url)=>new URL('../../',moduleURL).href;
 
-export async function startCityRuntime({window,document,storage=window.localStorage,locks=window.navigator?.locks,validateSave,loadGame}={}){
+export function showCityStartupFailure(document,error,homeURL=cityHomeURL()){
  const loading=document.getElementById('loading'),label=document.getElementById('load-text');
- const showFailure=error=>{if(loading){loading.hidden=false;loading.style.opacity='1';}if(label)label.textContent='Rapier 启动已停止：'+String(error?.message??error)+'。原存档未修改。';};
+ const detail=String(error?.message??error);
+ const reason=/webgl/i.test(detail)?'当前浏览器无法创建 WebGL 3D 画面。请使用支持 WebGL 的浏览器后重试；不要清除网站数据。':'Rapier 启动已停止：'+detail+'。';
+ if(loading){loading.hidden=false;loading.style.opacity='1';}
+ if(label)label.textContent=reason+'原存档未修改。';
+ if(loading&&!document.getElementById('city-startup-home')){
+  const home=document.createElement('a');home.id='city-startup-home';home.href=homeURL;home.textContent='返回存档管理';
+  home.style.cssText='display:block;min-height:44px;padding:10px 16px;margin-top:12px;text-align:center;color:inherit;text-decoration:underline;text-underline-offset:3px';
+  loading.append(home);
+ }
+}
+
+export async function startCityRuntime({window,document,storage=window.localStorage,locks=window.navigator?.locks,validateSave,loadGame}={}){
+ const showFailure=error=>showCityStartupFailure(document,error);
  let slot;try{slot=parseCitySlot(window.location.search);}catch(error){showFailure(error);return {blocked:true,error};}
  if(!locks?.request){const error=Error('安全存档锁不可用');showFailure(error);return {blocked:true,error};}
  let session=null,released=false,release,game=null;const disposed=new WeakSet();
@@ -41,7 +53,6 @@ export async function startCityRuntime({window,document,storage=window.localStor
  });}catch(error){stop(error);showFailure(error);return {blocked:true,error};}
 }
 if(typeof window!=='undefined'){
- const storage=window.localStorage;
- try{const {validateSave}=await import('./save-validation.js');startCityRuntime({window,document,storage,validateSave,loadGame:()=>import('./mobile-ui.js')});}
- catch(error){const label=document.getElementById('load-text');if(label)label.textContent='Rapier 启动失败：'+error.message+'。原存档未修改。';}
+ try{const storage=window.localStorage;const {validateSave}=await import('./save-validation.js');startCityRuntime({window,document,storage,validateSave,loadGame:()=>import('./mobile-ui.js')});}
+ catch(error){showCityStartupFailure(document,error);}
 }
