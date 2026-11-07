@@ -38,6 +38,7 @@ test('WebGL startup failure explains graphics availability and provides a safe s
  assert.equal(nodes.get('loading').hidden,false);assert.equal(nodes.get('loading').style.opacity,'1');
  assert.match(nodes.get('load-text').textContent,/无法创建 WebGL 3D 画面/);assert.match(nodes.get('load-text').textContent,/不要清除网站数据/);assert.match(nodes.get('load-text').textContent,/原存档未修改/);
  assert.equal(nodes.get('city-startup-home').href,cityHomeURL());assert.equal(nodes.get('city-startup-home').textContent,'返回存档管理');assert.equal(nodes.get('city-startup-home').tag,'a');
+ assert.match(nodes.get('city-startup-home').style.cssText,/background:#142b38;color:#f5f0e6/);
 });
 test('repeated failures update text without adding duplicate recovery links',()=>{
  const {document,nodes}=documentFixture();showCityStartupFailure(document,Error('first'));showCityStartupFailure(document,Error('second'));
@@ -71,9 +72,10 @@ test('failed physics is disposed exactly once even when pagehide follows the fai
  const f=await fixture();const result=await startCityRuntime({...options(f),loadGame:()=>{f.window.game={physics:{ready:false,failed:true,error:Error('physics failed'),dispose(){f.trace.disposed++;}},resetControls(){f.trace.reset++;}};}});
  assert.equal(result.blocked,true);assert.equal(f.window.game.paused,true);assert.equal(f.trace.disposed,1);f.listeners.get('pagehide')();assert.equal(f.trace.disposed,1);assert.equal(f.trace.released,1);unchanged(f);
 });
-test('normal ready lifecycle remains usable and releases only on pagehide',async()=>{
- const f=await fixture();const running=startCityRuntime({...options(f),loadGame:()=>{f.window.game={physics:{ready:true,failed:false,dispose(){f.trace.disposed++;}},resetControls(){},paused:true};}});
- for(let i=0;i<20&&!f.window.__sunriseCitySession?.ready;i++)await new Promise(resolve=>setImmediate(resolve));
+test('normal ready lifecycle remains usable and releases only on pagehide',{timeout:2000},async()=>{
+ const f=await fixture();let notifyReady,paused=true;const ready=new Promise(resolve=>notifyReady=resolve);
+ const running=startCityRuntime({...options(f),loadGame:()=>{f.window.game={physics:{ready:true,failed:false,dispose(){f.trace.disposed++;}},resetControls(){},get paused(){return paused;},set paused(value){paused=value;if(value===false)notifyReady();}};}});
+ await ready;
  assert.equal(f.document.documentElement.dataset.betaUiReady,'2');assert.equal(f.window.game.paused,false);assert.equal(f.window.__sunriseCitySession.canWrite(),true);assert.equal(f.trace.released,0);assert.equal(f.nodes.get('city-startup-home'),undefined);
  f.listeners.get('pagehide')();assert.deepEqual(await running,{released:true});assert.equal(f.trace.released,1);assert.equal(f.trace.disposed,1);unchanged(f);
 });

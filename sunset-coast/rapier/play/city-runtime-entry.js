@@ -10,7 +10,7 @@ export function showCityStartupFailure(document,error,homeURL=cityHomeURL()){
  if(label)label.textContent=reason+'原存档未修改。';
  if(loading&&!document.getElementById('city-startup-home')){
   const home=document.createElement('a');home.id='city-startup-home';home.href=homeURL;home.textContent='返回存档管理';
-  home.style.cssText='display:block;min-height:44px;padding:10px 16px;margin-top:12px;text-align:center;color:inherit;text-decoration:underline;text-underline-offset:3px';
+  home.style.cssText='display:block;min-height:44px;padding:10px 16px;margin-top:12px;text-align:center;background:#142b38;color:#f5f0e6;border:1px solid #f5f0e6;border-radius:8px;text-decoration:underline;text-underline-offset:3px';
   loading.append(home);
  }
 }
