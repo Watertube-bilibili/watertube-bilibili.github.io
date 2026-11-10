@@ -1,0 +1,288 @@
+{
+  "failures": [],
+  "passed": true,
+  "results": [
+    {
+      "evidence": {
+
+      },
+      "pass": true,
+      "test": "qa_mode_no_autobuild"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_0_rotation_0"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_0_rotation_1"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_1_rotation_0"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_1_rotation_1"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_2_rotation_0"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_2_rotation_1"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_3_rotation_0"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_3_rotation_1"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_4_rotation_0"
+    },
+    {
+      "evidence": {
+        "bottom": 1.20000004768372,
+        "expected": 1.20000004768372,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000162124633718008
+      },
+      "pass": true,
+      "test": "snap_4_rotation_1"
+    },
+    {
+      "evidence": {
+        "bottom": 0.400000005960464,
+        "expected": 0.400000005960464,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000284910202097421
+      },
+      "pass": true,
+      "test": "snap_5_rotation_0"
+    },
+    {
+      "evidence": {
+        "bottom": 0.400000005960464,
+        "expected": 0.400000005960464,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000284910202097421
+      },
+      "pass": true,
+      "test": "snap_5_rotation_1"
+    },
+    {
+      "evidence": {
+        "bottom": 0.400000005960464,
+        "expected": 0.400000005960464,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000284910202097421
+      },
+      "pass": true,
+      "test": "snap_6_rotation_0"
+    },
+    {
+      "evidence": {
+        "bottom": 0.400000005960464,
+        "expected": 0.400000005960464,
+        "frozen_upper": false,
+        "vertical_error": 0.0000000284910202097421
+      },
+      "pass": true,
+      "test": "snap_6_rotation_1"
+    },
+    {
+      "evidence": {
+        "links": 2
+      },
+      "pass": true,
+      "test": "bridge_two_supports"
+    },
+    {
+      "evidence": {
+        "a": "(-0.0, 0.5925, 0.0)",
+        "b": "(2.0, 0.5925, 0.0)"
+      },
+      "pass": true,
+      "test": "rotated_separated_boxes_no_phantom_contact"
+    },
+    {
+      "evidence": {
+        "lower": 0.572788000106812,
+        "sleeping": [
+          true,
+          true
+        ],
+        "upper": 1.75778770446777
+      },
+      "pass": true,
+      "test": "unrotated_stack_contacts"
+    },
+    {
+      "evidence": {
+        "initial_sleep": true,
+        "moved_x": 2.26080107688904,
+        "woke": true
+      },
+      "pass": true,
+      "test": "sleeping_body_wakes_on_side_impact"
+    },
+    {
+      "evidence": {
+        "after": 7.79171514511108,
+        "awake": 0,
+        "before": 9.0079402923584,
+        "frozen": false
+      },
+      "pass": true,
+      "test": "support_removal_falls_without_freezing"
+    },
+    {
+      "evidence": {
+        "state": {
+          "asleep": true,
+          "awake": 0,
+          "bricks": 40,
+          "engine": "Godot 4.6.3",
+          "fps": 1.0,
+          "joints": 39,
+          "kineticEnergy": 0.0,
+          "nextColor": 0,
+          "paused": false,
+          "physics": "Jolt",
+          "record": 40,
+          "renderer": "GODOT · JOLT",
+          "structures": 1,
+          "tallest": 40
+        },
+        "top": "(0.0, 47.38221, 0.0)"
+      },
+      "pass": true,
+      "test": "tower40_stands_sleeps"
+    },
+    {
+      "evidence": {
+        "asleep": true,
+        "awake": 0,
+        "bricks": 167,
+        "engine": "Godot 4.6.3",
+        "fps": 4208.0,
+        "joints": 308,
+        "kineticEnergy": 0.0,
+        "nextColor": 0,
+        "paused": false,
+        "physics": "Jolt",
+        "record": 40,
+        "renderer": "GODOT · JOLT",
+        "structures": 1,
+        "tallest": 33
+      },
+      "pass": true,
+      "test": "blueprint167_stands_sleeps"
+    },
+    {
+      "evidence": {
+        "peak_y": 10.1050243377686,
+        "state": {
+          "asleep": true,
+          "awake": 0,
+          "bricks": 167,
+          "engine": "Godot 4.6.3",
+          "fps": 508.0,
+          "joints": 12,
+          "kineticEnergy": 0.0,
+          "nextColor": 0,
+          "paused": false,
+          "physics": "Jolt",
+          "record": 40,
+          "renderer": "GODOT · JOLT",
+          "structures": 1,
+          "tallest": 2
+        }
+      },
+      "pass": true,
+      "test": "quake3_fractures_and_settles"
+    },
+    {
+      "evidence": {
+        "frozen": 0,
+        "state": {
+          "asleep": true,
+          "awake": 0,
+          "bricks": 300,
+          "engine": "Godot 4.6.3",
+          "fps": 576.0,
+          "joints": 0,
+          "kineticEnergy": 0.0,
+          "nextColor": 0,
+          "paused": false,
+          "physics": "Jolt",
+          "record": 40,
+          "renderer": "GODOT · JOLT",
+          "structures": 0,
+          "tallest": 0
+        }
+      },
+      "pass": true,
+      "test": "pour300_settles_no_frozen_floaters"
+    }
+  ]
+}

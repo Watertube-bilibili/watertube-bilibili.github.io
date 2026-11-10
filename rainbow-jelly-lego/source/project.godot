@@ -1,0 +1,35 @@
+config_version=5
+[application]
+config/name="彩虹果冻乐高 · Godot"
+run/main_scene="res://main.tscn"
+config/features=PackedStringArray("4.6", "GL Compatibility")
+[display]
+window/size/viewport_width=1024
+window/size/viewport_height=900
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+textures/default_filters/use_nearest_mipmap_filter=false
+anti_aliasing/quality/msaa_3d=0
+lights_and_shadows/directional_shadow/size=2048
+[physics]
+common/physics_ticks_per_second=120
+common/max_physics_steps_per_frame=8
+3d/physics_engine="Jolt Physics"
+jolt_physics_3d/simulation/velocity_steps=48
+jolt_physics_3d/simulation/position_steps=16
+3d/default_gravity=30.0
+3d/solver/solver_iterations=32
+3d/default_linear_damp=0.35
+3d/default_angular_damp=0.8
+3d/sleep_threshold_linear=0.12
+3d/sleep_threshold_angular=0.14
+3d/time_before_sleep=0.6
+
+[input_devices]
+pointing/emulate_mouse_from_touch=false
+[audio]
+driver/driver="Dummy"
+driver/driver.web="Dummy"
