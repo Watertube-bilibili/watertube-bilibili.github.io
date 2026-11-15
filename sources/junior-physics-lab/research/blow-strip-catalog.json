@@ -1,0 +1,57 @@
+{
+  "phy-blow-strip": {
+    "objective": "比较有无气流，以及流速、气体密度改变时，同一单纸条的平衡形态。",
+    "apparatus": [
+      "一端水平夹持的纸条",
+      "稳定气流（等效载荷教学模型）"
+    ],
+    "steps": [
+      "将流速调到0，观察纸条在自重下的下垂形态。",
+      "保持气体密度不变，缓慢增加流速，对比当前实线与无气流虚线。",
+      "固定流速，改变气体密度，比较动压、估算压差与端点抬升；密度0仅为无介质零载荷对照。",
+      "将流速调回0，检查纸条回到原来的自重平衡形态。"
+    ],
+    "observations": [
+      "流速0时没有气流箭头，实线与无气流虚线重合。",
+      "流速或密度增大使上举载荷增大，纸条曲线连续抬升；抬升不一定表示端点已高于夹持端。"
+    ],
+    "controls": [
+      {
+        "key": "speed",
+        "label": "气流速度",
+        "unit": "m/s",
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "value": 2
+      },
+      {
+        "key": "density",
+        "label": "气体密度（题设）",
+        "unit": "kg/m³",
+        "min": 0,
+        "max": 2,
+        "step": 0.1,
+        "value": 1.2,
+        "note": "0仅作无介质零载荷对照；不将液体密度套入吹气模型。"
+      }
+    ],
+    "conclusion": "在本等效载荷模型内，流速或气体密度增大使上举载荷增大，纸条连续抬起；没有气流时回到自重下垂形态。",
+    "modelNote": "Godot用q＝ρv²/2及教学系数Cp＝0.05估算均布竖直上举载荷，与纸条自重共同求不可伸长、可有限转动的弹性条平衡。L＝0.16 m、宽0.025 m、厚0.12 mm、纸密度800 kg/m³、E＝3 GPa均为未校准题设。动压不直接等于真实纸面压差；只比较单纸条稳定平衡，不计算真实流场、流固耦合、湍流、颤振、两纸靠近或瞬态响应。",
+    "implementationReview": {
+      "status": "fixed-browser-interaction-checked",
+      "scope": "Godot随流速和气体密度计算纸条平衡坐标，SVG显示当前曲线及无气流自重对照；零气流不显示气流箭头。",
+      "limitation": "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。",
+      "evidence": {
+        "engine": "tests/godot_blow_strip.gd: 404 velocity/density conditions, independent small-load beam limit, fixed length, continuity, mesh refinement and invalid-input checks; 42804 assertions pass on Godot 4.6.3.",
+        "browser": "tests/blow-strip-browser.py: 9 groups pass in actual Chromium 145.0.7632.6 with exported Godot WASM; six speed conditions, density, zero/bounds, range/rapid edits, records/CSV/reset, navigation and touch emulation. Whole-site 356 calls and original UI/records pass. No page errors or failed requests.",
+        "run": "https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/43660867657",
+        "scope": "Software verification only. No Firefox, real phone, physical apparatus, pressure/material calibration, real flow field, flutter or transient verification."
+      }
+    },
+    "modelParams": {
+      "scenario": "blowStrip",
+      "variant": "blow-strip"
+    }
+  }
+}

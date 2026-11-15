@@ -1,0 +1,32 @@
+[
+  {
+    "command": "node tests/catalog-audit.js",
+    "exitCode": 0,
+    "tail": "plicit coverage references checked (references are not proof of exhaustive coverage)\nchemistry: 79 catalog entries, 58 model families\nchemistry: NCET 35/35 numbered mappings; 0 explicitly partial/missing/pending\nchemistry: 99 explicit coverage references checked (references are not proof of exhaustive coverage)\nbiology: 95 catalog entries, 22 model families\nbiology: NCET 56/56 numbered mappings; 0 explicitly partial/missing/pending\nbiology: 166 explicit coverage references checked (references are not proof of exhaustive coverage)\n923 simulation scenarios (default, control boundaries/options, conditional probes); 3117 SVG states checked\n187 engine-dependent entries require real-browser Godot RPC tests; this Node audit checks their initial renderer but never fabricates engine output.\n\nPASS: 356 entries, 30 sources. Scientific coverage and source interpretation still require manual review.\n"
+  },
+  {
+    "command": "godot --headless --path godot --script ../tests/godot_domain.gd",
+    "exitCode": 0,
+    "tail": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n{\"checks\":22,\"failures\":[]}\n"
+  },
+  {
+    "command": "godot --headless --path godot --script ../tests/godot_extra.gd",
+    "exitCode": 0,
+    "tail": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\npendulum { \"scenario\": \"pendulum\", \"length\": 1.0, \"angle\": 5.0, \"mass\": 0.2, \"gravity\": 9.8, \"period\": 2.0080923484214, \"approximatePeriod\": 2.00708992315449, \"initialEnergy\": 0.00745839174018, \"duration\": 6.00000031292439 }\n{\"failed\":[]}\n"
+  },
+  {
+    "command": "godot --headless --path godot --script ../tests/godot_fluid_density_review.gd",
+    "exitCode": 0,
+    "tail": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n{\"checks\":882,\"failures\":[],\"fixtures\":11}\n"
+  },
+  {
+    "command": "godot --headless --path godot --script ../tests/godot_boundaries.gd",
+    "exitCode": 0,
+    "tail": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n{\"failures\":[],\"scenarioBoundaryChecks\":606}\n"
+  },
+  {
+    "command": "godot --headless --path godot --script ../tests/godot_rolling_pendulum.gd",
+    "exitCode": 0,
+    "tail": "Godot Engine v4.6.3.stable.official.7d41c59c4 - https://godotengine.org\n\n{\"assertions\":466298,\"cases\":20,\"failureCount\":0,\"failureGroups\":{},\"failures\":[],\"fixturePath\":\"\"}\n"
+  }
+]

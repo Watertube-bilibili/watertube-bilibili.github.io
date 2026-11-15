@@ -3219,30 +3219,36 @@
   {
     "id": "phy-blow-strip",
     "mode": "live",
-    "purpose": "比较有无气流时纸条形态。",
+    "purpose": "比较有无气流，以及流速、气体密度改变时，同一单纸条的平衡形态。",
     "controlsReviewed": [
       {
         "key": "speed",
-        "label": "流速",
+        "label": "气流速度",
         "default": 2
       },
       {
         "key": "density",
-        "label": "流体密度",
+        "label": "气体密度（题设）",
         "default": 1.2
       }
     ],
-    "sceneBehavior": "能比较气流速度与静压的题设数值，显示纸条受气流前后两种形状。",
+    "sceneBehavior": "Godot随流速和气体密度计算纸条平衡坐标，SVG显示当前曲线及无气流自重对照；零气流不显示气流箭头。",
     "limitations": [
-      "两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。"
+      "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。"
     ],
     "fixes": [
-      "按逐项教学目的区分即时操作与过程回放。"
+      "Godot按气流条件计算等效上举载荷与自重下的弹性条平衡曲线，SVG读取当前及无气流对照坐标。"
     ],
-    "status": "needs-implementation",
+    "status": "fixed-browser-interaction-checked",
     "evidence": {
       "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
-      "browser": "真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。"
+      "browser": "tests/blow-strip-browser.py: 9 groups pass in actual Chromium 145.0.7632.6 with exported Godot WASM; six speed conditions, density, zero/bounds, range/rapid edits, records/CSV/reset, navigation and touch emulation. Whole-site 356 calls and original UI/records pass. No page errors or failed requests.",
+      "specialist": {
+        "engine": "tests/godot_blow_strip.gd: 404 velocity/density conditions, independent small-load beam limit, fixed length, continuity, mesh refinement and invalid-input checks; 42804 assertions pass on Godot 4.6.3.",
+        "browser": "tests/blow-strip-browser.py: 9 groups pass in actual Chromium 145.0.7632.6 with exported Godot WASM; six speed conditions, density, zero/bounds, range/rapid edits, records/CSV/reset, navigation and touch emulation. Whole-site 356 calls and original UI/records pass. No page errors or failed requests.",
+        "run": "https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/43660867657",
+        "scope": "Software verification only. No Firefox, real phone, physical apparatus, pressure/material calibration, real flow field, flutter or transient verification."
+      }
     }
   },
   {

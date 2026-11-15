@@ -124,7 +124,7 @@ def apply_quality(records, root):
         'electromagnetic-induction':'移动导体','hand-generator':'转动手柄',
         'dc-motor-project':'接通电动机','water-freezing':'开始冷却','heat-mass-temperature':'开始加热','spark-radio':'操作发射电路'}
     # A reviewed mapping is not a claim that every textbook procedure is complete.
-    incomplete={'funnel-ball','saltwater-density','micro-hydrometer','shoe-pressure','bottle-barometer','blow-strip'}
+    incomplete={'funnel-ball','saltwater-density','micro-hydrometer','shoe-pressure','bottle-barometer'}
     revised={
         'cold-water-reboil':('在倒置热烧瓶中改变给定气压，对照水温与沸点，沸腾条件满足时出现气泡。','气压由题设改变；没有联立求解瓶内凝结、冷水传热和压力随时间变化。'),
         'funnel-ball':('可选择停吹/向下吹气，观察倒置漏斗与球间气流路径；球由支架定位。','只支持定性路径与压差分析，未复现完整漏斗流场和稳定托球，不能用向上吹气的轴向阻力模型替代。'),
@@ -153,7 +153,7 @@ def apply_quality(records, root):
         'inertia-sheet':('快速抽板完成后，小球从零水平速度开始沿真实自由落体轨迹落下。','没有模拟慢抽时纸片摩擦带动小球；不引入不存在的惯性力。'),
         'rubbing-paper':('按声称的单个摩擦带电物体电荷判断吸引；charge1为0时纸屑静止，正负均能吸引。','相对电荷与极化为定性示意，不能由吸引轻小物体辨认电荷正负。'),
         'bottle-barometer':('能根据海拔比较给定标准大气压，瓶与细管目前仍是结构图。','液柱未随条件联动；尚缺密封气体体积、温度和内外压差共同决定液位的模型，不能作为完成的气压计观察操作。'),
-        'blow-strip':('能比较气流速度与静压的题设数值，显示纸条受气流前后两种形状。','两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。'),
+        'blow-strip':('Godot按气流条件计算等效上举载荷与自重下的弹性条平衡曲线，SVG读取当前及无气流对照坐标。','气流压差系数与纸材常数为未校准的教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振或两纸靠近。'),
         'straw-spray':('停止吹气时不再显示液体上升箭头或水雾；有气流时显示喷雾原理示意。','未计算液柱吸起阈值、真实吸液高度、黏性和雾滴粒径，示意水雾不能用于量取流量。'),
     }
     for key,(scene,limitation) in revised.items():
@@ -197,7 +197,7 @@ def apply_quality(records, root):
             r['modelNote'] += ' 本项操作范围：'+limitation
         audit.append(dict(id=r['id'],mode=mode,purpose=r['objective'],controlsReviewed=[{'key':c['key'],'label':c['label'],'default':c['value']} for c in r['controls']],sceneBehavior=scene,limitations=[limitation],fixes=[fixed[key]] if key in fixed else ['按逐项教学目的区分即时操作与过程回放。'],status=status,evidence={'method':'逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。','browser':'待最终引擎导出后的端到端复测，不以源码可运行视为通过。'}))
     # Root-owned ruler contracts are applied last, after all general defaults.
-    for patch_file in ['ruler-catalog.json','electrical-review-catalog.json','deformation-review-catalog.json','physics-measurement-review-catalog.json','optics-review-catalog.json','fluid-density-review-catalog.json','rolling-pendulum-catalog.json']:
+    for patch_file in ['ruler-catalog.json','electrical-review-catalog.json','deformation-review-catalog.json','physics-measurement-review-catalog.json','optics-review-catalog.json','fluid-density-review-catalog.json','rolling-pendulum-catalog.json','blow-strip-catalog.json']:
         patch_path=root/'research'/patch_file
         if not patch_path.exists():continue
         for fullid,patch in json.loads(patch_path.read_text()).items():
@@ -216,6 +216,9 @@ def apply_quality(records, root):
         elif review.get('status')=='implemented-pending-integration-test':
             a['status']='fixed-awaiting-browser'
             a['evidence']['specialist']=review.get('evidence',{})
+        elif review.get('status')=='fixed-browser-interaction-checked':
+            a['status']='fixed-browser-interaction-checked'
+            a['evidence']['specialist']=review.get('evidence',{})
         if r['id'] in {'phy-ammeter','phy-voltmeter','phy-digital-multimeter','phy-compass-field','phy-electromagnet-crane','phy-fuse-comparison','phy-solar-water','phy-deformation'}:
             a['limitations']=[r['modelNote']]
             a['sceneBehavior']=r['objective']+' 操作步骤：'+'；'.join(r['steps'])
@@ -226,6 +229,11 @@ def apply_quality(records, root):
     if browser_path.exists():
         smoke={x['id']:x for x in json.loads(browser_path.read_text())}
         for a in audit:
+            if a['id']=='phy-blow-strip':
+                # The 2026-10-31 smoke result tested the OLD fixed-shape renderer.
+                # Never reuse it as proof that this replacement passed a browser.
+                a['evidence']['browser']=byid['blow-strip']['implementationReview'].get('evidence',{}).get('browser','新模型的实际WebAssembly与控件回归待运行；历史固定曲线的默认检查不适用于本修复。')
+                continue
             if smoke.get(a['id'],{}).get('ok'):
                 a['evidence']['browser']='真实Godot默认条件与0/.5/1三个阶段SVG已通过；不等于全部参数、全部操作或完整实物流程验收。'
                 checked_statuses={'fixed-awaiting-browser':'fixed-browser-smoke-checked','code-reviewed-awaiting-browser':'code-reviewed-browser-smoke-checked','verified-in-isolation-awaiting-integration':'verified-in-isolation-and-browser-smoke-checked'}

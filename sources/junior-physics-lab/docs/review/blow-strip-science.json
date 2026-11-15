@@ -1,0 +1,49 @@
+{
+  "checks": 42804,
+  "examples": [
+    {
+      "density": 1.2,
+      "pressureDrop": 0.0,
+      "speed": 0.0,
+      "tipRise": 0.0,
+      "tipY": -0.107347289114643
+    },
+    {
+      "density": 1.2,
+      "pressureDrop": 0.12,
+      "speed": 2.0,
+      "tipRise": 0.00607625677159372,
+      "tipY": -0.101271032343049
+    },
+    {
+      "density": 1.2,
+      "pressureDrop": 0.48,
+      "speed": 4.0,
+      "tipRise": 0.0348576314106316,
+      "tipY": -0.0724896577040115
+    },
+    {
+      "density": 1.2,
+      "pressureDrop": 1.08,
+      "speed": 6.0,
+      "tipRise": 0.133201258750695,
+      "tipY": 0.0258539696360518
+    },
+    {
+      "density": 1.2,
+      "pressureDrop": 1.92,
+      "speed": 8.0,
+      "tipRise": 0.2163874685892,
+      "tipY": 0.109040179474557
+    },
+    {
+      "density": 1.2,
+      "pressureDrop": 3.0,
+      "speed": 10.0,
+      "tipRise": 0.239662997864808,
+      "tipY": 0.132315708750165
+    }
+  ],
+  "failures": [],
+  "scope": "Godot 4.6.3 model tests; no physical apparatus validation."
+}

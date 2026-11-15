@@ -2965,10 +2965,10 @@
       "implementationRelation": "primary",
       "book": "八下",
       "implementationReview": {
-        "status": "needs-implementation",
-        "sceneBehavior": "能比较气流速度与静压的题设数值，显示纸条受气流前后两种形状。",
+        "status": "fixed-browser-interaction-checked",
+        "sceneBehavior": "Godot随流速和气体密度计算纸条平衡坐标，SVG显示当前曲线及无气流自重对照；零气流不显示气流箭头。",
         "limitations": [
-          "两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。"
+          "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。"
         ]
       }
     },
@@ -2987,10 +2987,10 @@
       "implementationRelation": "same-principle-variant",
       "book": "八下",
       "implementationReview": {
-        "status": "needs-implementation",
-        "sceneBehavior": "能比较气流速度与静压的题设数值，显示纸条受气流前后两种形状。",
+        "status": "fixed-browser-interaction-checked",
+        "sceneBehavior": "Godot随流速和气体密度计算纸条平衡坐标，SVG显示当前曲线及无气流自重对照；零气流不显示气流箭头。",
         "limitations": [
-          "两个形状仍是固定示意，纸条没有随吹气条件更新；尚缺气流与纸条变形联动。"
+          "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。"
         ]
       }
     },
@@ -5393,7 +5393,6 @@
     "phy-saltwater-density",
     "phy-shoe-pressure",
     "phy-bottle-barometer",
-    "phy-blow-strip",
     "phy-micro-hydrometer"
   ]
 }

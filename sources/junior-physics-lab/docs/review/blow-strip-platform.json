@@ -1,0 +1,14 @@
+{
+  "passed": 356,
+  "subjects": {
+    "physics": 182,
+    "chemistry": 79,
+    "biology": 95
+  },
+  "records": 3,
+  "errors": [],
+  "failedRequests": [],
+  "screenshots": "/tmp/blow-strip-ci/platform",
+  "testedCommit": "9275b3fd0bc11a7dc852a08b9ea4d4b88fc4ba00",
+  "workflowRun": "https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/43660867657"
+}

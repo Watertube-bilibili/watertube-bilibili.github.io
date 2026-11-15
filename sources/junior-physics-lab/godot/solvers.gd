@@ -20,6 +20,8 @@ const MeasurementReview = preload("res://physics_measurement_review.gd")
 var measurement_review = MeasurementReview.new()
 const FluidDensityReview = preload("res://fluid_density_review.gd")
 var fluid_density_review = FluidDensityReview.new()
+const BlowStripSolver = preload("res://blow_strip_solver.gd")
+var blow_strip_solver = BlowStripSolver.new()
 
 const G = 9.8
 
@@ -37,6 +39,8 @@ func graph(xlabel: String, ylabel: String, points: Array) -> Dictionary:
 	return {"xLabel": xlabel, "yLabel": ylabel, "points": points}
 
 func solve(model: String, p: Dictionary) -> Dictionary:
+	if model == "pressure" and (p.get("scenario", "") == "blowStrip" or (p.get("scenario", "") == "flow" and p.get("variant", "") == "blow-strip")):
+		return blow_strip_solver.solve(p)
 	var fluid_result=fluid_density_review.solve(model,p)
 	if not fluid_result.is_empty():return fluid_result
 	var measured_result=measurement_review.solve(model,p)
