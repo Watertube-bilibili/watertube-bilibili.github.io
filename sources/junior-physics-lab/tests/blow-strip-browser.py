@@ -52,7 +52,7 @@ with sync_playwright() as pw:
     assert not page.locator('#runBtn').is_visible()
     assert not page.locator('#pauseBtn').is_visible()
     assert not page.locator('#labTags .scope-partial').count()
-    assert '未' in page.locator('#labScene').inner_text()
+    assert '未' in page.locator('#labScene').text_content()
     checks.append('live mode retains immediate controls and displays model limitations')
     change('speed', 0)
     zero = snapshot()
@@ -128,7 +128,7 @@ with sync_playwright() as pw:
     page.locator('input[type=number][data-param="speed"]').fill('1')
     select('phy-straw-spray')
     change('speed', 0)
-    assert '没有吹气' in page.locator('#labScene').inner_text()
+    assert '没有吹气' in page.locator('#labScene').text_content()
     assert not page.locator('[data-blow-strip]').count()
     select('phy-reflection-law')
     assert not page.locator('#runBtn').is_visible()
@@ -164,3 +164,4 @@ with sync_playwright() as pw:
     (out/'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2)+'\n')
     print(json.dumps(report, ensure_ascii=False))
     browser.close()
+
