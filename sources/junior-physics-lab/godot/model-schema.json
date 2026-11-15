@@ -3967,7 +3967,8 @@
         "communicating",
         "pump",
         "liquidProbe",
-        "venturi"
+        "venturi",
+        "blowStrip"
       ],
       "controls": [
         {
@@ -4226,6 +4227,27 @@
             "max": 1400,
             "step": 50,
             "value": 1000
+          }
+        ],
+        "blowStrip": [
+          {
+            "key": "speed",
+            "label": "气流速度",
+            "unit": "m/s",
+            "min": 0,
+            "max": 10,
+            "step": 0.1,
+            "value": 2
+          },
+          {
+            "key": "density",
+            "label": "气体密度（题设）",
+            "unit": "kg/m³",
+            "min": 0,
+            "max": 2,
+            "step": 0.1,
+            "value": 1.2,
+            "note": "0仅作无介质零载荷对照；不将液体密度套入吹气模型。"
           }
         ]
       },
