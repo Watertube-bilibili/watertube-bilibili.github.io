@@ -216,6 +216,9 @@ def apply_quality(records, root):
         elif review.get('status')=='implemented-pending-integration-test':
             a['status']='fixed-awaiting-browser'
             a['evidence']['specialist']=review.get('evidence',{})
+        elif review.get('status')=='fixed-browser-interaction-checked':
+            a['status']='fixed-browser-interaction-checked'
+            a['evidence']['specialist']=review.get('evidence',{})
         if r['id'] in {'phy-ammeter','phy-voltmeter','phy-digital-multimeter','phy-compass-field','phy-electromagnet-crane','phy-fuse-comparison','phy-solar-water','phy-deformation'}:
             a['limitations']=[r['modelNote']]
             a['sceneBehavior']=r['objective']+' 操作步骤：'+'；'.join(r['steps'])

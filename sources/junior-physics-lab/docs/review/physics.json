@@ -3239,11 +3239,16 @@
     "fixes": [
       "Godot按气流条件计算等效上举载荷与自重下的弹性条平衡曲线，SVG读取当前及无气流对照坐标。"
     ],
-    "status": "fixed-awaiting-browser",
+    "status": "fixed-browser-interaction-checked",
     "evidence": {
       "method": "逐项目录、Godot求解器及SVG分支静态复核；动画初筛另见interaction审计。",
-      "browser": "新模型的实际WebAssembly与控件回归待运行；历史固定曲线的默认检查不适用于本修复。",
-      "specialist": {}
+      "browser": "tests/blow-strip-browser.py: 9 groups pass in actual Chromium 145.0.7632.6 with exported Godot WASM; six speed conditions, density, zero/bounds, range/rapid edits, records/CSV/reset, navigation and touch emulation. Whole-site 356 calls and original UI/records pass. No page errors or failed requests.",
+      "specialist": {
+        "engine": "tests/godot_blow_strip.gd: 404 velocity/density conditions, independent small-load beam limit, fixed length, continuity, mesh refinement and invalid-input checks; 42804 assertions pass on Godot 4.6.3.",
+        "browser": "tests/blow-strip-browser.py: 9 groups pass in actual Chromium 145.0.7632.6 with exported Godot WASM; six speed conditions, density, zero/bounds, range/rapid edits, records/CSV/reset, navigation and touch emulation. Whole-site 356 calls and original UI/records pass. No page errors or failed requests.",
+        "run": "https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/43660867657",
+        "scope": "Software verification only. No Firefox, real phone, physical apparatus, pressure/material calibration, real flow field, flutter or transient verification."
+      }
     }
   },
   {

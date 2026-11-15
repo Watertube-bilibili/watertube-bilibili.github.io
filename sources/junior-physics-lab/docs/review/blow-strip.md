@@ -60,7 +60,13 @@ python tests/blow-strip-browser.py
 LAB_URL=http://127.0.0.1:8767/ python tests/platform_browser.py
 ```
 
-本机Chromium受AF_UNIX套接字限制，无法启动；备用云浏览器连接本地服务被拒绝，故本机浏览器结果不标通过。新增 `.github/workflows/blow-strip-regression.yml` 在修复分支/PR运行相同科学检查、专项浏览器交互和整站356项真实引擎默认调用，并保存JSON、日志和截图。浏览器最终状态以该次CI报告为准。Firefox、真实iPhone和真实器材尚未验证。
+本机Chromium受AF_UNIX套接字限制，无法启动；备用云浏览器连接本地服务被拒绝，故本机浏览器结果不标通过。新增 `.github/workflows/blow-strip-regression.yml` 在修复分支/PR运行相同科学检查、专项浏览器交互和整站356项真实引擎默认调用，并保存JSON、日志和截图。2026-11-15的[实际CI运行](https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/43660867657)已通过：Chromium 145.0.7632.6完成9组专项检查，整站356项实际引擎默认调用与原有三科记录/CSV/播放流程均通过，页面错误和失败请求均为0。被测提交为 `9275b3fd0bc11a7dc852a08b9ea4d4b88fc4ba00`；后续仅补审查状态、报告及缓存版本。详见[浏览器逐项结果](blow-strip-browser.json)、[整站结果](blow-strip-platform.json)。390px布局和430px触摸检查均为模拟，Firefox、真实iPhone和真实器材尚未验证。
+
+实际Chromium截图（密度均为1.2 kg/m³，软件渲染器）：
+
+| 0 m/s：自重下垂 | 4 m/s：部分抬升 | 10 m/s：进一步抬升 |
+| --- | --- | --- |
+| ![零流速](blow-strip-evidence/scene-zero.png) | ![四米每秒](blow-strip-evidence/scene-speed-4.png) | ![十米每秒](blow-strip-evidence/scene-speed-10.png) |
 
 ## 导出与目录生成
 
@@ -75,3 +81,13 @@ python research/stamp-assets.py
 ```
 
 本次以相同版本Godot 4.6.3重新导出项目PCK，沿用仓库原有官方4.6.3运行时JS/WASM（引擎本体未修改）。无须重新下载模板或替换引擎。分发目录 `/junior-physics-lab/` 同步对应的目录、模块、schema、PCK和资源版本。原有181项其他物理目录记录与基线逐项相等。
+
+## 修改文件
+
+- 模型：`godot/blow_strip_solver.gd`、其UID、`godot/solvers.gd`、`godot/model-schema.json`。
+- 场景与控件：`dist/modules/physics/blow-strip.js`、`dist/modules/physics.js`、`research/blow-strip-catalog.json`、`research/physics-quality.py`。
+- 科学与浏览器测试：`tests/godot_blow_strip.gd`、`tests/blow-strip-browser.py`、仓库根部 `.github/workflows/blow-strip-regression.yml`。
+- 生成与发布：`dist/catalog/physics.js`、`dist/engine/model-schema.json`、`dist/engine/lab.pck`、`dist/index.html`，以及 `/junior-physics-lab/` 对应六份资源；`research/physics-final-records.json`、`research/physics-coverage.json`。
+- 审查：`docs/review/README.md`、`docs/review/physics.json`、本专项说明、科学/旧功能/浏览器/整站JSON及三张截图。
+
+完整仓库相对路径清单见 [blow-strip-files.json](blow-strip-files.json)。

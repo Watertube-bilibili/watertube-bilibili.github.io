@@ -2965,7 +2965,7 @@
       "implementationRelation": "primary",
       "book": "八下",
       "implementationReview": {
-        "status": "fixed-awaiting-browser",
+        "status": "fixed-browser-interaction-checked",
         "sceneBehavior": "Godot随流速和气体密度计算纸条平衡坐标，SVG显示当前曲线及无气流自重对照；零气流不显示气流箭头。",
         "limitations": [
           "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。"
@@ -2987,7 +2987,7 @@
       "implementationRelation": "same-principle-variant",
       "book": "八下",
       "implementationReview": {
-        "status": "fixed-awaiting-browser",
+        "status": "fixed-browser-interaction-checked",
         "sceneBehavior": "Godot随流速和气体密度计算纸条平衡坐标，SVG显示当前曲线及无气流自重对照；零气流不显示气流箭头。",
         "limitations": [
           "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。"

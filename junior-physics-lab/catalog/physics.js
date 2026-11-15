@@ -11021,9 +11021,15 @@ window.LAB_CATALOG.push(...[
       "reason": "改条件后直接比较当前读数、结构、受力或光路；阶段控件本身就是操作。"
     },
     "implementationReview": {
-      "status": "fixed-awaiting-browser",
+      "status": "fixed-browser-interaction-checked",
       "scope": "Godot随流速和气体密度计算纸条平衡坐标，SVG显示当前曲线及无气流自重对照；零气流不显示气流箭头。",
-      "limitation": "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。"
+      "limitation": "气流压差系数与纸材常数为未校准教学题设；只比较单纸条静态形变，不模拟真实流场、流固耦合、颤振、两纸靠近或瞬态过程。",
+      "evidence": {
+        "engine": "tests/godot_blow_strip.gd: 404 velocity/density conditions, independent small-load beam limit, fixed length, continuity, mesh refinement and invalid-input checks; 42804 assertions pass on Godot 4.6.3.",
+        "browser": "tests/blow-strip-browser.py: 9 groups pass in actual Chromium 145.0.7632.6 with exported Godot WASM; six speed conditions, density, zero/bounds, range/rapid edits, records/CSV/reset, navigation and touch emulation. Whole-site 356 calls and original UI/records pass. No page errors or failed requests.",
+        "run": "https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/43660867657",
+        "scope": "Software verification only. No Firefox, real phone, physical apparatus, pressure/material calibration, real flow field, flutter or transient verification."
+      }
     }
   },
   {
