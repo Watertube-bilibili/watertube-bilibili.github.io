@@ -1,8 +1,11 @@
+import { createGlassBridge } from './desk-bridge.js';
+
 (() => {
   "use strict";
 
   const controls = [...document.querySelectorAll(".glass-control")];
   if (!controls.length) return;
+  const bridge = createGlassBridge(document.querySelector('.hero-actions'));
 
   const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
   const reducedTransparency = matchMedia("(prefers-reduced-transparency: reduce)");
@@ -34,6 +37,7 @@
     control.style.setProperty("--glass-y", y + "px");
     control.dataset.glassHeld = "";
     held = { control, id: event.pointerId, startX: event.clientX, startY: event.clientY, rect, x, y, dragged: false };
+    bridge?.begin(control, rect, x, y);
     placeLight(control, event.clientX, event.clientY, rect);
     control.setPointerCapture(event.pointerId);
   }
@@ -58,8 +62,10 @@
 
     // Increasing resistance limits the total travel in every direction.
     const resistance = 38 * (1 - Math.exp(-distance / 67)) / (distance || 1);
-    control.style.setProperty("--glass-x", (held.x + dx * resistance) + "px");
-    control.style.setProperty("--glass-y", (held.y + dy * resistance) + "px");
+    let x = held.x + dx * resistance, y = held.y + dy * resistance;
+    if (bridge) [x, y] = bridge.move(x, y);
+    control.style.setProperty("--glass-x", x + "px");
+    control.style.setProperty("--glass-y", y + "px");
   }
 
   function end(event) {
@@ -67,6 +73,7 @@
     const { control, dragged, startX, startY } = held;
     const missedMove = event.type === "pointerup" && Math.hypot(event.clientX - startX, event.clientY - startY) >= 7;
     if (dragged || missedMove || event.type !== "pointerup") ignoreClickOn = control;
+    bridge?.end(event.type !== "pointerup");
     held = null;
     delete control.dataset.glassHeld;
     delete control.dataset.glassDrag;
@@ -93,7 +100,10 @@
   }
   window.addEventListener("blur", end);
 
-  if (!window.ResizeObserver || !CSS.supports("backdrop-filter", "url(#lens)")) return;
+  if (!window.ResizeObserver || !CSS.supports("filter", "url(#lens)")) return;
+  const hero = document.querySelector(".hero");
+  const lakeControls = controls.filter(control => control.closest(".hero-actions"));
+  const nativeBackdropLens = CSS.supports("backdrop-filter", "url(#lens)");
   const svgNS = "http://www.w3.org/2000/svg";
   const filters = document.createElementNS(svgNS, "svg");
   filters.setAttribute("width", "0");
@@ -103,30 +113,44 @@
   const defs = filters.appendChild(document.createElementNS(svgNS, "defs"));
   const lenses = new Map();
 
-  // Each normal displaces a backdrop sample toward the inside of the beveled
-  // rim. Neutral channels in the center preserve the scene behind the glass.
-  function lensMap(width, height, radius) {
+  // Give the lake lens pixels outside its silhouette, so the bevel can bend
+  // nearby shorelines into view. A flat backdrop filter can only sample its box.
+  const lakeMargin = 30;
+  function lensMap(width, height, radius, isLake) {
     const canvas = document.createElement("canvas");
-    canvas.width = Math.min(280, width);
-    canvas.height = Math.min(80, height);
+    const fieldWidth = width + (isLake ? 2 * lakeMargin : 0);
+    const fieldHeight = height + (isLake ? 2 * lakeMargin : 0);
+    canvas.width = Math.min(340, fieldWidth);
+    canvas.height = Math.min(120, fieldHeight);
     const ctx = canvas.getContext("2d");
     const map = ctx.createImageData(canvas.width, canvas.height);
-    const rim = Math.min(9, height * .2);
+    const rim = isLake ? Math.min(17, height * .36) : Math.min(9, height * .2);
+    const scale = isLake ? 58 : 20;
     for (let row = 0; row < canvas.height; row++) {
       for (let col = 0; col < canvas.width; col++) {
-        const x = (col + .5) * width / canvas.width - width / 2;
-        const y = (row + .5) * height / canvas.height - height / 2;
+        const x = (col + .5) * fieldWidth / canvas.width - fieldWidth / 2;
+        const y = (row + .5) * fieldHeight / canvas.height - fieldHeight / 2;
         const qx = Math.abs(x) - width / 2 + radius;
         const qy = Math.abs(y) - height / 2 + radius;
         const corner = Math.hypot(Math.max(0, qx), Math.max(0, qy));
         const depth = radius - corner - Math.min(Math.max(qx, qy), 0);
-        const bend = 116 * Math.pow(Math.max(0, 1 - Math.max(depth, 0) / rim), 2);
+        const t = Math.max(0, 1 - Math.max(depth, 0) / rim);
+        const bend = isLake ? -25 * t * t * (3 - 2 * t) : 9 * t * t;
+        // The gently curved center magnifies the lake; the bevel turns rays
+        // more steeply near the perimeter. Both meet without a visible seam.
+        const magnification = isLake ? .12 * (1 - t) : 0;
         const nx = corner ? Math.max(0, qx) / corner : Number(qx > qy);
         const ny = corner ? Math.max(0, qy) / corner : Number(qy >= qx);
         const i = 4 * (row * canvas.width + col);
-        map.data[i] = 128 - bend * Math.sign(x) * nx;
-        map.data[i + 1] = 128 - bend * Math.sign(y) * ny;
+        map.data[i] = 128 - 255 / scale * (bend * Math.sign(x) * nx + x * magnification);
+        map.data[i + 1] = 128 - 255 / scale * (bend * Math.sign(y) * ny + y * magnification);
         map.data[i + 2] = 128;
+        if (isLake) {
+          const light = -.6 * Math.sign(x) * nx - .8 * Math.sign(y) * ny;
+          const caustic = (.18 + .14 * light) * Math.exp(-Math.pow((depth - 2.7) / 2.4, 2));
+          const shade = .07 * Math.exp(-Math.pow((depth - 7.5) / 3, 2));
+          map.data[i + 2] += 255 * (caustic - shade);
+        }
         map.data[i + 3] = 255;
       }
     }
@@ -134,7 +158,52 @@
     return canvas.toDataURL();
   }
 
+  // Ordinary SVG filters also work on WebKit, where filtering a backdrop
+  // through an SVG URL is unreliable. Sample the same, already-cached hero
+  // artwork at its real size and offset, including its responsive gradient.
+  function mountLakeSample(control, filterId) {
+    const clip = document.createElement("span");
+    clip.className = "glass-scene";
+    clip.setAttribute("aria-hidden", "true");
+    const field = clip.appendChild(document.createElement("span"));
+    field.className = "glass-scene-field";
+    field.style.inset = -lakeMargin + "px";
+    field.style.filter = 'url("#' + filterId + '")';
+    const sample = field.appendChild(document.createElement("span"));
+    sample.className = "glass-scene-sample";
+    control.prepend(clip);
+    return sample;
+  }
+
+  function alignLakeSamples() {
+    if (!hero) return;
+    const scene = getComputedStyle(hero, "::before");
+    const heroBox = hero.getBoundingClientRect();
+    const left = parseFloat(scene.left);
+    const top = parseFloat(scene.top);
+    const width = hero.clientWidth - left - parseFloat(scene.right);
+    const height = hero.clientHeight - top - parseFloat(scene.bottom);
+    for (const control of lakeControls) {
+      const sample = lenses.get(control)?.sample;
+      if (!sample) continue;
+      const box = control.getBoundingClientRect();
+      const transform = getComputedStyle(control).transform;
+      const matrix = transform === "none" ? null : new DOMMatrixReadOnly(transform);
+      sample.style.left = (heroBox.left + hero.clientLeft + left - box.left - control.clientLeft + lakeMargin + (matrix?.m41 || 0)) + "px";
+      sample.style.top = (heroBox.top + hero.clientTop + top - box.top - control.clientTop + lakeMargin + (matrix?.m42 || 0)) + "px";
+      sample.style.width = width + "px";
+      sample.style.height = height + "px";
+      sample.style.backgroundImage = scene.backgroundImage;
+      sample.style.backgroundSize = scene.backgroundSize;
+      sample.style.backgroundPosition = scene.backgroundPosition;
+      sample.style.backgroundRepeat = scene.backgroundRepeat;
+      sample.style.backgroundColor = scene.backgroundColor;
+    }
+  }
+
   function updateLens(control) {
+    const isLake = lakeControls.includes(control);
+    if (!isLake && !nativeBackdropLens) return;
     const width = control.offsetWidth, height = control.offsetHeight;
     if (!width || !height) return;
     const radius = Math.min(width / 2, height / 2, parseFloat(getComputedStyle(control).borderTopLeftRadius));
@@ -157,22 +226,41 @@
       displace.setAttribute("in2", "normal");
       displace.setAttribute("xChannelSelector", "R");
       displace.setAttribute("yChannelSelector", "G");
-      displace.setAttribute("scale", "20");
+      displace.setAttribute("scale", isLake ? "58" : "20");
+      if (isLake) {
+        displace.setAttribute("result", "refracted");
+        const light = filter.appendChild(document.createElementNS(svgNS, "feColorMatrix"));
+        light.setAttribute("in", "normal");
+        light.setAttribute("values", "0 0 1 0 0  0 0 1 0 0  0 0 1 0 0  0 0 0 0 1");
+        light.setAttribute("result", "rimLight");
+        const finish = filter.appendChild(document.createElementNS(svgNS, "feComposite"));
+        finish.setAttribute("operator", "arithmetic");
+        finish.setAttribute("in", "refracted");
+        finish.setAttribute("in2", "rimLight");
+        finish.setAttribute("k2", "1.13");
+        finish.setAttribute("k3", "1");
+        finish.setAttribute("k4", "-.50");
+      }
       lens = { image, id: filter.id };
+      if (isLake) lens.sample = mountLakeSample(control, filter.id);
       lenses.set(control, lens);
     }
     lens.size = size;
-    lens.image.setAttribute("href", lensMap(width, height, radius));
-    control.style.setProperty("--glass-lens", 'url("#' + lens.id + '") blur(.5px)');
+    lens.image.setAttribute("href", lensMap(width, height, radius, isLake));
+    if (!isLake) control.style.setProperty("--glass-lens", 'url("#' + lens.id + '") blur(.5px)');
   }
 
   const resize = new ResizeObserver(entries => {
-    for (const entry of entries) updateLens(entry.target);
+    for (const entry of entries) {
+      if (entry.target !== hero) updateLens(entry.target);
+    }
+    alignLakeSamples();
   });
   function applyTier() {
     resize.disconnect();
     if (document.documentElement.dataset.glassTier !== "full" || reducedTransparency.matches) return;
     if (!filters.isConnected) document.body.append(filters);
+    if (hero) resize.observe(hero);
     for (const control of controls) resize.observe(control);
   }
   new MutationObserver(applyTier).observe(document.documentElement, {

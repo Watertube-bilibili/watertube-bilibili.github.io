@@ -11,9 +11,9 @@
   <script src="./assets/ie-entry.js" charset="utf-8"></script>
   <script src="./assets/home-edition.js?v=2"></script>
   <link rel="stylesheet" href="./assets/desk-home.css?v=2">
-  <link rel="stylesheet" href="./assets/desk-glass.css">
+  <link rel="stylesheet" href="./assets/desk-glass.css?v=water">
   <script type="module" src="./assets/desk-performance.js"></script>
-  <script type="module" src="./assets/desk-glass.js"></script>
+  <script type="module" src="./assets/desk-glass.js?v=water"></script>
 </head>
 <body>
   <svg xmlns="http://www.w3.org/2000/svg" class="symbols" aria-hidden="true">
@@ -42,6 +42,14 @@
         <nav class="hero-actions" aria-label="主页入口">
           <a class="glass-control" id="bilibili-link" href="https://space.bilibili.com/390310418" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#bili"/></svg>B站主页<svg class="icon tiny" aria-hidden="true"><use href="#out"/></svg></a>
           <a class="glass-control" href="./projects.html"><svg class="icon" aria-hidden="true"><use href="#grid"/></svg>查看我的项目</a>
+          <span class="glass-bridge-film" aria-hidden="true"></span>
+          <svg class="glass-bridge" aria-hidden="true" focusable="false">
+            <defs><linearGradient id="water-rim" x2=".25" y2="1">
+              <stop stop-color="#fffdf0" stop-opacity=".9"/><stop offset=".5" stop-color="#bdcbc4" stop-opacity=".43"/>
+              <stop offset=".82" stop-color="#536660" stop-opacity=".62"/><stop offset="1" stop-color="#fff9e3" stop-opacity=".8"/>
+            </linearGradient></defs>
+            <path class="glass-bridge-rim" fill="none" stroke="url(#water-rim)" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
         </nav>
       </div>
     </section>
