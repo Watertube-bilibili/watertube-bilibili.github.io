@@ -74,7 +74,9 @@ a:focus-visible, button:focus-visible { outline: 3px solid #a63c3e; outline-offs
 .notice-icon { float: left; width: 39px; height: 39px; margin: 0 12px 0 0; border-radius: 9px; box-shadow: inset 0 1px #e9a496, inset 0 -2px 2px #73231b, 0 2px 3px #55321f30; }
 .notice-icon .icon { width: 24px; height: 24px; }
 .notice-content h2 { font-size: 22px; margin: 0; line-height: 39px; letter-spacing: -.04em; }
-.notice-content p { clear: both; margin: 13px 0 20px; font-size: 14px; color: #645c52; line-height: 1.8; }
+.notice-content p { clear: both; margin: 13px 0 5px; font-size: 14px; color: #645c52; line-height: 1.8; }
+.notice-preference { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; margin-bottom: 9px; color: #534b42; font-size: 14px; cursor: pointer; }
+.notice-preference input { width: 16px; height: 16px; margin: 0; accent-color: #873b36; }
 .notice-actions { display: flex; gap: 10px; font-size: 14px; }
 .notice-actions .glass-control { flex: 1; --glass-radius: 999px; padding-inline: .55em; }
 .notice-actions .icon { width: 15px; height: 15px; }
