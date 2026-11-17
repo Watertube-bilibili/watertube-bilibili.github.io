@@ -1,0 +1,25 @@
+OwenElliott/image-safety-classifier-xs
+Weights and fine-tuning by Owen Elliott, MIT (LICENSE-model.txt).
+Base weights: timm/swiftformer_xs.dist_in1k, Apache 2.0 (LICENSE-SwiftFormer.txt).
+Pinned model card, evaluation and preprocessing:
+https://huggingface.co/OwenElliott/image-safety-classifier-xs/tree/2b33625727f94d117e9896bec2521d8fa030caa2
+The unmodified onnx/image-safety-classifier-xs.onnx is distributed as safety-xs.onnx.
+SHA-256: 8c28c49d9075f3ad15ebdc2961f02d5b3f99be944815b848b49c9f0e6f3fb689
+
+The graph takes RGB pixels resized to 224 by 224, channel-first, float32 in
+[0,255]. Its outputs are probabilities for gore (NSFL), pornographic/highly
+suggestive content (NSFW) and other images (SFW), in that order. The homepage
+requires SFW >= 0.90 with NSFL and NSFW each < 0.10. These are site thresholds.
+The model card notes fewer NSFL training examples. The model can miss unsafe
+material and flag ordinary images. It does not classify non-graphic violence,
+hate symbols or text within images.
+
+ONNX Runtime Web 1.24.3
+Copyright Microsoft Corporation. MIT (LICENSE-onnxruntime.txt). Bundled
+third-party licenses are in ThirdPartyNotices-onnxruntime.txt.
+https://www.npmjs.com/package/onnxruntime-web/v/1.24.3
+https://github.com/microsoft/onnxruntime/tree/v1.24.3
+Unmodified dist files: ort.wasm.min.mjs, ort-wasm-simd-threaded.mjs,
+ort-wasm-simd-threaded.wasm. The engine runs single-threaded in a local worker.
+Runtime, model and image processing are local to this origin. Only static
+runtime/model files are fetched. User image data and scores are never uploaded.

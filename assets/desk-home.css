@@ -51,7 +51,7 @@ a:focus-visible, button:focus-visible { outline: 3px solid #a63c3e; outline-offs
 .hero::before {
   content: ""; position: absolute; inset: 6px; z-index: -1; border-radius: 9px;
   background: linear-gradient(30deg, #132425a6 4%, #12252554 39%, transparent 64%),
-    url("../liquid-lab/assets/wallpaper-lake.jpg") center 57% / cover no-repeat;
+    var(--hero-photo, url("../liquid-lab/assets/wallpaper-lake.jpg")) center 57% / cover no-repeat;
   box-shadow: inset 0 0 0 1px #312c2670, inset 0 2px 4px #0f161970;
 }
 .hero-content { margin: clamp(32px,5.2vw,75px); color: #fffaf0; }

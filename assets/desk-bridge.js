@@ -31,22 +31,26 @@ function rimDepth(shape, x, y, ux, uy) {
 }
 
 export function createGlassBridge(nav) {
-  if (!nav || !CSS.supports('clip-path', "path(evenodd, 'M0 0H1V1Z')")) return null;
+  if (!nav) return null;
   const [first, second] = nav.querySelectorAll('.glass-control');
-  const film = nav.querySelector('.glass-bridge-film');
-  const rim = nav.querySelector('.glass-bridge-rim');
+  const svg = nav.querySelector('.glass-bridge');
+  const surface = svg.querySelector('.water-surface');
+  const highlight = svg.querySelector('.water-glint');
   const quiet = matchMedia('(prefers-reduced-motion: reduce), (prefers-reduced-transparency: reduce), (forced-colors: active)');
   const enabled = () => !quiet.matches && document.documentElement.dataset.glassTier !== 'lite';
   let holding = false, joinedAt = null, releasedAt = null, breakAt = null, frame = 0;
-  let base, peer;
+  let base, peer, lastGap, lastTime, speed = 0;
 
   function clearJoin() {
     joinedAt = breakAt = null;
     delete nav.dataset.bridgePhase;
-    first.style.removeProperty('clip-path');
-    second.style.removeProperty('clip-path');
-    film.style.removeProperty('clip-path');
-    rim.removeAttribute('d');
+    for (const button of [first, second]) {
+      button.style.removeProperty('--water-cut');
+      button.style.removeProperty('--wet-rim');
+    }
+    surface.removeAttribute('d');
+    highlight.removeAttribute('d');
+    svg.style.visibility = 'hidden';
   }
 
   function stop() {
@@ -69,69 +73,120 @@ export function createGlassBridge(nav) {
     const a = capsule(rectA), b = capsule(rectB);
     const { ax, ux, uy, distance, gap } = contact(a, b);
     if (joinedAt === null) {
-      if (!holding || gap > 4) return;
-      joinedAt = now;
+      if (!holding || gap > 1) return;
+      joinedAt = lastTime = now;
+      lastGap = gap;
+      speed = 0;
     }
+
+    const dt = Math.max(1, now - lastTime);
+    speed += ((gap - lastGap) / dt - speed) * (1 - Math.exp(-dt / 30));
+    lastGap = gap;
+    lastTime = now;
 
     const radius = Math.min(a.r, b.r);
-    const snapGap = radius * 1.22;
-    const released = releasedAt === null ? 0 : clamp((now - releasedAt) / 135, 0, 1);
-    const stretch = Math.max(released, clamp(gap / snapGap, 0, 1));
-    if (holding && gap <= 4) breakAt = null;
-    if (breakAt === null && (gap >= snapGap || released >= 1)) breakAt = now;
-    const breaking = breakAt === null ? 0 : (now - breakAt) / 170;
-    if (breaking >= 1) { clearJoin(); return; }
+    // A fast pull carries a little more water. Releasing lets the joint drain.
+    let limit = radius * .6 + clamp(speed * 10, 0, 4);
+    if (!holding) limit *= 1 - .58 * clamp((now - releasedAt) / 95, 0, 1);
+    if (holding && gap <= 1) breakAt = null;
+    if (breakAt === null && gap >= limit) breakAt = now;
+    const recoil = breakAt === null ? 0 : clamp((now - breakAt) / 100, 0, 1);
+    if (recoil >= 1) { clearJoin(); return; }
 
-    const phase = breakAt !== null ? 'breaking' : (stretch > .22 ? 'stretching' : 'joined');
+    const phase = breakAt !== null ? 'breaking' : gap > 2.5 ? 'stretching' : 'joined';
     if (nav.dataset.bridgePhase !== phase) nav.dataset.bridgePhase = phase;
-    const growth = .32 + .68 * Math.min(1, (now - joinedAt) / 85);
-    const retract = clamp((breaking - .25) / .75, 0, 1);
-    const remaining = (1 - retract) ** 2;
-    const width = radius * (.84 - .24 * stretch) * growth * (1 - .96 * retract);
-    const neck = Math.max(.4, width * (.78 - .73 * stretch) * (1 - Math.min(1, breaking * 4)));
+    const stretch = clamp(gap / limit, 0, 1);
+    const wetting = .35 + .65 * (1 - Math.exp(-(now - joinedAt) / 28));
+    const neck = Math.max(.16, radius * .25 * (1 - stretch) ** 1.35 * wetting);
+    // The concave meniscus is tangent to the circular endcaps. Solving for its
+    // radius gives the contact width and an arc that narrows continuously.
+    const halfDistance = radius + clamp(gap, -.45, limit) / 2;
+    const curvature = Math.max(.15, (halfDistance ** 2 + neck ** 2 - radius ** 2) / (2 * (radius - neck)));
+    const contactWidth = radius * (curvature + neck) / (radius + curvature);
+    const remaining = (1 - recoil) ** 2;
+    const width = clamp(contactWidth, .8, radius * .40) * (1 - recoil * .97);
+    const seam = (a.r + distance - b.r) / 2;
     const bx = ax + ux * distance;
-    function point(x, y, rect = origin) {
-      return (ax + ux*x - uy*y - rect.left).toFixed(2) + ' ' + (a.y + uy*x + ux*y - rect.top).toFixed(2);
+    const verts = [];
+    function point(x, y) {
+      const px = ax + ux * x - uy * y - origin.left;
+      const py = a.y + uy * x + ux * y - origin.top;
+      verts.push([px, py]);
+      return px.toFixed(2) + ' ' + py.toFixed(2);
     }
-    // Repaint just the facing sectors. The rest of the capsule keeps its own lens.
-    const seat = 1.7 * (1 - retract);
-    function shoulders(y) {
-      return [
-        rimDepth(a, ax - uy*y, a.y + ux*y, ux, uy) - seat,
-        distance - rimDepth(b, bx - uy*y, b.y + ux*y, -ux, -uy) + seat
-      ];
+    function shoulder(y, side) {
+      const left = side === 1;
+      const depth = rimDepth(left ? a : b, (left ? ax : bx) - uy * y,
+        (left ? a.y : b.y) + ux * y, ux * side, uy * side);
+      return (left ? 0 : distance) + side * (depth - .65 * remaining);
     }
-    const [at, bt] = shoulders(-width);
-    const [ab, bb] = shoulders(width);
-    const mid = (a.r + distance - b.r) / 2;
-    function trim(button, rect, top, bottom, direction) {
-      const p = (x, y) => point(x, y, rect);
-      const cut = 'M' + p(top, -width) + 'L' + p(top + direction*90, -width) +
-        'L' + p(bottom + direction*90, width) + 'L' + p(bottom, width) + 'Z';
-      button.style.clipPath = "path(evenodd, 'M-120 -120H" + (rect.width+120) + 'V' +
-        (rect.height+120) + "H-120Z " + cut + "')";
-    }
-    trim(first, rectA, at, ab, 1);
-    trim(second, rectB, bt, bb, -1);
 
-    // Draw each lobe from its upper shoulder around the tip to its lower shoulder.
-    // The tips share a waist until pinch-off, then independently recoil to the rims.
-    function lobe(top, bottom, face, dir) {
-      const tip = face + (mid - face) * remaining;
-      const topSpan = tip - top, bottomSpan = tip - bottom;
-      const tipRadius = retract ? Math.min(2, width*.2) * Math.sin(Math.PI*retract) : neck;
-      const upper = 'M' + point(top,-width) + 'C' + point(top+.23*topSpan,-width*.61) + ' ' +
-        point(tip-.43*topSpan,-tipRadius) + ' ' + point(tip,-tipRadius);
-      const nose = 'Q' + point(tip + dir*tipRadius,0) + ' ' + point(tip,tipRadius);
-      const lower = 'C' + point(tip-.43*bottomSpan,tipRadius) + ' ' +
-        point(bottom+.23*bottomSpan,width*.61) + ' ' + point(bottom,width);
-      return { fill: upper + (retract ? nose : 'L'+point(tip,tipRadius)) + lower + 'Z',
-        edge: upper + (retract ? nose : 'M'+point(tip,tipRadius)) + lower };
+    // Soften only the small bit of rim submerged in the joint. Its circular
+    // cut stays local even when the two capsules meet along a flat side.
+    function soften(button, rect, face, dir) {
+      const outside = radius * .36;
+      const cx = ax + ux * (face + dir * outside) - rect.left;
+      const cy = a.y + uy * (face + dir * outside) - rect.top;
+      const cut = Math.hypot(outside + width * width / (2 * radius), width);
+      const mask = 'radial-gradient(circle at ' + cx.toFixed(2) + 'px ' + cy.toFixed(2) +
+        'px, transparent ' + (cut - 1).toFixed(2) + 'px, black ' + (cut + .65).toFixed(2) + 'px)';
+      button.style.setProperty('--water-cut', mask);
+      // Submerged glass stops catching light along its former perimeter.
+      const faceX = ax + ux * face - rect.left, faceY = a.y + uy * face - rect.top;
+      button.style.setProperty('--wet-rim', 'radial-gradient(circle at ' + faceX.toFixed(2) + 'px ' +
+        faceY.toFixed(2) + 'px, transparent ' + (width * .77).toFixed(2) +
+        'px, black ' + (width * 1.55).toFixed(2) + 'px)');
     }
-    const left = lobe(at, ab, a.r, 1), right = lobe(bt, bb, distance-b.r, -1);
-    film.style.clipPath = 'path("' + left.fill + right.fill + '")';
-    rim.setAttribute('d', left.edge + right.edge);
-    if (releasedAt !== null || breakAt !== null || now - joinedAt < 85) requestPaint();
+    soften(first, rectA, a.r, 1);
+    soften(second, rectB, distance - b.r, -1);
+
+    function side(face, dir) {
+      const top = shoulder(-width, dir);
+      const bottom = shoulder(width, dir);
+      const reach = Math.min(Math.max(0, (seam - face) * dir), limit * .5);
+      const tip = recoil ? face + dir * reach * remaining : seam;
+      const tipWidth = breakAt === null ? neck : Math.min(neck, .65) * remaining;
+      const cap = tip + dir * Math.min(reach * remaining, 1.1) * Math.sin(Math.PI * recoil);
+      const grip = (x) => x + .28 * (tip - x);
+      const tangent = (x) => tip + .48 * (x - tip);
+      return {
+        top: point(top, -width), bottom: point(bottom, width),
+        upper: [point(grip(top), -.70 * width), point(tangent(top), -tipWidth), point(tip, -tipWidth)],
+        lower: [point(tangent(bottom), tipWidth), point(grip(bottom), .70 * width), point(bottom, width)],
+        tipBottom: point(tip, tipWidth), nose: point(cap, 0),
+        inner: point(face - dir * (width * .85 + .9) * (1 - recoil), 0)
+      };
+    }
+    const left = side(a.r, 1), right = side(distance - b.r, -1);
+    function curve(points) { return 'C' + points.join(' '); }
+    function tail(lobe) {
+      return 'M' + lobe.top + curve(lobe.upper) + 'Q' + lobe.nose + ' ' + lobe.tipBottom +
+        curve(lobe.lower) + 'Q' + lobe.inner + ' ' + lobe.top + 'Z';
+    }
+    let fill, glint;
+    if (breakAt === null) {
+      // One surface with a continuous tangent across the waist, no middle seam.
+      glint = 'M' + left.top + curve(left.upper) + curve([right.upper[1], right.upper[0], right.top]);
+      fill = glint + 'Q' + right.inner + ' ' + right.bottom +
+        curve([right.lower[1], right.lower[0], right.tipBottom]) + curve(left.lower) +
+        'Q' + left.inner + ' ' + left.top + 'Z';
+    } else {
+      fill = tail(left) + tail(right);
+      glint = 'M' + left.top + curve(left.upper) + 'M' + right.top + curve(right.upper);
+    }
+
+    // The SVG viewport only encloses the actual droplets. Nothing paints the
+    // button row, including during the frame in which the shape disappears.
+    const xs = verts.map(p => p[0]), ys = verts.map(p => p[1]);
+    const x = Math.floor(Math.min(...xs)) - 1, y = Math.floor(Math.min(...ys)) - 1;
+    const w = Math.ceil(Math.max(...xs)) + 1 - x, h = Math.ceil(Math.max(...ys)) + 1 - y;
+    svg.setAttribute('viewBox', [x, y, w, h].join(' '));
+    svg.style.left = x + 'px'; svg.style.top = y + 'px';
+    svg.style.width = w + 'px'; svg.style.height = h + 'px';
+    surface.setAttribute('d', fill);
+    highlight.setAttribute('d', glint);
+    svg.style.visibility = 'visible';
+    if (!holding || breakAt !== null || now - joinedAt < 110) requestPaint();
   }
 
   quiet.addEventListener?.('change', stop);
@@ -154,7 +209,7 @@ export function createGlassBridge(nav) {
       const target = { ...base, left: base.left+x, right: base.right+x, y: base.y+y };
       const { ux, uy, gap } = contact(target, capsule(peer.getBoundingClientRect()));
       // The glass compresses at contact; the two labels keep their own space.
-      const intrusion = Math.min(0, gap + 2);
+      const intrusion = Math.min(0, gap + .45);
       requestPaint();
       return [x + intrusion*ux, y + intrusion*uy];
     },

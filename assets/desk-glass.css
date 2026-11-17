@@ -67,7 +67,7 @@
 }
 
 html[data-glass-tier="full"] .glass-control {
-  --glass-backdrop: var(--glass-lens, blur(1.4px)) brightness(1.16) saturate(145%);
+  --glass-backdrop: blur(.55px) brightness(1.12) saturate(125%);
 }
 
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -159,69 +159,45 @@ html[data-glass-tier="lite"] .glass-control {
   .glass-control::before, .glass-control::after { display: none; }
 }
 
-/* The sampled lake sits below the label and specular reflections. Safari can
-   filter this painted surface even when an SVG backdrop filter is unavailable. */
-.glass-scene {
-  display: none;
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  border-radius: inherit;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-html[data-glass-tier="full"] .hero-actions .glass-scene {
-  display: block;
-  opacity: .87;
-}
-
-.glass-scene-field {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  contain: paint;
-}
-
-.glass-scene-sample {
-  position: absolute;
-  transform: translate(calc(-1 * var(--glass-x, 0px)), calc(-1 * var(--glass-y, 0px)));
-  transition: transform 320ms cubic-bezier(.22, 1.51, .45, 1);
-}
-
-[data-glass-held] .glass-scene-sample { transition: none; }
-
-.hero-actions .glass-control {
-  --glass-tint: 200, 236, 235;
-  --glass-solid: #3e5860;
-  --glass-ledge: rgba(20, 40, 47, .4);
-  --glass-shadow: 0 3px 6px rgba(13, 32, 40, .32);
-  text-shadow: 0 1px 3px rgba(7, 26, 31, .72);
-}
-
-@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
-  html[data-glass-tier="full"] .hero-actions .glass-scene { display: none; }
-}
-
-.hero-actions { position: relative; }
-.glass-bridge, .glass-bridge-film {
-  display: none;
+/* The bitmap itself is transparent outside the capsule and in the center. */
+.lake-rim {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  overflow: visible;
+  z-index: -1;
   pointer-events: none;
 }
-.hero-actions[data-bridge-phase] > :is(.glass-bridge, .glass-bridge-film) { display: block; }
-.glass-bridge-film {
-  z-index: 3;
-  background: linear-gradient(130deg, #fffae730, #e7f1e81c 48%, #bdcfbf30);
-  -webkit-backdrop-filter: blur(.65px) brightness(1.16) saturate(135%);
-  backdrop-filter: blur(.65px) brightness(1.16) saturate(135%);
-}
-.glass-bridge { z-index: 4; }
 
-@media (prefers-reduced-motion: reduce) {
-  .glass-scene-sample { transform: none; transition: none; }
+.hero-actions .glass-control {
+  --glass-tint: 236, 237, 232;
+  --glass-solid: #434b49;
+  --glass-ledge: rgba(25, 31, 33, .37);
+  --glass-shadow: 0 3px 6px rgba(15, 25, 24, .28);
+  text-shadow: 0 1px 3px rgba(7, 22, 21, .72);
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .lake-rim { display: none; }
+}
+
+.hero-actions { position: relative; }
+.hero-actions .glass-control {
+  -webkit-mask-image: var(--water-cut, none);
+  mask-image: var(--water-cut, none);
+}
+.hero-actions .lake-rim {
+  -webkit-mask-image: var(--wet-rim, none);
+  mask-image: var(--wet-rim, none);
+}
+.glass-bridge {
+  position: absolute;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
 }
