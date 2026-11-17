@@ -1,0 +1,15 @@
+#activity { padding: 0.7em; border: 1px solid #c8bda8; background: #f2ecdf; }
+#activity button, #activity select { font: 1em Tahoma, SimSun, sans-serif; }
+#activity button { margin: 0.2em 0.5em 0.2em 0; padding: 0.2em 0.5em; }
+#activity label { margin-right: 0.4em; }
+#activity textarea { display: block; width: 90%; height: 6em; margin: 0.4em 0; font: 1em Tahoma, SimSun, sans-serif; }
+.readout { margin: 0.6em 0; font-weight: bold; }
+.clock { margin: 0.2em 0; color: #4e682f; font: bold 2.3em 'Courier New', monospace; }
+.stage { margin: 0.6em 0; padding: 0.7em; border: 1px solid #c6b8a4; background: #fcf7ed; }
+.tower { width: 10em; margin: 0.3em auto; border-bottom: 4px solid #6e614c; }
+.brick { height: 0.9em; font-size: 0.9em; line-height: 0.9em; border: 2px outset #cdb5a3; }
+.jelly-tray { padding: 1em 0; }
+.jelly-table { width: 96%; height: 3em; table-layout: fixed; }
+.jelly-table td { border-style: solid; border-width: 3px; border-color: #e8d3c6 #766b62 #766b62 #e8d3c6; }
+.meter { width: 90%; padding: 2px; background: #fcf7ed; border: 1px solid #a89985; }
+.meter-line { height: 0.9em; font-size: 1em; line-height: 0.9em; background: #87603b; }
