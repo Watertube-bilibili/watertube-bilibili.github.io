@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#eeeae0" />
+    <meta
+      name="description"
+      content="一台可以用手势操作的模拟手机。体验九宫格桌面、拟物应用和液态玻璃。"
+    />
+    <title>Liquid Lab · 掌上模拟器</title>
+    <link rel="stylesheet" href="style.css?v=4" />
+    <link rel="stylesheet" href="studio.css?v=4" />
+    <link rel="stylesheet" href="apps.css?v=4" />
+    <link rel="stylesheet" href="control.css?v=4" />
+  </head>
+  <body>
+    <header class="workshop-header">
+      <div class="workshop-header-inner">
+        <h1 class="workshop-title">
+          <span class="workshop-monogram" aria-hidden="true"
+            ><i></i><i></i></span
+          ><span class="workshop-wordmark">Liquid Lab</span
+          ><span class="workshop-product">掌上模拟器</span>
+        </h1>
+        <button class="workshop-guide" id="guideBtn">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path
+              d="M3 5.3c3.5-.9 6.2-.4 9 1.7 2.8-2.1 5.5-2.6 9-1.7v13c-3.1-.7-6-.2-9 1.8-3-2-5.9-2.5-9-1.8zM12 7v13"
+            /></svg
+          ><span>手势指南</span>
+        </button>
+      </div>
+    </header>
+    <main class="workshop">
+      <section class="instrument" aria-label="手机模拟器">
+        <div class="instrument-heading">
+          <span class="bench-view"><i></i> 设备预览</span
+          ><span class="bench-metal"><i></i> 钛灰色</span>
+        </div>
+        <div class="bench">
+          <div class="bench-corners" aria-hidden="true">
+            <i></i><i></i><i></i><i></i>
+          </div>
+          <div class="phone-scaler" id="phoneScaler">
+            <div class="phone" id="phone">
+              <button
+                class="hardware action-key"
+                id="actionKey"
+                aria-label="静音侧键"
+              ></button
+              ><button
+                class="hardware volume-up"
+                aria-label="增加音量"
+                id="volumeUp"
+              ></button
+              ><button
+                class="hardware volume-down"
+                aria-label="降低音量"
+                id="volumeDown"
+              ></button
+              ><button
+                class="hardware power-key"
+                aria-label="锁定或唤醒"
+                id="powerKey"
+              ></button>
+              <div class="phone-screen" id="screen">
+                <img
+                  id="wallpaperBase"
+                  class="wallpaper-base"
+                  src="assets/wallpaper-lake.jpg"
+                  alt=""
+                  aria-hidden="true"
+                /><canvas id="optics" aria-hidden="true"></canvas>
+                <div class="screen-grain"></div>
+                <div class="home-screen" id="homeScreen">
+                  <div class="home-heading">
+                    <div class="home-calendar">
+                      <time id="homeClock" class="home-clock" aria-hidden="true"
+                        >09:41</time
+                      >
+                      <div class="home-date" id="homeDate">11月17日 星期二</div>
+                    </div>
+                    <button class="weather-peek" data-open="weather">
+                      <span class="sun-mini"
+                        ><svg viewBox="0 0 24 24" width="27" height="27">
+                          <circle cx="12" cy="12" r="5" fill="#eed19b" />
+                          <path
+                            d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"
+                            fill="none"
+                            stroke="#eed19b"
+                            stroke-width="1.5"
+                          /></svg></span
+                      ><b>22°</b><small>晴 · 杭州</small>
+                    </button>
+                  </div>
+                  <div class="desktop-grid" id="desktopGrid"></div>
+                  <button
+                    class="search-pill optical-glass"
+                    id="searchBtn"
+                    aria-label="搜索应用"
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.1"
+                      aria-hidden="true"
+                    >
+                      <circle cx="10.5" cy="10.5" r="6.7" />
+                      <path d="m16 16 5 5" />
+                    </svg>
+                    搜索
+                  </button>
+                  <div class="dock optical-glass" id="dock"></div>
+                </div>
+                <div class="app-layer" id="appLayer"></div>
+                <div class="tasks-layer" id="tasksLayer">
+                  <div class="tasks-title">
+                    最近使用 <span>上滑卡片关闭</span>
+                  </div>
+                  <div class="tasks-track" id="tasksTrack"></div>
+                  <button class="clear-tasks glass" id="clearTasks">
+                    清空后台
+                  </button>
+                </div>
+                <div class="edge-zone" aria-hidden="true"></div>
+                <div class="system-overlay" id="systemOverlay"></div>
+                <div class="lock-screen" id="lockScreen">
+                  <div class="lock-date" id="lockDate">11月8日 星期日</div>
+                  <div class="lock-time" id="lockTime">09:41</div>
+                  <div class="lock-label">轻触或上滑解锁</div>
+                </div>
+                <div class="status-bar">
+                  <span id="statusTime">9:41</span>
+                  <div>
+                    <svg viewBox="0 0 24 14">
+                      <path
+                        d="M1 13V10h3v3zm5 0V7h3v6zm5 0V4h3v9zm5 0V1h3v12z"
+                        fill="currentColor"
+                      /></svg
+                    ><svg viewBox="0 0 20 14">
+                      <path
+                        d="M1 4Q10-3 19 4M4 7Q10 2 16 7M7 10Q10 7 13 10"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      />
+                      <circle
+                        cx="10"
+                        cy="13"
+                        r="1.2"
+                        fill="currentColor"
+                      /></svg
+                    ><span class="battery">86</span>
+                  </div>
+                </div>
+                <div
+                  class="control-pull-zone"
+                  aria-label="向下拖动打开控制中心"
+                ></div>
+                <button
+                  class="dynamic-island"
+                  id="island"
+                  aria-label="展开灵动岛"
+                >
+                  <span class="island-compact"
+                    ><span class="island-art"></span
+                    ><span class="camera-dot"></span
+                    ><span class="island-wave"
+                      ><i></i><i></i><i></i><i></i></span></span
+                  ><span class="island-expanded" id="islandExpanded"></span>
+                </button>
+                <button
+                  class="home-gesture"
+                  id="homeGesture"
+                  aria-label="返回桌面；向上拖动并停留打开多任务"
+                >
+                  <span></span>
+                </button>
+                <div class="volume-hud" id="volumeHud">
+                  ♫
+                  <div><i></i></div>
+                </div>
+                <div class="phone-toast" id="phoneToast" role="status"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bench-footer">
+          <span class="bench-readout"
+            ><i></i
+            ><span id="motionReadout" role="status">设备已就绪</span></span
+          ><span class="bench-keyboard"
+            ><kbd>H</kbd>桌面 <kbd>M</kbd>多任务 <kbd>Esc</kbd>返回</span
+          >
+        </div>
+      </section>
+      <aside class="instrument-panel" aria-label="设备调校">
+        <section class="parameter-group">
+          <div class="group-title">
+            <span class="group-icon"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="4" y="4" width="16" height="16" rx="5" />
+                <path
+                  d="M8 11V9a1 1 0 0 1 1-1h2M16 13v2a1 1 0 0 1-1 1h-2"
+                /></svg
+            ></span>
+            <h2>玻璃材质</h2>
+          </div>
+          <div class="material-selector" role="group" aria-label="玻璃材质">
+            <button type="button" class="selected" data-material="liquid">
+              液态玻璃</button
+            ><button type="button" data-material="frost">经典毛玻璃</button>
+          </div>
+          <div class="optics-parameters">
+            <label class="instrument-slider"
+              ><span>折射强度</span
+              ><output for="refraction" id="refractionValue">82%</output
+              ><input id="refraction" type="range" min="0" max="100" value="82"
+            /></label>
+            <label class="instrument-slider"
+              ><span>光学厚度</span
+              ><output for="depth" id="depthValue">72%</output
+              ><input id="depth" type="range" min="5" max="100" value="72"
+            /></label>
+          </div>
+          <div class="highlight-row">
+            <span>随指针移动高光</span
+            ><button
+              class="toggle on"
+              id="highlightToggle"
+              role="switch"
+              aria-checked="true"
+              aria-label="随指针移动高光"
+            ></button>
+          </div>
+          <span hidden id="materialCaption"></span
+          ><span hidden id="rendererLabel">WebGL</span>
+        </section>
+        <section class="parameter-group paper-picker">
+          <div class="group-title">
+            <span class="group-icon"
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3" y="4.5" width="18" height="15" rx="2.5" />
+                <path d="m4 17 5-5 4 3 4-5 4 4" />
+                <circle cx="9" cy="9" r="1" /></svg
+            ></span>
+            <h2>壁纸</h2>
+          </div>
+          <div id="wallpaperSwatches" class="paper-swatches"></div>
+        </section>
+        <section class="parameter-group shortcuts">
+          <div class="group-title"><h2>快捷操作</h2></div>
+          <button id="demoTasks" class="shortcut-row">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="3" y="7" width="13" height="13" rx="2" />
+              <path d="M7 4h10a3 3 0 0 1 3 3v9" /></svg
+            ><span>多任务</span
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7M7 7h10v10" />
+            </svg>
+          </button>
+          <button id="controlBtn" class="shortcut-row">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M4 7h5m5 0h6M4 17h10m5 0h1" />
+              <circle cx="11.5" cy="7" r="2.3" />
+              <circle cx="16.5" cy="17" r="2.3" /></svg
+            ><span>控制中心</span
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7M7 7h10v10" />
+            </svg>
+          </button>
+          <button id="demoIsland" class="shortcut-row">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <rect x="2.5" y="7.5" width="19" height="9" rx="4.5" />
+              <circle cx="16.5" cy="12" r="1" /></svg
+            ><span>灵动岛</span
+            ><svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7M7 7h10v10" />
+            </svg>
+          </button>
+        </section>
+      </aside>
+    </main>
+    <dialog id="guide" aria-labelledby="guideTitle">
+      <button class="dialog-close" id="closeGuide" aria-label="关闭指南">
+        ×
+      </button>
+      <h2 id="guideTitle">手势指南</h2>
+      <dl class="guide-gestures">
+        <div>
+          <dt>回到桌面 <kbd>H</kbd></dt>
+          <dd>从底部横条向上轻扫。</dd>
+        </div>
+        <div>
+          <dt>多任务 <kbd>M</kbd></dt>
+          <dd>上滑后停住约 0.3 秒。横向拖动选择应用，上滑卡片关闭。</dd>
+        </div>
+        <div>
+          <dt>返回 <kbd>Esc</kbd></dt>
+          <dd>从应用左边缘向右拖动，往回拖可取消。</dd>
+        </div>
+        <div>
+          <dt>控制中心</dt>
+          <dd>从屏幕右上角下拉，上滑收起。</dd>
+        </div>
+        <div>
+          <dt>灵动岛</dt>
+          <dd>轻触顶部黑色胶囊，查看播放与计时状态。</dd>
+        </div>
+      </dl>
+      <p class="guide-local">
+        笔记与偏好保存在当前浏览器。消息使用本地回复，天气为示例数据。
+      </p>
+      <button class="primary-button" id="startExploring">回到模拟器</button>
+    </dialog>
+    <script src="assets/html2canvas.min.js"></script>
+    <script src="icons.js?v=4"></script>
+    <script src="motion.js?v=4"></script>
+    <script src="core/window.js?v=4"></script>
+    <script src="core/gestures.js?v=4"></script>
+    <script src="optics.js?v=4"></script>
+    <script src="core/control-center.js?v=4"></script>
+    <script src="audio.js?v=4"></script>
+    <script src="apps.js?v=4"></script>
+    <script src="core/storage.js?v=4"></script>
+    <script src="app.js?v=4"></script>
+  </body>
+</html>

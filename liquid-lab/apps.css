@@ -1,0 +1,622 @@
+/* Shared type, controls and contrast for the handset applications. */
+.app-panel {
+  --app-paper: #f7f4ed;
+  --app-ink: #35332d;
+  --app-muted: #746f64;
+  --app-accent: #8d362e;
+  --app-rule: #c9c0af75;
+  --app-inset: #fffaf2;
+  background: var(--app-paper);
+  color: var(--app-ink);
+}
+.app-header {
+  min-height: 65px;
+  align-items: center;
+  padding: 7px 22px 14px;
+}
+.app-header h2 {
+  font-size: 30px;
+  letter-spacing: -1.7px;
+  font-weight: 650;
+}
+.app-header button {
+  color: var(--app-accent);
+  font-size: 12px;
+  padding: 9px 0 9px 8px;
+}
+.app-header.detail-header {
+  min-height: 46px;
+  padding-left: 18px;
+  padding-right: 18px;
+  gap: 7px;
+  border-bottom: 1px solid var(--app-rule);
+}
+.detail-header strong {
+  font-size: 13px;
+  font-weight: 550;
+}
+.app-context {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 3px 0 18px;
+  color: var(--app-muted);
+  font-size: 11px;
+}
+.app-context span {
+  font-size: 10px;
+}
+.app-disclosure {
+  color: var(--app-muted);
+  font-size: 10px;
+  line-height: 1.65;
+  margin: 22px 0 12px;
+}
+.app-content .section-label {
+  margin: 18px 2px 9px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--app-muted);
+}
+.app-content .list-group {
+  border-radius: 14px;
+  background: var(--app-inset);
+  border: 1px solid var(--app-rule);
+  box-shadow: 0 2px 5px #352c2310;
+}
+.app-content .list-row {
+  border-color: var(--app-rule);
+  min-height: 51px;
+  padding: 12px 15px;
+  color: var(--app-ink);
+}
+.app-content .list-row .chevron {
+  color: var(--app-muted);
+}
+.app-content .toggle {
+  background: #b0a99e;
+}
+.app-content .toggle.on {
+  background: #9a4439;
+}
+.app-content .toggle:after {
+  background: #fff9ef;
+}
+.app-content .settings-profile {
+  background: var(--app-inset);
+  border-color: var(--app-rule);
+}
+.app-content select {
+  background: var(--app-paper);
+  color: var(--app-ink);
+  border: 1px solid var(--app-rule);
+}
+.app-content :focus-visible {
+  outline: 2px solid #ae5749;
+  outline-offset: 2px;
+}
+.app-content input:not([type="range"]),
+.app-content textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+.app-content h2,
+.app-content h3,
+.app-content b {
+  text-wrap: pretty;
+}
+
+/* A stitched paper notebook, with continuous ruling in the editor. */
+.notes-panel {
+  --app-paper: #f8f1df;
+  --app-inset: #fcf5e6;
+  --app-accent: #884135;
+}
+.notes-panel .app-header {
+  background: linear-gradient(#f9f3e4, #f4ead3);
+}
+.notes-panel .notes-index {
+  padding: 17px 22px 45px;
+  background:
+    radial-gradient(ellipse at 0% 0%, #d1af7230, transparent 68%), #f7f0df;
+}
+.notes-list {
+  border-top: 2px solid #786f5b;
+  margin: 0;
+}
+.notes-list .note-card {
+  padding: 17px 2px;
+  border-bottom: 1px solid #b8a68977;
+  background: none;
+}
+.note-card b {
+  font-size: 15px;
+  color: #423d33;
+  letter-spacing: 0.3px;
+  font-weight: 550;
+}
+.note-card small {
+  font-size: 11px;
+  color: #776f61;
+}
+.note-card time {
+  font:
+    10px ui-monospace,
+    monospace;
+  margin-right: 10px;
+  color: #9b6150;
+}
+.note-editor {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, #a88f6733 28px), #f9f2e1;
+}
+.note-editor input,
+.note-editor textarea {
+  color: #433c31;
+}
+.note-editor input {
+  font-size: 24px;
+}
+.note-editor textarea {
+  font:
+    14px/28px Georgia,
+    "Songti SC",
+    "STSong",
+    serif;
+}
+
+/* A contact sheet with a large first frame, followed by paired prints. */
+.photos-panel .photo-index {
+  padding: 6px 18px 45px;
+}
+.photo-index .photos-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin: 0;
+}
+.photos-grid button {
+  border-radius: 5px;
+  aspect-ratio: 1.16;
+  background: #ded9ce;
+}
+.photos-grid button:first-child {
+  grid-column: span 2;
+  aspect-ratio: 1.68;
+}
+.photo-name {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  padding: 18px 10px 8px;
+  color: #fffdf3;
+  font-size: 10px;
+  text-align: left;
+  background: linear-gradient(transparent, #13191c85);
+}
+.photo-toolbar {
+  align-items: center;
+}
+.photo-toolbar button {
+  min-width: 42px;
+  min-height: 42px;
+  padding: 6px 12px;
+}
+.photo-detail .app-header {
+  border-color: #ffffff22;
+}
+.photo-detail .app-header .back-button {
+  color: #eae4d6;
+}
+
+/* Conversation list and local messages. */
+.messages-panel,
+.settings-panel,
+.clock-panel {
+  background: var(--app-paper);
+  color: var(--app-ink);
+}
+.message-index {
+  padding-top: 5px;
+}
+.chat-row {
+  padding: 15px 0;
+  border-color: var(--app-rule);
+}
+.chat-row .avatar {
+  border-radius: 15px;
+  font:
+    italic 21px Georgia,
+    serif;
+  background: linear-gradient(145deg, #768e8b, #455e5c);
+  color: #fcf8eb;
+}
+.chat-row:nth-of-type(2) .avatar {
+  background: linear-gradient(145deg, #b39777, #89664d);
+}
+.chat-row:nth-of-type(3) .avatar {
+  background: linear-gradient(145deg, #8e8b93, #666272);
+}
+.chat-row b {
+  font-size: 15px;
+  font-weight: 550;
+}
+.chat-row small {
+  font-size: 11px;
+  color: var(--app-muted);
+}
+.chat-time {
+  align-self: center;
+  font-size: 20px;
+  color: #aca497;
+}
+.chat-mode {
+  font-size: 9px;
+  color: var(--app-muted);
+}
+.bubble {
+  border-color: var(--app-rule);
+  background: #fffaf1;
+  color: #474039;
+}
+.bubble.mine {
+  background: linear-gradient(150deg, #9c5444, #854338);
+  border-color: #804238;
+  color: #fffaf3;
+}
+.chat-input {
+  background: var(--app-paper);
+  border-top: 1px solid var(--app-rule);
+}
+.chat-input input {
+  background: var(--app-inset);
+  border-color: var(--app-rule);
+  color: var(--app-ink);
+}
+.chat-input button {
+  background: var(--app-accent);
+}
+
+/* Weather uses a cover photo behind translucent forecast sheets. */
+.weather-panel {
+  background:
+    linear-gradient(180deg, #284957b0, #27414da0 44%, #223e4ced),
+    url("assets/wallpaper-peaks.jpg") 50% 40% / cover !important;
+}
+.weather-panel .app-header h2 {
+  color: #fff9ea;
+}
+.weather-scroll {
+  padding-top: 0;
+}
+.city-picker {
+  margin: 0 0 6px;
+  gap: 7px;
+}
+.city-picker button {
+  padding: 6px 11px;
+  border-radius: 13px;
+  font-size: 10px;
+  color: #fffdf4;
+  text-shadow: 0 1px 3px #263e4b66;
+}
+.city-picker button.active {
+  background: #fff8ed38;
+}
+.weather-hero {
+  padding: 19px 0 22px;
+  text-shadow: 0 2px 8px #19364455;
+}
+.weather-hero h3 {
+  font-size: 22px;
+}
+.weather-hero .temperature {
+  font:
+    300 79px/1.1 -apple-system,
+    "Segoe UI",
+    sans-serif;
+}
+.weather-card.glass {
+  background: linear-gradient(125deg, #ebf2ee2e, #dae6ed11);
+  border-color: #d8eee335;
+  backdrop-filter: blur(7px) saturate(115%);
+}
+.weather-card > small,
+.weather-hero small,
+.weather-panel .app-disclosure {
+  color: #eef4e9c9;
+}
+.hourly b {
+  font-size: 12px;
+  font-weight: 500;
+}
+.weather-metrics .inline-unit {
+  display: inline;
+}
+
+/* Walnut plinth and lacquer record. */
+.music-panel {
+  background: radial-gradient(
+    ellipse at 16% 20%,
+    #57483f 0,
+    #332f2b 50%,
+    #211f1d 100%
+  ) !important;
+  color: #f6edda !important;
+}
+.music-panel .app-header h2 {
+  font-size: 29px;
+}
+.music-panel .app-header button {
+  color: #e9bc9c;
+}
+.music-scroll {
+  padding: 0 0 35px;
+}
+.record-stage {
+  height: 263px;
+  margin: 0 17px 11px;
+  border: 1px solid #bcaa8933;
+  border-radius: 14px;
+  background:
+    repeating-linear-gradient(
+      2deg,
+      #00000004 0 1px,
+      #f6d7a809 1px 3px,
+      transparent 3px 8px
+    ),
+    linear-gradient(125deg, #6b4b35, #4c3629 48%, #2c241e);
+  box-shadow:
+    inset 0 1px #d3a57c77,
+    inset 0 -2px #120f0c66,
+    0 4px 8px #120e0b4d;
+}
+.vinyl {
+  width: 217px;
+  height: 217px;
+  background: repeating-radial-gradient(
+    circle,
+    #212321 0 1px,
+    #111411 1.7px,
+    #33342d 2.8px
+  );
+}
+.vinyl-label {
+  inset: 65px;
+  background-image:
+    linear-gradient(#bc6c4830, #a35a4630), url("assets/photo-5.jpg");
+}
+.vinyl-label:after {
+  inset: 38px;
+}
+.tonearm {
+  right: 16px;
+  top: 25px;
+  height: 150px;
+  width: 64px;
+}
+.song-meta h3 {
+  font:
+    normal 30px/1.1 Georgia,
+    "Times New Roman",
+    serif;
+  color: #fbf2e0;
+}
+.song-meta p {
+  color: #c5b6a5;
+}
+.music-times,
+.track-no,
+.music-track small {
+  color: #b6a898;
+}
+.music-track {
+  color: #d3c6b4;
+  border-color: #ffffff17;
+}
+.music-track.active {
+  color: #fff2d9;
+}
+.music-controls .play-main {
+  background: linear-gradient(#f5e8d0, #cebea3);
+  color: #4d4032;
+}
+
+/* Desktop calculator, with a debossed green-grey display and a red equal key. */
+.calc-panel {
+  background: linear-gradient(135deg, #c2b8a7, #a89f91) !important;
+}
+.calc-panel .app-header h2 {
+  font-size: 22px;
+  font-weight: 600;
+  color: #3f3a31;
+}
+.calc-panel .app-header button {
+  color: #713e32;
+}
+.calc-display {
+  height: 134px;
+  margin: 4px 19px 20px;
+  background: linear-gradient(135deg, #b5ba9e, #d3d4b5);
+  border-color: #858573;
+}
+.calc-keys {
+  gap: 9px;
+}
+.calc-keys button {
+  border-color: #a99f8a;
+  border-radius: 10px;
+  background: linear-gradient(#f3eee1, #d3cbbc);
+  box-shadow:
+    0 3px 0 #938877,
+    0 5px 6px #2c241b22,
+    inset 0 1px #fff9ef;
+  color: #443e33;
+}
+.calc-keys .operator {
+  background: linear-gradient(#7e8880, #69776b);
+  border-color: #626e61;
+  box-shadow:
+    0 3px #4c5b4c,
+    inset 0 1px #fff5;
+}
+.calc-keys .equal {
+  background: linear-gradient(#b95847, #9e4136);
+  border-color: #8d4438;
+  box-shadow:
+    0 3px #753328,
+    inset 0 1px #fff5;
+}
+
+/* Ivory dial and steel bezel. */
+.clock-tabs {
+  background: #e8e2d6;
+  margin-bottom: 11px;
+}
+.clock-tabs button {
+  color: #746e62;
+}
+.clock-tabs button.active {
+  background: #fffaf0;
+  color: #4b473f;
+}
+.analog-clock {
+  border-color: #9b998e;
+  background: radial-gradient(circle at 38% 23%, #fffaf0, #e2dbca);
+  box-shadow:
+    inset 0 1px 5px #4e493e55,
+    0 2px #65675e,
+    0 10px 21px #34281424;
+}
+.stopwatch-readout {
+  color: var(--app-ink);
+  font-variant-numeric: tabular-nums;
+}
+.timer-inputs input {
+  color: var(--app-ink);
+  border-color: var(--app-rule);
+  background: var(--app-inset);
+}
+.clock-actions button {
+  background: linear-gradient(#efe9dc, #d6cdbb);
+  color: #5b5446;
+  box-shadow:
+    inset 0 1px #fff9e9,
+    0 3px #afa38d,
+    0 5px 9px #453b251a;
+}
+.clock-actions button.start {
+  background: linear-gradient(#a95243, #874139);
+  box-shadow:
+    inset 0 1px #da9c87,
+    0 3px #65342d,
+    0 5px 9px #453b2522;
+}
+.laps,
+.laps > div {
+  color: var(--app-muted);
+  border-color: var(--app-rule);
+}
+.lab-scroll {
+  padding: 0 0 48px;
+}
+.lab-app {
+  background: linear-gradient(160deg, #383d3d, #202927) !important;
+}
+#labCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.lab-app .lab-copy {
+  margin: 7px 10px 16px;
+  font-size: 11px;
+  color: #c4cfc5;
+}
+.lab-demo {
+  border: 1px solid #ffffff2e;
+  box-shadow: 0 10px 23px #08101438;
+}
+.lab-patterns button {
+  border-color: #b8c4ba55;
+  color: #e1e4d6;
+}
+.lab-patterns button.active {
+  background: #dceadd24;
+}
+.lab-app .slider-label {
+  color: #d2d7cd;
+}
+
+/* Use explicit night surfaces to preserve photo, waveform and LCD colors. */
+.phone-screen.night
+  .app-panel:not(.dark):not(.weather-panel):not(.music-panel):not(
+    .photo-detail
+  ):not(.lab-app),
+.phone-screen.night .app-panel img,
+.phone-screen.night .app-icon {
+  filter: none;
+}
+.phone-screen.night .app-panel {
+  --app-paper: #282825;
+  --app-inset: #34332e;
+  --app-ink: #efebdf;
+  --app-muted: #b9b2a2;
+  --app-accent: #e4ab98;
+  --app-rule: #e7ddc525;
+}
+.night .notes-panel,
+.night .notes-panel .app-header,
+.night .notes-panel .notes-index {
+  background: #302e29;
+}
+.night .note-card b,
+.night .note-editor input,
+.night .note-editor textarea {
+  color: #f2ead7;
+}
+.night .note-card small,
+.night .note-card time {
+  color: #c4b49a;
+}
+.night .note-editor {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 27px, #baaa8a19 28px), #302e29;
+}
+.night .bubble:not(.mine) {
+  background: #393830;
+  color: #f6eddc;
+}
+.night .clock-tabs {
+  background: #34332f;
+}
+.night .clock-tabs button {
+  color: #bcb6a9;
+}
+.night .clock-tabs button.active {
+  background: #555147;
+  color: #fff6df;
+}
+.night .calc-panel {
+  background: linear-gradient(140deg, #555048, #37352f) !important;
+}
+.night .calc-panel .app-header h2,
+.night .calc-panel .app-header button {
+  color: #e1d9c6;
+}
+.night.light-app .status-bar {
+  color: #f7f0de;
+}
+.night.light-app .battery {
+  color: #343731;
+  background: #eee7d5;
+}
+.night.light-app .home-gesture span {
+  background: #e9e3d2;
+}
+.sun-mini svg {
+  display: block;
+  width: 27px;
+  height: 27px;
+}

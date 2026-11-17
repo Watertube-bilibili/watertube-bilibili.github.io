@@ -1,0 +1,267 @@
+/* The controls form a single smoked glass panel above the current application. */
+.control-center {
+  --cc-ink: #fcf7ec;
+  --cc-edge: rgba(255, 247, 228, 0.38);
+  --cc-shadow: rgba(11, 7, 8, 0.2);
+  color: var(--cc-ink);
+  background: transparent;
+}
+.control-center .cc-content {
+  padding: 88px 20px 44px;
+}
+.control-center .control-heading {
+  height: 74px;
+  padding: 0 4px 18px;
+  align-items: center;
+}
+.control-center .control-heading h2 {
+  color: #fff9f0;
+  font-size: 29px;
+  font-weight: 640;
+  letter-spacing: -0.8px;
+  line-height: 1.3;
+  text-shadow: 0 2px 15px rgba(20, 12, 17, 0.6);
+}
+.control-center .control-heading > button {
+  width: 34px;
+  height: 34px;
+  padding: 8px;
+  color: #fff8ee;
+  border: 1px solid var(--cc-edge);
+  background: rgba(26, 21, 25, 0.32);
+  box-shadow: inset 0 1px 0 #fffaee36;
+}
+.control-center svg {
+  display: block;
+  flex: none;
+}
+.control-center .control-heading > button svg,
+.control-center .cc-wide > svg,
+.control-center .cc-shortcut > svg,
+.control-center .cc-slider > svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+.control-center .cc-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-rows: 100px 76px 76px 64px 68px;
+  gap: 10px;
+}
+.control-center .cc-piece {
+  background: linear-gradient(
+    145deg,
+    rgba(76, 66, 68, 0.21),
+    rgba(22, 20, 23, 0.35) 64%,
+    rgba(44, 36, 39, 0.28)
+  );
+  border: 1px solid var(--cc-edge);
+  box-shadow:
+    inset 0 1px 0 #fffff34a,
+    inset 0 -1px 1px #ecece333,
+    0 7px 17px var(--cc-shadow);
+  border-radius: 23px;
+  color: var(--cc-ink);
+}
+.control-center .cc-piece::after {
+  inset: 1px;
+  border-top-color: #fff9f35c;
+  mask-image: linear-gradient(110deg, black, transparent 70%);
+}
+.control-center .cc-music {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  padding: 14px;
+}
+.cc-album {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0;
+  min-width: 0;
+  text-align: left;
+}
+.control-center .cc-cover {
+  display: block;
+  flex: none;
+  width: 47px;
+  height: 55px;
+  margin: 0;
+  border-radius: 7px;
+  background:
+    linear-gradient(140deg, #22172710, #331c2744),
+    url("assets/photo-5.jpg") center / cover;
+  box-shadow:
+    0 4px 9px #0d0e1a55,
+    inset 0 0 0 1px #fff5;
+}
+.cc-metadata {
+  display: block;
+  min-width: 0;
+}
+.control-center .cc-music small {
+  font-size: 9px;
+  color: #fff4e7bb;
+  margin: 0 0 4px;
+}
+.control-center .cc-music b {
+  font:
+    500 19px/1.17 Georgia,
+    serif;
+  letter-spacing: -0.5px;
+  color: #fff9e9;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+.control-center .cc-music-buttons {
+  gap: 12px;
+  margin: 0 2px 0 8px;
+  flex-shrink: 0;
+}
+.control-center .cc-music-buttons button {
+  width: 17px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+}
+.control-center .cc-music-buttons button:nth-child(2) {
+  background: linear-gradient(145deg, #fffafa30, #ffede116);
+  border: 1px solid #fff9e54d;
+  box-shadow: inset 0 1px #fff4;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+}
+.control-center .cc-music-buttons button:nth-child(2) svg {
+  width: 15px;
+  height: 15px;
+}
+.control-center .cc-connectivity {
+  grid-column: 1/3;
+  grid-row: 2/4;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  padding: 10px;
+}
+.control-center .cc-connect {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  padding: 5px 1px;
+  background: rgba(25, 22, 26, 0.42);
+  color: #ebe8dc;
+  border: 1px solid #fff6e730;
+  box-shadow: inset 0 1px #fff3;
+}
+.control-center .cc-connect.on {
+  background: linear-gradient(135deg, #9e4c40ce, #7d3233ae);
+  color: #fff7ed;
+  border-color: #ecc7ae8a;
+  box-shadow:
+    inset 0 1px #fddbb67d,
+    0 3px 8px #15060726;
+}
+.cc-connect span {
+  font-size: 8px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.control-center .cc-connect svg {
+  width: 21px;
+  height: 21px;
+}
+.control-center .cc-slider {
+  grid-row: 2/4;
+  padding: 0 0 17px;
+  justify-content: flex-end;
+  border-radius: 26px;
+  isolation: isolate;
+}
+.control-center .cc-slider:nth-of-type(1) {
+  grid-column: 3;
+}
+.control-center .cc-slider:nth-of-type(2) {
+  grid-column: 4;
+}
+.control-center .cc-slider svg {
+  width: 24px;
+  height: 24px;
+}
+.control-center .cc-fill {
+  background: linear-gradient(120deg, #f6f0e88c, #f6f1dc4a 50%, #fff9ef9c);
+  box-shadow: inset 0 1px 0 #fffcf6ad;
+}
+.control-center .cc-slider small,
+.control-center .cc-shortcut small {
+  font-size: 9px;
+  color: #fff8e9;
+  text-shadow: 0 1px 6px #1c191d;
+}
+.control-center .cc-slider small {
+  margin-top: 5px;
+}
+.control-center .cc-wide {
+  grid-column: span 2;
+  grid-row: 4;
+  gap: 12px;
+  padding: 10px 13px;
+  border-radius: 19px;
+}
+.control-center .cc-wide > span {
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--cc-ink);
+}
+.control-center .cc-wide > svg {
+  width: 23px;
+  height: 23px;
+}
+.control-center .cc-wide small {
+  color: #f6eddccc;
+  font-size: 9px;
+  margin-top: 3px;
+}
+.control-center .cc-shortcut {
+  grid-row: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  align-items: center;
+  padding: 5px;
+  border-radius: 19px;
+}
+.control-center .cc-shortcut svg {
+  width: 21px;
+  height: 21px;
+}
+.control-center .cc-bottom {
+  bottom: 37px;
+}
+.control-center .cc-bottom > span {
+  background: #fff7ebbd;
+  box-shadow: 0 1px 5px #1f101d33;
+}
+.control-center :is(button, input):focus-visible {
+  outline: 2px solid #f1c083;
+  outline-offset: 2px;
+}
+.frost .control-center .cc-piece {
+  background: #413c4069;
+  backdrop-filter: blur(5px);
+}
