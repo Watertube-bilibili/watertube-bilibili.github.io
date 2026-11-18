@@ -20,7 +20,15 @@ func _save(path: String) -> bool:
 	if frame == null or frame.is_empty():
 		push_error("FAIL Capture is empty")
 		return false
-	print("ART_FRAME ", path, " size ", frame.get_size())
+	var readings := PackedFloat32Array()
+	for row: int in range(int(frame.get_height() * 0.45), int(frame.get_height() * 0.89), 3):
+		for column: int in range(int(frame.get_width() * 0.22), int(frame.get_width() * 0.78), 3):
+			readings.append(frame.get_pixel(column, row).get_luminance())
+	readings.sort()
+	print("ART_FRAME ", path, " size=", frame.get_size(), " middle=", readings[readings.size() / 2], " near_white=", readings[int(readings.size() * 0.99)])
+	if path.ends_with("snow.png") and readings[int(readings.size() * 0.99)] > 0.985:
+		push_error("FAIL Snow ground still clips in the test frame")
+		return false
 	return frame.save_png(path) == OK
 
 func _run() -> void:

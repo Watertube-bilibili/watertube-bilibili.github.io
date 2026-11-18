@@ -30,13 +30,13 @@ static func apply_atmosphere(env: Environment, sky: ProceduralSkyMaterial, sun: 
 	env.fog_density = 0.00130 if winter else 0.00115
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color("c0d5e3") if winter else Color("c1d1c3")
-	env.ambient_light_energy = 0.55
+	env.ambient_light_energy = 0.48 if winter else 0.55
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.tonemap_exposure = 0.84
+	env.tonemap_exposure = 0.68 if winter else 0.84
 	env.tonemap_white = 2.1
 
 	sun.light_color = Color("fff4e5") if winter else Color("fff2da")
-	sun.light_energy = 0.74 if winter else 0.82
+	sun.light_energy = 0.68 if winter else 0.82
 	sun.rotation_degrees = Vector3(-39, -31, 0) if winter else Vector3(-34, -44, 0)
 	sun.shadow_bias = 0.05
 	sun.shadow_normal_bias = 0.60

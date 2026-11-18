@@ -424,7 +424,7 @@ func _surface_color(x: float, z: float, sample_span: float = 2.0) -> Color:
 		"alpine": color = Color("777e69")
 		"icefield": color = Color("acbfc9")
 	if winter:
-		color = Color("bbcacf") if biome != "icefield" else Color("a8bcc8")
+		color = Color("a8b8bf") if biome != "icefield" else Color("9ab0bf")
 	var surface: String = Terrain.surface_at(x, z, _region)
 	var wetness := 0.0
 	match surface:
@@ -440,7 +440,7 @@ func _surface_color(x: float, z: float, sample_span: float = 2.0) -> Color:
 			color = Color("789ea9")
 			wetness = 0.96
 		"snow":
-			color = Color("bbcacf")
+			color = Color("a8b8bf")
 		"trail":
 			# Custom terrains include painted trails but no procedural centerline.
 			if _region == "custom":
@@ -449,7 +449,7 @@ func _surface_color(x: float, z: float, sample_span: float = 2.0) -> Color:
 	# The road trace is feathered where the wider mesh spacing cannot resolve its edge.
 	if surface not in ["mud", "rock", "water", "ice"]:
 		var distance: float = Terrain.road_distance(x, z, _region)
-		var trail := Color("9baeb6") if winter else Color("9e8767")
+		var trail := Color("92a5ad") if winter else Color("9e8767")
 		var shoulder: float = 5.1 if sample_span <= 2.0 else maxf(6.0, sample_span * 0.73)
 		color = color.lerp(trail, 1.0 - smoothstep(2.1, shoulder, distance))
 	var variation := sin(x * 0.047 + z * 0.037) * 0.065 + cos(z * 0.019 - x * 0.059) * 0.04

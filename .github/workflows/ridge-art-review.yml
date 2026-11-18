@@ -42,7 +42,7 @@ jobs:
           git add _graphics/
           tree=$(git write-tree)
           commit=$(git -c user.name='Ridgebound Art Review' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p HEAD -m 'Capture the revised Godot art in three viewports')
-          git push origin "$commit:refs/heads/codex/ridgebound-art-preview-20261118"
+          git push origin "$commit:refs/heads/codex/ridgebound-art-preview-final-20261118"
           echo "ART_PREVIEW_COMMIT $commit"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

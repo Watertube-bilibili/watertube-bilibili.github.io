@@ -43,7 +43,7 @@ void fragment() {
 	float shade = mix(0.79, 1.13, field) + relief * 0.24;
 	float ice = (snow ? 1.0 : 0.0) * smoothstep(0.075, 0.17, pigment.b - pigment.r);
 	float wet = clamp(COLOR.a, 0.0, 1.0);
-	ALBEDO = pigment * shade;
+	ALBEDO = pigment * shade * (snow ? 0.90 : 1.0);
 	ROUGHNESS = mix(mix(0.95, 0.61, wet), 0.28, ice);
 	SPECULAR = mix(0.19, 0.37, max(ice, wet * 0.72));
 
