@@ -38,7 +38,7 @@
 
   <header class="topbar">
     <a class="wordmark" href="../projects.html" aria-label="返回水管同学项目页"><svg><use href="#i-mountain"/></svg><span>山野之间<small>RIDGEBOUND</small></span></a>
-    <div class="compass" aria-label="行驶方向"><span>航向</span><strong id="heading">N</strong></div>
+    <div class="compass" aria-label="行驶方向"><span class="compass-ruler" aria-hidden="true"></span><strong id="heading">N</strong></div>
     <nav class="top-actions" aria-label="游戏设置">
       <button class="icon-button" id="controller-settings" title="控制器与屏幕" aria-label="控制器与屏幕设置"><svg viewBox="0 0 24 24"><path d="M7 6h10l4 11c.7 3-2 4-4 1l-2-2H9l-2 2c-2 3-5 2-4-1L7 6Zm-1 6h6M9 9v6m6-4h.01m3 2h.01"/></svg></button>
       <button class="icon-button" id="garage-button" title="地图与车库" aria-label="地图与车库"><svg viewBox="0 0 24 24"><path d="m3 9 9-6 9 6v12H3V9Zm4 12V11h10v10M7 15h10M7 18h10"/></svg></button>
@@ -53,26 +53,38 @@
 
   <main>
     <section class="welcome" id="welcome" aria-labelledby="game-title">
-      <h1 id="game-title">山野之间</h1>
-      <p class="intro">开过泥径、湿地与雪线，找一条自己的路。</p>
-      <div class="launch-actions">
-        <button class="start-button" id="start" disabled aria-busy="true"><span>开始驾驶</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        <button class="launch-map-button" id="welcome-map"><svg aria-hidden="true"><use href="#i-map"/></svg>地图与车库</button>
-      </div>
-      <p class="input-note"><span class="desktop-note"><kbd>W A S D</kbd> 驾驶 <kbd>E</kbd> 绞盘</span><span class="mobile-note">左手转方向盘，右手控制踏板</span></p>
-      <div class="download-links" aria-label="客户端下载">
-        <svg aria-hidden="true"><use href="#i-download"/></svg>
-        <a href="./downloads/Ridgebound-Android.apk?v=summit-20261118" download>安卓 10+ APK</a>
-        <a href="./downloads/Ridgebound-Setup-x64.exe?v=summit-20261118" download>Windows 安装版</a>
-        <a href="./downloads/Ridgebound-Windows-x64.zip?v=summit-20261118" download>便携 ZIP</a>
-      </div>
+      <h1 id="game-title">山野之间<span class="welcome-title-en" lang="en">RIDGEBOUND</span></h1>
+      <nav class="launch-actions" aria-label="主菜单">
+        <button class="start-button" id="start" disabled aria-busy="true">开始驾驶</button>
+        <button class="launch-map-button" id="welcome-map">地图与车库</button>
+        <button class="launch-map-button" id="welcome-settings">设置</button>
+        <details class="launch-downloads">
+          <summary>下载客户端</summary>
+          <div class="download-links" aria-label="客户端下载">
+                  <svg aria-hidden="true"><use href="#i-download"/></svg>
+                  <a href="./downloads/Ridgebound-Android.apk?v=summit-20261118" download>安卓 10+ APK</a>
+                  <a href="./downloads/Ridgebound-Setup-x64.exe?v=summit-20261118" download>Windows 安装版</a>
+                  <a href="./downloads/Ridgebound-Windows-x64.zip?v=summit-20261118" download>便携 ZIP</a>
+                </div>
+        </details>
+      </nav>
     </section>
 
     <section class="mission play-only" aria-label="探索进度"><div class="mission-label"><span id="current-area">松林起点</span><span id="checkpoint-count">00 / 04</span></div><div class="mission-target"><svg><use href="#i-pin"/></svg><strong id="target-name">林间泥径</strong><span id="target-distance" title="至下一路标的直线距离">700 m</span></div><div class="progress-track"><i id="journey-progress"></i></div><p id="mission-hint" hidden></p></section>
     <section class="map-panel play-only" aria-label="导航地图"><div class="map-title"><span>松风谷</span><span>N ↑</span></div><button id="map-toggle" class="map-toggle" aria-pressed="false" aria-label="当前为跟车局部图，点按查看全图"><canvas id="minimap" width="320" height="320" aria-label="金色主路，浅色环线，圆点路标，房屋维修站"></canvas><span id="map-mode" class="map-mode">局部 · 看全图</span></button><div class="map-footer"><span id="map-scale">100 m</span><span id="altitude">海拔 0 m</span></div><p id="map-target-direction" class="map-target-direction" hidden>路标在北</p></section>
 
-    <section class="dashboard play-only" aria-label="车辆状态"><div class="speed"><span id="speed">00</span><span class="speed-unit">KM/H<small id="gear-display">D · 自动</small></span></div><div class="vehicle-state"><span><i id="traction-dot"></i><b id="surface">林间土路</b></span><span class="tilt-label">坡度 <b id="pitch">0°</b></span></div><div class="dashboard-line"><i id="speed-bar"></i></div><div class="damage-summary" id="damage-summary"><span>车身 <b id="body-health">100%</b></span><span>轮胎 <b id="tires-health">100%</b></span><span>悬挂 <b id="suspension-health">100%</b></span></div><p class="pedal-fault" id="brake-fault" role="status" hidden>制动踏板断裂</p><span id="brake-pressure-hud" class="brake-pressure-hud" hidden></span><button class="repair-button" id="repair" title="小屋维修 · T" hidden disabled>小屋维修 (T)</button></section>
-    <div class="equipment play-only" aria-label="传动与救援">
+    <section class="dashboard play-only" aria-label="车辆状态"><div class="speed"><span id="speed">00</span><span class="speed-unit">KM/H<small id="gear-display">D · 自动</small></span></div><div class="vehicle-state"><span><i id="traction-dot"></i><b id="surface">林间土路</b></span></div><div class="attitude-instruments" aria-label="车身姿态">
+  <div class="attitude-dial">
+    <svg viewBox="0 0 44 27" aria-hidden="true"><path class="dial-scale" d="M4 24a18 18 0 0 1 36 0M22 5v4M9 12l3 3m23-3-3 3"/><path id="pitch-needle" class="dial-needle" d="M13 24h18"/></svg>
+    <span>俯仰 <b id="pitch">0°</b></span>
+  </div>
+  <div class="attitude-dial">
+    <svg viewBox="0 0 44 27" aria-hidden="true"><path class="dial-scale" d="M4 24a18 18 0 0 1 36 0M22 5v4M9 12l3 3m23-3-3 3"/><path id="roll-needle" class="dial-needle" d="M12 24h20"/></svg>
+    <span>侧倾 <b id="roll-reading">0°</b></span>
+  </div>
+</div><div class="dashboard-line"><i id="speed-bar"></i></div><div class="damage-summary" id="damage-summary"><span>车身 <b id="body-health">100%</b></span><span>轮胎 <b id="tires-health">100%</b></span><span>悬挂 <b id="suspension-health">100%</b></span></div><p class="pedal-fault" id="brake-fault" role="status" hidden>制动踏板断裂</p><span id="brake-pressure-hud" class="brake-pressure-hud" hidden></span><button class="repair-button" id="repair" title="小屋维修 · T" hidden disabled>小屋维修 (T)</button></section>
+    <button id="drive-tools-toggle" class="drive-tools-toggle play-only" type="button" aria-expanded="false" aria-controls="drive-tools"><svg aria-hidden="true"><use href="#i-drive"/></svg><span>车辆工具</span></button>
+    <div class="equipment play-only" id="drive-tools" aria-label="传动与救援" hidden>
       <button class="equipment-button active" id="awd" title="切换四驱 · X" aria-pressed="true"><svg><use href="#i-drive"/></svg><span>四驱<small>4WD</small></span><i></i></button>
       <button class="equipment-button" id="lowgear" title="切换低速挡 · L" aria-pressed="false"><span class="low-icon">L</span><span>低速挡<small>LOW</small></span><i></i></button>
       <button class="equipment-button recover-button" id="recover" title="回到检查点 · R"><svg><use href="#i-recover"/></svg><span>脱困<small>RESET</small></span></button>
@@ -104,7 +116,7 @@
       <span id="touch-wheel-instructions" class="visually-hidden">拖动轮缘来转向，松开回正。键盘也可用方向键。</span>
       <div class="pedals"><button data-control="reverse" class="touch-button reverse" aria-label="倒车"><span>R</span><small>倒车</small></button><button data-control="brake" class="touch-button brake" aria-label="刹车"><svg aria-hidden="true"><use href="#i-pause"/></svg><small>刹车</small></button><button data-control="throttle" class="touch-button throttle" aria-label="油门"><svg aria-hidden="true" class="pedal-up"><use href="#i-arrow"/></svg><small>油门</small></button></div>
     </div>
-    <p class="drive-guide play-only"><kbd>W A S D</kbd> 驾驶 <span>·</span> <kbd>空格</kbd> 刹车 <span>·</span> <kbd>C</kbd> 视角 <span>·</span> <kbd>R</kbd> 脱困</p>
+    
     <div class="anchor-instruction" id="anchor-instruction" hidden><svg><use href="#i-hook"/></svg>选择场景中的锚点，或再次按 E 快速连接</div>
   </main>
 
@@ -115,8 +127,8 @@
     <h2 id="pause-title">暂停驾驶</h2><p class="dialog-intro">陡坡、岩石和泥地适合慢速通过。遇到险段时，挂低速挡或用绞盘。</p>
     <div class="instructions"><div><kbd>W A S D / 方向键</kbd><span>驾驶与倒车</span></div><div><kbd>空格</kbd><span>刹车</span></div><div><kbd>L / X</kbd><span>低速挡 / 四驱</span></div><div><kbd>E</kbd><span>连接附近锚点</span></div><div><kbd>F</kbd><span>按住收绳</span></div><div><kbd>Q</kbd><span>释放绞盘</span></div><div><kbd>C / R</kbd><span>切换视角 / 脱困</span></div><div><kbd>T / Esc</kbd><span>小屋维修 / 暂停</span></div></div>
     <label class="graphics-setting" for="graphics-quality">渲染画质<select id="graphics-quality"><option value="auto">自动</option><option value="quality">清晰</option><option value="performance">流畅</option></select></label>
-    <p class="help-note">点按小地图切换局部和全图。房屋标记是维修点。触屏时左手转向，右手控制踏板。松开方向盘会自动回正。</p>
-    <div class="dialog-actions"><button class="primary-button" id="resume">继续旅程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="dialog-recover">返回检查点</button></div><div class="pause-tools"><button id="dialog-map" class="secondary-button">地图与车库</button><button id="dialog-camera" class="secondary-button">切换驾驶视角</button><button id="dialog-controllers" class="secondary-button">控制器与屏幕</button><button id="dialog-photo" class="secondary-button">保存风景照片</button><button id="dialog-fullscreen" class="secondary-button">全屏显示</button></div><a class="home-link" href="../projects.html">← 返回我的项目</a>
+    <p class="help-note">点按小地图切换局部和全图。房屋标记是维修点。拖动画面中间可环绕观察车外。触屏时左手转向，右手控制踏板。松开方向盘会自动回正。</p>
+    <div class="dialog-actions"><button class="primary-button" id="resume">继续旅程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="dialog-recover">返回检查点</button></div><div class="pause-tools"><button id="dialog-map" class="secondary-button">地图与车库</button><button id="dialog-camera" class="secondary-button">切换驾驶视角</button><button id="dialog-controllers" class="secondary-button">控制器与屏幕</button><button id="dialog-photo" class="secondary-button">保存风景照片</button><button class="secondary-button" id="dialog-audio" aria-pressed="false">声音：关闭</button><button id="dialog-fullscreen" class="secondary-button">全屏显示</button></div><a class="home-link" href="../projects.html">← 返回我的项目</a>
   </dialog>
   <dialog id="victoryDialog" class="dialog victory-dialog"><div class="victory-mark"><svg><use href="#i-mountain"/></svg></div><h2>抵达终点</h2><div class="journey-stats"><div><strong id="result-time">00:00</strong><span>旅程用时</span></div><div><strong id="result-distance">0 m</strong><span>行驶里程</span></div><div><strong>4 / 4</strong><span>探索路标</span></div></div><button class="primary-button" id="restart">再走一程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="discover-snow" hidden>发现隐藏雪线 ↗</button><button class="secondary-button" id="victory-continue">留在山野</button></dialog>
   <dialog id="garage" class="dialog garage-dialog">
