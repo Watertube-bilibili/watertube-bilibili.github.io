@@ -35,6 +35,7 @@ var _rearm_at = -1000
 var _force_strength = 0.35
 var _force_sent = false
 
+var interface_theme: Theme
 var _dialog: AcceptDialog
 var _device_label: Label
 var _status_label: Label
@@ -351,6 +352,8 @@ func _save_settings() -> void:
 
 func _build_dialog() -> void:
 	_dialog = AcceptDialog.new()
+	if interface_theme != null:
+		_dialog.theme = interface_theme
 	_dialog.title = "方向盘与踏板"
 	_dialog.ok_button_text = "返回"
 	_dialog.min_size = Vector2i(570, 400)
