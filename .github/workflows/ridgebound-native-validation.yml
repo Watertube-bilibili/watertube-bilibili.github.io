@@ -1,0 +1,38 @@
+name: Verify Ridgebound on the Windows 7 Godot toolchain
+on:
+  push:
+    branches: ['codex/ridgebound-native-validation-20261118']
+permissions:
+  contents: read
+jobs:
+  native-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify Godot 4.4.1 compatibility before native export
+        run: |
+          tool_dir="$RUNNER_TEMP/godot44"
+          mkdir -p "$tool_dir"
+          cd "$tool_dir"
+          release=https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable
+          editor=Godot_v4.4.1-stable_linux.x86_64.zip
+          for asset in SHA512-SUMS.txt "$editor"; do
+            curl --fail --silent --show-error --location --connect-timeout 15 --max-time 120 "$release/$asset" --output "$asset"
+          done
+          awk -v file="$editor" '$2==file || $2==("*" file)' SHA512-SUMS.txt | sha512sum --check
+          unzip -q "$editor"
+          godot="$tool_dir/Godot_v4.4.1-stable_linux.x86_64"
+          cd "$GITHUB_WORKSPACE"
+          project=sources/ridgebound/godot
+          sed -i 's#run/main_scene="res://main.tscn"#run/main_scene="res://desktop_main.tscn"#; s#PackedStringArray("4.6"#PackedStringArray("4.4"#' "$project/project.godot"
+          timeout 45s "$godot" --headless --editor --path "$project" --import --quit 2>&1 | tee "$RUNNER_TEMP/native-import.log"
+          if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/native-import.log"; then exit 1; fi
+          timeout 30s "$godot" --headless --path "$project" -- --native-smoke 2>&1 | tee "$RUNNER_TEMP/native-smoke.log"
+          if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/native-smoke.log"; then exit 1; fi
+          grep -q NATIVE_SMOKE_OK "$RUNNER_TEMP/native-smoke.log"
