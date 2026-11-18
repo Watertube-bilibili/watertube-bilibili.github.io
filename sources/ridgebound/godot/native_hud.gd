@@ -29,6 +29,8 @@ var message_card: PanelContainer
 var backdrop: ColorRect
 var sheet: PanelContainer
 var title: Label
+var back_button: Button
+var start_note: Label
 var tabs: HBoxContainer
 var sheet_body: VBoxContainer
 var map_preview: Control
@@ -92,6 +94,15 @@ func reflow() -> void:
 	var width := maxf(200.0, right - left)
 	var height := maxf(180.0, bottom - top)
 	var compact := mobile and viewport_size.x <= viewport_size.y
+	var tap_height := 88.0 if compact else (49.0 if mobile else 34.0)
+	if mobile:
+		for candidate in root_control.find_children("*", "Button", true, false):
+			var button := candidate as Button
+			button.custom_minimum_size.y = tap_height
+			button.add_theme_font_size_override("font_size", 26 if compact else 16)
+	title.add_theme_font_size_override("font_size", 44 if compact else 32)
+	if is_instance_valid(start_note):
+		start_note.add_theme_font_size_override("font_size", 24 if compact else 16)
 	var short_landscape := mobile and height < 530.0
 	var tool_width := minf(350.0 if mobile else 330.0, width * 0.52)
 	var mini_width := clampf(width * 0.22, 132.0, 208.0)
@@ -100,19 +111,30 @@ func reflow() -> void:
 	_set_box(mini_card, Rect2(Vector2(right - mini_width, top), Vector2(mini_width, mini_width + 32)))
 	var drive_bottom := bottom - (190.0 if mobile else 0.0)
 	var meter_y := top + 78.0 if short_landscape else drive_bottom - (142.0 if pedal_warning.visible else 118.0)
-	var tools_y := top if short_landscape else drive_bottom - (100.0 if mobile else 52.0)
+	var tool_height := tap_height * 2.0 + 25.0 if mobile else 52.0
+	var tools_y := top if short_landscape else drive_bottom - tool_height
 	_set_box(meter_card, Rect2(Vector2(left, meter_y), Vector2(meter_width, 111)))
-	_set_box(tool_card, Rect2(Vector2(right - tool_width, tools_y), Vector2(tool_width, 92 if mobile else 47)))
+	_set_box(tool_card, Rect2(Vector2(right - tool_width, tools_y), Vector2(tool_width, tool_height)))
 	var winch_width := minf(340.0, width)
 	var winch_x := left + (width - winch_width) * 0.5 if short_landscape else right - winch_width
-	var winch_y := top + 51.0 if short_landscape else maxf(top + 82.0, tools_y - 252.0)
-	_set_box(winch_card, Rect2(Vector2(winch_x, winch_y), Vector2(winch_width, 246)))
+	var winch_height := maxf(246.0, winch_card.get_combined_minimum_size().y)
+	var winch_y := top if short_landscape else maxf(top + 72.0, tools_y - winch_height - 10.0)
+	_set_box(winch_card, Rect2(Vector2(winch_x, winch_y), Vector2(winch_width, winch_height)))
 	_set_box(message_card, Rect2(Vector2(left + width * 0.23, top + 79), Vector2(width * 0.54, 34)))
-	var sheet_width := minf(width, 740.0 if current_screen == "maps" and not compact else 470.0)
-	var sheet_height := minf(height, 594.0 if compact else 520.0)
+	var starting := current_screen == "start"
+	var sheet_width := width if compact else minf(width, 740.0 if current_screen == "maps" else 470.0)
+	var sheet_height := minf(height, 810.0 if compact else 520.0)
+	if starting:
+		if compact:
+			sheet_height = minf(height, 367.0)
+		elif mobile:
+			sheet_width = minf(width * 0.48, 324.0)
+			sheet_height = minf(height, 265.0)
+		else:
+			sheet_height = minf(height, 294.0)
 	var sheet_origin := Vector2(left, top + (height - sheet_height) * 0.5)
-	if compact:
-		sheet_origin = Vector2(left + (width - sheet_width) * 0.5, bottom - sheet_height)
+	if compact or (starting and mobile):
+		sheet_origin.y = bottom - sheet_height
 	_set_box(sheet, Rect2(sheet_origin, Vector2(sheet_width, sheet_height)))
 	_show_driving_chrome(short_landscape)
 
@@ -169,7 +191,10 @@ func show_screen(mode: String, context: Dictionary) -> void:
 		sheet_body.remove_child(child)
 		child.queue_free()
 	map_preview = null
+	start_note = null
+	back_button.visible = mode != "start"
 	tabs.visible = mode != "start"
+	backdrop.color = Color(0.04, 0.06, 0.055, 0.19 if mode == "start" else 0.57)
 	var first: Button
 	var started := bool(context.get("started", false))
 	var save: Dictionary = context.get("save", {})
@@ -178,10 +203,16 @@ func show_screen(mode: String, context: Dictionary) -> void:
 		"start":
 			title.text = "山野之间"
 			first = _button(sheet_body, "启程", "begin", null, true)
-			_button(sheet_body, "地图", "screen", "maps")
-			_button(sheet_body, "车库", "screen", "garage")
-			_button(sheet_body, "设置", "screen", "settings")
-			_hint(sheet_body, "拖动空白处转视角。左手转方向盘，右手踩踏板。" if mobile else "拖动空白处转视角。方向键驾驶，空格刹车。")
+			first.custom_minimum_size.y = 52.0
+			var shortcuts := _row(sheet_body)
+			for choice in [["地图", "maps"], ["车库", "garage"], ["设置", "settings"]]:
+				var shortcut := _button(shortcuts, choice[0], "screen", choice[1])
+				shortcut.theme_type_variation = &"QuietButton"
+			start_note = _label(sheet_body, "左手转向，右手踩踏板。拖动空白处转视角。" if mobile else "方向键驾驶，空格刹车。拖动空白处转视角。", 16)
+			start_note.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			start_note.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+			start_note.custom_minimum_size.y = 28
+			start_note.modulate = COLOR_SECONDARY
 		"pause":
 			title.text = "暂停"
 			first = _button(sheet_body, "继续驾驶", "begin", null, true)
@@ -446,9 +477,9 @@ func _make_sheet() -> void:
 	var head := _row(shell)
 	title = _label(head, "山野之间", 32)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	var back := _button(head, "返回", "back")
-	back.custom_minimum_size.x = 58.0
-	back.size_flags_horizontal = Control.SIZE_SHRINK_END
+	back_button = _button(head, "返回", "back")
+	back_button.custom_minimum_size.x = 58.0
+	back_button.size_flags_horizontal = Control.SIZE_SHRINK_END
 	tabs = _row(shell)
 	for tab in [["地图", "maps"], ["车库", "garage"], ["设置", "settings"]]:
 		_button(tabs, tab[0], "screen", tab[1])
@@ -570,6 +601,11 @@ func _make_theme() -> Theme:
 		var focus := _box(Color.TRANSPARENT, COLOR_SIGNAL, 1)
 		focus.set_border_width_all(2)
 		result.set_stylebox("focus", type, focus)
+	result.set_type_variation(&"QuietButton", &"Button")
+	var empty := StyleBoxEmpty.new()
+	result.set_stylebox("normal", "QuietButton", empty)
+	result.set_stylebox("hover", "QuietButton", _box(COLOR_FACE, COLOR_FACE, 6))
+	result.set_stylebox("pressed", "QuietButton", _box(COLOR_FACE.lightened(0.08), COLOR_FACE, 6))
 	result.set_type_variation(&"SignalButton", &"Button")
 	for state in ["font_color", "font_pressed_color", "font_hover_color", "font_focus_color", "font_disabled_color"]:
 		result.set_color(state, "SignalButton", COLOR_INK)
