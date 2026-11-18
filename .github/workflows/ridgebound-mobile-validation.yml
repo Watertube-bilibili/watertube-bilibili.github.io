@@ -1,0 +1,35 @@
+name: Ridgebound mobile browser validation
+on:
+  push:
+    branches: ['codex/ridgebound-web-validation-20261118']
+permissions:
+  contents: read
+jobs:
+  portrait:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install Chromium and Playwright
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ridgebound-qa" playwright@1.51.1
+          "$RUNNER_TEMP/ridgebound-qa/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Test the production game with simultaneous touch input
+        run: |
+          python3 -m http.server 9018 > "$RUNNER_TEMP/ridgebound-http.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..10}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:9018/ridgebound/; then break; fi
+            sleep 1
+          done
+          NODE_PATH="$RUNNER_TEMP/ridgebound-qa/node_modules" RIDGEBOUND_SCREENSHOTS="$RUNNER_TEMP/ridgebound-mobile-check" node ridgebound/tests/mobile-touch.cjs http://127.0.0.1:9018/ridgebound/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ridgebound-mobile-screenshots
+          path: ${{ runner.temp }}/ridgebound-mobile-check/
+          if-no-files-found: ignore
+          retention-days: 3
