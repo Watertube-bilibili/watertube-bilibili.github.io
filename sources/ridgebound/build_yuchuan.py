@@ -184,7 +184,7 @@ class MPV:
             for i in range(nx+1):
                 u=-1+2*i/nx
                 y=.925+.038*math.sin(math.pi*t)-.061*abs(u)**3
-                hood_vs.append((u*half,y,z-.045*abs(u)**4))
+                hood_vs.append((u*half,y,z-(.045+.135*t)*abs(u)**4))
         for j in range(nz):
             for i in range(nx):
                 k=j*(nx+1)+i;hood_fs.append((k,k+1,k+nx+2,k+nx+1))
@@ -204,7 +204,7 @@ class MPV:
         us=[-1,-.98,-.92,-.83,-.76,-.65,-.4,0,.4,.65,.76,.83,.92,.98,1]
         nv=len(us);nr=len(rows);front_vs=[];front_fs=[]
         for yy,half,zz in rows:
-            for u in us:front_vs.append((u*half,yy,zz-.18*abs(u)**4))
+            for u in us:front_vs.append((u*half,yy-(.061*abs(u)**3 if yy>.90 else 0),zz-.18*abs(u)**4))
         total=len(front_vs);front_vs += [(x,y,z-.22) for x,y,z in front_vs]
         missing=set()
         for j in range(nr-1):
@@ -244,9 +244,16 @@ class MPV:
             self.rod('Deep grille fin',(x,.235,grille_z(x)-.105),(x,.53,grille_z(x)-.105),.005,'dark')
         # Original arcing light ribbons wrap onto the corners; faceted rectangular optics
         # replace the old round dots. The warm DRL is distinct from any real badge/lamp shape.
+        def fascia_surface(x,y):
+            for lo,hi in zip(rows,rows[1:]):
+                if lo[0]<=y<=hi[0]:
+                    t=(y-lo[0])/(hi[0]-lo[0]);half=lo[1]+t*(hi[1]-lo[1]);zz=lo[2]+t*(hi[2]-lo[2])
+                    return zz-.18*(abs(x)/half)**4
+            return 2.60
         for s in (-1,1):
-            points=[(s*.49,.805,2.726),(s*.63,.812,2.725),(s*.78,.803,2.699),
-                    (s*.90,.775,2.652),(s*.966,.724,2.602),(s*.994,.662,2.558)]
+            # Keep the ribbons flush to the actual bowed shell, including the outer turn.
+            points=[(s*x,y,fascia_surface(x,y)+.010) for x,y in
+                    [(.49,.805),(.63,.812),(.78,.803),(.90,.775),(.966,.724),(.994,.662)]]
             for a,b in zip(points,points[1:]):self.rod('Arcing DRL dark cradle',a,b,.026,'dark')
             for a,b in zip(points,points[1:]):
                 aa=(a[0],a[1]+.002,a[2]+.012);bb=(b[0],b[1]+.002,b[2]+.012)
@@ -426,7 +433,7 @@ def glb_info(path):
     return {k:{f:v for f,v in nodes[k].items() if f in ('translation','rotation','scale','extras')} for k in required}
 def preview(path,cockpit=False):
     scene=bpy.context.scene
-    scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=128;scene.cycles.use_adaptive_sampling=True;scene.cycles.adaptive_threshold=.018;scene.cycles.use_denoising=False
+    scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=256;scene.cycles.use_adaptive_sampling=True;scene.cycles.adaptive_threshold=.012;scene.cycles.use_denoising=False
     scene.render.resolution_x=800;scene.render.resolution_y=600;scene.render.resolution_percentage=100
     if scene.world is None:scene.world=bpy.data.worlds.new('Review environment')
     scene.world.use_nodes=True;scene.world.node_tree.nodes['Background'].inputs['Color'].default_value=(.20,.23,.26,1);scene.world.node_tree.nodes['Background'].inputs['Strength'].default_value=.38;scene.view_settings.view_transform='AgX'
