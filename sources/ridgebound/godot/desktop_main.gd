@@ -299,6 +299,7 @@ func _action(action: String) -> void:
 		"map":
 			if started:
 				map_overview = not map_overview
+				interface.call("reveal_map")
 				_refresh()
 		"winch":
 			if _driving():

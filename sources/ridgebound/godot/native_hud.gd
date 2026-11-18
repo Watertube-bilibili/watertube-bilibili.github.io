@@ -93,8 +93,8 @@ class TrailMarks extends Control:
 		_stroke(center - axis * (radius - 7.0), center + axis * (radius - 7.0), EMBER if absf(degrees) >= 28.0 else CHALK)
 		draw_circle(center, 2.0, CHALK)
 		draw_line(center + Vector2(-4.0, radius), center + Vector2(4.0, radius), EMBER, 2.0, true)
-		_print("%+d°" % roundi(degrees), center + Vector2(-32.0, radius + 19.0), 64.0, 17)
-		_print("俯仰" if pitch else "侧倾", center + Vector2(-34.0, -radius - 7.0), 68.0, 15)
+		_print("%+d°" % roundi(degrees), center + Vector2(-32.0, radius + 19.0), 64.0, 19)
+		_print("俯仰" if pitch else "侧倾", center + Vector2(-34.0, -radius - 7.0), 68.0, 18)
 
 	func _stroke(from: Vector2, to: Vector2, color: Color) -> void:
 		draw_line(from + Vector2(0, 1), to + Vector2(0, 1), INK, 3.0, true)
@@ -102,7 +102,7 @@ class TrailMarks extends Control:
 
 	func _print(text: String, point: Vector2, width: float, font_size: int) -> void:
 		var font := face if face else get_theme_default_font()
-		draw_string(font, point + Vector2(0, 1.6), text, HORIZONTAL_ALIGNMENT_CENTER, width, font_size, INK)
+		draw_string_outline(font, point, text, HORIZONTAL_ALIGNMENT_CENTER, width, font_size, 4, INK)
 		draw_string(font, point, text, HORIZONTAL_ALIGNMENT_CENTER, width, font_size, CHALK)
 
 var skin: Theme
@@ -219,9 +219,15 @@ func reflow() -> void:
 	_set_box(tool_card, Rect2(Vector2(right - tool_width, top + 36.0), Vector2(tool_width, tap_height)))
 	var tray_width := minf(318.0 if portrait else 290.0, width)
 	var tray_height := tray_card.get_combined_minimum_size().y
-	_set_box(tray_card, Rect2(Vector2(right - tray_width, top + tap_height + 48.0), Vector2(tray_width, tray_height)))
+	var tray_origin := Vector2(right - tray_width, top + tap_height + 48.0)
+	if short_landscape:
+		tray_origin = Vector2(right - tool_width - tray_width - 12.0, top + 41.0)
+	_set_box(tray_card, Rect2(tray_origin, Vector2(tray_width, tray_height)))
 	var map_width := minf(247.0 if portrait else 200.0, width * 0.40)
-	_set_box(mini_card, Rect2(Vector2(right - map_width, top + tap_height + 51.0), Vector2(map_width, map_width + tap_height + 16.0)))
+	var map_origin := Vector2(right - map_width, top + tap_height + 51.0)
+	if short_landscape:
+		map_origin = Vector2((left + right - map_width) * 0.5, top + 48.0)
+	_set_box(mini_card, Rect2(map_origin, Vector2(map_width, map_width + tap_height + 16.0)))
 	var winch_width := minf(372.0, width)
 	var winch_x := right - winch_width
 	var winch_height := winch_card.get_combined_minimum_size().y
@@ -241,9 +247,9 @@ func reflow() -> void:
 
 func _show_driving_chrome() -> void:
 	var driving := current_screen.is_empty()
-	area_card.visible = driving
+	area_card.visible = driving and tools_open
 	meter_card.visible = driving and not open_winch
-	marks.visible = driving and not open_winch
+	marks.visible = driving and not open_winch and not tools_open
 	tool_card.visible = driving and not open_winch
 	tray_card.visible = driving and tools_open and not open_winch
 	mini_card.visible = driving and mini_visible and not open_winch and not tools_open
@@ -256,6 +262,12 @@ func _toggle_tools() -> void:
 
 func _toggle_map() -> void:
 	mini_visible = not mini_visible
+	tools_open = false
+	tool_toggle.text = "工具"
+	reflow()
+
+func reveal_map() -> void:
+	mini_visible = true
 	tools_open = false
 	tool_toggle.text = "工具"
 	reflow()
@@ -465,7 +477,7 @@ func _make_instruments() -> void:
 	unit.custom_minimum_size.x = 35.0
 	road = _label(main, "", 14)
 	road.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	gearbox = _label(meters, "", 18)
+	gearbox = _label(meters, "", 23)
 	gearbox.modulate = COLOR_SIGNAL
 	health = _label(meters, "", 14)
 	health.modulate = COLOR_SECONDARY
@@ -746,6 +758,8 @@ func _make_theme() -> Theme:
 	result.set_color("font_shadow_color", "Label", Color(0.05, 0.08, 0.06, 0.80))
 	result.set_constant("shadow_offset_y", "Label", 2)
 	result.set_constant("shadow_offset_x", "Label", 1)
+	result.set_color("font_outline_color", "Label", Color(0.05, 0.08, 0.06, 0.79))
+	result.set_constant("outline_size", "Label", 3)
 	result.set_stylebox("panel", "AcceptDialog", _box(COLOR_INK, COLOR_LINE, 12))
 	result.set_stylebox("panel", "PopupMenu", _box(COLOR_INK, COLOR_LINE, 6))
 	result.set_color("font_color", "PopupMenu", COLOR_PAPER)
@@ -765,9 +779,13 @@ func _make_theme() -> Theme:
 	var empty := StyleBoxEmpty.new()
 	result.set_stylebox("normal", "QuietButton", empty)
 	result.set_stylebox("hover", "QuietButton", _box(COLOR_FACE, COLOR_FACE, 6))
+	result.set_color("font_outline_color", "QuietButton", Color(0.05, 0.08, 0.06, 0.86))
+	result.set_constant("outline_size", "QuietButton", 3)
 	result.set_stylebox("pressed", "QuietButton", _box(COLOR_FACE.lightened(0.08), COLOR_FACE, 6))
 	result.set_type_variation(&"TrailEntry", &"Button")
 	result.set_type_variation(&"TrailSelected", &"TrailEntry")
+	result.set_color("font_outline_color", "TrailEntry", Color(0.05, 0.08, 0.06, 0.76))
+	result.set_constant("outline_size", "TrailEntry", 3)
 	var plain := _box(Color.TRANSPARENT, Color.TRANSPARENT, 0)
 	plain.set_border_width_all(0)
 	plain.content_margin_left = 25.0

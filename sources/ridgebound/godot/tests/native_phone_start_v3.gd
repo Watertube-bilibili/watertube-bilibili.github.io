@@ -59,6 +59,15 @@ func _capture() -> void:
 					quit(1)
 					return
 		_save(root.get_texture().get_image(), String(layout[0]) + "-drive")
+		shell.interface._toggle_tools()
+		await process_frame
+		var tool_panel: Control = shell.interface.tray_card
+		for pedal in controls._pedal_rects:
+			if tool_panel.get_global_rect().intersects(pedal):
+				push_error("Expanded tools overlap touch pedals")
+				quit(1)
+				return
+		shell.interface._toggle_tools()
 	print("MOBILE_LAYOUT_OK")
 	quit()
 

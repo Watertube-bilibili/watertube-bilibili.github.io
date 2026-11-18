@@ -1,6 +1,7 @@
 extends Node3D
 
 const RoverCamera := preload("res://rover_camera.gd")
+const MenuCamp := preload("res://menu_camp.gd")
 const GarageState := preload("res://garage_state.gd")
 const ExpeditionArt := preload("res://expedition_art.gd")
 const RecoveryWinch := preload("res://recovery_winch.gd")
@@ -24,12 +25,14 @@ var accelerator_rest := Basis.IDENTITY
 var selected_vehicle := "rover"
 var pedal_max_force := 1400.0
 var garage := GarageState.new()
+var camp: MenuCamp
 var shock_rods: Array[Node3D] = []
 var shock_rest_heights: Array[float] = []
 var winch_outlet: Node3D
 var rear_winch_outlet: Node3D
 var graphics_profile := "auto"
 var steering_rest := Basis.IDENTITY
+var steering_axis_sign := 1.0
 var driver_eye_local := Vector3(0.423, 1.2392, -0.45)
 var speed_needle_rest := Basis.IDENTITY
 var rpm_needle_rest := Basis.IDENTITY
@@ -90,6 +93,9 @@ func _ready():
 	_setup_environment()
 	chunks=ChunkTerrain.new()
 	add_child(chunks)
+	if DisplayServer.get_name() != "headless" and ResourceLoader.exists("res://art/title/camp_wide.webp") and ResourceLoader.exists("res://art/title/camp_tall.webp"):
+		camp = MenuCamp.new()
+		add_child(camp)
 	garage.restore()
 	pedal_max_force = bootstrap.maxForceN
 	_mount_vehicle(bootstrap.vehicleId)
@@ -141,6 +147,8 @@ func _mount_vehicle(id: String) -> void:
 	vehicle = next
 	add_child(vehicle)
 	selected_vehicle = id
+	if camp:
+		camp.display_vehicle(template, id)
 	body = vehicle.find_child("Body", true, false) as Node3D
 	wheels.clear()
 	wheel_spins.clear()
@@ -177,6 +185,10 @@ func _mount_vehicle(id: String) -> void:
 	accelerator_pedal = vehicle.find_child("AcceleratorPedal", true, false) as Node3D
 	if steering:
 		steering_rest = steering.basis
+		# The two Blender columns have opposite local axle normals. Orient
+		# each axle towards its own driver before applying the steering ratio.
+		var to_driver := vehicle.to_global(driver_eye_local) - steering.global_position
+		steering_axis_sign = 1.0 if steering.global_basis.y.dot(to_driver) >= 0.0 else -1.0
 	if speed_needle:
 		speed_needle_rest = speed_needle.basis
 	if rpm_needle:
@@ -608,6 +620,8 @@ func _process(dt):
 	throttle_value=float(input.throttle) if input.active else 0.0
 	_update_vehicle(dt)
 	_update_camera(dt)
+	if camp:
+		camp.reveal(not playing)
 	_update_cable()
 	for i in range(checkpoint_rings.size()):checkpoint_rings[i].visible=i==int(state.checkpoint)
 	report_clock+=dt
@@ -701,7 +715,7 @@ func _update_vehicle(dt):
 	# Blender local Z becomes local Y in the exported glTF coordinate system.
 	if steering:
 		# Positive steering turns the wheel clockwise as seen from the driver seat.
-		steering.basis = steering_rest * Basis(Vector3.UP, road_yaw * 16.0)
+		steering.basis = steering_rest * Basis(Vector3.UP, road_yaw * 16.0 * steering_axis_sign)
 	if speed_needle:
 		speed_needle.basis = speed_needle_rest * Basis(Vector3.UP, -absf(state.speed) * 0.22)
 	if rpm_needle:
