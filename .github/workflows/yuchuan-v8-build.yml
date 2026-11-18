@@ -50,4 +50,4 @@ jobs:
         run: |
           git add -- sources/ridgebound/build_yuchuan.py sources/ridgebound/yuchuan-v8.blend ridgebound/assets/yuchuan-v8.glb ridgebound/assets/yuchuan-v8-spec.json ridgebound/assets/yuchuan-v8-preview.png ridgebound/assets/yuchuan-v8-cockpit.png
           git -c user.name='Ridgebound Asset Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Build original Yuchuan V8 with Blender, verify rig and round trip'
-          git push origin HEAD:refs/heads/codex/yuchuan-v8-asset-output-20261118-v4
+          git push origin HEAD:refs/heads/codex/yuchuan-v8-asset-output-20261118-v5
