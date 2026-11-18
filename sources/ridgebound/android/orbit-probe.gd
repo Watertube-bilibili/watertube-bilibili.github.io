@@ -39,6 +39,7 @@ func _process(delta: float) -> void:
 		_sequence += 1
 		print("ORBIT_PROBE ", JSON.stringify({
 			"sequence": _sequence, "active": false, "start": start, "viewport": [extent.x, extent.y],
+			"rotation": ScreenFit._display_rotation(),
 		}))
 		return
 	if not camera or not vehicle or not touch:

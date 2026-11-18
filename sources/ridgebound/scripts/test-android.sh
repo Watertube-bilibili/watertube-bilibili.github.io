@@ -182,6 +182,37 @@ def capture(directory, label, rotation, notch, app):
     print(f"{label}: rendered {width}×{height}, both orbit axes and driving controls passed")
 
 
+def start_driving(directory, name, activity, rotation=None):
+    adb("logcat", "-c")
+    print(adb("shell", "am", "start", "-W", "-n", activity).strip())
+    screenshot(directory, f"{name}-launch")
+    start = wait_probe("the real Android start menu appeared",
+                       lambda s: s.get("start") and (rotation is None or s["rotation"] == rotation),
+                       timeout=40)
+    start = wait_probe("the start menu layout settled",
+                       lambda s: s.get("start") and s["rotation"] == start["rotation"]
+                       and s["sequence"] >= start["sequence"] + 3)
+    width, height = screenshot(directory, f"{name}-start-menu")
+    x, y = start["start"]
+    vw, vh = start["viewport"]
+    point = (x * width / vw, y * height / vh)
+    swipe(point, point, 420)
+    wait_probe("real Android tap on the primary menu action started driving",
+               lambda s: s["active"] and s["rotation"] == start["rotation"], timeout=25)
+    print(f"ANDROID_START_BUTTON_TAP_OK {name} rotation={start['rotation']}")
+
+
+def locked_rotation(command, rotation):
+    adb("shell", "wm", command, "lock", rotation)
+    timeout = time.monotonic() + 12
+    while time.monotonic() < timeout:
+        windows = adb("shell", "dumpsys", "window", "displays")
+        if re.search(rf"\bmRotation=(?:ROTATION_{rotation * 90}|{rotation})\b", windows):
+            return
+        time.sleep(0.25)
+    raise RuntimeError(f"Android reported no system rotation {rotation} before launcher start")
+
+
 def main():
     apk = Path(sys.argv[1])
     output = Path(sys.argv[2] if len(sys.argv) > 2 else "/tmp/ridgebound-android-smoke")
@@ -208,27 +239,26 @@ def main():
                 restore_notch = True
         print("System cutout overlay enabled" if notch else "System cutout overlay unavailable on this image")
         print(adb("install", "-r", apk).strip())
-        adb("shell", "am", "force-stop", app)
-        adb("logcat", "-c")
         activity = adb("shell", "cmd", "package", "resolve-activity", "--brief", "-a",
                        "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", app).strip().splitlines()[-1]
         if not activity.startswith(app + "/"):
             raise RuntimeError("APK launcher activity is missing")
-        print(adb("shell", "am", "start", "-W", "-n", activity).strip())
-        screenshot(output, "launch")
-        start = wait_probe("the real Android start menu appeared", lambda s: s.get("start"), timeout=40)
-        start = wait_probe("the start menu layout settled",
-                           lambda s: s.get("start") and s["sequence"] >= start["sequence"] + 3)
-        width, height = screenshot(output, "start-menu")
-        x, y = start["start"]
-        vw, vh = start["viewport"]
-        point = (x * width / vw, y * height / vh)
-        swipe(point, point, 420)
-        wait_probe("real Android tap on the primary menu action started driving", lambda s: s["active"], timeout=25)
-        print("ANDROID_START_BUTTON_TAP_OK")
-        capture(output, "portrait", 0, notch, app)
-        capture(output, "landscape", 1, notch, app)
-        capture(output, "reverse-landscape", 3, notch, app)
+        if os.environ.get("RIDGEBOUND_ANDROID_COLD_ORIENTATIONS") == "1":
+            adb("shell", "wm", fix_command, "enabled")
+            for rotation, name in ((1, "cold-landscape"), (3, "cold-reverse-landscape")):
+                adb("shell", "am", "force-stop", app)
+                locked_rotation(rotation_command, rotation)
+                start_driving(output, name, activity, rotation)
+                capture(output, name, rotation, notch, app)
+                (output / f"{name}.log").write_text(adb("logcat", "-d", "-s", *RUNTIME_TAGS), encoding="utf-8")
+            print("ANDROID_COLD_LANDSCAPES_OK")
+        else:
+            adb("shell", "am", "force-stop", app)
+            start_driving(output, "natural-portrait", activity, 0)
+            capture(output, "portrait", 0, notch, app)
+            capture(output, "landscape", 1, notch, app)
+            capture(output, "reverse-landscape", 3, notch, app)
+            print("ANDROID_NATURAL_ROTATIONS_OK")
         log = adb("logcat", "-d", "-s", *RUNTIME_TAGS)
         if not re.search(r"Godot Engine v4\.6\.3", log) or re.search(r"FATAL EXCEPTION|SCRIPT ERROR:", log):
             raise RuntimeError("Android runtime failed during orbit verification")
