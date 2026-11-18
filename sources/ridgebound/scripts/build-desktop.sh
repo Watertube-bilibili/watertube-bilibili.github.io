@@ -113,7 +113,10 @@ text, replaced = re.subn(
 )
 if replaced != 1:
     raise SystemExit("Unrecognised Godot config/features")
-text, scenes = re.subn(r'^run/main_scene=.*
+main_scene = 'run/main_scene="res://main.tscn"'
+if text.count(main_scene) != 1:
+    raise SystemExit("Could not set the native entry scene")
+text = text.replace(main_scene, 'run/main_scene="res://desktop_main.tscn"', 1)
 text = re.sub(
     r"(?m)^(?:renderer/rendering_method(?:\.\w+)?|gl_compatibility/driver\.windows|"
     r"anti_aliasing/quality/msaa_3d|scaling_3d/scale)=.*\n",
@@ -177,96 +180,6 @@ run_godot export --path "$native_project" --export-release "Windows x64" "$game_
   cd "$scratch"
   run_godot smoke --main-pack "$game_files/Ridgebound.pck" --quit-after 300 -- --native-smoke
   grep -q NATIVE_SMOKE_OK "$scratch/smoke.log"
-)
-
-"$mingw" -std=c++17 -O2 -Wall -Wextra -Wpedantic -municode \
-  -D_WIN32_WINNT=0x0601 -DWINVER=0x0601 -static -static-libgcc -static-libstdc++ \
-  "$project_root/windows-bridge/bridge.cpp" -o "$game_files/ridgebound-wheel-bridge.exe" \
-  -ldinput8 -ldxguid -lws2_32 -lole32 -lshell32 -luser32
-
-cp -- "$toolchain/Godot-LICENSE.txt" "$toolchain/Godot-COPYRIGHT.txt" "$game_files/licenses/"
-cp -- "$project_root/LICENSE" "$game_files/licenses/Ridgebound.txt"
-cp -- "$project_root/windows-bridge/LICENSE" "$game_files/licenses/DirectInput-bridge.txt"
-for package in g++-mingw-w64-x86-64-posix gcc-mingw-w64-x86-64-posix \
-  gcc-mingw-w64-x86-64-posix-runtime mingw-w64-common mingw-w64-x86-64-dev; do
-  notice="/usr/share/doc/$package/copyright"
-  if [[ ! -r "$notice" ]]; then
-    printf 'Missing MinGW redistribution notice: %s\n' "$notice" >&2
-    exit 1
-  fi
-  cp -- "$notice" "$game_files/licenses/$package.txt"
-done
-cp -- "$project_root/windows-desktop/README.txt" "$game_files/README.txt"
-
-makensis -V3 "-DAPP_FILES=$game_files" "-DOUTPUT_EXE=$scratch/Ridgebound-Setup-x64.exe" \
-  "$project_root/windows-desktop/setup.nsi"
-
-python3 "$project_root/scripts/verify-desktop.py" \
-  "$game_files" "$scratch/Ridgebound-Setup-x64.exe" "$windows_template" \
-  "$scratch/Ridgebound-Windows-x64.zip"
-install -m 644 "$scratch/Ridgebound-Setup-x64.exe" "$scratch/Ridgebound-Windows-x64.zip" "$destination"
-sha256sum -- "$destination/Ridgebound-Setup-x64.exe" "$destination/Ridgebound-Windows-x64.zip"
-, 'run/main_scene="res://desktop_main.tscn"', text, count=1, flags=re.MULTILINE)
-if scenes != 1:
-    raise SystemExit("Could not set the native entry scene")
-text = re.sub(
-    r"(?m)^(?:renderer/rendering_method(?:\.\w+)?|gl_compatibility/driver\.windows|"
-    r"anti_aliasing/quality/msaa_3d|scaling_3d/scale)=.*\n",
-    "",
-    text,
-)
-text = text.replace(
-    "[rendering]\n",
-    '[rendering]\nrenderer/rendering_method="gl_compatibility"\n'
-    'renderer/rendering_method.mobile="gl_compatibility"\n'
-    'gl_compatibility/driver.windows="opengl3"\n'
-    'anti_aliasing/quality/msaa_3d=2\nscaling_3d/scale=1.0\n',
-    1,
-)
-configuration.write_text(text, encoding="utf-8")
-(project / "export_presets.cfg").write_text(
-    '[preset.0]\n'
-    'name="Windows x64"\n'
-    'platform="Windows Desktop"\n'
-    'runnable=true\n'
-    'dedicated_server=false\n'
-    'custom_features="ridgebound_desktop"\n'
-    'export_filter="all_resources"\n'
-    'include_filter=""\n'
-    'exclude_filter="tests/*"\n'
-    'export_path=""\n'
-    'script_export_mode=2\n'
-    '[preset.0.options]\n'
-    'custom_template/debug=""\n'
-    f'custom_template/release={json.dumps(sys.argv[2])}\n'
-    'binary_format/embed_pck=false\n'
-    'binary_format/architecture="x86_64"\n'
-    'debug/export_console_wrapper=0\n'
-    'texture_format/s3tc_bptc=true\n'
-    'texture_format/etc2_astc=false\n'
-    'codesign/enable=false\n'
-    'application/modify_resources=false\n'
-    'application/export_angle=2\n'
-    'application/export_d3d12=2\n',
-    encoding="utf-8",
-)
-PY
-
-run_godot() {
-  local label="$1" log="$scratch/$1.log"
-  shift
-  "$godot" --headless "$@" 2>&1 | tee "$log"
-  if grep -Eq '(^|[[:space:]])(SCRIPT ERROR|ERROR):' "$log"; then
-    printf 'Godot %s reported errors.\n' "$label" >&2
-    exit 1
-  fi
-}
-
-run_godot import --editor --path "$native_project" --import --quit
-run_godot export --path "$native_project" --export-release "Windows x64" "$game_files/Ridgebound.exe"
-(
-  cd "$scratch"
-  run_godot smoke --main-pack "$game_files/Ridgebound.pck" --quit-after 80
 )
 
 "$mingw" -std=c++17 -O2 -Wall -Wextra -Wpedantic -municode \
