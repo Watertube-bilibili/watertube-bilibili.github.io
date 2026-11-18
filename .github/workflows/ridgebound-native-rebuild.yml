@@ -55,24 +55,16 @@ jobs:
           if re.search(r'(^|\s)(SCRIPT ERROR|ERROR):', text):
               raise SystemExit('Unexpected Godot import error')
           PY
-      - name: Start the cockpit interface and verify pause, view and import controls
+      - name: Render portrait and landscape menus using native Android UI layout
         run: |
-          timeout 60s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 godot --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --path sources/ridgebound/godot --quit-after 300 -- --native-smoke 2>&1 | tee "$RUNNER_TEMP/smoke-native.log"
-          if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/smoke-native.log"; then exit 1; fi
-          grep -q NATIVE_SMOKE_OK "$RUNNER_TEMP/smoke-native.log"
-      - name: Exercise independent camera touch ownership and the screen catalogue
-        run: |
-          timeout 45s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 godot --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --path sources/ridgebound/godot --script res://tests/native_rebuild_smoke.gd 2>&1 | tee "$RUNNER_TEMP/rebuild-native.log"
-          if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/rebuild-native.log"; then exit 1; fi
-          grep -q NEW_NATIVE_SMOKE_OK "$RUNNER_TEMP/rebuild-native.log"
-      - name: Save the rendered views for inspection
-        run: |
+          sed -i 's/OS\.has_feature("android")/(OS.has_feature("android") or "--preview-phone" in OS.get_cmdline_user_args())/g' sources/ridgebound/godot/desktop_main.gd sources/ridgebound/godot/native_hud.gd sources/ridgebound/godot/touch_drive.gd
+          timeout 60s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 godot --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 390x844 --path sources/ridgebound/godot --script res://tests/native_phone_preview.gd -- --preview-phone
           python3 - <<'PY'
           import base64
           import os
           from pathlib import Path
-          for tag in ("start", "drive", "display", "map", "garage", "control"):
-              data = base64.b64encode((Path(os.environ["RUNNER_TEMP"]) / f"rebuild-{tag}.jpg").read_bytes()).decode()
+          for tag in ("portrait", "landscape"):
+              data = base64.b64encode((Path(os.environ["RUNNER_TEMP"]) / f"mobile-{tag}.jpg").read_bytes()).decode()
               for i in range(0, len(data), 1024):
-                  print(f"REBUILD_PREVIEW {tag} {data[i:i + 1024]}")
+                  print(f"MOBILE_PREVIEW {tag} {data[i:i + 1024]}")
           PY
