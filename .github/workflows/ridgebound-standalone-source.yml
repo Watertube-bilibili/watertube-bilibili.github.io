@@ -1,0 +1,49 @@
+name: Prepare standalone Ridgebound Git source
+on:
+  push:
+    branches: ['codex/ridgebound-portable-source-20261118']
+permissions:
+  contents: write
+jobs:
+  source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 1
+      - name: Extract the game project and build a cloneable Git bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/ridgebound-standalone"
+          mkdir -p "$work/sources" "$work/ridgebound/downloads" "$work/assets"
+          cp -a sources/ridgebound "$work/sources/"
+          for file in ridgebound/*.mjs ridgebound/style.css ridgebound/index.html ridgebound/device-profiles.json; do
+            cp -- "$file" "$work/ridgebound/"
+          done
+          cp -a ridgebound/assets "$work/ridgebound/"
+          cp ridgebound/downloads/ridgebound-map-example.zip "$work/ridgebound/downloads/"
+          cp assets/ie-entry.js "$work/assets/"
+          cp sources/ridgebound/LICENSE "$work/LICENSE"
+          cp sources/ridgebound/README.md "$work/README.md"
+          git -C "$work" init -q --initial-branch=main
+          git -C "$work" config user.name 'Ridgebound Builder'
+          git -C "$work" config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git -C "$work" add .
+          git -C "$work" commit -qm 'Import the standalone Ridgebound game, Blender models and native build tools'
+          git -C "$work" bundle create "$RUNNER_TEMP/Ridgebound-source.bundle" main HEAD
+          git -C "$work" bundle verify "$RUNNER_TEMP/Ridgebound-source.bundle"
+          git clone -q "$RUNNER_TEMP/Ridgebound-source.bundle" "$RUNNER_TEMP/restore"
+          test -s "$RUNNER_TEMP/restore/sources/ridgebound/godot/project.godot"
+          test -s "$RUNNER_TEMP/restore/sources/ridgebound/yuchuan-v8.blend"
+          test -s "$RUNNER_TEMP/restore/ridgebound/device-profiles.json"
+          test "$(git -C "$RUNNER_TEMP/restore" rev-list --count HEAD)" = 1
+          git fetch -q --no-tags "$work" main:refs/heads/ridgebound-standalone-source
+          git push origin refs/heads/ridgebound-standalone-source
+          mkdir -p ridgebound-source-export
+          cp "$RUNNER_TEMP/Ridgebound-source.bundle" ridgebound-source-export/
+          git add ridgebound-source-export/Ridgebound-source.bundle
+          git -c user.name='Ridgebound Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -qm 'Provide the verified standalone Git bundle'
+          git push origin HEAD:refs/heads/codex/ridgebound-standalone-bundle-20261118
+          echo STANDALONE_GIT_BUNDLE_OK
