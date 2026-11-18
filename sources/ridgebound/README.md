@@ -56,7 +56,7 @@
 
 ## Windows 原生版
 
-[安装版 EXE](../../ridgebound/downloads/Ridgebound-Setup-x64.exe) · [便携版 ZIP](../../ridgebound/downloads/Ridgebound-Windows-x64.zip)
+[安装版 EXE](../../ridgebound/downloads/Ridgebound-Setup-x64.exe?v=expedition-20261118) · [便携版 ZIP](../../ridgebound/downloads/Ridgebound-Windows-x64.zip?v=expedition-20261118)
 
 安装版提供开始菜单快捷方式和卸载。便携版解压后运行 `Ridgebound.exe`。桌面包用 Godot 4.4.1 的 OpenGL 兼容渲染器，目标系统为 Windows 7 SP1 x64 及更新版本，需要 OpenGL 3.3 驱动。车载相机、绞盘、维修和雪线解锁均可离线使用。桌面存档保存在系统用户目录。
 
