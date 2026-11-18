@@ -1,0 +1,16 @@
+name: Verify the live Ridgebound Summit release
+on:
+  push:
+    branches: ['codex/ridgebound-summit-public-20261118']
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify the public entry, art, engine and downloadable files
+        env:
+          VERIFY_ANDROID: '0'
+        run: python3 check-summit-public.py
