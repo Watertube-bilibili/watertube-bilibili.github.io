@@ -54,7 +54,7 @@ var _capture_best: Dictionary = {}
 var _capture_instructions = "先让方向盘回中、踏板松开，再选择要绑定的操作。"
 
 func _ready() -> void:
-	layer = 4
+	layer = 15
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_load_settings()
 	_build_dialog()

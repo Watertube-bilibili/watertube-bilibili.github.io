@@ -44,7 +44,7 @@ var _pedal_held: StyleBoxFlat
 var _throttle_idle: StyleBoxFlat
 
 func _ready() -> void:
-	layer = 9
+	layer = 12
 	_label_font = load(UI_FONT_PATH) as Font if ResourceLoader.exists(UI_FONT_PATH) else ThemeDB.fallback_font
 	_surface = DriveSurface.new()
 	_surface.controller = self
