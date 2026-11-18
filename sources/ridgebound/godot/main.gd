@@ -51,6 +51,9 @@ var js_enabled=false
 # Browser sets this small bootstrap before starting the engine. Native tests may
 # assign the same dictionary before adding the scene to the tree.
 var bootstrap_options:Dictionary={}
+# A desktop shell can provide controller input and pause state without changing Web input.
+var desktop_input_provider: Callable
+
 var world_builds:int=0
 var initialization_ms:float=0.0
 var world_build_ms:float=0.0
@@ -433,6 +436,10 @@ func _process(dt):
 		if commands is Array:
 			for command in commands:
 				if command is Dictionary:_command(command)
+	elif desktop_input_provider.is_valid():
+		var sampled: Variant = desktop_input_provider.call()
+		if sampled is Dictionary:
+			input.merge(sampled, true)
 	else:
 		input.active=true
 		input.throttle=1 if Input.is_physical_key_pressed(KEY_W) else 0
@@ -444,7 +451,7 @@ func _process(dt):
 	chunks.update_stream(Vector3(state.x,state.y,state.z),forward*state.speed,dt)
 	_update_anchor_layers()
 	quality_clock+=dt
-	if quality_clock>1.0:
+	if quality_clock>1.0 and not desktop_input_provider.is_valid():
 		quality_clock=0.0
 		var average_ms=float(chunks.get_stats().avgMs)
 		var target_scale=.6 if average_ms>60.0 else (.75 if average_ms>35.0 else .9)
