@@ -521,7 +521,7 @@ func _process(dt):
 			streaming_waiting=true
 			input.throttle=0.0
 			input.reverse=0.0
-			input.brakeValue=maxf(float(input.brakeValue),.65)
+			input.brakeAssist = 0.65
 		previous_position=Vector3(state.x,state.y,state.z)
 		var previous_state=state.duplicate(true)
 		simulation.step(state, input, minf(dt, 0.1), _nearby_scene_obstacles(6.0))
@@ -601,7 +601,7 @@ func _import_map(command: Dictionary) -> void:
 	_reset_world("custom", bool(state.snowTires), 0)
 
 func _update_vehicle(dt):
-	var steer_angle: float = float(state.get("roadSteeringAngle", float(state.steering) * 0.49))
+	var road_yaw := float(state.get("roadSteeringAngle", -float(state.steering) * OffroadPhysics.MAX_ROAD_STEER))
 	vehicle.position=Vector3(state.x,state.y,state.z)
 	vehicle.rotation.y=state.yaw
 	if body:
@@ -610,7 +610,7 @@ func _update_vehicle(dt):
 	for i in range(wheels.size()):
 		if wheels[i]:
 			wheels[i].rotation.x=float(state.wheelRotation)
-			wheels[i].rotation.y=-steer_angle if i<2 else 0.0
+			wheels[i].rotation.y=road_yaw if i<2 else 0.0
 			if state.has("wheelHeights"):wheels[i].position.y=state.wheelHeights[i]-state.y
 		var shock: Node3D = shock_rods[i]
 		if shock:
@@ -618,8 +618,8 @@ func _update_vehicle(dt):
 	# Preserve the imported tilt of each pivot as it rotates about local Y.
 	# Blender local Z becomes local Y in the exported glTF coordinate system.
 	if steering:
-		# Positive steering turns the wheel clockwise as seen from the driver seat.
-		steering.basis = steering_rest * Basis(Vector3.UP, -steer_angle * 16.0)
+		# World road yaw already maps a right input to negative rotation.
+		steering.basis = steering_rest * Basis(Vector3.UP, road_yaw * 16.0)
 	if speed_needle:
 		speed_needle.basis = speed_needle_rest * Basis(Vector3.UP, -absf(state.speed) * 0.22)
 	if rpm_needle:

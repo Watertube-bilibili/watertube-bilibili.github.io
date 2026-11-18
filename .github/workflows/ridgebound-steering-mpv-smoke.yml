@@ -1,0 +1,52 @@
+name: Ridgebound steering and MPV physics smoke
+on:
+  push:
+    branches:
+      - codex/ridgebound-steering-mpv-smoke-20261118
+permissions:
+  contents: read
+jobs:
+  godot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Install verified Godot 4.6.3
+        shell: bash
+        run: |
+          cd "$RUNNER_TEMP"
+          release=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          editor=Godot_v4.6.3-stable_linux.x86_64.zip
+          curl --fail --silent --show-error --location --retry 2 "$release/$editor" --output "$editor"
+          curl --fail --silent --show-error --location --retry 2 "$release/SHA512-SUMS.txt" --output SHA512-SUMS.txt
+          awk -v file="$editor" '$2==file || $2==("*" file)' SHA512-SUMS.txt | sha512sum --check
+          unzip -q "$editor"
+          mv "${editor%.zip}" godot
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Import game and check regression detects the inverted wheel
+        shell: bash
+        run: |
+          godot --headless --editor --path sources/ridgebound/godot --import --quit 2>&1 | tee "$RUNNER_TEMP/import.log"
+          ! grep -E 'SCRIPT ERROR|^ERROR:' "$RUNNER_TEMP/import.log"
+          main=sources/ridgebound/godot/main.gd
+          cp "$main" "$RUNNER_TEMP/fixed-main.gd"
+          git show "HEAD^:$main" > "$main"
+          if godot --headless --path sources/ridgebound/godot --script tests/test_runtime.gd > "$RUNNER_TEMP/baseline.log" 2>&1; then
+            echo 'The original visual inversion must be detected'
+            exit 1
+          fi
+          mv "$RUNNER_TEMP/fixed-main.gd" "$main"
+          grep -F 'FAIL cockpit rim turns left with actual physics input' "$RUNNER_TEMP/baseline.log"
+          grep -F 'FAIL cockpit rim turns right with actual physics input' "$RUNNER_TEMP/baseline.log"
+          grep -F 'PASS vehicle course turns left' "$RUNNER_TEMP/baseline.log"
+          grep -F 'PASS vehicle course turns right' "$RUNNER_TEMP/baseline.log"
+      - name: Verify all steering and physical braking behavior
+        shell: bash
+        run: |
+          for script in test_runtime test_mpv_physics test_obstacle_contacts test_physics; do
+            godot --headless --path sources/ridgebound/godot --script "tests/$script.gd" 2>&1 | tee "$RUNNER_TEMP/$script.log"
+            ! grep -E 'SCRIPT ERROR|^ERROR:|FAILURES [1-9]' "$RUNNER_TEMP/$script.log"
+          done
