@@ -1,0 +1,39 @@
+name: Validate the Ridgebound terrain and routes
+on:
+  push:
+    branches: ['codex/ridgebound-large-terrain-validation-20261118']
+permissions:
+  contents: read
+jobs:
+  routes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Import the project with Godot 4.6.3
+        run: |
+          cd "$RUNNER_TEMP"
+          release=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          name=Godot_v4.6.3-stable_linux.x86_64.zip
+          curl --fail --silent --show-error --location --max-time 120 "$release/$name" --output "$name"
+          curl --fail --silent --show-error --location --max-time 30 "$release/SHA512-SUMS.txt" --output sums
+          awk -v name="$name" '$2==name || $2==("*" name)' sums | sha512sum --check
+          unzip -q "$name"
+          ln -s "$RUNNER_TEMP/Godot_v4.6.3-stable_linux.x86_64" "$RUNNER_TEMP/godot"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+          cd "$GITHUB_WORKSPACE"
+          timeout 80s "$RUNNER_TEMP/godot" --headless --editor --path sources/ridgebound/godot --import --quit 2>&1 | tee "$RUNNER_TEMP/terrain-import.log"
+          if grep -E '(SCRIPT ERROR:|^ERROR:)' "$RUNNER_TEMP/terrain-import.log"; then exit 1; fi
+      - name: Run large-world regressions
+        run: |
+          failed=0
+          for script in test_streaming test_startup test_world test_physics; do
+            if ! timeout 180s godot --headless --path sources/ridgebound/godot --script "tests/$script.gd" 2>&1 | tee "$RUNNER_TEMP/$script.log"; then failed=1; fi
+            if grep -E '(SCRIPT ERROR:|^ERROR:|FAILURES [1-9])' "$RUNNER_TEMP/$script.log"; then failed=1; fi
+          done
+          exit "$failed"
