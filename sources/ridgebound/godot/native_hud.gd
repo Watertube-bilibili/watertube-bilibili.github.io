@@ -99,7 +99,7 @@ func reflow() -> void:
 	_set_box(area_card, Rect2(Vector2(left, top), Vector2(minf(290.0, width * 0.47), 72)))
 	_set_box(mini_card, Rect2(Vector2(right - mini_width, top), Vector2(mini_width, mini_width + 32)))
 	var drive_bottom := bottom - (190.0 if mobile else 0.0)
-	var meter_y := top + 78.0 if short_landscape else drive_bottom - 118.0
+	var meter_y := top + 78.0 if short_landscape else drive_bottom - (142.0 if pedal_warning.visible else 118.0)
 	var tools_y := top if short_landscape else drive_bottom - (100.0 if mobile else 52.0)
 	_set_box(meter_card, Rect2(Vector2(left, meter_y), Vector2(meter_width, 111)))
 	_set_box(tool_card, Rect2(Vector2(right - tool_width, tools_y), Vector2(tool_width, 92 if mobile else 47)))
@@ -140,13 +140,14 @@ func update_status(snapshot: Dictionary, detail: Dictionary) -> void:
 	gearbox.text = "%s · %s" % ["四驱" if snapshot.awd else "两驱", "低速挡" if snapshot.lowGear else "高挡"]
 	health.text = "车身 %d%%   轮胎 %d%%   悬挂 %d%%" % [snapshot.damage.body, snapshot.damage.tires, snapshot.damage.suspension]
 	var broken := bool(snapshot.get("brakePedalBroken", false))
+	var warning_changed := pedal_warning.visible != broken
 	pedal_warning.visible = broken
 	pedal_warning.text = "制动踏板已断 · 前往维修小屋" if broken else ""
 	if not broken and float(snapshot.get("pedalForceN", 0.0)) >= 1.0:
 		gearbox.text += "   %d N" % roundi(float(snapshot.pedalForceN))
 	if snapshot.get("blocked", false):
 		route.text = "正在加载前方路面"
-	tool_camera.text = VIEW_NAMES[clampi(int(snapshot.cameraMode), 0, VIEW_NAMES.size() - 1)]
+	tool_camera.tooltip_text = "当前视角 · %s" % VIEW_NAMES[clampi(int(snapshot.cameraMode), 0, VIEW_NAMES.size() - 1)]
 	tool_repair.disabled = not bool(snapshot.get("repairAvailable", false))
 	var overview := bool(detail.get("overview", false))
 	mini_switch.text = "跟车" if overview else "全图"
@@ -155,6 +156,8 @@ func update_status(snapshot: Dictionary, detail: Dictionary) -> void:
 	if is_instance_valid(map_preview) and map_preview.is_visible_in_tree():
 		map_preview.call("set_view", snapshot, true)
 	_refresh_winch(snapshot)
+	if warning_changed:
+		reflow()
 
 func show_screen(mode: String, context: Dictionary) -> void:
 	current_screen = mode
@@ -307,15 +310,20 @@ func _make_instruments() -> void:
 	main.add_theme_constant_override("separation", 8)
 	meters.add_child(main)
 	speed = _label(main, "00", 39)
+	speed.custom_minimum_size.x = 70.0
 	speed.modulate = COLOR_SIGNAL
-	_label(main, "km/h", 14)
+	var unit := _label(main, "km/h", 14)
+	unit.custom_minimum_size.x = 36.0
 	road = _label(main, "", 15)
+	road.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gearbox = _label(meters, "", 15)
 	health = _label(meters, "", 14)
 	health.modulate = COLOR_SECONDARY
 	pedal_warning = _label(meters, "", 14)
 	pedal_warning.modulate = COLOR_DANGER
 	pedal_warning.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	pedal_warning.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+	pedal_warning.custom_minimum_size.y = 20
 	pedal_warning.hide()
 
 	var tools := _card(root_control)
@@ -348,7 +356,9 @@ func _make_instruments() -> void:
 	var head := _row(rig)
 	var heading := _label(head, "绞盘", 20)
 	heading.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_button(head, "收起", "winch_panel", null, false, false).size_flags_horizontal = Control.SIZE_SHRINK_END
+	var close := _button(head, "收起", "winch_panel", null, false, false)
+	close.custom_minimum_size.x = 58.0
+	close.size_flags_horizontal = Control.SIZE_SHRINK_END
 	var select := _row(rig)
 	endpoint_select = OptionButton.new()
 	endpoint_select.add_item("前钩")
@@ -436,7 +446,9 @@ func _make_sheet() -> void:
 	var head := _row(shell)
 	title = _label(head, "山野之间", 32)
 	title.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	_button(head, "返回", "back").size_flags_horizontal = Control.SIZE_SHRINK_END
+	var back := _button(head, "返回", "back")
+	back.custom_minimum_size.x = 58.0
+	back.size_flags_horizontal = Control.SIZE_SHRINK_END
 	tabs = _row(shell)
 	for tab in [["地图", "maps"], ["车库", "garage"], ["设置", "settings"]]:
 		_button(tabs, tab[0], "screen", tab[1])
@@ -488,6 +500,8 @@ func _label(parent: Container, text: String, size: int) -> Label:
 func _hint(parent: Container, text: String, ink: Color = COLOR_SECONDARY) -> void:
 	var label := _label(parent, text, 15)
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.text_overrun_behavior = TextServer.OVERRUN_NO_TRIMMING
+	label.custom_minimum_size.y = 24
 	label.modulate = ink
 
 func _row(parent: Container) -> HBoxContainer:

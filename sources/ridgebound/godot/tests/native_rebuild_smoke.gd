@@ -11,6 +11,9 @@ func _test() -> void:
 	await capture("start")
 	shell._begin()
 	await capture("drive")
+	if shell.interface.speed.size.x < 60.0:
+		fail("speed display lost its width")
+		return
 	var center := root.get_visible_rect().size * 0.5
 	var first := InputEventScreenTouch.new()
 	first.index = 2
