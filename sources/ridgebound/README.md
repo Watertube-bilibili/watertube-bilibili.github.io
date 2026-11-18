@@ -1,6 +1,6 @@
 # 山野之间 · RIDGEBOUND
 
-水管同学的原创越野游戏，提供网页和 Windows 原生版。采用 Godot 和 Blender，原始代码、模型、生成脚本及网页入口一并开源。这个目录是个人主页仓库中的独立项目，不包含其它项目的源码许可。
+水管同学的原创越野游戏，提供网页、Windows 和安卓原生版。采用 Godot 和 Blender，原始代码、模型、生成脚本及网页入口一并开源。这个目录是个人主页仓库中的独立项目，不包含其它项目的源码许可。
 
 [进入游戏](https://watertube-bilibili.github.io/ridgebound/) · [返回项目页](https://watertube-bilibili.github.io/projects.html)
 
@@ -43,6 +43,16 @@
 - `windows-bridge/`：Windows DirectInput输入/力反馈服务。
 - `scripts/build-web.sh`：Godot网页导出。
 - [`../../ridgebound/`](../../ridgebound/)：HTML界面、输入绑定、存档和已导出的Godot网页文件。
+
+## 自定义地图
+
+在网页或桌面版打开「地图与车库」并选择 ZIP。支持 Ridgebound 高度图和障碍物，以及 BeamNG v9 的单个 TerrainBlock、地表抓地和出生点。本次可在会话中重新打开已导入地图。 [导入格式与示例](MAP-IMPORT.md)
+
+## 安卓原生版
+
+[下载 ARM64 APK](../../ridgebound/downloads/Ridgebound-Android.apk)
+
+使用触屏方向盘和踏板，可随设备方向切换竖屏与横屏。方向变化只调整布局，转向来自方向盘。此版为签名的侧载构建。 [安卓构建验证](https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/44270193567)
 
 ## Windows 原生版
 

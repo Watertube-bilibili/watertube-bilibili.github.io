@@ -7,6 +7,7 @@
   <meta name="theme-color" content="#17211e">
   <meta name="description" content="山野之间，一段属于你的越野旅程。驾驶复古四驱车穿越山林，使用绞盘脱困，抵达山顶。支持键盘与手机触屏。">
   <title>山野之间 · RIDGEBOUND</title>
+  <meta name="ridgebound-release" content="expedition-20261118">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23353e36'/%3E%3Cpath d='M8 47 27 17l10 16 6-9 15 23Z' fill='none' stroke='%23e8dec5' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./style.css?v=ef041943e0dbc30b">
 </head>
@@ -59,8 +60,9 @@
         <button class="launch-map-button" id="welcome-map"><svg aria-hidden="true"><use href="#i-map"/></svg>地图与车库</button>
       </div>
       <p class="input-note"><span class="desktop-note"><kbd>W A S D</kbd> 驾驶 <kbd>E</kbd> 绞盘</span><span class="mobile-note">左手转方向盘，右手控制踏板</span></p>
-      <div class="download-links" aria-label="Windows 版">
+      <div class="download-links" aria-label="客户端下载">
         <svg aria-hidden="true"><use href="#i-download"/></svg>
+        <a href="./downloads/Ridgebound-Android.apk" download>安卓 APK</a>
         <a href="./downloads/Ridgebound-Setup-x64.exe" download>Windows 安装版</a>
         <a href="./downloads/Ridgebound-Windows-x64.zip" download>便携 ZIP</a>
       </div>
@@ -116,7 +118,7 @@
     <p class="help-note">点按小地图切换局部和全图。房屋标记是维修点。触屏时左手转向，右手控制踏板。松开方向盘会自动回正。</p>
     <div class="dialog-actions"><button class="primary-button" id="resume">继续旅程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="dialog-recover">返回检查点</button></div><div class="pause-tools"><button id="dialog-map" class="secondary-button">地图与车库</button><button id="dialog-camera" class="secondary-button">切换驾驶视角</button><button id="dialog-controllers" class="secondary-button">控制器与踏板</button><button id="dialog-photo" class="secondary-button">保存风景照片</button><button id="dialog-fullscreen" class="secondary-button">全屏显示</button></div><a class="home-link" href="../projects.html">← 返回我的项目</a>
   </dialog>
-  <dialog id="victoryDialog" class="dialog victory-dialog"><div class="victory-mark"><svg><use href="#i-mountain"/></svg></div><h2>山顶，见。</h2><p class="dialog-intro">你越过了泥泞与陡坡。现在，把这一刻留给自己。</p><div class="journey-stats"><div><strong id="result-time">00:00</strong><span>旅程用时</span></div><div><strong id="result-distance">0 m</strong><span>行驶里程</span></div><div><strong>4 / 4</strong><span>探索路标</span></div></div><button class="primary-button" id="restart">再走一程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="discover-snow" hidden>发现隐藏雪线 ↗</button><button class="secondary-button" id="victory-continue">留在山野</button></dialog>
+  <dialog id="victoryDialog" class="dialog victory-dialog"><div class="victory-mark"><svg><use href="#i-mountain"/></svg></div><h2>抵达终点</h2><div class="journey-stats"><div><strong id="result-time">00:00</strong><span>旅程用时</span></div><div><strong id="result-distance">0 m</strong><span>行驶里程</span></div><div><strong>4 / 4</strong><span>探索路标</span></div></div><button class="primary-button" id="restart">再走一程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="discover-snow" hidden>发现隐藏雪线 ↗</button><button class="secondary-button" id="victory-continue">留在山野</button></dialog>
   <dialog id="garage" class="dialog garage-dialog">
     <button class="dialog-close icon-button" id="close-garage" aria-label="关闭车库"><svg><use href="#i-close"/></svg></button>
     <h2>地图与车库</h2>

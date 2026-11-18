@@ -56,6 +56,7 @@ ln -s -- "$(realpath -- "$template")" "$editor/editor_data/export_templates/4.6.
 icon="$ridgebound_root/android/launcher-icon.png"
 test -s "$icon" || { echo "Missing Android launcher artwork: $icon" >&2; exit 1; }
 cp -- "$icon" "$project/android-launcher-icon.png"
+python3 "$ridgebound_root/scripts/build-native-font.py" "$project"
 
 if [ -z "${GODOT_ANDROID_KEYSTORE_RELEASE_PATH:-}" ]; then
   # A local sideload key is reused on subsequent builds on this machine.
@@ -130,6 +131,7 @@ set_section("input_devices", {
 set_section("rendering", {
     "renderer/rendering_method.mobile": '"gl_compatibility"',
     "anti_aliasing/quality/msaa_3d": "0",
+    "textures/vram_compression/import_etc2_astc": "true",
 })
 doc.write_text(cfg, encoding="utf-8")
 
@@ -145,7 +147,7 @@ runnable=true
 dedicated_server=false
 custom_features="ridgebound_android"
 export_filter="all_resources"
-include_filter=""
+include_filter="assets/Ridgebound-UI-OFL.txt"
 exclude_filter="tests/*, android-launcher-icon.png"
 export_path=""
 script_export_mode=2
