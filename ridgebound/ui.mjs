@@ -273,7 +273,7 @@ export function createUI(actions = {}) {
     $('altitude').textContent = `海拔 ${Math.round(extra.altitude ?? (state.y || 0))} m`;
     const yaw = ((extra.heading ?? state.yaw ?? 0) * 180/Math.PI % 360 + 360) % 360;
     $('heading').textContent = ['N','NE','E','SE','S','SW','W','NW'][Math.round(yaw/45)%8];
-    $('mission-hint').textContent = state.completed ? '自由探索，享受山野' : state.stuck > 3 ? '试试低速挡，或用绞盘借力' : '主线约 3.5 km · 3 条岔路可探索';
+    $('mission-hint').textContent = state.completed ? '自由探索，享受山野' : state.stuck > 3 ? '试试低速挡，或用绞盘借力' : '主线约 24 km · 可探索 7 条环线';
     const connected = !!state.winch;
     $('winch-toggle-status').textContent = connected ? '已连接' : '待命';
     $('winch-toggle').classList.toggle('connected',connected);

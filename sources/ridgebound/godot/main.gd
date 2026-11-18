@@ -7,6 +7,12 @@ var camera:Camera3D
 var vehicle:Node3D
 var body:Node3D
 var wheels:Array=[]
+var shock_rods: Array[Node3D] = []
+var shock_rest_heights: Array[float] = []
+var winch_outlet: Node3D
+var steering_rest := Basis.IDENTITY
+var speed_needle_rest := Basis.IDENTITY
+var rpm_needle_rest := Basis.IDENTITY
 var steering:Node3D
 var speed_needle:Node3D
 var rpm_needle:Node3D
@@ -19,9 +25,8 @@ var _anchor_visuals:Dictionary={}
 var _anchor_center=Vector2(INF,INF)
 const ANCHOR_RADIUS=96.0
 const ANCHOR_SPACING=15.0
-const SAFETY_COLUMNS=32
-const SAFETY_ROWS=64
-const SAFETY_MARGIN=256.0
+const SAFETY_MARGIN: float = 2048.0
+const SAFETY_Y: float = -500.0
 var repair_sites:Array=[]
 var checkpoints:Array=[]
 var checkpoint_rings:Array=[]
@@ -66,14 +71,24 @@ func _ready():
 	vehicle=model_scene.instantiate()
 	add_child(vehicle)
 	body=vehicle.find_child("Body",true,false)
-	for wheel_name in ["Wheel_FL","Wheel_FR","Wheel_RL","Wheel_RR"]:
-		wheels.append(vehicle.find_child(wheel_name,true,false))
+	for corner: String in ["FL", "FR", "RL", "RR"]:
+		wheels.append(vehicle.find_child("Wheel_" + corner, true, false))
+		var shock := vehicle.find_child("ShockRod_" + corner, true, false) as Node3D
+		shock_rods.append(shock)
+		shock_rest_heights.append(shock.position.y if shock else 0.0)
+	winch_outlet = vehicle.find_child("WinchOutlet", true, false) as Node3D
 	steering=vehicle.find_child("SteeringWheel",true,false)
 	speed_needle=vehicle.find_child("SpeedNeedle",true,false)
 	rpm_needle=vehicle.find_child("RPMNeedle",true,false)
+	if steering:
+		steering_rest = steering.basis
+	if speed_needle:
+		speed_needle_rest = speed_needle.basis
+	if rpm_needle:
+		rpm_needle_rest = rpm_needle.basis
 	camera=Camera3D.new()
 	camera.fov=52
-	camera.far=780
+	camera.far=1850
 	camera.near=.06
 	add_child(camera)
 	camera.current=true
@@ -139,7 +154,7 @@ func _setup_environment():
 	env.tonemap_mode=Environment.TONE_MAPPER_LINEAR
 	env.fog_enabled=true
 	env.fog_light_color=Color("c8d3c5")
-	env.fog_density=.007
+	env.fog_density=.0022
 	environment.environment=env
 	add_child(environment)
 	sun=DirectionalLight3D.new()
@@ -226,23 +241,12 @@ func _cone(parent:Node3D,position_:Vector3,radius:float,height:float,color:Color
 func _build_scenery(region:String):
 	_build_terrain_safety(region)
 	var snowy=region=="snow"
-	var rng=RandomNumberGenerator.new()
-	rng.seed=6731
-	# A bounded set of silhouettes surrounds the whole valley, not only its start.
-	for z0 in range(-150,4001,450):
-		for side in [-1,1]:
-			var x=side*(TerrainMath.MAX_X+120+rng.randf()*110)
-			var z=float(z0)+rng.randf()*100
-			var h=90+rng.randf()*100
-			var pos=Vector3(x,TerrainMath.height_at(x,z,region)+h*.42-12,z)
-			_cone(scenery,pos,85+rng.randf()*60,h,Color("97adc0") if snowy else Color("98ad98"),5)
-			if snowy:
-				_cone(scenery,pos+Vector3(0,h*.33,0),32,h*.35,Color("e6ebef"),5)
 	_refresh_nearby_anchors(true)
 	for i in range(checkpoints.size()):
 		var cp=checkpoints[i]
 		var cp_root=Node3D.new()
 		cp_root.position=Vector3(cp.x,TerrainMath.height_at(cp.x,cp.z,region),cp.z)
+		cp_root.rotation.y=TerrainMath.heading_at(cp.z)
 		scenery.add_child(cp_root)
 		for side in [-1,1]:
 			_box(cp_root,Vector3(side*4,1.9,0),Vector3(.13,3.8,.13),Color("746449"))
@@ -283,94 +287,71 @@ func _build_scenery(region:String):
 	# A small base camp and the blue lake remain as distant navigation landmarks.
 	var camp_y=TerrainMath.height_at(-10,0,region)
 	_cone(scenery,Vector3(-10,camp_y+1.5,0),2.8,3,Color("be8857"),3)
-	var water=MeshInstance3D.new()
-	var disk=CylinderMesh.new()
-	disk.top_radius=TerrainMath.LAKE_RADIUS
-	disk.bottom_radius=TerrainMath.LAKE_RADIUS
-	disk.height=.04
-	disk.radial_segments=48
-	water.mesh=disk
-	water.material_override=_mat(Color("8daec6") if snowy else Color("71a6ab"),.25)
-	water.position=Vector3(TerrainMath.LAKE_X,TerrainMath.LAKE_WATER_Y+.01,TerrainMath.LAKE_Z)
-	scenery.add_child(water)
+	for site: Dictionary in TerrainMath.water_bodies():
+		var water := MeshInstance3D.new()
+		var disk := CylinderMesh.new()
+		disk.top_radius = site.radius
+		disk.bottom_radius = site.radius
+		disk.height = 0.04
+		disk.radial_segments = 64
+		water.mesh = disk
+		water.material_override = _mat(Color("8daec6") if snowy else Color("71a6ab"), 0.25)
+		water.position = Vector3(site.x, site.y + 0.01, site.z)
+		scenery.add_child(water)
+	for site: Dictionary in TerrainMath.landmarks():
+		_build_lookout(site, region)
 
-func _build_terrain_safety(region:String):
-	# Fixed 4096 triangles cover all 8 km² plus an outer skirt. The fine 16 m
-	# layer remains the only drivable ground; distant coverage never grows with tiles.
-	var mesh:ArrayMesh
+func _build_lookout(site: Dictionary, region: String) -> void:
+	# The high marker has a clear silhouette and belongs beside the pullout,
+	# outside the driving corridor. The station and flags mark its entrance.
+	var marker := Node3D.new()
+	marker.position = Vector3(site.x, TerrainMath.height_at(site.x, site.z, region), site.z)
+	scenery.add_child(marker)
+	var frame := _box(marker, Vector3(0, 3, 0), Vector3(1.2, 6, 1.2), Color("70685d"))
+	frame.visibility_range_end = 480.0
+	var cap := _cone(marker, Vector3(0, 7, 0), 1.8, 2.0, Color("de9864"), 6)
+	cap.visibility_range_end = 480.0
+	_box(marker, Vector3(0, 1.1, 0), Vector3(3.8, 0.36, 3.8), Color("8a7555"))
+	for side: float in [-1.0, 1.0]:
+		_box(marker, Vector3(side * 1.7, 1.9, 0), Vector3(0.10, 0.12, 3.5), Color("bdac87"))
+		_box(marker, Vector3(side * 1.75, 1.4, 1.7), Vector3(0.11, 1.0, 0.11), Color("746449"))
+	var label := Label3D.new()
+	label.text = "LOOKOUT"
+	label.position = Vector3(0, 3.4, -0.65)
+	label.rotation.y = PI
+	label.pixel_size = 0.008
+	label.visibility_range_end = 75.0
+	marker.add_child(label)
+
+func _build_terrain_safety(region: String) -> void:
+	# Only two triangles stay resident globally. The scrolling visual layers
+	# supply actual height detail, and the near layer controls drivable ground.
+	var mesh: ArrayMesh
 	if terrain_safety_meshes.has(region):
-		mesh=terrain_safety_meshes[region]
+		mesh = terrain_safety_meshes[region]
 	else:
-		var tool=SurfaceTool.new()
+		var x_min: float = TerrainMath.MIN_X - SAFETY_MARGIN
+		var x_max: float = TerrainMath.MAX_X + SAFETY_MARGIN
+		var z_min: float = TerrainMath.MIN_Z - SAFETY_MARGIN
+		var z_max: float = TerrainMath.MAX_Z + SAFETY_MARGIN
+		var a := Vector3(x_min, SAFETY_Y, z_min)
+		var b := Vector3(x_max, SAFETY_Y, z_min)
+		var c := Vector3(x_min, SAFETY_Y, z_max)
+		var d := Vector3(x_max, SAFETY_Y, z_max)
+		var material: StandardMaterial3D = _mat(Color("b4c7cd") if region == "snow" else Color("818f73"))
+		var tool := SurfaceTool.new()
 		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-		var snowy=region=="snow"
-		var stride=SAFETY_COLUMNS+1
-		var x_min=TerrainMath.MIN_X-SAFETY_MARGIN
-		var z_min=TerrainMath.MIN_Z-SAFETY_MARGIN
-		var x_step=(TerrainMath.MAX_X-TerrainMath.MIN_X+SAFETY_MARGIN*2)/SAFETY_COLUMNS
-		var z_step=(TerrainMath.MAX_Z-TerrainMath.MIN_Z+SAFETY_MARGIN*2)/SAFETY_ROWS
-		var points=PackedVector3Array()
-		var colors=PackedColorArray()
-		points.resize((SAFETY_COLUMNS+1)*(SAFETY_ROWS+1))
-		colors.resize(points.size())
-		for row in range(SAFETY_ROWS+1):
-			for column in range(SAFETY_COLUMNS+1):
-				var x=x_min+column*x_step
-				var z=z_min+row*z_step
-				var index=row*stride+column
-				points[index]=Vector3(x,TerrainMath.height_at(x,z,region)-5.0,z)
-				var variation=sin(x*.051+z*.039)*.035
-				colors[index]=(Color("c5d5d9") if snowy else Color("a1ac7c")).lightened(variation)
-		# A coarse face must not bridge a valley above its actual road. Conservatively
-		# lower shared corners to the local centre and every road's sampled corridor.
-		var samples=points.duplicate()
-		for row in range(SAFETY_ROWS):
-			for column in range(SAFETY_COLUMNS):
-				var index=row*stride+column
-				var x=x_min+(column+.5)*x_step
-				var z=z_min+(row+.5)*z_step
-				var minimum=TerrainMath.height_at(x,z,region)-5.0
-				for corner in [index,index+1,index+stride,index+stride+1]:
-					minimum=minf(minimum,samples[corner].y)
-				for corner in [index,index+1,index+stride,index+stride+1]:
-					points[corner].y=minf(points[corner].y,minimum)
-		for road in range(-1,TerrainMath.BRANCHES.size()):
-			var start=TerrainMath.MIN_Z if road<0 else float(TerrainMath.BRANCHES[road].start)
-			var finish=TerrainMath.MAX_Z if road<0 else float(TerrainMath.BRANCHES[road].end)
-			var z=start
-			while z<=finish:
-				var center=TerrainMath.route_x(z) if road<0 else TerrainMath.branch_x(road,z)
-				for offset in [-7.0,0.0,7.0]:
-					var x=center+offset
-					var column=clampi(int(floor((x-x_min)/x_step)),0,SAFETY_COLUMNS-1)
-					var row=clampi(int(floor((z-z_min)/z_step)),0,SAFETY_ROWS-1)
-					var index=row*stride+column
-					var height=TerrainMath.height_at(x,z,region)-3.4
-					for corner in [index,index+1,index+stride,index+stride+1]:
-						points[corner].y=minf(points[corner].y,height)
-				z+=8.0
-		for row in range(SAFETY_ROWS):
-			for column in range(SAFETY_COLUMNS):
-				var a=row*stride+column
-				for triangle in [[a,a+stride,a+1],[a+1,a+stride,a+stride+1]]:
-					var normal=(points[triangle[1]]-points[triangle[0]]).cross(points[triangle[2]]-points[triangle[0]]).normalized()
-					for index in [triangle[0],triangle[2],triangle[1]]:
-						tool.set_color(colors[index])
-						tool.set_normal(normal)
-						tool.add_vertex(points[index])
-		var material=StandardMaterial3D.new()
-		material.vertex_color_use_as_albedo=true
-		material.vertex_color_is_srgb=true
-		material.metallic_specular=0.0
-		material.roughness=1.0
+		for point: Vector3 in [a, b, c, b, d, c]:
+			tool.set_normal(Vector3.UP)
+			tool.add_vertex(point)
 		tool.set_material(material)
-		mesh=tool.commit()
-		terrain_safety_meshes[region]=mesh
-	coarse_triangles=mesh.surface_get_array_len(0)/3
-	terrain_safety=MeshInstance3D.new()
-	terrain_safety.name="ResidentTerrainSilhouette"
-	terrain_safety.mesh=mesh
-	terrain_safety.cast_shadow=GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		mesh = tool.commit()
+		terrain_safety_meshes[region] = mesh
+	coarse_triangles = mesh.surface_get_array_len(0) / 3
+	terrain_safety = MeshInstance3D.new()
+	terrain_safety.name = "OpaqueTerrainUnderlay"
+	terrain_safety.mesh = mesh
+	terrain_safety.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	scenery.add_child(terrain_safety)
 
 func _refresh_nearby_anchors(force:bool=false):
@@ -543,10 +524,17 @@ func _update_vehicle(dt):
 			wheels[i].rotation.x=float(state.wheelRotation)
 			wheels[i].rotation.y=-state.steering*.4 if i<2 else 0
 			if state.has("wheelHeights"):wheels[i].position.y=state.wheelHeights[i]-state.y
+		var shock: Node3D = shock_rods[i]
+		if shock:
+			shock.position.y = shock_rest_heights[i] + float(state.suspension[i])
+	# Preserve the imported tilt of each pivot as it rotates about local Y.
 	# Blender local Z becomes local Y in the exported glTF coordinate system.
-	if steering:steering.rotation.y=state.steering*2.5
-	if speed_needle:speed_needle.rotation.y=-absf(state.speed)*.22
-	if rpm_needle:rpm_needle.rotation.y=-absf(state.speed)*.16-.15-throttle_value*.65
+	if steering:
+		steering.basis = steering_rest * Basis(Vector3.UP, state.steering * 2.5)
+	if speed_needle:
+		speed_needle.basis = speed_needle_rest * Basis(Vector3.UP, -absf(state.speed) * 0.22)
+	if rpm_needle:
+		rpm_needle.basis = rpm_needle_rest * Basis(Vector3.UP, -absf(state.speed) * 0.16 - 0.15 - throttle_value * 0.65)
 	if contact_shadow:
 		var x=float(state.x)
 		var z=float(state.z)
@@ -590,8 +578,17 @@ func _update_camera(dt):
 		target=base+forward*4+Vector3(0,1.25,0)
 		camera.fov=52
 	var alpha=1-exp(-dt*(6 if camera_mode==2 else 4))
-	camera.position=camera.position.lerp(desired,alpha)
-	target_camera=target_camera.lerp(target,alpha)
+	# At kilometer-scale coordinates, single-precision interpolation can round
+	# a small step away entirely. Finish the transition inside 1.5 cm.
+	const SETTLE_DISTANCE_SQUARED: float = 0.000225
+	if camera.position.distance_squared_to(desired) < SETTLE_DISTANCE_SQUARED:
+		camera.position = desired
+	else:
+		camera.position = camera.position.lerp(desired, alpha)
+	if target_camera.distance_squared_to(target) < SETTLE_DISTANCE_SQUARED:
+		target_camera = target
+	else:
+		target_camera = target_camera.lerp(target, alpha)
 	camera_up=camera_up.lerp(desired_up,alpha).normalized()
 	camera.look_at(target_camera,camera_up)
 
@@ -599,7 +596,7 @@ func _update_cable():
 	cable.visible=state.winch!=null
 	if not cable.visible:return
 	var a=state.winch.anchor
-	var start=vehicle.to_global(Vector3(0,.25,2.35))
+	var start: Vector3 = winch_outlet.global_position if winch_outlet else vehicle.to_global(Vector3(0, 0.25, 2.35))
 	var finish=Vector3(a.x,a.y,a.z)
 	var geometry=ImmediateMesh.new()
 	geometry.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
