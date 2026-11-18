@@ -6,27 +6,91 @@ export function createUI(actions = {}) {
   const input = {throttle:0, reverse:0, steer:0, brake:false, reel:false};
   const keys = new Set();
   const pointers = new Map();
+  const wheel = $('touch-wheel');
+  let wheelDrag = null, wheelValue = 0;
   let playing = false, paused = false, toastTimer, latestState, lastFocus;
   let compactWinch = false, winchExpanded = true, suppressedReel = false;
   const touchLayout = window.matchMedia('(pointer: coarse), (max-width: 900px)');
+  const portraitLayout = window.matchMedia('(max-width: 700px) and (orientation: portrait)');
   const pauseDialog = $('pauseDialog'), victoryDialog = $('victoryDialog'), garageDialog = $('garage');
   let garageState = {coins:0,snowTires:false,snowUnlocked:false,region:'forest'};
   const call = name => actions[name]?.();
+  const canDrive = () => playing && !paused && !document.querySelector('dialog[open]');
   function syncInput() {
     const held = name => [...pointers.values()].some(v => v.name === name);
     const has = (...codes) => codes.some(code => keys.has(code));
-    const active = playing && !paused && !document.querySelector('dialog[open]');
+    const active = canDrive();
     input.throttle = active && (has('KeyW','ArrowUp') || held('throttle')) ? 1 : 0;
     input.reverse = active && (has('KeyS','ArrowDown') || held('reverse')) ? 1 : 0;
-    input.steer = active ? Number(has('KeyD','ArrowRight') || held('right')) - Number(has('KeyA','ArrowLeft') || held('left')) : 0;
+    const keySteer = Number(has('KeyD','ArrowRight')) - Number(has('KeyA','ArrowLeft'));
+    input.steer = active ? (wheelDrag?.steer ?? keySteer) : 0;
+    updateWheel(input.steer);
     input.brake = active && (has('Space') || held('brake'));
     input.reel = active && !suppressedReel && (has('KeyF') || held('reel'));
   }
+  function updateWheel(steer) {
+    const value = Math.round(steer * 100);
+    if (wheelValue === value) return;
+    wheelValue = value;
+    wheel.style.setProperty('--touch-wheel-angle', (value * 1.15) + 'deg');
+    wheel.setAttribute('aria-valuenow', String(value));
+    wheel.setAttribute('aria-valuetext', value === 0 ? '已回正' : (value > 0 ? '向右 ' : '向左 ') + Math.abs(value) + '%');
+  }
+  function wheelPointer(event) {
+    const bounds = wheel.getBoundingClientRect();
+    const x = event.clientX - bounds.left - bounds.width / 2;
+    const y = event.clientY - bounds.top - bounds.height / 2;
+    const radius = bounds.width / 2;
+    const angle = Math.hypot(x, y) > radius * .28 ? Math.atan2(x, -y) : null;
+    return {x, radius, angle};
+  }
+  function releaseWheel(pointerId) {
+    if (!wheelDrag || (pointerId !== undefined && wheelDrag.id !== pointerId)) return;
+    const id = wheelDrag.id;
+    wheelDrag = null;
+    wheel.classList.remove('held');
+    if (wheel.hasPointerCapture(id)) wheel.releasePointerCapture(id);
+    syncInput();
+  }
+  wheel.addEventListener('pointerdown', event => {
+    if (!canDrive() || wheelDrag || event.button !== 0) return;
+    const {x, angle} = wheelPointer(event);
+    event.preventDefault();
+    wheelDrag = {id:event.pointerId, x, angle, fromCenter:angle === null, steer:0};
+    try { wheel.setPointerCapture(event.pointerId); } catch {}
+    wheel.classList.add('held');
+  });
+  window.addEventListener('pointermove', event => {
+    if (wheelDrag?.id !== event.pointerId) return;
+    if (!canDrive()) {
+      releaseWheel(event.pointerId);
+      return;
+    }
+    const {x, radius, angle} = wheelPointer(event);
+    if (wheelDrag.fromCenter) {
+      // A thumb resting on the hub can drag sideways to the same steering limits.
+      wheelDrag.steer = Math.max(-1, Math.min(1, (x - wheelDrag.x) / (radius * .8)));
+    } else {
+      if (angle !== null && wheelDrag.angle !== null) {
+        const change = angle - wheelDrag.angle;
+        const shortest = Math.atan2(Math.sin(change), Math.cos(change));
+        wheelDrag.steer = Math.max(-1, Math.min(1, wheelDrag.steer + shortest / (115 * Math.PI / 180)));
+      }
+      wheelDrag.angle = angle;
+    }
+    syncInput();
+  });
+  for (const type of ['pointerup','pointercancel']) {
+    window.addEventListener(type, event => releaseWheel(event.pointerId));
+  }
+  wheel.addEventListener('lostpointercapture', event => releaseWheel(event.pointerId));
+  wheel.addEventListener('contextmenu', event => event.preventDefault());
   function resetInput() {
     suppressedReel = false;
     keys.clear();
     pointers.forEach(({el}) => el.classList.remove('held'));
     pointers.clear();
+    releaseWheel();
     syncInput();
   }
   function toast(message) {
@@ -90,13 +154,18 @@ export function createUI(actions = {}) {
   function syncWinchLayout(cameraMode) {
     const camera = Number(cameraMode) || 0;
     document.body.dataset.camera = String(camera);
-    const nextCompact = camera === 2 && touchLayout.matches;
+    const nextCompact = touchLayout.matches && (camera === 2 || portraitLayout.matches);
     if (nextCompact && !compactWinch) {winchExpanded = false; releaseReel();}
     if (!nextCompact) winchExpanded = true;
     compactWinch = nextCompact;
     renderWinchLayout();
   }
-  touchLayout.addEventListener('change',()=>syncWinchLayout(latestState?.cameraMode));
+  for (const layout of [touchLayout, portraitLayout]) {
+    layout.addEventListener('change', () => {
+      releaseWheel();
+      syncWinchLayout(latestState?.cameraMode);
+    });
+  }
   $('winch-toggle').addEventListener('click',()=>setWinchExpanded(!winchExpanded));
   $('winch-close').addEventListener('click',()=>{setWinchExpanded(false);$('winch-toggle').focus({preventScroll:true});});
   $('start').addEventListener('click', () => {if (!$('start').disabled) call('start');});

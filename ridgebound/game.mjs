@@ -1,5 +1,5 @@
 import {routeX,checkpoints,emptyState,worldBounds,branches,branchX,repairStations,lake,riverX,areaNameAt,formatDistance} from './world-data.mjs?v=7e701208d4f3ba05';
-import {createUI} from './ui.mjs?v=f114600f86cffde3';
+import {createUI} from './ui.mjs?v=43f218dfa9360462';
 import {bootEngine,bootStats} from './boot.mjs?v=ac95ed60b19461bb';
 import {createControllers} from './controllers.mjs';
 const STORAGE='watertube-ridgebound-v1';
@@ -25,7 +25,7 @@ function candidates(){return(state.anchors||[]).map(a=>({...a,f:(a.x-state.x)*Ma
 function connect(anchor){send('attach',{id:anchor.id});selecting=false;ui.showWinchTargets(false);ui.toast('绞盘挂钩 · 按住 F 或「收绳」牵引，Q 释放');}
 function startAudio(){if(!audioEnabled)return;try{if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();engineTone=audioCtx.createOscillator();engineTone.type='sawtooth';const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=180;engineGain=audioCtx.createGain();engineGain.gain.value=.018;engineTone.connect(filter).connect(engineGain).connect(audioCtx.destination);engineTone.start();}audioCtx.resume();}catch{audioEnabled=false;ui.setAudio(false);}}
 const actions={
- start(){if(!ready)return;playing=true;paused=false;send('start');ui.setPlaying(true);ui.setPaused(false);refreshGarage();startAudio();ui.toast('W / 方向键驾驶 · C 切换车内视角 · 泥地用低速挡 L');},
+ start(){if(!ready)return;playing=true;paused=false;send('start');ui.setPlaying(true);ui.setPaused(false);refreshGarage();startAudio();ui.toast(matchMedia('(pointer: coarse), (max-width: 900px)').matches ? '左手转方向盘，右手操作踏板' : 'W / 方向键驾驶 · C 切换车内视角 · 泥地用低速挡 L');},
  pause(){if(paused)resume();else pause();},resume,
  recover(){if(!ready)return;send('recover');selecting=false;ui.showWinchTargets(false);resume();ui.toast('已返回最近检查点');},
  toggleGear(){if(!ready)return;send('gear');ui.toast(state.lowGear?'高速挡 · 适合平缓路面':'低速挡 · 更强扭矩，适合泥地和陡坡');},

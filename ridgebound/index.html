@@ -8,7 +8,7 @@
   <meta name="description" content="山野之间，一段属于你的越野旅程。驾驶复古四驱车穿越山林，使用绞盘脱困，抵达山顶。支持键盘与手机触屏。">
   <title>山野之间 · RIDGEBOUND</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23353e36'/%3E%3Cpath d='M8 47 27 17l10 16 6-9 15 23Z' fill='none' stroke='%23e8dec5' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="./style.css?v=e800daaeb2234081">
+  <link rel="stylesheet" href="./style.css?v=cfb528377b744920">
 </head>
 <body>
   <svg class="symbols" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -75,7 +75,19 @@
 
     <button id="winch-toggle" class="winch-toggle play-only" aria-controls="winch-panel" aria-expanded="false" aria-label="展开绞盘控制" hidden><svg><use href="#i-hook"/></svg><span>绞盘<small id="winch-toggle-status">待命</small></span><svg class="winch-chevron" viewBox="0 0 24 24"><path d="m7 14 5-5 5 5"/></svg></button>
 
-    <div class="touch-controls play-only" aria-label="手机驾驶按键"><div class="steering"><button data-control="left" class="touch-button steer" aria-label="左转"><svg viewBox="0 0 24 24"><path d="m15 5-7 7 7 7"/></svg></button><button data-control="right" class="touch-button steer" aria-label="右转"><svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button></div><div class="pedals"><button data-control="reverse" class="touch-button reverse" aria-label="倒车"><span>R</span><small>倒车</small></button><button data-control="brake" class="touch-button brake" aria-label="刹车"><span>Ⅱ</span><small>刹车</small></button><button data-control="throttle" class="touch-button throttle" aria-label="油门"><span>↑</span><small>油门</small></button></div></div>
+    <div class="touch-controls play-only" aria-label="手机驾驶">
+      <div id="touch-wheel" class="touch-wheel" role="slider" tabindex="0"
+        aria-label="触屏方向盘" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="0"
+        aria-valuetext="已回正" aria-describedby="touch-wheel-instructions">
+        <span class="touch-wheel-face" aria-hidden="true">
+          <span class="touch-wheel-index"></span>
+          <span class="touch-wheel-spokes"></span>
+          <span class="touch-wheel-hub"></span>
+        </span>
+      </div>
+      <span id="touch-wheel-instructions" class="visually-hidden">拖动轮缘来转向，松开回正。键盘也可用方向键。</span>
+      <div class="pedals"><button data-control="reverse" class="touch-button reverse" aria-label="倒车"><span>R</span><small>倒车</small></button><button data-control="brake" class="touch-button brake" aria-label="刹车"><span>Ⅱ</span><small>刹车</small></button><button data-control="throttle" class="touch-button throttle" aria-label="油门"><span>↑</span><small>油门</small></button></div>
+    </div>
     <p class="drive-guide play-only"><kbd>W A S D</kbd> 驾驶 <span>·</span> <kbd>空格</kbd> 刹车 <span>·</span> <kbd>C</kbd> 视角 <span>·</span> <kbd>R</kbd> 脱困</p>
     <div class="anchor-instruction" id="anchor-instruction" hidden><svg><use href="#i-hook"/></svg>选择场景中的锚点，或再次按 E 快速连接</div>
   </main>
@@ -86,7 +98,7 @@
     <button class="dialog-close icon-button" id="close-dialog" aria-label="关闭操作指南"><svg><use href="#i-close"/></svg></button>
     <h2 id="pause-title">在山野，慢一点。</h2><p class="dialog-intro">约 3.5 km 主线串起四个路标，三条岔路会接回主路。遇到泥地或陡坡，试试低速挡与绞盘。</p>
     <div class="instructions"><div><kbd>W A S D / 方向键</kbd><span>驾驶与倒车</span></div><div><kbd>空格</kbd><span>刹车</span></div><div><kbd>L / X</kbd><span>低速挡 / 四驱</span></div><div><kbd>E</kbd><span>连接附近锚点</span></div><div><kbd>F</kbd><span>按住收绳</span></div><div><kbd>Q</kbd><span>释放绞盘</span></div><div><kbd>C / R</kbd><span>切换视角 / 脱困</span></div><div><kbd>T / Esc</kbd><span>小屋维修 / 暂停</span></div></div>
-    <p class="help-note">点按地图切换局部 / 全图：实线是主路，虚线是岔路，房屋标记可免费维修。手机：按住左右方向和油门可以同时操作。绞盘挂上后，持续按住「收绳」拉动车辆。横屏视野更开阔。</p>
+    <p class="help-note">点按地图切换局部 / 全图：实线是主路，虚线是岔路，房屋标记可免费维修。手机：左手拖动方向盘，右手可同时操作油门或刹车。松开方向盘自动回正。绞盘挂上后，持续按住「收绳」拉动车辆。横屏视野更开阔。</p>
     <div class="dialog-actions"><button class="primary-button" id="resume">继续旅程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="dialog-recover">返回检查点</button></div><div class="pause-tools"><button id="dialog-camera" class="secondary-button">切换驾驶视角</button><button id="dialog-controllers" class="secondary-button">控制器与踏板</button><button id="dialog-photo" class="secondary-button">保存风景照片</button><button id="dialog-fullscreen" class="secondary-button">全屏显示</button></div><a class="home-link" href="../projects.html">← 返回我的项目</a>
   </dialog>
   <dialog id="victoryDialog" class="dialog victory-dialog"><div class="victory-mark"><svg><use href="#i-mountain"/></svg></div><h2>山顶，见。</h2><p class="dialog-intro">你越过了泥泞与陡坡。现在，把这一刻留给自己。</p><div class="journey-stats"><div><strong id="result-time">00:00</strong><span>旅程用时</span></div><div><strong id="result-distance">0 m</strong><span>行驶里程</span></div><div><strong>4 / 4</strong><span>探索路标</span></div></div><button class="primary-button" id="restart">再走一程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="discover-snow" hidden>发现隐藏雪线 ↗</button><button class="secondary-button" id="victory-continue">留在山野</button></dialog>
@@ -113,6 +125,6 @@
   </dialog>
   <div class="error-panel" id="error" hidden><h2>暂时无法打开山野</h2><p id="error-message">请使用支持 WebGL 的浏览器，并开启硬件加速后重试。</p><button onclick="location.reload()">重新载入</button><a href="../projects.html">返回项目</a></div>
   <noscript><div class="error-panel"><h2>需要开启 JavaScript</h2><p>开启后即可进入三维山野。</p></div></noscript>
-  <script type="module" src="./game.mjs?v=abe14b6c1a7b9579"></script>
+  <script type="module" src="./game.mjs?v=f8b9a3ad15d7d074"></script>
 </body>
 </html>
