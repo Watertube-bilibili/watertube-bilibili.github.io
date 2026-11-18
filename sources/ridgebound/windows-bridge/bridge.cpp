@@ -12,6 +12,7 @@
 #include <atomic>
 #include <array>
 #include <chrono>
+#include <cwchar>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -30,6 +31,14 @@ Feedback feedback;Clock::time_point feedbackAt=Clock::time_point::min();bool eme
 std::string snapshot=R"({"bridge":"ridgebound-directinput","version":1,"devices":[],"ffb":{"available":false,"armed":false,"strength":0.35,"status":"Starting"}})";
 HWND windowHandle=nullptr;IDirectInput8W *directInput=nullptr;SOCKET listener=INVALID_SOCKET;
 std::string origin="http://127.0.0.1:8766";fs::path webRoot;
+constexpr unsigned nativePort=8767;
+bool nativeMode=false;
+std::string nativeToken;
+struct ParentProcess {
+ HANDLE handle=nullptr;
+ ~ParentProcess(){if(handle)CloseHandle(handle);}
+ bool ended() const {return handle && WaitForSingleObject(handle,0)!=WAIT_TIMEOUT;}
+};
 std::string utf8(const wchar_t *s){int n=WideCharToMultiByte(CP_UTF8,0,s,-1,nullptr,0,nullptr,nullptr);if(n<=1)return "";std::string out(n,'\0');WideCharToMultiByte(CP_UTF8,0,s,-1,out.data(),n,nullptr,nullptr);out.pop_back();return out;}
 std::string guid_string(const GUID &g){wchar_t text[64]{};StringFromGUID2(g,text,64);return "di:"+utf8(text);}
 std::string hr_text(HRESULT hr){std::ostringstream s;s<<"DirectInput error 0x"<<std::hex<<unsigned(hr);return s.str();}
@@ -121,19 +130,29 @@ void client(SOCKET s){
  std::string request;std::array<char,4096> buf{};size_t end=std::string::npos;while((end=request.find("\r\n\r\n"))==std::string::npos){int n=recv(s,buf.data(),buf.size(),0);if(n<=0)return;request.append(buf.data(),n);if(request.size()>16384){response(s,413,"text/plain","Headers too large");return;}}
  std::istringstream lines(request.substr(0,end));std::string first,method,uri,version;std::getline(lines,first);std::istringstream line(first);line>>method>>uri>>version;if(version!="HTTP/1.1"&&version!="HTTP/1.0"){response(s,400,"text/plain","Invalid request");return;}
  std::map<std::string,std::string> headers;std::string raw;while(std::getline(lines,raw)){auto colon=raw.find(':');if(colon==std::string::npos){response(s,400,"text/plain","Invalid header");return;}auto key=lower(trim(raw.substr(0,colon)));if(headers.count(key)){response(s,400,"text/plain","Duplicate header");return;}headers[key]=trim(raw.substr(colon+1));}
- if(!allowed_host(headers["host"])||(headers.count("origin")&&!allowed_origin(headers["origin"]))){response(s,403,"text/plain","Local origin required");return;}
+ if(nativeMode){
+  if(headers["host"]!="127.0.0.1:8767"||headers["x-ridgebound-token"]!=nativeToken||headers.count("origin")){
+   response(s,403,"text/plain","Native client required");return;
+  }
+ }else if(!allowed_host(headers["host"])||(headers.count("origin")&&!allowed_origin(headers["origin"]))){
+  response(s,403,"text/plain","Local origin required");return;
+ }
  if(headers.count("transfer-encoding")){response(s,400,"text/plain","Transfer encoding not supported");return;}
  auto api=uri.substr(0,uri.find('?'));
  if(api=="/api/input"||api=="/api/devices"){if(method!="GET"){response(s,405,"text/plain","GET required");return;}std::string state;{std::lock_guard<std::mutex> lock(stateMutex);state=snapshot;}response(s,200,"application/json",state);return;}
  if(api=="/api/feedback"){
   if(method!="POST"){response(s,405,"text/plain","POST required");return;}
-  if(!allowed_origin(headers["origin"])||lower(headers["content-type"]).find("application/json")!=0){response(s,403,"text/plain","Same-origin JSON required");return;}
+  if((!nativeMode&&!allowed_origin(headers["origin"]))||lower(headers["content-type"]).find("application/json")!=0){response(s,403,"text/plain","Same-origin JSON required");return;}
   size_t length=0;try{const auto &n=headers.at("content-length");if(n.empty()||n.find_first_not_of("0123456789")!=std::string::npos)throw 0;length=std::stoul(n);}catch(...){response(s,400,"text/plain","Content-Length required");return;}if(length>4096){response(s,413,"text/plain","Feedback too large");return;}
   std::string body=request.substr(end+4);while(body.size()<length){int n=recv(s,buf.data(),int(std::min<size_t>(buf.size(),length-body.size())),0);if(n<=0)return;body.append(buf.data(),n);}if(body.size()!=length){response(s,400,"text/plain","Invalid body length");return;}
   Feedback f;if(!parse_feedback(body,f)){response(s,400,"application/json",R"({"ok":false,"error":"Invalid telemetry"})");return;}
-  {std::lock_guard<std::mutex> lock(stateMutex);if(!f.enabled)emergencyLatched=false;if(emergencyLatched)f.enabled=false;feedback=std::move(f);feedbackAt=Clock::now();}
+  {std::lock_guard<std::mutex> lock(stateMutex);if(nativeMode){
+   if(headers["x-ridgebound-rearm"]=="1")emergencyLatched=false;
+  }else if(!f.enabled)emergencyLatched=false;
+  if(emergencyLatched)f.enabled=false;feedback=std::move(f);feedbackAt=Clock::now();}
   response(s,200,"application/json",R"({"ok":true})");return;
  }
+ if(nativeMode){response(s,404,"text/plain","Unknown native endpoint");return;}
  if(method!="GET"&&method!="HEAD"){response(s,405,"text/plain","GET or HEAD required");return;}serveFile(s,uri,method=="HEAD");
 }
 void server(){while(running){sockaddr_in peer{};int size=sizeof(peer);SOCKET s=accept(listener,reinterpret_cast<sockaddr*>(&peer),&size);if(s==INVALID_SOCKET){if(running)std::this_thread::sleep_for(std::chrono::milliseconds(10));continue;}if(ntohl(peer.sin_addr.s_addr)!=INADDR_LOOPBACK||activeClients.load()>=24){closesocket(s);continue;}++activeClients;std::thread([s]{try{client(s);}catch(const std::exception &e){std::cerr<<"Request rejected: "<<e.what()<<"\n";}catch(...){std::cerr<<"Request rejected.\n";}}).detach();}}
@@ -143,16 +162,54 @@ LRESULT CALLBACK windowProc(HWND hwnd,UINT message,WPARAM wp,LPARAM lp){if(messa
 int wmain(int argc,wchar_t **argv){
  SetConsoleOutputCP(CP_UTF8);std::cout<<"Ridgebound / 山野之间 - Windows DirectInput bridge\n";
  wchar_t exe[MAX_PATH]{};GetModuleFileNameW(nullptr,exe,MAX_PATH);fs::path base=fs::path(exe).parent_path();webRoot=base/L"web";bool browser=true;
- for(int i=1;i<argc;i++){std::wstring arg=argv[i];if(arg==L"--web-root"&&i+1<argc)webRoot=argv[++i];else if(arg==L"--no-browser")browser=false;else if(arg==L"--help"){std::cout<<"Usage: ridgebound-wheel-bridge.exe [--web-root PATH] [--no-browser]\n";return 0;}else {std::cerr<<"Unknown option. Use --help.\n";return 2;}}
- std::error_code ec;webRoot=fs::weakly_canonical(webRoot,ec);if(ec||!fs::is_regular_file(webRoot/L"index.html")){std::cerr<<"Cannot find web/index.html. Extract the complete Windows package,\nthen launch Start-Ridgebound.bat (or specify --web-root).\n";return 2;}
+ DWORD parentPid=0;
+ ParentProcess parent;
+ for(int i=1;i<argc;i++){
+  const std::wstring arg=argv[i];
+  if(arg==L"--web-root"&&i+1<argc)webRoot=argv[++i];
+  else if(arg==L"--no-browser")browser=false;
+  else if(arg==L"--controller-only"){nativeMode=true;browser=false;}
+  else if(arg==L"--parent-pid"&&i+1<argc){
+   const std::wstring pid=argv[++i];
+   if(pid.empty()||pid.size()>10||pid.find_first_not_of(L"0123456789")!=std::wstring::npos)return 2;
+   const auto value=std::wcstoull(pid.c_str(),nullptr,10);
+   if(value==0||value>MAXDWORD)return 2;
+   parentPid=static_cast<DWORD>(value);
+  }else if(arg==L"--native-token"&&i+1<argc)nativeToken=utf8(argv[++i]);
+  else if(arg==L"--help"){
+   std::cout<<"Usage: ridgebound-wheel-bridge.exe [--web-root PATH] [--no-browser]\n"
+              "Native: --controller-only --parent-pid PID --native-token 32_HEX_DIGITS\n";
+   return 0;
+  }else{
+   std::cerr<<"Unknown or incomplete option. Use --help.\n";
+   return 2;
+  }
+ }
+ if(nativeMode){
+  if(!parentPid||nativeToken.size()!=32||nativeToken.find_first_not_of("0123456789abcdef")!=std::string::npos){
+   std::cerr<<"Native mode requires a parent process and session token.\n";return 2;
+  }
+  parent.handle=OpenProcess(SYNCHRONIZE,FALSE,parentPid);
+  if(!parent.handle||parent.ended())return 2;
+  origin="http://127.0.0.1:8767";
+ }else{
+  if(parentPid||!nativeToken.empty())return 2;
+  std::error_code ec;
+  webRoot=fs::weakly_canonical(webRoot,ec);
+  if(ec||!fs::is_regular_file(webRoot/L"index.html")){
+   std::cerr<<"Cannot find web/index.html. Extract the complete Windows package,\n"
+              "then launch Start-Ridgebound.bat (or specify --web-root).\n";return 2;
+  }
+ }
  CoInitializeEx(nullptr,COINIT_MULTITHREADED);SetConsoleCtrlHandler(consoleControl,TRUE);WNDCLASSW wc{};wc.lpfnWndProc=windowProc;wc.hInstance=GetModuleHandleW(nullptr);wc.lpszClassName=L"RidgeboundInputBridge";RegisterClassW(&wc);windowHandle=CreateWindowExW(0,wc.lpszClassName,L"Ridgebound input bridge",WS_OVERLAPPEDWINDOW,CW_USEDEFAULT,CW_USEDEFAULT,360,100,nullptr,nullptr,wc.hInstance,nullptr);
  if(!windowHandle||FAILED(DirectInput8Create(wc.hInstance,DIRECTINPUT_VERSION,IID_IDirectInput8W,reinterpret_cast<void**>(&directInput),nullptr))){std::cerr<<"DirectInput initialization failed. Install the manufacturer's device driver.\n";return 3;}
- WSADATA wsa{};if(WSAStartup(MAKEWORD(2,2),&wsa)){std::cerr<<"Windows sockets unavailable.\n";return 4;}listener=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);BOOL exclusive=TRUE;setsockopt(listener,SOL_SOCKET,SO_EXCLUSIVEADDRUSE,reinterpret_cast<const char*>(&exclusive),sizeof(exclusive));sockaddr_in addr{};addr.sin_family=AF_INET;addr.sin_port=htons(kPort);addr.sin_addr.s_addr=htonl(INADDR_LOOPBACK);
- if(bind(listener,reinterpret_cast<sockaddr*>(&addr),sizeof(addr))==SOCKET_ERROR||listen(listener,16)==SOCKET_ERROR){std::cerr<<"Port 8766 is already used. Close the other bridge instance.\n";closesocket(listener);listener=INVALID_SOCKET;devices.clear();directInput->Release();DestroyWindow(windowHandle);WSACleanup();CoUninitialize();return 4;}
- std::thread http(server);std::cout<<"Local game: "<<origin<<"/\nForce feedback starts OFF. Enable it explicitly in controller settings.\nDefault strength 35%; maximum 60%; stale telemetry stops forces after 500 ms.\nF8 = emergency force stop. Ctrl+C = close bridge and restore device defaults.\n";
+ WSADATA wsa{};if(WSAStartup(MAKEWORD(2,2),&wsa)){std::cerr<<"Windows sockets unavailable.\n";return 4;}listener=socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);BOOL exclusive=TRUE;setsockopt(listener,SOL_SOCKET,SO_EXCLUSIVEADDRUSE,reinterpret_cast<const char*>(&exclusive),sizeof(exclusive));sockaddr_in addr{};addr.sin_family=AF_INET;addr.sin_port=htons(nativeMode?nativePort:kPort);addr.sin_addr.s_addr=htonl(INADDR_LOOPBACK);
+ if(bind(listener,reinterpret_cast<sockaddr*>(&addr),sizeof(addr))==SOCKET_ERROR||listen(listener,16)==SOCKET_ERROR){std::cerr<<"Port "<<(nativeMode?nativePort:kPort)<<" is already used. Close the other bridge instance.\n";closesocket(listener);listener=INVALID_SOCKET;devices.clear();directInput->Release();DestroyWindow(windowHandle);WSACleanup();CoUninitialize();return 4;}
+ std::thread http(server);std::cout<<(nativeMode?"Native controller endpoint: ":"Local game: ")<<origin<<"/\nForce feedback starts OFF. Enable it explicitly in controller settings.\nDefault strength 35%; maximum 60%; stale telemetry stops forces after 500 ms.\nF8 = emergency force stop. Ctrl+C = close bridge and restore device defaults.\n";
  if(browser)ShellExecuteW(nullptr,L"open",L"http://127.0.0.1:8766/",nullptr,nullptr,SW_SHOWNORMAL);
  auto began=Clock::now(),lastEnumeration=Clock::time_point::min();bool f8was=false;Clock::time_point retryAfter{};
  while(running){
+  if(parent.ended())break;
   auto now=Clock::now();MSG msg{};while(PeekMessageW(&msg,nullptr,0,0,PM_REMOVE)){if(msg.message==WM_QUIT)running=false;TranslateMessage(&msg);DispatchMessageW(&msg);}
   if(lastEnumeration==Clock::time_point::min()||now-lastEnumeration>std::chrono::seconds(3)){directInput->EnumDevices(DI8DEVCLASS_GAMECTRL,enumDevices,nullptr,DIEDFL_ATTACHEDONLY);lastEnumeration=now;}
   bool f8=(GetAsyncKeyState(VK_F8)&0x8000)!=0;if(f8&&!f8was){std::lock_guard<std::mutex> lock(stateMutex);feedback.enabled=false;emergencyLatched=true;std::cout<<"Emergency force stop. Toggle feedback off then on to re-enable.\n";}f8was=f8;
@@ -163,6 +220,7 @@ int wmain(int argc,wchar_t **argv){
   {std::lock_guard<std::mutex> lock(stateMutex);snapshot=makeSnapshot(f,watchdog,emergency);}
   std::this_thread::sleep_for(std::chrono::milliseconds(16));
  }
+ running=false;
  for(auto &d:devices)d->disarm();
  shutdown(listener,SD_BOTH);closesocket(listener);listener=INVALID_SOCKET;if(http.joinable())http.join();while(activeClients.load()>0)std::this_thread::sleep_for(std::chrono::milliseconds(10));devices.clear();directInput->Release();DestroyWindow(windowHandle);WSACleanup();CoUninitialize();std::cout<<"Stopped. Device defaults restored.\n";return 0;
 }
