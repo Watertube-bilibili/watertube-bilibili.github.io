@@ -93,6 +93,7 @@ game_files="$scratch/Ridgebound"
 mkdir -p "$native_project" "$game_files/licenses"
 tar -C "$project_root/godot" --exclude='./.godot' -cf - . | tar -C "$native_project" -xf -
 cp -- "$site_root/ridgebound/assets/ridge-rover.glb" "$native_project/assets/ridge-rover.glb"
+"${RIDGEBOUND_NATIVE_FONT_PYTHON:-python3}" "$project_root/scripts/build-native-font.py" "$native_project" "$game_files/licenses"
 
 # Native import uses its own 4.4.1 project cache. The web project and pack are untouched.
 python3 - "$native_project" "$windows_template" <<'PY'
