@@ -21,7 +21,7 @@ func _capture() -> void:
 		var actual_scale := float(source.get_width()) / root.get_visible_rect().size.x
 		var hero := Button.new()
 		for control in shell.interface.sheet_body.find_children("*", "Button", true, false):
-			if control.text == "启程":
+			if control.text == "出发":
 				hero.free()
 				hero = control
 				break
@@ -33,6 +33,12 @@ func _capture() -> void:
 			push_error("Portrait menu is too narrow for the safe area")
 			quit(1)
 			return
+		var scroll: Control = shell.interface.sheet_body.get_parent()
+		for control in shell.interface.sheet_body.find_children("*", "Button", true, false):
+			if not scroll.get_global_rect().has_point(control.get_global_rect().get_center()) or control.size.y * actual_scale < 44.0:
+				push_error("A menu touch target was clipped or too small: " + control.text)
+				quit(1)
+				return
 		print("MOBILE_TARGET ", layout[0], " ", round(hero.size.y * actual_scale), "px")
 		_save(source, String(layout[0]) + "-start")
 	shell._begin()
