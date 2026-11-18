@@ -312,6 +312,7 @@ def preview(path,cockpit=False):
     scene=bpy.context.scene
     scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=20;scene.cycles.use_denoising=False
     scene.render.resolution_x=960;scene.render.resolution_y=720;scene.render.resolution_percentage=100
+    if scene.world is None:scene.world=bpy.data.worlds.new('Review environment')
     scene.world.color=(.18,.20,.22);scene.view_settings.view_transform='AgX'
     lamps=[]
     for name,pos,energy,size in [('Key',(5,7,6),1500,6),('Fill',(-5,3,2),900,5),('Rim',(0,5,-7),1700,5)]:
