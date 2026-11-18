@@ -78,7 +78,7 @@ def bound_controls(sample):
 
 def swipe(start, end, duration=580):
     points = [round(value) for point in (start, end) for value in point]
-    adb("shell", "input", "touchscreen", "swipe", *points, duration)
+    adb("shell", "input", "touchscreen", "-d", "0", "swipe", *points, duration)
 
 
 def settled_input(description):
@@ -156,6 +156,10 @@ def capture(directory, label, rotation, notch, app, rotation_command):
     if not any(app in line and re.search(r"mResumedActivity|topResumedActivity", line)
                for line in activities.splitlines()):
         raise RuntimeError("The tested game is not the resumed Android activity")
+    (directory / (label + ".input")).write_text(adb("shell", "dumpsys", "input"), encoding="utf-8")
+    # Emulator may discard the first touch after a full-screen surface rotates.
+    # A stationary touch outside the HUD does not alter the camera.
+    adb("shell", "input", "touchscreen", "-d", "0", "tap", width // 2, height // 2)
     gestures(sample, width, height)
     screenshot(directory, label)
     (directory / (label + ".activities")).write_text(activities, encoding="utf-8")
@@ -227,6 +231,7 @@ def main():
                         if app in line or re.search(r"low.memory|lmkd|tombstone|SIGSEGV", line, re.I)]
             print("\n".join(relevant[-35:]), file=sys.stderr)
             (output / "failure.activities").write_text(adb("shell", "dumpsys", "activity", "activities", check=False), encoding="utf-8")
+            (output / "failure.input").write_text(adb("shell", "dumpsys", "input", check=False), encoding="utf-8")
             (output / "failure.display").write_text(adb("shell", "dumpsys", "window", "displays", check=False), encoding="utf-8")
             try:
                 screenshot(output, "failure")

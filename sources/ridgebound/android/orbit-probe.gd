@@ -3,6 +3,12 @@ extends Node
 
 const DrivingUI := preload("res://desktop_main.tscn")
 const ScreenFit := preload("res://screen_fit.gd")
+class TouchMonitor extends Node:
+	var observe: Callable
+	func _input(event: InputEvent) -> void:
+		if event is InputEventScreenTouch:
+			observe.call(event)
+
 var _shell: Node
 var _clock := 0.0
 var _sequence := 0
@@ -11,6 +17,9 @@ func _ready() -> void:
 	print("ORBIT_PROBE_INSTANTIATING")
 	_shell = DrivingUI.instantiate()
 	add_child(_shell)
+	var monitor := TouchMonitor.new()
+	monitor.observe = _trace_touch
+	add_child(monitor)
 	print("ORBIT_PROBE_READY")
 
 func _process(delta: float) -> void:
@@ -83,11 +92,14 @@ func _start_center() -> Array:
 			return [center.x, center.y]
 	return []
 
-func _input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch and is_instance_valid(_shell) and bool(_shell.call("_driving")):
+func _trace_touch(event: InputEventScreenTouch) -> void:
+	if is_instance_valid(_shell):
+		var touch := _shell.get("touch_controls") as CanvasLayer
 		print("ORBIT_TOUCH ", JSON.stringify({
 			"index": event.index, "pressed": event.pressed, "canceled": event.canceled,
 			"point": [event.position.x, event.position.y], "rotation": ScreenFit._display_rotation(),
 			"allowsOrbit": bool(_shell.call("_can_orbit")),
 			"hitsHUD": bool(_shell.call("_over_driving_ui", event.position)),
+			"hitsDrivingControl": touch != null and bool(touch.call("_is_drive_position", event.position)),
+			"source": event.device,
 		}))
