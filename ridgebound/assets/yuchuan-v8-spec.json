@@ -1,0 +1,192 @@
+{
+  "name": "御川 V8",
+  "id": "yuchuan_v8",
+  "game_axes": "+X driver left, +Y up, +Z forward",
+  "wheelbase_m": 3.42,
+  "track_m": 1.82,
+  "wheel_radius_m": 0.405,
+  "tyre_width_m": 0.245,
+  "ride_height_m": 0.415,
+  "body_length_m": 5.6,
+  "body_width_m": 2.08,
+  "height_m": 2.1,
+  "driver_eye": [
+    0.49,
+    1.32,
+    0.48
+  ],
+  "wheel_spin_axis": "WheelSpin_* local X",
+  "wheel_steer_axis": "Wheel_* local Y",
+  "steering_gauge_axis": "local Y after GLB conversion",
+  "steering_gain_sign": "positive local Y viewed from behind is clockwise; game may set negative for left steering",
+  "nodes": {
+    "YuchuanV8": {
+      "extras": {
+        "vehicle": "御川 V8",
+        "wheelbase_m": 3.42,
+        "track_m": 1.82,
+        "wheel_radius_m": 0.405,
+        "ride_height_m": 0.415,
+        "length_m": 5.6,
+        "width_m": 2.08,
+        "height_m": 2.1
+      }
+    },
+    "Body": {},
+    "DriverEye": {
+      "translation": [
+        0.49000000953674316,
+        1.3200000524520874,
+        0.47999998927116394
+      ]
+    },
+    "BrakePedal": {
+      "extras": {
+        "press_axis": "local X"
+      },
+      "translation": [
+        0.550000011920929,
+        0.44999998807907104,
+        1.190000057220459
+      ]
+    },
+    "AcceleratorPedal": {
+      "extras": {
+        "press_axis": "local X"
+      },
+      "translation": [
+        0.3199999928474426,
+        0.44999998807907104,
+        1.190000057220459
+      ]
+    },
+    "SteeringWheel": {
+      "extras": {
+        "rotation_axis_glb": "local Y",
+        "driver_side": "left_positive_X"
+      }
+    },
+    "SpeedNeedle": {
+      "extras": {
+        "rotation_axis_glb": "local Y"
+      }
+    },
+    "RPMNeedle": {
+      "extras": {
+        "rotation_axis_glb": "local Y"
+      }
+    },
+    "WinchOutlet": {
+      "translation": [
+        0,
+        0.25,
+        2.799999952316284
+      ]
+    },
+    "RearWinchOutlet": {
+      "translation": [
+        0,
+        0.2199999988079071,
+        -2.819999933242798
+      ]
+    },
+    "Wheel_FL": {
+      "extras": {
+        "suspension_axis": "local Y",
+        "steering_axis": "local Y"
+      },
+      "translation": [
+        0.9100000262260437,
+        0,
+        1.7100000381469727
+      ]
+    },
+    "Wheel_FR": {
+      "extras": {
+        "suspension_axis": "local Y",
+        "steering_axis": "local Y"
+      },
+      "translation": [
+        -0.9100000262260437,
+        0,
+        1.7100000381469727
+      ]
+    },
+    "Wheel_RL": {
+      "extras": {
+        "suspension_axis": "local Y",
+        "steering_axis": "local Y"
+      },
+      "translation": [
+        0.9100000262260437,
+        0,
+        -1.7100000381469727
+      ]
+    },
+    "Wheel_RR": {
+      "extras": {
+        "suspension_axis": "local Y",
+        "steering_axis": "local Y"
+      },
+      "translation": [
+        -0.9100000262260437,
+        0,
+        -1.7100000381469727
+      ]
+    },
+    "WheelSpin_FL": {
+      "extras": {
+        "spin_axis": "local X",
+        "radius_m": 0.405
+      }
+    },
+    "WheelSpin_FR": {
+      "extras": {
+        "spin_axis": "local X",
+        "radius_m": 0.405
+      }
+    },
+    "WheelSpin_RL": {
+      "extras": {
+        "spin_axis": "local X",
+        "radius_m": 0.405
+      }
+    },
+    "WheelSpin_RR": {
+      "extras": {
+        "spin_axis": "local X",
+        "radius_m": 0.405
+      }
+    }
+  },
+  "measured": {
+    "mesh_count": 34,
+    "triangles": 66018,
+    "bounds_blender": {
+      "min": [
+        -1.1966991424560547,
+        -2.8264129161834717,
+        -0.4050000011920929
+      ],
+      "max": [
+        1.1966991424560547,
+        2.886000156402588,
+        1.7330000400543213
+      ]
+    },
+    "dimensions_game": [
+      2.3933982849121094,
+      2.138000041246414,
+      5.71241307258606
+    ]
+  },
+  "roundtrip": {
+    "passed": true,
+    "triangles": 66018,
+    "dimensions_game": [
+      2.3933982849121094,
+      2.138000041246414,
+      5.71241307258606
+    ]
+  }
+}
