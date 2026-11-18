@@ -51,7 +51,7 @@ jobs:
           git add "sources/ridgebound/godot/art/title"
           tree=$(git write-tree)
           commit=$(git -c user.name='Ridgebound Art' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p HEAD -m 'Render the original campsite in landscape and portrait')
-          git push origin "$commit:refs/heads/codex/ridgebound-camp-assets-final-20261118"
+          git push origin "$commit:refs/heads/codex/ridgebound-camp-assets-approved-20261118"
           echo "CAMP_ART_COMMIT $commit"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

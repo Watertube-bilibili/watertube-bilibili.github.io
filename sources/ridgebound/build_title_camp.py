@@ -71,7 +71,7 @@ def trail(y):
 
 
 def lake_distance(x, y):
-    return math.hypot((x + 34.0) / 32.0, (y - 51.0) / 34.0)
+    return math.hypot((x + 20.5) / 22.0, (y - 42.0) / 24.5)
 
 
 def ground_height(x, y):
@@ -170,7 +170,7 @@ def mountain_layer(label, y, elevation, max_height, color, offset, spread):
 
 def conifer_template(variant, foliage, trunk):
     radial = 7
-    profile = [(0.05, .12), (.45, .115), (.33, .58), (.40, .88), (.53, .63), (.60, .72),
+    profile = [(0.0, .12), (.45, .115), (.33, .58), (.40, .88), (.53, .63), (.60, .72),
                (.69, .38), (.73, .43), (.84, .23), (1.0, .018)]
     points, faces, indices = [], [], []
     for row, (height, radius) in enumerate(profile):
@@ -276,7 +276,7 @@ def lake():
     apparent.node_tree.links.new(noise.outputs["Fac"], bump.inputs["Height"])
     apparent.node_tree.links.new(bump.outputs["Normal"], shader.inputs["Normal"])
     points = [
-        (-34 + math.cos(i * math.tau / 120) * 33.5, 51 + math.sin(i * math.tau / 120) * 35.3, -1.77)
+        (-20.5 + math.cos(i * math.tau / 120) * 23.1, 42 + math.sin(i * math.tau / 120) * 25.7, -1.77)
         for i in range(120)
     ]
     mesh("Lake waterline", points, [tuple(range(120))], [apparent])
@@ -332,17 +332,17 @@ def sky_color():
     coords, separate = nodes.new("ShaderNodeTexCoord"), nodes.new("ShaderNodeSeparateXYZ")
     links.new(coords.outputs["Normal"], separate.inputs["Vector"])
     ramp = nodes.new("ShaderNodeValToRGB")
-    ramp.color_ramp.elements[0].position = .41
+    ramp.color_ramp.elements[0].position = .19
     ramp.color_ramp.elements[0].color = rgba("eac8a0")
-    ramp.color_ramp.elements[1].position = .78
+    ramp.color_ramp.elements[1].position = .83
     ramp.color_ramp.elements[1].color = rgba("648fa9")
-    warm = ramp.color_ramp.elements.new(.51)
-    warm.color = rgba("ecc7a0")
-    cool = ramp.color_ramp.elements.new(.61)
+    warm = ramp.color_ramp.elements.new(.32)
+    warm.color = rgba("f0d3b3")
+    cool = ramp.color_ramp.elements.new(.53)
     cool.color = rgba("b7b7b7")
     fit = nodes.new("ShaderNodeMapRange")
-    fit.inputs["From Min"].default_value = -.18
-    fit.inputs["From Max"].default_value = .75
+    fit.inputs["From Min"].default_value = -.063
+    fit.inputs["From Max"].default_value = .42
     links.new(separate.outputs["Z"], fit.inputs["Value"])
     links.new(fit.outputs["Result"], ramp.inputs[0])
     ambient = nodes.get("Background")
@@ -413,9 +413,9 @@ def main():
 
     sky_color()
     sunlight()
-    mountain_layer("Far blue range", 430.0, 93.0, 101.0, "a4b1b2", 2.3, 58.0)
-    mountain_layer("Middle range", 287.0, 64.0, 96.0, "8d9f9b", .7, 45.0)
-    mountain_layer("Pine foothills", 156.0, 37.0, 48.0, "788b72", 4.8, 30.0)
+    mountain_layer("Far blue range", 430.0, 54.5, 64.0, "afbdc3", 2.3, 27.0)
+    mountain_layer("Middle range", 287.0, 36.0, 65.0, "8caaa9", .7, 25.0)
+    mountain_layer("Pine foothills", 156.0, 17.2, 33.0, "76876b", 4.8, 14.0)
     terrain()
     lake()
     forest()
