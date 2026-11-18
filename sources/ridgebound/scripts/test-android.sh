@@ -172,10 +172,21 @@ def capture(directory, label, rotation, notch, app):
     if not any(app in line and re.search(r"mResumedActivity|topResumedActivity", line)
                for line in activities.splitlines()):
         raise RuntimeError("The tested game is not the resumed Android activity")
-    (directory / (label + ".input")).write_text(adb("shell", "dumpsys", "input"), encoding="utf-8")
-    # Emulator may discard the first touch after a full-screen surface rotates.
-    # A stationary touch outside the HUD does not alter the camera.
-    adb("shell", "input", "touchscreen", "-d", "0", "tap", width // 2, height // 2)
+    inputs = adb("shell", "dumpsys", "input")
+    (directory / (label + ".input")).write_text(inputs, encoding="utf-8")
+    if rotation:
+        print(f"{label} physical touch diagnostics ({width}x{height}):")
+        for line in inputs.splitlines():
+            if app in line or re.search(r"FocusedApplications|FocusedWindows|DisplayViewport|TouchStatesByDisplay", line):
+                print(line[:1500])
+        # These stationary touches detect a viewport still using portrait width.
+        # The actual orbit assertion below still exercises the center of the view.
+        for proportion in (0.32, 0.40, 0.50):
+            x, y = round(width * proportion), round(height * 0.47)
+            print(f"Raw touch probe at {x},{y}")
+            adb("shell", "input", "touchscreen", "-d", "0", "tap", x, y)
+            wait_probe("the AVD rendered after a width probe",
+                       lambda s: s["active"] and s["sequence"] > sample["sequence"])
     gestures(sample, width, height)
     screenshot(directory, label)
     (directory / (label + ".activities")).write_text(activities, encoding="utf-8")
@@ -200,17 +211,6 @@ def start_driving(directory, name, activity, rotation=None):
     wait_probe("real Android tap on the primary menu action started driving",
                lambda s: s["active"] and s["rotation"] == start["rotation"], timeout=25)
     print(f"ANDROID_START_BUTTON_TAP_OK {name} rotation={start['rotation']}")
-
-
-def locked_rotation(command, rotation):
-    adb("shell", "wm", command, "lock", rotation)
-    timeout = time.monotonic() + 12
-    while time.monotonic() < timeout:
-        windows = adb("shell", "dumpsys", "window", "displays")
-        if re.search(rf"\bmRotation=(?:ROTATION_{rotation * 90}|{rotation})\b", windows):
-            return
-        time.sleep(0.25)
-    raise RuntimeError(f"Android reported no system rotation {rotation} before launcher start")
 
 
 def main():
@@ -247,7 +247,7 @@ def main():
             adb("shell", "wm", fix_command, "enabled")
             for rotation, name in ((1, "cold-landscape"), (3, "cold-reverse-landscape")):
                 adb("shell", "am", "force-stop", app)
-                locked_rotation(rotation_command, rotation)
+                adb("shell", "wm", rotation_command, "lock", rotation)
                 start_driving(output, name, activity, rotation)
                 capture(output, name, rotation, notch, app)
                 (output / f"{name}.log").write_text(adb("logcat", "-d", "-s", *RUNTIME_TAGS), encoding="utf-8")
