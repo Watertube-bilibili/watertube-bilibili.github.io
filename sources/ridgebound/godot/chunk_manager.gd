@@ -1,5 +1,7 @@
 class_name ChunkTerrain
 extends Node3D
+
+const ExpeditionArt := preload("res://expedition_art.gd")
 ## Bounded, adaptive terrain streaming. Rendered ground is authoritative for entry:
 ## the vehicle controller must reject movement when is_ready_at() returns false.
 ## Continuous TerrainMath remains authoritative for wheel/contact heights.
@@ -375,12 +377,7 @@ func _unload_distant() -> void:
 		_obstacles_dirty = true
 
 func _make_resources() -> void:
-	var terrain_material := StandardMaterial3D.new()
-	terrain_material.vertex_color_use_as_albedo = true
-	terrain_material.vertex_color_is_srgb = true
-	terrain_material.metallic_specular = 0.0
-	terrain_material.roughness = 1.0
-	_terrain_material = terrain_material
+	_terrain_material = ExpeditionArt.terrain_material(_region)
 	_trunk_material = StandardMaterial3D.new()
 	_trunk_material.albedo_color = Color("655a49") if _region == "forest" else Color("596266")
 	_trunk_material.roughness = 1.0

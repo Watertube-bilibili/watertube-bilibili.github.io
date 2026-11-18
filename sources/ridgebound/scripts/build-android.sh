@@ -45,11 +45,17 @@ editor="$build_dir/editor"
 mkdir -p "$project" "$editor/editor_data/export_templates/4.6.3.stable"
 
 tar -C "$project_source" --exclude='./.godot' --exclude='./android' -cf - . | tar -C "$project" -xf -
-test -s "$project/desktop_main.tscn" && test -s "$project/touch_drive.gd" && test -s "$project/assets/ridge-rover.glb"
+for asset in desktop_main.tscn touch_drive.gd assets/ridge-rover.glb; do
+  test -s "$project/$asset" || { echo "Missing native project asset: $asset" >&2; exit 1; }
+done
 cp -- "$godot_bin" "$editor/godot"
 chmod +x "$editor/godot"
 touch "$editor/_sc_"
 ln -s -- "$(realpath -- "$template")" "$editor/editor_data/export_templates/4.6.3.stable/android_release.apk"
+
+icon="$ridgebound_root/android/launcher-icon.png"
+test -s "$icon" || { echo "Missing Android launcher artwork: $icon" >&2; exit 1; }
+cp -- "$icon" "$project/android-launcher-icon.png"
 
 if [ -z "${GODOT_ANDROID_KEYSTORE_RELEASE_PATH:-}" ]; then
   # A local sideload key is reused on subsequent builds on this machine.
@@ -140,7 +146,7 @@ dedicated_server=false
 custom_features="ridgebound_android"
 export_filter="all_resources"
 include_filter=""
-exclude_filter="tests/*"
+exclude_filter="tests/*, android-launcher-icon.png"
 export_path=""
 script_export_mode=2
 
@@ -153,6 +159,8 @@ architectures/x86_64={emulator}
 package/unique_name="io.github.watertube.ridgebound"
 package/name="山野之间"
 package/signed=true
+launcher_icons/main_192x192="res://android-launcher-icon.png"
+launcher_icons/adaptive_foreground_432x432="res://android-launcher-icon.png"
 version/code={version_code}
 version/name={version_name}
 screen/immersive_mode=true
@@ -178,6 +186,21 @@ run_godot "$build_dir/export.log" --export-release Android "$build_dir/Ridgeboun
 "$sdk_dir/build-tools/$sdk_tools/aapt" dump badging "$build_dir/Ridgebound.apk" | tee "$build_dir/badging.log"
 grep -q "package: name='io.github.watertube.ridgebound'" "$build_dir/badging.log"
 grep -E -q 'native-code:.*arm64-v8a' "$build_dir/badging.log"
+grep -E -q '^application-icon-[0-9]+:.+res/' "$build_dir/badging.log"
+python3 - "$template" "$build_dir/Ridgebound.apk" <<'PY'
+from zipfile import ZipFile
+from sys import argv
+
+with ZipFile(argv[1]) as template_zip, ZipFile(argv[2]) as apk_zip:
+    launcher_paths = [
+        path for path in template_zip.namelist()
+        if path.startswith("res/mipmap") and path.endswith(("/icon.webp", "/icon_foreground.webp"))
+    ]
+    if not launcher_paths or any(template_zip.read(path) == apk_zip.read(path) for path in launcher_paths):
+        raise SystemExit("The APK still contains default launcher artwork.")
+    if any("android-launcher-icon.png" in path for path in apk_zip.namelist()):
+        raise SystemExit("Launcher source should only be represented in mipmap resources.")
+PY
 "$sdk_dir/build-tools/$sdk_tools/aapt" dump xmltree "$build_dir/Ridgebound.apk" AndroidManifest.xml > "$build_dir/manifest.log"
 grep -E -q 'screenOrientation.*(fullUser|0x0*d[[:space:]]*$)' "$build_dir/manifest.log"
 

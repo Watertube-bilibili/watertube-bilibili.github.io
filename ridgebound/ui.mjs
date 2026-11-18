@@ -27,7 +27,7 @@ export function createUI(actions = {}) {
     updateWheel(input.steer);
     input.brake = active && (has('Space') || held('brake'));
     input.reel = active && !suppressedReel && (has('KeyF') || held('reel'));
-    input.payout = active && held('payout');
+    input.payout = active && !suppressedReel && (held('payout') || has('KeyV'));
   }
   function updateWheel(steer) {
     const value = Math.round(steer * 100);
@@ -128,8 +128,9 @@ export function createUI(actions = {}) {
     resetInput();
   }
   function releaseReel() {
-    if (keys.has('KeyF')) suppressedReel = true;
+    if (keys.has('KeyF') || keys.has('KeyV')) suppressedReel = true;
     keys.delete('KeyF');
+    keys.delete('KeyV');
     for (const [id,held] of [...pointers]) {
       if (held.name !== 'reel' && held.name !== 'payout') continue;
       pointers.delete(id);
@@ -231,7 +232,7 @@ export function createUI(actions = {}) {
     el.addEventListener('lostpointercapture',release);
     el.addEventListener('contextmenu',event => event.preventDefault());
   }
-  const movement = new Set(['KeyW','KeyS','KeyA','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','KeyF']);
+  const movement = new Set(['KeyW','KeyS','KeyA','KeyD','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space','KeyF','KeyV']);
   const shortcuts = {KeyE:'winch',KeyQ:'detach',KeyL:'toggleGear',KeyX:'toggleAWD',KeyC:'camera',KeyR:'recover',KeyT:'repair'};
   window.addEventListener('keydown', event => {
     if (event.code === 'Escape' && playing && !victoryDialog.open && !garageDialog.open && !$('controllerDialog')?.open) {
@@ -243,10 +244,10 @@ export function createUI(actions = {}) {
     if (!playing || paused || document.querySelector('dialog[open]')) return;
     if (event.target.closest?.('#map-toggle') && ['Space','Enter'].includes(event.code)) return;
     if (movement.has(event.code) || shortcuts[event.code]) event.preventDefault();
-    if (movement.has(event.code) && !(event.code === 'KeyF' && suppressedReel)) {keys.add(event.code);syncInput();}
+    if (movement.has(event.code) && !(['KeyF','KeyV'].includes(event.code) && suppressedReel)) {keys.add(event.code);syncInput();}
     if (!event.repeat && shortcuts[event.code]) call(shortcuts[event.code]);
   });
-  window.addEventListener('keyup', event => {keys.delete(event.code);if(event.code==='KeyF')suppressedReel=false;syncInput();});
+  window.addEventListener('keyup', event => {keys.delete(event.code);if(event.code==='KeyF'||event.code==='KeyV')suppressedReel=false;syncInput();});
   window.addEventListener('blur', resetInput);
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {resetInput();if(playing && !paused && !victoryDialog.open){call('pause');setPaused(true);}}
@@ -267,10 +268,10 @@ export function createUI(actions = {}) {
     $('awd').setAttribute('aria-pressed',String(!!state.awd));
     $('lowgear').classList.toggle('active',!!state.lowGear);
     $('lowgear').setAttribute('aria-pressed',String(!!state.lowGear));
-    $('checkpoint-count').textContent = `${String(state.checkpoint || 0).padStart(2,'0')} / 04`;
+    $('checkpoint-count').textContent = state.region === 'custom' ? '自定义' : `${String(state.checkpoint || 0).padStart(2,'0')} / 04`;
     $('journey-progress').style.width = `${Math.min((state.checkpoint || 0)/4*100,100)}%`;
     $('target-name').textContent = state.completed ? '旅程已完成' : extra.targetName || '下一处路标';
-    $('target-distance').textContent = state.completed ? '✓' : distanceText(extra.targetDistance);
+    $('target-distance').textContent = state.region === 'custom' ? '' : (state.completed ? '✓' : distanceText(extra.targetDistance));
     $('current-area').textContent = extra.areaName || state.areaName || state.segmentName || (state.region==='snow'?'珠峰雪线':'松风谷');
     $('current-area').title = $('current-area').textContent;
     $('altitude').textContent = `海拔 ${Math.round(extra.altitude ?? (state.y || 0))} m`;

@@ -1,5 +1,7 @@
 class_name OffroadPhysics
 extends RefCounted
+
+const RecoveryWinch := preload("res://recovery_winch.gd")
 ## Kinematic off-road traction with four independently sampled spring/damper corners.
 ## +Z forward; body uses rotation.x=-pitch and rotation.z=roll.
 ## Wheel order: front-left, front-right, rear-left, rear-right.
@@ -39,18 +41,8 @@ func create_state(region: String = "forest", snow_tires: bool = false) -> Dictio
 	_reset_suspension(state)
 	return state
 
-func attach_winch(state: Dictionary, anchor: Dictionary) -> bool:
-	if not anchor.has("x") or not anchor.has("z"):
-		return false
-	var ax: float = float(anchor.x)
-	var az: float = float(anchor.z)
-	if not is_finite(ax) or not is_finite(az):
-		return false
-	var distance: float = Vector2(ax - state.x, az - state.z).length()
-	if distance > 24.0 or distance < 1.6:
-		return false
-	state.winch = {"anchor": anchor.duplicate(), "length": distance, "tension": 0.0}
-	return true
+func attach_winch(state: Dictionary, anchor: Dictionary, endpoint: String = "front") -> bool:
+	return RecoveryWinch.attach(state, anchor, endpoint)
 
 func detach_winch(state: Dictionary) -> void:
 	state.winch = null
@@ -170,6 +162,7 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, rocks: Array, so
 	var reverse: float = clampf(float(input.get("reverse", 0.0)), 0.0, 1.0)
 	var steer: float = clampf(float(input.get("steer", 0.0)), -1.0, 1.0)
 	var reel: bool = bool(input.get("reel", false))
+	var payout: bool = bool(input.get("payout", false))
 	state.surface = Terrain.surface_at(state.x, state.z, state.region)
 	var snowy: bool = state.region == "snow" or state.surface == "snow" or state.surface == "ice"
 	var winter_grip: float = 0.44 if snowy and not state.snowTires else 1.0
@@ -240,24 +233,7 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, rocks: Array, so
 		state.x -= side_x * downhill_slide
 		state.z -= side_z * downhill_slide
 	if state.winch != null:
-		var w: Dictionary = state.winch
-		var dx: float = w.anchor.x - state.x
-		var dz: float = w.anchor.z - state.z
-		var distance: float = Vector2(dx, dz).length()
-		if distance > 29.0:
-			state.winch = null
-		else:
-			if reel:
-				w.length = maxf(2.2, w.length - dt * 2.8)
-			var stretch: float = maxf(0.0, distance - w.length)
-			w.tension = clampf(stretch / 0.8 + (0.2 if reel else 0.0), 0.0, 1.0)
-			if stretch > 0.0 and distance > 0.01:
-				var pull: float = minf(stretch, dt * (3.4 if reel else 5.0))
-				state.x += dx / distance * pull
-				state.z += dz / distance * pull
-				var alignment: float = (dx * forward_x + dz * forward_z) / distance
-				if alignment * state.speed < 0.0:
-					state.speed *= exp(-dt * 5.0)
+		RecoveryWinch.apply(state, reel, payout, dt)
 	state.collision = false
 	for obstacle: Dictionary in legacy:
 		var min_distance: float = float(obstacle.get("r", 0.5)) + 0.92

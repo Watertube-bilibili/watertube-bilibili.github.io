@@ -103,7 +103,7 @@ function finishImport(result) {
   reportImport(result.error || '无法读取这张地图。');
   return;
  }
- reportImport((result.summary?.warnings || []).join('。') || '地图已就绪。');
+ reportImport(result.summary?.warnings || '地图已就绪。');
  closeDialogs();
  playing = true;
  paused = false;

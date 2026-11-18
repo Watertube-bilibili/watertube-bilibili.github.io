@@ -1,5 +1,8 @@
 extends Node3D
 
+const ExpeditionArt := preload("res://expedition_art.gd")
+const RecoveryWinch := preload("res://recovery_winch.gd")
+
 const SolidGeometry = preload("res://solid_geometry.gd")
 const MapImporter = preload("res://map_importer.gd")
 
@@ -13,6 +16,8 @@ var wheels:Array=[]
 var shock_rods: Array[Node3D] = []
 var shock_rest_heights: Array[float] = []
 var winch_outlet: Node3D
+var rear_winch_outlet: Node3D
+var graphics_profile := "auto"
 var steering_rest := Basis.IDENTITY
 var driver_eye_local := Vector3(0.423, 1.2392, -0.45)
 var speed_needle_rest := Basis.IDENTITY
@@ -86,6 +91,7 @@ func _ready():
 		shock_rods.append(shock)
 		shock_rest_heights.append(shock.position.y if shock else 0.0)
 	winch_outlet = vehicle.find_child("WinchOutlet", true, false) as Node3D
+	rear_winch_outlet = vehicle.find_child("RearWinchOutlet", true, false) as Node3D
 	var driver_eye := vehicle.find_child("DriverEye", true, false) as Node3D
 	if driver_eye:
 		driver_eye_local = vehicle.to_local(driver_eye.global_position)
@@ -148,35 +154,17 @@ func _make_contact_shadow():
 	add_child(contact_shadow)
 
 func _setup_environment():
-	environment=WorldEnvironment.new()
-	var env=Environment.new()
-	env.background_mode=Environment.BG_SKY
-	sky_material=ProceduralSkyMaterial.new()
-	sky_material.sky_top_color=Color("9bafa8")
-	sky_material.sky_horizon_color=Color("d9c9ad")
-	sky_material.ground_bottom_color=Color("718065")
-	sky_material.ground_horizon_color=Color("d9c9ad")
-	sky_material.sun_angle_max=8.0
-	var sky=Sky.new()
-	sky.sky_material=sky_material
-	env.sky=sky
-	env.ambient_light_source=Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color=Color("d5dfd1")
-	env.ambient_light_energy=.40
-	env.tonemap_mode=Environment.TONE_MAPPER_LINEAR
-	env.fog_enabled=true
-	env.fog_light_color=Color("c8d3c5")
-	env.fog_density=.0022
-	environment.environment=env
+	environment = WorldEnvironment.new()
+	environment.environment = Environment.new()
+	environment.environment.background_mode = Environment.BG_SKY
+	sky_material = ProceduralSkyMaterial.new()
+	var sky := Sky.new()
+	sky.sky_material = sky_material
+	environment.environment.sky = sky
 	add_child(environment)
-	sun=DirectionalLight3D.new()
-	sun.light_color=Color("fff1d5")
-	sun.light_energy=.78
-	sun.rotation_degrees=Vector3(-48,-36,0)
-	sun.shadow_enabled=false
-	sun.directional_shadow_mode=DirectionalLight3D.SHADOW_ORTHOGONAL
-	sun.directional_shadow_max_distance=48.0
+	sun = DirectionalLight3D.new()
 	add_child(sun)
+	ExpeditionArt.apply_quality(get_viewport(), sun, graphics_profile)
 
 func _reset_world(region:String,snow_tires:bool,progress:int):
 	var build_started=Time.get_ticks_usec()
@@ -211,14 +199,7 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	var scenery_started=Time.get_ticks_usec()
 	_build_scenery(region)
 	scenery_build_ms=float(Time.get_ticks_usec()-scenery_started)/1000.0
-	var snowy=region=="snow"
-	environment.environment.background_color=Color("b9c7dd") if snowy else Color("c7d5c8")
-	environment.environment.fog_light_color=Color("c2cce0") if snowy else Color("c1c6aa")
-	sky_material.sky_top_color=Color("9bafc5") if snowy else Color("9bafa8")
-	sky_material.sky_horizon_color=Color("d1dce2") if snowy else Color("d9c9ad")
-	sky_material.ground_horizon_color=sky_material.sky_horizon_color
-	environment.environment.ambient_light_color=Color("d0d8f1") if snowy else Color("d5dfd1")
-	sun.light_color=Color("e9f0ff") if snowy else Color("fff1d5")
+	ExpeditionArt.apply_atmosphere(environment.environment, sky_material, sun, region)
 	vehicle.position=Vector3(state.x,state.y,state.z)
 	camera.position=vehicle.position+Vector3(20,12,-23)
 	target_camera=vehicle.position+Vector3(-10,1,17)
@@ -361,7 +342,7 @@ func _build_scenery(region:String):
 		disk.height = 0.04
 		disk.radial_segments = 64
 		water.mesh = disk
-		water.material_override = _mat(Color("8daec6") if snowy else Color("71a6ab"), 0.25)
+		water.material_override = ExpeditionArt.water_material(snowy)
 		water.position = Vector3(site.x, site.y + 0.01, site.z)
 		scenery.add_child(water)
 	for site: Dictionary in TerrainMath.landmarks(region):
@@ -525,11 +506,10 @@ func _process(dt):
 	chunks.update_stream(Vector3(state.x,state.y,state.z),forward*state.speed,dt)
 	_update_anchor_layers()
 	quality_clock+=dt
-	if quality_clock>1.0 and not desktop_input_provider.is_valid():
-		quality_clock=0.0
-		var average_ms=float(chunks.get_stats().avgMs)
-		var target_scale=.6 if average_ms>60.0 else (.75 if average_ms>35.0 else .9)
-		get_viewport().scaling_3d_scale=target_scale
+	if quality_clock >= 1.25:
+		quality_clock = 0.0
+		if graphics_profile == "auto" and not desktop_input_provider.is_valid():
+			ExpeditionArt.apply_quality(get_viewport(), sun, graphics_profile, float(chunks.get_stats().avgMs))
 	streaming_waiting=false
 	if input.active:
 		# Start slowing before the fine-terrain boundary; the final position guard
@@ -569,6 +549,11 @@ func _command(command:Dictionary):
 	match command.get("type",""):
 		"start":playing=true
 		"import_map":_import_map(command)
+		"quality":
+			var requested := String(command.get("profile", "auto"))
+			if requested in ["auto", "quality", "performance"]:
+				graphics_profile = requested
+				ExpeditionArt.apply_quality(get_viewport(), sun, graphics_profile, float(chunks.get_stats().avgMs))
 		"reset":
 			playing=command.get("playing",true)
 			_reset_world(command.get("region","forest"),command.get("snowTires",false),int(command.get("progress",0)))
@@ -585,7 +570,9 @@ func _command(command:Dictionary):
 		"tires":state.snowTires=true
 		"attach":
 			for anchor in anchors:
-				if anchor.id==command.get("id","") and _anchor_visuals.has(anchor.id):simulation.attach_winch(state,anchor)
+				if anchor.id == command.get("id", "") and _anchor_visuals.has(anchor.id):
+					simulation.attach_winch(state, anchor, String(command.get("endpoint", "front")))
+					break
 		"detach":simulation.detach_winch(state)
 		"camera":camera_mode=(camera_mode+1)%3;orbit=0
 		"photo":_take_photo()
@@ -695,20 +682,42 @@ func _update_camera(dt):
 	camera.look_at(target_camera,camera_up)
 
 func _update_cable():
-	cable.visible=state.winch!=null
-	if not cable.visible:return
-	var a=state.winch.anchor
-	var start: Vector3 = winch_outlet.global_position if winch_outlet else vehicle.to_global(Vector3(0, 0.25, 2.35))
-	var finish=Vector3(a.x,a.y,a.z)
-	var geometry=ImmediateMesh.new()
-	geometry.surface_begin(Mesh.PRIMITIVE_LINE_STRIP)
-	for i in range(17):
-		var t=i/16.0
-		var point=start.lerp(finish,t)
-		point.y-=sin(t*PI)*.25
-		geometry.surface_add_vertex(point)
+	cable.visible = state.winch != null
+	if not cable.visible:
+		return
+	var line: Dictionary = state.winch
+	var endpoint := String(line.get("endpoint", "front"))
+	var socket: Node3D = rear_winch_outlet if endpoint == "rear" else winch_outlet
+	var start := socket.global_position if socket else RecoveryWinch.mount(state, endpoint)
+	var finish := Vector3(float(line.anchor.x), float(line.anchor.y), float(line.anchor.z))
+	var axis := finish - start
+	if axis.length_squared() < 0.0001:
+		cable.visible = false
+		return
+	var tangent := axis.normalized()
+	var right := tangent.cross(Vector3.UP)
+	right = right.normalized() if right.length_squared() > 0.0001 else Vector3.RIGHT
+	var up := tangent.cross(right).normalized()
+	var sag := clampf((float(line.length) - axis.length()) * 0.65, 0.015, 1.45)
+	var geometry := cable.mesh as ImmediateMesh
+	if geometry == null:
+		geometry = ImmediateMesh.new()
+		cable.mesh = geometry
+	geometry.clear_surfaces()
+	geometry.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
+	for step: int in range(14):
+		var t0 := float(step) / 14.0
+		var t1 := float(step + 1) / 14.0
+		var current := start.lerp(finish, t0) - Vector3.UP * sin(t0 * PI) * sag
+		var next := start.lerp(finish, t1) - Vector3.UP * sin(t1 * PI) * sag
+		for side: int in range(7):
+			var angle := TAU * side / 6.0
+			var normal := right * cos(angle) + up * sin(angle)
+			geometry.surface_set_normal(normal)
+			geometry.surface_add_vertex(current + normal * 0.021)
+			geometry.surface_set_normal(normal)
+			geometry.surface_add_vertex(next + normal * 0.021)
 	geometry.surface_end()
-	cable.mesh=geometry
 
 func _take_photo():
 	if not js_enabled:return
@@ -728,6 +737,7 @@ func get_snapshot()->Dictionary:
 	report["areaName"]=TerrainMath.area_name(state.x,state.z,state.region)
 	report["nearbyAnchors"]=anchors.size()
 	report["renderScale"]=get_viewport().scaling_3d_scale
+	report["graphicsProfile"]=graphics_profile
 	report["startup"]={"worldBuilds":world_builds,"initializationMs":snappedf(initialization_ms,.01),"worldBuildMs":snappedf(world_build_ms,.01),"chunksMs":snappedf(chunks_build_ms,.01),"sceneryMs":snappedf(scenery_build_ms,.01)}
 	report["playing"]=playing
 	report["customMap"] = TerrainMath.custom_summary()
