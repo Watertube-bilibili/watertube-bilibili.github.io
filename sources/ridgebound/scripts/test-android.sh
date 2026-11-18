@@ -200,7 +200,12 @@ def capture(directory, label, rotation, notch, app):
 
 def start_driving(directory, name, activity, rotation=None):
     adb("logcat", "-c")
-    print(adb("shell", "am", "start", "-W", "-n", activity).strip())
+    print(adb("shell", "am", "start", "-W", "-a", "android.intent.action.MAIN",
+              "-c", "android.intent.category.LAUNCHER", "-f", "0x10200000", "-n", activity).strip())
+    windows = adb("shell", "dumpsys", "window", "windows", check=False)
+    (directory / f"{name}-launch.windows").write_text(windows, encoding="utf-8")
+    print("\n".join(line for line in windows.splitlines()
+                    if re.search(r"mCurrentFocus|mFocusedApp|GodotApp(?:Launcher)?[ }]", line)))
     screenshot(directory, f"{name}-launch")
     start = wait_probe("the real Android start menu appeared",
                        lambda s: s.get("start") and (rotation is None or s["rotation"] == rotation),
