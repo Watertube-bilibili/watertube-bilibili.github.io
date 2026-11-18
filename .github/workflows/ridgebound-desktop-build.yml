@@ -1,0 +1,93 @@
+name: Build and verify Ridgebound Windows downloads
+on:
+  push:
+    branches: ['codex/ridgebound-desktop-build-20261118']
+permissions:
+  contents: write
+concurrency:
+  group: ridgebound-desktop-build-20261118
+  cancel-in-progress: true
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install NSIS and the MinGW Windows compiler
+        timeout-minutes: 5
+        run: |
+          list="$RUNNER_TEMP/ridgebound-apt.list"
+          printf '%s\n' 'deb https://archive.ubuntu.com/ubuntu noble main universe' > "$list"
+          apt_flags=(-o Dir::Etc::sourcelist="$list" -o Dir::Etc::sourceparts=- -o Acquire::Retries=1 -o Acquire::https::Timeout=20)
+          sudo apt-get "${apt_flags[@]}" update -qq
+          sudo apt-get "${apt_flags[@]}" install -y --no-install-recommends nsis g++-mingw-w64-x86-64-posix binutils-mingw-w64-x86-64
+      - name: Export Godot 4.4.1 and package Windows binaries
+        run: |
+          bash sources/ridgebound/scripts/build-desktop.sh "$RUNNER_TEMP/ridgebound-desktop"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ridgebound-windows-downloads
+          path: ${{ runner.temp }}/ridgebound-desktop/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+  windows-smoke:
+    needs: package
+    runs-on: windows-2022
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ridgebound-windows-downloads
+          path: ${{ runner.temp }}/ridgebound-desktop
+      - name: Launch portable game and test the NSIS installation
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $packages = Join-Path $env:RUNNER_TEMP 'ridgebound-desktop'
+          $portable = Join-Path $env:RUNNER_TEMP 'Ridgebound Portable'
+          $installed = Join-Path $env:RUNNER_TEMP 'Ridgebound Installed'
+          function Confirm-Game($folder) {
+            foreach ($name in @('Ridgebound.exe', 'Ridgebound.pck', 'ridgebound-wheel-bridge.exe')) {
+              if (!(Test-Path (Join-Path $folder $name))) { throw "Package lacks $name" }
+            }
+            $log = Join-Path $folder 'smoke.log'
+            $argline = '--headless --log-file "' + $log + '" --quit-after 300 -- --native-smoke'
+            $game = Start-Process (Join-Path $folder 'Ridgebound.exe') -WorkingDirectory $folder -ArgumentList $argline -PassThru
+            if (!$game.WaitForExit(60000)) { $game.Kill(); throw 'Windows game smoke timed out' }
+            if (Test-Path $log) { Get-Content $log }
+            if ($game.ExitCode -ne 0 -or !(Test-Path $log) -or !(Select-String -Quiet -Path $log -Pattern 'NATIVE_SMOKE_OK')) {
+              throw "Windows game could not start or complete its controls smoke ($($game.ExitCode))"
+            }
+          }
+          Expand-Archive (Join-Path $packages 'Ridgebound-Windows-x64.zip') -DestinationPath $portable
+          $gameExe = @(Get-ChildItem $portable -Recurse -Filter 'Ridgebound.exe')
+          if ($gameExe.Count -ne 1) { throw 'Portable archive must include one Ridgebound.exe' }
+          Confirm-Game $gameExe[0].Directory.FullName
+          $setup = Start-Process (Join-Path $packages 'Ridgebound-Setup-x64.exe') -ArgumentList "/S /D=$installed" -PassThru -Wait
+          if ($setup.ExitCode -ne 0 -or !(Test-Path (Join-Path $installed 'Uninstall.exe'))) { throw 'Installation failed' }
+          Confirm-Game $installed
+          $uninstaller = Start-Process (Join-Path $installed 'Uninstall.exe') -ArgumentList '/S' -PassThru -Wait
+          if ($uninstaller.ExitCode -ne 0 -or (Test-Path (Join-Path $installed 'Ridgebound.exe'))) { throw 'Uninstall failed' }
+      - name: Stage the verified Windows downloads
+        shell: bash
+        env:
+          RELEASE_BASE: '0e7baa64b1919b94c46f6357f1c9c2673bf4e853'
+        run: |
+          cp "$RUNNER_TEMP/ridgebound-desktop/Ridgebound-Setup-x64.exe" ridgebound/downloads/
+          cp "$RUNNER_TEMP/ridgebound-desktop/Ridgebound-Windows-x64.zip" ridgebound/downloads/
+          git rm --cached -- .github/workflows/ridgebound-desktop-build.yml
+          git add -- ridgebound/downloads/Ridgebound-Setup-x64.exe ridgebound/downloads/Ridgebound-Windows-x64.zip
+          git diff --cached "$RELEASE_BASE" --check
+          tree=$(git write-tree)
+          commit=$(git -c user.name='Ridgebound Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p "$RELEASE_BASE" -m 'Add the verified Ridgebound Windows installer and portable build')
+          git push origin "$commit:refs/heads/codex/ridgebound-desktop-output-20261118"
+          echo "Desktop build commit: $commit"
