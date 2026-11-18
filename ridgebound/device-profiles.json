@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "models": [
+    {
+      "id": "test-notched",
+      "label": "测试机型（刘海）",
+      "cutout": "notch",
+      "top": 0.112,
+      "bottom": 0.075
+    },
+    {
+      "id": "test-flat",
+      "label": "测试机型（平屏）",
+      "cutout": "none",
+      "top": 0,
+      "bottom": 0
+    }
+  ]
+}

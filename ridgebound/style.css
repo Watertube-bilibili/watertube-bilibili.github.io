@@ -10,10 +10,19 @@
   --ochre: #f6bf72;
   --red: #ffa28e;
   --edge: clamp(18px, 3vw, 48px);
-  --left: max(var(--edge), env(safe-area-inset-left));
-  --right: max(var(--edge), env(safe-area-inset-right));
-  --top: max(16px, env(safe-area-inset-top));
-  --bottom: max(22px, env(safe-area-inset-bottom));
+  --safe-top: max(env(safe-area-inset-top, 0px), var(--device-top, 0px));
+  --safe-right: max(env(safe-area-inset-right, 0px), var(--device-right, 0px));
+  --safe-bottom: max(env(safe-area-inset-bottom, 0px), var(--device-bottom, 0px));
+  --safe-left: max(env(safe-area-inset-left, 0px), var(--device-left, 0px));
+  --extra-edge: var(--device-padding, 0px);
+  --left: calc(max(var(--edge), var(--safe-left)) + var(--extra-edge));
+  --right: calc(max(var(--edge), var(--safe-right)) + var(--extra-edge));
+  --top: calc(max(var(--base-top), var(--safe-top)) + var(--extra-edge));
+  --bottom: calc(max(var(--base-bottom), var(--safe-bottom)) + var(--extra-edge));
+  --base-top: 16px;
+  --base-bottom: 22px;
+  --safe-width: calc(100% - var(--left) - var(--right));
+  --safe-center: calc(50% + (var(--left) - var(--right)) / 2);
   --panel-top: calc(var(--top) + 70px);
   --wheel-size: 104px;
   --hud-bottom: var(--bottom);
@@ -73,7 +82,7 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
 
 .welcome {
   position: absolute; inset: auto auto max(10%, calc(var(--bottom) + 38px)) var(--left);
-  width: min(88vw, 470px); padding: 26px 0 0; border-top: 1px solid #e5e7d58c;
+  width: min(var(--safe-width), 470px); padding: 26px 0 0; border-top: 1px solid #e5e7d58c;
 }
 .playing .welcome { display: none; }
 .welcome h1 { font-family: "Noto Serif CJK SC", "Songti SC", "SimSun", serif; margin: 0; font-size: clamp(3rem, 7.2vw, 6rem); font-weight: 800; letter-spacing: -.04em; line-height: 1.04; }
@@ -134,7 +143,7 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
 .damage-summary b.damaged { color: var(--red); }
 .repair-button { width: 100%; font-size: 11px; min-height: 34px; margin-top: 7px; padding: 5px; }
 .playing .equipment:not([hidden]) {
-  bottom: var(--hud-bottom); left: 50%; transform: translateX(-50%);
+  bottom: var(--hud-bottom); left: var(--safe-center); transform: translateX(-50%);
   display: inline-flex !important; gap: 3px; padding: 3px;
 }
 .equipment-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 43px; padding: 6px 10px; border-radius: 5px; white-space: nowrap; font-size: 12px; }
@@ -144,7 +153,7 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
 .equipment-button small, .equipment-button i { display: none; }
 .equipment-button:hover { background: var(--stone-button); }
 .equipment-button.active { color: var(--moss); background: var(--stone-button); }
-.drive-guide { position: absolute; bottom: calc(var(--hud-bottom) + 63px); left: 50%; transform: translateX(-50%); color: var(--paper); font-size: 11px; text-shadow: 0px 2px 6px var(--stone); }
+.drive-guide { position: absolute; bottom: calc(var(--hud-bottom) + 63px); left: var(--safe-center); transform: translateX(-50%); color: var(--paper); font-size: 11px; text-shadow: 0px 2px 6px var(--stone); }
 .drive-guide span { margin-inline: 3px; }
 
 .winch-panel { z-index: 8; right: var(--right); bottom: var(--hud-bottom); width: 234px; padding: 10px; }
@@ -176,18 +185,18 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
 .winch-toggle .winch-chevron { width: 13px; }
 .winch-toggle[aria-expanded=true] .winch-chevron { transform: rotate(180deg); }
 .compact-winch .winch-panel {
-  bottom: calc(var(--hud-bottom) + 101px); max-height: calc(100% - var(--hud-bottom) - 160px);
+  bottom: calc(var(--hud-bottom) + 101px); max-height: calc(100% - var(--hud-bottom) - var(--top) - 145px);
   overflow: auto; overscroll-behavior: contain; scrollbar-color: var(--line) var(--stone);
 }
 .anchor-instruction {
-  position: absolute; z-index: 9; top: calc(var(--panel-top) + 87px); left: 50%; transform: translateX(-50%);
-  display: flex; align-items: center; gap: 7px; width: max-content; max-width: calc(100% - 20px);
+  position: absolute; z-index: 9; top: calc(var(--panel-top) + 87px); left: var(--safe-center); transform: translateX(-50%);
+  display: flex; align-items: center; gap: 7px; width: max-content; max-width: var(--safe-width);
   padding: 8px 10px; border-radius: 5px; background: var(--stone); color: var(--paper); font-size: 12px;
 }
 
 .toast, .loading {
-  position: absolute; z-index: 11; pointer-events: none; left: 50%; transform: translateX(-50%);
-  width: max-content; max-width: min(440px, calc(100% - 26px)); padding: 8px 12px; background: var(--stone);
+  position: absolute; z-index: 11; pointer-events: none; left: var(--safe-center); transform: translateX(-50%);
+  width: max-content; max-width: min(440px, var(--safe-width)); padding: 8px 12px; background: var(--stone);
   border: 1px solid var(--line); border-radius: 5px; font-size: 12px; line-height: 1.5; text-align: center;
 }
 .toast { opacity: 0; top: calc(var(--top) + 53px); transition: opacity .18s ease-out; }
@@ -197,7 +206,8 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
 @keyframes load-turn { to { transform: rotate(360deg); } }
 
 .dialog, .error-panel {
-  width: min(94%, 580px); max-height: min(90%, 760px); border: 1px solid var(--line); border-radius: 12px;
+  position: fixed; inset: var(--top) var(--right) var(--bottom) var(--left); margin: auto;
+  width: min(var(--safe-width), 580px); max-height: min(760px, calc(100% - var(--top) - var(--bottom))); border: 1px solid var(--line); border-radius: 12px;
   background: var(--stone); color: var(--paper); padding: 24px; overflow: auto; overscroll-behavior: contain; touch-action: pan-y;
   scrollbar-color: var(--line) var(--stone-raised);
 }
@@ -242,7 +252,7 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
 #map-import-status:empty { display: none; }
 #map-import-status[data-error=true] { color: var(--red); }
 .garage-note { margin: 12px 0 8px; }
-.controller-dialog { width: min(94%, 635px); }
+.controller-dialog { width: min(var(--safe-width), 635px); }
 .connected-devices, .capture-status { font-size: 12px; padding: 7px 9px; border-radius: 5px; color: var(--moss); background: var(--stone-button); }
 .pad-guide, .binding-summary, .binding-details, .wheel-feedback-settings { font-size: 12px; color: var(--secondary); }
 .pad-guide { margin-top: 10px; }
@@ -263,7 +273,7 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
 .wheel-feedback-settings .strength-label { flex-wrap: wrap; }
 .strength-label input { flex: 1 1 110px; }
 .windows-download { min-height: 40px; display: inline-flex; gap: 7px; align-items: center; color: var(--moss); }
-.error-panel { position: absolute; inset: 50% auto auto 50%; transform: translate(-50%, -50%); z-index: 15; }
+.error-panel { height: fit-content; z-index: 15; }
 .error-panel a { display: inline-block; margin-left: 9px; }
 
 .playing .touch-controls.play-only:not([hidden]) { display: none !important; }
@@ -309,7 +319,7 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
   .repair-button, .winch-buttons button, #payout { min-height: 44px; }
 }
 @media (max-width: 700px) and (orientation: portrait) {
-  :root { --edge: 10px; --top: max(8px, env(safe-area-inset-top)); --bottom: max(9px, env(safe-area-inset-bottom)); --wheel-size: clamp(100px, 29vw, 125px); --panel-top: calc(var(--top) + 55px); }
+  :root { --edge: 10px; --base-top: 8px; --base-bottom: 9px; --wheel-size: min(clamp(100px, 29vw, 125px), max(76px, calc(100vw - var(--left) - var(--right) - 160px))); --panel-top: calc(var(--top) + 55px); }
   .wordmark { gap: 5px; }
   .wordmark > svg { width: 24px; height: 24px; }
   .wordmark > span { font-size: 13px; }
@@ -325,7 +335,7 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
   .map-panel { width: 98px; padding: 6px; }
   .map-panel .map-footer { display: none; }
   .map-panel .map-title, .map-panel .map-mode, .map-target-direction { font-size: 10px; }
-  .mission { width: min(185px, calc(100vw - 124px)); padding: 7px; }
+  .mission { width: min(185px, max(84px, calc(100vw - var(--left) - var(--right) - 106px))); padding: 7px; }
   .mission-target svg { display: none; }
   .mission-target strong { font-size: 11px; }
   .mission-label, #target-distance { font-size: 10px; }
@@ -336,15 +346,15 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
   .playing .equipment:not([hidden]) { left: auto; right: var(--right); transform: none; }
   .equipment-button { min-width: 44px; font-size: 10px; gap: 3px; padding: 4px; }
   .equipment-button svg, .equipment-button .low-icon { width: 14px; height: 14px; }
-  .winch-panel { width: min(224px, calc(100% - 2 * var(--edge))); }
+  .winch-panel { width: min(224px, var(--safe-width)); }
   .winch-expanded .map-panel { visibility: hidden; }
   .toast { top: auto; bottom: calc(var(--hud-bottom) + 104px); }
-  .dialog { width: calc(100% - 16px); max-height: 93%; padding: 15px; }
+  .dialog { padding: 15px; }
   .dialog .instructions { gap: 5px 8px; }
   .dialog .instructions div { min-height: 31px; }
 }
 @media (max-height: 560px) and (orientation: landscape) {
-  :root { --edge: 12px; --wheel-size: 74px; --top: max(7px, env(safe-area-inset-top)); --bottom: max(7px, env(safe-area-inset-bottom)); --panel-top: calc(var(--top) + 49px); }
+  :root { --edge: 12px; --wheel-size: 74px; --base-top: 7px; --base-bottom: 7px; --panel-top: calc(var(--top) + 49px); }
   .topbar { min-height: 44px; }
   .top-actions #fullscreen, .top-actions #controller-settings { display: none; }
   .welcome { padding-top: 12px; bottom: calc(var(--bottom) + 12px); }
@@ -364,10 +374,36 @@ body:not(.game-ready) #game-canvas { visibility: hidden; }
   .dialog { padding: 13px 17px; }
 }
 @media (max-height: 365px) and (orientation: landscape) {
-  .compact-winch .winch-panel { bottom: calc(var(--hud-bottom) + 50px); max-height: calc(100% - var(--hud-bottom) - 110px); }
+  .compact-winch .winch-panel { bottom: calc(var(--hud-bottom) + 50px); max-height: calc(100% - var(--hud-bottom) - var(--top) - 94px); }
   .playing.winch-expanded .winch-toggle:not([hidden]) { display: none !important; }
 }
 @media (prefers-reduced-motion: reduce) {
   .touch-wheel-face, .toast { transition: none; }
   .loading-spinner { animation: none; }
+}
+
+.safe-area-probe {
+  position: fixed; inset: 0 auto auto 0; visibility: hidden; pointer-events: none;
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+}
+.device-layout {
+  margin: 15px 0 17px; padding: 9px 0 11px; border-block: 1px solid var(--line);
+}
+.device-layout-fields {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px;
+}
+.device-layout-fields label {
+  display: grid; align-content: start; min-width: 0; gap: 4px; color: var(--secondary); font-size: 12px;
+}
+.device-layout-fields select { min-width: 0; width: 100%; min-height: 44px; }
+.device-layout-fields .device-padding { grid-column: 1 / -1; grid-template-columns: 1fr auto; align-items: center; }
+.device-padding output { color: var(--moss); }
+.device-padding input { grid-column: 1 / -1; width: 100%; min-height: 30px; margin: 0; }
+#device-layout-status { min-height: 1.55em; margin: 4px 0 0; font-size: 11px; color: var(--secondary); }
+@media (max-width: 360px) and (orientation: portrait) {
+  .topbar { gap: 6px; }
+  .dashboard { width: min(123px, max(78px, calc(100vw - var(--left) - var(--right) - 150px))); }
+  .equipment-button { flex-direction: column; gap: 1px; padding: 4px; }
+  .damage-summary { flex-wrap: wrap; }
 }

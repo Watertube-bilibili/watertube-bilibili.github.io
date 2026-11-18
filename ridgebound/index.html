@@ -40,7 +40,7 @@
     <a class="wordmark" href="../projects.html" aria-label="返回水管同学项目页"><svg><use href="#i-mountain"/></svg><span>山野之间<small>RIDGEBOUND</small></span></a>
     <div class="compass" aria-label="行驶方向"><span>航向</span><strong id="heading">N</strong></div>
     <nav class="top-actions" aria-label="游戏设置">
-      <button class="icon-button" id="controller-settings" title="控制器与踏板" aria-label="控制器与踏板设置"><svg viewBox="0 0 24 24"><path d="M7 6h10l4 11c.7 3-2 4-4 1l-2-2H9l-2 2c-2 3-5 2-4-1L7 6Zm-1 6h6M9 9v6m6-4h.01m3 2h.01"/></svg></button>
+      <button class="icon-button" id="controller-settings" title="控制器与屏幕" aria-label="控制器与屏幕设置"><svg viewBox="0 0 24 24"><path d="M7 6h10l4 11c.7 3-2 4-4 1l-2-2H9l-2 2c-2 3-5 2-4-1L7 6Zm-1 6h6M9 9v6m6-4h.01m3 2h.01"/></svg></button>
       <button class="icon-button" id="garage-button" title="地图与车库" aria-label="地图与车库"><svg viewBox="0 0 24 24"><path d="m3 9 9-6 9 6v12H3V9Zm4 12V11h10v10M7 15h10M7 18h10"/></svg></button>
       <button class="icon-button" id="photo" title="拍照保存" aria-label="拍照保存"><svg><use href="#i-camera"/></svg></button>
       <button class="icon-button" id="camera" title="切换视角 · C" aria-label="切换视角"><svg><use href="#i-view"/></svg></button>
@@ -116,7 +116,7 @@
     <div class="instructions"><div><kbd>W A S D / 方向键</kbd><span>驾驶与倒车</span></div><div><kbd>空格</kbd><span>刹车</span></div><div><kbd>L / X</kbd><span>低速挡 / 四驱</span></div><div><kbd>E</kbd><span>连接附近锚点</span></div><div><kbd>F</kbd><span>按住收绳</span></div><div><kbd>Q</kbd><span>释放绞盘</span></div><div><kbd>C / R</kbd><span>切换视角 / 脱困</span></div><div><kbd>T / Esc</kbd><span>小屋维修 / 暂停</span></div></div>
     <label class="graphics-setting" for="graphics-quality">渲染画质<select id="graphics-quality"><option value="auto">自动</option><option value="quality">清晰</option><option value="performance">流畅</option></select></label>
     <p class="help-note">点按小地图切换局部和全图。房屋标记是维修点。触屏时左手转向，右手控制踏板。松开方向盘会自动回正。</p>
-    <div class="dialog-actions"><button class="primary-button" id="resume">继续旅程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="dialog-recover">返回检查点</button></div><div class="pause-tools"><button id="dialog-map" class="secondary-button">地图与车库</button><button id="dialog-camera" class="secondary-button">切换驾驶视角</button><button id="dialog-controllers" class="secondary-button">控制器与踏板</button><button id="dialog-photo" class="secondary-button">保存风景照片</button><button id="dialog-fullscreen" class="secondary-button">全屏显示</button></div><a class="home-link" href="../projects.html">← 返回我的项目</a>
+    <div class="dialog-actions"><button class="primary-button" id="resume">继续旅程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="dialog-recover">返回检查点</button></div><div class="pause-tools"><button id="dialog-map" class="secondary-button">地图与车库</button><button id="dialog-camera" class="secondary-button">切换驾驶视角</button><button id="dialog-controllers" class="secondary-button">控制器与屏幕</button><button id="dialog-photo" class="secondary-button">保存风景照片</button><button id="dialog-fullscreen" class="secondary-button">全屏显示</button></div><a class="home-link" href="../projects.html">← 返回我的项目</a>
   </dialog>
   <dialog id="victoryDialog" class="dialog victory-dialog"><div class="victory-mark"><svg><use href="#i-mountain"/></svg></div><h2>抵达终点</h2><div class="journey-stats"><div><strong id="result-time">00:00</strong><span>旅程用时</span></div><div><strong id="result-distance">0 m</strong><span>行驶里程</span></div><div><strong>4 / 4</strong><span>探索路标</span></div></div><button class="primary-button" id="restart">再走一程<svg><use href="#i-arrow"/></svg></button><button class="secondary-button" id="discover-snow" hidden>发现隐藏雪线 ↗</button><button class="secondary-button" id="victory-continue">留在山野</button></dialog>
   <dialog id="garage" class="dialog garage-dialog">
@@ -144,7 +144,17 @@
   </dialog>
   <dialog id="controllerDialog" class="dialog controller-dialog">
     <button class="dialog-close icon-button" id="close-controllers" aria-label="关闭控制设置"><svg><use href="#i-close"/></svg></button>
-    <h2>控制器与踏板</h2><p class="controller-intro">手柄可直接驾驶。方向盘、独立油门和刹车踏板，可分别从不同设备绑定。</p>
+    <h2>控制器与屏幕</h2>
+    <section class="device-layout" aria-labelledby="device-layout-title">
+      <h3 id="device-layout-title">手机屏幕避让</h3>
+      <div class="device-layout-fields">
+        <label for="device-profile">机型<select id="device-profile" disabled><option value="auto">自动</option></select></label>
+        <label for="cutout-side">横屏挖孔<select id="cutout-side" disabled><option value="auto">随旋转</option><option value="left">靠左</option><option value="right">靠右</option></select></label>
+        <label class="device-padding" for="device-padding">额外留边 <output id="device-padding-value" for="device-padding">0 px</output><input id="device-padding" type="range" min="0" max="32" value="0" step="1"></label>
+      </div>
+      <p id="device-layout-status" role="status">正在读取屏幕安全区。</p>
+    </section>
+    <h3>方向盘与踏板</h3><p class="controller-intro">手柄可直接驾驶。方向盘、独立油门和刹车踏板，可分别从不同设备绑定。</p>
     <div id="connected-devices" class="connected-devices" role="status">连接设备后，按一下设备按钮。</div>
     <details class="pad-guide"><summary>标准手柄按键</summary><p>左摇杆转向 · RT 油门 · LT 刹车 · B 倒车 · A 低速挡 · X 绞盘 · Y 视角 · LB 收绳 · RB 释放 · Start 暂停</p></details>
     <p class="binding-explainer">绑定前松开踏板、回正方向盘。点击「监听绑定」，在 6 秒内将目标轴移动完整行程。不同踏板可绑定不同设备。</p><p id="capture-status" class="capture-status" role="status">绑定会保存在当前浏览器。</p>
