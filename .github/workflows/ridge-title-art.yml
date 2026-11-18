@@ -1,0 +1,65 @@
+name: Render the original Ridgebound title camp
+on:
+  push:
+    branches: ['codex/ridgebound-camp-art-20261118']
+permissions:
+  contents: write
+jobs:
+  render:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install the verified Blender Python runtime
+        run: |
+          mkdir -p "$RUNNER_TEMP/scene"
+          cd "$RUNNER_TEMP/scene"
+          python -m pip download --quiet --only-binary=:all: --no-deps 'bpy==4.3.0'
+          echo '1620199392a7e7aab58672aa47c50b3c5b1e4d39d46af5a7f9bbe2af561ea942  bpy-4.3.0-cp311-cp311-manylinux_2_28_x86_64.whl' | sha256sum --check
+          python -m pip install --quiet 'numpy==1.26.4' 'Pillow==11.2.1' ./bpy-4.3.0-cp311-cp311-manylinux_2_28_x86_64.whl
+      - name: Model and render the meadow in two aspect ratios
+        run: |
+          mkdir -p "sources/ridgebound/godot/art/title"
+          python -m py_compile "sources/ridgebound/build_title_camp.py"
+          python "sources/ridgebound/build_title_camp.py" "$RUNNER_TEMP/camp" 2>&1 | tee "$RUNNER_TEMP/camp-render.log"
+          grep -q CAMP_RENDER_OK "$RUNNER_TEMP/camp-render.log"
+          python - "$RUNNER_TEMP/camp" "sources/ridgebound/godot/art/title" <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          import sys
+          source, dest = map(Path, sys.argv[1:])
+          for name, size in (("camp_wide", (1164,538)), ("camp_tall", (624,1352))):
+              with Image.open(source / (name + ".png")) as frame:
+                  if frame.size != size:
+                      raise SystemExit(f"Unexpected frame resolution: {frame.size}")
+                  frame.convert("RGB").save(dest / (name + ".webp"), quality=89, method=6)
+                  thumbnail = frame.convert("RGB")
+                  thumbnail.thumbnail((70,70))
+                  pixels = list(thumbnail.getdata())
+                  contrast = [max(pixel) - min(pixel) for pixel in pixels]
+                  if sum(contrast) / len(contrast) < 8.0:
+                      raise SystemExit(f"Frame without sufficient color range: {name}")
+          PY
+      - name: Stage the title art for review
+        run: |
+          git add "sources/ridgebound/godot/art/title"
+          tree=$(git write-tree)
+          commit=$(git -c user.name='Ridgebound Art' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p HEAD -m 'Render the original campsite in landscape and portrait')
+          git push origin "$commit:refs/heads/codex/ridgebound-camp-assets-20261118"
+          echo "CAMP_ART_COMMIT $commit"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: title-camp-art
+          path: |
+            ${{ runner.temp }}/camp/
+            ${{ runner.temp }}/camp-render.log
+            sources/ridgebound/godot/art/title/
+          if-no-files-found: ignore
+          retention-days: 5
