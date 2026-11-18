@@ -14,7 +14,7 @@
 
 首次到达每个检查点获得60游戏金币，雪地胎售价180金币。完成山林路线后解锁「珠峰雪线」，不购买雪胎也能进入；普通胎在雪地与蓝冰上更容易打滑，碰撞和摔落照常造成车损。地图为原创虚构越野路线，不是珠峰真实道路测绘。没有真实货币支付。
 
-金币、解锁和检查点只保存在当前浏览器。换浏览器或清除网站数据会移除这份进度。Windows本地桥地址与在线网站是不同的浏览器存储空间。
+网页版将金币、解锁和检查点保存在当前浏览器，Windows 和安卓原生版写入各自的本地存档。使用 Windows 桥接程序打开网页时，进度保存在桥接程序的本地网址下。
 
 扩图沿用原存档：金币、雪胎和雪线解锁状态保留，检查点进度按原序号对应到加长后的路线。
 
@@ -60,13 +60,13 @@
 
 ## 安卓原生版
 
-[下载 ARM64 APK](../../ridgebound/downloads/Ridgebound-Android.apk)
+[下载 Android 10+ ARM64 APK](https://watertube-bilibili.github.io/ridgebound/downloads/Ridgebound-Android.apk?v=summit-20261118)
 
-使用触屏方向盘和踏板，可随设备方向切换竖屏与横屏。方向变化只调整布局，转向来自方向盘。此版为签名的侧载构建。 [安卓构建验证](https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/44270193567)
+安卓版 2.0 支持正反横屏和竖屏，使用触摸方向盘转向，右手可同时控制踏板。新版包名为 `io.github.watertube.ridgebound.expedition`，可与旧版并排安装，进度分别保存。
 
 ## Windows 原生版
 
-[安装版 EXE](../../ridgebound/downloads/Ridgebound-Setup-x64.exe?v=expedition-20261118) · [便携版 ZIP](../../ridgebound/downloads/Ridgebound-Windows-x64.zip?v=expedition-20261118)
+[安装版 EXE](https://watertube-bilibili.github.io/ridgebound/downloads/Ridgebound-Setup-x64.exe?v=summit-20261118) · [便携版 ZIP](https://watertube-bilibili.github.io/ridgebound/downloads/Ridgebound-Windows-x64.zip?v=summit-20261118)
 
 安装版提供开始菜单快捷方式和卸载。便携版解压后运行 `Ridgebound.exe`。桌面包用 Godot 4.4.1 的 OpenGL 兼容渲染器，目标系统为 Windows 7 SP1 x64 及更新版本，需要 OpenGL 3.3 驱动。车载相机、绞盘、维修和雪线解锁均可离线使用。桌面存档保存在系统用户目录。
 
@@ -76,14 +76,14 @@
 
 ## 本地运行与构建
 
-已导出的网页无需npm依赖。在仓库根目录执行：
+独立源码包首次运行前，需要按下方命令导出网页。已有网页导出文件时，在仓库根目录启动本地服务器即可。
 
 ```sh
 python3 -m http.server 8765
 # 浏览器打开 http://localhost:8765/ridgebound/
 ```
 
-源码构建需要 Godot 4.6.3 及对应 Web 导出模板。GitHub Pages使用无多线程模板，不依赖跨域隔离HTTP头。
+源码构建需要 Godot 4.6.3 及对应 Web 导出模板。GitHub Pages 使用单线程模板。
 
 ```sh
 bash sources/ridgebound/scripts/build-web.sh
@@ -113,6 +113,6 @@ godot --headless --path sources/ridgebound/godot --script tests/test_physics.gd
 
 本项目原创代码及生成的车辆/场景资产采用 [MIT许可](LICENSE)。其他网站项目不因本文件而变更许可。
 
-Godot采用MIT许可，其第三方组件各有许可，随网页保留在 [`ridgebound/licenses/`](../../ridgebound/licenses/)。Blender用于创作模型，未重新分发Blender程序。项目安装的Impeccable设计技能采用Apache-2.0，见仓库 `.agents/skills/impeccable/`。
+Godot采用MIT许可，其第三方组件各有许可，随网页保留在 [网页发行包的许可目录](https://github.com/Watertube-bilibili/watertube-bilibili.github.io/tree/main/ridgebound/licenses)。Blender用于创作模型，未重新分发Blender程序。项目安装的Impeccable设计技能采用Apache-2.0，见[主页仓库中的设计技能](https://github.com/Watertube-bilibili/watertube-bilibili.github.io/tree/main/.agents/skills/impeccable)。
 
 车辆、场景和界面均为本项目原创。设计参考了开发者公开介绍中的分区探索、地标导航和绞盘脱困。 [Funselektor 开发者文章](https://news.xbox.com/en-us/2026/01/23/the-wilderness-of-over-the-hill-on-xbox-series-xs/) · [玩法访谈](https://80.lv/articles/over-the-hill-creating-a-co-op-driving-adventure-game)
