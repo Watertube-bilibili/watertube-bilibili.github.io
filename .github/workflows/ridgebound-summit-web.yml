@@ -1,0 +1,92 @@
+name: Publish Ridgebound Summit Web after driving and map checks
+on:
+  push:
+    branches: ['codex/ridgebound-summit-web-final-20261118']
+permissions:
+  contents: write
+concurrency:
+  group: ridgebound-summit-web-final-20261118
+  cancel-in-progress: true
+jobs:
+  web:
+    defaults:
+      run:
+        shell: bash
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install verified Godot 4.6.3 export tools
+        run: |
+          mkdir -p "$RUNNER_TEMP/ridgebound-tools"
+          cd "$RUNNER_TEMP/ridgebound-tools"
+          release=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          editor=Godot_v4.6.3-stable_linux.x86_64.zip
+          templates=Godot_v4.6.3-stable_export_templates.tpz
+          for asset in SHA512-SUMS.txt "$editor" "$templates"; do
+            curl --fail --silent --show-error --location --retry 3 "$release/$asset" --output "$asset"
+          done
+          awk -v editor="$editor" -v templates="$templates" '$2==editor || $2==templates' SHA512-SUMS.txt | tee verified.sha512
+          test "$(wc -l < verified.sha512)" -eq 2
+          sha512sum --check verified.sha512
+          unzip -q "$editor"
+          install -m 755 Godot_v4.6.3-stable_linux.x86_64 godot
+          template_dir="$HOME/.local/share/godot/export_templates/4.6.3.stable"
+          mkdir -p "$template_dir"
+          unzip -p "$templates" templates/web_nothreads_release.zip > "$template_dir/web_nothreads_release.zip"
+          echo "$RUNNER_TEMP/ridgebound-tools" >> "$GITHUB_PATH"
+      - name: Export the Web build and run Godot regressions
+        run: |
+          bash sources/ridgebound/scripts/build-web.sh 2>&1 | tee "$RUNNER_TEMP/ridgebound-export.log"
+          if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/ridgebound-export.log"; then exit 1; fi
+          for script in test_summit test_startup test_runtime test_mpv_physics test_streaming test_obstacle_contacts test_winch_modes test_map_import test_touch_drive; do
+            timeout 180s godot --headless --path sources/ridgebound/godot --script "tests/$script.gd" 2>&1 | tee "$RUNNER_TEMP/$script.log"
+            if grep -E '(SCRIPT ERROR:|^ERROR:|FAILURES [1-9])' "$RUNNER_TEMP/$script.log"; then exit 1; fi
+          done
+      - name: Install Chromium and Playwright
+        run: |
+          npm install --prefix "$RUNNER_TEMP/ridgebound-qa" playwright@1.51.1
+          if command -v google-chrome >/dev/null; then
+            echo "CHROMIUM_BIN=$(command -v google-chrome)" >> "$GITHUB_ENV"
+          else
+            "$RUNNER_TEMP/ridgebound-qa/node_modules/.bin/playwright" install chromium
+          fi
+      - name: Drive the exported Web build in portrait and landscape
+        run: |
+          python3 -m http.server 9018 > "$RUNNER_TEMP/ridgebound-http.log" 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..10}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:9018/ridgebound/; then break; fi
+            sleep 1
+          done
+          NODE_PATH="$RUNNER_TEMP/ridgebound-qa/node_modules" RIDGEBOUND_SCREENSHOTS="$RUNNER_TEMP/ridgebound-preview" node ridgebound/tests/quiet-menu.cjs http://127.0.0.1:9018/ridgebound/
+          NODE_PATH="$RUNNER_TEMP/ridgebound-qa/node_modules" RIDGEBOUND_SCREENSHOTS="$RUNNER_TEMP/ridgebound-preview" node ridgebound/tests/map-upload.cjs http://127.0.0.1:9018/ridgebound/
+          NODE_PATH="$RUNNER_TEMP/ridgebound-qa/node_modules" RIDGEBOUND_SCREENSHOTS="$RUNNER_TEMP/ridgebound-preview" node ridgebound/tests/device-layout.cjs http://127.0.0.1:9018/ridgebound/
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ridgebound-web-preview-and-logs
+          path: |
+            ${{ runner.temp }}/ridgebound-preview/
+            ${{ runner.temp }}/ridgebound-export.log
+            ${{ runner.temp }}/test_*.log
+            ridgebound/assets/vehicle-preview.png
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Stage verified build for review
+        env:
+          RELEASE_BASE: 'a94cf6c216c2dd553e00627497809d2f643c83dc'
+        run: |
+          git read-tree "$RELEASE_BASE"
+          git add -- ridgebound/engine ridgebound/boot.mjs ridgebound/game.mjs ridgebound/device-layout.mjs ridgebound/index.html
+          git diff --cached "$RELEASE_BASE" --check
+          tree=$(git write-tree)
+          commit=$(git -c user.name='Ridgebound Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p "$RELEASE_BASE" -m 'Publish verified Ridgebound summit Web engine and immutable entry')
+          git push origin "$commit:refs/heads/codex/ridgebound-summit-web-output-20261118-$GITHUB_RUN_ID"
+          echo "Build commit: $commit"
