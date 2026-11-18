@@ -43,7 +43,7 @@ var _trunk_material: StandardMaterial3D
 var _foliage_material: StandardMaterial3D
 var _rock_material: StandardMaterial3D
 var _trunk_mesh: CylinderMesh
-var _foliage_mesh: CylinderMesh
+var _foliage_mesh: ArrayMesh
 var _rock_mesh: SphereMesh
 var _rock_faces: PackedVector3Array
 var _trunk_faces: PackedVector3Array
@@ -81,7 +81,11 @@ void fragment() {
 			}
 		}
 	}
-	ALBEDO = COLOR.rgb;
+	vec3 pigment = COLOR.rgb;
+	if (!OUTPUT_IS_SRGB) {
+		pigment = pow(max(pigment, vec3(0.0)), vec3(2.2));
+	}
+	ALBEDO = pigment * 0.94;
 	ROUGHNESS = 1.0;
 	SPECULAR = 0.0;
 }
@@ -383,7 +387,8 @@ func _make_resources() -> void:
 	_trunk_material.roughness = 1.0
 	_foliage_material = StandardMaterial3D.new()
 	_foliage_material.vertex_color_use_as_albedo = true
-	_foliage_material.albedo_color = Color("47624b") if _region == "forest" else Color("a8c5c5")
+	_foliage_material.vertex_color_is_srgb = true
+	_foliage_material.albedo_color = Color("5e7960") if _region != "snow" else Color("b3c6c3")
 	_foliage_material.roughness = 1.0
 	_foliage_material.metallic_specular = 0.0
 	_rock_material = StandardMaterial3D.new()
@@ -398,13 +403,7 @@ func _make_resources() -> void:
 	_trunk_mesh.radial_segments = 5
 	_trunk_mesh.rings = 1
 	_trunk_mesh.material = _trunk_material
-	_foliage_mesh = CylinderMesh.new()
-	_foliage_mesh.top_radius = 0.0
-	_foliage_mesh.bottom_radius = 1.0
-	_foliage_mesh.height = 1.0
-	_foliage_mesh.radial_segments = 6
-	_foliage_mesh.rings = 1
-	_foliage_mesh.material = _foliage_material
+	_foliage_mesh = ExpeditionArt.evergreen_crown(_foliage_material, _region == "snow")
 	_rock_mesh = SphereMesh.new()
 	_rock_mesh.radius = 1.0
 	_rock_mesh.height = 2.0
@@ -416,35 +415,48 @@ func _make_resources() -> void:
 	_foliage_faces = _foliage_mesh.get_faces()
 
 func _surface_color(x: float, z: float, sample_span: float = 2.0) -> Color:
-	var snowy: bool = _region == "snow"
-	var color: Color = Color("a5ad76")
+	var winter: bool = _region == "snow"
 	var biome: String = Terrain.biome_at(x, z, _region)
+	var color := Color("63714e")
 	match biome:
-		"marsh": color = Color("8f9c73")
-		"stone": color = Color("a29278")
-		"alpine": color = Color("a6a78c")
-		"icefield": color = Color("ccdce0")
-	if snowy:
-		color = Color("d5e2dd") if biome != "icefield" else Color("c2d4dc")
+		"marsh": color = Color("647058")
+		"stone": color = Color("837a67")
+		"alpine": color = Color("777e69")
+		"icefield": color = Color("acbfc9")
+	if winter:
+		color = Color("bbcacf") if biome != "icefield" else Color("a8bcc8")
 	var surface: String = Terrain.surface_at(x, z, _region)
+	var wetness := 0.0
 	match surface:
-		"mud": color = Color("756146")
-		"water": color = Color("688f89")
-		"rock": color = Color("a29e8b")
-		"ice": color = Color("91b6be")
-	var distance: float = Terrain.road_distance(x, z, _region)
+		"mud":
+			color = Color("665442")
+			wetness = 0.78
+		"water":
+			color = Color("4e6c67")
+			wetness = 0.92
+		"rock":
+			color = Color("817c70")
+		"ice":
+			color = Color("789ea9")
+			wetness = 0.96
+		"snow":
+			color = Color("bbcacf")
+		"trail":
+			# Custom terrains include painted trails but no procedural centerline.
+			if _region == "custom":
+				color = Color("9e8767")
+
+	# The road trace is feathered where the wider mesh spacing cannot resolve its edge.
 	if surface not in ["mud", "rock", "water", "ice"]:
-		# At lower detail the road gets a feathered trace so junctions and
-		# the direction of the trail survive sparse vertex sampling.
-		var trail: Color = Color("acbec0") if snowy else Color("c9b18b")
-		if sample_span <= 2.0:
-			if distance < 3.5:
-				color = trail
-		else:
-			var edge: float = maxf(6.0, sample_span * 0.73)
-			color = color.lerp(trail, 1.0 - smoothstep(2.0, edge, distance))
-	var variation: float = sin(x * 0.34 + z * 0.18) * 0.035 + cos(z * 0.27 - x * 0.13) * 0.025
-	return color.lightened(variation) if variation >= 0.0 else color.darkened(-variation)
+		var distance: float = Terrain.road_distance(x, z, _region)
+		var trail := Color("9baeb6") if winter else Color("9e8767")
+		var shoulder: float = 5.1 if sample_span <= 2.0 else maxf(6.0, sample_span * 0.73)
+		color = color.lerp(trail, 1.0 - smoothstep(2.1, shoulder, distance))
+	var variation := sin(x * 0.047 + z * 0.037) * 0.065 + cos(z * 0.019 - x * 0.059) * 0.04
+	var detail := color.lightened(variation) if variation > 0.0 else color.darkened(-variation)
+	# Alpha is the terrain shader's wetness input, never object transparency.
+	detail.a = wetness
+	return detail
 
 func _emit_triangle(tool: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, color_a: Color, color_b: Color, color_c: Color) -> void:
 	var normal: Vector3 = (b - a).cross(c - a).normalized()
@@ -549,8 +561,9 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 			var height: float = rng.randf_range(3.8, 7.5)
 			var width: float = rng.randf_range(1.0, 1.75)
 			trunks.append(Transform3D(Basis(Vector3.UP, rotation).scaled(Vector3(1.0, height * 0.7, 1.0)), Vector3(x, y + height * 0.35, z)))
-			foliage.append(Transform3D(Basis(Vector3.UP, rotation).scaled(Vector3(width, height * 0.69, width)), Vector3(x, y + height * 0.64, z)))
-			foliage.append(Transform3D(Basis(Vector3.UP, rotation + 0.25).scaled(Vector3(width * 0.74, height * 0.52, width * 0.74)), Vector3(x, y + height * 0.83, z)))
+			var crown_scale := Vector3(width, height * 0.96, width)
+			var crown_basis := Basis(Vector3.UP, rotation) * Basis.from_scale(crown_scale)
+			foliage.append(Transform3D(crown_basis, Vector3(x, y + height * 0.65, z)))
 		else:
 			# Most stones form traversable shelves, while taller boulders require a detour.
 			var height: float = rng.randf_range(0.14, 0.37) if rng.randf() < 0.76 else rng.randf_range(0.43, 0.92)
@@ -620,7 +633,8 @@ func _add_multimesh(group: Node3D, mesh: Mesh, transforms: Array[Transform3D], c
 			instances.set_instance_color(i, Color(tone, tone, tone, 1.0))
 	var node: MultiMeshInstance3D = MultiMeshInstance3D.new()
 	node.multimesh = instances
-	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if _mobile else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
+	# Render quality decides whether these casters are drawn into a shadow map.
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	group.add_child(node)
 
 func _reset_visual_tiles() -> void:

@@ -10,12 +10,15 @@ float hash_cell(vec2 cell) {
 	return fract((point.x + point.y) * point.z);
 }
 
-float noise_field(vec2 position) {
-	vec2 cell = floor(position);
-	vec2 t = fract(position);
-	t = t * t * (3.0 - 2.0 * t);
-	return mix(mix(hash_cell(cell), hash_cell(cell + vec2(1.0, 0.0)), t.x),
-		mix(hash_cell(cell + vec2(0.0, 1.0)), hash_cell(cell + vec2(1.0)), t.x), t.y);
+float noise_field(vec2 coordinate) {
+	vec2 cell = floor(coordinate);
+	vec2 blend = fract(coordinate);
+	blend = blend * blend * (3.0 - 2.0 * blend);
+	return mix(
+		mix(hash_cell(cell), hash_cell(cell + vec2(1.0, 0.0)), blend.x),
+		mix(hash_cell(cell + vec2(0.0, 1.0)), hash_cell(cell + vec2(1.0)), blend.x),
+		blend.y
+	);
 }
 
 void vertex() {
@@ -27,15 +30,26 @@ void fragment() {
 	if (!OUTPUT_IS_SRGB) {
 		pigment = pow(max(pigment, vec3(0.0)), vec3(2.2));
 	}
-	vec2 at = world_point.xz;
+	vec2 ground = world_point.xz;
 	float distance_to_eye = distance(world_point, CAMERA_POSITION_WORLD);
-	float detail = 1.0 - smoothstep(30.0, 155.0, distance_to_eye);
-	float patch = noise_field(at * 0.37);
-	float gravel = noise_field(at * 9.0) * (1.0 - smoothstep(5.0, 36.0, distance_to_eye));
-	float lines = noise_field(vec2(at.x + at.y * 0.37, at.y * 0.18) * 2.7);
-	float shade = mix(0.92, 1.08, patch) + (gravel - 0.20 + (lines - 0.5) * 0.25) * detail * 0.37;
-	ALBEDO = clamp(pigment * shade, vec3(0.025), vec3(1.0));
-	float ice = float(snow) * smoothstep(0.015, 0.08, pigment.b - pigment.r);
-	ROUGHNESS = mix(0.94, 0.24, ice) - gravel * 0.09;
-	SPECULAR = mix(0.20, 0.46, ice);
+	float fine_fade = 1.0 - smoothstep(7.0, 44.0, distance_to_eye);
+	float field = noise_field(ground * 0.24);
+	float grit = noise_field(ground * 2.9);
+	float relief = (grit - 0.5) * (0.28 + 0.72 * fine_fade);
+	if (fine_fade > 0.001) {
+		float detail = noise_field(ground * 11.0);
+		relief += (detail - 0.5) * 0.32 * fine_fade;
+	}
+	float shade = mix(0.79, 1.13, field) + relief * 0.24;
+	float ice = (snow ? 1.0 : 0.0) * smoothstep(0.075, 0.17, pigment.b - pigment.r);
+	float wet = clamp(COLOR.a, 0.0, 1.0);
+	ALBEDO = pigment * shade;
+	ROUGHNESS = mix(mix(0.95, 0.61, wet), 0.28, ice);
+	SPECULAR = mix(0.19, 0.37, max(ice, wet * 0.72));
+
+	// Gravel changes the micro-normal only. Geometry and tire contact stay in step.
+	vec2 gradient = vec2(dFdx(relief), dFdy(relief)) * 0.29 * fine_fade;
+	vec3 tangent_x = normalize(dFdx(VERTEX) + vec3(0.0001, 0.0, 0.0));
+	vec3 tangent_y = normalize(dFdy(VERTEX) + vec3(0.0, 0.0001, 0.0));
+	NORMAL = normalize(NORMAL - tangent_x * clamp(gradient.x, -0.09, 0.09) - tangent_y * clamp(gradient.y, -0.09, 0.09));
 }

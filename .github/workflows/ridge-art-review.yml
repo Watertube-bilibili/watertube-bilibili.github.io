@@ -1,0 +1,56 @@
+name: Review Ridgebound foliage and surface shading
+on:
+  push:
+    branches: ['codex/ridgebound-art-review-20261118']
+permissions:
+  contents: write
+jobs:
+  graphics:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Install the verified Godot 4.4.1 renderer
+        run: |
+          cd "$RUNNER_TEMP"
+          base=https://github.com/godotengine/godot-builds/releases/download/4.4.1-stable
+          archive=Godot_v4.4.1-stable_linux.x86_64.zip
+          for file in "$archive" SHA512-SUMS.txt; do
+            curl -fsSL --connect-timeout 15 --max-time 65 --retry 1 "$base/$file" -o "$file"
+          done
+          awk -v name="$archive" '$2==name || $2==("*" name)' SHA512-SUMS.txt | sha512sum --check
+          unzip -q "$archive"
+          ln -s "$RUNNER_TEMP/Godot_v4.4.1-stable_linux.x86_64" "$RUNNER_TEMP/godot"
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+      - name: Render terrain on the compatibility backend
+        run: |
+          project=sources/ridgebound/godot
+          sed -i 's/PackedStringArray("4.6"/PackedStringArray("4.4"/' "$project/project.godot"
+          export LIBGL_ALWAYS_SOFTWARE=1
+          mkdir -p _graphics
+          settings=(--audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --path "$project")
+          timeout 60s xvfb-run -a godot "${settings[@]}" --editor --import --quit 2>&1 | tee import.log
+          timeout 85s xvfb-run -a godot "${settings[@]}" --script tests/render_expedition_review.gd -- "$PWD/_graphics" 2>&1 | tee render.log
+          if grep -E 'SCRIPT ERROR|Shader compilation failed|SHADER ERROR|FAIL ' render.log; then exit 1; fi
+          grep -q ART_PREVIEW_OK render.log
+          for screenshot in _graphics/forest.png _graphics/portrait.png _graphics/snow.png; do
+            test "$(stat -c %s "$screenshot")" -ge 24000
+          done
+          git add _graphics/
+          tree=$(git write-tree)
+          commit=$(git -c user.name='Ridgebound Art Review' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p HEAD -m 'Capture the revised Godot art in three viewports')
+          git push origin "$commit:refs/heads/codex/ridgebound-art-preview-20261118"
+          echo "ART_PREVIEW_COMMIT $commit"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: expedition-graphics-review
+          path: |
+            _graphics/
+            import.log
+            render.log
+          if-no-files-found: ignore
+          retention-days: 3
