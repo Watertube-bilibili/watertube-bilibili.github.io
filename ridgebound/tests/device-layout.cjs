@@ -63,6 +63,20 @@ async function main() {
     await rotate(390, 844, 'portraitPrimary', 0);
     await setup();
     assert.equal(await tab.locator('#device-profile').inputValue(), 'auto');
+    await tab.evaluate(() => {
+      const queue = window.ridgeboundCommands;
+      window.seenCommands = [];
+      const push = queue.push.bind(queue);
+      queue.push = (...commands) => {
+        window.seenCommands.push(...commands);
+        return push(...commands);
+      };
+    });
+    await tab.locator('#brake-force-calibration').evaluate(el => {
+      el.value = '1700';
+      el.dispatchEvent(new Event('change', {bubbles:true}));
+    });
+    await tab.waitForFunction(() => seenCommands.some(({type,maxForceN})=>type==='pedal_calibration'&&maxForceN===1700));
     await tab.locator('#device-profile').selectOption(preset.id);
     await tab.locator('#device-padding').evaluate(el => {
       el.value = '12';
@@ -111,6 +125,11 @@ async function main() {
     await assertSafe(['#pauseDialog','#close-dialog']);
     await tab.locator('#dialog-map').tap();
     await assertSafe(['#garage','#close-garage']);
+    await tab.locator('#vehicle-yuchuan').tap();
+    assert.equal(await tab.locator('#vehicle-yuchuan').getAttribute('aria-pressed'), 'true');
+    assert.equal(await tab.evaluate(() => localStorage.getItem('watertube-ridgebound-vehicle')), 'yuchuan');
+    assert.equal(await tab.evaluate(() => localStorage.getItem('watertube-ridgebound-max-brake-force')), '1700');
+    await tab.locator('#close-garage').tap();
     assert.deepEqual(errors,[]);
     console.log('PASS screen presets, padding persistence, portrait, both landscape directions, manual cutout side, controls and safe dialogs');
   } finally {

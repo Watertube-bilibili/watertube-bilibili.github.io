@@ -5,6 +5,15 @@ import {createControllers} from './controllers.mjs';
 import {createDeviceLayout} from './device-layout.mjs';
 const STORAGE='watertube-ridgebound-v1';
 const QUALITY_KEY = 'watertube-ridgebound-quality';
+const VEHICLE_KEY = 'watertube-ridgebound-vehicle';
+const BRAKE_FORCE_KEY = 'watertube-ridgebound-max-brake-force';
+const VEHICLES = ['rover', 'yuchuan'];
+let vehicleId = 'rover';
+let maxBrakeForce = 1400;
+function normalizedBrakeForce(value) {
+ const number = String(value ?? '').trim() === '' ? NaN : Number(value);
+ return Number.isFinite(number) ? Math.round(Math.min(2500, Math.max(300, number))) : 1400;
+}
 const MAP_TEMP_PATH = '/tmp/ridgebound-import.zip';
 const MAX_MAP_BYTES = 128 * 1024 * 1024;
 const qualityOptions = ['auto', 'quality', 'performance'];
@@ -12,6 +21,9 @@ let graphicsQuality = 'auto';
 try {
  const savedQuality = localStorage.getItem(QUALITY_KEY);
  if (qualityOptions.includes(savedQuality)) graphicsQuality = savedQuality;
+ const savedVehicle = localStorage.getItem(VEHICLE_KEY);
+ if (VEHICLES.includes(savedVehicle)) vehicleId = savedVehicle;
+ maxBrakeForce = normalizedBrakeForce(localStorage.getItem(BRAKE_FORCE_KEY));
 } catch {}
 let engine;
 let activeImport = 0;
@@ -23,11 +35,19 @@ let audioEnabled=false,audioCtx,engineTone,engineGain;
 let orbitDrag = null;
 const canvas=document.createElement('canvas');canvas.id='game-canvas';canvas.tabIndex=-1;canvas.setAttribute('aria-label','山野之间 Godot 3D 场景');document.getElementById('viewport').append(canvas);
 window.ridgeboundInput={active:false};window.ridgeboundCommands=[];
-window.ridgeboundBootstrap={region:save.region,snowTires:save.snowTires,progress:save.progress[save.region]>0&&save.progress[save.region]<4?save.progress[save.region]:0};
+window.ridgeboundBootstrap={region:save.region,snowTires:save.snowTires,progress:save.progress[save.region]>0&&save.progress[save.region]<4?save.progress[save.region]:0,vehicleId,maxForceN:maxBrakeForce};
 const send=(type,data={})=>window.ridgeboundCommands.push({type,...data});
 function persist(){try{localStorage.setItem(STORAGE,JSON.stringify(save));}catch{ui?.toast('浏览器未允许保存，本次探索仍可继续');}}
 function refreshGarage() {
  ui?.updateGarage({...save, region:state.region, customMapName:state.customMap?.name || ''});
+ for (const id of VEHICLES) {
+  const button = document.getElementById('vehicle-' + id);
+  const selected = id === vehicleId;
+  button.disabled = !ready;
+  button.classList.toggle('selected', selected);
+  button.setAttribute('aria-pressed', String(selected));
+ }
+ document.getElementById('garage-brake-fault').hidden = !state.brakePedalBroken;
 }
 function targetName(i){return(state.region==='snow'?['冰川前哨','蓝冰山口','风雪垭口','雪线营地']:checkpoints.map(x=>x.name))[Math.min(3,i)];}
 function rewardCheckpoints(previous){for(let i=previous;i<state.checkpoint;i++){const key=state.region+':'+i;if(!save.awards.includes(key)){save.awards.push(key);save.coins+=60;ui.toast('抵达 '+targetName(i)+' · +60 游戏金币');}else ui.toast('抵达 '+targetName(i));}save.progress[state.region]=state.checkpoint;if(state.completed&&state.region==='forest')save.snowUnlocked=true;persist();refreshGarage();}
@@ -48,7 +68,7 @@ function connect(anchor) {
 }
 function startAudio(){if(!audioEnabled)return;try{if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();engineTone=audioCtx.createOscillator();engineTone.type='sawtooth';const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=180;engineGain=audioCtx.createGain();engineGain.gain.value=.018;engineTone.connect(filter).connect(engineGain).connect(audioCtx.destination);engineTone.start();}audioCtx.resume();}catch{audioEnabled=false;ui.setAudio(false);}}
 const actions={
- start(){if(!ready)return;playing=true;paused=false;send('start');ui.setPlaying(true);ui.setPaused(false);refreshGarage();startAudio();ui.toast(matchMedia('(pointer: coarse), (max-width: 900px)').matches ? '左手转方向盘，右手操作踏板' : 'W / 方向键驾驶 · C 切换车内视角 · 泥地用低速挡 L');},
+ start(){if(!ready)return;playing=true;paused=false;send('vehicle',{id:vehicleId});send('start');ui.setPlaying(true);ui.setPaused(false);refreshGarage();startAudio();ui.toast(matchMedia('(pointer: coarse), (max-width: 900px)').matches ? '左手转方向盘，右手操作踏板' : 'W / 方向键驾驶 · C 切换车内视角 · 泥地用低速挡 L');},
  pause(){if(paused)resume();else pause();},resume,
  recover(){if(!ready)return;send('recover');selecting=false;ui.showWinchTargets(false);resume();ui.toast('已返回最近检查点');},
  toggleGear(){if(!ready)return;send('gear');ui.toast(state.lowGear?'高速挡 · 适合平缓路面':'低速挡 · 更强扭矩，适合泥地和陡坡');},
@@ -70,6 +90,26 @@ const mapFileInput = document.getElementById('map-import-file');
 const mapImportButton = document.getElementById('map-import-button');
 const mapImportStatus = document.getElementById('map-import-status');
 const graphicsSelect = document.getElementById('graphics-quality');
+const brakeForceInput = document.getElementById('brake-force-calibration');
+brakeForceInput.value = String(maxBrakeForce);
+brakeForceInput.addEventListener('change', () => {
+ maxBrakeForce = normalizedBrakeForce(brakeForceInput.value);
+ brakeForceInput.value = String(maxBrakeForce);
+ try { localStorage.setItem(BRAKE_FORCE_KEY, String(maxBrakeForce)); } catch {}
+ if (ready) send('pedal_calibration', {maxForceN:maxBrakeForce});
+});
+for (const id of VEHICLES) {
+ document.getElementById('vehicle-' + id).addEventListener('click', () => {
+  if (!ready || id === vehicleId) return;
+  clearInput();
+  vehicleId = id;
+  try { localStorage.setItem(VEHICLE_KEY, id); } catch {}
+  send('vehicle', {id});
+  refreshGarage();
+ });
+}
+const brakeFault = document.getElementById('brake-fault');
+const brakePressure = document.getElementById('brake-pressure-hud');
 
 function reportImport(message) {
  if (mapImportStatus) mapImportStatus.textContent = message;
@@ -218,7 +258,11 @@ window.onRidgeState=next=>{
  lastEngineReport=performance.now();const previous=state;
  state=next;
  if (next.importResult) finishImport(next.importResult);
- if (next.region !== previous.region) refreshGarage();
+ if (next.region !== previous.region || next.vehicleId !== previous.vehicleId || next.brakePedalBroken !== previous.brakePedalBroken) refreshGarage();
+ brakeFault.hidden = !next.brakePedalBroken;
+ const pedalForce = Number.isFinite(next.pedalForceN) ? Math.max(0, Math.round(next.pedalForceN)) : 0;
+ brakePressure.hidden = !pedalForce;
+ if (pedalForce) brakePressure.textContent = '制动 ' + pedalForce + ' N';
  if(resetPending){if(next.region===resetPending.region&&next.checkpoint===resetPending.checkpoint){resetPending=null;bootSync=false;}else return;}
  if(ready&&!bootSync&&next.region!=='custom'&&next.region===previous.region&&next.checkpoint>previous.checkpoint)rewardCheckpoints(previous.checkpoint);
  if(playing&&next.region!=='custom'&&next.completed&&!won){won=true;paused=true;clearInput();refreshGarage();ui.showVictory(state);}
@@ -227,7 +271,7 @@ window.onRidgeState=next=>{
  if(state.blocked&&performance.now()-streamHint>6000){streamHint=performance.now();ui.toast('正在准备前方路段 · 已为你停稳');}
 };
 window.onRidgePhoto=data=>{const a=document.createElement('a');a.download='山野之间-'+(state.region==='snow'?'珠峰雪线':'松风谷')+'.png';a.href=data;a.click();ui.toast('风景照片已保存');};
-window.onRidgeReady=()=>{ready=true;bootSync=false;resetPending=null;bootStats.readyMs=performance.now()-bootStats.startedAt;start.disabled=false;ui.setReady?.(true);loading.hidden=true;refreshGarage();send('quality',{profile:graphicsQuality});};
+window.onRidgeReady=()=>{ready=true;bootSync=false;resetPending=null;bootStats.readyMs=performance.now()-bootStats.startedAt;start.disabled=false;ui.setReady?.(true);loading.hidden=true;refreshGarage();send('quality',{profile:graphicsQuality});send('vehicle',{id:vehicleId});send('pedal_calibration',{maxForceN:maxBrakeForce});};
 const orbitSensitivity = 0.006;
 function canOrbit() {
  const mode = state.cameraMode ?? 0;

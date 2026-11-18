@@ -71,7 +71,7 @@
     <section class="mission play-only" aria-label="探索进度"><div class="mission-label"><span id="current-area">松林起点</span><span id="checkpoint-count">00 / 04</span></div><div class="mission-target"><svg><use href="#i-pin"/></svg><strong id="target-name">林间泥径</strong><span id="target-distance" title="至下一路标的直线距离">700 m</span></div><div class="progress-track"><i id="journey-progress"></i></div><p id="mission-hint" hidden></p></section>
     <section class="map-panel play-only" aria-label="导航地图"><div class="map-title"><span>松风谷</span><span>N ↑</span></div><button id="map-toggle" class="map-toggle" aria-pressed="false" aria-label="当前为跟车局部图，点按查看全图"><canvas id="minimap" width="320" height="320" aria-label="金色主路，浅色环线，圆点路标，房屋维修站"></canvas><span id="map-mode" class="map-mode">局部 · 看全图</span></button><div class="map-footer"><span id="map-scale">100 m</span><span id="altitude">海拔 0 m</span></div><p id="map-target-direction" class="map-target-direction" hidden>路标在北</p></section>
 
-    <section class="dashboard play-only" aria-label="车辆状态"><div class="speed"><span id="speed">00</span><span class="speed-unit">KM/H<small id="gear-display">D · 自动</small></span></div><div class="vehicle-state"><span><i id="traction-dot"></i><b id="surface">林间土路</b></span><span class="tilt-label">坡度 <b id="pitch">0°</b></span></div><div class="dashboard-line"><i id="speed-bar"></i></div><div class="damage-summary" id="damage-summary"><span>车身 <b id="body-health">100%</b></span><span>轮胎 <b id="tires-health">100%</b></span><span>悬挂 <b id="suspension-health">100%</b></span></div><button class="repair-button" id="repair" title="小屋维修 · T" hidden disabled>小屋维修 (T)</button></section>
+    <section class="dashboard play-only" aria-label="车辆状态"><div class="speed"><span id="speed">00</span><span class="speed-unit">KM/H<small id="gear-display">D · 自动</small></span></div><div class="vehicle-state"><span><i id="traction-dot"></i><b id="surface">林间土路</b></span><span class="tilt-label">坡度 <b id="pitch">0°</b></span></div><div class="dashboard-line"><i id="speed-bar"></i></div><div class="damage-summary" id="damage-summary"><span>车身 <b id="body-health">100%</b></span><span>轮胎 <b id="tires-health">100%</b></span><span>悬挂 <b id="suspension-health">100%</b></span></div><p class="pedal-fault" id="brake-fault" role="status" hidden>制动踏板断裂</p><span id="brake-pressure-hud" class="brake-pressure-hud" hidden></span><button class="repair-button" id="repair" title="小屋维修 · T" hidden disabled>小屋维修 (T)</button></section>
     <div class="equipment play-only" aria-label="传动与救援">
       <button class="equipment-button active" id="awd" title="切换四驱 · X" aria-pressed="true"><svg><use href="#i-drive"/></svg><span>四驱<small>4WD</small></span><i></i></button>
       <button class="equipment-button" id="lowgear" title="切换低速挡 · L" aria-pressed="false"><span class="low-icon">L</span><span>低速挡<small>LOW</small></span><i></i></button>
@@ -125,6 +125,12 @@
     <div class="coin-row"><span>旅途金币</span><strong><span class="coin-icon">◇</span> <span id="coinBalance">0</span></strong></div>
     <p class="garage-caption">首次抵达检查点可获得 60 游戏金币。</p>
     <div class="upgrade-card"><svg class="tire-icon" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="21"/><circle cx="26" cy="26" r="12"/><path d="m15 8 2 8M8 17l8 2m-9 11 9-1m-4 13 7-7m9 12-2-9m14 3-6-7m12-11-9 2m3-14-6 7M26 5v8"/></svg><div><strong>雪地越野胎</strong><p>增强冰雪路面抓地力，挑战隐藏雪线。</p></div><button id="buyTires" class="upgrade-buy">◇ 180<small>装配雪地胎</small></button></div>
+    <h3 class="map-section-label">选择车辆</h3>
+    <div class="region-options vehicle-options" aria-label="可用车辆">
+      <button class="region-card selected" id="vehicle-rover" type="button" aria-pressed="true" disabled><strong>山脊越野车</strong><small>短轴四驱 · 山路和岩石</small></button>
+      <button class="region-card" id="vehicle-yuchuan" type="button" aria-pressed="false" disabled><strong>御川 V8</strong><small>长轴 MPV · 制动力超过 1600 N 时失去行车制动</small></button>
+    </div>
+    <p id="garage-brake-fault" class="pedal-fault" role="status" hidden>制动踏板断裂。前往维修小屋更换。</p>
     <h3 class="map-section-label">选择地图</h3>
     <div class="region-options">
       <button id="forestMap" class="region-card selected" aria-pressed="true"><strong>松风谷</strong><small>湖畔湿地与山脊环线</small></button>
@@ -159,6 +165,11 @@
     <details class="pad-guide"><summary>标准手柄按键</summary><p>左摇杆转向 · RT 油门 · LT 刹车 · B 倒车 · A 低速挡 · X 绞盘 · Y 视角 · LB 收绳 · RB 释放 · Start 暂停</p></details>
     <p class="binding-explainer">绑定前松开踏板、回正方向盘。点击「监听绑定」，在 6 秒内将目标轴移动完整行程。不同踏板可绑定不同设备。</p><p id="capture-status" class="capture-status" role="status">绑定会保存在当前浏览器。</p>
     <div id="binding-rows"></div>
+    <div class="brake-calibration">
+      <label for="brake-force-calibration">满行程制动力（N）</label>
+      <input id="brake-force-calibration" type="number" min="300" max="2500" value="1400" step="1" inputmode="numeric" aria-describedby="brake-calibration-note">
+      <p id="brake-calibration-note">可调 300–2500 N。御川 V8 超过 1600 N 时制动踏板会断裂。</p>
+    </div>
     <div class="rumble-settings"><label><input id="rumble-enabled" type="checkbox" checked>设备震动</label><button id="test-rumble" type="button" class="secondary-button">测试震动</button></div>
     <p class="feedback-note">网页支持设备输入；震动需设备支持。真实方向盘扭矩反馈需专用适配。</p><section class="wheel-feedback-settings"><h3>Windows 方向盘扭矩反馈</h3><p id="bridge-status">通过 Windows 方向盘启动器打开后可用。</p><a class="windows-download" href="./downloads/ridgebound-windows.zip" download>下载 Windows 方向盘启动器<svg><use href="#i-arrow"/></svg></a><label><input type="checkbox" id="wheel-feedback">启用真实扭矩反馈</label><label class="strength-label">反馈强度 <output id="wheel-strength-label">35%</output><input id="wheel-strength" type="range" min="0" max="60" value="35" step="1"></label><p>首次使用建议保持较低强度。暂停、失去连接或关闭页面后自动停止输出。</p></section>
     <button id="controller-done" class="primary-button">保存并返回旅程</button>
