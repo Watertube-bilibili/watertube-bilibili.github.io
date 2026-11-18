@@ -173,10 +173,27 @@ run_godot() {
     fi
   done
   timeout 90s xvfb-run -a env "${gfx[@]}" "$godot" --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 "$@" 2>&1 | tee "$log"
-  if grep -Eq '(^|[[:space:]])(SCRIPT ERROR|ERROR):' "$log"; then
-    printf 'Godot %s reported errors.\n' "$label" >&2
-    exit 1
-  fi
+  python3 - "$label" "$log" <<'PY'
+from pathlib import Path
+import re
+import sys
+
+label = sys.argv[1]
+log = Path(sys.argv[2]).read_text(encoding="utf-8", errors="replace")
+if label in ("import", "export") and re.search(r"OpenGL API .* - Compatibility - ", log):
+    # The editor probes optional Vulkan capabilities even on the OpenGL backend.
+    log = re.sub(
+        r'^ERROR: Required extension VK_KHR_surface not found\.\n'
+        r'[^\n]*drivers/vulkan/rendering_context_driver_vulkan\.cpp[^\n]*\n'
+        r'^ERROR: Condition "err != OK" is true\. Returning: err\n'
+        r'[^\n]*drivers/vulkan/rendering_context_driver_vulkan\.cpp[^\n]*\n',
+        "",
+        log,
+        flags=re.MULTILINE,
+    )
+if re.search(r"(^|\s)(SCRIPT ERROR|ERROR):", log):
+    raise SystemExit(f"Godot {label} reported errors.")
+PY
 }
 
 run_godot import --editor --path "$native_project" --import --quit
