@@ -28,8 +28,8 @@ jobs:
           cd "$RUNNER_TEMP/ridgebound-blender"
           python -m pip download --quiet --only-binary=:all: --no-deps 'bpy==4.3.0'
           echo '1620199392a7e7aab58672aa47c50b3c5b1e4d39d46af5a7f9bbe2af561ea942  bpy-4.3.0-cp311-cp311-manylinux_2_28_x86_64.whl' | sha256sum --check
-          python -m pip install --quiet ./bpy-4.3.0-cp311-cp311-manylinux_2_28_x86_64.whl
-          python -c 'import bpy; print(bpy.app.version_string)'
+          python -m pip install --quiet 'numpy==1.26.4' ./bpy-4.3.0-cp311-cp311-manylinux_2_28_x86_64.whl
+          python -c 'import bpy, bmesh; print(bpy.app.version_string)'
       - name: Build editable model, game GLB and preview
         run: |
           python3 -m py_compile sources/ridgebound/build_vehicle.py sources/ridgebound/cabin.py

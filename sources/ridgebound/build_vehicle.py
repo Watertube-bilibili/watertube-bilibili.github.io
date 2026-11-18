@@ -13,8 +13,8 @@ from pathlib import Path
 import shutil
 import sys
 
-import bmesh
 import bpy
+import bmesh
 from mathutils import Vector
 
 SOURCE = Path(__file__).resolve().parent
