@@ -1,6 +1,7 @@
 extends Node3D
 
 const RoverCamera := preload("res://rover_camera.gd")
+const MenuCamp := preload("res://menu_camp.gd")
 const GarageState := preload("res://garage_state.gd")
 const ExpeditionArt := preload("res://expedition_art.gd")
 const RecoveryWinch := preload("res://recovery_winch.gd")
@@ -24,6 +25,7 @@ var accelerator_rest := Basis.IDENTITY
 var selected_vehicle := "rover"
 var pedal_max_force := 1400.0
 var garage := GarageState.new()
+var camp: MenuCamp
 var shock_rods: Array[Node3D] = []
 var shock_rest_heights: Array[float] = []
 var winch_outlet: Node3D
@@ -91,6 +93,9 @@ func _ready():
 	_setup_environment()
 	chunks=ChunkTerrain.new()
 	add_child(chunks)
+	if DisplayServer.get_name() != "headless" and ResourceLoader.exists("res://art/title/camp_wide.webp") and ResourceLoader.exists("res://art/title/camp_tall.webp"):
+		camp = MenuCamp.new()
+		add_child(camp)
 	garage.restore()
 	pedal_max_force = bootstrap.maxForceN
 	_mount_vehicle(bootstrap.vehicleId)
@@ -142,6 +147,8 @@ func _mount_vehicle(id: String) -> void:
 	vehicle = next
 	add_child(vehicle)
 	selected_vehicle = id
+	if camp:
+		camp.display_vehicle(template, id)
 	body = vehicle.find_child("Body", true, false) as Node3D
 	wheels.clear()
 	wheel_spins.clear()
@@ -613,6 +620,8 @@ func _process(dt):
 	throttle_value=float(input.throttle) if input.active else 0.0
 	_update_vehicle(dt)
 	_update_camera(dt)
+	if camp:
+		camp.reveal(not playing)
 	_update_cable()
 	for i in range(checkpoint_rings.size()):checkpoint_rings[i].visible=i==int(state.checkpoint)
 	report_clock+=dt

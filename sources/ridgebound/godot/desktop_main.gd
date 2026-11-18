@@ -299,6 +299,7 @@ func _action(action: String) -> void:
 		"map":
 			if started:
 				map_overview = not map_overview
+				interface.call("reveal_map")
 				_refresh()
 		"winch":
 			if _driving():
@@ -484,7 +485,10 @@ func _make_file_picker() -> void:
 	file_dialog.add_filter("*.zip,*.ZIP", "地图模组 ZIP")
 	file_dialog.theme = interface.get("skin")
 	file_dialog.file_selected.connect(_on_archive_selected)
-	add_child(file_dialog)
+	var modal_layer := CanvasLayer.new()
+	modal_layer.layer = 15
+	add_child(modal_layer)
+	modal_layer.add_child(file_dialog)
 
 func _pick_archive() -> void:
 	if import_pending:

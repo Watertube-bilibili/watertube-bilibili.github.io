@@ -2,6 +2,7 @@ extends Node
 ## Staging-only observer. Gestures are delivered by Android, through the real input path.
 
 const DrivingUI := preload("res://desktop_main.tscn")
+const ScreenFit := preload("res://screen_fit.gd")
 var _shell: Node
 var _clock := 0.0
 var _sequence := 0
@@ -53,6 +54,7 @@ func _process(delta: float) -> void:
 		"pitch": float(orbit.get("pitch", 0.0)),
 		"pose": [offset.x, offset.y, offset.z],
 		"cutouts": DisplayServer.get_display_cutouts().size(),
+		"rotation": ScreenFit._display_rotation(),
 		"viewport": [extent.x, extent.y],
 		"screen": [screen.x, screen.y],
 		"safe": [safe.position.x, safe.position.y, safe.size.x, safe.size.y],
@@ -65,13 +67,27 @@ func _process(delta: float) -> void:
 
 func _start_center() -> Array:
 	var interface: CanvasLayer = _shell.get("interface")
-	if interface == null:
+	if interface == null or str(interface.get("current_screen")) != "start":
 		return []
-	for child in interface.find_children("*", "Button", true, false):
+	var actions: Container = interface.get("sheet_body")
+	if actions == null:
+		return []
+	# Both native home layouts place the driving action first in the sheet.
+	for child in actions.get_children():
 		var button := child as Button
-		if button.text == "启程" and button.is_visible_in_tree() and not button.disabled:
-			var bounds := button.get_global_rect()
-			if bounds.has_area():
-				var center := bounds.get_center()
-				return [center.x, center.y]
+		if button == null or not button.is_visible_in_tree() or button.disabled:
+			continue
+		var bounds := button.get_global_rect()
+		if bounds.has_area():
+			var center := bounds.get_center()
+			return [center.x, center.y]
 	return []
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventScreenTouch and is_instance_valid(_shell) and bool(_shell.call("_driving")):
+		print("ORBIT_TOUCH ", JSON.stringify({
+			"index": event.index, "pressed": event.pressed, "canceled": event.canceled,
+			"point": [event.position.x, event.position.y], "rotation": ScreenFit._display_rotation(),
+			"allowsOrbit": bool(_shell.call("_can_orbit")),
+			"hitsHUD": bool(_shell.call("_over_driving_ui", event.position)),
+		}))

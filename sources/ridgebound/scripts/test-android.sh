@@ -17,9 +17,11 @@ RUNTIME_TAGS = ("AndroidRuntime:E", "godot:V", "libc:F", "DEBUG:E", "ActivityTas
 
 
 def adb(*args, binary=False, check=True):
-    return subprocess.run(
-        ["adb", *map(str, args)], capture_output=True, check=check, text=not binary, timeout=60
-    ).stdout
+    command = ["adb", *map(str, args)]
+    result = subprocess.run(command, capture_output=True, text=not binary, timeout=60)
+    if check and result.returncode:
+        raise RuntimeError(f"{command!r} exited {result.returncode}: {result.stderr}")
+    return result.stdout
 
 
 def samples():
@@ -82,9 +84,12 @@ def swipe(start, end, duration=580):
 def gestures(sample, width, height):
     # Two swipes in the clear center viewport, where no touch control is present.
     # Both must affect the real camera pose as well as its requested orbit.
+    # Reverse vertical motion on a high camera so repeated orientation tests
+    # still exercise pitch instead of running into its intended travel limit.
+    pitch_y = 0.34 if sample["pitch"] > 0.25 else 0.64
     for axis, start, end in [
-        ("yaw", (width * 0.46, height * 0.47), (width * 0.64, height * 0.47)),
-        ("pitch", (width * 0.50, height * 0.48), (width * 0.50, height * 0.66)),
+        ("yaw", (width * 0.46, height * 0.47), (width * 0.61, height * 0.47)),
+        ("pitch", (width * 0.50, height * 0.49), (width * 0.50, height * pitch_y)),
     ]:
         other_axis = "pitch" if axis == "yaw" else "yaw"
         swipe(start, end)
@@ -130,22 +135,18 @@ def screenshot(directory, name):
 
 def capture(directory, label, rotation, notch, app):
     before = wait_probe("driving UI is ready", lambda s: s["active"])
-    adb("shell", "wm", "user-rotation", "lock", rotation)
-    degrees = rotation * 90
-    until = time.monotonic() + 20
-    while time.monotonic() < until:
-        display = adb("shell", "dumpsys", "window", "displays")
-        if re.search(rf"\bmRotation=ROTATION_{degrees}\b", display):
-            break
-        time.sleep(0.30)
-    else:
-        raise RuntimeError(f"Android did not report actual rotation {degrees} degrees")
-    sample = wait_probe(
-        f"view resized for {label}, overlay present if supported",
-        lambda s: s["active"] and s["sequence"] > before["sequence"]
-        and (s["viewport"][1] > s["viewport"][0]) == (rotation == 0)
-        and (not notch or s["cutouts"] > 0),
-    )
+    # The wm user-rotation command is unavailable on Android 10.
+    adb("shell", "settings", "put", "system", "user_rotation", rotation)
+
+    def matches(s):
+        return (s["active"] and s["rotation"] == rotation
+                and (s["viewport"][1] > s["viewport"][0]) == (rotation == 0)
+                and (not notch or s["cutouts"] > 0))
+
+    first = wait_probe(f"Android surface and viewport rotated to {label}",
+                       lambda s: s["sequence"] > before["sequence"] and matches(s))
+    sample = wait_probe(f"surface settled after rotating to {label}",
+                        lambda s: s["sequence"] >= first["sequence"] + 4 and matches(s))
     bound_controls(sample)
     width, height = screenshot(directory, label)
     if (height > width) != (rotation == 0):
@@ -168,7 +169,12 @@ def main():
     overlay = "com.android.internal.display.cutout.emulation.tall"
     notch = False
     restore_notch = False
+    rotation_keys = ("accelerometer_rotation", "user_rotation")
+    rotation_settings = {
+        key: adb("shell", "settings", "get", "system", key).strip() for key in rotation_keys
+    }
     try:
+        adb("shell", "settings", "put", "system", "accelerometer_rotation", 0)
         overlays = adb("shell", "cmd", "overlay", "list", "--user", "0", check=False)
         match = next((line for line in overlays.splitlines() if overlay in line), "")
         if match:
@@ -191,7 +197,7 @@ def main():
         x, y = start["start"]
         vw, vh = start["viewport"]
         adb("shell", "input", "touchscreen", "tap", round(x * width / vw), round(y * height / vh))
-        wait_probe("real Android tap on 启程 started driving", lambda s: s["active"], timeout=25)
+        wait_probe("real Android tap on the primary menu action started driving", lambda s: s["active"], timeout=25)
         print("ANDROID_START_BUTTON_TAP_OK")
         capture(output, "portrait", 0, notch, app)
         capture(output, "landscape", 1, notch, app)
@@ -213,7 +219,12 @@ def main():
                 screenshot(output, "failure")
             except (OSError, RuntimeError, subprocess.SubprocessError):
                 pass
-        adb("shell", "wm", "user-rotation", "free", check=False)
+        for key in reversed(rotation_keys):
+            value = rotation_settings[key]
+            if value == "null":
+                adb("shell", "settings", "delete", "system", key, check=False)
+            else:
+                adb("shell", "settings", "put", "system", key, value, check=False)
         if restore_notch:
             adb("shell", "cmd", "overlay", "disable", "--user", "0", overlay, check=False)
 
