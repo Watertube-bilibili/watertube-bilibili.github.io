@@ -1,4 +1,4 @@
-import {routeX,checkpoints,emptyState,worldBounds,branches,branchX,repairStations,lake,riverX,areaNameAt,formatDistance} from './world-data.mjs?v=7e701208d4f3ba05';
+import {routeX,checkpoints,emptyState,worldBounds,branches,branchX,repairStations,lakes,riverX,areaNameAt,formatDistance} from './world-data.mjs?v=7e701208d4f3ba05';
 import {createUI} from './ui.mjs?v=43f218dfa9360462';
 import {bootEngine,bootStats} from './boot.mjs?v=ac95ed60b19461bb';
 import {createControllers} from './controllers.mjs';
@@ -49,8 +49,10 @@ const targets=document.createElement('div');targets.id='anchorTargets';targets.s
 function drawAnchors(){if(!selecting){targets.replaceChildren();return;}const list=candidates(),ids=list.map(a=>a.id).join();if(targets.dataset.ids!==ids||!targets.children.length){targets.replaceChildren();targets.dataset.ids=ids;list.forEach((a,i)=>{const b=document.createElement('button');b.className='anchor-marker';b.style.cssText='position:absolute;pointer-events:auto;transform:translate(-50%,-50%);border:2px solid #ffe1a3;border-radius:50%;background:#254534ee;color:#ffe4ad;width:48px;height:48px;font:600 12px sans-serif;touch-action:manipulation';b.setAttribute('aria-label','连接锚点 '+(i+1));b.addEventListener('click',()=>connect(a));targets.append(b);});}list.forEach((a,i)=>{const b=targets.children[i];if(!b)return;b.style.display=a.visible&&a.sx>.02&&a.sx<.98&&a.sy>.08&&a.sy<.85?'block':'none';b.style.left=a.sx*innerWidth+'px';b.style.top=a.sy*innerHeight+'px';b.textContent=Math.round(a.d)+'m';});}
 const map=document.getElementById('minimap'),ctx=map.getContext('2d');map.width=320;map.height=320;
 const mapButton=document.getElementById('map-toggle');let mapOverview=false;
-const mainRoute=[];for(let z=0;z<=3300;z+=10)mainRoute.push({x:routeX(z),z});
-const branchRoutes=branches.map((branch,index)=>{const points=[];for(let z=branch.start;z<branch.end;z+=10)points.push({x:branchX(index,z),z});points.push({x:routeX(branch.end),z:branch.end});return points;});
+const mapRoads = [
+  {start:worldBounds.minZ,end:worldBounds.maxZ,xAt:routeX},
+  ...branches.map((branch,index) => ({...branch,xAt:z=>branchX(index,z)})),
+];
 mapButton.addEventListener('click',()=>{mapOverview=!mapOverview;drawMap();});
 function drawMap(){
  if(!ctx)return;const size=320,pad=22,center=size/2;
@@ -62,17 +64,36 @@ function drawMap(){
  ctx.clearRect(0,0,size,size);ctx.fillStyle=state.region==='snow'?'#344452':'#344838';ctx.fillRect(0,0,size,size);
  ctx.save();ctx.beginPath();ctx.rect(8,8,size-16,size-16);ctx.clip();
  // A metric grid gives both modes the same orientation and scale.
- const grid=mapOverview?500:100;ctx.strokeStyle=state.region==='snow'?'#546474':'#50604b';ctx.lineWidth=1;
+ const grid=mapOverview?4000:100;ctx.strokeStyle=state.region==='snow'?'#546474':'#50604b';ctx.lineWidth=1;
  const minX=mapOverview?worldBounds.minX:centerX-span/2-50,maxX=mapOverview?worldBounds.maxX:centerX+span/2+50;
  const minZ=mapOverview?worldBounds.minZ:centerZ-span/2-50,maxZ=mapOverview?worldBounds.maxZ:centerZ+span/2+50;
  for(let x=Math.ceil(minX/grid)*grid;x<=maxX;x+=grid){const a=xy(x,minZ),b=xy(x,maxZ);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}
  for(let z=Math.ceil(minZ/grid)*grid;z<=maxZ;z+=grid){const a=xy(minX,z),b=xy(maxX,z);ctx.beginPath();ctx.moveTo(...a);ctx.lineTo(...b);ctx.stroke();}
  if(mapOverview){const a=xy(worldBounds.maxX,worldBounds.maxZ),b=xy(worldBounds.minX,worldBounds.minZ);ctx.strokeStyle='#8e9b7c';ctx.lineWidth=1.5;ctx.strokeRect(a[0],a[1],b[0]-a[0],b[1]-a[1]);}
- const lakePoint=xy(lake.x,lake.z);ctx.fillStyle=state.region==='snow'?'#7799aa':'#729d99';ctx.beginPath();ctx.arc(...lakePoint,lake.radius*scale,0,Math.PI*2);ctx.fill();
- ctx.strokeStyle=state.region==='snow'?'#7899ab':'#729d99';ctx.lineWidth=Math.max(3,18*scale);ctx.beginPath();for(let z=1700;z<=2200;z+=10){const p=xy(riverX(z),z);z===1700?ctx.moveTo(...p):ctx.lineTo(...p);}ctx.stroke();
- function pathLine(points,color,width,dash=[]){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.setLineDash(dash);ctx.beginPath();points.forEach((point,index)=>{const p=xy(point.x,point.z);index?ctx.lineTo(...p):ctx.moveTo(...p);});ctx.stroke();ctx.setLineDash([]);}
- branchRoutes.forEach(points=>pathLine(points,'#c5cea8',mapOverview?2.7:3.2,[5,4]));
- pathLine(mainRoute,'#e2bd7d',mapOverview?3.5:4.4);
+ ctx.fillStyle=state.region==='snow'?'#7799aa':'#729d99';
+ for(const lake of lakes){
+  if(lake.z+lake.radius<minZ||lake.z-lake.radius>maxZ||lake.x+lake.radius<minX||lake.x-lake.radius>maxX)continue;
+  ctx.beginPath();
+  ctx.arc(...xy(lake.x,lake.z),lake.radius*scale,0,Math.PI*2);
+  ctx.fill();
+ }
+ function drawRoad({start,end,xAt},color,width,dash=[]){
+  const from=Math.max(start,minZ),to=Math.min(end,maxZ);
+  if(from>=to)return;
+  const step=mapOverview?100:12;
+  ctx.strokeStyle=color;
+  ctx.lineWidth=width;
+  ctx.setLineDash(dash);
+  ctx.beginPath();
+  ctx.moveTo(...xy(xAt(from),from));
+  for(let z=from+step;z<to;z+=step)ctx.lineTo(...xy(xAt(z),z));
+  ctx.lineTo(...xy(xAt(to),to));
+  ctx.stroke();
+  ctx.setLineDash([]);
+ }
+ drawRoad({start:7300,end:10400,xAt:riverX},state.region==='snow'?'#66899b':'#6f8c75',Math.max(1.5,26*scale));
+ mapRoads.slice(1).forEach(road=>drawRoad(road,'#c5cea8',mapOverview?1.8:3.2,mapOverview?[]:[5,4]));
+ drawRoad(mapRoads[0],'#e2bd7d',mapOverview?2.4:4.4);
  // Houses are service points; offset overlapping checkpoint symbols with a short leader.
  for(const station of repairStations){const actual=xy(station.x,station.z);if(!within(actual,7))continue;let [x,y]=actual;
   if(checkpoints.some(cp=>Math.hypot(...xy(cp.x,cp.z).map((v,i)=>v-actual[i]))<17)){x+=18;y+=7;ctx.strokeStyle='#d4e1c6';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(...actual);ctx.lineTo(x,y);ctx.stroke();}
@@ -84,7 +105,7 @@ function drawMap(){
  if(offscreen){const dx=targetPoint[0]-center,dy=targetPoint[1]-center,t=(center-22)/Math.max(Math.abs(dx),Math.abs(dy));ctx.save();ctx.translate(center+dx*t,center+dy*t);ctx.rotate(Math.atan2(dx,-dy));ctx.fillStyle='#ffd28d';ctx.strokeStyle='#2a3f31';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-10);ctx.lineTo(-7,6);ctx.lineTo(0,2);ctx.lineTo(7,6);ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();}
  ctx.restore();
  // The line length is derived from meters per pixel, rather than a decorative fixed label.
- const scaleMeters=mapOverview?1000:100,scalePixels=scaleMeters*scale;ctx.strokeStyle='#edf1df';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(18,size-18);ctx.lineTo(18+scalePixels,size-18);ctx.moveTo(18,size-23);ctx.lineTo(18,size-14);ctx.moveTo(18+scalePixels,size-23);ctx.lineTo(18+scalePixels,size-14);ctx.stroke();
+ const scaleMeters=mapOverview?5000:100,scalePixels=scaleMeters*scale;ctx.strokeStyle='#edf1df';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(18,size-18);ctx.lineTo(18+scalePixels,size-18);ctx.moveTo(18,size-23);ctx.lineTo(18,size-14);ctx.moveTo(18+scalePixels,size-23);ctx.lineTo(18+scalePixels,size-14);ctx.stroke();
  document.getElementById('map-scale').textContent=formatDistance(scaleMeters);
  document.getElementById('map-mode').textContent=mapOverview?'全图 · 跟随车':'局部 · 看全图';
  mapButton.setAttribute('aria-pressed',String(mapOverview));mapButton.setAttribute('aria-label',mapOverview?'当前为全图，点按切换跟车局部图':'当前为跟车局部图，点按查看全图');
@@ -98,7 +119,7 @@ window.onRidgeState=next=>{
  if(resetPending){if(next.region===resetPending.region&&next.checkpoint===resetPending.checkpoint){resetPending=null;bootSync=false;}else return;}
  if(ready&&!bootSync&&next.region===previous.region&&next.checkpoint>previous.checkpoint)rewardCheckpoints(previous.checkpoint);
  if(playing&&next.completed&&!won){won=true;paused=true;clearInput();refreshGarage();ui.showVictory(state);}
- const cp=checkpoints[Math.min(state.checkpoint,3)];ui.update(state,{targetName:targetName(state.checkpoint),targetDistance:Math.hypot(state.x-cp.x,state.z-cp.z),heading:-state.yaw,altitude:Math.round((state.region==='snow'?5200:1240)+state.y*(state.region==='snow'?35:8)),elapsed:state.time,areaName:state.areaName||state.segmentName||areaNameAt(state.z)});drawMap();drawAnchors();
+ const cp=checkpoints[Math.min(state.checkpoint,3)];ui.update(state,{targetName:targetName(state.checkpoint),targetDistance:Math.hypot(state.x-cp.x,state.z-cp.z),heading:-state.yaw,altitude:Math.round((state.region==='snow'?5200:1240)+state.y),elapsed:state.time,areaName:state.areaName||state.segmentName||areaNameAt(state.z,state.region)});drawMap();drawAnchors();
  if(playing&&!paused&&state.stuck>4&&state.time-stuckHint>15){stuckHint=state.time;ui.toast(state.region==='snow'&&!state.snowTires?'冰面抓地不足 · 可在车库用金币换雪地胎':'试试低速挡 L，或 E 连接锚点、F 收绳脱困');}
  if(state.blocked&&performance.now()-streamHint>6000){streamHint=performance.now();ui.toast('正在准备前方路段 · 已为你停稳');}
 };

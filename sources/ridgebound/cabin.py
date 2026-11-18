@@ -1,196 +1,323 @@
-"""Original LEFT HAND DRIVE Ridgebound cockpit, built in Blender.
+"""Editable left-hand-drive cockpit for the Ridgebound expedition vehicle.
 
-The vehicle faces game +Z, so screen-left is game +X from the driver seat.
-Cabin authoring positions are reflected into that left-hand-drive layout without
-negative mesh scales; text glyphs and face winding remain unchanged.
-SteeringWheel/SpeedNeedle/RPMNeedle are animatable pivots under fixed mounts.
+Dimensions are in metres. Game +X is the driver's side, +Y is up, +Z is
+forward. Blender stores the same points as (x, -z, y).
 """
+from math import cos, pi, radians, sin
+
+import bmesh
 import bpy
-import math
-from mathutils import Matrix
+from mathutils import Matrix, Vector
 
 
-def add_cabin(bodyParent, materials):
-    m = materials
-    def game(p):
-        # Reposition cabin parts across X only. This does not mirror their mesh data,
-        # preserving readable gauge text, normals and positive object scales.
-        return (-p[0], -p[2], p[1])
-    def finish(obj, name, material, parent=bodyParent):
-        obj.name = name
+DRIVER_EYE = (0.47, 1.58, -0.45)
+
+
+def _blender_position(position):
+    x, y, z = position
+    return x, -z, y
+
+
+class _CabinBuilder:
+    def __init__(self, body, materials):
+        self.collection = body.users_collection[0]
+        self.materials = materials
+        self.root = self.mount("Cabin", body, (0, 0, 0))
+
+    def mount(self, name, parent, position):
+        obj = bpy.data.objects.new(name, None)
+        self.collection.objects.link(obj)
         obj.parent = parent
-        if material:
-            obj.data.materials.append(material)
-        return obj
-    def cube(name, p, size, material, bevel=0):
-        bpy.ops.mesh.primitive_cube_add(size=1, location=game(p))
-        o = finish(bpy.context.object, name, material)
-        o.dimensions = (size[0], size[2], size[1])
-        bpy.ops.object.transform_apply(location=False, rotation=False, scale=True)
-        if bevel:
-            mod = o.modifiers.new('Soft manufactured edges', 'BEVEL')
-            mod.width = bevel
-            mod.segments = 1
-            mod.affect = 'EDGES'
-            bpy.context.view_layer.objects.active = o
-            bpy.ops.object.modifier_apply(modifier=mod.name)
-        return o
-    def cylinder(name, p, radius, depth, material, vertices=20):
-        bpy.ops.mesh.primitive_cylinder_add(vertices=vertices, radius=radius, depth=depth, location=game(p), rotation=(math.pi/2, 0, 0))
-        return finish(bpy.context.object, name, material)
-    def sphere(name, p, scale, material):
-        bpy.ops.mesh.primitive_uv_sphere_add(segments=12, ring_count=6, radius=1, location=game(p))
-        o=finish(bpy.context.object,name,material)
-        o.scale=(scale[0],scale[2],scale[1])
-        return o
-    def empty(name, parent, loc=(0,0,0), rotation=(0,0,0)):
-        o=bpy.data.objects.new(name,None)
-        bpy.context.collection.objects.link(o)
-        o.parent=parent
-        o.location=loc
-        o.rotation_euler=rotation
-        return o
-    def local_cube(name, parent, p, size, material):
-        bpy.ops.mesh.primitive_cube_add(size=1)
-        o=finish(bpy.context.object,name,material,parent)
-        o.location=p
-        o.dimensions=size
-        bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
-        return o
-    def label(name, text, p, size=.034, material=None):
-        curve=bpy.data.curves.new(name, 'FONT')
-        curve.body=text
-        curve.align_x='CENTER'
-        curve.align_y='CENTER'
-        curve.size=size
-        curve.extrude=0
-        curve.resolution_u=2
-        obj=bpy.data.objects.new(name,curve)
-        bpy.context.collection.objects.link(obj)
-        obj.parent=bodyParent
-        obj.location=game(p)
-        obj.rotation_euler=Matrix(((-1,0,0),(0,0,1),(0,1,0))).to_euler()
-        obj.data.materials.append(material or m['cream'])
-        bpy.ops.object.select_all(action='DESELECT')
-        obj.select_set(True)
-        bpy.context.view_layer.objects.active=obj
-        bpy.ops.object.convert(target='MESH')
+        obj.location = position
+        obj.empty_display_size = 0.04
         return obj
 
-    # Open footwell, individual seats and fabric inserts; no solid block in the cabin.
-    cube('Rubber cabin floor',(0,.39,-.46),(1.78,.07,2.45),m['black'])
-    cube('Transmission tunnel',(0,.53,-.10),(.29,.26,1.35),m['trim'],.035)
-    for x,side in [(-.49,'Driver'),(.49,'Passenger')]:
-        cube(side+' seat pedestal',(x,.53,-.44),(.64,.24,.65),m['black'],.03)
-        cube(side+' seat cushion',(x,.69,-.37),(.75,.17,.78),m['seat'],.055)
-        cube(side+' cushion insert',(x,.785,-.37),(.53,.025,.61),m['trim'],.012)
-        cube(side+' seat back',(x,1.11,-.78),(.75,.92,.16),m['seat'],.045)
-        cube(side+' back insert',(x,1.12,-.682),(.53,.65,.022),m['trim'],.015)
-        for z in [-.58,-.40,-.22]:
-            cube(side+' cushion stitch',(x,.801,z),(.49,.012,.009),m['black'])
-        for y in [.9,1.08,1.26]:
-            cube(side+' back stitch',(x,y,-.667),(.50,.009,.008),m['black'])
-        for xx in [x-.18,x+.18]:
-            cube(side+' headrest rail',(xx,1.58,-.78),(.025,.18,.025),m['metal'])
-        cube(side+' headrest',(x,1.72,-.78),(.48,.28,.18),m['seat'],.035)
-        cube(side+' belt clasp',(x+(.40 if x<0 else -.40),.75,-.42),(.08,.13,.09),m['black'],.01)
-        cube(side+' belt button',(x+(.40 if x<0 else -.40),.824,-.42),(.055,.012,.055),m['red'])
-    cube('Rear bench cushion',(0,.67,-1.39),(1.60,.18,.46),m['seat'],.04)
-    cube('Rear bench back',(0,1.00,-1.69),(1.60,.65,.12),m['seat'],.04)
+    def facing_mount(self, name, position, tilt=0):
+        obj = self.mount(name, self.root, _blender_position(position))
+        # Local X reads right, Y reads up, and Z points at the driver.
+        # The moving child rotates around Z in Blender and Y in Godot.
+        obj.rotation_euler = Matrix((
+            (-1, 0, 0),
+            (0, -sin(tilt), cos(tilt)),
+            (0, cos(tilt), sin(tilt)),
+        )).to_euler()
+        return obj
 
-    # Padded top, painted metal fascia, center switches and passenger grab bar.
-    cube('Dashboard structure',(0,1.06,.62),(1.87,.34,.34),m['trim'],.045)
-    cube('Dashboard padded top',(0,1.245,.60),(1.90,.085,.37),m['black'],.025)
-    cube('Instrument binnacle',(-.46,1.12,.423),(.71,.28,.065),m['black'],.035)
-    cube('Passenger glove compartment',(.52,1.045,.438),(.64,.23,.045),m['paint'],.012)
-    cube('Glovebox handle',(.52,1.108,.409),(.14,.025,.035),m['metal'],.005)
-    cube('Passenger grab rail',(.53,1.27,.37),(.48,.035,.035),m['metal'],.01)
-    for x in [.30,.76]:
-        cube('Grab rail standoff',(x,1.27,.42),(.025,.025,.10),m['metal'])
-    for x in [-.84,.10,.86]:
-        cube('Air vent surround',(x,1.12,.422),(.13,.14,.04),m['black'],.01)
-        for y in [1.07,1.105,1.14,1.175]:
-            cube('Vent horizontal louver',(x,y,.395),(.105,.008,.01),m['metal'])
+    def mesh(self, name, vertices, faces, material, parent, position=(0, 0, 0)):
+        mesh = bpy.data.meshes.new(name)
+        mesh.from_pydata(vertices, [], faces)
+        mesh.update()
+        mesh.materials.append(self.materials[material])
+        obj = bpy.data.objects.new(name, mesh)
+        self.collection.objects.link(obj)
+        obj.parent = parent
+        obj.location = position
+        return obj
 
-    # Twin mechanical gauges. Labels and scale are separate from moving needles.
-    for center,name,max_value in [(-.615,'Speed',120),(-.305,'RPM',6)]:
-        cy,cz=1.13,.382
-        cylinder(name+' polished bezel',(center,cy,cz),.137,.025,m['metal'],24)
-        cylinder(name+' black dial',(center,cy,cz-.017),.123,.012,m['black'],24)
-        for i in range(13):
-            a=math.radians(-130+260*i/12)
-            # Geometry readable facing the driver; minor ticks alternate shorter.
-            rr=.107
-            xx=center+math.sin(a)*rr
-            yy=cy+math.cos(a)*rr
-            tick=cube(name+' tick',(xx,yy,cz-.025),(.010,.019 if i%2==0 else .011,.004),m['cream'])
-            tick.rotation_euler[1]=a
-        for i in range(0,7,2):
-            a=math.radians(-130+260*i/6)
-            label(name+' numeral '+str(i),str(round(max_value*i/6)),(center+math.sin(a)*.082,cy+math.cos(a)*.082,cz-.030),.025)
-        label(name+' units','KM/H' if name=='Speed' else 'RPM',(center,cy-.053,cz-.030),.019)
-        mount=empty(name+'NeedleMount',bodyParent,game((center,cy,cz-.038)),(math.pi/2,0,0))
-        pivot=empty(name+'Needle',mount)
-        verts=[(-.009,-.018,0),(.009,-.018,0),(.004,.103,0),(-.004,.103,0)]
-        geo=bpy.data.meshes.new(name+' needle geometry')
-        geo.from_pydata(verts,[],[(0,1,2,3)])
-        geo.materials.append(m['orange'])
-        needle=bpy.data.objects.new(name+' needle blade',geo)
-        bpy.context.collection.objects.link(needle)
-        needle.parent=pivot
-        bpy.ops.mesh.primitive_cylinder_add(vertices=12,radius=.015,depth=.008)
-        cap=finish(bpy.context.object,name+' needle hub',m['metal'],pivot)
-        cap.location=(0,0,-.002)
+    def rectangle(self, name, parent, position, dimensions, material, bevel=0):
+        bm = bmesh.new()
+        try:
+            bmesh.ops.create_cube(bm, size=1)
+            for vertex in bm.verts:
+                for axis in range(3):
+                    vertex.co[axis] *= dimensions[axis]
+            if bevel:
+                bmesh.ops.bevel(
+                    bm, geom=list(bm.edges), offset=bevel, segments=2,
+                    affect="EDGES", clamp_overlap=True,
+                )
+            mesh = bpy.data.meshes.new(name)
+            bm.to_mesh(mesh)
+            mesh.update()
+        finally:
+            bm.free()
+        mesh.materials.append(self.materials[material])
+        obj = bpy.data.objects.new(name, mesh)
+        self.collection.objects.link(obj)
+        obj.parent = parent
+        obj.location = position
+        return obj
 
-    # Three-spoke wheel: fixed tilted mounting, pure local-Z rotation on child pivot.
-    column=cylinder('Steering column',(-.47,1.08,.43),.045,.36,m['black'],12)
-    column.rotation_euler[0]=math.radians(70)
-    mount=empty('SteeringMount',bodyParent,game((-.47,1.15,.25)),(math.radians(70),0,0))
-    wheel=empty('SteeringWheel',mount)
-    bpy.ops.mesh.primitive_torus_add(major_radius=.244,minor_radius=.025,major_segments=32,minor_segments=6)
-    rim=finish(bpy.context.object,'Leather steering rim',m['black'],wheel)
-    rim.location=(0,0,0)
-    for angle in [math.radians(90),math.radians(210),math.radians(330)]:
-        spoke=local_cube('Brushed steering spoke',wheel,(math.cos(angle)*.115,math.sin(angle)*.115,0),(.20,.032,.018),m['metal'])
-        spoke.rotation_euler[2]=angle
-    bpy.ops.mesh.primitive_cylinder_add(vertices=20,radius=.073,depth=.038)
-    hub=finish(bpy.context.object,'Steering horn pad',m['trim'],wheel)
-    hub.location=(0,0,-.009)
-    for off in [-.022,.022]:
-        bolt=local_cube('Horn detail',wheel,(off,0,-.031),(.010,.010,.003),m['metal'])
+    def box(self, name, position, dimensions, material, bevel=0):
+        width, height, length = dimensions
+        return self.rectangle(
+            name, self.root, _blender_position(position),
+            (width, length, height), material, bevel,
+        )
 
-    # Mechanical controls and a small original expedition radio.
-    cube('Center radio housing',(.02,.99,.413),(.25,.12,.04),m['black'],.008)
-    cube('Radio amber display',(.02,1.012,.387),(.14,.035,.006),m['orange'])
-    for x in [-.075,.115]:
-        cylinder('Radio tuning knob',(x,.97,.38),.023,.022,m['metal'],12)
-    for x in [-.09,.0,.09]:
-        cube('Auxiliary switch',(x,.87,.414),(.043,.046,.022),m['black'],.003)
-    label('Switch labels','4WD  LOW  WINCH',(.0,.82,.394),.018)
-    for x,color in [(-.087,'green'),(.0,'orange'),(.087,'red')]:
-        cylinder('Dashboard status lamp',(x,.925,.395),.012,.009,m[color],10)
-    cube('Gear lever gaiter',(0,.695,-.04),(.19,.09,.22),m['black'],.02)
-    cube('Gear lever shaft',(0,.85,-.02),(.026,.28,.026),m['metal'])
-    sphere('Gear lever knob',(0,1.005,-.02),(.058,.052,.058),m['black'])
-    cube('Transfer lever shaft',(.19,.755,-.12),(.020,.20,.020),m['metal'])
-    sphere('Transfer lever knob',(.19,.865,-.12),(.043,.039,.043),m['black'])
-    for x,w in [(-.68,.085),(-.49,.10),(-.31,.075)]:
-        cube('Pedal stalk',(x,.59,.43),(.025,.22,.025),m['metal'])
-        ped=cube('Textured pedal',(x,.51,.34),(w,.14,.035),m['black'],.007)
-        ped.rotation_euler[0]=math.radians(-15)
-        for y in [.47,.50,.53,.56]:
-            cube('Pedal grip rib',(x,y,.315),(w*.8,.006,.008),m['metal'])
+    def disk(self, name, parent, position, radius, depth, material, sides=24):
+        vertices = [
+            (radius * cos(2 * pi * i / sides), radius * sin(2 * pi * i / sides), z)
+            for z in (-depth / 2, depth / 2) for i in range(sides)
+        ]
+        faces = [tuple(reversed(range(sides))), tuple(range(sides, 2 * sides))]
+        faces.extend(
+            (i, (i + 1) % sides, sides + (i + 1) % sides, sides + i)
+            for i in range(sides)
+        )
+        obj = self.mesh(name, vertices, faces, material, parent, position)
+        for polygon in list(obj.data.polygons)[2:]:
+            polygon.use_smooth = True
+        return obj
 
-    for side in [-1,1]:
-        cube('Door trim panel',(side*.94,.89,-.10),(.055,.55,1.35),m['trim'],.022)
-        cube('Door pull armrest',(side*.88,1.005,-.16),(.14,.07,.46),m['black'],.013)
-        cube('Door inner handle',(side*.90,1.20,.19),(.035,.045,.15),m['metal'],.006)
-        cube('Door storage pocket',(side*.90,.67,-.25),(.09,.16,.65),m['black'],.015)
-        cylinder('Manual window crank hub',(side*.88,.88,.26),.04,.026,m['metal'],12)
-        cube('Window crank arm',(side*.87,.84,.26),(.025,.11,.025),m['metal'])
-    cube('Rear view mirror stem',(0,1.91,.60),(.025,.16,.025),m['metal'])
-    cube('Rear view mirror surround',(0,1.865,.535),(.34,.13,.045),m['black'],.015)
-    cube('Rear view mirror glass',(0,1.865,.505),(.30,.093,.006),m['glass'])
-    for x in [-.47,.47]:
-        cube('Folded sun visor',(x,1.97,.53),(.59,.12,.035),m['cream'],.012)
-    return {'steering':wheel, 'driver_camera':(.47,1.58,-.45), 'steering_axis':'local Z', 'gauge_axis':'local Z'}
+    def rod(self, name, a, b, radius, material):
+        start, end = Vector(_blender_position(a)), Vector(_blender_position(b))
+        direction = end - start
+        obj = self.disk(name, self.root, (start + end) * 0.5, radius, direction.length, material, 10)
+        obj.rotation_mode = "QUATERNION"
+        obj.rotation_quaternion = direction.to_track_quat("Z", "Y")
+        return obj
+
+    def label(self, name, text, mount, position, size, material="cream"):
+        font = bpy.data.curves.new(name, "FONT")
+        font.body = text
+        font.align_x = "CENTER"
+        font.align_y = "CENTER"
+        font.size = size
+        font.resolution_u = 2
+        obj = bpy.data.objects.new(name, font)
+        self.collection.objects.link(obj)
+        # Bake readable face lettering while keeping the source's clean part hierarchy.
+        bpy.context.view_layer.update()
+        mesh = bpy.data.meshes.new_from_object(obj.evaluated_get(bpy.context.evaluated_depsgraph_get()))
+        bpy.data.objects.remove(obj, do_unlink=True)
+        bpy.data.curves.remove(font)
+        mesh.materials.append(self.materials[material])
+        obj = bpy.data.objects.new(name, mesh)
+        self.collection.objects.link(obj)
+        obj.parent = mount
+        obj.location = position
+        return obj
+
+    def seats_and_floor(self):
+        self.box("Fitted rubber liner", (0, .435, -.26), (1.75, .034, 2.02), "black", .01)
+        self.box("Transmission tunnel", (0, .56, -.05), (.26, .22, 1.4), "trim", .037)
+        for center, occupant in ((.47, "Driver"), (-.47, "Passenger")):
+            for offset in (-.23, .23):
+                self.box(occupant + " seat rail", (center + offset, .475, -.50), (.07, .065, .78), "metal", .006)
+            self.box(occupant + " seat frame", (center, .56, -.52), (.67, .13, .71), "black", .02)
+            self.box(occupant + " canvas cushion", (center, .675, -.45), (.66, .16, .72), "seat", .045)
+            self.box(occupant + " cushion inset", (center, .755, -.44), (.42, .024, .58), "green", .01)
+            for offset in (-.265, .265):
+                self.box(occupant + " side bolster", (center + offset, .75, -.45), (.13, .11, .60), "seat", .031)
+            backrest = self.box(occupant + " reclined backrest", (center, 1.10, -.91), (.66, .77, .15), "seat", .046)
+            backrest.rotation_euler.x = radians(-9)
+            inset = self.box(occupant + " backrest canvas inset", (center, 1.105, -.828), (.44, .57, .022), "green", .009)
+            inset.rotation_euler.x = backrest.rotation_euler.x
+            for y in (.91, 1.02, 1.13, 1.24):
+                self.box(occupant + " lumbar seam", (center, y, -.827 - (y - 1.105) * .156), (.40, .006, .012), "trim")
+            for offset in (-.13, .13):
+                self.rod(occupant + " head restraint post", (center + offset, 1.38, -.96),
+                         (center + offset, 1.59, -.98), .012, "metal")
+            self.box(occupant + " head restraint", (center, 1.605, -.98), (.42, .22, .15), "seat", .041)
+            buckle_x = center - (.35 if center > 0 else -.35)
+            self.box(occupant + " belt buckle", (buckle_x, .71, -.56), (.058, .15, .074), "black", .01)
+            self.box(occupant + " belt release", (buckle_x, .788, -.56), (.043, .012, .049), "red", .003)
+            self.box(occupant + " heel pad", (center, .466, .25), (.56, .027, .48), "trim", .008)
+            for z in (.09, .16, .23, .30, .37, .44):
+                self.box(occupant + " heel pad ridge", (center, .485, z), (.51, .016, .017), "black", .004)
+
+    def dashboard(self):
+        # Low cowl with a shallow curved top, leaving a clear windshield from DRIVER_EYE.
+        sections = [(-.91, 1.245), (-.71, 1.273), (-.26, 1.277), (.26, 1.29), (.71, 1.284), (.91, 1.247)]
+        vertices = []
+        for x, top in sections:
+            vertices.extend(_blender_position((x, y, z)) for y, z in (
+                (.98, .75), (.96, .53), (1.07, .427),
+                (top - .047, .433), (top, .515), (top - .026, .788),
+            ))
+        faces = [tuple(reversed(range(6)))]
+        for i in range(len(sections) - 1):
+            left, right = i * 6, (i + 1) * 6
+            faces.extend((left+j, left+(j+1)%6, right+(j+1)%6, right+j) for j in range(6))
+        faces.append(tuple(range(len(vertices) - 6, len(vertices))))
+        # Recalculate topology normals independent of cross-section point order.
+        fascia = self.mesh("Continuous molded dashboard shell", vertices, faces, "trim", self.root)
+        bm = bmesh.new()
+        try:
+            bm.from_mesh(fascia.data)
+            bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
+            bm.to_mesh(fascia.data)
+        finally:
+            bm.free()
+        board = self.facing_mount("Twin instrument face", (.48, 1.216, .416), radians(9))
+        self.rectangle("Instrument binnacle housing", board, (0, 0, -.026), (.706, .305, .083), "black", .036)
+        self.rectangle("Inset instrument faceplate", board, (0, 0, .015), (.654, .262, .018), "trim", .018)
+        self.gauge(board, "Speed", -.136, .12, "km/h", ("0", "18", "36", "54", "72"))
+        self.gauge(board, "RPM", .147, .111, "x1000", ("0", "1.5", "3", "4.5", "6"))
+        fascia_panel = self.facing_mount("Passenger dashboard panel", (-.505, 1.089, .418), radians(7))
+        self.rectangle("Recessed glovebox surround", fascia_panel, (0, 0, 0), (.62, .177, .036), "black", .015)
+        self.rectangle("Pressed copper glovebox", fascia_panel, (0, 0, .019), (.574, .148, .018), "paint", .01)
+        self.rectangle("Glovebox recessed latch", fascia_panel, (0, .044, .031), (.105, .025, .012), "black", .006)
+        self.label("Ridgebound dashboard badge", "RIDGEBOUND", fascia_panel, (0, -.032, .029), .036)
+        self.rod("Passenger grab handle", (-.77, 1.231, .379), (-.27, 1.231, .379), .021, "black")
+        for x in (-.77, -.27):
+            self.rod("Grab rail fixing", (x, 1.231, .379), (x, 1.231, .46), .019, "metal")
+        for x in (-.845, -.235, .876):
+            vent = self.facing_mount("Air outlet", (x, 1.159, .415), radians(8))
+            self.rectangle("Recessed outlet rim", vent, (0, 0, 0), (.103, .11, .042), "black", .009)
+            for y in (-.035, -.012, .011, .034):
+                self.rectangle("Outlet vane", vent, (0, y, .024), (.079, .009, .009), "metal", .002)
+
+    def gauge(self, board, name, center, radius, units, numbers):
+        dial = self.mount(name + " gauge housing", board, (center, 0, .029))
+        self.disk(name + " brushed bezel", dial, (0, 0, 0), radius, .018, "metal", 36)
+        self.disk(name + " matte dial", dial, (0, 0, .009), radius * .923, .006, "black", 36)
+        # Labels use the same clockwise arc as the in-game negative needle angle.
+        for index in range(17):
+            angle = radians(224) - index * radians(252) / 16
+            major = index % 4 == 0
+            distance = radius * .826
+            tick = self.rectangle(name + " graduation", dial,
+                                  (cos(angle) * distance, sin(angle) * distance, .014),
+                                  (.016 if major else .009, .0048 if major else .0028, .0025),
+                                  "cream" if name == "Speed" or index < 14 else "red")
+            tick.rotation_euler.z = angle
+        for index, numeral in enumerate(numbers):
+            angle = radians(224) - index * radians(252) / 4
+            distance = radius * .63
+            self.label(name + " scale " + numeral, numeral, dial,
+                       (cos(angle) * distance, sin(angle) * distance, .015), .021)
+        self.label(name + " units", units, dial, (0, -.060, .015), .020)
+        needle = self.mount(name + "Needle", dial, (0, 0, .021))
+        # Bake the zero mark into the blade so the animation can set the whole pivot rotation.
+        angle = radians(224)
+        blade = self.rectangle(name + " pointer", needle,
+                               (cos(angle) * .034, sin(angle) * .034, 0),
+                               (radius * .93, .007, .005), "orange", .001)
+        blade.rotation_euler.z = angle
+        self.disk(name + " pointer cap", needle, (0, 0, .003), .014, .009, "black", 14)
+
+    def steering_wheel(self):
+        mount = self.facing_mount("Steering column mount", (.47, 1.10, .152), radians(24))
+        wheel = self.mount("SteeringWheel", mount, (0, 0, 0))
+        self.rod("Steering column tube", (.47, 1.10, .155), (.47, .995, .557), .054, "black")
+        # Sweep a leather rim with a slightly flat lower section.
+        vertices = []
+        hoop_count, section_count = 36, 8
+        for i in range(hoop_count):
+            angle = 2 * pi * i / hoop_count
+            x, y = cos(angle), sin(angle)
+            for j in range(section_count):
+                profile = 2 * pi * j / section_count
+                radius = .207 + .021 * cos(profile)
+                vertices.append((x * radius, max(-.184, y * .207) + y * .021 * cos(profile),
+                                 .021 * sin(profile)))
+        faces = [
+            (i * section_count + j, ((i+1) % hoop_count) * section_count + j,
+             ((i+1) % hoop_count) * section_count + (j+1) % section_count,
+             i * section_count + (j+1) % section_count)
+            for i in range(hoop_count) for j in range(section_count)
+        ]
+        rim = self.mesh("Leather steering rim", vertices, faces, "black", wheel)
+        for face in rim.data.polygons:
+            face.use_smooth = True
+        for angle in (radians(12), radians(168), radians(270)):
+            spoke = self.rectangle("Machined steering spoke", wheel,
+                                   (.119 * cos(angle), .119 * sin(angle), -.009),
+                                   (.166, .036, .020), "metal", .007)
+            spoke.rotation_euler.z = angle
+        self.disk("Horn hub", wheel, (0, 0, .003), .076, .047, "trim")
+        self.disk("Enamel steering badge", wheel, (0, 0, .031), .040, .014, "paint", 20)
+        self.label("Steering monogram", "RB", wheel, (0, 0, .039), .034)
+        return wheel
+
+    def center_controls(self):
+        radio = self.facing_mount("Expedition radio panel", (-.085, 1.052, .421), radians(12))
+        self.rectangle("Radio metal housing", radio, (0, 0, 0), (.246, .141, .07), "black", .011)
+        self.rectangle("Radio amber display", radio, (0, .033, .037), (.194, .044, .008), "orange", .004)
+        self.label("Radio channel readout", "CH 04", radio, (0, .033, .042), .027, "black")
+        for x in (-.078, .078):
+            self.disk("Knurled radio dial", radio, (x, -.033, .046), .024, .025, "metal", 12)
+        for x in (-.034, 0, .034):
+            self.rectangle("Radio preset key", radio, (x, -.033, .041), (.020, .014, .012), "trim", .003)
+        self.box("Center stack support", (-.04, .829, .542), (.326, .397, .249), "trim", .024)
+        switches = self.facing_mount("Transfer case controls", (0, .877, .416), radians(15))
+        self.rectangle("Auxiliary switch plate", switches, (0, 0, 0), (.29, .127, .045), "trim", .01)
+        for x, name, color in ((-.09, "4WD", "green"), (0, "LOW", "orange"), (.09, "WINCH", "red")):
+            self.rectangle(name + " switch guard", switches, (x, .021, .026), (.055, .043, .008), "black", .005)
+            self.rectangle(name + " rocker", switches, (x, .017, .033), (.034, .031, .014), "metal", .003)
+            self.disk(name + " lamp", switches, (x, .043, .022), .008, .01, color, 10)
+            self.label(name + " panel label", name, switches, (x, -.025, .024), .018)
+        self.box("Shift boot", (0, .696, -.105), (.20, .104, .24), "black", .036)
+        self.rod("Curved gear shift lower", (0, .71, -.105), (0, .892, -.105), .018, "metal")
+        self.rod("Curved gear shift upper", (0, .889, -.105), (0, .976, -.164), .018, "metal")
+        self.box("Gear shift handle", (0, .981, -.166), (.094, .059, .081), "trim", .019)
+        self.rod("Transfer selector shaft", (-.167, .64, -.087), (-.195, .818, -.157), .012, "metal")
+        self.box("Transfer selector knob", (-.195, .83, -.165), (.07, .045, .062), "black", .015)
+        for x, width, name in ((.676, .083, "Clutch"), (.493, .119, "Brake"), (.315, .073, "Throttle")):
+            pedal = self.facing_mount(name + " mounting plate", (x, .536, .444), radians(18))
+            self.rod(name + " pivot arm", (x, .748, .555), (x, .541, .449), .014, "metal")
+            self.rectangle(name + " rubber pedal pad", pedal, (0, 0, 0), (width, .125, .031), "black", .007)
+            for y in (-.042, -.014, .014, .042):
+                self.rectangle(name + " grip strip", pedal, (0, y, .017),
+                               (width * .8, .008, .006), "trim", .001)
+
+    def door_details(self):
+        for side, name in ((1, "Driver"), (-1, "Passenger")):
+            self.box(name + " stitched door card", (side * .923, .861, -.072), (.058, .455, 1.32), "trim", .023)
+            self.box(name + " canvas door insert", (side * .890, .906, -.082), (.039, .255, 1.04), "seat", .015)
+            self.box(name + " padded armrest", (side * .845, 1.001, -.185), (.135, .071, .49), "black", .022)
+            self.box(name + " latch surround", (side * .864, 1.083, .303), (.057, .081, .172), "black", .011)
+            self.box(name + " interior latch", (side * .831, 1.083, .303), (.025, .038, .137), "metal", .006)
+            self.box(name + " map pocket", (side * .852, .666, -.218), (.117, .135, .56), "black", .024)
+        self.rod("Rear-view mirror stem", (0, 2.034, .545), (0, 1.923, .499), .017, "black")
+        self.box("Rear-view mirror shell", (0, 1.907, .48), (.341, .111, .054), "black", .017)
+        self.box("Rear-view mirror plate", (0, 1.907, .447), (.300, .075, .011), "metal", .006)
+        for x in (-.48, .48):
+            self.box("Folded sun visor", (x, 2.035, .390), (.57, .041, .182), "cream", .014)
+
+
+def add_cabin(body_parent, materials):
+    cabin = _CabinBuilder(body_parent, materials)
+    cabin.seats_and_floor()
+    cabin.dashboard()
+    wheel = cabin.steering_wheel()
+    cabin.center_controls()
+    cabin.door_details()
+    return {
+        "steering": wheel,
+        "driver_camera": DRIVER_EYE,
+        "steering_axis": "local Z",
+        "gauge_axis": "local Z",
+    }

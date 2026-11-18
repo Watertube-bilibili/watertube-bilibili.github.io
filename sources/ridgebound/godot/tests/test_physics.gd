@@ -107,14 +107,16 @@ func _initialize() -> void:
 	check(absf(settling.suspension[0] - settling.suspension[1]) > 0.0001, "independent suspension travel")
 	for region: String in ["forest", "snow"]:
 		var drive: Dictionary = physics.create_state(region, true)
-		drive.lowGear = true
-		for i: int in range(60 * 1800):
+		# Larger world, same real simulation rate. The outer control interval is
+		# 100 ms; physics still integrates the original 120Hz-sized substeps.
+		for i: int in range(85000):
 			if drive.completed:
 				break
+			drive.lowGear = drive.surface == "mud" or drive.surface == "ice"
 			var aim_z: float = drive.z + 5.0
 			var target: float = atan2(Terrain.route_x(aim_z) - drive.x, aim_z - drive.z)
-			var difference: float = atan2(sin(target - drive.yaw), cos(target - drive.yaw))
-			physics.step(drive, {"throttle": 1.0, "steer": clampf(-difference * 2.0, -1.0, 1.0)}, 1.0 / 60.0)
+			var difference: float = angle_difference(drive.yaw, target)
+			physics.step(drive, {"throttle": 1.0, "steer": clampf(-difference * 2.0, -1.0, 1.0)}, 0.1)
 		check(drive.completed, region + " complete expedition")
 		check(is_finite(drive.y) and is_finite(drive.pitch) and is_finite(drive.roll), region + " suspension stays finite")
 		check(drive.damage.body == 100.0 and drive.damage.tires == 100.0 and drive.damage.suspension == 100.0, region + " normal expedition has no false impact damage")

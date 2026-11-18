@@ -49,7 +49,8 @@ func run() -> void:
 	check(manager.is_ready_at(0.0, 0.0), "spawn at a four-chunk junction has full vehicle support")
 	check(manager.get_obstacles().is_empty() and manager.get_stats().propsChunks == 0 and not manager.props_ready_at(0.0, 0.0), "startup ground is safe before props exist and invisible props cannot collide")
 	check(not manager.is_ready_at(15.0, 0.0), "center inside terrain cannot enter with unsupported outer wheels")
-	check(not manager.is_ready_at(400.0, 400.0), "unloaded terrain is rejected")
+	check(not manager.is_ready_at(400.0, 400.0), "distant visual coverage cannot authorize driving on unloaded fine ground")
+	check(manager.get_stats().visualStartupTiles == 13, "startup seeds a fixed number of nearby backdrop tiles")
 	check(not manager.is_ready_at(NAN, 0.0), "non-finite positions are rejected")
 	check(manager.get_stats().queued > 0, "forward chunks are queued before driving")
 	for sample: Dictionary in [
@@ -121,7 +122,7 @@ func run() -> void:
 	manager.update_stream(Vector3(NAN, 0.0, 0.0), Vector3.ZERO, 1.0 / 60.0)
 	check(manager.get_stats().builtTotal == before_invalid, "invalid streaming request cannot mutate world")
 	var old_count: int = manager.get_stats().chunks
-	var destination: Vector3 = Vector3(768.0, 0.0, 2048.0)
+	var destination: Vector3 = Vector3(6144.0, 0.0, 18432.0)
 	manager.update_stream(destination, Vector3.ZERO, 1.0 / 60.0)
 	check(manager.get_stats().chunks >= old_count, "old ring remains resident while teleport destination is building")
 	check(manager.is_ready_at(10.0, 35.0), "old vehicle footprint remains supported before replacement is ready")
@@ -131,6 +132,8 @@ func run() -> void:
 	check(manager.is_ready_at(destination.x, destination.z), "destination becomes driveable only after support tiles load")
 	check(not manager.is_ready_at(10.0, 35.0), "distant old ring is retired after replacement support exists")
 	check(manager.get_stats().chunks < 25, "retained chunk count stays bounded after a long jump")
+	check(manager.get_stats().visualTiles > 0 and manager.get_stats().visualTiles <= 130, "visual tiles rebuild in a bounded window near a cross-map jump")
+	check(manager._visual_centers[1] == Vector2i(12, 36) and not manager._visual_tiles.has(Vector3i(0, 0, 1)), "far backdrop follows the vehicle and retires the initial area")
 	var saved_checkpoint: Dictionary = Terrain.checkpoints()[2]
 	var saved_spawn: Vector3 = Vector3(saved_checkpoint.x, 15.0, saved_checkpoint.z)
 	manager.setup("snow", saved_spawn)

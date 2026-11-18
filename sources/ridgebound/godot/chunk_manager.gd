@@ -43,6 +43,55 @@ var _trunk_mesh: CylinderMesh
 var _foliage_mesh: CylinderMesh
 var _rock_mesh: SphereMesh
 
+
+# Distance layers only affect the picture. Readiness always comes from the 16m tiles.
+const VISUAL_SIZES: Array[float] = [128.0, 512.0]
+const VISUAL_RADII: Array[int] = [2, 3]
+const VISUAL_SEGMENTS: Array[int] = [8, 8]
+const VISUAL_CLEARANCE: Array[float] = [0.8, 10.0]
+const FINE_MASK_SIZE: int = 32
+const FINE_MASK_SHADER_CODE: String = """
+shader_type spatial;
+varying vec2 terrain_xz;
+uniform sampler2D fine_tiles : filter_nearest, repeat_disable;
+uniform vec2 mask_origin;
+uniform vec2 mid_origin;
+uniform bool far_layer = false;
+void vertex() {
+	terrain_xz = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xz;
+}
+void fragment() {
+	vec2 tile = floor(terrain_xz / 16.0) - mask_origin;
+	if (all(greaterThanEqual(tile, vec2(0.0))) && all(lessThan(tile, vec2(32.0)))) {
+		if (texture(fine_tiles, (tile + vec2(0.5)) / 32.0).r > 0.5) {
+			discard;
+		}
+	}
+	if (far_layer) {
+		vec2 mid_tile = floor(terrain_xz / 128.0) - mid_origin;
+		if (all(greaterThanEqual(mid_tile, vec2(0.0))) && all(lessThan(mid_tile, vec2(32.0)))) {
+			if (texture(fine_tiles, (mid_tile + vec2(0.5)) / 32.0).g > 0.5) {
+				discard;
+			}
+		}
+	}
+	ALBEDO = COLOR.rgb;
+	ROUGHNESS = 1.0;
+	SPECULAR = 0.0;
+}
+"""
+var _visual_tiles: Dictionary = {}
+var _visual_queue: Array[Vector3i] = []
+var _visual_centers: Array[Vector2i] = []
+var _visual_root: Node3D
+var _visual_startup_count: int = 0
+var _visual_delay: int = 0
+var _visual_far_radius: int = 0
+var _visual_materials: Array[ShaderMaterial] = []
+var _fine_mask: Image
+var _fine_mask_texture: ImageTexture
+var _fine_mask_dirty: bool = false
+
 func setup(region: String, initial_position: Vector3 = Vector3.ZERO) -> void:
 	_initialized = false
 	_region = "snow" if region == "snow" else "forest"
@@ -81,6 +130,7 @@ func setup(region: String, initial_position: Vector3 = Vector3.ZERO) -> void:
 	for key: Vector2i in support.keys():
 		_build_chunk(key)
 	_startup_chunks = _chunks.size()
+	_reset_visual_tiles()
 	_initialized = true
 	_refresh_queue()
 	streaming_ready.emit()
@@ -98,12 +148,13 @@ func update_stream(position: Vector3, velocity: Vector3, dt: float) -> void:
 		_adapt_quality()
 	var next_center: Vector2i = _key_at(position.x, position.z)
 	if next_center != _center or _refresh_time > 0.35:
+		_fine_mask_dirty = _fine_mask_dirty or _center != next_center
 		_center = next_center
 		_refresh_time = 0.0
 		_refresh_queue()
 	var started: int = Time.get_ticks_usec()
-	# One bounded mesh build per rendered frame. Each chunk is deliberately small;
-	# the 3ms target never permits a second build in the same rendered frame.
+	# One driving-layer job per rendered frame. The visual backdrop
+	# can consume a small amount of remaining budget after this job.
 	if not _queue.is_empty() and Time.get_ticks_usec() - started < BUILD_BUDGET_US:
 		var key: Vector2i = _queue.pop_front()
 		_queued.erase(key)
@@ -125,6 +176,8 @@ func update_stream(position: Vector3, velocity: Vector3, dt: float) -> void:
 			if _build_ms > float(BUILD_BUDGET_US) / 1000.0:
 				_budget_overruns += 1
 	_unload_distant()
+	_update_visual_tiles(started)
+	_update_fine_mask()
 
 func is_ready_at(x: float, z: float) -> bool:
 	if not _initialized or not is_finite(x) or not is_finite(z):
@@ -178,6 +231,8 @@ func get_stats() -> Dictionary:
 		"chunkSize": CHUNK_SIZE, "startupChunks": _startup_chunks, "buildBudgetMs": float(BUILD_BUDGET_US) / 1000.0,
 		"queued": _queue.size() + _props_queue.size(), "objects": objects, "activeObjects": objects,
 		"groundChunks": _chunks.size(), "groundQueued": _queue.size(),
+		"visualTiles": _visual_tiles.size(), "visualQueued": _visual_queue.size(),
+		"visualStartupTiles": _visual_startup_count,
 		"propsChunks": props_chunks, "propsQueued": _props_queue.size(), "propsBuiltTotal": _props_built_count,
 		"radius": _radius, "avgMs": snappedf(_avg_ms, 0.1),
 		"fps": int(round(1000.0 / maxf(1.0, _avg_ms))),
@@ -269,6 +324,7 @@ func _unload_distant() -> void:
 		node.hide()
 		node.queue_free()
 		_chunks.erase(key)
+		_fine_mask_dirty = true
 		_props_queued.erase(key)
 		_props_queue.erase(key)
 		_obstacles_dirty = true
@@ -313,80 +369,106 @@ func _make_resources() -> void:
 	_rock_mesh.rings = 2
 	_rock_mesh.material = _rock_material
 
-func _surface_color(x: float, z: float) -> Color:
-	var color: Color
+func _surface_color(x: float, z: float, sample_span: float = 2.0) -> Color:
+	var snowy: bool = _region == "snow"
+	var color: Color = Color("a5ad76")
+	var biome: String = Terrain.biome_at(x, z, _region)
+	match biome:
+		"marsh": color = Color("8f9c73")
+		"stone": color = Color("a29278")
+		"alpine": color = Color("a6a78c")
+		"icefield": color = Color("ccdce0")
+	if snowy:
+		color = Color("d5e2dd") if biome != "icefield" else Color("c2d4dc")
 	var surface: String = Terrain.surface_at(x, z, _region)
-	if _region == "snow":
-		color = Color("d5e2dd") if Terrain.road_distance(x, z) >= 3.5 else Color("acbec0")
-		if surface == "ice":
-			color = Color("91b6be")
-	else:
-		match surface:
-			"mud": color = Color("756146")
-			"water": color = Color("688f89")
-			"rock": color = Color("96998a")
-			_: color = Color("a5ad76")
-		if Terrain.road_distance(x, z) < 3.5 and surface not in ["mud", "rock", "water"]:
-			color = Color("c9b18b")
+	match surface:
+		"mud": color = Color("756146")
+		"water": color = Color("688f89")
+		"rock": color = Color("a29e8b")
+		"ice": color = Color("91b6be")
+	var distance: float = Terrain.road_distance(x, z)
+	if surface not in ["mud", "rock", "water", "ice"]:
+		# At lower detail the road gets a feathered trace so junctions and
+		# the direction of the trail survive sparse vertex sampling.
+		var trail: Color = Color("acbec0") if snowy else Color("c9b18b")
+		if sample_span <= 2.0:
+			if distance < 3.5:
+				color = trail
+		else:
+			var edge: float = maxf(6.0, sample_span * 0.73)
+			color = color.lerp(trail, 1.0 - smoothstep(2.0, edge, distance))
 	var variation: float = sin(x * 0.34 + z * 0.18) * 0.035 + cos(z * 0.27 - x * 0.13) * 0.025
 	return color.lightened(variation) if variation >= 0.0 else color.darkened(-variation)
 
-func _point(x: float, z: float) -> Vector3:
-	return Vector3(x, Terrain.height_at(x, z, _region), z)
-
-func _add_triangle(tool: SurfaceTool, a: Vector3, b: Vector3, c: Vector3) -> void:
+func _emit_triangle(tool: SurfaceTool, a: Vector3, b: Vector3, c: Vector3, color_a: Color, color_b: Color, color_c: Color) -> void:
 	var normal: Vector3 = (b - a).cross(c - a).normalized()
-	# Godot front faces use clockwise winding. Keep the upward normal,
-	# reverse vertex submission from the cross-product convention.
-	for vertex: Vector3 in [a, c, b]:
-		tool.set_normal(normal)
-		tool.set_color(_surface_color(vertex.x, vertex.z))
-		tool.add_vertex(vertex)
+	# Godot front faces use clockwise winding; keep the geometric normal.
+	tool.set_normal(normal)
+	tool.set_color(color_a)
+	tool.add_vertex(a)
+	tool.set_color(color_c)
+	tool.add_vertex(c)
+	tool.set_color(color_b)
+	tool.add_vertex(b)
+
+func _emit_grid(tool: SurfaceTool, points: PackedVector3Array, colors: PackedColorArray, segments: int, skirt_depth: float) -> void:
+	var stride: int = segments + 1
+	for row: int in range(segments):
+		for col: int in range(segments):
+			var a: int = row * stride + col
+			var b: int = a + 1
+			var c: int = a + stride
+			var d: int = c + 1
+			_emit_triangle(tool, points[a], points[c], points[b], colors[a], colors[c], colors[b])
+			_emit_triangle(tool, points[b], points[c], points[d], colors[b], colors[c], colors[d])
+	# Skirts hide T-junctions between different mesh resolutions.
+	var last_row: int = segments * stride
+	for edge: int in range(4):
+		for i: int in range(segments):
+			var a: int
+			var b: int
+			match edge:
+				0:
+					a = i * stride
+					b = (i + 1) * stride
+				1:
+					a = (i + 1) * stride + segments
+					b = i * stride + segments
+				2:
+					a = i + 1
+					b = i
+				_:
+					a = last_row + i
+					b = last_row + i + 1
+			var down: Vector3 = Vector3.UP * skirt_depth
+			_emit_triangle(tool, points[a], points[a] - down, points[b], colors[a], colors[a], colors[b])
+			_emit_triangle(tool, points[b], points[a] - down, points[b] - down, colors[b], colors[a], colors[b])
 
 func _build_chunk(key: Vector2i) -> void:
 	if _chunks.has(key):
 		return
-	var group: Node3D = Node3D.new()
+	var group := Node3D.new()
 	group.name = "Chunk_%d_%d" % [key.x, key.y]
-	var x0: float = float(key.x) * CHUNK_SIZE
-	var z0: float = float(key.y) * CHUNK_SIZE
+	var origin := Vector2(key) * CHUNK_SIZE
 	var step_size: float = CHUNK_SIZE / float(_segments)
-	var tool: SurfaceTool = SurfaceTool.new()
+	var stride: int = _segments + 1
+	var points := PackedVector3Array()
+	var colors := PackedColorArray()
+	points.resize(stride * stride)
+	colors.resize(stride * stride)
+	# Sample each vertex once, even where two cells or a skirt share it.
+	for row: int in range(stride):
+		for col: int in range(stride):
+			var x: float = origin.x + col * step_size
+			var z: float = origin.y + row * step_size
+			var idx: int = row * stride + col
+			points[idx] = Vector3(x, Terrain.height_at(x, z, _region), z)
+			colors[idx] = _surface_color(x, z)
+	var tool := SurfaceTool.new()
 	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-	for iz: int in range(_segments):
-		for ix: int in range(_segments):
-			var x: float = x0 + float(ix) * step_size
-			var z: float = z0 + float(iz) * step_size
-			var a: Vector3 = _point(x, z)
-			var b: Vector3 = _point(x + step_size, z)
-			var c: Vector3 = _point(x, z + step_size)
-			var d: Vector3 = _point(x + step_size, z + step_size)
-			_add_triangle(tool, a, c, b)
-			_add_triangle(tool, b, c, d)
-	# Downward edge skirts hide T-junctions between different adaptive resolutions.
-	# They also give the furthest visible tile a solid edge until fog takes over.
-	for edge: int in range(4):
-		for i: int in range(_segments):
-			var a: Vector3
-			var b: Vector3
-			var t: float = float(i) * step_size
-			match edge:
-				0:
-					a = _point(x0, z0 + t)
-					b = _point(x0, z0 + t + step_size)
-				1:
-					a = _point(x0 + CHUNK_SIZE, z0 + t + step_size)
-					b = _point(x0 + CHUNK_SIZE, z0 + t)
-				2:
-					a = _point(x0 + t + step_size, z0)
-					b = _point(x0 + t, z0)
-				_:
-					a = _point(x0 + t, z0 + CHUNK_SIZE)
-					b = _point(x0 + t + step_size, z0 + CHUNK_SIZE)
-			_add_triangle(tool, a, a - Vector3.UP * SKIRT_DEPTH, b)
-			_add_triangle(tool, b, a - Vector3.UP * SKIRT_DEPTH, b - Vector3.UP * SKIRT_DEPTH)
+	_emit_grid(tool, points, colors, _segments, SKIRT_DEPTH)
 	tool.set_material(_terrain_material)
-	var ground: MeshInstance3D = MeshInstance3D.new()
+	var ground := MeshInstance3D.new()
 	ground.mesh = tool.commit()
 	ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	group.add_child(ground)
@@ -394,6 +476,7 @@ func _build_chunk(key: Vector2i) -> void:
 	_chunks[key] = {"node": group, "obstacles": [], "objects": 1, "segments": _segments, "propsReady": false}
 	_enqueue_props(key)
 	_obstacles_dirty = true
+	_fine_mask_dirty = true
 	_built_count += 1
 
 func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dictionary:
@@ -414,7 +497,9 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 			continue
 		var y: float = Terrain.height_at(x, z, _region)
 		var rotation: float = rng.randf_range(0.0, TAU)
-		if i < 4:
+		var biome: String = Terrain.biome_at(x, z, _region)
+		var tree_count: int = 4 if biome == "pine" else (2 if biome == "marsh" else 1)
+		if i < tree_count:
 			var height: float = rng.randf_range(3.8, 7.5)
 			var width: float = rng.randf_range(1.0, 1.75)
 			trunks.append(Transform3D(Basis(Vector3.UP, rotation).scaled(Vector3(1.0, height * 0.7, 1.0)), Vector3(x, y + height * 0.35, z)))
@@ -452,3 +537,168 @@ func _add_multimesh(group: Node3D, mesh: Mesh, transforms: Array[Transform3D], c
 	node.multimesh = instances
 	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF if _mobile else GeometryInstance3D.SHADOW_CASTING_SETTING_ON
 	group.add_child(node)
+
+func _reset_visual_tiles() -> void:
+	if is_instance_valid(_visual_root):
+		_visual_root.hide()
+		_visual_root.queue_free()
+	_visual_root = Node3D.new()
+	_visual_root.name = "DistanceTerrain"
+	add_child(_visual_root)
+	_visual_tiles.clear()
+	_visual_queue.clear()
+	_visual_centers.clear()
+	_visual_delay = 0
+	_fine_mask = Image.create_empty(FINE_MASK_SIZE, FINE_MASK_SIZE, false, Image.FORMAT_RGB8)
+	_fine_mask_texture = ImageTexture.create_from_image(_fine_mask)
+	_visual_materials.clear()
+	var shader := Shader.new()
+	shader.code = FINE_MASK_SHADER_CODE
+	for level: int in range(VISUAL_SIZES.size()):
+		var material := ShaderMaterial.new()
+		material.shader = shader
+		material.set_shader_parameter("fine_tiles", _fine_mask_texture)
+		material.set_shader_parameter("far_layer", level == 1)
+		_visual_materials.append(material)
+	_refresh_visual_queue()
+	# Seed medium ground under the camera's immediate surroundings before
+	# filling the broad backdrop. This remains independent of world size.
+	var minimum := Vector2i(floori((_player.x - 32.0) / VISUAL_SIZES[0]), floori((_player.z - 32.0) / VISUAL_SIZES[0]))
+	var maximum := Vector2i(floori((_player.x + 32.0) / VISUAL_SIZES[0]), floori((_player.z + 32.0) / VISUAL_SIZES[0]))
+	for z: int in range(minimum.y, maximum.y + 1):
+		for x: int in range(minimum.x, maximum.x + 1):
+			var key := Vector3i(x, z, 0)
+			_build_visual_tile(key)
+			_visual_queue.erase(key)
+	var far: Vector2i = _visual_centers[1]
+	for dz: int in range(-1, 2):
+		for dx: int in range(-1, 2):
+			var key := Vector3i(far.x + dx, far.y + dz, 1)
+			_build_visual_tile(key)
+			_visual_queue.erase(key)
+	_visual_startup_count = _visual_tiles.size()
+	_fine_mask_dirty = true
+	_update_fine_mask()
+
+func _update_fine_mask() -> void:
+	if not _fine_mask_dirty:
+		return
+	var half: Vector2i = Vector2i.ONE * int(FINE_MASK_SIZE * 0.5)
+	var origin: Vector2i = _center - half
+	var mid_origin: Vector2i = _visual_centers[0] - half
+	_fine_mask.fill(Color.BLACK)
+	for key: Vector2i in _chunks:
+		var relative: Vector2i = key - origin
+		if relative.x >= 0 and relative.x < FINE_MASK_SIZE and relative.y >= 0 and relative.y < FINE_MASK_SIZE:
+			_fine_mask.set_pixelv(relative, Color.RED)
+	for key: Vector3i in _visual_tiles:
+		if key.z != 0:
+			continue
+		var relative: Vector2i = Vector2i(key.x, key.y) - mid_origin
+		var pixel: Color = _fine_mask.get_pixelv(relative)
+		pixel.g = 1.0
+		_fine_mask.set_pixelv(relative, pixel)
+	_fine_mask_texture.update(_fine_mask)
+	for material: ShaderMaterial in _visual_materials:
+		material.set_shader_parameter("mask_origin", Vector2(origin))
+		material.set_shader_parameter("mid_origin", Vector2(mid_origin))
+	_fine_mask_dirty = false
+
+func _wanted_far_radius() -> int:
+	return 2 if _mobile or _avg_ms > 34.0 else VISUAL_RADII[1]
+
+func _visual_center(size: float) -> Vector2i:
+	return Vector2i(floori(_player.x / size), floori(_player.z / size))
+
+func _refresh_visual_queue() -> void:
+	_fine_mask_dirty = true
+	_visual_queue.clear()
+	_visual_centers.clear()
+	_visual_far_radius = _wanted_far_radius()
+	for level: int in range(VISUAL_SIZES.size()):
+		var center: Vector2i = _visual_center(VISUAL_SIZES[level])
+		_visual_centers.append(center)
+		var radius: int = _visual_far_radius if level == 1 else VISUAL_RADII[level]
+		for dz: int in range(-radius, radius + 1):
+			for dx: int in range(-radius, radius + 1):
+				var key := Vector3i(center.x + dx, center.y + dz, level)
+				if not _visual_tiles.has(key):
+					_visual_queue.append(key)
+	_visual_queue.sort_custom(func(a: Vector3i, b: Vector3i) -> bool:
+		return _visual_priority(a) < _visual_priority(b)
+	)
+	for key: Vector3i in _visual_tiles.keys():
+		var offset: Vector2i = Vector2i(key.x, key.y) - _visual_centers[key.z]
+		var retention: int = (_visual_far_radius if key.z == 1 else VISUAL_RADII[key.z]) + 1
+		if maxi(absi(offset.x), absi(offset.y)) > retention:
+			var node: MeshInstance3D = _visual_tiles[key]
+			node.hide()
+			node.queue_free()
+			_visual_tiles.erase(key)
+
+func _visual_priority(key: Vector3i) -> float:
+	var size: float = VISUAL_SIZES[key.z]
+	var center := (Vector2(key.x, key.y) + Vector2(0.5, 0.5)) * size
+	return center.distance_squared_to(Vector2(_player.x, _player.z))
+
+func _update_visual_tiles(started: int) -> void:
+	if _visual_far_radius != _wanted_far_radius() or _visual_centers[0] != _visual_center(VISUAL_SIZES[0]) or _visual_centers[1] != _visual_center(VISUAL_SIZES[1]):
+		_refresh_visual_queue()
+	# Low-end devices alternate jobs. Keep the first 16m ring protected even
+	# when the backdrop is incomplete. Ground and props share the same budget.
+	_visual_delay += 1
+	var interval := 3 if _mobile or _avg_ms > 34.0 else 1
+	if _visual_delay < interval or _visual_queue.is_empty():
+		return
+	if Time.get_ticks_usec() - started >= BUILD_BUDGET_US / 2:
+		return
+	_visual_delay = 0
+	_build_visual_tile(_visual_queue.pop_front())
+
+func _build_visual_tile(key: Vector3i) -> void:
+	var size: float = VISUAL_SIZES[key.z]
+	var segments: int = VISUAL_SEGMENTS[key.z]
+	var step_size: float = size / segments
+	var stride: int = segments + 1
+	var origin := Vector2(key.x, key.y) * size
+	var points := PackedVector3Array()
+	var colors := PackedColorArray()
+	points.resize(stride * stride)
+	colors.resize(stride * stride)
+	for row: int in range(stride):
+		for col: int in range(stride):
+			var x: float = origin.x + col * step_size
+			var z: float = origin.y + row * step_size
+			var idx: int = row * stride + col
+			var height: float = Terrain.height_at(x, z, _region)
+			points[idx] = Vector3(x, height - VISUAL_CLEARANCE[key.z], z)
+			colors[idx] = _surface_color(x, z, step_size)
+	# A coarse cell near a road cut should sit below the road even if
+	# its vertex samples land outside it. Apply the drop to all four corners.
+	var original := points.duplicate()
+	for row: int in range(segments):
+		for col: int in range(segments):
+			var x: float = origin.x + (col + 0.5) * step_size
+			var z: float = origin.y + (row + 0.5) * step_size
+			var idx: int = row * stride + col
+			var height: float = Terrain.height_at(x, z, _region)
+			var lowest: float = height - VISUAL_CLEARANCE[key.z]
+			for corner: int in [idx, idx + 1, idx + stride, idx + stride + 1]:
+				lowest = minf(lowest, original[corner].y)
+			# Preserve most relief off road, but prevent distant ground
+			# bridging over the fine trail through a steep bank.
+			var corridor: bool = Terrain.road_distance(x, z) < step_size * 0.85 + 5.0
+			if corridor:
+				for corner: int in [idx, idx + 1, idx + stride, idx + stride + 1]:
+					points[corner].y = minf(points[corner].y, lowest)
+	var tool := SurfaceTool.new()
+	tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	_emit_grid(tool, points, colors, segments, 42.0 if key.z == 0 else 96.0)
+	tool.set_material(_visual_materials[key.z])
+	var node := MeshInstance3D.new()
+	node.name = "Distance_%d_%d_%d" % [key.z, key.x, key.y]
+	node.mesh = tool.commit()
+	node.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	_visual_root.add_child(node)
+	_visual_tiles[key] = node
+	_fine_mask_dirty = _fine_mask_dirty or key.z == 0

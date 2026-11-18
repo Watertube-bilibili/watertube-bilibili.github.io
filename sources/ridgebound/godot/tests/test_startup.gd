@@ -36,11 +36,11 @@ func coarse_height_at(vertices: PackedVector3Array, x: float, z: float) -> float
 func check_horizon(game, region: String) -> void:
 	var mesh: ArrayMesh = game.terrain_safety.mesh
 	var bounds: AABB = mesh.get_aabb()
-	check(bounds.position.x < -1000.0 and bounds.end.x > 1000.0 and bounds.position.z < -200.0 and bounds.end.z > 3800.0, region + " safety horizon covers every map boundary with margin")
+	check(bounds.position.x < Terrain.MIN_X and bounds.end.x > Terrain.MAX_X and bounds.position.z < Terrain.MIN_Z and bounds.end.z > Terrain.MAX_Z, region + " safety horizon covers every map boundary with margin")
 	var arrays: Array = mesh.surface_get_arrays(0)
 	var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
 	var main_below: bool = true
-	for z: float in [0.0, 350.0, 700.0, 1100.0, 1500.0, 1900.0, 2400.0, 2850.0, 3300.0, 3650.0]:
+	for z: float in [0.0, 700.0, 3000.0, 6200.0, 9000.0, 13200.0, 16000.0, 19000.0, 20600.0, 22000.0]:
 		var x: float = Terrain.route_x(z)
 		main_below = main_below and coarse_height_at(vertices, x, z) < Terrain.height_at(x, z, region) - 0.05
 	check(main_below, region + " resident coarse triangles remain beneath the complete main driving route")
@@ -52,7 +52,7 @@ func check_horizon(game, region: String) -> void:
 			var z: float = lerpf(float(branch.start), float(branch.end), fraction)
 			var x: float = Terrain.branch_x(index, z)
 			branch_below = branch_below and coarse_height_at(vertices, x, z) < Terrain.height_at(x, z, region) - 0.05
-	check(branch_below, region + " resident coarse triangles remain beneath all three branch roads")
+	check(branch_below, region + " resident coarse triangles remain beneath every branch road")
 
 func run() -> void:
 	var game = MainScene.instantiate()
@@ -69,7 +69,7 @@ func run() -> void:
 	var timing: Dictionary = first.startup
 	check(timing.initializationMs > 0.0 and timing.worldBuildMs > 0.0 and timing.chunksMs > 0.0 and timing.sceneryMs > 0.0, "startup diagnostics expose measured initialization and build phases")
 	check(timing.initializationMs + 0.03 >= timing.worldBuildMs and timing.worldBuildMs + 0.03 >= timing.chunksMs + timing.sceneryMs, "reported nested phase timings are consistent")
-	check(first.coarseTriangles > 0 and first.coarseTriangles <= 5000, "expanded resident horizon remains within a 5000-triangle budget")
+	check(first.coarseTriangles == 2 and first.streaming.visualStartupTiles >= 10 and first.streaming.visualStartupTiles <= 13 and first.streaming.visualTiles == first.streaming.visualStartupTiles, "a fixed underlay and bounded local backdrop tiles provide the horizon at any saved spawn")
 	check_horizon(game, "snow")
 	var safety_mesh: ArrayMesh = game.terrain_safety.mesh
 	var mesh_arrays: Array = safety_mesh.surface_get_arrays(0)

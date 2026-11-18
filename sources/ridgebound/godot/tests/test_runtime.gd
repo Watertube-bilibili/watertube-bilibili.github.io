@@ -30,7 +30,7 @@ func run() -> void:
 	check(all_wheels, "four separate wheel nodes are available for suspension")
 	check(game.steering != null and game.speed_needle != null and game.rpm_needle != null, "cockpit steering wheel and both instrument needles exist")
 	check(game.anchors.size() > 0 and game.anchors.size() < 80 and game.checkpoints.size() == 4, "nearby anchor pool stays bounded while all four expedition checkpoints exist")
-	check(Terrain.repair_sites().size() == 7, "expanded main road and branches expose seven repair sites")
+	check(Terrain.repair_sites().size() == 14, "expanded main road and branches expose fourteen repair sites")
 	var initial_anchor_ids: Array = []
 	for anchor: Dictionary in game.anchors:
 		initial_anchor_ids.append(anchor.id)
@@ -48,6 +48,11 @@ func run() -> void:
 	var coarse_normals: PackedVector3Array = coarse_arrays[Mesh.ARRAY_NORMAL]
 	var coarse_cross: Vector3 = (coarse_vertices[1] - coarse_vertices[0]).cross(coarse_vertices[2] - coarse_vertices[0])
 	check(coarse_normals[0].y > 0.0 and coarse_cross.dot(coarse_normals[0]) < 0.0, "resident terrain top uses Godot clockwise front-face winding")
+	check(game.winch_outlet != null and game.winch_outlet.is_inside_tree(), "Blender winch outlet provides the cable origin")
+	var all_shocks: bool = game.shock_rods.size() == 4
+	for shock in game.shock_rods:
+		all_shocks = all_shocks and shock != null
+	check(all_shocks, "each corner has a separately driven suspension rod")
 	var old_position: Vector2 = Vector2(game.state.x, game.state.z)
 	for frame: int in range(180):
 		game.simulation.step(game.state, {"throttle": 1.0}, 1.0 / 60.0)
@@ -61,10 +66,13 @@ func run() -> void:
 	game.state.wheelRotation = 2.4
 	game.state.wheelHeights[0] += 0.19
 	game.state.wheelHeights[1] -= 0.09
+	game.state.suspension[0] = 0.12
+	game.state.suspension[1] = -0.10
 	game._update_vehicle(1.0 / 60.0)
 	check(game.steering != null and not game.steering.basis.is_equal_approx(old_steering_basis), "steering input rotates the real cockpit wheel")
 	check(game.speed_needle != null and not game.speed_needle.basis.is_equal_approx(old_speed_basis), "vehicle speed animates the cockpit speedometer")
 	check(all_wheels and absf(game.wheels[0].position.y - game.wheels[1].position.y) > 0.1, "left and right wheel suspension transforms differ")
+	check(all_shocks and is_equal_approx(game.shock_rods[0].position.y - game.shock_rest_heights[0], 0.12) and is_equal_approx(game.shock_rods[1].position.y - game.shock_rest_heights[1], -0.10), "suspension rods follow independent wheel compression without moving their mounted housings")
 	game._command({"type": "start"})
 	game._command({"type": "camera"})
 	game._command({"type": "camera"})
