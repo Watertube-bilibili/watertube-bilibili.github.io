@@ -67,7 +67,11 @@ jobs:
       - name: Install Chromium and Playwright
         run: |
           npm install --prefix "$RUNNER_TEMP/ridgebound-qa" playwright@1.51.1
-          "$RUNNER_TEMP/ridgebound-qa/node_modules/.bin/playwright" install --with-deps chromium
+          if command -v google-chrome >/dev/null; then
+            echo "CHROMIUM_BIN=$(command -v google-chrome)" >> "$GITHUB_ENV"
+          else
+            "$RUNNER_TEMP/ridgebound-qa/node_modules/.bin/playwright" install chromium
+          fi
       - name: Drive the exported Web build in portrait and landscape
         run: |
           python3 -m http.server 9018 > "$RUNNER_TEMP/ridgebound-http.log" 2>&1 &
