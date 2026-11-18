@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
-          fetch-depth: 2
+          fetch-depth: 8
       - name: Install verified Godot 4.6.3
         shell: bash
         run: |
@@ -33,7 +33,7 @@ jobs:
           if grep -E 'SCRIPT ERROR|^ERROR:' "$RUNNER_TEMP/import.log"; then exit 1; fi
           main=sources/ridgebound/godot/main.gd
           cp "$main" "$RUNNER_TEMP/fixed-main.gd"
-          git show "HEAD^:$main" > "$main"
+          git show "6c3d0d37ca251ba4fabd4601e1d8c8b8db1d3161:$main" > "$main"
           if timeout 25s godot --headless --path sources/ridgebound/godot --script tests/test_runtime.gd > "$RUNNER_TEMP/baseline.log" 2>&1; then
             echo 'The original visual inversion must be detected'
             exit 1
