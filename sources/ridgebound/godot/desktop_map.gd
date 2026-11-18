@@ -1,126 +1,144 @@
 extends Control
-## North-up route map. Low-cost, clipped local view and full regional overview.
+## North-up route guide in world metres. The compact and full views share data.
 
 const Terrain = preload("res://terrain_math.gd")
-const BORDER := Color("526354")
-const GRID := Color("33463b")
-const ROAD := Color("d0e78d")
-const BRANCH := Color("bfccbb")
-const STATION := Color("f1e9d5")
-const CHECKPOINT := Color("f6bf72")
+const FIELD := Color("202b26")
+const PAPER := Color("f5ead6")
+const GRAPH := Color("46544b")
+const TRACK := Color("e9bf80")
+const PISTE := Color("a1b1a3")
+const WATER := Color("426c78")
+const TARGET := Color("ffad82")
 
-var snapshot: Dictionary = {}
-var overview := false
+var world_state: Dictionary = {}
+var zoomed_out := false
+var focus := Vector2.ZERO
+var scale_metres := 1.0
 var routes: Array = Terrain.branch_routes()
 var stations: Array = Terrain.repair_sites()
 var checkpoints: Array = Terrain.checkpoints()
 var lakes: Array = Terrain.water_bodies()
-var _center := Vector2.ZERO
-var _scale := 1.0
 
-func set_view(state: Dictionary, show_overview: bool) -> void:
-	snapshot = state
-	overview = show_overview
+func set_view(state: Dictionary, overview: bool) -> void:
+	world_state = state
+	zoomed_out = overview
 	queue_redraw()
 
-func _loc(x: float, z: float) -> Vector2:
-	# In the game world +X is west and +Z is north.
-	return size * 0.5 - (Vector2(x, z) - _center) * _scale
-
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("17211e"))
-	if snapshot.is_empty() or size.x < 20 or size.y < 20:
+	var paper := Rect2(Vector2.ZERO, size)
+	draw_rect(paper, FIELD)
+	if world_state.is_empty() or size.x < 28.0 or size.y < 28.0:
 		return
-	var player := Vector2(float(snapshot.x), float(snapshot.z))
-	var world := Rect2(
+	var custom := String(world_state.get("region", "")) == "custom"
+	var position_at := Vector2(float(world_state.x), float(world_state.z))
+	var map_bounds := _bounds(custom)
+	focus = map_bounds.get_center() if zoomed_out else position_at
+	if zoomed_out:
+		scale_metres = minf((size.x - 28.0) / map_bounds.size.x, (size.y - 28.0) / map_bounds.size.y)
+	else:
+		scale_metres = minf(size.x, size.y) / 620.0
+	var visible := Rect2(focus - size / (2.0 * scale_metres), size / scale_metres)
+	var step := 4000 if zoomed_out else 100
+	if custom and zoomed_out:
+		step = maxi(5, roundi(maxf(map_bounds.size.x, map_bounds.size.y) / 50.0) * 5)
+	_grid(visible, step)
+	if zoomed_out:
+		draw_rect(Rect2(_pixel(map_bounds.end), map_bounds.size * scale_metres), PISTE.darkened(0.35), false)
+	if not custom:
+		_guide(visible, map_bounds)
+	_vehicle(position_at)
+	if not custom and not zoomed_out and not bool(world_state.completed) and not checkpoints.is_empty():
+		var marker: Dictionary = checkpoints[clampi(int(world_state.checkpoint), 0, checkpoints.size() - 1)]
+		_offscreen_target(_pixel(Vector2(marker.x, marker.z)) - size * 0.5)
+	var bar := float(step) if custom and zoomed_out else (5000.0 if zoomed_out else 100.0)
+	_legend(bar)
+
+func _bounds(custom: bool) -> Rect2:
+	if custom:
+		var b: Dictionary = world_state.get("mapBounds", {})
+		if b.is_empty():
+			var summary: Dictionary = world_state.get("customMap", {})
+			b = summary.get("bounds", {})
+		if not b.is_empty():
+			var lower := Vector2(float(b.get("minX", -100)), float(b.get("minZ", -100)))
+			var higher := Vector2(float(b.get("maxX", 100)), float(b.get("maxZ", 100)))
+			if higher.x > lower.x and higher.y > lower.y:
+				return Rect2(lower, higher - lower)
+	return Rect2(
 		Vector2(Terrain.MIN_X, Terrain.MIN_Z),
 		Vector2(Terrain.MAX_X - Terrain.MIN_X, Terrain.MAX_Z - Terrain.MIN_Z)
 	)
-	var custom := String(snapshot.get("region", "")) == "custom"
-	if custom:
-		var b: Dictionary = snapshot.get("mapBounds", {})
-		if b.is_empty():
-			var summary: Dictionary = snapshot.get("customMap", {})
-			b = summary.get("bounds", {})
-		if not b.is_empty():
-			var minimum := Vector2(float(b.get("minX", -100)), float(b.get("minZ", -100)))
-			var maximum := Vector2(float(b.get("maxX", 100)), float(b.get("maxZ", 100)))
-			if maximum.x > minimum.x and maximum.y > minimum.y:
-				world = Rect2(minimum, maximum - minimum)
-	_center = world.get_center() if overview else player
-	_scale = minf((size.x - 20) / world.size.x, (size.y - 20) / world.size.y) if overview else minf(size.x, size.y) / 720.0
-	var low := _center - size / (2.0 * _scale)
-	var high := _center + size / (2.0 * _scale)
-	var grid := 4000 if overview else 100
-	if overview and custom:
-		grid = maxi(5, roundi(maxf(world.size.x, world.size.y) / 50.0) * 5)
-	for x in range(int(ceil(low.x / grid)) * grid, int(high.x) + 1, grid):
-		draw_line(_loc(x, low.y), _loc(x, high.y), GRID)
-	for z in range(int(ceil(low.y / grid)) * grid, int(high.y) + 1, grid):
-		draw_line(_loc(low.x, z), _loc(high.x, z), GRID)
-	if overview:
-		draw_rect(Rect2(_loc(world.end.x, world.end.y), world.size * _scale), BORDER, false)
-	if not custom:
-		for lake in lakes:
-			var radius := float(lake.radius)
-			if Rect2(low, high - low).grow(radius).has_point(Vector2(lake.x, lake.z)):
-				draw_circle(_loc(lake.x, lake.z), radius * _scale, Color("487c8c"))
-		for index in range(routes.size()):
-			var branch: Dictionary = routes[index]
-			_draw_road(index, maxf(low.y, branch.start), minf(high.y, branch.end), BRANCH, 1.6)
-		_draw_road(-1, maxf(low.y, Terrain.MIN_Z), minf(high.y, Terrain.MAX_Z), ROAD, 2.2)
-		for station in stations:
-			var p := _loc(station.x, station.z)
-			if Rect2(Vector2.ZERO, size).grow(-5).has_point(p):
-				draw_rect(Rect2(p - Vector2(3, 3), Vector2(6, 6)), STATION)
-		for index in range(checkpoints.size()):
-			var cp: Dictionary = checkpoints[index]
-			var p := _loc(cp.x, cp.z)
-			if Rect2(Vector2.ZERO, size).grow(-5).has_point(p):
-				draw_circle(p, 4.0, CHECKPOINT if index >= int(snapshot.checkpoint) else BORDER)
-	var vehicle := _loc(player.x, player.y)
-	var yaw := float(snapshot.yaw)
-	var forward := Vector2(-sin(yaw), -cos(yaw))
-	var cross := forward.orthogonal()
-	draw_colored_polygon(PackedVector2Array([
-		vehicle + forward * 9,
-		vehicle - forward * 5 - cross * 5,
-		vehicle - forward * 5 + cross * 5
-	]), Color("fff5df"))
-	if not custom and not overview and not bool(snapshot.completed) and not checkpoints.is_empty():
-		var marker: Dictionary = checkpoints[clampi(int(snapshot.checkpoint), 0, checkpoints.size() - 1)]
-		var target := _loc(marker.x, marker.z) - vehicle
-		var max_delta := size * 0.5 - Vector2(15, 15)
-		var ratio := maxf(absf(target.x) / max_delta.x, absf(target.y) / max_delta.y)
-		if ratio > 1.0:
-			var p := vehicle + target / ratio
-			var direction := target.normalized()
-			draw_colored_polygon(PackedVector2Array([
-				p + direction * 6,
-				p - direction * 5 + direction.orthogonal() * 5,
-				p - direction * 5 - direction.orthogonal() * 5
-			]), CHECKPOINT)
-	var ruler_metres := 5000.0 if overview else 100.0
-	if custom and overview:
-		ruler_metres = float(grid)
-	var ruler := ruler_metres * _scale
-	var ruler_start := Vector2(12, size.y - 12)
-	draw_line(ruler_start, ruler_start + Vector2(ruler, 0), STATION, 2.0)
-	var unit_text := "%.1f km" % (ruler_metres / 1000.0) if ruler_metres >= 1000.0 else "%d m" % ruler_metres
-	draw_string(get_theme_default_font(), ruler_start - Vector2(0, 5), unit_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, STATION)
 
-func _draw_road(index: int, from: float, to: float, tint: Color, width: float) -> void:
-	if from >= to:
+func _pixel(point: Vector2) -> Vector2:
+	# +X points west and +Z north in Ridgebound.
+	return size * 0.5 - (point - focus) * scale_metres
+
+func _grid(view: Rect2, step: int) -> void:
+	for x in range(ceili(view.position.x / step) * step, floori(view.end.x) + 1, step):
+		draw_line(_pixel(Vector2(x, view.position.y)), _pixel(Vector2(x, view.end.y)), GRAPH)
+	for z in range(ceili(view.position.y / step) * step, floori(view.end.y) + 1, step):
+		draw_line(_pixel(Vector2(view.position.x, z)), _pixel(Vector2(view.end.x, z)), GRAPH)
+
+func _guide(view: Rect2, bounds: Rect2) -> void:
+	for lake in lakes:
+		var center := Vector2(lake.x, lake.z)
+		var radius := float(lake.radius)
+		if view.grow(radius).has_point(center):
+			draw_circle(_pixel(center), radius * scale_metres, WATER, true, -1.0, true)
+	for i in range(routes.size()):
+		var junction: Dictionary = routes[i]
+		_track(i, maxf(view.position.y, junction.start), minf(view.end.y, junction.end), PISTE, 1.4)
+	_track(-1, maxf(view.position.y, bounds.position.y), minf(view.end.y, bounds.end.y), TRACK, 2.4)
+	var inner := Rect2(Vector2.ZERO, size).grow(-8.0)
+	for station in stations:
+		var p := _pixel(Vector2(station.x, station.z))
+		if inner.has_point(p):
+			draw_rect(Rect2(p - Vector2(2.5, 2.5), Vector2(5.0, 5.0)), PAPER)
+	for i in range(checkpoints.size()):
+		var point: Dictionary = checkpoints[i]
+		var mark := _pixel(Vector2(point.x, point.z))
+		if inner.has_point(mark):
+			draw_circle(mark, 3.6, TARGET if i >= int(world_state.checkpoint) else PISTE, true, -1.0, true)
+
+func _track(branch: int, start: float, finish: float, tint: Color, width: float) -> void:
+	if finish <= start:
 		return
 	var points := PackedVector2Array()
-	var z := from
-	var step := 90.0 if overview else 12.0
-	while z < to:
-		points.append(_road_point(index, z))
-		z += step
-	points.append(_road_point(index, to))
+	var spacing := 85.0 if zoomed_out else 10.0
+	var z := start
+	while z < finish:
+		var x := Terrain.route_x(z) if branch < 0 else Terrain.branch_x(branch, z)
+		points.append(_pixel(Vector2(x, z)))
+		z += spacing
+	var final_x := Terrain.route_x(finish) if branch < 0 else Terrain.branch_x(branch, finish)
+	points.append(_pixel(Vector2(final_x, finish)))
 	draw_polyline(points, tint, width, true)
 
-func _road_point(index: int, z: float) -> Vector2:
-	var x := Terrain.route_x(z) if index < 0 else Terrain.branch_x(index, z)
-	return _loc(x, z)
+func _vehicle(position_at: Vector2) -> void:
+	var plane := _pixel(position_at)
+	var yaw := float(world_state.yaw)
+	var travel := Vector2(-sin(yaw), -cos(yaw))
+	_triangle(plane, travel, 9.0, PAPER)
+
+func _offscreen_target(offset: Vector2) -> void:
+	var region := size * 0.5 - Vector2(15.0, 15.0)
+	var ratio := maxf(absf(offset.x) / region.x, absf(offset.y) / region.y)
+	if ratio > 1.0:
+		_triangle(size * 0.5 + offset / ratio, offset.normalized(), 6.0, TARGET)
+
+func _triangle(point: Vector2, forward: Vector2, length: float, ink: Color) -> void:
+	var side := forward.orthogonal() * (length * 0.52)
+	draw_colored_polygon(PackedVector2Array([
+		point + forward * length, point - forward * length * 0.52 + side,
+		point - forward * length * 0.52 - side,
+	]), ink)
+
+func _legend(metres: float) -> void:
+	var base := Vector2(10.0, size.y - 8.0)
+	var bar := metres * scale_metres
+	draw_line(base, base + Vector2(bar, 0.0), PAPER, 1.8)
+	var unit := "%.1f km" % (metres / 1000.0) if metres >= 1000.0 else "%d m" % metres
+	draw_string(get_theme_default_font(), base - Vector2(0, 5), unit, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, PAPER)
+	var north := Vector2(size.x - 13.0, 13.0)
+	_triangle(north, Vector2.UP, 5.0, PAPER)
+	draw_string(get_theme_default_font(), north + Vector2(-4.0, 12.0), "N", HORIZONTAL_ALIGNMENT_LEFT, -1, 10, PAPER)
