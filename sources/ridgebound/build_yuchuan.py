@@ -146,12 +146,22 @@ class MPV:
                     k=j*4;n=k+4;fs.extend([(k,n,n+1,k+1),(k+2,k+3,n+3,n+2),(k,k+2,n+2,n),(k+1,n+1,n+3,k+3)])
                 fs.extend([(0,1,3,2),(72,74,75,73)]);self.mesh('Wheel opening brightwork',vs,fs,'chrome')
         # Roof and tail pillars form a high, long van silhouette without filling the interior.
-        self.cube('Pearl floating roof',(0,1.66,-.91),(2.01,.08,3.91),'roof',bevel=.065,segments=3)
-        self.cube('Roof glass insert',(0,1.707,-1.05),(1.34,.012,2.61),'privacy',bevel=.085,segments=3)
+        roof_vs=[];roof_fs=[];segments=24
+        for yy,ww,dd,rr in [(1.585,2.00,3.91,.14),(1.675,1.98,3.89,.20),(1.72,1.84,3.75,.23)]:
+            for cx,cz,start in [(ww/2-rr,dd/2-rr,0),(-ww/2+rr,dd/2-rr,90),(-ww/2+rr,-dd/2+rr,180),(ww/2-rr,-dd/2+rr,270)]:
+                for j in range(6):
+                    a=math.radians(start+j*18);roof_vs.append((cx+rr*math.cos(a),yy,-.91+cz+rr*math.sin(a)))
+        roof_fs.append(tuple(reversed(range(segments))));roof_fs.append(tuple(range(segments*2,segments*3)))
+        for row in range(2):
+            for j in range(segments):roof_fs.append((row*segments+j,row*segments+(j+1)%segments,(row+1)*segments+(j+1)%segments,(row+1)*segments+j))
+        roof=self.mesh('Rounded monocoque roof',roof_vs,roof_fs,'roof')
+        for face in roof.data.polygons:face.use_smooth=True
+        self.cube('Roof glass insert',(0,1.727,-1.05),(1.25,.012,2.48),'screen',bevel=.005,segments=2)
         self.cube('Rear upper pillar',(0,1.34,-2.73),(1.95,.67,.08),'dark',bevel=.04)
         self.cube('Rear window',(0,1.36,-2.781),(1.77,.51,.012),'privacy',bevel=.07,segments=3)
         self.cube('Rear tailgate',(0,.48,-2.77),(1.99,.94,.13),'paint',bevel=.055,segments=3)
         self.cube('Rear chrome belt',(0,.94,-2.842),(1.86,.052,.012),'chrome',bevel=.008)
+        self.cube('Rear bumper',(0,-.075,-2.73),(1.99,.18,.20),'paint',bevel=.045,segments=3)
         self.cube('Rear diffuser',(0,-.12,-2.76),(1.82,.19,.15),'dark',bevel=.045)
         for s in (-1,1):
             self.cube('Vertical tail lens',(s*.878,.58,-2.847),(.13,.55,.025),'red',bevel=.035,segments=3)
@@ -166,6 +176,7 @@ class MPV:
         self.cube('Long sculpted bonnet',(0,.88,2.16),(1.97,.16,1.10),'roof',bevel=.07,segments=3)
         for x in (-.68,.68):self.cube('Bonnet edge crease',(x,.970,2.18),(.008,.004,.86),'chrome',bevel=.001,segments=1)
         self.cube('Upright closed front',(0,.52,2.69),(2.02,.68,.14),'paint',bevel=.065,segments=3)
+        self.cube('Integrated front bumper',(0,.025,2.665),(2.025,.265,.22),'paint',bevel=.055,segments=3)
         self.cube('Front lower intake',(0,.08,2.75),(1.47,.19,.035),'dark',bevel=.035)
         self.cube('Front chrome horizon',(0,.72,2.772),(1.72,.033,.025),'chrome',bevel=.009)
         for s in (-1,1):
@@ -231,7 +242,7 @@ class MPV:
             mount=self.empty(name+'NeedleMount',self.body,(cx,1.08,1.028));mount.rotation_euler.x=math.pi/2
             needle=self.empty(name+'Needle',mount);needle['rotation_axis_glb']='local Y'
             # Blender XY blade -> GLB XZ, rotating its GLB local Y axis.
-            obj=self.cube(name+'Pointer',(0,.003,.021),(.004,.004,.044),'amber',needle,bevel=.001,segments=1)
+            obj=self.cube(name+'Pointer',(0,.003,-.021),(.004,.004,.044),'amber',needle,bevel=.001,segments=1)
         mount=self.empty('SteeringMount',self.body,(.49,1.00,.92));mount.rotation_euler.x=math.radians(74)
         wheel=self.empty('SteeringWheel',mount);wheel['rotation_axis_glb']='local Y';wheel['driver_side']='left_positive_X'
         self.torus('Leather steering rim',(0,0,0),.172,.019,'dark',wheel,'y',40,8)
@@ -263,6 +274,12 @@ class MPV:
                 self.cube('Door cabin trim',(s*.923,.58,z),(.045,.59,1.13),'leather',bevel=.025)
                 self.cube('Door armrest',(s*.865,.70,z),(.12,.065,.49),'wood',bevel=.022)
                 self.cube('Door ambient light',(s*.89,.824,z),(.008,.009,.69),'amber',bevel=.002)
+        # Dedicated pedal pivots can be pressed or detached by the gameplay rig.
+        for name,x in [('BrakePedal',.55),('AcceleratorPedal',.32)]:
+            pedal=self.empty(name,self.body,(x,.45,1.19));pedal['press_axis']='local X'
+            self.cube(name+'Arm',(0,-.11,-.055),(.023,.23,.025),'chrome',pedal,bevel=.006)
+            self.cube(name+'Pad',(0,-.23,-.08),(.11 if name=='BrakePedal' else .07,.105,.027),'rubber',pedal,bevel=.012)
+            for y in (-.26,-.235,-.21):self.cube(name+'Grip',(0,y,-.098),(.085 if name=='BrakePedal' else .052,.005,.004),'chrome',pedal,bevel=.001,segments=1)
         self.cube('Rear mirror',(0,1.44,1.0),(.28,.085,.03),'dark',bevel=.022)
         self.cube('Rear mirror glass',(0,1.44,.98),(.235,.052,.009),'chrome',bevel=.015)
         for x in (-.49,.49):self.cube('Sun visor',(x,1.548,.90),(.48,.08,.025),'leather',bevel=.02)
@@ -279,6 +296,13 @@ def finalize_meshes(model):
         bpy.ops.object.select_all(action='DESELECT');o.select_set(True);bpy.context.view_layer.objects.active=o
         bpy.ops.object.convert(target='MESH');o=bpy.context.view_layer.objects.active
         bpy.ops.object.transform_apply(location=False,rotation=False,scale=True)
+        # Premium greenhouse taper: lean the glass/pillars inward, preserving wheel/rig axes.
+        if o.parent and not o.parent.name.startswith(('Steering','Speed','RPM','Wheel','Brake','Accelerator')):
+            bpy.context.view_layer.update();world=o.matrix_world.copy();inverse=world.inverted()
+            for vertex in o.data.vertices:
+                p=world @ vertex.co
+                if p.z>1.0:p.x*=1-min(.10,(p.z-1.0)*.125)
+                vertex.co=inverse @ p
         bm=bmesh.new();bm.from_mesh(o.data);bmesh.ops.recalc_face_normals(bm,faces=bm.faces);bm.to_mesh(o.data);bm.free()
     buckets={}
     for o in list(bpy.context.scene.objects):
@@ -300,7 +324,7 @@ def measure():
     return {'mesh_count':len(meshes),'triangles':sum(len(o.data.loop_triangles) for o in meshes),'bounds_blender':{'min':lo,'max':hi},'dimensions_game':[hi[0]-lo[0],hi[2]-lo[2],hi[1]-lo[1]]}
 def glb_info(path):
     b=path.read_bytes();length,kind=struct.unpack_from('<II',b,12);d=json.loads(b[20:20+length]);nodes={n.get('name'):n for n in d['nodes']}
-    required=['YuchuanV8','Body','DriverEye','SteeringWheel','SpeedNeedle','RPMNeedle','WinchOutlet','RearWinchOutlet']
+    required=['YuchuanV8','Body','DriverEye','BrakePedal','AcceleratorPedal','SteeringWheel','SpeedNeedle','RPMNeedle','WinchOutlet','RearWinchOutlet']
     required += ['Wheel_'+x for x in ('FL','FR','RL','RR')]+['WheelSpin_'+x for x in ('FL','FR','RL','RR')]
     assert all(x in nodes for x in required)
     for tag,x,z in [('FL',.91,1.71),('FR',-.91,1.71),('RL',.91,-1.71),('RR',-.91,-1.71)]:
@@ -310,8 +334,8 @@ def glb_info(path):
     return {k:{f:v for f,v in nodes[k].items() if f in ('translation','rotation','scale','extras')} for k in required}
 def preview(path,cockpit=False):
     scene=bpy.context.scene
-    scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=20;scene.cycles.use_denoising=False
-    scene.render.resolution_x=960;scene.render.resolution_y=720;scene.render.resolution_percentage=100
+    scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=32;scene.cycles.use_denoising=False
+    scene.render.resolution_x=800;scene.render.resolution_y=600;scene.render.resolution_percentage=100
     if scene.world is None:scene.world=bpy.data.worlds.new('Review environment')
     scene.world.color=(.18,.20,.22);scene.view_settings.view_transform='AgX'
     lamps=[]
