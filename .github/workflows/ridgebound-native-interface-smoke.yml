@@ -28,6 +28,11 @@ jobs:
           unzip -q "$editor"
           install -m 755 "${editor%.zip}" godot
           echo "$RUNNER_TEMP/godot44" >> "$GITHUB_PATH"
+      - name: Assemble the native CJK font
+        run: |
+          python3 -m venv "$RUNNER_TEMP/ridgebound-font-tools"
+          "$RUNNER_TEMP/ridgebound-font-tools/bin/python" -m pip install --disable-pip-version-check --quiet 'fonttools==4.58.5'
+          "$RUNNER_TEMP/ridgebound-font-tools/bin/python" sources/ridgebound/scripts/build-native-font.py sources/ridgebound/godot
       - name: Import textures using OpenGL and check the native scene
         run: |
           project=sources/ridgebound/godot
