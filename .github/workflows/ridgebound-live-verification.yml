@@ -1,0 +1,40 @@
+name: Verify the public Ridgebound Web and Android files
+on:
+  push:
+    branches: ['codex/ridgebound-live-verification-20261118']
+permissions:
+  contents: read
+jobs:
+  public-site:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - name: Fetch the public page, engine pack and Android APK
+        shell: bash
+        run: |
+          game='https://watertube-bilibili.github.io/ridgebound'
+          expected_pack=2bda44686932fb0164d73590a21d3f30c691f08b8bf1422caf794e136c0a95be
+          expected_apk=a5e071e298b74d5006cb5aa9c066fa62ef9abc0a339e9a597f8588c8ba15bc82
+          folder="$RUNNER_TEMP/ridgebound-public"
+          mkdir -p "$folder"
+          cd "$folder"
+          for attempt in {1..10}; do
+            if curl -fsSL --max-time 20 "$game/index.html?v=expedition-20261118" -o version.html &&
+               grep -q 'ridgebound-release.*expedition-20261118' version.html &&
+               curl -fsSL --max-time 20 "$game/" -o canonical.html &&
+               grep -q 'ridgebound-release.*expedition-20261118' canonical.html; then
+              break
+            fi
+            sleep 10
+          done
+          for page in version.html canonical.html; do
+            grep -q 'ridgebound-release.*expedition-20261118' "$page"
+            grep -q 'winch-advanced' "$page"
+            grep -q 'map-import-file' "$page"
+            grep -q 'game.mjs?v=3677e186bc970040' "$page"
+          done
+          curl -fsSL --max-time 30 "$game/engine/ridgebound.2bda44686932fb01.pck" -o current.pck
+          printf '%s  %s\n' "$expected_pack" current.pck | sha256sum --check
+          curl -fsSL --max-time 90 "$game/downloads/Ridgebound-Android.apk" -o Ridgebound-Android.apk
+          printf '%s  %s\n' "$expected_apk" Ridgebound-Android.apk | sha256sum --check
+          echo "PUBLIC_WEB_AND_ANDROID_OK"
