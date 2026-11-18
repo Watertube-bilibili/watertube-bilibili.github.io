@@ -9,7 +9,7 @@ export function createUI(actions = {}) {
   const wheel = $('touch-wheel');
   let wheelDrag = null, wheelValue = 0;
   let playing = false, paused = false, toastTimer, latestState, lastFocus;
-  let compactWinch = false, winchExpanded = true, suppressedReel = false;
+  let winchExpanded = false, suppressedReel = false;
   const touchLayout = window.matchMedia('(pointer: coarse), (max-width: 900px)');
   const portraitLayout = window.matchMedia('(max-width: 700px) and (orientation: portrait)');
   const pauseDialog = $('pauseDialog'), victoryDialog = $('victoryDialog'), garageDialog = $('garage');
@@ -120,6 +120,8 @@ export function createUI(actions = {}) {
   function setPlaying(value) {
     playing = value;
     document.body.classList.toggle('playing',value);
+    setToolsOpen(false);
+    setWinchExpanded(false);
     if (value && $('loading')) $('loading').hidden = true;
     if (pauseDialog.open) pauseDialog.close();
     if (victoryDialog.open) victoryDialog.close();
@@ -140,26 +142,22 @@ export function createUI(actions = {}) {
     syncInput();
   }
   function renderWinchLayout() {
-    document.body.classList.toggle('compact-winch',compactWinch);
-    document.body.classList.toggle('winch-expanded',compactWinch && winchExpanded);
-    $('winch-panel').hidden = compactWinch && !winchExpanded;
-    $('winch-toggle').hidden = !compactWinch;
-    $('winch-close').hidden = !compactWinch;
-    $('winch-toggle').setAttribute('aria-expanded',String(winchExpanded));
-    $('winch-toggle').setAttribute('aria-label',winchExpanded?'收起绞盘控制':'展开绞盘控制');
+    document.body.classList.add('compact-winch');
+    document.body.classList.toggle('winch-expanded', winchExpanded);
+    $('winch-panel').hidden = !winchExpanded;
+    $('winch-toggle').hidden = false;
+    $('winch-close').hidden = false;
+    $('winch-toggle').setAttribute('aria-expanded', String(winchExpanded));
+    $('winch-toggle').setAttribute('aria-label', winchExpanded ? '收起绞盘控制' : '展开绞盘控制');
   }
   function setWinchExpanded(value) {
     winchExpanded = value;
-    if (!value) releaseReel();
+    if (value) setToolsOpen(false);
+    else releaseReel();
     renderWinchLayout();
   }
   function syncWinchLayout(cameraMode) {
-    const camera = Number(cameraMode) || 0;
-    document.body.dataset.camera = String(camera);
-    const nextCompact = touchLayout.matches;
-    if (nextCompact && !compactWinch) {winchExpanded = false; releaseReel();}
-    if (!nextCompact) winchExpanded = true;
-    compactWinch = nextCompact;
+    document.body.dataset.camera = String(Number(cameraMode) || 0);
     renderWinchLayout();
   }
   for (const layout of [touchLayout, portraitLayout]) {
@@ -173,6 +171,16 @@ export function createUI(actions = {}) {
   $('start').addEventListener('click', () => {if (!$('start').disabled) call('start');});
   $('pause').addEventListener('click', () => {call('pause'); setPaused(true);});
   $('help').addEventListener('click', () => {if (playing) call('pause'); setPaused(true);});
+  $('welcome-settings').addEventListener('click', () => setPaused(true));
+  $('dialog-audio').addEventListener('click', () => call('audio'));
+  const tools = $('drive-tools');
+  const toolsToggle = $('drive-tools-toggle');
+  function setToolsOpen(open) {
+    if (open) setWinchExpanded(false);
+    tools.hidden = !open;
+    toolsToggle.setAttribute('aria-expanded', String(open));
+  }
+  toolsToggle.addEventListener('click', () => setToolsOpen(tools.hidden));
   $('resume').addEventListener('click', closePause);
   $('close-dialog').addEventListener('click', closePause);
   pauseDialog.addEventListener('cancel', event => {event.preventDefault(); closePause();});
@@ -262,7 +270,12 @@ export function createUI(actions = {}) {
     $('speed-bar').style.width = `${Math.min(kmh/42*100,100)}%`;
     $('gear-display').textContent = state.speed < -.2 ? 'R · 倒车' : state.lowGear ? 'L · 低速' : 'D · 自动';
     $('surface').textContent = surfaces[state.surface] || '山野草地';
-    $('pitch').textContent = `${Math.round(Math.abs(state.pitch || 0) * 180/Math.PI)}°`;
+    const tiltAngle = angle => Math.round((Number(angle) || 0) * 180 / Math.PI);
+    for (const [angle, readout, needle] of [[state.pitch, 'pitch', 'pitch-needle'], [state.roll, 'roll-reading', 'roll-needle']]) {
+      const degrees = tiltAngle(angle);
+      $(readout).textContent = degrees + '°';
+      $(needle).setAttribute('transform', 'rotate(' + Math.max(-42, Math.min(42, degrees)) + ' 22 24)');
+    }
     $('traction-dot').style.background = state.slip > .45 || state.surface === 'water' ? '#dfa45e' : '#b0ce98';
     $('awd').classList.toggle('active',!!state.awd);
     $('awd').setAttribute('aria-pressed',String(!!state.awd));
@@ -306,6 +319,8 @@ export function createUI(actions = {}) {
     $('audio').setAttribute('aria-pressed',String(enabled));
     $('audio').setAttribute('aria-label',enabled?'关闭声音':'开启声音');
     $('audio').title=enabled?'关闭声音':'开启声音';
+    $('dialog-audio').textContent = enabled ? '声音：开启' : '声音：关闭';
+    $('dialog-audio').setAttribute('aria-pressed', String(enabled));
   }
   function showGarage() {
     resetInput();paused=true;
@@ -337,6 +352,7 @@ export function createUI(actions = {}) {
   }
   function setDamage(damage={},repairAvailable=false) {
     for(const [key,id]of [['body','body-health'],['tires','tires-health'],['suspension','suspension-health']]){const integrity=Math.max(0,Math.min(100,damage?.[key]??100));$(id).textContent=Math.round(integrity)+'%';$(id).classList.toggle('damaged',integrity<65);}
+    $('damage-summary').hidden = Object.values(damage || {}).every(value => value >= 100);
     $('repair').disabled=!repairAvailable;
     $('repair').hidden=!repairAvailable;
     $('repair').textContent='小屋维修 (T)';

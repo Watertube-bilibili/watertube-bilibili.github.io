@@ -51,11 +51,23 @@ done
 cp -- "$godot_bin" "$editor/godot"
 chmod +x "$editor/godot"
 touch "$editor/_sc_"
-ln -s -- "$(realpath -- "$template")" "$editor/editor_data/export_templates/4.6.3.stable/android_release.apk"
+python3 "$ridgebound_root/scripts/patch-android-template.py" "$template" "$editor/editor_data/export_templates/4.6.3.stable/android_release.apk" 29
 
 icon="$ridgebound_root/android/launcher-icon.png"
 test -s "$icon" || { echo "Missing Android launcher artwork: $icon" >&2; exit 1; }
 cp -- "$icon" "$project/android-launcher-icon.png"
+test -s "$project/device-profiles.json"
+if [ "${RIDGEBOUND_ANDROID_ORBIT_PROBE:-0}" = "1" ]; then
+  cp -- "$ridgebound_root/android/orbit-probe.gd" "$project/android-orbit-probe.gd"
+  cat > "$project/android-orbit-probe.tscn" <<'TSCN'
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://android-orbit-probe.gd" id="1"]
+
+[node name="AndroidOrbitProbe" type="Node"]
+script = ExtResource("1")
+TSCN
+fi
 python3 "$ridgebound_root/scripts/build-native-font.py" "$project"
 
 if [ -z "${GODOT_ANDROID_KEYSTORE_RELEASE_PATH:-}" ]; then
@@ -112,7 +124,8 @@ def set_section(name, values):
     new = f"[{name}]\n" + "\n".join(existing + [f"{k}={v}" for k, v in values.items()]).strip("\n") + "\n\n"
     cfg = cfg[:match.start()] + new + cfg[match.end():] if match else cfg.rstrip() + "\n\n" + new
 
-set_section("application", {"run/main_scene": '"res://desktop_main.tscn"'})
+start_scene = "android-orbit-probe.tscn" if (project / "android-orbit-probe.tscn").is_file() else "desktop_main.tscn"
+set_section("application", {"run/main_scene": quote("res://" + start_scene)})
 set_section("display", {
     "window/handheld/orientation": "6",
     "window/size/viewport_width": "720",
@@ -135,10 +148,10 @@ set_section("rendering", {
 })
 doc.write_text(cfg, encoding="utf-8")
 
-version_code = int(os.environ.get("RIDGEBOUND_ANDROID_VERSION_CODE", "1"))
+version_code = int(os.environ.get("RIDGEBOUND_ANDROID_VERSION_CODE", "20000"))
 if not 1 <= version_code <= 2100000000:
     raise SystemExit("Invalid Android version code.")
-version_name = quote(os.environ.get("RIDGEBOUND_ANDROID_VERSION_NAME", "1.0"))
+version_name = quote(os.environ.get("RIDGEBOUND_ANDROID_VERSION_NAME", "2.0"))
 emulator = "true" if os.environ.get("RIDGEBOUND_ANDROID_ENABLE_X86_64") == "1" else "false"
 presets = f"""[preset.0]
 name="Android"
@@ -147,7 +160,7 @@ runnable=true
 dedicated_server=false
 custom_features="ridgebound_android"
 export_filter="all_resources"
-include_filter="assets/Ridgebound-UI-OFL.txt"
+include_filter="assets/Ridgebound-UI-OFL.txt, device-profiles.json"
 exclude_filter="tests/*, android-launcher-icon.png"
 export_path=""
 script_export_mode=2
@@ -158,15 +171,15 @@ architectures/arm64-v8a=true
 architectures/armeabi-v7a=false
 architectures/x86=false
 architectures/x86_64={emulator}
-package/unique_name="io.github.watertube.ridgebound"
-package/name="山野之间"
+package/unique_name="io.github.watertube.ridgebound.expedition"
+package/name="山野之间 · 远征"
 package/signed=true
 launcher_icons/main_192x192="res://android-launcher-icon.png"
 launcher_icons/adaptive_foreground_432x432="res://android-launcher-icon.png"
 version/code={version_code}
 version/name={version_name}
 screen/immersive_mode=true
-screen/edge_to_edge=false
+screen/edge_to_edge=true
 permissions/internet=false
 """
 (project / "export_presets.cfg").write_text(presets, encoding="utf-8")
@@ -186,7 +199,8 @@ run_godot "$build_dir/export.log" --export-release Android "$build_dir/Ridgeboun
 "$sdk_dir/build-tools/$sdk_tools/apksigner" verify --verbose --print-certs "$build_dir/Ridgebound.apk"
 "$sdk_dir/build-tools/$sdk_tools/zipalign" -c -P 16 4 "$build_dir/Ridgebound.apk"
 "$sdk_dir/build-tools/$sdk_tools/aapt" dump badging "$build_dir/Ridgebound.apk" | tee "$build_dir/badging.log"
-grep -q "package: name='io.github.watertube.ridgebound'" "$build_dir/badging.log"
+grep -F -q "package: name='io.github.watertube.ridgebound.expedition'" "$build_dir/badging.log"
+grep -F -x -q "sdkVersion:'29'" "$build_dir/badging.log"
 grep -E -q 'native-code:.*arm64-v8a' "$build_dir/badging.log"
 grep -E -q '^application-icon-[0-9]+:.+res/' "$build_dir/badging.log"
 python3 - "$template" "$build_dir/Ridgebound.apk" <<'PY'
@@ -202,6 +216,10 @@ with ZipFile(argv[1]) as template_zip, ZipFile(argv[2]) as apk_zip:
         raise SystemExit("The APK still contains default launcher artwork.")
     if any("android-launcher-icon.png" in path for path in apk_zip.namelist()):
         raise SystemExit("Launcher source should only be represented in mipmap resources.")
+    if "assets/device-profiles.json" not in apk_zip.namelist():
+        raise SystemExit("The offline device profiles are missing from the APK.")
+    if b"--edge_to_edge" not in apk_zip.read("assets/_cl_"):
+        raise SystemExit("The APK did not opt in to edge-to-edge rendering.")
 PY
 "$sdk_dir/build-tools/$sdk_tools/aapt" dump xmltree "$build_dir/Ridgebound.apk" AndroidManifest.xml > "$build_dir/manifest.log"
 grep -E -q 'screenOrientation.*(fullUser|0x0*d[[:space:]]*$)' "$build_dir/manifest.log"

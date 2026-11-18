@@ -1,8 +1,10 @@
 extends CanvasLayer
 ## Native controller setup. Browser controls stay in the web interface.
 signal action_pressed(action: String)
+signal brake_force_changed(force_newtons: float)
 
 const BRIDGE_URL = "http://127.0.0.1:8767"
+const ScreenFit = preload("res://screen_fit.gd")
 const CONFIG_PATH = "user://desktop-controls.cfg"
 const BINDING_LABELS = {
 	"steer": "转向", "throttle": "油门", "brake": "刹车", "clutch": "离合器"
@@ -36,6 +38,7 @@ var _force_strength = 0.35
 var _force_sent = false
 
 var interface_theme: Theme
+var brake_max_force_n := 1400.0
 var _dialog: AcceptDialog
 var _device_label: Label
 var _status_label: Label
@@ -51,7 +54,7 @@ var _capture_best: Dictionary = {}
 var _capture_instructions = "先让方向盘回中、踏板松开，再选择要绑定的操作。"
 
 func _ready() -> void:
-	layer = 4
+	layer = 15
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_load_settings()
 	_build_dialog()
@@ -252,7 +255,17 @@ func open_settings() -> void:
 	_capture_key = ""
 	_capture_instructions = "先让方向盘回中、踏板松开，再选择要绑定的操作。"
 	_refresh_dialog()
-	_dialog.popup_centered()
+	_layout_dialog(true)
+
+func _layout_dialog(open_now: bool = false) -> void:
+	if not is_instance_valid(_dialog) or (not open_now and not _dialog.visible):
+		return
+	var safe := ScreenFit.margins(get_viewport())
+	var view := get_viewport().get_visible_rect().size
+	var origin := Vector2(safe.x, safe.y) + Vector2(16, 16)
+	var available := view - Vector2(safe.x + safe.z, safe.y + safe.w) - Vector2(32, 32)
+	var size := Vector2(minf(660.0, available.x), minf(590.0, available.y))
+	_dialog.popup(Rect2i(Rect2(origin + (available - size) * 0.5, size)))
 
 func _connected_axes() -> Dictionary:
 	var axes: Dictionary = {}
@@ -324,6 +337,9 @@ func _load_settings() -> void:
 	var config := ConfigFile.new()
 	if config.load(CONFIG_PATH) != OK:
 		return
+	var saved_force: Variant = config.get_value("pedals", "max_brake_force_n", 1400.0)
+	if (saved_force is float or saved_force is int) and is_finite(float(saved_force)):
+		brake_max_force_n = clampf(float(saved_force), 300.0, 2500.0)
 	var strength = config.get_value("feedback", "strength", 0.35)
 	if (strength is float or strength is int) and is_finite(float(strength)):
 		_force_strength = clampf(float(strength), 0.0, 0.60)
@@ -346,6 +362,7 @@ func _load_settings() -> void:
 func _save_settings() -> void:
 	var config := ConfigFile.new()
 	config.set_value("feedback", "strength", _force_strength)
+	config.set_value("pedals", "max_brake_force_n", brake_max_force_n)
 	for key in _bindings:
 		config.set_value("axes", key, _bindings[key])
 	config.save(CONFIG_PATH)
@@ -356,14 +373,21 @@ func _build_dialog() -> void:
 		_dialog.theme = interface_theme
 	_dialog.title = "方向盘与踏板"
 	_dialog.ok_button_text = "返回"
-	_dialog.min_size = Vector2i(570, 400)
+	_dialog.min_size = Vector2i(360, 260)
 	_dialog.exclusive = true
 	add_child(_dialog)
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true
+	_dialog.add_child(scroll)
 	var content := VBoxContainer.new()
-	_dialog.add_child(content)
+	content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 8)
+	scroll.add_child(content)
 
 	var gamepad_help := Label.new()
 	gamepad_help.text = "手柄：左摇杆转向，RT 油门，LT 刹车，B 倒车\nY 视角，X 低速挡，A 四驱，LB 挂绳，RB 收绳，右方向键松绳"
+	gamepad_help.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(gamepad_help)
 	_device_label = Label.new()
 	content.add_child(_device_label)
@@ -375,7 +399,7 @@ func _build_dialog() -> void:
 		var label := Label.new()
 		label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		label.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
-		label.custom_minimum_size.x = 320.0
+		label.custom_minimum_size.x = 160.0 if OS.has_feature("android") else 260.0
 		_binding_labels[key] = label
 		row.add_child(label)
 		var bind_button := Button.new()
@@ -387,6 +411,22 @@ func _build_dialog() -> void:
 		clear_button.text = "清除"
 		clear_button.pressed.connect(_clear_binding.bind(key))
 		row.add_child(clear_button)
+	var calibration := HBoxContainer.new()
+	content.add_child(calibration)
+	var calibration_label := Label.new()
+	calibration_label.text = "满行程制动力"
+	calibration_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	calibration.add_child(calibration_label)
+	var max_force := SpinBox.new()
+	max_force.min_value = 300.0
+	max_force.max_value = 2500.0
+	max_force.step = 50.0
+	max_force.suffix = "N"
+	max_force.value = brake_max_force_n
+	max_force.tooltip_text = "设定踏板踩到底在游戏中对应的力"
+	max_force.value_changed.connect(_set_brake_force)
+	calibration.add_child(max_force)
+
 	_capture_label = Label.new()
 	content.add_child(_capture_label)
 	content.add_child(HSeparator.new())
@@ -418,11 +458,17 @@ func _build_dialog() -> void:
 	content.add_child(_status_label)
 	var emergency := Label.new()
 	emergency.text = "F8 立即停用力反馈。重新启用前，先在这里关闭再打开。"
+	emergency.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	content.add_child(emergency)
 	_retry_button = Button.new()
 	_retry_button.text = "启动方向盘辅助程序"
 	_retry_button.pressed.connect(_start_bridge)
 	content.add_child(_retry_button)
+
+func _set_brake_force(value: float) -> void:
+	brake_max_force_n = clampf(value, 300.0, 2500.0)
+	_save_settings()
+	brake_force_changed.emit(brake_max_force_n)
 
 func _refresh_dialog() -> void:
 	var names := PackedStringArray()
