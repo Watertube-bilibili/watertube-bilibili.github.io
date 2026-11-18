@@ -1,1 +1,0 @@
-.beta-save-home{position:fixed;left:16px;top:82px;z-index:24;background:#13232e;border:1px solid #536c65;border-radius:6px;padding:5px 9px;color:#d5ff9c;font:10px/1.5 system-ui;text-decoration:none}@media(max-width:700px),(pointer:coarse){.beta-save-home{top:calc(env(safe-area-inset-top) + 53px);left:12px;max-width:calc(100vw - 24px)}}
