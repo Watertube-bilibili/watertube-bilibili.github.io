@@ -133,10 +133,9 @@ def screenshot(directory, name):
     return struct.unpack(">II", png[16:24])
 
 
-def capture(directory, label, rotation, notch, app):
+def capture(directory, label, rotation, notch, app, rotation_command):
     before = wait_probe("driving UI is ready", lambda s: s["active"])
-    # The wm user-rotation command is unavailable on Android 10.
-    adb("shell", "settings", "put", "system", "user_rotation", rotation)
+    adb("shell", "wm", rotation_command, "lock", rotation)
 
     def matches(s):
         return (s["active"] and s["rotation"] == rotation
@@ -169,12 +168,14 @@ def main():
     overlay = "com.android.internal.display.cutout.emulation.tall"
     notch = False
     restore_notch = False
-    rotation_keys = ("accelerometer_rotation", "user_rotation")
-    rotation_settings = {
-        key: adb("shell", "settings", "get", "system", key).strip() for key in rotation_keys
-    }
+    # Android 10 used set-user-rotation. Newer releases dropped the prefix.
+    wm_help = adb("shell", "wm", "help", check=False)
+    legacy_rotation = "set-user-rotation" in wm_help
+    rotation_command = "set-user-rotation" if legacy_rotation else "user-rotation"
+    fix_command = "set-fix-to-user-rotation" if legacy_rotation else "fixed-to-user-rotation"
     try:
-        adb("shell", "settings", "put", "system", "accelerometer_rotation", 0)
+        adb("shell", "wm", fix_command, "enabled")
+        adb("shell", "wm", rotation_command, "lock", 0)
         overlays = adb("shell", "cmd", "overlay", "list", "--user", "0", check=False)
         match = next((line for line in overlays.splitlines() if overlay in line), "")
         if match:
@@ -199,9 +200,9 @@ def main():
         adb("shell", "input", "touchscreen", "tap", round(x * width / vw), round(y * height / vh))
         wait_probe("real Android tap on the primary menu action started driving", lambda s: s["active"], timeout=25)
         print("ANDROID_START_BUTTON_TAP_OK")
-        capture(output, "portrait", 0, notch, app)
-        capture(output, "landscape", 1, notch, app)
-        capture(output, "reverse-landscape", 3, notch, app)
+        capture(output, "portrait", 0, notch, app, rotation_command)
+        capture(output, "landscape", 1, notch, app, rotation_command)
+        capture(output, "reverse-landscape", 3, notch, app, rotation_command)
         log = adb("logcat", "-d", "-s", *RUNTIME_TAGS)
         if not re.search(r"Godot Engine v4\.6\.3", log) or re.search(r"FATAL EXCEPTION|SCRIPT ERROR:", log):
             raise RuntimeError("Android runtime failed during orbit verification")
@@ -226,12 +227,8 @@ def main():
                 screenshot(output, "failure")
             except (OSError, RuntimeError, subprocess.SubprocessError):
                 pass
-        for key in reversed(rotation_keys):
-            value = rotation_settings[key]
-            if value == "null":
-                adb("shell", "settings", "delete", "system", key, check=False)
-            else:
-                adb("shell", "settings", "put", "system", key, value, check=False)
+        adb("shell", "wm", rotation_command, "free", check=False)
+        adb("shell", "wm", fix_command, "disabled" if legacy_rotation else "default", check=False)
         if restore_notch:
             adb("shell", "cmd", "overlay", "disable", "--user", "0", overlay, check=False)
 
