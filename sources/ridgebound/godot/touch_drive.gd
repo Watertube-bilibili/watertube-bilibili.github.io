@@ -3,6 +3,9 @@ extends CanvasLayer
 
 signal action_pressed(action: String)
 
+const ScreenFit = preload("res://screen_fit.gd")
+const UI_FONT_PATH := "res://assets/ridgebound-ui.ttf"
+
 const ACCENT := Color("#d0e78d")
 const INK := Color("#17211e")
 const PAPER := Color("#f1e9d5")
@@ -20,6 +23,9 @@ class DriveSurface extends Control:
 		controller.draw_controls(self)
 
 var _surface: DriveSurface
+var _safe_margins := Vector4.ZERO
+var _screen_poll := 0.0
+var _label_font: Font
 var _driving_active := false
 var _wheel_center := Vector2.ZERO
 var _wheel_radius := 0.0
@@ -39,6 +45,7 @@ var _throttle_idle: StyleBoxFlat
 
 func _ready() -> void:
 	layer = 9
+	_label_font = load(UI_FONT_PATH) as Font if ResourceLoader.exists(UI_FONT_PATH) else ThemeDB.fallback_font
 	_surface = DriveSurface.new()
 	_surface.controller = self
 	_surface.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -101,16 +108,10 @@ func _layout_controls() -> void:
 	# A finger held during rotation used the old coordinate space.
 	reset_input()
 	var extent := get_viewport().get_visible_rect().size
-	var left_edge := 20.0
-	var right_edge := extent.x - 20.0
-	var bottom_edge := extent.y - 20.0
-	if OS.has_feature("android"):
-		var screen_size := Vector2(DisplayServer.screen_get_size())
-		var safe := Rect2(DisplayServer.get_display_safe_area())
-		if screen_size.x > 0.0 and screen_size.y > 0.0 and safe.has_area():
-			left_edge += clampf(safe.position.x / screen_size.x, 0.0, 0.12) * extent.x
-			right_edge -= clampf(1.0 - safe.end.x / screen_size.x, 0.0, 0.12) * extent.x
-			bottom_edge -= clampf(1.0 - safe.end.y / screen_size.y, 0.0, 0.12) * extent.y
+	_safe_margins = ScreenFit.margins(get_viewport())
+	var left_edge := 18.0 + _safe_margins.x
+	var right_edge := extent.x - 18.0 - _safe_margins.z
+	var bottom_edge := extent.y - 18.0 - _safe_margins.w
 	var portrait := extent.y >= extent.x
 	var span := maxf(1.0, right_edge - left_edge)
 	_wheel_radius = minf(clampf(extent.x * 0.145, 55.0, 82.0) if portrait else 70.0, span * 0.235)
@@ -217,6 +218,11 @@ func _end_touch(index: int) -> bool:
 	return true
 
 func _process(delta: float) -> void:
+	_screen_poll += delta
+	if _screen_poll >= 0.25:
+		_screen_poll = 0.0
+		if not ScreenFit.margins(get_viewport()).is_equal_approx(_safe_margins):
+			_layout_controls()
 	if not _driving_active:
 		return
 	var next := _steer if _wheel_finger >= 0 else move_toward(_shown_steer, 0.0, delta * 7.0)
@@ -238,7 +244,7 @@ func draw_controls(canvas: Control) -> void:
 	canvas.draw_circle(center, radius * 0.27, MUTED.darkened(0.35), false, 1.0, true)
 	var mark := -PI * 0.5 + rotation
 	canvas.draw_arc(center, radius - 4.0, mark - 0.07, mark + 0.07, 8, ACCENT, 4.0, true)
-	var font := ThemeDB.fallback_font
+	var font := _label_font if _label_font != null else ThemeDB.fallback_font
 	for i in range(_pedal_rects.size()):
 		var rect := _pedal_rects[i]
 		var held := _pedal_is_held(PEDALS[i])

@@ -41,10 +41,25 @@ async function loadWasm(report){
  }
  return new Response(data,{headers:{'Content-Type':'application/wasm'}});
 }
+async function loadPack() {
+ const pack = assets.pack;
+ if (pack.gzip && typeof DecompressionStream === 'function') {
+  try {
+   const packed = await download(pack.gzip, pack.compressedBytes, pack.compressedSha256, () => {});
+   const stream = new Blob([packed.buffer]).stream().pipeThrough(new DecompressionStream('gzip'));
+   const buffer = await new Response(stream).arrayBuffer();
+   if (buffer.byteLength !== pack.bytes || !await valid(buffer, pack.sha256)) throw new Error('车辆和地图资源校验失败');
+   return {buffer};
+  } catch (error) {
+   console.warn('正在读取兼容版车辆和地图资源', error.message);
+  }
+ }
+ return download(pack.url, pack.bytes, pack.sha256, () => {});
+}
 function loadScript(){return new Promise((resolve,reject)=>{const el=document.createElement('script');el.src=assetURL(assets.loader.url)+'?v='+assets.loader.sha256.slice(0,16);el.onload=resolve;el.onerror=()=>reject(new Error('引擎脚本未能载入'));document.head.append(el);});}
 export async function bootEngine({canvas,report=()=>{},onError=console.error}){
  // Fetch script, game pack and compact engine in parallel; no service-worker activation wait.
- const [wasm,pack]=await Promise.all([loadWasm(report),download(assets.pack.url,assets.pack.bytes,assets.pack.sha256,()=>{}),loadScript()]);
+ const [wasm,pack]=await Promise.all([loadWasm(report),loadPack(),loadScript()]);
  if(typeof window.Engine?.loadFromResponse!=='function')throw new Error('启动器版本不匹配，请刷新页面');
  const base=new URL('ridgebound',root).href;
  await window.Engine.loadFromResponse(base,wasm);

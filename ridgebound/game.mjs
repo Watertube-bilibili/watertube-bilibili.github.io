@@ -2,8 +2,18 @@ import {routeX,checkpoints,emptyState,worldBounds,branches,branchX,repairStation
 import {createUI} from './ui.mjs?v=43e5279a8f32c039';
 import {bootEngine,bootStats} from './boot.mjs?v=f22f4cde6434d488';
 import {createControllers} from './controllers.mjs';
+import {createDeviceLayout} from './device-layout.mjs';
 const STORAGE='watertube-ridgebound-v1';
 const QUALITY_KEY = 'watertube-ridgebound-quality';
+const VEHICLE_KEY = 'watertube-ridgebound-vehicle';
+const BRAKE_FORCE_KEY = 'watertube-ridgebound-max-brake-force';
+const VEHICLES = ['rover', 'yuchuan'];
+let vehicleId = 'rover';
+let maxBrakeForce = 1400;
+function normalizedBrakeForce(value) {
+ const number = String(value ?? '').trim() === '' ? NaN : Number(value);
+ return Number.isFinite(number) ? Math.round(Math.min(2500, Math.max(300, number))) : 1400;
+}
 const MAP_TEMP_PATH = '/tmp/ridgebound-import.zip';
 const MAX_MAP_BYTES = 128 * 1024 * 1024;
 const qualityOptions = ['auto', 'quality', 'performance'];
@@ -11,6 +21,9 @@ let graphicsQuality = 'auto';
 try {
  const savedQuality = localStorage.getItem(QUALITY_KEY);
  if (qualityOptions.includes(savedQuality)) graphicsQuality = savedQuality;
+ const savedVehicle = localStorage.getItem(VEHICLE_KEY);
+ if (VEHICLES.includes(savedVehicle)) vehicleId = savedVehicle;
+ maxBrakeForce = normalizedBrakeForce(localStorage.getItem(BRAKE_FORCE_KEY));
 } catch {}
 let engine;
 let activeImport = 0;
@@ -19,17 +32,26 @@ const defaults=()=>({coins:0,snowTires:false,snowUnlocked:false,awards:[],progre
 function readSave(){try{const p=JSON.parse(localStorage.getItem(STORAGE)||'null');if(!p||typeof p!=='object')return defaults();return{coins:Number.isFinite(p.coins)?Math.max(0,Math.floor(p.coins)):0,snowTires:p.snowTires===true,snowUnlocked:p.snowUnlocked===true,awards:Array.isArray(p.awards)?p.awards.filter(x=>typeof x==='string').slice(0,8):[],progress:{forest:Math.max(0,Math.min(4,Math.floor(Number(p.progress?.forest)||0))),snow:Math.max(0,Math.min(4,Math.floor(Number(p.progress?.snow)||0)))},region:p.region==='snow'&&p.snowUnlocked?'snow':'forest'};}catch{return defaults();}}
 const save=readSave();let state=emptyState(save.region,save.snowTires),ui,controllers,playing=false,paused=false,selecting=false,won=false,ready=false,bootSync=true,resetPending=null,stuckHint=0,streamHint=0,lastEngineReport=0;
 let audioEnabled=false,audioCtx,engineTone,engineGain;
+let orbitDrag = null;
 const canvas=document.createElement('canvas');canvas.id='game-canvas';canvas.tabIndex=-1;canvas.setAttribute('aria-label','山野之间 Godot 3D 场景');document.getElementById('viewport').append(canvas);
 window.ridgeboundInput={active:false};window.ridgeboundCommands=[];
-window.ridgeboundBootstrap={region:save.region,snowTires:save.snowTires,progress:save.progress[save.region]>0&&save.progress[save.region]<4?save.progress[save.region]:0};
+window.ridgeboundBootstrap={region:save.region,snowTires:save.snowTires,progress:save.progress[save.region]>0&&save.progress[save.region]<4?save.progress[save.region]:0,vehicleId,maxForceN:maxBrakeForce};
 const send=(type,data={})=>window.ridgeboundCommands.push({type,...data});
 function persist(){try{localStorage.setItem(STORAGE,JSON.stringify(save));}catch{ui?.toast('浏览器未允许保存，本次探索仍可继续');}}
 function refreshGarage() {
  ui?.updateGarage({...save, region:state.region, customMapName:state.customMap?.name || ''});
+ for (const id of VEHICLES) {
+  const button = document.getElementById('vehicle-' + id);
+  const selected = id === vehicleId;
+  button.disabled = !ready;
+  button.classList.toggle('selected', selected);
+  button.setAttribute('aria-pressed', String(selected));
+ }
+ document.getElementById('garage-brake-fault').hidden = !state.brakePedalBroken;
 }
 function targetName(i){return(state.region==='snow'?['冰川前哨','蓝冰山口','风雪垭口','雪线营地']:checkpoints.map(x=>x.name))[Math.min(3,i)];}
 function rewardCheckpoints(previous){for(let i=previous;i<state.checkpoint;i++){const key=state.region+':'+i;if(!save.awards.includes(key)){save.awards.push(key);save.coins+=60;ui.toast('抵达 '+targetName(i)+' · +60 游戏金币');}else ui.toast('抵达 '+targetName(i));}save.progress[state.region]=state.checkpoint;if(state.completed&&state.region==='forest')save.snowUnlocked=true;persist();refreshGarage();}
-function clearInput(){ui?.resetInput();window.ridgeboundInput={active:false};}
+function clearInput(){cancelOrbitDrag();ui?.resetInput();window.ridgeboundInput={active:false};}
 function closeDialogs(){document.querySelectorAll('dialog[open]').forEach(d=>d.close());}
 function pause(){if(!playing)return;paused=true;clearInput();ui.setPaused(true);}
 function resume(){closeDialogs();paused=false;ui.setPaused(false);clearInput();}
@@ -46,14 +68,14 @@ function connect(anchor) {
 }
 function startAudio(){if(!audioEnabled)return;try{if(!audioCtx){audioCtx=new(window.AudioContext||window.webkitAudioContext)();engineTone=audioCtx.createOscillator();engineTone.type='sawtooth';const filter=audioCtx.createBiquadFilter();filter.type='lowpass';filter.frequency.value=180;engineGain=audioCtx.createGain();engineGain.gain.value=.018;engineTone.connect(filter).connect(engineGain).connect(audioCtx.destination);engineTone.start();}audioCtx.resume();}catch{audioEnabled=false;ui.setAudio(false);}}
 const actions={
- start(){if(!ready)return;playing=true;paused=false;send('start');ui.setPlaying(true);ui.setPaused(false);refreshGarage();startAudio();ui.toast(matchMedia('(pointer: coarse), (max-width: 900px)').matches ? '左手转方向盘，右手操作踏板' : 'W / 方向键驾驶 · C 切换车内视角 · 泥地用低速挡 L');},
+ start(){if(!ready)return;playing=true;paused=false;send('vehicle',{id:vehicleId});send('start');ui.setPlaying(true);ui.setPaused(false);refreshGarage();startAudio();ui.toast(matchMedia('(pointer: coarse), (max-width: 900px)').matches ? '左手转方向盘，右手操作踏板' : 'W / 方向键驾驶 · C 切换车内视角 · 泥地用低速挡 L');},
  pause(){if(paused)resume();else pause();},resume,
  recover(){if(!ready)return;send('recover');selecting=false;ui.showWinchTargets(false);resume();ui.toast('已返回最近检查点');},
  toggleGear(){if(!ready)return;send('gear');ui.toast(state.lowGear?'高速挡 · 适合平缓路面':'低速挡 · 更强扭矩，适合泥地和陡坡');},
  toggleAWD(){if(!ready)return;send('awd');ui.toast(state.awd?'两轮驱动 · 抓地力降低':'四轮驱动已启用');},
  winch(){if(!ready)return;if(state.winch){ui.toast('按住收绳牵引，按 Q 或释放卸钩');return;}const list=candidates();if(!list.length){ui.toast('24 米内没有锚点，请靠近路边树木');return;}if(selecting){connect(list[0]);return;}selecting=true;ui.showWinchTargets(true);ui.toast('点击高亮锚点 · 再按 E 快速连接');},
  detach(){send('detach');selecting=false;ui.showWinchTargets(false);ui.toast('绞盘已释放');},
- camera(){send('camera');ui.toast(['高位观察','车内驾驶 · 方向盘与仪表联动','跟随视角'][state.cameraMode||0]);},
+ camera(){cancelOrbitDrag();send('camera');ui.toast(['高位观察','车内驾驶 · 方向盘与仪表联动','跟随视角'][state.cameraMode||0]);},
  audio(){audioEnabled=!audioEnabled;ui.setAudio(audioEnabled);if(audioEnabled)startAudio();else audioCtx?.suspend();},
  photo(){if(!ready)return;send('photo');ui.toast('正在保存这片风景…');},
  restart(){if(!ready)return;closeDialogs();resetWorld(state.region,0,true);ui.toast('重新出发 · 金币与雪地胎已保留');},
@@ -68,6 +90,26 @@ const mapFileInput = document.getElementById('map-import-file');
 const mapImportButton = document.getElementById('map-import-button');
 const mapImportStatus = document.getElementById('map-import-status');
 const graphicsSelect = document.getElementById('graphics-quality');
+const brakeForceInput = document.getElementById('brake-force-calibration');
+brakeForceInput.value = String(maxBrakeForce);
+brakeForceInput.addEventListener('change', () => {
+ maxBrakeForce = normalizedBrakeForce(brakeForceInput.value);
+ brakeForceInput.value = String(maxBrakeForce);
+ try { localStorage.setItem(BRAKE_FORCE_KEY, String(maxBrakeForce)); } catch {}
+ if (ready) send('pedal_calibration', {maxForceN:maxBrakeForce});
+});
+for (const id of VEHICLES) {
+ document.getElementById('vehicle-' + id).addEventListener('click', () => {
+  if (!ready || id === vehicleId) return;
+  clearInput();
+  vehicleId = id;
+  try { localStorage.setItem(VEHICLE_KEY, id); } catch {}
+  send('vehicle', {id});
+  refreshGarage();
+ });
+}
+const brakeFault = document.getElementById('brake-fault');
+const brakePressure = document.getElementById('brake-pressure-hud');
 
 function reportImport(message) {
  if (mapImportStatus) mapImportStatus.textContent = message;
@@ -138,8 +180,9 @@ if (graphicsSelect) {
 
 const start=document.getElementById('start');start.disabled=true;
 const loading=document.getElementById('loading');let loadingText=loading.lastChild;loadingText.textContent=' 正在加载越野世界…';
+const deviceLayout = createDeviceLayout();
 const targets=document.createElement('div');targets.id='anchorTargets';targets.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:12';document.body.append(targets);
-function drawAnchors(){if(!selecting){targets.replaceChildren();return;}const list=candidates(),ids=list.map(a=>a.id).join();if(targets.dataset.ids!==ids||!targets.children.length){targets.replaceChildren();targets.dataset.ids=ids;list.forEach((a,i)=>{const b=document.createElement('button');b.className='anchor-marker';b.style.cssText='position:absolute;pointer-events:auto;transform:translate(-50%,-50%);border:2px solid #ffe1a3;border-radius:50%;background:#254534ee;color:#ffe4ad;width:48px;height:48px;font:600 12px sans-serif;touch-action:manipulation';b.setAttribute('aria-label','连接锚点 '+(i+1));b.addEventListener('click',()=>connect(a));targets.append(b);});}list.forEach((a,i)=>{const b=targets.children[i];if(!b)return;b.style.display=a.visible&&a.sx>.02&&a.sx<.98&&a.sy>.08&&a.sy<.85?'block':'none';b.style.left=a.sx*innerWidth+'px';b.style.top=a.sy*innerHeight+'px';b.textContent=Math.round(a.d)+'m';});}
+function drawAnchors(){if(!selecting){targets.replaceChildren();return;}const list=candidates(),ids=list.map(a=>a.id).join();if(targets.dataset.ids!==ids||!targets.children.length){targets.replaceChildren();targets.dataset.ids=ids;list.forEach((a,i)=>{const b=document.createElement('button');b.className='anchor-marker';b.style.cssText='position:absolute;pointer-events:auto;transform:translate(-50%,-50%);border:2px solid #ffe1a3;border-radius:50%;background:#254534ee;color:#ffe4ad;width:48px;height:48px;font:600 12px sans-serif;touch-action:manipulation';b.setAttribute('aria-label','连接锚点 '+(i+1));b.addEventListener('click',()=>connect(a));targets.append(b);});}list.forEach((a,i)=>{const b=targets.children[i];if(!b)return;const x=a.sx*innerWidth,y=a.sy*innerHeight;b.style.display=a.visible&&a.sx>.02&&a.sx<.98&&a.sy>.08&&a.sy<.85&&deviceLayout.contains(x,y,24)?'block':'none';b.style.left=x+'px';b.style.top=y+'px';b.textContent=Math.round(a.d)+'m';});}
 const map=document.getElementById('minimap'),ctx=map.getContext('2d');map.width=320;map.height=320;
 const mapButton=document.getElementById('map-toggle');let mapOverview=false;
 const mapRoads = [
@@ -215,7 +258,11 @@ window.onRidgeState=next=>{
  lastEngineReport=performance.now();const previous=state;
  state=next;
  if (next.importResult) finishImport(next.importResult);
- if (next.region !== previous.region) refreshGarage();
+ if (next.region !== previous.region || next.vehicleId !== previous.vehicleId || next.brakePedalBroken !== previous.brakePedalBroken) refreshGarage();
+ brakeFault.hidden = !next.brakePedalBroken;
+ const pedalForce = Number.isFinite(next.pedalForceN) ? Math.max(0, Math.round(next.pedalForceN)) : 0;
+ brakePressure.hidden = !pedalForce;
+ if (pedalForce) brakePressure.textContent = '制动 ' + pedalForce + ' N';
  if(resetPending){if(next.region===resetPending.region&&next.checkpoint===resetPending.checkpoint){resetPending=null;bootSync=false;}else return;}
  if(ready&&!bootSync&&next.region!=='custom'&&next.region===previous.region&&next.checkpoint>previous.checkpoint)rewardCheckpoints(previous.checkpoint);
  if(playing&&next.region!=='custom'&&next.completed&&!won){won=true;paused=true;clearInput();refreshGarage();ui.showVictory(state);}
@@ -224,10 +271,41 @@ window.onRidgeState=next=>{
  if(state.blocked&&performance.now()-streamHint>6000){streamHint=performance.now();ui.toast('正在准备前方路段 · 已为你停稳');}
 };
 window.onRidgePhoto=data=>{const a=document.createElement('a');a.download='山野之间-'+(state.region==='snow'?'珠峰雪线':'松风谷')+'.png';a.href=data;a.click();ui.toast('风景照片已保存');};
-window.onRidgeReady=()=>{ready=true;bootSync=false;resetPending=null;bootStats.readyMs=performance.now()-bootStats.startedAt;start.disabled=false;ui.setReady?.(true);loading.hidden=true;refreshGarage();send('quality',{profile:graphicsQuality});};
-let drag=null;canvas.addEventListener('pointerdown',e=>{if(e.button===0){drag={id:e.pointerId,x:e.clientX};canvas.setPointerCapture(e.pointerId);}});canvas.addEventListener('pointermove',e=>{if(drag&&drag.id===e.pointerId&&playing&&!paused){send('orbit',{delta:(drag.x-e.clientX)*.006});drag.x=e.clientX;}});for(const name of['pointerup','pointercancel'])canvas.addEventListener(name,()=>drag=null);
+window.onRidgeReady=()=>{ready=true;bootSync=false;resetPending=null;bootStats.readyMs=performance.now()-bootStats.startedAt;start.disabled=false;ui.setReady?.(true);loading.hidden=true;refreshGarage();send('quality',{profile:graphicsQuality});send('vehicle',{id:vehicleId});send('pedal_calibration',{maxForceN:maxBrakeForce});};
+const orbitSensitivity = 0.006;
+function canOrbit() {
+ const mode = state.cameraMode ?? 0;
+ return ready && playing && !paused && !selecting && !resetPending
+   && (mode === 0 || mode === 1) && !document.hidden && !document.querySelector('dialog[open]');
+}
+function cancelOrbitDrag(pointerId = orbitDrag?.id) {
+ if (!orbitDrag || orbitDrag.id !== pointerId) return;
+ orbitDrag = null;
+ if (canvas.hasPointerCapture(pointerId)) canvas.releasePointerCapture(pointerId);
+}
+canvas.addEventListener('pointerdown', event => {
+ if (event.button !== 0 || orbitDrag || !canOrbit()) return;
+ orbitDrag = {id:event.pointerId, x:event.clientX, y:event.clientY};
+ try { canvas.setPointerCapture(event.pointerId); } catch {}
+ event.preventDefault();
+});
+window.addEventListener('pointermove', event => {
+ if (orbitDrag?.id !== event.pointerId) return;
+ if (!canOrbit() || (event.pointerType === 'mouse' && !(event.buttons & 1))) {
+  cancelOrbitDrag(event.pointerId);
+  return;
+ }
+ const delta = (orbitDrag.x - event.clientX) * orbitSensitivity;
+ const pitchDelta = (event.clientY - orbitDrag.y) * orbitSensitivity;
+ orbitDrag.x = event.clientX;
+ orbitDrag.y = event.clientY;
+ if (delta || pitchDelta) send('orbit', {delta, pitchDelta});
+});
+for (const name of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+ window.addEventListener(name, event => cancelOrbitDrag(event.pointerId), true);
+}
 canvas.addEventListener('contextmenu',e=>e.preventDefault());
-addEventListener('blur',()=>{if(playing&&!paused)pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden){clearInput();if(playing&&!paused)pause();}});
+addEventListener('blur',()=>{cancelOrbitDrag();if(playing&&!paused)pause();});document.addEventListener('visibilitychange',()=>{if(document.hidden){clearInput();if(playing&&!paused)pause();}});
 let fpsFrames=0,fpsTime=0,frameLast=0;
 function frame(now){requestAnimationFrame(frame);const dt=frameLast?Math.min((now-frameLast)/1000,.2):1/60;frameLast=now;fpsFrames++;fpsTime+=dt;const pad=controllers.sample(),keys=ui.input;const active=ready&&playing&&!paused&&!document.querySelector('dialog[open]')&&!resetPending&&!document.hidden;
  window.ridgeboundInput=active?{active:true,throttle:Math.max(keys.throttle,pad.throttle||0),reverse:Math.max(keys.reverse,pad.reverse||0),steer:Math.abs(keys.steer)>.01?keys.steer:(pad.steer||0),brake:keys.brake,brakeValue:keys.brake?1:(pad.brakeValue||(pad.brake?1:0)),reel:keys.reel||pad.reel,payout:keys.payout||false,clutch:pad.clutch||0}:{active:false};

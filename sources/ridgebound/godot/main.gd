@@ -1,5 +1,7 @@
 extends Node3D
 
+const RoverCamera := preload("res://rover_camera.gd")
+const GarageState := preload("res://garage_state.gd")
 const ExpeditionArt := preload("res://expedition_art.gd")
 const RecoveryWinch := preload("res://recovery_winch.gd")
 
@@ -9,10 +11,19 @@ const MapImporter = preload("res://map_importer.gd")
 var simulation=OffroadPhysics.new()
 var state:Dictionary
 var chunks:ChunkTerrain
-var camera:Camera3D
+var camera: RoverCamera
 var vehicle:Node3D
 var body:Node3D
 var wheels:Array=[]
+var wheel_spins: Array[Node3D] = []
+var wheel_contacts: Array[int] = []
+var brake_pedal: Node3D
+var accelerator_pedal: Node3D
+var brake_rest := Basis.IDENTITY
+var accelerator_rest := Basis.IDENTITY
+var selected_vehicle := "rover"
+var pedal_max_force := 1400.0
+var garage := GarageState.new()
 var shock_rods: Array[Node3D] = []
 var shock_rest_heights: Array[float] = []
 var winch_outlet: Node3D
@@ -45,7 +56,6 @@ var checkpoints:Array=[]
 var checkpoint_rings:Array=[]
 var playing=false
 var camera_mode=0
-var orbit=0.0
 var elapsed=0.0
 var report_clock=0.0
 var blocked=false
@@ -57,7 +67,6 @@ var throttle_value=0.0
 var sky_material:ProceduralSkyMaterial
 var quality_clock=0.0
 var contact_shadow:MeshInstance3D
-var target_camera=Vector3.ZERO
 var material_cache={}
 var model_scene=preload("res://assets/ridge-rover.glb")
 var js_enabled=false
@@ -73,7 +82,6 @@ var world_build_ms:float=0.0
 var chunks_build_ms:float=0.0
 var scenery_build_ms:float=0.0
 var terrain_safety_meshes:Dictionary={}
-var camera_up=Vector3.UP
 
 func _ready():
 	var initialized_at=Time.get_ticks_usec()
@@ -82,32 +90,10 @@ func _ready():
 	_setup_environment()
 	chunks=ChunkTerrain.new()
 	add_child(chunks)
-	vehicle=model_scene.instantiate()
-	add_child(vehicle)
-	body=vehicle.find_child("Body",true,false)
-	for corner: String in ["FL", "FR", "RL", "RR"]:
-		wheels.append(vehicle.find_child("Wheel_" + corner, true, false))
-		var shock := vehicle.find_child("ShockRod_" + corner, true, false) as Node3D
-		shock_rods.append(shock)
-		shock_rest_heights.append(shock.position.y if shock else 0.0)
-	winch_outlet = vehicle.find_child("WinchOutlet", true, false) as Node3D
-	rear_winch_outlet = vehicle.find_child("RearWinchOutlet", true, false) as Node3D
-	var driver_eye := vehicle.find_child("DriverEye", true, false) as Node3D
-	if driver_eye:
-		driver_eye_local = vehicle.to_local(driver_eye.global_position)
-	steering=vehicle.find_child("SteeringWheel",true,false)
-	speed_needle=vehicle.find_child("SpeedNeedle",true,false)
-	rpm_needle=vehicle.find_child("RPMNeedle",true,false)
-	if steering:
-		steering_rest = steering.basis
-	if speed_needle:
-		speed_needle_rest = speed_needle.basis
-	if rpm_needle:
-		rpm_needle_rest = rpm_needle.basis
-	camera=Camera3D.new()
-	camera.fov=52
-	camera.far=1850
-	camera.near=.06
+	garage.restore()
+	pedal_max_force = bootstrap.maxForceN
+	_mount_vehicle(bootstrap.vehicleId)
+	camera = RoverCamera.new()
 	add_child(camera)
 	camera.current=true
 	_make_contact_shadow()
@@ -120,8 +106,10 @@ func _ready():
 	if js_enabled:JavaScriptBridge.eval("window.onRidgeReady && window.onRidgeReady();")
 
 func _normalize_bootstrap(raw:Variant)->Dictionary:
-	var result={"region":"forest","snowTires":false,"progress":0}
+	var result={"region":"forest","snowTires":false,"progress":0, "vehicleId":"rover", "maxForceN":1400.0}
 	if not raw is Dictionary:return result
+	result.vehicleId = "yuchuan" if raw.get("vehicleId") == "yuchuan" else "rover"
+	result.maxForceN = GarageState.calibrated(raw.get("maxForceN"), 1400.0)
 	result.region="snow" if raw.get("region", "forest")=="snow" else "forest"
 	var equipped=raw.get("snowTires",false)
 	result.snowTires=equipped is bool and equipped
@@ -137,6 +125,84 @@ func _read_bootstrap()->Dictionary:
 	if js_enabled:
 		raw=JSON.parse_string(JavaScriptBridge.eval("JSON.stringify(window.ridgeboundBootstrap || {})"))
 	return _normalize_bootstrap(raw)
+
+func _mount_vehicle(id: String) -> void:
+	var template: PackedScene = model_scene
+	if id == "yuchuan":
+		template = load("res://assets/yuchuan-v8.glb") as PackedScene
+	if template == null:
+		return
+	var next := template.instantiate() as Node3D
+	if next == null:
+		return
+	if vehicle:
+		remove_child(vehicle)
+		vehicle.queue_free()
+	vehicle = next
+	add_child(vehicle)
+	selected_vehicle = id
+	body = vehicle.find_child("Body", true, false) as Node3D
+	wheels.clear()
+	wheel_spins.clear()
+	wheel_contacts.clear()
+	shock_rods.clear()
+	shock_rest_heights.clear()
+	var offsets: Array = OffroadPhysics.vehicle_geometry(id).wheelOffsets
+	for corner: String in ["FL", "FR", "RL", "RR"]:
+		var wheel := vehicle.find_child("Wheel_" + corner, true, false) as Node3D
+		var spin := vehicle.find_child("WheelSpin_" + corner, true, false) as Node3D
+		var shock := vehicle.find_child("ShockRod_" + corner, true, false) as Node3D
+		wheels.append(wheel)
+		wheel_spins.append(spin if spin else wheel)
+		shock_rods.append(shock)
+		shock_rest_heights.append(shock.position.y if shock else 0.0)
+		var contact := wheels.size() - 1
+		if wheel:
+			var local := vehicle.to_local(wheel.global_position)
+			var best := INF
+			for i: int in range(offsets.size()):
+				var distance := Vector2(local.x, local.z).distance_squared_to(offsets[i])
+				if distance < best:
+					contact = i
+					best = distance
+		wheel_contacts.append(contact)
+	var eye := vehicle.find_child("DriverEye", true, false) as Node3D
+	driver_eye_local = vehicle.to_local(eye.global_position) if eye else Vector3(0.423, 1.2392, -0.45)
+	winch_outlet = vehicle.find_child("WinchOutlet", true, false) as Node3D
+	rear_winch_outlet = vehicle.find_child("RearWinchOutlet", true, false) as Node3D
+	steering = vehicle.find_child("SteeringWheel", true, false) as Node3D
+	speed_needle = vehicle.find_child("SpeedNeedle", true, false) as Node3D
+	rpm_needle = vehicle.find_child("RPMNeedle", true, false) as Node3D
+	brake_pedal = vehicle.find_child("BrakePedal", true, false) as Node3D
+	accelerator_pedal = vehicle.find_child("AcceleratorPedal", true, false) as Node3D
+	if steering:
+		steering_rest = steering.basis
+	if speed_needle:
+		speed_needle_rest = speed_needle.basis
+	if rpm_needle:
+		rpm_needle_rest = rpm_needle.basis
+	if brake_pedal:
+		brake_rest = brake_pedal.basis
+	if accelerator_pedal:
+		accelerator_rest = accelerator_pedal.basis
+
+func _select_vehicle(id: String) -> void:
+	if id == selected_vehicle or id not in ["rover", "yuchuan"]:
+		return
+	garage.remember(state)
+	_mount_vehicle(id)
+	if selected_vehicle != id:
+		return
+	state.vehicleId = id
+	state.brakePedalBroken = id == "yuchuan" and garage.broken
+	state.pedalForceN = 0.0
+	state.pedalMaxForceN = pedal_max_force
+	state.winch = null
+	state.speed = 0.0
+	state.wheelRotation = 0.0
+	simulation._reset_suspension(state)
+	_update_vehicle(0.0)
+	camera.snap_next_frame()
 
 func _make_contact_shadow():
 	# A single soft contact patch gives the tires weight without shadow maps.
@@ -174,12 +240,15 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	checkpoints = TerrainMath.checkpoints(region)
 	repair_sites = TerrainMath.repair_sites(region)
 	simulation.ground_height_provider = Callable()
-	state=simulation.create_state(region,snow_tires)
+	garage.remember(state)
+	state=simulation.create_state(region,snow_tires,selected_vehicle)
+	state.pedalMaxForceN = pedal_max_force
+	state.brakePedalBroken = selected_vehicle == "yuchuan" and garage.broken
 	state.checkpoint=clampi(progress,0,3) if region != "custom" else 0
 	if state.checkpoint > 0:
 		simulation.recover(state)
 	camera_mode=0
-	orbit=0
+	camera.recenter()
 	var chunks_started=Time.get_ticks_usec()
 	chunks.setup(region,Vector3(state.x,state.y,state.z))
 	simulation.ground_height_provider = Callable(chunks, "ground_height_at")
@@ -201,9 +270,7 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	scenery_build_ms=float(Time.get_ticks_usec()-scenery_started)/1000.0
 	ExpeditionArt.apply_atmosphere(environment.environment, sky_material, sun, region)
 	vehicle.position=Vector3(state.x,state.y,state.z)
-	camera.position=vehicle.position+Vector3(20,12,-23)
-	target_camera=vehicle.position+Vector3(-10,1,17)
-	camera_up=Vector3.UP
+	camera.snap_next_frame()
 	world_build_ms=float(Time.get_ticks_usec()-build_started)/1000.0
 
 func _mat(color:Color,roughness:float=.85)->StandardMaterial3D:
@@ -521,7 +588,7 @@ func _process(dt):
 			streaming_waiting=true
 			input.throttle=0.0
 			input.reverse=0.0
-			input.brakeValue=maxf(float(input.brakeValue),.65)
+			input.brakeAssist = 0.65
 		previous_position=Vector3(state.x,state.y,state.z)
 		var previous_state=state.duplicate(true)
 		simulation.step(state, input, minf(dt, 0.1), _nearby_scene_obstacles(6.0))
@@ -529,10 +596,13 @@ func _process(dt):
 		if blocked:
 			# Reject all effects of an unsafe step, including spring samples,
 			# checkpoint rewards, damage and cable length, not only coordinates.
+			previous_state.brakePedalBroken = state.brakePedalBroken
+			previous_state.pedalForceN = state.pedalForceN
 			state=previous_state
 			state.speed=0.0
 			state.yVel=0.0
 	else:blocked=false
+	garage.remember(state)
 	state.steer=state.steering
 	state.repairAvailable=_can_repair()
 	throttle_value=float(input.throttle) if input.active else 0.0
@@ -548,6 +618,11 @@ func _process(dt):
 func _command(command:Dictionary):
 	match command.get("type",""):
 		"start":playing=true
+		"vehicle":
+			_select_vehicle(str(command.get("id", "")))
+		"pedal_calibration":
+			pedal_max_force = GarageState.calibrated(command.get("maxForceN"), pedal_max_force)
+			state.pedalMaxForceN = pedal_max_force
 		"import_map":_import_map(command)
 		"quality":
 			var requested := String(command.get("profile", "auto"))
@@ -563,8 +638,8 @@ func _command(command:Dictionary):
 				chunks.setup(state.region,Vector3(state.x,state.y,state.z))
 			simulation._reset_suspension(state)
 			vehicle.position=Vector3(state.x,state.y,state.z)
-			camera.position=vehicle.position+Vector3(0,6,-12)
-			target_camera=vehicle.position+Vector3(0,1,4)
+			camera.recenter()
+			camera.snap_next_frame()
 		"gear":state.lowGear=not state.lowGear
 		"awd":state.awd=not state.awd
 		"tires":state.snowTires=true
@@ -574,11 +649,18 @@ func _command(command:Dictionary):
 					simulation.attach_winch(state, anchor, String(command.get("endpoint", "front")))
 					break
 		"detach":simulation.detach_winch(state)
-		"camera":camera_mode=(camera_mode+1)%3;orbit=0
+		"camera":
+			camera_mode = (camera_mode + 1) % 3
+			camera.recenter()
+			camera.snap_next_frame()
 		"photo":_take_photo()
-		"orbit":orbit+=float(command.get("delta",0))
+		"orbit":
+			if playing and camera_mode != 2:
+				camera.orbit_by(command.get("delta", 0.0), command.get("pitchDelta", 0.0), camera_mode)
 		"repair":
-			if _can_repair():simulation.repair(state)
+			if _can_repair():
+				simulation.repair(state)
+				garage.remember(state)
 
 func _import_map(command: Dictionary) -> void:
 	var path: Variant = command.get("path")
@@ -601,7 +683,7 @@ func _import_map(command: Dictionary) -> void:
 	_reset_world("custom", bool(state.snowTires), 0)
 
 func _update_vehicle(dt):
-	var steer_angle: float = float(state.get("roadSteeringAngle", float(state.steering) * 0.49))
+	var road_yaw: float = float(state.get("roadSteeringAngle", -float(state.steering) * 0.49))
 	vehicle.position=Vector3(state.x,state.y,state.z)
 	vehicle.rotation.y=state.yaw
 	if body:
@@ -609,21 +691,27 @@ func _update_vehicle(dt):
 		body.rotation.z=state.roll
 	for i in range(wheels.size()):
 		if wheels[i]:
-			wheels[i].rotation.x=float(state.wheelRotation)
-			wheels[i].rotation.y=-steer_angle if i<2 else 0.0
-			if state.has("wheelHeights"):wheels[i].position.y=state.wheelHeights[i]-state.y
+			wheel_spins[i].rotation.x = float(state.wheelRotation)
+			wheels[i].rotation.y = road_yaw if i < 2 else 0.0
+			if state.has("wheelHeights"):wheels[i].position.y=state.wheelHeights[wheel_contacts[i]]-state.y
 		var shock: Node3D = shock_rods[i]
 		if shock:
-			shock.position.y = shock_rest_heights[i] + float(state.suspension[i])
+			shock.position.y = shock_rest_heights[i] + float(state.suspension[wheel_contacts[i]])
 	# Preserve the imported tilt of each pivot as it rotates about local Y.
 	# Blender local Z becomes local Y in the exported glTF coordinate system.
 	if steering:
 		# Positive steering turns the wheel clockwise as seen from the driver seat.
-		steering.basis = steering_rest * Basis(Vector3.UP, -steer_angle * 16.0)
+		steering.basis = steering_rest * Basis(Vector3.UP, road_yaw * 16.0)
 	if speed_needle:
 		speed_needle.basis = speed_needle_rest * Basis(Vector3.UP, -absf(state.speed) * 0.22)
 	if rpm_needle:
 		rpm_needle.basis = rpm_needle_rest * Basis(Vector3.UP, -absf(state.speed) * 0.16 - 0.15 - throttle_value * 0.65)
+	if brake_pedal:
+		var travel := clampf(float(state.get("pedalForceN", 0.0)) / pedal_max_force, 0.0, 1.0)
+		var angle := 1.3 if state.get("brakePedalBroken", false) else travel * 0.32
+		brake_pedal.basis = brake_rest * Basis(Vector3.RIGHT, angle)
+	if accelerator_pedal:
+		accelerator_pedal.basis = accelerator_rest * Basis(Vector3.RIGHT, throttle_value * 0.3)
 	if contact_shadow:
 		var x=float(state.x)
 		var z=float(state.z)
@@ -636,50 +724,8 @@ func _update_vehicle(dt):
 		contact_shadow.position=Vector3(x,TerrainMath.height_at(x,z,state.region)+.16,z)
 		contact_shadow.rotation=Vector3(-atan((front-back)*.5),state.yaw,atan((right-left)*.5))
 
-func _update_camera(dt):
-	var base=vehicle.position
-	var desired:Vector3
-	var target:Vector3
-	var desired_up=Vector3.UP
-	var forward=Vector3(sin(state.yaw),0,cos(state.yaw))
-	if not playing:
-		desired=base+Vector3(22,13,-23)
-		target=base+Vector3(-9,1,17)
-		camera.fov=52
-	elif camera_mode==2:
-		var local_camera: Vector3 = driver_eye_local
-		var yaw_basis=Basis(Vector3.UP,float(state.yaw))
-		# Keep road feel while damping suspension motion instead of rigidly
-		# inheriting the sprung body's full pitch, roll and head-position arc.
-		var pitch_sway=clampf(float(state.pitch)*.28,-.12,.12)
-		var roll_sway=clampf(float(state.roll)*.18,-.06,.06)
-		var head_basis=yaw_basis*Basis(Vector3.RIGHT,-pitch_sway)*Basis(Vector3.BACK,roll_sway)
-		desired=base+yaw_basis*local_camera
-		target=desired+head_basis*Vector3(0,-.14,1)*20
-		desired_up=head_basis*Vector3.UP
-		camera.fov=78
-	else:
-		var distance=22.0 if camera_mode==1 else 12.5
-		if get_viewport().get_visible_rect().size.x<get_viewport().get_visible_rect().size.y:distance+=3.5
-		var yaw=state.yaw+orbit
-		desired=base+Vector3(-sin(yaw)*distance,15 if camera_mode==1 else 6,-cos(yaw)*distance)
-		desired.y=maxf(desired.y,TerrainMath.height_at(desired.x,desired.z,state.region)+2.5)
-		target=base+forward*4+Vector3(0,1.25,0)
-		camera.fov=52
-	var alpha=1-exp(-dt*(6 if camera_mode==2 else 4))
-	# At kilometer-scale coordinates, single-precision interpolation can round
-	# a small step away entirely. Finish the transition inside 1.5 cm.
-	const SETTLE_DISTANCE_SQUARED: float = 0.000225
-	if camera.position.distance_squared_to(desired) < SETTLE_DISTANCE_SQUARED:
-		camera.position = desired
-	else:
-		camera.position = camera.position.lerp(desired, alpha)
-	if target_camera.distance_squared_to(target) < SETTLE_DISTANCE_SQUARED:
-		target_camera = target
-	else:
-		target_camera = target_camera.lerp(target, alpha)
-	camera_up=camera_up.lerp(desired_up,alpha).normalized()
-	camera.look_at(target_camera,camera_up)
+func _update_camera(dt: float) -> void:
+	camera.follow(vehicle.position, state, driver_eye_local, camera_mode, playing, dt)
 
 func _update_cable():
 	cable.visible = state.winch != null
@@ -731,6 +777,7 @@ func get_snapshot()->Dictionary:
 	var report=state.duplicate(true)
 	report["steer"]=state.steering
 	report["cameraMode"]=camera_mode
+	report["cameraOrbit"] = {"yaw": camera.orbit_yaw, "pitch": camera.orbit_pitch}
 	report["streaming"]=chunks.get_stats()
 	report["blocked"]=blocked or streaming_waiting
 	report["coarseTriangles"]=coarse_triangles

@@ -23,7 +23,7 @@ NOTICE_NAME = "Ridgebound-UI-OFL.txt"
 
 def interface_characters(project):
     characters = set(chr(code) for code in range(32, 127))
-    for extension in ("*.gd", "*.tscn"):
+    for extension in ("*.gd", "*.tscn", "device-profiles.json"):
         for path in project.rglob(extension):
             relative = path.relative_to(project)
             if any(part.startswith(".") or part == "tests" for part in relative.parts):

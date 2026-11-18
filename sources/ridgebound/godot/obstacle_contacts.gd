@@ -15,6 +15,19 @@ const BODY_VOLUMES: Array[AABB] = [
 	AABB(Vector3(-.205, -.205, -1.46), Vector3(.41, .41, .32)),
 ]
 
+# Body coordinates are measured from the wheel centres. The undertray and
+# bumper volumes preserve the lower van's ground clearance at each overhang.
+const MPV_VOLUMES: Array[AABB] = [
+	AABB(Vector3(-0.94, 0.48, -2.72), Vector3(1.88, 1.19, 4.18)),
+	AABB(Vector3(-0.96, 0.28, 1.34), Vector3(1.92, 0.49, 1.34)),
+	AABB(Vector3(-0.99, 0.03, -2.70), Vector3(1.98, 0.49, 5.30)),
+	AABB(Vector3(-0.87, -0.19, -1.44), Vector3(1.74, 0.27, 2.96)),
+	AABB(Vector3(-1.00, 0.01, 2.58), Vector3(2.0, 0.43, 0.22)),
+	AABB(Vector3(-1.00, 0.02, -2.85), Vector3(2.0, 0.42, 0.23)),
+	AABB(Vector3(-1.17, 0.89, 0.97), Vector3(0.18, 0.15, 0.22)),
+	AABB(Vector3(0.99, 0.89, 0.97), Vector3(0.18, 0.15, 0.22)),
+]
+
 static func faces(obstacle: Dictionary) -> PackedVector3Array:
 	var vertices: Variant = obstacle.get("top")
 	if vertices is PackedVector3Array:
@@ -69,14 +82,16 @@ static func _triangle_tire_floor(points: PackedVector3Array, start: int, origin:
 static func body_hits(state: Dictionary, obstacles: Array, include_tires: bool, wheel_offsets: Array[Vector2], radius: float) -> bool:
 	if obstacles.is_empty():
 		return false
+	var van: bool = state.get("vehicleId", "rover") == "yuchuan"
+	var volumes: Array[AABB] = MPV_VOLUMES if van else BODY_VOLUMES
 	var origin := Vector3(float(state.x), float(state.y), float(state.z))
 	var rotation := Basis.from_euler(Vector3(-float(state.pitch), float(state.yaw), float(state.roll)))
 	for obstacle: Dictionary in obstacles:
 		var planar := Vector2(float(obstacle.x) - origin.x, float(obstacle.z) - origin.z)
-		var reach := float(obstacle.r) + 2.75
+		var reach := float(obstacle.r) + (3.20 if van else 2.75)
 		if planar.length_squared() > reach * reach:
 			continue
-		for volume: AABB in BODY_VOLUMES:
+		for volume: AABB in volumes:
 			var center := origin + rotation * volume.get_center()
 			if _intersects(center, rotation, volume.size * 0.5, obstacle):
 				return true
@@ -86,7 +101,7 @@ static func body_hits(state: Dictionary, obstacles: Array, include_tires: bool, 
 				var local := wheel_offsets[i]
 				var center := origin + yaw * Vector3(local.x, 0.0, local.y)
 				center.y = float(state.wheelHeights[i])
-				var wheel_half := Vector3(TIRE_HALF_TREAD, radius, radius * .80)
+				var wheel_half := Vector3(0.1225 if van else TIRE_HALF_TREAD, radius, radius * .80)
 				if _intersects(center, yaw, wheel_half, obstacle):
 					return true
 	return false

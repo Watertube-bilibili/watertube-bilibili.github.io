@@ -2,6 +2,8 @@ extends RefCounted
 ## Two recovery points on the production Blender model, in metres and model axes.
 const FRONT_MOUNT := Vector3(0.0, 0.3956, 2.197)
 const REAR_MOUNT := Vector3(0.0, 0.18736, -2.16892)
+const MPV_FRONT_MOUNT := Vector3(0.0, 0.25, 2.80)
+const MPV_REAR_MOUNT := Vector3(0.0, 0.22, -2.82)
 const MAX_ATTACH_DISTANCE := 26.0
 const MIN_LENGTH := 1.35
 const MAX_LENGTH := 30.0
@@ -10,6 +12,8 @@ const PAYOUT_SPEED := 3.20
 
 static func mount(state: Dictionary, endpoint: String) -> Vector3:
 	var rest := REAR_MOUNT if endpoint == "rear" else FRONT_MOUNT
+	if state.get("vehicleId") == "yuchuan":
+		rest = MPV_REAR_MOUNT if endpoint == "rear" else MPV_FRONT_MOUNT
 	var orientation := Basis(Vector3.UP, float(state.yaw)) * Basis(Vector3.RIGHT, -float(state.pitch)) * Basis(Vector3.BACK, float(state.roll))
 	return Vector3(float(state.x), float(state.y), float(state.z)) + orientation * rest
 
