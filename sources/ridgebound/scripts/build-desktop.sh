@@ -163,11 +163,16 @@ PY
 run_godot() {
   local label="$1" log="$scratch/$1.log"
   shift
-  if [[ "$label" == smoke ]]; then
-    timeout 75s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 "$godot" --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 "$@" 2>&1 | tee "$log"
-  else
-    timeout 120s "$godot" --headless "$@" 2>&1 | tee "$log"
-  fi
+  # Godot 4.4 uses a real texture backend during GLB import.
+  local -a gfx=(LIBGL_ALWAYS_SOFTWARE=1)
+  local icd
+  for icd in /usr/share/vulkan/icd.d/lvp_icd*.json; do
+    if [[ -r "$icd" ]]; then
+      gfx+=("VK_ICD_FILENAMES=$icd")
+      break
+    fi
+  done
+  timeout 90s xvfb-run -a env "${gfx[@]}" "$godot" --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 "$@" 2>&1 | tee "$log"
   if grep -Eq '(^|[[:space:]])(SCRIPT ERROR|ERROR):' "$log"; then
     printf 'Godot %s reported errors.\n' "$label" >&2
     exit 1
