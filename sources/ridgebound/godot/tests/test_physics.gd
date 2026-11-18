@@ -35,7 +35,7 @@ func cruise_metrics(region: String) -> Dictionary:
 			var ground: float = 0.0
 			for offset: Vector2 in physics.WHEEL_OFFSETS:
 				ground += physics._wheel_ground(state, offset) * 0.25
-			var heave: float = state.y - ground - 0.65
+			var heave: float = state.y - ground - Physics.REST_HEIGHT
 			heave_squared += heave * heave
 			var vertical_acceleration: float = (state.yVel - previous_velocity) * 60.0
 			acceleration_squared += vertical_acceleration * vertical_acceleration
@@ -101,7 +101,7 @@ func _initialize() -> void:
 	check(absf(settling.y - ride) < 0.08 and absf(settling.yVel) < 0.1, "spring/damper heave settles")
 	settling.x = Terrain.route_x(1410.0) + 18.0
 	settling.z = 1410.0
-	settling.y = Terrain.height_at(settling.x, settling.z) + 0.65
+	settling.y = Terrain.height_at(settling.x, settling.z) + Physics.REST_HEIGHT
 	advance(settling, {}, 2.5)
 	check(absf(settling.wheelHeights[0] - settling.wheelHeights[3]) > 0.1, "independent wheel heights")
 	check(absf(settling.suspension[0] - settling.suspension[1]) > 0.0001, "independent suspension travel")

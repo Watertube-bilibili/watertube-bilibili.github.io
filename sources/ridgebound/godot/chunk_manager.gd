@@ -7,6 +7,7 @@ extends Node3D
 signal streaming_ready
 
 const Terrain = preload("res://terrain_math.gd")
+const SolidGeometry = preload("res://solid_geometry.gd")
 const CHUNK_SIZE: float = 16.0
 const BUILD_BUDGET_US: int = 3000
 const SUPPORT_MARGIN: float = 2.6
@@ -35,13 +36,16 @@ var _mobile: bool = false
 var _initialized: bool = false
 var _built_count: int = 0
 var _startup_chunks: int = 0
-var _terrain_material: StandardMaterial3D
+var _terrain_material: Material
 var _trunk_material: StandardMaterial3D
 var _foliage_material: StandardMaterial3D
 var _rock_material: StandardMaterial3D
 var _trunk_mesh: CylinderMesh
 var _foliage_mesh: CylinderMesh
 var _rock_mesh: SphereMesh
+var _rock_faces: PackedVector3Array
+var _trunk_faces: PackedVector3Array
+var _foliage_faces: PackedVector3Array
 
 
 # Distance layers only affect the picture. Readiness always comes from the 16m tiles.
@@ -94,7 +98,7 @@ var _fine_mask_dirty: bool = false
 
 func setup(region: String, initial_position: Vector3 = Vector3.ZERO) -> void:
 	_initialized = false
-	_region = "snow" if region == "snow" else "forest"
+	_region = region if region in ["snow", "custom"] else "forest"
 	for entry: Dictionary in _chunks.values():
 		var old_node: Node3D = entry.node
 		old_node.hide()
@@ -201,7 +205,7 @@ func _enqueue_props(key: Vector2i) -> void:
 
 func _build_props(key: Vector2i) -> bool:
 	var entry: Dictionary = _chunks[key]
-	var details: Dictionary = _scatter_details(entry.node, key, float(key.x) * CHUNK_SIZE, float(key.y) * CHUNK_SIZE)
+	var details: Dictionary = _build_custom_props(entry.node, key) if _region == "custom" else _scatter_details(entry.node, key, float(key.x) * CHUNK_SIZE, float(key.y) * CHUNK_SIZE)
 	if bool(details.get("deferred", false)):
 		return false
 	entry.obstacles = details.obstacles
@@ -218,6 +222,47 @@ func get_obstacles() -> Array:
 			_obstacles.append_array(entry.obstacles)
 		_obstacles_dirty = false
 	return _obstacles
+
+func obstacles_near(x: float, z: float, radius: float) -> Array:
+	# An imported box is owned by its centre tile and may extend up to 8 m per axis.
+	var extent: float = radius + 12.0
+	var first: Vector2i = _key_at(x - extent, z - extent)
+	var last: Vector2i = _key_at(x + extent, z + extent)
+	var center := Vector2(x, z)
+	var result: Array = []
+	for row: int in range(first.y, last.y + 1):
+		for col: int in range(first.x, last.x + 1):
+			var key := Vector2i(col, row)
+			if not _chunks.has(key):
+				continue
+			for obstacle: Dictionary in _chunks[key].obstacles:
+				var reach: float = radius + float(obstacle.r)
+				if center.distance_squared_to(Vector2(obstacle.x, obstacle.z)) <= reach * reach:
+					result.append(obstacle)
+	return result
+
+func ground_height_at(x: float, z: float) -> float:
+	var key: Vector2i = _key_at(x, z)
+	if not _chunks.has(key):
+		return Terrain.height_at(x, z, _region)
+	var tile: Dictionary = _chunks[key]
+	var segments: int = tile.segments
+	var local: Vector2 = (Vector2(x, z) - Vector2(key) * CHUNK_SIZE) * (float(segments) / CHUNK_SIZE)
+	var col: int = clampi(int(floor(local.x)), 0, segments - 1)
+	var row: int = clampi(int(floor(local.y)), 0, segments - 1)
+	var u: float = local.x - col
+	var v: float = local.y - row
+	var stride: int = segments + 1
+	var first: int = row * stride + col
+	var points: PackedVector3Array = tile.points
+	var a: float = points[first].y
+	var b: float = points[first + 1].y
+	var c: float = points[first + stride].y
+	var d: float = points[first + stride + 1].y
+	# Interpolate on the same diagonal used when emitting the driving mesh.
+	if u + v <= 1.0:
+		return a + u * (b - a) + v * (c - a)
+	return d + (1.0 - u) * (c - d) + (1.0 - v) * (b - d)
 
 func get_stats() -> Dictionary:
 	var objects: int = 0
@@ -330,11 +375,12 @@ func _unload_distant() -> void:
 		_obstacles_dirty = true
 
 func _make_resources() -> void:
-	_terrain_material = StandardMaterial3D.new()
-	_terrain_material.vertex_color_use_as_albedo = true
-	_terrain_material.vertex_color_is_srgb = true
-	_terrain_material.metallic_specular = 0.0
-	_terrain_material.roughness = 1.0
+	var terrain_material := StandardMaterial3D.new()
+	terrain_material.vertex_color_use_as_albedo = true
+	terrain_material.vertex_color_is_srgb = true
+	terrain_material.metallic_specular = 0.0
+	terrain_material.roughness = 1.0
+	_terrain_material = terrain_material
 	_trunk_material = StandardMaterial3D.new()
 	_trunk_material.albedo_color = Color("655a49") if _region == "forest" else Color("596266")
 	_trunk_material.roughness = 1.0
@@ -368,6 +414,9 @@ func _make_resources() -> void:
 	_rock_mesh.radial_segments = 6
 	_rock_mesh.rings = 2
 	_rock_mesh.material = _rock_material
+	_rock_faces = _rock_mesh.get_faces()
+	_trunk_faces = _trunk_mesh.get_faces()
+	_foliage_faces = _foliage_mesh.get_faces()
 
 func _surface_color(x: float, z: float, sample_span: float = 2.0) -> Color:
 	var snowy: bool = _region == "snow"
@@ -386,7 +435,7 @@ func _surface_color(x: float, z: float, sample_span: float = 2.0) -> Color:
 		"water": color = Color("688f89")
 		"rock": color = Color("a29e8b")
 		"ice": color = Color("91b6be")
-	var distance: float = Terrain.road_distance(x, z)
+	var distance: float = Terrain.road_distance(x, z, _region)
 	if surface not in ["mud", "rock", "water", "ice"]:
 		# At lower detail the road gets a feathered trace so junctions and
 		# the direction of the trail survive sparse vertex sampling.
@@ -473,7 +522,7 @@ func _build_chunk(key: Vector2i) -> void:
 	ground.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	group.add_child(ground)
 	add_child(group)
-	_chunks[key] = {"node": group, "obstacles": [], "objects": 1, "segments": _segments, "propsReady": false}
+	_chunks[key] = {"node": group, "obstacles": [], "objects": 1, "segments": _segments, "points": points, "propsReady": false}
 	_enqueue_props(key)
 	_obstacles_dirty = true
 	_fine_mask_dirty = true
@@ -490,12 +539,12 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 	for i: int in range(5):
 		var x: float = x0 + rng.randf_range(1.5, CHUNK_SIZE - 1.5)
 		var z: float = z0 + rng.randf_range(1.5, CHUNK_SIZE - 1.5)
-		if Terrain.road_distance(x, z) < 6.0:
+		if Terrain.road_distance(x, z, _region) < 6.0:
 			continue
 		var surface: String = Terrain.surface_at(x, z, _region)
 		if surface == "water" or surface == "ice":
 			continue
-		var y: float = Terrain.height_at(x, z, _region)
+		var y: float = ground_height_at(x, z)
 		var rotation: float = rng.randf_range(0.0, TAU)
 		var biome: String = Terrain.biome_at(x, z, _region)
 		var tree_count: int = 4 if biome == "pine" else (2 if biome == "marsh" else 1)
@@ -505,20 +554,59 @@ func _scatter_details(group: Node3D, key: Vector2i, x0: float, z0: float) -> Dic
 			trunks.append(Transform3D(Basis(Vector3.UP, rotation).scaled(Vector3(1.0, height * 0.7, 1.0)), Vector3(x, y + height * 0.35, z)))
 			foliage.append(Transform3D(Basis(Vector3.UP, rotation).scaled(Vector3(width, height * 0.69, width)), Vector3(x, y + height * 0.64, z)))
 			foliage.append(Transform3D(Basis(Vector3.UP, rotation + 0.25).scaled(Vector3(width * 0.74, height * 0.52, width * 0.74)), Vector3(x, y + height * 0.83, z)))
-			obstacles.append({"x": x, "z": z, "r": 0.45})
 		else:
-			var scale: Vector3 = Vector3(rng.randf_range(0.6, 1.5), rng.randf_range(0.4, 1.1), rng.randf_range(0.7, 1.6))
-			stones.append(Transform3D(Basis(Vector3.UP, rotation).scaled(scale), Vector3(x, y + scale.y * 0.25, z)))
-			obstacles.append({"x": x, "z": z, "r": maxf(scale.x, scale.z) * 0.7})
-	# Never materialize an obstacle around the car. Keep the whole props layer
-	# absent/non-colliding until the driver has left its safe appearance radius.
-	for obstacle: Dictionary in obstacles:
-		if Vector2(float(obstacle.x) - _player.x, float(obstacle.z) - _player.z).length() < float(obstacle.r) + 3.0:
+			# Most stones form traversable shelves, while taller boulders require a detour.
+			var height: float = rng.randf_range(0.14, 0.37) if rng.randf() < 0.76 else rng.randf_range(0.43, 0.92)
+			var scale := Vector3(rng.randf_range(0.6, 1.5), height, rng.randf_range(0.7, 1.6))
+			stones.append(Transform3D(Basis(Vector3.UP, rotation) * Basis.from_scale(scale), Vector3(x, y + height * 0.25, z)))
+	# Visible surfaces and their collision are published together. Avoid
+	# spawning a tree branch or stone inside a car whose tile just arrived.
+	for transform: Transform3D in trunks:
+		if _would_appear_in_vehicle(transform.origin, 0.2):
 			return {"deferred": true}
+	for transform: Transform3D in foliage:
+		if _would_appear_in_vehicle(transform.origin, 1.75):
+			return {"deferred": true}
+	for transform: Transform3D in stones:
+		if _would_appear_in_vehicle(transform.origin, maxf(transform.basis.x.length(), transform.basis.z.length())):
+			return {"deferred": true}
+	for transform: Transform3D in trunks:
+		obstacles.append(SolidGeometry.mesh(_trunk_faces, transform))
+	for transform: Transform3D in foliage:
+		obstacles.append(SolidGeometry.mesh(_foliage_faces, transform))
+	for transform: Transform3D in stones:
+		obstacles.append(SolidGeometry.mesh(_rock_faces, transform, "rock"))
 	_add_multimesh(group, _trunk_mesh, trunks, false)
 	_add_multimesh(group, _foliage_mesh, foliage, true)
 	_add_multimesh(group, _rock_mesh, stones, true)
 	return {"obstacles": obstacles, "count": trunks.size() + stones.size()}
+
+func _would_appear_in_vehicle(center: Vector3, radius: float) -> bool:
+	var reach: float = radius + 3.0
+	return Vector2(center.x - _player.x, center.z - _player.z).length_squared() < reach * reach
+
+func _build_custom_props(group: Node3D, key: Vector2i) -> Dictionary:
+	var props: Array = Terrain.custom_props_at(key)
+	var obstacles: Array = []
+	for prop: Dictionary in props:
+		var center := Vector3(prop.x, prop.y, prop.z)
+		var descriptor: Dictionary = SolidGeometry.box(center, prop.half, Basis(Vector3.UP, float(prop.yaw)))
+		if _would_appear_in_vehicle(center, descriptor.r):
+			return {"deferred": true}
+		obstacles.append(descriptor)
+	for index: int in range(obstacles.size()):
+		var solid: Dictionary = obstacles[index]
+		var instance := MeshInstance3D.new()
+		var model := BoxMesh.new()
+		model.size = solid.half * 2.0
+		instance.mesh = model
+		instance.material_override = _rock_material
+		instance.transform = Transform3D(solid.basis, Vector3(solid.x, solid.y, solid.z))
+		group.add_child(instance)
+		var offset: float = float(solid.y) + float(solid.half.y) - ground_height_at(solid.x, solid.z)
+		if offset > 0.0 and offset <= 0.50:
+			obstacles[index] = SolidGeometry.mesh(model.get_faces(), instance.transform, "rock")
+	return {"obstacles": obstacles, "count": obstacles.size()}
 
 func _add_multimesh(group: Node3D, mesh: Mesh, transforms: Array[Transform3D], colored: bool) -> void:
 	if transforms.is_empty():
@@ -687,7 +775,7 @@ func _build_visual_tile(key: Vector3i) -> void:
 				lowest = minf(lowest, original[corner].y)
 			# Preserve most relief off road, but prevent distant ground
 			# bridging over the fine trail through a steep bank.
-			var corridor: bool = Terrain.road_distance(x, z) < step_size * 0.85 + 5.0
+			var corridor: bool = Terrain.road_distance(x, z, _region) < step_size * 0.85 + 5.0
 			if corridor:
 				for corner: int in [idx, idx + 1, idx + stride, idx + stride + 1]:
 					points[corner].y = minf(points[corner].y, lowest)

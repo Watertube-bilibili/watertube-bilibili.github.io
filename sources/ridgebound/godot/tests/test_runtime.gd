@@ -62,6 +62,7 @@ func run() -> void:
 	var old_steering_basis: Basis = game.steering.basis if game.steering != null else Basis.IDENTITY
 	var old_speed_basis: Basis = game.speed_needle.basis if game.speed_needle != null else Basis.IDENTITY
 	game.state.steering = 0.65
+	game.state.roadSteeringAngle = 0.65 * 0.49
 	game.state.speed = 8.0
 	game.state.wheelRotation = 2.4
 	game.state.wheelHeights[0] += 0.19
@@ -82,6 +83,7 @@ func run() -> void:
 	check(game.camera_mode == 2 and game.camera.position.is_finite(), "cockpit camera selects and remains finite")
 	check(game.camera.position.distance_to(game.vehicle.position) < 5.0, "cockpit camera is physically inside the car")
 	check(view_direction.dot(game.vehicle.global_basis.z) > 0.7, "cockpit camera looks through the forward windshield")
+	_check_cockpit_steering_direction(game)
 	game._command({"type": "reset", "region": "forest", "snowTires": false, "progress": 2, "playing": true})
 	check(game.state.checkpoint == 2 and absf(game.state.z - float(Terrain.checkpoints()[1].z)) < 8.0, "reset restores the saved checkpoint")
 	check(game.chunks.is_ready_at(game.state.x, game.state.z), "saved checkpoint has synchronous ground before the first drive frame")
@@ -154,3 +156,26 @@ func run() -> void:
 	await process_frame
 	print("RUNTIME_CHECKS ", checks, " FAILURES ", failures)
 	quit(failures)
+
+func _check_cockpit_steering_direction(game) -> void:
+	if game.steering == null:
+		check(false, "steering wheel exists for cockpit handedness test")
+		return
+	game.state.steering = 0.0
+	game.state.roadSteeringAngle = 0.0
+	game._update_vehicle(1.0 / 60.0)
+	var wheel: Node3D = game.steering
+	var camera: Camera3D = game.camera
+	var rim := Vector3(0.16, 0, 0)
+	var center: Vector2 = camera.unproject_position(wheel.global_position)
+	var neutral: Vector2 = camera.unproject_position(wheel.to_global(rim)) - center
+	for direction: float in [-1.0, 1.0]:
+		game.state.steering = direction * 0.12
+		game.state.roadSteeringAngle = direction * 0.12 * 0.49
+		game._update_vehicle(1.0 / 60.0)
+		var rotated: Vector2 = camera.unproject_position(wheel.to_global(rim)) - center
+		# Positive screen-space cross product is clockwise in the driver's view.
+		check(neutral.cross(rotated) * direction > 0.0, "cockpit steering wheel turns in the same direction as driver input")
+	game.state.steering = 0.0
+	game.state.roadSteeringAngle = 0.0
+	game._update_vehicle(1.0 / 60.0)

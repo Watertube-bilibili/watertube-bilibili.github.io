@@ -1,5 +1,8 @@
 extends Node3D
 
+const SolidGeometry = preload("res://solid_geometry.gd")
+const MapImporter = preload("res://map_importer.gd")
+
 var simulation=OffroadPhysics.new()
 var state:Dictionary
 var chunks:ChunkTerrain
@@ -11,6 +14,7 @@ var shock_rods: Array[Node3D] = []
 var shock_rest_heights: Array[float] = []
 var winch_outlet: Node3D
 var steering_rest := Basis.IDENTITY
+var driver_eye_local := Vector3(0.423, 1.2392, -0.45)
 var speed_needle_rest := Basis.IDENTITY
 var rpm_needle_rest := Basis.IDENTITY
 var steering:Node3D
@@ -22,6 +26,10 @@ var scenery:Node3D
 var cable:MeshInstance3D
 var anchors:Array=[]
 var _anchor_visuals:Dictionary={}
+var _anchor_solids: Dictionary = {}
+var _scenery_solid_cells: Dictionary = {}
+var import_result: Dictionary = {}
+const SCENERY_CELL_SIZE: float = 32.0
 var _anchor_center=Vector2(INF,INF)
 const ANCHOR_RADIUS=96.0
 const ANCHOR_SPACING=15.0
@@ -66,8 +74,6 @@ func _ready():
 	var initialized_at=Time.get_ticks_usec()
 	js_enabled=OS.has_feature("web")
 	var bootstrap=_read_bootstrap()
-	checkpoints=TerrainMath.checkpoints()
-	repair_sites=TerrainMath.repair_sites()
 	_setup_environment()
 	chunks=ChunkTerrain.new()
 	add_child(chunks)
@@ -80,6 +86,9 @@ func _ready():
 		shock_rods.append(shock)
 		shock_rest_heights.append(shock.position.y if shock else 0.0)
 	winch_outlet = vehicle.find_child("WinchOutlet", true, false) as Node3D
+	var driver_eye := vehicle.find_child("DriverEye", true, false) as Node3D
+	if driver_eye:
+		driver_eye_local = vehicle.to_local(driver_eye.global_position)
 	steering=vehicle.find_child("SteeringWheel",true,false)
 	speed_needle=vehicle.find_child("SpeedNeedle",true,false)
 	rpm_needle=vehicle.find_child("RPMNeedle",true,false)
@@ -172,13 +181,21 @@ func _setup_environment():
 func _reset_world(region:String,snow_tires:bool,progress:int):
 	var build_started=Time.get_ticks_usec()
 	world_builds+=1
+	if region == "custom" and TerrainMath.custom_summary().is_empty():
+		region = "forest"
+	checkpoints = TerrainMath.checkpoints(region)
+	repair_sites = TerrainMath.repair_sites(region)
+	simulation.ground_height_provider = Callable()
 	state=simulation.create_state(region,snow_tires)
-	state.checkpoint=clampi(progress,0,3)
-	if progress>0 and progress<4:simulation.recover(state)
+	state.checkpoint=clampi(progress,0,3) if region != "custom" else 0
+	if state.checkpoint > 0:
+		simulation.recover(state)
 	camera_mode=0
 	orbit=0
 	var chunks_started=Time.get_ticks_usec()
 	chunks.setup(region,Vector3(state.x,state.y,state.z))
+	simulation.ground_height_provider = Callable(chunks, "ground_height_at")
+	simulation._reset_suspension(state)
 	chunks_build_ms=float(Time.get_ticks_usec()-chunks_started)/1000.0
 	if scenery:
 		scenery.hide()
@@ -187,6 +204,8 @@ func _reset_world(region:String,snow_tires:bool,progress:int):
 	add_child(scenery)
 	anchors.clear()
 	_anchor_visuals.clear()
+	_anchor_solids.clear()
+	_scenery_solid_cells.clear()
 	_anchor_center=Vector2(INF,INF)
 	checkpoint_rings.clear()
 	var scenery_started=Time.get_ticks_usec()
@@ -216,18 +235,22 @@ func _mat(color:Color,roughness:float=.85)->StandardMaterial3D:
 	material_cache[key]=material
 	return material
 
-func _box(parent:Node3D,position_:Vector3,size_:Vector3,color:Color)->MeshInstance3D:
+func _box(parent:Node3D,position_:Vector3,size_:Vector3,color:Color,roll:float=0.0,solid:bool=true,climbable:bool=false)->MeshInstance3D:
 	var node=MeshInstance3D.new()
 	var geometry=BoxMesh.new()
 	geometry.size=size_
 	node.mesh=geometry
 	node.material_override=_mat(color)
 	node.position=position_
+	node.rotation.z=roll
 	node.visibility_range_end=96.0
 	parent.add_child(node)
+	if solid:
+		var descriptor: Dictionary = SolidGeometry.mesh(node.mesh.get_faces(), node.global_transform, "rock") if climbable else _solid_for_node(node)
+		_register_scenery_solid(descriptor)
 	return node
 
-func _cone(parent:Node3D,position_:Vector3,radius:float,height:float,color:Color,sides:int=6)->MeshInstance3D:
+func _cone(parent:Node3D,position_:Vector3,radius:float,height:float,color:Color,sides:int=6,solid:bool=true)->MeshInstance3D:
 	var node=MeshInstance3D.new()
 	var geometry=CylinderMesh.new()
 	geometry.top_radius=0
@@ -239,10 +262,48 @@ func _cone(parent:Node3D,position_:Vector3,radius:float,height:float,color:Color
 	node.position=position_
 	if height<15.0:node.visibility_range_end=96.0
 	parent.add_child(node)
+	if solid:
+		_register_scenery_solid(_solid_for_node(node))
 	return node
+
+func _solid_for_node(node: MeshInstance3D) -> Dictionary:
+	var box_mesh := node.mesh as BoxMesh
+	if box_mesh:
+		return SolidGeometry.box(node.global_position, box_mesh.size * 0.5, node.global_basis)
+	return SolidGeometry.mesh(node.mesh.get_faces(), node.global_transform)
+
+func _scenery_cell(x: float, z: float) -> Vector2i:
+	return Vector2i(int(floor(x / SCENERY_CELL_SIZE)), int(floor(z / SCENERY_CELL_SIZE)))
+
+func _register_scenery_solid(solid: Dictionary) -> void:
+	var key: Vector2i = _scenery_cell(solid.x, solid.z)
+	if not _scenery_solid_cells.has(key):
+		_scenery_solid_cells[key] = []
+	_scenery_solid_cells[key].append(solid)
+
+func _nearby_scene_obstacles(radius: float) -> Array:
+	var x: float = state.x
+	var z: float = state.z
+	var center := Vector2(x, z)
+	var obstacles: Array = chunks.obstacles_near(x, z, radius)
+	var extent: float = radius + 6.0
+	var first: Vector2i = _scenery_cell(x - extent, z - extent)
+	var last: Vector2i = _scenery_cell(x + extent, z + extent)
+	for row: int in range(first.y, last.y + 1):
+		for col: int in range(first.x, last.x + 1):
+			for solid: Dictionary in _scenery_solid_cells.get(Vector2i(col, row), []):
+				var reach: float = radius + float(solid.r)
+				if center.distance_squared_to(Vector2(solid.x, solid.z)) <= reach * reach:
+					obstacles.append(solid)
+	for anchor: Dictionary in anchors:
+		if _anchor_solids.has(anchor.id) and center.distance_squared_to(Vector2(anchor.x, anchor.z)) <= extent * extent:
+			obstacles.append_array(_anchor_solids[anchor.id])
+	return obstacles
 
 func _build_scenery(region:String):
 	_build_terrain_safety(region)
+	if region == "custom":
+		return
 	var snowy=region=="snow"
 	_refresh_nearby_anchors(true)
 	for i in range(checkpoints.size()):
@@ -272,8 +333,7 @@ func _build_scenery(region:String):
 		scenery.add_child(cabin)
 		_box(cabin,Vector3(0,1.5,0),Vector3(5,3,4),Color("746c53"))
 		for side in [-1,1]:
-			var roof=_box(cabin,Vector3(side*1.35,3.35,0),Vector3(3.1,.17,4.7),Color("d8e2e8") if snowy else Color("425a49"))
-			roof.rotation.z=-side*.42
+			_box(cabin,Vector3(side*1.35,3.35,0),Vector3(3.1,.17,4.7),Color("d8e2e8") if snowy else Color("425a49"),-side*.42)
 		_box(cabin,Vector3(0,.95,-2.06),Vector3(1.05,1.9,.08),Color("303e32"))
 		_box(cabin,Vector3(1.5,1.65,-2.07),Vector3(.9,.85,.08),Color("e7ce8c"))
 		_box(cabin,Vector3(-1.5,1.65,-2.07),Vector3(.9,.85,.08),Color("e7ce8c"))
@@ -286,11 +346,14 @@ func _build_scenery(region:String):
 		label.rotation.y=PI
 		label.visibility_range_end=96.0
 		cabin.add_child(label)
-		_box(cabin,Vector3(0,.12,-3.2),Vector3(5.4,.24,2.5),Color("958a69"))
+		_box(cabin,Vector3(0,.12,-3.2),Vector3(5.4,.24,2.5),Color("958a69"),0.0,true,true)
 	# A small base camp and the blue lake remain as distant navigation landmarks.
 	var camp_y=TerrainMath.height_at(-10,0,region)
 	_cone(scenery,Vector3(-10,camp_y+1.5,0),2.8,3,Color("be8857"),3)
-	for site: Dictionary in TerrainMath.water_bodies():
+	# Liquid water is a surface effect over a solid bed. Frozen lakes use
+	# their collision terrain directly, avoiding an offset visual ice plane.
+	var liquid_lakes: Array = [] if snowy else TerrainMath.water_bodies(region)
+	for site: Dictionary in liquid_lakes:
 		var water := MeshInstance3D.new()
 		var disk := CylinderMesh.new()
 		disk.top_radius = site.radius
@@ -301,7 +364,7 @@ func _build_scenery(region:String):
 		water.material_override = _mat(Color("8daec6") if snowy else Color("71a6ab"), 0.25)
 		water.position = Vector3(site.x, site.y + 0.01, site.z)
 		scenery.add_child(water)
-	for site: Dictionary in TerrainMath.landmarks():
+	for site: Dictionary in TerrainMath.landmarks(region):
 		_build_lookout(site, region)
 
 func _build_lookout(site: Dictionary, region: String) -> void:
@@ -333,14 +396,18 @@ func _build_terrain_safety(region: String) -> void:
 	if terrain_safety_meshes.has(region):
 		mesh = terrain_safety_meshes[region]
 	else:
-		var x_min: float = TerrainMath.MIN_X - SAFETY_MARGIN
-		var x_max: float = TerrainMath.MAX_X + SAFETY_MARGIN
-		var z_min: float = TerrainMath.MIN_Z - SAFETY_MARGIN
-		var z_max: float = TerrainMath.MAX_Z + SAFETY_MARGIN
-		var a := Vector3(x_min, SAFETY_Y, z_min)
-		var b := Vector3(x_max, SAFETY_Y, z_min)
-		var c := Vector3(x_min, SAFETY_Y, z_max)
-		var d := Vector3(x_max, SAFETY_Y, z_max)
+		var bounds: Rect2 = TerrainMath.bounds_for(region)
+		var x_min: float = bounds.position.x - SAFETY_MARGIN
+		var x_max: float = bounds.end.x + SAFETY_MARGIN
+		var z_min: float = bounds.position.y - SAFETY_MARGIN
+		var z_max: float = bounds.end.y + SAFETY_MARGIN
+		var safety_height: float = SAFETY_Y
+		if region == "custom":
+			safety_height = float(TerrainMath.custom_summary().get("minHeight", -100000.0)) - 32.0
+		var a := Vector3(x_min, safety_height, z_min)
+		var b := Vector3(x_max, safety_height, z_min)
+		var c := Vector3(x_min, safety_height, z_max)
+		var d := Vector3(x_max, safety_height, z_max)
 		var material: StandardMaterial3D = _mat(Color("b4c7cd") if region == "snow" else Color("818f73"))
 		var tool := SurfaceTool.new()
 		tool.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -358,6 +425,8 @@ func _build_terrain_safety(region: String) -> void:
 	scenery.add_child(terrain_safety)
 
 func _refresh_nearby_anchors(force:bool=false):
+	if state.region == "custom":
+		return
 	var position_=Vector2(state.x,state.z)
 	if not force and _anchor_center.is_finite() and position_.distance_squared_to(_anchor_center)<144.0:return
 	_anchor_center=position_
@@ -383,7 +452,7 @@ func _refresh_nearby_anchors(force:bool=false):
 				if TerrainMath.road_distance(x,z)<6.0 or TerrainMath.surface_at(x,z,state.region)=="water":continue
 				var id="anchor-%d-%d-%d" % [road,sample,side]
 				ids[id]=true
-				next.append({"id":id,"x":x,"y":TerrainMath.height_at(x,z,state.region)+.65,"z":z,"r":.45,"height":h})
+				next.append({"id":id,"x":x,"y":chunks.ground_height_at(x,z)+.65,"z":z,"r":.45,"height":h})
 	if state.winch!=null:
 		var attached=state.winch.anchor
 		if not ids.has(attached.id) and position_.distance_to(Vector2(attached.x,attached.z))<64.0:
@@ -394,6 +463,7 @@ func _refresh_nearby_anchors(force:bool=false):
 			_anchor_visuals[id].hide()
 			_anchor_visuals[id].queue_free()
 			_anchor_visuals.erase(id)
+			_anchor_solids.erase(id)
 	anchors=next
 
 func _update_anchor_layers():
@@ -407,17 +477,21 @@ func _update_anchor_layers():
 				_anchor_visuals[id].hide()
 				_anchor_visuals[id].queue_free()
 				_anchor_visuals.erase(id)
+				_anchor_solids.erase(id)
 			continue
 		if not layer_ready or Vector2(anchor.x-state.x,anchor.z-state.z).length()<4.0:
 			continue
 		var group=Node3D.new()
 		group.name=id
-		group.position=Vector3(anchor.x,anchor.y-.65,anchor.z)
+		var base_height: float = chunks.ground_height_at(anchor.x, anchor.z)
+		anchor.y = base_height + 0.65
+		group.position=Vector3(anchor.x,base_height,anchor.z)
 		scenery.add_child(group)
 		var h=float(anchor.height)
-		_box(group,Vector3(0,h*.25,0),Vector3(.26,h*.5,.26),Color("675b45"))
-		_cone(group,Vector3(0,h*.59,0),h*.3,h*.75,Color("718b96") if snowy else Color("3c5e49"))
-		_cone(group,Vector3(0,h*.85,0),h*.21,h*.56,Color("7b939d") if snowy else Color("4b6c50"))
+		var trunk := _box(group,Vector3(0,h*.25,0),Vector3(.26,h*.5,.26),Color("675b45"),0.0,false)
+		var lower := _cone(group,Vector3(0,h*.59,0),h*.3,h*.75,Color("718b96") if snowy else Color("3c5e49"),6,false)
+		var upper := _cone(group,Vector3(0,h*.85,0),h*.21,h*.56,Color("7b939d") if snowy else Color("4b6c50"),6,false)
+		_anchor_solids[id] = [_solid_for_node(trunk), _solid_for_node(lower), _solid_for_node(upper)]
 		_anchor_visuals[id]=group
 
 func _can_repair()->bool:
@@ -470,10 +544,7 @@ func _process(dt):
 			input.brakeValue=maxf(float(input.brakeValue),.65)
 		previous_position=Vector3(state.x,state.y,state.z)
 		var previous_state=state.duplicate(true)
-		var obstacles=chunks.get_obstacles().duplicate()
-		for anchor in anchors:
-			if _anchor_visuals.has(anchor.id) and absf(anchor.z-state.z)<15:obstacles.append(anchor)
-		simulation.step(state,input,minf(dt,.1),obstacles)
+		simulation.step(state, input, minf(dt, 0.1), _nearby_scene_obstacles(6.0))
 		blocked=not chunks.is_ready_at(state.x,state.z)
 		if blocked:
 			# Reject all effects of an unsafe step, including spring samples,
@@ -497,6 +568,7 @@ func _process(dt):
 func _command(command:Dictionary):
 	match command.get("type",""):
 		"start":playing=true
+		"import_map":_import_map(command)
 		"reset":
 			playing=command.get("playing",true)
 			_reset_world(command.get("region","forest"),command.get("snowTires",false),int(command.get("progress",0)))
@@ -504,6 +576,7 @@ func _command(command:Dictionary):
 			simulation.recover(state)
 			if not chunks.is_ready_at(state.x,state.z):
 				chunks.setup(state.region,Vector3(state.x,state.y,state.z))
+			simulation._reset_suspension(state)
 			vehicle.position=Vector3(state.x,state.y,state.z)
 			camera.position=vehicle.position+Vector3(0,6,-12)
 			target_camera=vehicle.position+Vector3(0,1,4)
@@ -520,7 +593,28 @@ func _command(command:Dictionary):
 		"repair":
 			if _can_repair():simulation.repair(state)
 
+func _import_map(command: Dictionary) -> void:
+	var path: Variant = command.get("path")
+	var request_id: Variant = command.get("requestId")
+	import_result = {"ok": false, "requestId": request_id, "error": "请选择地图 ZIP 文件。"}
+	if not path is String or String(path).is_empty():
+		return
+	if js_enabled and path != "/tmp/ridgebound-import.zip":
+		return
+	var result: Dictionary = MapImporter.load_zip(path)
+	if js_enabled:
+		DirAccess.remove_absolute(path)
+	if not result.get("ok", false):
+		import_result.error = result.get("error", "地图导入失败。")
+		return
+	TerrainMath.install_custom(result.data)
+	terrain_safety_meshes.erase("custom")
+	import_result = {"ok": true, "requestId": request_id, "summary": result.summary}
+	playing = true
+	_reset_world("custom", bool(state.snowTires), 0)
+
 func _update_vehicle(dt):
+	var steer_angle: float = float(state.get("roadSteeringAngle", float(state.steering) * 0.49))
 	vehicle.position=Vector3(state.x,state.y,state.z)
 	vehicle.rotation.y=state.yaw
 	if body:
@@ -529,7 +623,7 @@ func _update_vehicle(dt):
 	for i in range(wheels.size()):
 		if wheels[i]:
 			wheels[i].rotation.x=float(state.wheelRotation)
-			wheels[i].rotation.y=-state.steering*.4 if i<2 else 0
+			wheels[i].rotation.y=-steer_angle if i<2 else 0.0
 			if state.has("wheelHeights"):wheels[i].position.y=state.wheelHeights[i]-state.y
 		var shock: Node3D = shock_rods[i]
 		if shock:
@@ -537,7 +631,8 @@ func _update_vehicle(dt):
 	# Preserve the imported tilt of each pivot as it rotates about local Y.
 	# Blender local Z becomes local Y in the exported glTF coordinate system.
 	if steering:
-		steering.basis = steering_rest * Basis(Vector3.UP, state.steering * 2.5)
+		# Positive steering turns the wheel clockwise as seen from the driver seat.
+		steering.basis = steering_rest * Basis(Vector3.UP, -steer_angle * 16.0)
 	if speed_needle:
 		speed_needle.basis = speed_needle_rest * Basis(Vector3.UP, -absf(state.speed) * 0.22)
 	if rpm_needle:
@@ -565,7 +660,7 @@ func _update_camera(dt):
 		target=base+Vector3(-9,1,17)
 		camera.fov=52
 	elif camera_mode==2:
-		var local_camera=Vector3(.47,1.58,-.45)
+		var local_camera: Vector3 = driver_eye_local
 		var yaw_basis=Basis(Vector3.UP,float(state.yaw))
 		# Keep road feel while damping suspension motion instead of rigidly
 		# inheriting the sprung body's full pitch, roll and head-position arc.
@@ -635,6 +730,8 @@ func get_snapshot()->Dictionary:
 	report["renderScale"]=get_viewport().scaling_3d_scale
 	report["startup"]={"worldBuilds":world_builds,"initializationMs":snappedf(initialization_ms,.01),"worldBuildMs":snappedf(world_build_ms,.01),"chunksMs":snappedf(chunks_build_ms,.01),"sceneryMs":snappedf(scenery_build_ms,.01)}
 	report["playing"]=playing
+	report["customMap"] = TerrainMath.custom_summary()
+	report["importResult"] = import_result
 	var visible_anchors=[]
 	for anchor in anchors:
 		if not _anchor_visuals.has(anchor.id):continue

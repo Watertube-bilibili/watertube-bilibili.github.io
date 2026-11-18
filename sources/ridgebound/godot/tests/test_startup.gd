@@ -102,7 +102,7 @@ func run() -> void:
 			var view: Vector3 = -game.camera.global_basis.z
 			var up: Vector3 = game.camera.global_basis.y
 			var label: String = " pitch=%s roll=%s" % [pitch, roll]
-			check(absf(offset.x - 0.47) < 0.002 and absf(offset.y - 1.58) < 0.002 and absf(offset.z + 0.45) < 0.002, "left-hand-drive eye stays anchored without body-tilt orbit" + label)
+			check(offset.distance_to(game.driver_eye_local) < 0.003 and offset.x > 0.35, "left-hand-drive eye stays anchored at the model's driver socket" + label)
 			check(absf(asin(clampf(view.y, -1.0, 1.0))) < 0.32 and absf(asin(clampf(up.x, -1.0, 1.0))) < 0.085 and view.z > 0.93, "cockpit pitch and roll remain bounded under extreme suspension tilt" + label)
 	game.queue_free()
 	await process_frame

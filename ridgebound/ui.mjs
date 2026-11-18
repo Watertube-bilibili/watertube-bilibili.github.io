@@ -3,7 +3,7 @@ const distanceText = meters => {const value=Math.max(0,Number(meters)||0);return
 const seconds = n => `${Math.floor(n / 60).toString().padStart(2, '0')}:${Math.floor(n % 60).toString().padStart(2, '0')}`;
 
 export function createUI(actions = {}) {
-  const input = {throttle:0, reverse:0, steer:0, brake:false, reel:false};
+  const input = {throttle:0, reverse:0, steer:0, brake:false, reel:false, payout:false};
   const keys = new Set();
   const pointers = new Map();
   const wheel = $('touch-wheel');
@@ -27,6 +27,7 @@ export function createUI(actions = {}) {
     updateWheel(input.steer);
     input.brake = active && (has('Space') || held('brake'));
     input.reel = active && !suppressedReel && (has('KeyF') || held('reel'));
+    input.payout = active && held('payout');
   }
   function updateWheel(steer) {
     const value = Math.round(steer * 100);
@@ -111,7 +112,7 @@ export function createUI(actions = {}) {
     if (value) {
       if (victoryDialog.open) victoryDialog.close();
       if (!pauseDialog.open) {lastFocus = document.activeElement; pauseDialog.showModal();}
-      $('pause-title').textContent = playing ? '在山野，慢一点。' : '启程之前。';
+      $('pause-title').textContent = playing ? '暂停驾驶' : '游戏设置';
       $('resume').childNodes[0].textContent = playing ? '继续旅程' : '回到山野';
       $('dialog-recover').hidden = !playing;
     } else if (pauseDialog.open) pauseDialog.close();
@@ -130,7 +131,7 @@ export function createUI(actions = {}) {
     if (keys.has('KeyF')) suppressedReel = true;
     keys.delete('KeyF');
     for (const [id,held] of [...pointers]) {
-      if (held.name !== 'reel') continue;
+      if (held.name !== 'reel' && held.name !== 'payout') continue;
       pointers.delete(id);
       held.el.classList.remove('held');
       try { if (held.el.hasPointerCapture(id)) held.el.releasePointerCapture(id); } catch {}
@@ -154,7 +155,7 @@ export function createUI(actions = {}) {
   function syncWinchLayout(cameraMode) {
     const camera = Number(cameraMode) || 0;
     document.body.dataset.camera = String(camera);
-    const nextCompact = touchLayout.matches && (camera === 2 || portraitLayout.matches);
+    const nextCompact = touchLayout.matches;
     if (nextCompact && !compactWinch) {winchExpanded = false; releaseReel();}
     if (!nextCompact) winchExpanded = true;
     compactWinch = nextCompact;
@@ -187,7 +188,9 @@ export function createUI(actions = {}) {
   $('dialog-photo').addEventListener('click',()=>call('photo'));
   $('dialog-fullscreen').addEventListener('click',()=>$('fullscreen').click());
   $('repair').addEventListener('click',()=>call('repair'));
-  $('garage-button').addEventListener('click', () => call('garage'));
+  for (const id of ['garage-button', 'welcome-map', 'dialog-map']) {
+    $(id).addEventListener('click', () => call('garage'));
+  }
   $('buyTires').addEventListener('click', () => call('buyTires'));
   function closeGarage() {garageDialog.close();paused=false;resetInput();if(playing)call('resume');}
   $('close-garage').addEventListener('click',closeGarage);
@@ -273,7 +276,9 @@ export function createUI(actions = {}) {
     $('altitude').textContent = `海拔 ${Math.round(extra.altitude ?? (state.y || 0))} m`;
     const yaw = ((extra.heading ?? state.yaw ?? 0) * 180/Math.PI % 360 + 360) % 360;
     $('heading').textContent = ['N','NE','E','SE','S','SW','W','NW'][Math.round(yaw/45)%8];
-    $('mission-hint').textContent = state.completed ? '自由探索，享受山野' : state.stuck > 3 ? '试试低速挡，或用绞盘借力' : '主线约 24 km · 可探索 7 条环线';
+    const missionHint = $('mission-hint');
+    missionHint.textContent = state.completed ? '可继续自由探索' : state.stuck > 3 ? '挂低速挡或用绞盘脱困' : '';
+    missionHint.hidden = !missionHint.textContent;
     const connected = !!state.winch;
     $('winch-toggle-status').textContent = connected ? '已连接' : '待命';
     $('winch-toggle').classList.toggle('connected',connected);
@@ -282,6 +287,8 @@ export function createUI(actions = {}) {
     $('winch-action').textContent = connected ? '已连接' : '连接锚点';
     $('winch-hint').textContent = connected ? input.reel ? '收绳中 · 保持油门可辅助脱困' : '已连接 · 按住收绳，拉动车辆' : '靠近树木，连接锚点';
     $('reel').disabled = !connected;
+    $('payout').disabled = !connected;
+    $('winch-endpoint').disabled = connected;
     $('detach').disabled = !connected;
     $('tension-bar').style.width = connected ? `${Math.min(100,Math.max(0,(state.winch.tension || 0)*100))}%` : '0%';
   }
@@ -308,7 +315,7 @@ export function createUI(actions = {}) {
   }
   function updateGarage(data) {
     garageState = {...garageState,...data};
-    const {coins,snowTires,snowUnlocked,region} = garageState;
+    const {coins,snowTires,snowUnlocked,region,customMapName} = garageState;
     $('coinBalance').textContent = Math.floor(coins);
     $('buyTires').disabled = snowTires || coins < 180;
     $('buyTires').innerHTML = snowTires ? '已装配<small>SNOW GRIP</small>' : '◇ 180<small>装配雪地胎</small>';
@@ -316,10 +323,16 @@ export function createUI(actions = {}) {
     $('snowMap').disabled = !snowUnlocked;
     $('snowMap').classList.toggle('locked',!snowUnlocked);
     $('snowMap').classList.toggle('selected',region === 'snow');
-    $('forestMap').classList.toggle('selected',region !== 'snow');
+    $('forestMap').classList.toggle('selected',region === 'forest');
+    $('forestMap').setAttribute('aria-pressed',String(region === 'forest'));
+    $('snowMap').setAttribute('aria-pressed',String(region === 'snow'));
+    $('customMap').hidden = !customMapName;
+    $('customMap').classList.toggle('selected',region === 'custom');
+    $('customMap').setAttribute('aria-pressed',String(region === 'custom'));
+    $('map-import-name').textContent = customMapName || '自定义地图';
     $('snow-lock').textContent = snowUnlocked ? '已解锁 · 普通胎也可进入' : '完成山林路线后解锁';
     $('garage-note').textContent = snowUnlocked && !snowTires ? '雪线已解锁，普通胎也可进入。雪地胎可改善冰雪抓地力。' : snowTires ? '雪地胎已就绪。去探索更高处的风景。' : '每抵达一个路标，获得 60 枚游戏金币。';
-    document.querySelector('.map-title > span').textContent = region === 'snow' ? '珠峰雪线' : '松风谷';
+    document.querySelector('.map-title > span').textContent = region === 'custom' ? (customMapName || '自定义地图') : (region === 'snow' ? '珠峰雪线' : '松风谷');
   }
   function setDamage(damage={},repairAvailable=false) {
     for(const [key,id]of [['body','body-health'],['tires','tires-health'],['suspension','suspension-health']]){const integrity=Math.max(0,Math.min(100,damage?.[key]??100));$(id).textContent=Math.round(integrity)+'%';$(id).classList.toggle('damaged',integrity<65);}
@@ -328,7 +341,9 @@ export function createUI(actions = {}) {
     $('repair').textContent='小屋维修 (T)';
   }
   function setReady(ready,message) {
+    document.body.classList.toggle('game-ready', ready);
     $('start').disabled=!ready;
+    $('map-import-button').disabled=!ready;
     $('start').setAttribute('aria-busy',String(!ready));
     if($('loading')){ $('loading').hidden=!!ready; if(message && $('loading').lastChild) $('loading').lastChild.textContent=message; }
   }
