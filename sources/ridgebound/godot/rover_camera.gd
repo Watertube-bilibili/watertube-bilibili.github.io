@@ -43,9 +43,19 @@ func follow(base: Vector3, state: Dictionary, eye: Vector3, mode: int, active: b
 	var horizon := Vector3.UP
 	var vehicle_yaw := float(state.yaw)
 	if not active:
-		desired = base + Vector3(22, 13, -23)
-		target = base + Vector3(-9, 1, 17)
-		fov = 52.0
+		var window_size := get_viewport().get_visible_rect().size
+		var portrait := window_size.y > window_size.x
+		var orientation := Basis(Vector3.UP, vehicle_yaw)
+		var bearing := (orientation * Vector3(0.68, 0.0, 0.74)).normalized()
+		var width_ratio := window_size.x / maxf(window_size.y, 1.0)
+		var radius := clampf(5.5 / maxf(width_ratio, 0.46), 7.6, 12.0) if portrait else 8.8
+		desired = base + bearing * radius + Vector3.UP * (1.85 if portrait else 2.15)
+		desired.y = maxf(desired.y, TerrainMath.height_at(desired.x, desired.z, state.region) + 0.8)
+		var screen_right := (-bearing).cross(Vector3.UP)
+		target = base + Vector3.UP * (-0.72 if portrait else 0.74)
+		if not portrait:
+			target -= screen_right * clampf(width_ratio * 0.90, 0.85, 2.4)
+		fov = 49.0
 	elif mode == 2:
 		var orientation := Basis(Vector3.UP, vehicle_yaw)
 		var pitch := clampf(float(state.pitch) * 0.28, -0.12, 0.12)
