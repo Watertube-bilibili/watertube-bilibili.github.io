@@ -1,6 +1,6 @@
 # 山野之间 · RIDGEBOUND
 
-水管同学的原创浏览器越野游戏。采用 Godot 4.6 和 Blender，原始代码、模型、生成脚本及网页入口一并开源。这个目录是个人主页仓库中的独立项目，不包含其它项目的源码许可。
+水管同学的原创越野游戏，提供网页和 Windows 原生版。采用 Godot 和 Blender，原始代码、模型、生成脚本及网页入口一并开源。这个目录是个人主页仓库中的独立项目，不包含其它项目的源码许可。
 
 [进入游戏](https://watertube-bilibili.github.io/ridgebound/) · [返回项目页](https://watertube-bilibili.github.io/projects.html)
 
@@ -43,6 +43,16 @@
 - `windows-bridge/`：Windows DirectInput输入/力反馈服务。
 - `scripts/build-web.sh`：Godot网页导出。
 - [`../../ridgebound/`](../../ridgebound/)：HTML界面、输入绑定、存档和已导出的Godot网页文件。
+
+## Windows 原生版
+
+[安装版 EXE](../../ridgebound/downloads/Ridgebound-Setup-x64.exe) · [便携版 ZIP](../../ridgebound/downloads/Ridgebound-Windows-x64.zip)
+
+安装版提供开始菜单快捷方式和卸载。便携版解压后运行 `Ridgebound.exe`。桌面包用 Godot 4.4.1 的 OpenGL 兼容渲染器，目标系统为 Windows 7 SP1 x64 及更新版本，需要 OpenGL 3.3 驱动。车载相机、绞盘、维修和雪线解锁均可离线使用。桌面存档保存在系统用户目录。
+
+按 F2 切换画质，控制器设置可为不同设备分别绑定转向、油门和刹车。力反馈默认关闭，可在设置中启用，按 F8 停止。Windows 7 真机和实体方向盘的兼容性尚未验证。
+
+`bash sources/ridgebound/scripts/build-desktop.sh` 在 Linux 上构建两种发行包，使用 NSIS、MinGW 和 Xvfb。
 
 ## 本地运行与构建
 
