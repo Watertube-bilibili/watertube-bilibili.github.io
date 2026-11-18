@@ -251,13 +251,23 @@ class MPV:
             for a,b in zip(points,points[1:]):
                 aa=(a[0],a[1]+.002,a[2]+.012);bb=(b[0],b[1]+.002,b[2]+.012)
                 self.rod('Arcing pearl DRL',aa,bb,.011,'white')
-            housing=self.cube('Crystal headlight pocket',(s*.858,.642,2.639),(.265,.142,.075),'dark',bevel=.045,segments=4)
-            housing.rotation_euler.z=-s*.17
+            lamp_vs=[];lamp_fs=[]
+            for yy in (.595,.605,.675,.695):
+                for j in range(9):
+                    x=s*(.705+j*.031)
+                    zz=2.758-(yy-.60)*.35-.18*(abs(x)/1.03)**4
+                    lamp_vs.append((x,yy,zz))
+            for row in range(3):
+                for j in range(8):
+                    k=row*9+j;lamp_fs.append((k,k+1,k+10,k+9))
+            housing=self.mesh('Curved crystal lamp pocket',lamp_vs,lamp_fs,'dark')
+            solid=housing.modifiers.new('Lamp housing shell','SOLIDIFY');solid.thickness=.018
+            for f in housing.data.polygons:f.use_smooth=True
             for j in range(3):
-                x=s*(.774+j*.067);z=2.694-.23*(abs(x)/1.03)**4
-                optic=self.cube('Crystal optical block',(x,.641,z),(.052,.071,.030),'white',bevel=.012,segments=3)
-                optic.rotation_euler.z=-s*.15
-                self.cube('Crystal lower facet',(x,.611,z+.017),(.041,.010,.008),'chrome',bevel=.003,segments=2)
+                x=s*(.754+j*.068);z=2.758-(.641-.60)*.35-.18*(abs(x)/1.03)**4+.015
+                optic=self.cube('Crystal optical block',(x,.641,z),(.048,.056,.020),'white',bevel=.010,segments=3)
+                optic.rotation_euler.z=-s*.20
+                self.cube('Crystal lower facet',(x,.617,z+.013),(.038,.008,.006),'chrome',bevel=.003,segments=2)
             self.cube('Corner intake inset',(s*.926,.113,2.65),(.115,.16,.035),'dark',bevel=.035,segments=3)
         self.cube('Front lower lip',(0,-.105,2.73),(1.69,.045,.08),'chrome',bevel=.020,segments=3)
         # Small original paired-river emblem, shaped as two offset polished facets.
