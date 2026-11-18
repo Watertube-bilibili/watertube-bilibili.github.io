@@ -122,7 +122,7 @@ def terrain():
             x = -121.0 + column * .89
             positions.append((x, y, ground_height(x, y)))
             grass = .45 + .22 * math.sin(x * .33 - y * .25) + .22 * math.cos(y * .16 + x * .12)
-            ground = mixed(rgba("8b7037"), rgba("c2a158"), grass)
+            ground = mixed(rgba("9e7841"), rgba("d4b270"), grass)
             if y > 29.0:
                 ground = mixed(ground, rgba("8f9a59"), smooth(29.0, 109.0, y) * .66)
             center = abs(x - at)
@@ -144,7 +144,7 @@ def terrain():
 
 
 def mountain_layer(label, y, elevation, max_height, color, offset, spread):
-    shade = material(label, color, 1.0)
+    shade = material(label, color, 1.0, .18)
     points, faces = [], []
     pitch = 7.0
     ridge_count = 117
@@ -212,7 +212,7 @@ def forest():
             continue
         if -15.0 < x < 42.0 and y < 30.0:
             continue
-        if 8.0 < x < 25.0 and 32.0 < y < 48.0:
+        if 6.0 < x < 19.0 and 34.0 < y < 51.0:
             continue
         grove = .5 + .29 * math.sin(x * .21 + y * .12) + .22 * math.cos(x * .09 - y * .34)
         if rng.random() > grove:
@@ -287,7 +287,7 @@ def cabin():
         ("755338", "825e45", "9c7353", "624b36"))]
     roof = material("Pine tar roofing", "474b40", .89)
     glass = material("Camp window", "eab677", .38, .7)
-    building = Vector((17.1, 37.2, 0.0))
+    building = Vector((12.15, 42.0, 0.0))
     building.z = ground_height(building.x, building.y)
     p = building
     box("Cabin foundation", (4.85, 3.75, .32), p + Vector((0, 0, .02)), woods[3])
@@ -375,7 +375,7 @@ def render(scene, output, vertical):
     camera = bpy.context.object
     scene.camera = camera
     scene.render.resolution_x, scene.render.resolution_y = (1164, 538) if wide else (624, 1352)
-    camera.location = (1.0, -16.5, 6.4) if wide else (7.85, -16.2, 5.65)
+    camera.location = (1.0, -16.5, 2.29) if wide else (7.85, -16.2, 2.62)
     look = Vector((1.8, 31.0, 5.6) if wide else (4.0, 30.0, 5.7))
     camera.rotation_euler = (look - camera.location).to_track_quat("-Z", "Y").to_euler()
     camera.data.sensor_fit = "HORIZONTAL" if wide else "VERTICAL"
@@ -407,7 +407,7 @@ def main():
     scene.cycles.glossy_bounces = 2
     scene.view_settings.view_transform = "AgX"
     scene.view_settings.look = "AgX - Medium High Contrast"
-    scene.view_settings.exposure = .19
+    scene.view_settings.exposure = .43
     scene.render.resolution_percentage = 100
     scene.render.image_settings.file_format = "PNG"
 
