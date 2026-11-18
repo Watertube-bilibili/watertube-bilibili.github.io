@@ -1,116 +1,27 @@
 # 山野之间 · RIDGEBOUND
 
-水管同学的原创越野游戏，提供网页、Windows 和安卓原生版。采用 Godot 和 Blender，原始代码、模型、生成脚本及网页入口一并开源。这个目录是个人主页仓库中的独立项目，不包含其它项目的源码许可。
+水管同学的原创越野驾驶游戏。开着四驱越野车或长轴 MPV 从松风谷出发，在山路上过石、涉泥，用绞盘脱困，到维修小屋整备。
 
-[进入游戏](https://watertube-bilibili.github.io/ridgebound/) · [返回项目页](https://watertube-bilibili.github.io/projects.html)
+[在线试玩](https://watertube-bilibili.github.io/ridgebound/index.html?v=summit-20261118) · [Android 10+ APK](https://watertube-bilibili.github.io/ridgebound/downloads/Ridgebound-Android.apk?v=summit-20261118) · [Windows 安装版](https://watertube-bilibili.github.io/ridgebound/downloads/Ridgebound-Setup-x64.exe?v=summit-20261118) · [Windows 便携版](https://watertube-bilibili.github.io/ridgebound/downloads/Ridgebound-Windows-x64.zip?v=summit-20261118)
 
-## 玩法
+## 获取源码
 
-驾驶复古四驱车沿松风谷土路寻找四处检查点。泥地与陡坡可以使用四驱、低速挡和树木绞盘；碰撞会损伤车身、轮胎与悬挂，驶近路标旁的小屋可免费维修。
-
-松风谷与珠峰雪线各有 16×24 公里的可探索地形。主线实际长约 24 公里，七条环线合计约 78 公里，沿途设有 14 处维修点。小地图默认跟随车辆，点按可切换全图查看路线、路标和维修点。
-
-首次到达每个检查点获得60游戏金币，雪地胎售价180金币。完成山林路线后解锁「珠峰雪线」，不购买雪胎也能进入；普通胎在雪地与蓝冰上更容易打滑，碰撞和摔落照常造成车损。地图为原创虚构越野路线，不是珠峰真实道路测绘。没有真实货币支付。
-
-金币、解锁和检查点只保存在当前浏览器。换浏览器或清除网站数据会移除这份进度。Windows本地桥地址与在线网站是不同的浏览器存储空间。
-
-扩图沿用原存档：金币、雪胎和雪线解锁状态保留，检查点进度按原序号对应到加长后的路线。
-
-## 车辆和移动设备
-
-车库提供原有四驱越野车和原创长轴 MPV「御川 V8」。御川的轴距为 3.42 米，左右车轮独立接地。座舱方向盘跟随前轮转角，传动比为 16:1。两台车都有前后绞盘挂点。御川的游戏制动踏板在受力严格超过 1600 N 时断裂，正好 1600 N 可以正常制动。故障会保存在这辆车上，开到维修小屋可恢复。
-
-外接踏板在控制器设置中单独绑定。满行程制动力默认为 1400 N，支持 300–2500 N 标定。只提供归一化行程的设备通过标定估算游戏力值。普通按键和触屏也使用当前标定。
-
-安卓原生版支持 Android 10 及更高版本，使用 ARM64。首次打开可在屏幕设置选择机型，系统返回的安全区域优先。机型预设为保守的界面留边，具体手机可再调整。横竖屏都支持左手方向盘、右手踏板，中间空白区域拖动可环绕车身。
-
-## 操作
-
-| 操作 | 键盘 |
-|---|---|
-| 油门、倒车、转向 | W/S/A/D 或方向键 |
-| 刹车 | 空格 |
-| 四驱、低速挡 | X、L |
-| 绞盘选择锚点 / 快速连接 | E，再按 E 或点场景锚点 |
-| 收绳、释放 | 按住 F、Q |
-| 跟随 / 高位 / 车内视角 | C |
-| 返回检查点、小屋维修 | R、T |
-| 暂停 | Esc |
-
-手机左下是可转动方向盘，松手自动回正。右手可以同时踩油门、刹车或倒车。竖屏和车内视角的绞盘面板默认收起。左舵座舱的方向盘和仪表随驾驶联动。手机车内视角默认收起绞盘面板，点击绞盘按钮展开；收起时停止收绳，不会断开已经连接的绳索。
-
-控制器设置支持标准手柄、方向盘以及独立USB踏板。每项操作可分别选择设备、轴或按钮，设置反转、死区和有效行程。先按一下设备按钮，浏览器才能识别部分设备；设备能否通过Gamepad API暴露取决于驱动和浏览器。
-
-普通网页可使用设备提供的震动能力。Windows方向盘真实扭矩反馈通过配套DirectInput本地桥接程序接入，详见 [Windows桥说明](windows-bridge/README.md)。兼容性以驱动和实机结果为准，不保证所有型号。未用真实方向盘测试的范围会在发行说明中明确标出。
-
-## 项目结构
-
-- `godot/`：游戏场景、地形、车辆物理、分块管理和测试。
-- `ridge-rover.blend`：可编辑的车辆和座舱模型。
-- `build_vehicle.py`、`cabin.py`：可重复生成模型的Blender脚本。
-- `windows-bridge/`：Windows DirectInput输入/力反馈服务。
-- `scripts/build-web.sh`：Godot网页导出。
-- [`../../ridgebound/`](../../ridgebound/)：HTML界面、输入绑定、存档和已导出的Godot网页文件。
-
-## 自定义地图
-
-在网页或桌面版打开「地图与车库」并选择 ZIP。支持 Ridgebound 高度图和障碍物，以及 BeamNG v9 的单个 TerrainBlock、地表抓地和出生点。本次可在会话中重新打开已导入地图。 [导入格式与示例](MAP-IMPORT.md)
-
-## 安卓原生版
-
-[下载 ARM64 APK](../../ridgebound/downloads/Ridgebound-Android.apk)
-
-使用触屏方向盘和踏板，可随设备方向切换竖屏与横屏。方向变化只调整布局，转向来自方向盘。此版为签名的侧载构建。 [安卓构建验证](https://github.com/Watertube-bilibili/watertube-bilibili.github.io/actions/runs/44270193567)
-
-## Windows 原生版
-
-[安装版 EXE](../../ridgebound/downloads/Ridgebound-Setup-x64.exe?v=expedition-20261118) · [便携版 ZIP](../../ridgebound/downloads/Ridgebound-Windows-x64.zip?v=expedition-20261118)
-
-安装版提供开始菜单快捷方式和卸载。便携版解压后运行 `Ridgebound.exe`。桌面包用 Godot 4.4.1 的 OpenGL 兼容渲染器，目标系统为 Windows 7 SP1 x64 及更新版本，需要 OpenGL 3.3 驱动。车载相机、绞盘、维修和雪线解锁均可离线使用。桌面存档保存在系统用户目录。
-
-按 F2 切换画质，控制器设置可为不同设备分别绑定转向、油门和刹车。力反馈默认关闭，可在设置中启用，按 F8 停止。Windows 7 真机和实体方向盘的兼容性尚未验证。
-
-`bash sources/ridgebound/scripts/build-desktop.sh` 在 Linux 上构建两种发行包，使用 NSIS、MinGW 和 Xvfb。
-
-## 本地运行与构建
-
-已导出的网页无需npm依赖。在仓库根目录执行：
+本源码库有自己的 Git 历史，包含 Godot 工程、网页界面、Blender 原稿和构建脚本。保存[源码包](https://watertube-bilibili.github.io/ridgebound/downloads/Ridgebound-source.bundle)后，可在下载目录执行以下命令。
 
 ```sh
+git clone Ridgebound-source.bundle ridgebound
+cd ridgebound
+```
+
+## 在本地运行
+
+在 Godot 4.6.3 中打开 [project.godot](sources/ridgebound/godot/project.godot) 可以运行原生场景。构建网页版需要安装 Godot 4.6.3 的 Web 导出模板和 Python 3。在仓库根目录运行以下命令，然后打开 `http://localhost:8765/ridgebound/`。
+
+```sh
+bash sources/ridgebound/scripts/build-web.sh
 python3 -m http.server 8765
-# 浏览器打开 http://localhost:8765/ridgebound/
 ```
 
-源码构建需要 Godot 4.6.3 及对应 Web 导出模板。GitHub Pages使用无多线程模板，不依赖跨域隔离HTTP头。
+[游戏操作与各平台构建](sources/ridgebound/README.md) · [地图模组格式](sources/ridgebound/MAP-IMPORT.md) · [Windows 方向盘与独立踏板](sources/ridgebound/windows-bridge/README.md)
 
-```sh
-bash sources/ridgebound/scripts/build-web.sh
-```
-
-构建脚本会在导出后运行 `scripts/prepare-web.py`，为 Godot 4.6.3 启动器添加读取已校验字节的入口，并生成带内容摘要的压缩引擎和游戏包，同时为前端模块与样式添加内容版本，避免新地图界面混用旧游戏包缓存。若手动使用编辑器导出，也必须运行此脚本。正常首次传输的引擎从37,700,666字节减为9,382,282字节，浏览器支持缓存时再次进入可直接读取本地副本。不支持解压或压缩包校验失败时，会自动回退标准WASM文件。
-
-修改或重新生成模型（需要Blender4.3+）：
-
-```sh
-blender --background --python-exit-code 1 --python sources/ridgebound/build_vehicle.py -- --preview
-bash sources/ridgebound/scripts/build-web.sh
-```
-
-也可直接用Godot编辑器打开 `godot/project.godot`。网页界面独立于Godot场景，通过JSON桥传递输入、指令和状态。独立Godot编辑器运行主要用于场景和物理调试，完整UI请用网页导出验证。
-
-```sh
-godot --headless --editor --path sources/ridgebound/godot --import --quit
-godot --headless --path sources/ridgebound/godot --script tests/test_physics.gd
-```
-
-分块以16米为单位，启动仅同步生成车身支撑范围内的1–4块地面，其余逐帧准备。地面与树石分为两个队列，先生成地面，再显示障碍物并同时启用碰撞；绞盘树也在显示后才可连接。若待显示的障碍物靠近车身，会延后到车辆驶离，避免突然生成造成车损。中景和远景分别按 128 米与 512 米分块随车补齐。检查点、维修小屋与瞭望台帮助在长路线中辨认方向。
-
-加载邻域按实际帧耗时调整，并优先准备行驶前方；粗远景始终保留，未准备好精细地形时限制车辆继续进入。四轮悬挂为自定义弹簧阻尼车辆模拟，支持车身侧倾、俯仰和轮位独立起伏；座舱相机另行平滑，减轻正常驾驶时的抖动。
-
-## 许可与致谢
-
-本项目原创代码及生成的车辆/场景资产采用 [MIT许可](LICENSE)。其他网站项目不因本文件而变更许可。
-
-Godot采用MIT许可，其第三方组件各有许可，随网页保留在 [`ridgebound/licenses/`](../../ridgebound/licenses/)。Blender用于创作模型，未重新分发Blender程序。项目安装的Impeccable设计技能采用Apache-2.0，见仓库 `.agents/skills/impeccable/`。
-
-车辆、场景和界面均为本项目原创。设计参考了开发者公开介绍中的分区探索、地标导航和绞盘脱困。 [Funselektor 开发者文章](https://news.xbox.com/en-us/2026/01/23/the-wilderness-of-over-the-hill-on-xbox-series-xs/) · [玩法访谈](https://80.lv/articles/over-the-hill-creating-a-co-op-driving-adventure-game)
+原创代码、车型及场景素材采用 MIT 许可。[查看许可](LICENSE)

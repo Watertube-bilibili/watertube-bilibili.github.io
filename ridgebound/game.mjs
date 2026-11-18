@@ -1,8 +1,8 @@
 import {routeX,checkpoints,emptyState,worldBounds,branches,branchX,repairStations,lakes,riverX,areaNameAt,formatDistance} from './world-data.mjs?v=7bd02ac574a3a9e1';
-import {createUI} from './ui.mjs?v=43e5279a8f32c039';
-import {bootEngine,bootStats} from './boot.mjs?v=f22f4cde6434d488';
+import {createUI} from './ui.mjs?v=05d5296ee734e3b7';
+import {bootEngine,bootStats} from './boot.mjs?v=7088bb4734c3b1c1';
 import {createControllers} from './controllers.mjs';
-import {createDeviceLayout} from './device-layout.mjs';
+import {createDeviceLayout} from './device-layout.mjs?v=97647a73b0eeed4f';
 const STORAGE='watertube-ridgebound-v1';
 const QUALITY_KEY = 'watertube-ridgebound-quality';
 const VEHICLE_KEY = 'watertube-ridgebound-vehicle';

@@ -13,10 +13,15 @@ import sys
 import time
 
 
+RUNTIME_TAGS = ("AndroidRuntime:E", "godot:V", "libc:F", "DEBUG:E", "ActivityTaskManager:I")
+
+
 def adb(*args, binary=False, check=True):
-    return subprocess.run(
-        ["adb", *map(str, args)], capture_output=True, check=check, text=not binary, timeout=60
-    ).stdout
+    command = ["adb", *map(str, args)]
+    result = subprocess.run(command, capture_output=True, text=not binary, timeout=60)
+    if check and result.returncode:
+        raise RuntimeError(f"{command!r} exited {result.returncode}: {result.stderr}")
+    return result.stdout
 
 
 def samples():
@@ -73,24 +78,30 @@ def bound_controls(sample):
 
 def swipe(start, end, duration=580):
     points = [round(value) for point in (start, end) for value in point]
-    adb("shell", "input", "touchscreen", "swipe", *points, duration)
+    adb("shell", "input", "touchscreen", "-d", "0", "swipe", *points, duration)
+
+
+def settled_input(description):
+    after_swipe = wait_probe(description, lambda s: s["active"])
+    return wait_probe(description, lambda s: s["active"] and s["sequence"] >= after_swipe["sequence"] + 3)
 
 
 def gestures(sample, width, height):
     # Two swipes in the clear center viewport, where no touch control is present.
     # Both must affect the real camera pose as well as its requested orbit.
+    # Reverse vertical motion on a high camera so repeated orientation tests
+    # still exercise pitch instead of running into its intended travel limit.
+    pitch_y = 0.34 if sample["pitch"] > 0.25 else 0.64
     for axis, start, end in [
-        ("yaw", (width * 0.46, height * 0.47), (width * 0.64, height * 0.47)),
-        ("pitch", (width * 0.50, height * 0.48), (width * 0.50, height * 0.66)),
+        ("yaw", (width * 0.46, height * 0.47), (width * 0.61, height * 0.47)),
+        ("pitch", (width * 0.50, height * 0.49), (width * 0.50, height * pitch_y)),
     ]:
         other_axis = "pitch" if axis == "yaw" else "yaw"
         swipe(start, end)
         before = sample
-        sample = wait_probe(
-            f"center Android swipe must change camera {axis} and its pose",
-            lambda s: s["active"] and s["sequence"] > before["sequence"]
-            and abs(s[axis] - before[axis]) > 0.035 and math.dist(s["pose"], before["pose"]) > 0.20,
-        )
+        sample = settled_input(f"driving rendered after the {axis} swipe")
+        if abs(sample[axis] - before[axis]) <= 0.035 or math.dist(sample["pose"], before["pose"]) <= 0.20:
+            raise RuntimeError(f"Center Android swipe did not move camera {axis}: {before} -> {sample}")
         if abs(sample[other_axis] - before[other_axis]) > 0.025:
             raise RuntimeError(f"{axis}-only swipe also displaced {other_axis}")
     for action in ("steer", "throttle"):
@@ -104,11 +115,10 @@ def gestures(sample, width, height):
         else:
             x, y = before["gas"]
             start = end = (x * scale_x, y * scale_y)
-        swipe(start, end, 720)
-        sample = wait_probe(
-            f"{action} touch must return to neutral on release",
-            lambda s: s["sequence"] > before["sequence"] and abs(s[action]) < 0.02,
-        )
+        swipe(start, end, 2_400)
+        sample = settled_input(f"driving rendered after the {action} hold")
+        if abs(sample[action]) >= 0.02:
+            raise RuntimeError(f"{action} touch did not return to neutral: {sample}")
         during = [s for s in samples() if before["sequence"] < s["sequence"] <= sample["sequence"]]
         if not any(abs(s[action]) > 0.30 for s in during):
             raise RuntimeError(f"Android did not deliver the real {action} gesture: {during}")
@@ -117,39 +127,100 @@ def gestures(sample, width, height):
         print(f"Real {action} touch did not affect the camera")
 
 
-def capture(directory, label, rotation, notch, app):
-    before = wait_probe("driving UI is ready", lambda s: s["active"])
-    adb("shell", "wm", "user-rotation", "lock", rotation)
-    degrees = rotation * 90
-    until = time.monotonic() + 20
-    while time.monotonic() < until:
-        display = adb("shell", "dumpsys", "window", "displays")
-        if re.search(rf"\bmRotation=ROTATION_{degrees}\b", display):
-            break
-        time.sleep(0.30)
-    else:
-        raise RuntimeError(f"Android did not report actual rotation {degrees} degrees")
-    sample = wait_probe(
-        f"view resized for {label}, overlay present if supported",
-        lambda s: s["active"] and s["sequence"] > before["sequence"]
-        and (s["viewport"][1] > s["viewport"][0]) == (rotation == 0)
-        and (not notch or s["cutouts"] > 0),
-    )
-    bound_controls(sample)
+def screenshot(directory, name):
     png = adb("exec-out", "screencap", "-p", binary=True)
     if not png.startswith(b"\x89PNG\r\n\x1a\n") or len(png) < 24:
         raise RuntimeError("Invalid screenshot data")
-    width, height = struct.unpack(">II", png[16:24])
+    (directory / (name + ".png")).write_bytes(png)
+    return struct.unpack(">II", png[16:24])
+
+
+def capture(directory, label, rotation, notch, app):
+    before = wait_probe("driving UI is ready", lambda s: s["active"])
+    current = before
+    # Rotate the virtual handset itself so the AVD display and touch transform
+    # change together, exactly as when a user turns a phone.
+    for _ in range(8):
+        if current["rotation"] == rotation:
+            break
+        previous = current["rotation"]
+        reply = adb("emu", "rotate").strip()
+        if "KO" in reply:
+            raise RuntimeError(f"Emulator device rotation failed: {reply}")
+        try:
+            current = wait_probe("virtual handset changed its rotation",
+                                 lambda s: s["active"] and s["rotation"] != previous, timeout=8)
+        except RuntimeError:
+            current = wait_probe("read current app rotation", lambda s: s["active"])
+    if current["rotation"] != rotation:
+        raise RuntimeError(f"Could not rotate handset to {label}: {current}")
+
+    def matches(s):
+        return (s["active"] and s["rotation"] == rotation
+                and (s["viewport"][1] > s["viewport"][0]) == (rotation == 0)
+                and (not notch or s["cutouts"] > 0))
+
+    first = wait_probe(f"Android surface and viewport rotated to {label}",
+                       lambda s: s["sequence"] > before["sequence"] and matches(s))
+    sample = wait_probe(f"surface settled after rotating to {label}",
+                        lambda s: s["sequence"] >= first["sequence"] + 4 and matches(s))
+    bound_controls(sample)
+    width, height = screenshot(directory, label)
     if (height > width) != (rotation == 0):
         raise RuntimeError(f"Screenshot dimensions disagree with {label}")
     activities = adb("shell", "dumpsys", "activity", "activities")
     if not any(app in line and re.search(r"mResumedActivity|topResumedActivity", line)
                for line in activities.splitlines()):
         raise RuntimeError("The tested game is not the resumed Android activity")
+    inputs = adb("shell", "dumpsys", "input")
+    (directory / (label + ".input")).write_text(inputs, encoding="utf-8")
+    if rotation:
+        print(f"{label} physical touch diagnostics ({width}x{height}):")
+        lines = inputs.splitlines()
+        context = set()
+        categories = r"FocusedApplications|FocusedWindows|DisplayViewport|TouchStatesByDisplay|Immersive|NavigationBar"
+        for index, line in enumerate(lines):
+            if app in line or re.search(categories, line, re.IGNORECASE):
+                context.update(range(max(0, index - 1), min(len(lines), index + 3)))
+        for index in sorted(context):
+            print(lines[index][:1500])
+        # These stationary touches detect a viewport still using portrait width.
+        # The actual orbit assertion below still exercises the center of the view.
+        for proportion in (0.32, 0.40, 0.50):
+            x, y = round(width * proportion), round(height * 0.47)
+            print(f"Raw touch probe at {x},{y}")
+            adb("shell", "input", "touchscreen", "-d", "0", "tap", x, y)
+            wait_probe("the AVD rendered after a width probe",
+                       lambda s: s["active"] and s["sequence"] > sample["sequence"])
     gestures(sample, width, height)
-    (directory / (label + ".png")).write_bytes(adb("exec-out", "screencap", "-p", binary=True))
+    screenshot(directory, label)
     (directory / (label + ".activities")).write_text(activities, encoding="utf-8")
     print(f"{label}: rendered {width}×{height}, both orbit axes and driving controls passed")
+
+
+def start_driving(directory, name, activity, rotation=None):
+    adb("logcat", "-c")
+    print(adb("shell", "am", "start", "-W", "-a", "android.intent.action.MAIN",
+              "-c", "android.intent.category.LAUNCHER", "-f", "0x10200000", "-n", activity).strip())
+    windows = adb("shell", "dumpsys", "window", "windows", check=False)
+    (directory / f"{name}-launch.windows").write_text(windows, encoding="utf-8")
+    print("\n".join(line for line in windows.splitlines()
+                    if re.search(r"mCurrentFocus|mFocusedApp|GodotApp(?:Launcher)?[ }]", line)))
+    screenshot(directory, f"{name}-launch")
+    start = wait_probe("the real Android start menu appeared",
+                       lambda s: s.get("start") and (rotation is None or s["rotation"] == rotation),
+                       timeout=40)
+    start = wait_probe("the start menu layout settled",
+                       lambda s: s.get("start") and s["rotation"] == start["rotation"]
+                       and s["sequence"] >= start["sequence"] + 3)
+    width, height = screenshot(directory, f"{name}-start-menu")
+    x, y = start["start"]
+    vw, vh = start["viewport"]
+    point = (x * width / vw, y * height / vh)
+    swipe(point, point, 420)
+    wait_probe("real Android tap on the primary menu action started driving",
+               lambda s: s["active"] and s["rotation"] == start["rotation"], timeout=25)
+    print(f"ANDROID_START_BUTTON_TAP_OK {name} rotation={start['rotation']}")
 
 
 def main():
@@ -160,7 +231,19 @@ def main():
     overlay = "com.android.internal.display.cutout.emulation.tall"
     notch = False
     restore_notch = False
+    immersive_key = "immersive_mode_confirmations"
+    old_immersive_value = adb("shell", "settings", "get", "secure", immersive_key).strip()
+    # Android 10 used set-user-rotation. Newer releases dropped the prefix.
+    wm_help = adb("shell", "wm", "help", check=False)
+    legacy_rotation = "set-user-rotation" in wm_help
+    rotation_command = "set-user-rotation" if legacy_rotation else "user-rotation"
+    fix_command = "set-fix-to-user-rotation" if legacy_rotation else "fixed-to-user-rotation"
     try:
+        # Dismiss only Android's first-use fullscreen education on the test device.
+        adb("shell", "settings", "put", "secure", immersive_key, "confirmed")
+        adb("shell", "wm", fix_command, "disabled" if legacy_rotation else "default")
+        adb("shell", "wm", rotation_command, "free")
+        adb("shell", "settings", "put", "system", "accelerometer_rotation", 1)
         overlays = adb("shell", "cmd", "overlay", "list", "--user", "0", check=False)
         match = next((line for line in overlays.splitlines() if overlay in line), "")
         if match:
@@ -170,25 +253,57 @@ def main():
                 restore_notch = True
         print("System cutout overlay enabled" if notch else "System cutout overlay unavailable on this image")
         print(adb("install", "-r", apk).strip())
-        adb("shell", "am", "force-stop", app)
-        adb("logcat", "-c")
         activity = adb("shell", "cmd", "package", "resolve-activity", "--brief", "-a",
                        "android.intent.action.MAIN", "-c", "android.intent.category.LAUNCHER", app).strip().splitlines()[-1]
         if not activity.startswith(app + "/"):
             raise RuntimeError("APK launcher activity is missing")
-        print(adb("shell", "am", "start", "-W", "-n", activity).strip())
-        wait_probe("the orbit probe launched into driving mode", lambda s: s["active"], timeout=30)
-        capture(output, "portrait", 0, notch, app)
-        capture(output, "landscape", 1, notch, app)
-        capture(output, "reverse-landscape", 3, notch, app)
-        log = adb("logcat", "-d", "-s", "AndroidRuntime:E", "godot:V")
+        if os.environ.get("RIDGEBOUND_ANDROID_COLD_ORIENTATIONS") == "1":
+            adb("shell", "wm", fix_command, "enabled")
+            for rotation, name in ((1, "cold-landscape"), (3, "cold-reverse-landscape")):
+                adb("shell", "am", "force-stop", app)
+                adb("shell", "wm", rotation_command, "lock", rotation)
+                start_driving(output, name, activity, rotation)
+                capture(output, name, rotation, notch, app)
+                (output / f"{name}.log").write_text(adb("logcat", "-d", "-s", *RUNTIME_TAGS), encoding="utf-8")
+            print("ANDROID_COLD_LANDSCAPES_OK")
+        else:
+            adb("shell", "am", "force-stop", app)
+            start_driving(output, "natural-portrait", activity, 0)
+            capture(output, "portrait", 0, notch, app)
+            capture(output, "landscape", 1, notch, app)
+            capture(output, "reverse-landscape", 3, notch, app)
+            print("ANDROID_NATURAL_ROTATIONS_OK")
+        log = adb("logcat", "-d", "-s", *RUNTIME_TAGS)
         if not re.search(r"Godot Engine v4\.6\.3", log) or re.search(r"FATAL EXCEPTION|SCRIPT ERROR:", log):
             raise RuntimeError("Android runtime failed during orbit verification")
         print("ANDROID_ORIENTATIONS_OK")
         print("ANDROID_ORBIT_GESTURES_OK")
     finally:
-        (output / "android.log").write_text(adb("logcat", "-d", "-s", "AndroidRuntime:E", "godot:V", check=False), encoding="utf-8")
-        adb("shell", "wm", "user-rotation", "free", check=False)
+        log = adb("logcat", "-d", "-s", *RUNTIME_TAGS, check=False)
+        (output / "android.log").write_text(log, encoding="utf-8")
+        if sys.exc_info()[0] is not None:
+            lines = [line for line in log.splitlines() if "ORBIT_PROBE {" not in line]
+            print("\n".join(lines[-100:]), file=sys.stderr)
+            device_log = adb("logcat", "-b", "all", "-d", check=False)
+            (output / "failure.device.log").write_text(device_log, encoding="utf-8")
+            exit_info = adb("shell", "dumpsys", "activity", "exit-info", app, check=False)
+            (output / "failure.exit-info").write_text(exit_info, encoding="utf-8")
+            relevant = [line for line in device_log.splitlines()
+                        if app in line or re.search(r"low.memory|lmkd|tombstone|SIGSEGV", line, re.I)]
+            print("\n".join(relevant[-35:]), file=sys.stderr)
+            (output / "failure.activities").write_text(adb("shell", "dumpsys", "activity", "activities", check=False), encoding="utf-8")
+            (output / "failure.input").write_text(adb("shell", "dumpsys", "input", check=False), encoding="utf-8")
+            (output / "failure.display").write_text(adb("shell", "dumpsys", "window", "displays", check=False), encoding="utf-8")
+            try:
+                screenshot(output, "failure")
+            except (OSError, RuntimeError, subprocess.SubprocessError):
+                pass
+        adb("shell", "wm", rotation_command, "free", check=False)
+        adb("shell", "wm", fix_command, "disabled" if legacy_rotation else "default", check=False)
+        if old_immersive_value == "null":
+            adb("shell", "settings", "delete", "secure", immersive_key, check=False)
+        else:
+            adb("shell", "settings", "put", "secure", immersive_key, old_immersive_value, check=False)
         if restore_notch:
             adb("shell", "cmd", "overlay", "disable", "--user", "0", overlay, check=False)
 
