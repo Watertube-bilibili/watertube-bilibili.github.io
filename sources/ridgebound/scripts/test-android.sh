@@ -169,22 +169,12 @@ def main():
     overlay = "com.android.internal.display.cutout.emulation.tall"
     notch = False
     restore_notch = False
-    restore_size = False
     rotation_keys = ("accelerometer_rotation", "user_rotation")
     rotation_settings = {
         key: adb("shell", "settings", "get", "system", key).strip() for key in rotation_keys
     }
     try:
         adb("shell", "settings", "put", "system", "accelerometer_rotation", 0)
-        # Software-rendered CIs can otherwise miss an entire gesture between frames.
-        # Scale both emulator dimensions together, keeping its device aspect and cutout.
-        size = adb("shell", "wm", "size")
-        dimensions = re.search(r"Physical size: (\d+)x(\d+)", size)
-        if dimensions and "Override size:" not in size:
-            width, height = map(int, dimensions.groups())
-            if width > 720:
-                adb("shell", "wm", "size", f"720x{round(height * 720 / width)}")
-                restore_size = True
         overlays = adb("shell", "cmd", "overlay", "list", "--user", "0", check=False)
         match = next((line for line in overlays.splitlines() if overlay in line), "")
         if match:
@@ -236,8 +226,6 @@ def main():
                 screenshot(output, "failure")
             except (OSError, RuntimeError, subprocess.SubprocessError):
                 pass
-        if restore_size:
-            adb("shell", "wm", "size", "reset", check=False)
         for key in reversed(rotation_keys):
             value = rotation_settings[key]
             if value == "null":

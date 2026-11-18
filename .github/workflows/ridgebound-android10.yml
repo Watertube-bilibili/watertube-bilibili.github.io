@@ -81,8 +81,10 @@ jobs:
           target: google_apis
           arch: x86_64
           profile: ${{ matrix.profile }}
+          ram-size: 4096M
+          heap-size: 512M
           disable-animations: true
-          emulator-options: -no-window -gpu ${{ matrix.gpu }} -noaudio -no-boot-anim -no-snapshot
+          emulator-options: -no-window -gpu ${{ matrix.gpu }} -cores 3 -noaudio -no-boot-anim -no-snapshot
           script: bash sources/ridgebound/scripts/test-android.sh "$RUNNER_TEMP/Ridgebound-Android-emulator.apk" "$RUNNER_TEMP/android-smoke"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
