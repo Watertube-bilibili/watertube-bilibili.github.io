@@ -11,8 +11,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {api: 29, gpu: lavapipe, profile: pixel_3a}
-          - {api: 35, gpu: swiftshader_indirect, profile: pixel_7}
+          - {api: 29, gpu: swangle, profile: pixel_3a, target: default}
+          - {api: 35, gpu: swiftshader_indirect, profile: pixel_7, target: google_apis}
     timeout-minutes: 25
     defaults:
       run:
@@ -78,7 +78,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@1dcd0090116d15e7c562f8db72807de5e036a4ed
         with:
           api-level: ${{ matrix.api }}
-          target: google_apis
+          target: ${{ matrix.target }}
           arch: x86_64
           profile: ${{ matrix.profile }}
           ram-size: 4096M

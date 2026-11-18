@@ -81,6 +81,11 @@ def swipe(start, end, duration=580):
     adb("shell", "input", "touchscreen", "swipe", *points, duration)
 
 
+def settled_input(description):
+    after_swipe = wait_probe(description, lambda s: s["active"])
+    return wait_probe(description, lambda s: s["active"] and s["sequence"] >= after_swipe["sequence"] + 3)
+
+
 def gestures(sample, width, height):
     # Two swipes in the clear center viewport, where no touch control is present.
     # Both must affect the real camera pose as well as its requested orbit.
@@ -94,11 +99,9 @@ def gestures(sample, width, height):
         other_axis = "pitch" if axis == "yaw" else "yaw"
         swipe(start, end)
         before = sample
-        sample = wait_probe(
-            f"center Android swipe must change camera {axis} and its pose",
-            lambda s: s["active"] and s["sequence"] > before["sequence"]
-            and abs(s[axis] - before[axis]) > 0.035 and math.dist(s["pose"], before["pose"]) > 0.20,
-        )
+        sample = settled_input(f"driving rendered after the {axis} swipe")
+        if abs(sample[axis] - before[axis]) <= 0.035 or math.dist(sample["pose"], before["pose"]) <= 0.20:
+            raise RuntimeError(f"Center Android swipe did not move camera {axis}: {before} -> {sample}")
         if abs(sample[other_axis] - before[other_axis]) > 0.025:
             raise RuntimeError(f"{axis}-only swipe also displaced {other_axis}")
     for action in ("steer", "throttle"):
@@ -113,10 +116,9 @@ def gestures(sample, width, height):
             x, y = before["gas"]
             start = end = (x * scale_x, y * scale_y)
         swipe(start, end, 2_400)
-        sample = wait_probe(
-            f"{action} touch must return to neutral on release",
-            lambda s: s["sequence"] > before["sequence"] and abs(s[action]) < 0.02,
-        )
+        sample = settled_input(f"driving rendered after the {action} hold")
+        if abs(sample[action]) >= 0.02:
+            raise RuntimeError(f"{action} touch did not return to neutral: {sample}")
         during = [s for s in samples() if before["sequence"] < s["sequence"] <= sample["sequence"]]
         if not any(abs(s[action]) > 0.30 for s in during):
             raise RuntimeError(f"Android did not deliver the real {action} gesture: {during}")
@@ -194,10 +196,13 @@ def main():
         print(adb("shell", "am", "start", "-W", "-n", activity).strip())
         screenshot(output, "launch")
         start = wait_probe("the real Android start menu appeared", lambda s: s.get("start"), timeout=40)
+        start = wait_probe("the start menu layout settled",
+                           lambda s: s.get("start") and s["sequence"] >= start["sequence"] + 3)
         width, height = screenshot(output, "start-menu")
         x, y = start["start"]
         vw, vh = start["viewport"]
-        adb("shell", "input", "touchscreen", "tap", round(x * width / vw), round(y * height / vh))
+        point = (x * width / vw, y * height / vh)
+        swipe(point, point, 420)
         wait_probe("real Android tap on the primary menu action started driving", lambda s: s["active"], timeout=25)
         print("ANDROID_START_BUTTON_TAP_OK")
         capture(output, "portrait", 0, notch, app, rotation_command)
