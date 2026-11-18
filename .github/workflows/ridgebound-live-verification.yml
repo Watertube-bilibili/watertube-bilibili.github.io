@@ -37,4 +37,18 @@ jobs:
           printf '%s  %s\n' "$expected_pack" current.pck | sha256sum --check
           curl -fsSL --max-time 90 "$game/downloads/Ridgebound-Android.apk" -o Ridgebound-Android.apk
           printf '%s  %s\n' "$expected_apk" Ridgebound-Android.apk | sha256sum --check
-          echo "PUBLIC_WEB_AND_ANDROID_OK"
+          for file in Ridgebound-Setup-x64.exe Ridgebound-Windows-x64.zip; do
+            case "$file" in
+              *.exe) expected=509d6174a02a75547ffc4630b79758b68b57f8dfc523afc5a4b0beebabb1ab21 ;;
+              *.zip) expected=f1b02fa00ad97883d71b73bcd513e1e377351d23113b03d8de09b897349038ac ;;
+            esac
+            for attempt in {1..8}; do
+              if curl -fsSL --max-time 60 "$game/downloads/$file?v=expedition-20261118" -o "$file" &&
+                 printf '%s  %s\n' "$expected" "$file" | sha256sum --check --status; then
+                break
+              fi
+              sleep 10
+            done
+            printf '%s  %s\n' "$expected" "$file" | sha256sum --check
+          done
+          echo "PUBLIC_WEB_WINDOWS_ANDROID_OK"
