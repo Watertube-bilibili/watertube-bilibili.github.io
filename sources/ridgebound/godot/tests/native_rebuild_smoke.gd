@@ -8,7 +8,9 @@ func _test() -> void:
 	root.add_child(shell)
 	await process_frame
 	shell.smoke = true
+	await capture("start")
 	shell._begin()
+	await capture("drive")
 	var center := root.get_visible_rect().size * 0.5
 	var first := InputEventScreenTouch.new()
 	first.index = 2
@@ -43,6 +45,7 @@ func _test() -> void:
 		fail("pause did not reset camera and drive capture")
 		return
 	shell._open_menu("display")
+	await capture("display")
 	var profile_size: int = shell.interface.screen_model.item_count
 	if profile_size < 65:
 		fail("screen fit picker did not expose the model catalogue")
@@ -57,19 +60,27 @@ func _test() -> void:
 		fail("screen fit picker did not save the selected preset")
 		return
 	shell._open_menu("maps")
-	await create_timer(0.3).timeout
+	await capture("map")
 	shell._open_menu("garage")
-	await create_timer(0.2).timeout
+	await capture("garage")
 	shell._open_menu("settings")
 	await create_timer(0.2).timeout
 	shell.controls.open_settings()
 	await create_timer(0.2).timeout
+	await capture("control")
 	if not bool(shell.controls.settings_open()):
 		fail("controller settings did not open")
 		return
-	print("NEW_NATIVE_SMOKE_OK ", profile_size, " "model choices; touch ownership; open 4 sheets and control settings"")
+	print("NEW_NATIVE_SMOKE_OK choices=", profile_size)
 	quit()
 
 func fail(reason: String) -> void:
 	push_error(reason)
 	quit(1)
+
+func capture(state: String) -> void:
+	await create_timer(0.35).timeout
+	await RenderingServer.frame_post_draw
+	var image := root.get_texture().get_image()
+	image.resize(760, roundi(760.0 * image.get_height() / image.get_width()), Image.INTERPOLATE_LANCZOS)
+	image.save_jpg(OS.get_environment("RUNNER_TEMP").path_join("rebuild-" + state + ".jpg"), 0.85)
