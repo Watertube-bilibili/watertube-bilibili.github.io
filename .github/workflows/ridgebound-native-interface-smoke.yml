@@ -55,3 +55,15 @@ jobs:
           timeout 60s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 godot --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --path sources/ridgebound/godot --quit-after 300 -- --native-smoke 2>&1 | tee "$RUNNER_TEMP/smoke-native.log"
           if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/smoke-native.log"; then exit 1; fi
           grep -q NATIVE_SMOKE_OK "$RUNNER_TEMP/smoke-native.log"
+      - name: Capture desktop navigation and driving layouts
+        run: |
+          timeout 60s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 godot --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --resolution 1100x700 --path sources/ridgebound/godot --script res://tests/native_ui_preview.gd
+          python3 - <<'PY'
+          import base64
+          import os
+          from pathlib import Path
+          for tag in ("start", "drive", "winch", "maps"):
+              data = base64.b64encode((Path(os.environ["RUNNER_TEMP"]) / f"ui-{tag}.jpg").read_bytes()).decode()
+              for i in range(0, len(data), 1024):
+                  print(f"NATIVE_PREVIEW {tag} {data[i:i + 1024]}")
+          PY
