@@ -176,9 +176,14 @@ def capture(directory, label, rotation, notch, app):
     (directory / (label + ".input")).write_text(inputs, encoding="utf-8")
     if rotation:
         print(f"{label} physical touch diagnostics ({width}x{height}):")
-        for line in inputs.splitlines():
-            if app in line or re.search(r"FocusedApplications|FocusedWindows|DisplayViewport|TouchStatesByDisplay", line):
-                print(line[:1500])
+        lines = inputs.splitlines()
+        context = set()
+        categories = r"FocusedApplications|FocusedWindows|DisplayViewport|TouchStatesByDisplay|Immersive|NavigationBar"
+        for index, line in enumerate(lines):
+            if app in line or re.search(categories, line, re.IGNORECASE):
+                context.update(range(max(0, index - 1), min(len(lines), index + 3)))
+        for index in sorted(context):
+            print(lines[index][:1500])
         # These stationary touches detect a viewport still using portrait width.
         # The actual orbit assertion below still exercises the center of the view.
         for proportion in (0.32, 0.40, 0.50):
@@ -221,12 +226,16 @@ def main():
     overlay = "com.android.internal.display.cutout.emulation.tall"
     notch = False
     restore_notch = False
+    immersive_key = "immersive_mode_confirmations"
+    old_immersive_value = adb("shell", "settings", "get", "secure", immersive_key).strip()
     # Android 10 used set-user-rotation. Newer releases dropped the prefix.
     wm_help = adb("shell", "wm", "help", check=False)
     legacy_rotation = "set-user-rotation" in wm_help
     rotation_command = "set-user-rotation" if legacy_rotation else "user-rotation"
     fix_command = "set-fix-to-user-rotation" if legacy_rotation else "fixed-to-user-rotation"
     try:
+        # Dismiss only Android's first-use fullscreen education on the test device.
+        adb("shell", "settings", "put", "secure", immersive_key, "confirmed")
         adb("shell", "wm", fix_command, "disabled" if legacy_rotation else "default")
         adb("shell", "wm", rotation_command, "free")
         adb("shell", "settings", "put", "system", "accelerometer_rotation", 1)
@@ -286,6 +295,10 @@ def main():
                 pass
         adb("shell", "wm", rotation_command, "free", check=False)
         adb("shell", "wm", fix_command, "disabled" if legacy_rotation else "default", check=False)
+        if old_immersive_value == "null":
+            adb("shell", "settings", "delete", "secure", immersive_key, check=False)
+        else:
+            adb("shell", "settings", "put", "secure", immersive_key, old_immersive_value, check=False)
         if restore_notch:
             adb("shell", "cmd", "overlay", "disable", "--user", "0", overlay, check=False)
 
