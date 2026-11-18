@@ -1,0 +1,53 @@
+name: Build and verify original Yuchuan V8 Blender asset
+on:
+  push:
+    branches: ['codex/yuchuan-v8-asset-build-20261118']
+permissions:
+  contents: write
+concurrency:
+  group: yuchuan-v8-asset-build-20261118
+  cancel-in-progress: true
+jobs:
+  asset:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.11'
+      - name: Install verified Blender 4.3 runtime
+        timeout-minutes: 6
+        run: |
+          mkdir -p "$RUNNER_TEMP/yuchuan-blender"
+          cd "$RUNNER_TEMP/yuchuan-blender"
+          python -m pip download --quiet --only-binary=:all: --no-deps 'bpy==4.3.0'
+          echo '1620199392a7e7aab58672aa47c50b3c5b1e4d39d46af5a7f9bbe2af561ea942  bpy-4.3.0-cp311-cp311-manylinux_2_28_x86_64.whl' | sha256sum --check
+          python -m pip install --quiet 'numpy==1.26.4' ./bpy-4.3.0-cp311-cp311-manylinux_2_28_x86_64.whl
+          python -c 'import bpy; print(bpy.app.version_string)'
+      - name: Model, export, round-trip and render using real Blender
+        run: |
+          python -m py_compile sources/ridgebound/build_yuchuan.py
+          python sources/ridgebound/build_yuchuan.py --preview 2>&1 | tee "$RUNNER_TEMP/yuchuan-blender.log"
+          test -s ridgebound/assets/yuchuan-v8.glb
+          test -s sources/ridgebound/yuchuan-v8.blend
+          test -s ridgebound/assets/yuchuan-v8-spec.json
+          test -s ridgebound/assets/yuchuan-v8-preview.png
+          test -s ridgebound/assets/yuchuan-v8-cockpit.png
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: yuchuan-v8-preview-and-build-log
+          path: |
+            ridgebound/assets/yuchuan-v8*.png
+            ridgebound/assets/yuchuan-v8-spec.json
+            ${{ runner.temp }}/yuchuan-blender.log
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Save outputs on independent branch
+        run: |
+          git add -- sources/ridgebound/build_yuchuan.py sources/ridgebound/yuchuan-v8.blend ridgebound/assets/yuchuan-v8.glb ridgebound/assets/yuchuan-v8-spec.json ridgebound/assets/yuchuan-v8-preview.png ridgebound/assets/yuchuan-v8-cockpit.png
+          git -c user.name='Ridgebound Asset Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Build original Yuchuan V8 with Blender, verify rig and round trip'
+          git push origin HEAD:refs/heads/codex/yuchuan-v8-asset-output-20261118
