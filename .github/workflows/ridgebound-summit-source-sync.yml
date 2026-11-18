@@ -1,0 +1,49 @@
+name: Verify the standalone source matches Ridgebound Summit
+on:
+  push:
+    branches: ['codex/ridgebound-summit-source-sync-20261118']
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Refresh the standalone source and verify a clean Git clone
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_copy="$RUNNER_TEMP/ridgebound-src"
+          git fetch --no-tags origin ridgebound-standalone-source:refs/remotes/origin/ridgebound-standalone-source
+          git worktree add --detach "$source_copy" refs/remotes/origin/ridgebound-standalone-source
+          git -C "$source_copy" ls-files -z -- sources/ridgebound ridgebound |
+            while IFS= read -r -d '' path; do
+              test -f "$GITHUB_WORKSPACE/$path"
+              cp -p -- "$GITHUB_WORKSPACE/$path" "$source_copy/$path"
+            done
+          cp standalone-readme.md "$source_copy/README.md"
+          git -C "$source_copy" add -u
+          git -C "$source_copy" -c user.name='Ridgebound Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -qm 'Sync standalone game sources and Android 10 and 15 verification with Ridgebound 2.0'
+          git -C "$source_copy" push origin HEAD:refs/heads/ridgebound-standalone-source
+          export_folder="$RUNNER_TEMP/ridgebound-export"
+          git init -q --initial-branch=main "$export_folder"
+          git -C "$export_folder" fetch -q "$source_copy" HEAD
+          git -C "$export_folder" reset --hard FETCH_HEAD
+          git -C "$export_folder" bundle create "$GITHUB_WORKSPACE/ridgebound/downloads/Ridgebound-source.bundle" main HEAD
+          git -C "$export_folder" bundle verify "$GITHUB_WORKSPACE/ridgebound/downloads/Ridgebound-source.bundle"
+          git clone -q ridgebound/downloads/Ridgebound-source.bundle "$RUNNER_TEMP/ridgebound-clone"
+          cmp "$RUNNER_TEMP/ridgebound-clone/README.md" standalone-readme.md
+          for path in sources/ridgebound/godot/project.godot sources/ridgebound/scripts/test-android.sh sources/ridgebound/android/orbit-probe.gd sources/ridgebound/ridge-rover.blend sources/ridgebound/yuchuan-v8.blend ridgebound/game.mjs ridgebound/device-layout.mjs ridgebound/index.html; do
+            cmp "$RUNNER_TEMP/ridgebound-clone/$path" "$path"
+          done
+          git -C "$RUNNER_TEMP/ridgebound-clone" fsck --full
+          test -s "$RUNNER_TEMP/ridgebound-clone/LICENSE"
+          sha256sum ridgebound/downloads/Ridgebound-source.bundle
+          git fetch --no-tags --depth=1 origin 88479e368c3f5e3c3f4366157cab03ad1a40fe2c
+          git read-tree 88479e368c3f5e3c3f4366157cab03ad1a40fe2c
+          git add ridgebound/downloads/Ridgebound-source.bundle
+          tree=$(git write-tree)
+          commit=$(git -c user.name='Ridgebound Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p 88479e368c3f5e3c3f4366157cab03ad1a40fe2c -m 'Refresh the verified standalone Ridgebound Git source bundle')
+          git push origin "$commit:refs/heads/codex/ridgebound-summit-release-20261118"
+          echo "SUMMIT_RELEASE_COMMIT $commit $tree"
