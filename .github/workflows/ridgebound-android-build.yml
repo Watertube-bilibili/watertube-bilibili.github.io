@@ -62,6 +62,8 @@ jobs:
             sdkmanager "build-tools;36.0.0"
           fi
           echo "RIDGEBOUND_ANDROID_TEMPLATE=$RUNNER_TEMP/ridgebound-tools/android_release.apk" >> "$GITHUB_ENV"
+      - name: Prepare native UI font builder
+        run: python -m pip install --quiet fonttools==4.58.5
       - name: Build signed ARM64 and emulator APKs
         run: |
           bash sources/ridgebound/scripts/build-android.sh "$RUNNER_TEMP/Ridgebound-Android.apk"

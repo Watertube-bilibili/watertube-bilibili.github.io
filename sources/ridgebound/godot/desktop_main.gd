@@ -962,6 +962,9 @@ func _style(fill: Color, trim: Color, padding: int, radius: int = 9) -> StyleBox
 
 func _theme() -> Theme:
 	var theme := Theme.new()
+	const FONT_PATH := "res://assets/ridgebound-ui.ttf"
+	if ResourceLoader.exists(FONT_PATH):
+		theme.default_font = load(FONT_PATH) as Font
 	theme.default_font_size = 16
 	theme.set_color("font_color", "Label", PAPER)
 	theme.set_stylebox("panel", "PanelContainer", _style(Color(PANEL_INK, 0.94), LINE, 11))
