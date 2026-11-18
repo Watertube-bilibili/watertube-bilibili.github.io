@@ -3,6 +3,10 @@ extends RefCounted
 ## Deterministic world shared by the renderer, wheel contacts and expedition map.
 ## +Z runs north, +X runs west; coordinates and heights are in metres.
 
+const ImportedMap = preload("res://map_importer.gd")
+static var _custom: Dictionary = {}
+static var _props_by_tile: Dictionary = {}
+
 const MIN_X: float = -8000.0
 const MAX_X: float = 8000.0
 const MIN_Z: float = -2000.0
@@ -42,6 +46,33 @@ const SUMMITS: Array = [
 const SECTIONS: Array[float] = [700.0, 3300.0, 7200.0, 11200.0, 15400.0, 18300.0]
 const FOREST_AREAS: Array[String] = ["松风林地", "镜湖谷", "红岩高原", "苔原湿地", "云岭台地", "断层峡谷", "山巅雪线"]
 const SNOW_AREAS: Array[String] = ["冰川前哨", "冰镜湖", "冻岩山口", "冻土湿地", "白岭台地", "冰谷", "珠峰雪线"]
+
+
+static func install_custom(data: Dictionary) -> void:
+	_custom = data
+	_props_by_tile.clear()
+	for prop: Dictionary in data.get("props", []):
+		var key: Vector2i = Vector2i(floori(float(prop.x) / 16.0), floori(float(prop.z) / 16.0))
+		if not _props_by_tile.has(key):
+			_props_by_tile[key] = []
+		_props_by_tile[key].append(prop)
+
+static func bounds_for(region: String) -> Rect2:
+	if region == "custom" and not _custom.is_empty():
+		return _custom.bounds
+	return Rect2(MIN_X, MIN_Z, MAX_X - MIN_X, MAX_Z - MIN_Z)
+
+static func spawn_for(region: String) -> Vector3:
+	# X, yaw in radians, Z. Ground height is sampled independently.
+	if region == "custom" and not _custom.is_empty():
+		return _custom.spawn
+	return Vector3(route_x(0.0), heading_at(0.0), 0.0)
+
+static func custom_summary() -> Dictionary:
+	return _custom.get("summary", {}).duplicate(true)
+
+static func custom_props_at(key: Vector2i) -> Array:
+	return _props_by_tile.get(key, [])
 
 static func _smooth(a: float, b: float, x: float) -> float:
 	var t: float = clampf((x - a) / (b - a), 0.0, 1.0)
@@ -83,7 +114,9 @@ static func branch_x(index: int, z: float) -> float:
 	var wave: float = sin(PI * (z - branch.start) / (branch.end - branch.start))
 	return center + branch.offset * wave * wave
 
-static func road_distance(x: float, z: float) -> float:
+static func road_distance(x: float, z: float, region: String = "forest") -> float:
+	if region == "custom":
+		return INF
 	# The local perpendicular distance preserves trail width along diagonal roads.
 	var center: float = route_x(z)
 	var slope: float = _route_slope(z)
@@ -103,7 +136,9 @@ static func road_distance(x: float, z: float) -> float:
 static func river_x(z: float) -> float:
 	return route_x(z) - 900.0 - 260.0 * sin(z / 480.0)
 
-static func water_bodies() -> Array:
+static func water_bodies(region: String = "forest") -> Array:
+	if region == "custom":
+		return []
 	return LAKES.duplicate(true)
 
 static func _lake_index(x: float, z: float, margin: float) -> int:
@@ -132,6 +167,8 @@ static func _road_elevation(x: float, z: float, snowy: bool) -> float:
 	return lerpf(starter, grade, _smooth(850.0, 2550.0, z))
 
 static func height_at(x: float, z: float, region: String = "forest") -> float:
+	if region == "custom" and not _custom.is_empty():
+		return ImportedMap.height_at(_custom, x, z)
 	var snowy: bool = region == "snow"
 	var distance: float = road_distance(x, z)
 	var grade: float = _road_elevation(x, z, snowy)
@@ -176,6 +213,12 @@ static func _wet_trail(z: float) -> bool:
 	return (z > 450.0 and z < 640.0) or (z > 7750.0 and z < 8030.0) or (z > 15900.0 and z < 16160.0)
 
 static func biome_at(x: float, z: float, region: String = "forest") -> String:
+	if region == "custom":
+		match surface_at(x, z, region):
+			"ice", "snow": return "icefield"
+			"rock": return "stone"
+			"mud", "water": return "marsh"
+		return "pine"
 	if region == "snow":
 		return "icefield" if z > 17700.0 else "alpine"
 	if z > 18300.0:
@@ -187,6 +230,8 @@ static func biome_at(x: float, z: float, region: String = "forest") -> String:
 	return "pine"
 
 static func surface_at(x: float, z: float, region: String = "forest") -> String:
+	if region == "custom" and not _custom.is_empty():
+		return ImportedMap.surface_at(_custom, x, z)
 	var lake: int = _lake_index(x, z, 0.0)
 	var distance: float = road_distance(x, z)
 	if region == "snow":
@@ -206,14 +251,18 @@ static func surface_at(x: float, z: float, region: String = "forest") -> String:
 	var biome: String = biome_at(x, z)
 	return "rock" if biome == "stone" or biome == "alpine" else "grass"
 
-static func checkpoints() -> Array:
+static func checkpoints(region: String = "forest") -> Array:
+	if region == "custom":
+		return []
 	var result: Array = []
 	for i: int in range(CHECKPOINT_Z.size()):
 		var z: float = CHECKPOINT_Z[i]
 		result.append({"x": route_x(z), "z": z, "name": CHECKPOINT_NAMES[i]})
 	return result
 
-static func repair_sites() -> Array:
+static func repair_sites(region: String = "forest") -> Array:
+	if region == "custom":
+		return []
 	var sites: Array = []
 	var names: Array[String] = ["松林维修站", "山口维修站", "河谷维修站", "山巅维修站"]
 	for i: int in range(CHECKPOINT_Z.size()):
@@ -227,7 +276,9 @@ static func repair_sites() -> Array:
 		sites.append({"x": route_x(hub[0]) + 10.0, "z": hub[0], "name": hub[1]})
 	return sites
 
-static func landmarks() -> Array:
+static func landmarks(region: String = "forest") -> Array:
+	if region == "custom":
+		return []
 	var points: Array = []
 	for i: int in range(BRANCHES.size()):
 		var branch: Dictionary = BRANCHES[i]
@@ -236,6 +287,8 @@ static func landmarks() -> Array:
 	return points
 
 static func area_name(x: float, z: float, region: String = "forest") -> String:
+	if region == "custom" and not _custom.is_empty():
+		return _custom.summary.name
 	var main: float = route_x(z)
 	for i: int in range(BRANCHES.size()):
 		var branch: Dictionary = BRANCHES[i]

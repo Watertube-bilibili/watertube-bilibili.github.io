@@ -2,12 +2,12 @@ extends Control
 ## North-up route map. Low-cost, clipped local view and full regional overview.
 
 const Terrain = preload("res://terrain_math.gd")
-const BORDER := Color("718379")
-const GRID := Color("3b514a")
-const ROAD := Color("f7ca81")
-const BRANCH := Color("94b1a0")
-const STATION := Color("b2d9bb")
-const CHECKPOINT := Color("e69464")
+const BORDER := Color("526354")
+const GRID := Color("33463b")
+const ROAD := Color("d0e78d")
+const BRANCH := Color("bfccbb")
+const STATION := Color("f1e9d5")
+const CHECKPOINT := Color("f6bf72")
 
 var snapshot: Dictionary = {}
 var overview := false
@@ -28,7 +28,7 @@ func _loc(x: float, z: float) -> Vector2:
 	return size * 0.5 - (Vector2(x, z) - _center) * _scale
 
 func _draw() -> void:
-	draw_rect(Rect2(Vector2.ZERO, size), Color("19302b"))
+	draw_rect(Rect2(Vector2.ZERO, size), Color("17211e"))
 	if snapshot.is_empty() or size.x < 20 or size.y < 20:
 		return
 	var player := Vector2(float(snapshot.x), float(snapshot.z))
@@ -36,34 +36,48 @@ func _draw() -> void:
 		Vector2(Terrain.MIN_X, Terrain.MIN_Z),
 		Vector2(Terrain.MAX_X - Terrain.MIN_X, Terrain.MAX_Z - Terrain.MIN_Z)
 	)
+	var custom := String(snapshot.get("region", "")) == "custom"
+	if custom:
+		var b: Dictionary = snapshot.get("mapBounds", {})
+		if b.is_empty():
+			var summary: Dictionary = snapshot.get("customMap", {})
+			b = summary.get("bounds", {})
+		if not b.is_empty():
+			var minimum := Vector2(float(b.get("minX", -100)), float(b.get("minZ", -100)))
+			var maximum := Vector2(float(b.get("maxX", 100)), float(b.get("maxZ", 100)))
+			if maximum.x > minimum.x and maximum.y > minimum.y:
+				world = Rect2(minimum, maximum - minimum)
 	_center = world.get_center() if overview else player
 	_scale = minf((size.x - 20) / world.size.x, (size.y - 20) / world.size.y) if overview else minf(size.x, size.y) / 720.0
 	var low := _center - size / (2.0 * _scale)
 	var high := _center + size / (2.0 * _scale)
 	var grid := 4000 if overview else 100
+	if overview and custom:
+		grid = maxi(5, roundi(maxf(world.size.x, world.size.y) / 50.0) * 5)
 	for x in range(int(ceil(low.x / grid)) * grid, int(high.x) + 1, grid):
 		draw_line(_loc(x, low.y), _loc(x, high.y), GRID)
 	for z in range(int(ceil(low.y / grid)) * grid, int(high.y) + 1, grid):
 		draw_line(_loc(low.x, z), _loc(high.x, z), GRID)
 	if overview:
 		draw_rect(Rect2(_loc(world.end.x, world.end.y), world.size * _scale), BORDER, false)
-	for lake in lakes:
-		var radius := float(lake.radius)
-		if Rect2(low, high - low).grow(radius).has_point(Vector2(lake.x, lake.z)):
-			draw_circle(_loc(lake.x, lake.z), radius * _scale, Color("487c8c"))
-	for index in range(routes.size()):
-		var branch: Dictionary = routes[index]
-		_draw_road(index, maxf(low.y, branch.start), minf(high.y, branch.end), BRANCH, 1.6)
-	_draw_road(-1, maxf(low.y, Terrain.MIN_Z), minf(high.y, Terrain.MAX_Z), ROAD, 2.2)
-	for station in stations:
-		var p := _loc(station.x, station.z)
-		if Rect2(Vector2.ZERO, size).grow(-5).has_point(p):
-			draw_rect(Rect2(p - Vector2(3, 3), Vector2(6, 6)), STATION)
-	for index in range(checkpoints.size()):
-		var cp: Dictionary = checkpoints[index]
-		var p := _loc(cp.x, cp.z)
-		if Rect2(Vector2.ZERO, size).grow(-5).has_point(p):
-			draw_circle(p, 4.0, CHECKPOINT if index >= int(snapshot.checkpoint) else BORDER)
+	if not custom:
+		for lake in lakes:
+			var radius := float(lake.radius)
+			if Rect2(low, high - low).grow(radius).has_point(Vector2(lake.x, lake.z)):
+				draw_circle(_loc(lake.x, lake.z), radius * _scale, Color("487c8c"))
+		for index in range(routes.size()):
+			var branch: Dictionary = routes[index]
+			_draw_road(index, maxf(low.y, branch.start), minf(high.y, branch.end), BRANCH, 1.6)
+		_draw_road(-1, maxf(low.y, Terrain.MIN_Z), minf(high.y, Terrain.MAX_Z), ROAD, 2.2)
+		for station in stations:
+			var p := _loc(station.x, station.z)
+			if Rect2(Vector2.ZERO, size).grow(-5).has_point(p):
+				draw_rect(Rect2(p - Vector2(3, 3), Vector2(6, 6)), STATION)
+		for index in range(checkpoints.size()):
+			var cp: Dictionary = checkpoints[index]
+			var p := _loc(cp.x, cp.z)
+			if Rect2(Vector2.ZERO, size).grow(-5).has_point(p):
+				draw_circle(p, 4.0, CHECKPOINT if index >= int(snapshot.checkpoint) else BORDER)
 	var vehicle := _loc(player.x, player.y)
 	var yaw := float(snapshot.yaw)
 	var forward := Vector2(-sin(yaw), -cos(yaw))
@@ -73,7 +87,7 @@ func _draw() -> void:
 		vehicle - forward * 5 - cross * 5,
 		vehicle - forward * 5 + cross * 5
 	]), Color("fff5df"))
-	if not overview and not bool(snapshot.completed):
+	if not custom and not overview and not bool(snapshot.completed) and not checkpoints.is_empty():
 		var marker: Dictionary = checkpoints[clampi(int(snapshot.checkpoint), 0, checkpoints.size() - 1)]
 		var target := _loc(marker.x, marker.z) - vehicle
 		var max_delta := size * 0.5 - Vector2(15, 15)
@@ -86,9 +100,14 @@ func _draw() -> void:
 				p - direction * 5 + direction.orthogonal() * 5,
 				p - direction * 5 - direction.orthogonal() * 5
 			]), CHECKPOINT)
-	var ruler := (5000.0 if overview else 100.0) * _scale
+	var ruler_metres := 5000.0 if overview else 100.0
+	if custom and overview:
+		ruler_metres = float(grid)
+	var ruler := ruler_metres * _scale
 	var ruler_start := Vector2(12, size.y - 12)
-	draw_line(ruler_start, ruler_start + Vector2(ruler, 0), Color("eef3db"), 2.0)
+	draw_line(ruler_start, ruler_start + Vector2(ruler, 0), STATION, 2.0)
+	var unit_text := "%.1f km" % (ruler_metres / 1000.0) if ruler_metres >= 1000.0 else "%d m" % ruler_metres
+	draw_string(get_theme_default_font(), ruler_start - Vector2(0, 5), unit_text, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, STATION)
 
 func _draw_road(index: int, from: float, to: float, tint: Color, width: float) -> void:
 	if from >= to:

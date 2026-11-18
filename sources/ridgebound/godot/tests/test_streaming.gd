@@ -75,6 +75,19 @@ func run() -> void:
 		one_layer_per_frame = one_layer_per_frame and ground_delta + props_delta <= 1
 	check(priority_ok and one_layer_per_frame, "ground queue wins and a rendered frame never builds ground and props together")
 	check(manager.get_stats().propsChunks > 0 and manager.get_obstacles().size() > 0, "background props become visible and collidable after the ground phase")
+	var rocks: int = 0
+	var real_mesh_shapes: bool = true
+	for obstacle: Dictionary in manager.get_obstacles():
+		if obstacle.kind == "rock":
+			rocks += 1
+		var faces: PackedVector3Array = obstacle.top
+		real_mesh_shapes = real_mesh_shapes and faces.size() >= 12 and faces.size() % 3 == 0
+	check(rocks > 0 and real_mesh_shapes, "visible stone, trunk and canopy instances publish closed triangle collision surfaces")
+	var ground_a: float = manager.ground_height_at(0.0, 0.0)
+	var ground_b: float = manager.ground_height_at(2.0, 0.0)
+	var ground_c: float = manager.ground_height_at(0.0, 2.0)
+	var ground_middle: float = manager.ground_height_at(0.5, 0.5)
+	check(absf(ground_middle - (ground_a * 0.5 + ground_b * 0.25 + ground_c * 0.25)) < 0.001, "wheel support interpolates the actual driving terrain triangles")
 	var original_obstacles: String = JSON.stringify(manager.get_obstacles())
 	var overlap_obstacle: Dictionary = manager.get_obstacles()[0].duplicate()
 	manager.setup("forest")

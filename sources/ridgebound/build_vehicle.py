@@ -15,12 +15,17 @@ import sys
 
 import bpy
 import bmesh
-from mathutils import Vector
+from mathutils import Matrix, Vector
 
 SOURCE = Path(__file__).resolve().parent
-RADIUS = 0.64
+# The wheel centers and tread radius match the Godot suspension contact points.
+TREAD_DESIGN_RADIUS = 0.64
+WHEEL_RADIUS = 0.52
 AXLE_Z = 1.30
-HALF_TRACK = 1.06
+TRACK_HALF_WIDTH = 0.954
+BODY_WIDTH_FACTOR = 0.9
+HALF_TRACK = TRACK_HALF_WIDTH / BODY_WIDTH_FACTOR
+RIDE_HEIGHT = 0.53
 TAU = math.tau
 
 
@@ -55,11 +60,11 @@ def material(name, hex_color, roughness, metallic=0.0, alpha=1.0, emission=0.0):
 
 def vehicle_materials():
     palette = {
-        "paint": ("Copper enamel", "B96A42", .39, .18),
+        "paint": ("Copper enamel", "AA5935", .32, .15),
         "cream": ("Warm limestone", "E6D8AF", .50, .06),
         "black": ("All-terrain rubber", "252A29", .90),
         "trim": ("Charcoal coating", "273532", .70, .10),
-        "glass": ("Glazing", "89AAA8", .18, .0, .13),
+        "glass": ("Glazing", "82A6AB", .17, .0, .095),
         "metal": ("Machined aluminium", "AAAFA4", .35, .62),
         "seat": ("Olive canvas", "616951", .90),
         "orange": ("Amber lens", "E4A741", .34, .1, 1, .16),
@@ -67,7 +72,14 @@ def vehicle_materials():
         "light": ("Headlamp optic", "FFF0CB", .27, .1, 1, .27),
         "green": ("Expedition olive", "667457", .80),
     }
-    return {key: material(*properties) for key, properties in palette.items()}
+    surfaces = {key: material(*properties) for key, properties in palette.items()}
+    enamel = surfaces["paint"].node_tree.nodes.get("Principled BSDF")
+    enamel.inputs["Coat Weight"].default_value = .24
+    enamel.inputs["Coat Roughness"].default_value = .28
+    glass = surfaces["glass"].node_tree.nodes.get("Principled BSDF")
+    glass.inputs["IOR"].default_value = 1.45
+    glass.inputs["Specular IOR Level"].default_value = .25
+    return surfaces
 
 
 def select_only(objects, active=None):
@@ -84,7 +96,9 @@ class Rover:
         self.body = self.empty("Body", self.root)
         self.body["vehicle"] = "Ridge Rover 02"
         self.body["wheelbase_m"] = 2 * AXLE_Z
-        self.body["track_m"] = 2 * HALF_TRACK
+        self.body["track_m"] = 2 * TRACK_HALF_WIDTH
+        self.body["wheel_radius_m"] = WHEEL_RADIUS
+        self.body["neutral_ride_height_m"] = RIDE_HEIGHT
 
     def empty(self, name, parent=None, point=(0, 0, 0)):
         obj = bpy.data.objects.new(name, None)
@@ -246,7 +260,9 @@ class Rover:
         top_height = 1.24 if axle_z < 0 else 1.18
         radius = .91
         arch_angles = [math.radians(-68 + 136*i/16) for i in range(17)]
-        arc = [(axle_z + radius*math.sin(a), radius*math.cos(a)) for a in arch_angles]
+        # Raise the upper arch to leave room for the full wheel compression.
+        arc = [(axle_z + radius*math.sin(a), radius*math.cos(a) + .15*math.cos(a)**2)
+               for a in arch_angles]
         floor = [(z_min,.32), *[(z,y) for z,y in arc if z_min < z < z_max], (z_max,.32)]
         profile = [(z_min,top_height),(z_max,top_height),*reversed(floor)]
         self.prism(name, [(side*.99,y,z) for z,y in profile],
@@ -254,13 +270,14 @@ class Rover:
 
     def wheel_lip(self, side, z0):
         # Continuous molded fender with an outside chamfer and dark wheel-well liner.
-        ring = [(.99,.936), (1.105,.923), (1.175,.901), (1.165,.850), (1.00,.833)]
+        ring = [(.99,.941), (1.133,.937), (1.235,.917), (1.218,.870), (1.00,.866)]
         sections = 19
         vertices = []
         for i in range(sections):
             angle = math.radians(-77 + 154*i/(sections-1))
             for x, r in ring:
-                vertices.append((side*x,r*math.cos(angle),z0+r*math.sin(angle)))
+                lift = .15 * math.cos(angle)**2
+                vertices.append((side*x, r*math.cos(angle) + lift, z0 + r*math.sin(angle)))
         count = len(ring)
         faces = [tuple(range(count - 1, -1, -1)),
                  tuple(range((sections-1)*count,sections*count))]
@@ -417,7 +434,7 @@ class Rover:
             y, z = .242*math.cos(angle+.26), .242*math.sin(angle+.26)
             self.tube("Recessed wheel vent", (side*.176,y,z),(side*.184,y,z),
                       .033,"trim",pivot,sides=10)
-        # Alternating V-shaped tread is a single mesh, preserving the 0.64 m ride radius.
+        # Use one tread mesh. Its final radius is set by the ride envelope below.
         vertices, faces = [], []
         tread_rows = 24 if not spare else 20
         for i in range(tread_rows):
@@ -428,7 +445,7 @@ class Rover:
                 start = len(vertices)
                 for outer in (False,True):
                     for x, a in corners:
-                        radius = (RADIUS if abs(x)<.155 else .606) if outer else (.589 if abs(x)<.155 else .566)
+                        radius = (TREAD_DESIGN_RADIUS if abs(x)<.155 else .606) if outer else (.589 if abs(x)<.155 else .566)
                         vertices.append((x,radius*math.cos(a),radius*math.sin(a)))
                 faces.extend(tuple(start+index for index in face) for face in
                              ((0,3,2,1),(4,5,6,7),(0,1,5,4),(1,2,6,5),(2,3,7,6),(3,0,4,7)))
@@ -439,6 +456,11 @@ class Rover:
         self.box("Rear top tread plate",(0,.447,-2.112),(1.58,.032,.196),"metal",bevel=.013)
         self.box("Rear receiver hitch",(0,.212,-2.22),(.176,.151,.19),"trim",bevel=.014)
         self.box("Rear recovery tongue",(0,.195,-2.32),(.116,.092,.124),"metal",bevel=.015)
+        rear_eye = [(.052 * math.cos(TAU * i / 16),
+                     .196 + .048 * math.sin(TAU * i / 16), -2.397)
+                    for i in range(16)]
+        self.sweep("Rear recovery bow", rear_eye, .015, "orange", sides=7, closed=True)
+        self.empty("RearWinchOutlet", self.body, (0, .196, -2.414))
         for x in (-.861,.861):
             self.box("Tail lamp inset",(x,.943,-2.103),(.208,.41,.068),"trim",bevel=.034)
             self.box("Stop lamp optic",(x,.995,-2.146),(.148,.17,.033),"red",bevel=.018)
@@ -505,8 +527,93 @@ class Rover:
         if str(SOURCE) not in sys.path:
             sys.path.insert(0,str(SOURCE))
         from cabin import add_cabin
-        add_cabin(self.body,self.mat)
-        bpy.context.view_layer.update()
+        cockpit = add_cabin(self.body, self.mat)
+        self.empty("DriverEye", self.body, cockpit["driver_camera"])
+        bake_ride_envelope()
+        verify_ride_envelope(self.body)
+
+
+def shell_envelope(point, roof_load=False):
+    """Map a design point in Blender axes into the finished shell and cargo."""
+    x, longitudinal, height = point
+    if roof_load:
+        height = 2.20 + (height - 2.20) * .52
+    # Leave the chassis and its lowest points intact. Lower the hood and roof
+    # above the frame while carrying the cabin, window openings and pillars along.
+    if height > .16:
+        height = .16 + (height - .16) * .76
+    if abs(longitudinal) > AXLE_Z:
+        excess = (abs(longitudinal) - AXLE_Z) * .78
+        longitudinal = math.copysign(AXLE_Z + excess, longitudinal)
+    return Vector((x * BODY_WIDTH_FACTOR, longitudinal, height))
+
+
+def owning_part(obj):
+    while obj:
+        if obj.name.startswith("Wheel_") or obj.name in ("SpareWheel", "RoofRack"):
+            return obj
+        obj = obj.parent
+    return None
+
+
+def bake_ride_envelope():
+    """Shape the body and wheels separately while retaining rigid animation pivots."""
+    bpy.context.view_layer.update()
+    objects = list(bpy.context.scene.objects)
+    original = {obj: obj.matrix_world.copy() for obj in objects}
+    inverse = {obj: matrix.inverted() for obj, matrix in original.items()}
+    owners = {obj: owning_part(obj) for obj in objects}
+    adjusted = {}
+
+    def remap(obj, point):
+        part = owners[obj]
+        if part is None or part.name == "RoofRack":
+            return shell_envelope(point, roof_load=part is not None)
+        # Work in the wheel's own frame so even the rear-mounted spare stays round.
+        center = shell_envelope(original[part].translation)
+        axis_point = inverse[part] @ point
+        radial_scale = WHEEL_RADIUS / TREAD_DESIGN_RADIUS
+        axis_point.x *= .73
+        axis_point.y *= radial_scale
+        axis_point.z *= radial_scale
+        return center + original[part].to_3x3() @ axis_point
+
+    for obj, matrix in original.items():
+        transform = matrix.copy()
+        transform.translation = remap(obj, matrix.translation)
+        adjusted[obj] = transform
+        if obj.type == "MESH":
+            to_local = transform.inverted()
+            for vertex in obj.data.vertices:
+                vertex.co = to_local @ remap(obj, matrix @ vertex.co)
+            obj.data.update()
+
+    for obj, matrix in adjusted.items():
+        obj.matrix_parent_inverse = Matrix.Identity(4)
+        obj.matrix_basis = adjusted[obj.parent].inverted() @ matrix if obj.parent else matrix
+    bpy.context.view_layer.update()
+
+
+def verify_ride_envelope(body):
+    for axle, longitudinal in (("F", -AXLE_Z), ("R", AXLE_Z)):
+        for label, side in (("L", -1), ("R", 1)):
+            pivot = bpy.data.objects[f"Wheel_{axle}{label}"]
+            expected = Vector((side * TRACK_HALF_WIDTH, longitudinal, 0))
+            if (pivot.matrix_world.translation - expected).length > 1e-5:
+                raise ValueError(f"{pivot.name}: wheel pivot does not match suspension")
+            tread = next(child for child in pivot.children
+                         if child.name.startswith("Directional all-terrain tread"))
+            to_wheel = pivot.matrix_world.inverted() @ tread.matrix_world
+            radius = max(math.hypot(local.y, local.z)
+                         for vertex in tread.data.vertices
+                         for local in (to_wheel @ vertex.co,))
+            if abs(radius - WHEEL_RADIUS) > 1e-5:
+                raise ValueError(f"{pivot.name}: tread radius {radius} differs from physics")
+    eye = bpy.data.objects["DriverEye"].matrix_world.translation
+    expected_eye = Vector((.423, .45, 1.2392))
+    if (eye - expected_eye).length > 1e-5:
+        raise ValueError("DriverEye does not match the Godot cockpit camera")
+    body["driver_eye_game_m"] = (eye.x, eye.z, -eye.y)
 
 
 def summarize(objects):
@@ -576,7 +683,7 @@ def studio_preview(path):
     world.node_tree.nodes["Background"].inputs["Strength"].default_value = .3
     scene.world = world
 
-    bpy.ops.mesh.primitive_plane_add(size=200,location=(0,0,-.648))
+    bpy.ops.mesh.primitive_plane_add(size=200,location=(0,0,-WHEEL_RADIUS-.004))
     ground = bpy.context.object
     ground.data.materials.append(material("Preview cyclorama","39493E",.84))
 
@@ -597,10 +704,10 @@ def studio_preview(path):
     data = bpy.data.cameras.new("Expedition profile")
     cam = bpy.data.objects.new("Expedition profile",data)
     scene.collection.objects.link(cam)
-    cam.location = blender_point((6.2,3.6,7.5))
-    cam.rotation_euler = (blender_point((0,.89,.04))-cam.location).to_track_quat("-Z","Y").to_euler()
+    cam.location = blender_point((6.2,3.13,7.5))
+    cam.rotation_euler = (blender_point((0,.64,.04))-cam.location).to_track_quat("-Z","Y").to_euler()
     data.type = "ORTHO"
-    data.ortho_scale = 6.45
+    data.ortho_scale = 5.82
     scene.camera = cam
     scene.render.filepath = str(path)
     bpy.ops.render.render(write_still=True)

@@ -1,26 +1,36 @@
 class_name OffroadPhysics
 extends RefCounted
+
+const RecoveryWinch := preload("res://recovery_winch.gd")
 ## Kinematic off-road traction with four independently sampled spring/damper corners.
 ## +Z forward; body uses rotation.x=-pitch and rotation.z=roll.
 ## Wheel order: front-left, front-right, rear-left, rear-right.
 const Terrain = preload("res://terrain_math.gd")
-const WHEEL_OFFSETS: Array[Vector2] = [Vector2(-1.06, 1.3), Vector2(1.06, 1.3), Vector2(-1.06, -1.3), Vector2(1.06, -1.3)]
+const Contacts = preload("res://obstacle_contacts.gd")
+const WHEEL_OFFSETS: Array[Vector2] = [Vector2(-0.954, 1.3), Vector2(0.954, 1.3), Vector2(-0.954, -1.3), Vector2(0.954, -1.3)]
+const HALF_TRACK := 0.954
+const WHEELBASE := 2.6
+const MAX_ROAD_STEER := 0.49
 # Healthy springs are close to critically damped; damaged dampers remain softer.
 const SPRING_RATE: float = 90.0
 const DAMPING: float = 20.0
 const SUSPENSION_TRAVEL: float = 0.30
-const WHEEL_RADIUS: float = 0.64
+const WHEEL_RADIUS: float = 0.52
+const REST_HEIGHT := 0.53
+const NO_ROCK_SUPPORT: Array[float] = [-INF, -INF, -INF, -INF]
 var _checkpoints: Array = Terrain.checkpoints()
+# Scene runtime optionally uses the visible, triangulated ground of a ready tile.
+var ground_height_provider: Callable
 
 func create_state(region: String = "forest", snow_tires: bool = false) -> Dictionary:
-	var x: float = Terrain.route_x(0.0)
+	var spawn: Vector3 = Terrain.spawn_for(region)
 	var state: Dictionary = {
-		"x": x, "y": Terrain.height_at(x, 0.0, region) + 0.65, "z": 0.0,
-		"yaw": Terrain.heading_at(0.0), "speed": 0.0, "region": region, "snowTires": snow_tires,
+		"x": spawn.x, "y": _ground_height(spawn.x, spawn.z, region) + REST_HEIGHT, "z": spawn.z,
+		"yaw": spawn.y, "speed": 0.0, "region": region, "snowTires": snow_tires,
 		"pitch": 0.0, "roll": 0.0, "tilt": 0.0, "lowGear": false, "awd": true, "winch": null,
 		"checkpoint": 0, "completed": false, "time": 0.0, "distance": 0.0,
-		"surface": Terrain.surface_at(x, 0.0, region), "slip": 0.0, "stuck": 0.0,
-		"wheelRotation": 0.0, "collision": false, "steering": 0.0,
+		"surface": Terrain.surface_at(spawn.x, spawn.z, region), "slip": 0.0, "stuck": 0.0,
+		"wheelRotation": 0.0, "collision": false, "steering": 0.0, "roadSteeringAngle": 0.0,
 		"damage": {"body": 100.0, "tires": 100.0, "suspension": 100.0},
 		"impact": 0.0, "damageCooldown": 0.0, "repairAvailable": false,
 		"yVel": 0.0, "pitchVel": 0.0, "rollVel": 0.0,
@@ -31,28 +41,23 @@ func create_state(region: String = "forest", snow_tires: bool = false) -> Dictio
 	_reset_suspension(state)
 	return state
 
-func attach_winch(state: Dictionary, anchor: Dictionary) -> bool:
-	if not anchor.has("x") or not anchor.has("z"):
-		return false
-	var ax: float = float(anchor.x)
-	var az: float = float(anchor.z)
-	if not is_finite(ax) or not is_finite(az):
-		return false
-	var distance: float = Vector2(ax - state.x, az - state.z).length()
-	if distance > 24.0 or distance < 1.6:
-		return false
-	state.winch = {"anchor": anchor.duplicate(), "length": distance, "tension": 0.0}
-	return true
+func attach_winch(state: Dictionary, anchor: Dictionary, endpoint: String = "front") -> bool:
+	return RecoveryWinch.attach(state, anchor, endpoint)
 
 func detach_winch(state: Dictionary) -> void:
 	state.winch = null
 
 func recover(state: Dictionary) -> void:
-	var index: int = mini(int(state.checkpoint), _checkpoints.size()) - 1
-	state.z = float(_checkpoints[index].z) + 1.8 if index >= 0 else 0.0
-	state.x = Terrain.route_x(state.z)
-	state.y = Terrain.height_at(state.x, state.z, state.region) + 0.65
-	state.yaw = Terrain.heading_at(state.z)
+	var spawn: Vector3 = Terrain.spawn_for(state.region)
+	if state.region != "custom" and state.checkpoint > 0:
+		var index: int = mini(int(state.checkpoint), _checkpoints.size()) - 1
+		spawn.z = float(_checkpoints[index].z) + 1.8
+		spawn.x = Terrain.route_x(spawn.z)
+		spawn.y = Terrain.heading_at(spawn.z)
+	state.z = spawn.z
+	state.x = spawn.x
+	state.y = _ground_height(state.x, state.z, state.region) + REST_HEIGHT
+	state.yaw = spawn.y
 	state.speed = 0.0
 	state.pitch = 0.0
 	state.roll = 0.0
@@ -73,6 +78,7 @@ func repair(state: Dictionary) -> void:
 	state.slip = 0.0
 	state.stuck = 0.0
 	state.steering = 0.0
+	state.roadSteeringAngle = 0.0
 	state.collision = false
 	state.winch = null
 	_reset_suspension(state)
@@ -87,12 +93,18 @@ func _apply_damage(state: Dictionary, impact: float, body_loss: float, tire_loss
 	state.impact = maxf(state.impact, impact)
 	state.damageCooldown = 0.55
 
+func _ground_height(x: float, z: float, region: String) -> float:
+	if ground_height_provider.is_valid():
+		return float(ground_height_provider.call(x, z))
+	return Terrain.height_at(x, z, region)
+
+func _wheel_position(x: float, z: float, forward: Vector2, offset: Vector2) -> Vector2:
+	return Vector2(x, z) + Vector2(forward.y, -forward.x) * offset.x + forward * offset.y
+
 func _wheel_ground(state: Dictionary, offset: Vector2) -> float:
-	var fx: float = sin(state.yaw)
-	var fz: float = cos(state.yaw)
-	var x: float = state.x + fz * offset.x + fx * offset.y
-	var z: float = state.z - fx * offset.x + fz * offset.y
-	return Terrain.height_at(x, z, state.region)
+	var forward := Vector2(sin(state.yaw), cos(state.yaw))
+	var point := _wheel_position(state.x, state.z, forward, offset)
+	return _ground_height(point.x, point.y, state.region)
 
 func _contact_ground(state: Dictionary, offset: Vector2) -> float:
 	# Tire footprint supports the chassis across small ripples rather than at a point.
@@ -105,9 +117,9 @@ func _reset_suspension(state: Dictionary) -> void:
 	var grounds: Array[float] = []
 	for offset: Vector2 in WHEEL_OFFSETS:
 		grounds.append(_contact_ground(state, offset))
-	state.y = (grounds[0] + grounds[1] + grounds[2] + grounds[3]) * 0.25 + 0.65
+	state.y = (grounds[0] + grounds[1] + grounds[2] + grounds[3]) * 0.25 + REST_HEIGHT
 	state.pitch = atan(((grounds[0] + grounds[1]) - (grounds[2] + grounds[3])) / 5.2)
-	state.roll = atan(((grounds[1] + grounds[3]) - (grounds[0] + grounds[2])) / 4.24)
+	state.roll = atan(((grounds[1] + grounds[3]) - (grounds[0] + grounds[2])) / (4.0 * HALF_TRACK))
 	for i: int in range(4):
 		state.contactHeights[i] = grounds[i]
 		state.contactVelocities[i] = 0.0
@@ -121,10 +133,25 @@ func step(state: Dictionary, input: Dictionary, dt: float, obstacles: Array = []
 		return
 	var total: float = minf(dt, 0.15)
 	var count: int = maxi(1, int(ceil(total / (1.0 / 120.0))))
+	# Limit precise mesh tests to objects the car can reach in this frame.
+	var center := Vector2(float(state.x), float(state.z))
+	var rocks: Array = []
+	var solids: Array = []
+	var legacy: Array = []
+	for obstacle: Dictionary in obstacles:
+		var delta := Vector2(float(obstacle.x), float(obstacle.z)) - center
+		var reach := float(obstacle.get("r", 0.5)) + 5.0
+		if delta.length_squared() > reach * reach:
+			continue
+		match String(obstacle.get("kind", "")):
+			"rock": rocks.push_back(obstacle)
+			"trunk", "box", "convex": solids.push_back(obstacle)
+			_: legacy.push_back(obstacle)
+	var world: Rect2 = Terrain.bounds_for(state.region)
 	for _i: int in range(count):
-		_simulate(state, input, total / float(count), obstacles)
+		_simulate(state, input, total / float(count), rocks, solids, legacy, world)
 
-func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array) -> void:
+func _simulate(state: Dictionary, input: Dictionary, dt: float, rocks: Array, solids: Array, legacy: Array, world: Rect2) -> void:
 	state.damageCooldown = maxf(0.0, state.damageCooldown - dt)
 	state.impact = maxf(0.0, state.impact - dt * 3.5)
 	var body_health: float = clampf(state.damage.body / 100.0, 0.0, 1.0)
@@ -135,11 +162,12 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 	var reverse: float = clampf(float(input.get("reverse", 0.0)), 0.0, 1.0)
 	var steer: float = clampf(float(input.get("steer", 0.0)), -1.0, 1.0)
 	var reel: bool = bool(input.get("reel", false))
-	var snowy: bool = state.region == "snow"
+	var payout: bool = bool(input.get("payout", false))
+	state.surface = Terrain.surface_at(state.x, state.z, state.region)
+	var snowy: bool = state.region == "snow" or state.surface == "snow" or state.surface == "ice"
 	var winter_grip: float = 0.44 if snowy and not state.snowTires else 1.0
 	var steering_response: float = 3.2 if snowy and not state.snowTires else 10.0
 	state.steering += (steer - state.steering) * (1.0 - exp(-dt * steering_response))
-	state.surface = Terrain.surface_at(state.x, state.z, state.region)
 	var mud: bool = state.surface == "mud"
 	var water: bool = state.surface == "water"
 	var fx: float = sin(state.yaw)
@@ -187,7 +215,9 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 	if not is_zero_approx(drive) and absf(state.speed) < 0.06 and signf(state.speed) != signf(drive) and absf(slope_force) < torque + rolling:
 		state.speed = 0.0
 	# In this +Z-forward, Y-up world, screen-right is world -X.
-	var steer_rate: float = -state.steering * winter_grip * steering_health * state.speed / 3.35 * (0.82 / (1.0 + absf(state.speed) * 0.08))
+	state.roadSteeringAngle = -state.steering * MAX_ROAD_STEER
+	var steer_rate: float = tan(state.roadSteeringAngle) * winter_grip * steering_health * state.speed / (WHEELBASE * (1.0 + absf(state.speed) * 0.055))
+	var old_yaw: float = state.yaw
 	state.yaw += steer_rate * dt
 	var forward_x: float = sin(state.yaw)
 	var forward_z: float = cos(state.yaw)
@@ -203,26 +233,9 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 		state.x -= side_x * downhill_slide
 		state.z -= side_z * downhill_slide
 	if state.winch != null:
-		var w: Dictionary = state.winch
-		var dx: float = w.anchor.x - state.x
-		var dz: float = w.anchor.z - state.z
-		var distance: float = Vector2(dx, dz).length()
-		if distance > 29.0:
-			state.winch = null
-		else:
-			if reel:
-				w.length = maxf(2.2, w.length - dt * 2.8)
-			var stretch: float = maxf(0.0, distance - w.length)
-			w.tension = clampf(stretch / 0.8 + (0.2 if reel else 0.0), 0.0, 1.0)
-			if stretch > 0.0 and distance > 0.01:
-				var pull: float = minf(stretch, dt * (3.4 if reel else 5.0))
-				state.x += dx / distance * pull
-				state.z += dz / distance * pull
-				var alignment: float = (dx * forward_x + dz * forward_z) / distance
-				if alignment * state.speed < 0.0:
-					state.speed *= exp(-dt * 5.0)
+		RecoveryWinch.apply(state, reel, payout, dt)
 	state.collision = false
-	for obstacle: Dictionary in obstacles:
+	for obstacle: Dictionary in legacy:
 		var min_distance: float = float(obstacle.get("r", 0.5)) + 0.92
 		var dx: float = state.x - obstacle.x
 		var dz: float = state.z - obstacle.z
@@ -238,11 +251,14 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 				_apply_damage(state, crash_speed, minf(18.0, severity * 1.8), minf(8.0, severity * 0.75), minf(12.0, severity * 1.1))
 			state.speed *= 0.18
 			state.collision = true
-	if state.x < Terrain.MIN_X or state.x > Terrain.MAX_X or state.z < Terrain.MIN_Z or state.z > Terrain.MAX_Z:
-		state.x = clampf(state.x, Terrain.MIN_X, Terrain.MAX_X)
-		state.z = clampf(state.z, Terrain.MIN_Z, Terrain.MAX_Z)
+	if state.x < world.position.x or state.x > world.end.x or state.z < world.position.y or state.z > world.end.y:
+		state.x = clampf(state.x, world.position.x, world.end.x)
+		state.z = clampf(state.z, world.position.y, world.end.y)
 		state.speed *= 0.2
-	_update_suspension(state, dt, acceleration, steer_rate)
+	var floor_heights: Array[float] = NO_ROCK_SUPPORT
+	if not rocks.is_empty() or not solids.is_empty():
+		floor_heights = _resolve_obstacles(state, old_x, old_z, old_yaw, rocks, solids, torque, dt)
+	_update_suspension(state, dt, acceleration, steer_rate, floor_heights)
 	state.tilt = rad_to_deg(maxf(absf(state.pitch), absf(state.roll)))
 	var slip_factor: float = 1.0 - snow_grip if snowy else (0.23 if state.lowGear else 0.78) if mud else 0.9 if water else 0.04 if state.awd else 0.17
 	state.slip = clampf((slip_factor + (1.0 - tire_health) * 0.35) * absf(drive), 0.0, 1.0)
@@ -250,14 +266,68 @@ func _simulate(state: Dictionary, input: Dictionary, dt: float, obstacles: Array
 	state.distance += Vector2(state.x - old_x, state.z - old_z).length()
 	state.wheelRotation += (state.speed * dt + state.slip * drive * dt * 2.0) / WHEEL_RADIUS
 	state.time += dt
-	if state.checkpoint < _checkpoints.size():
+	if state.region != "custom" and state.checkpoint < _checkpoints.size():
 		var target: Dictionary = _checkpoints[state.checkpoint]
 		if Vector2(state.x - target.x, state.z - target.z).length() < 13.0:
 			state.checkpoint += 1
 			if state.checkpoint == _checkpoints.size():
 				state.completed = true
 
-func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer_rate: float) -> void:
+func _rock_floors(state: Dictionary, rocks: Array) -> Array[float]:
+	if rocks.is_empty():
+		return NO_ROCK_SUPPORT
+	var forward := Vector2(sin(state.yaw), cos(state.yaw))
+	var floors: Array[float] = []
+	for i: int in range(WHEEL_OFFSETS.size()):
+		var point := _wheel_position(state.x, state.z, forward, WHEEL_OFFSETS[i])
+		# The front tires turn on the steering pivots before they meet a rock.
+		var steering := float(state.roadSteeringAngle) if i < 2 else 0.0
+		var heading := Vector2(sin(state.yaw + steering), cos(state.yaw + steering))
+		floors.push_back(Contacts.wheel_floor(point, heading, WHEEL_RADIUS, rocks))
+	return floors
+
+func _resolve_obstacles(state: Dictionary, old_x: float, old_z: float, old_yaw: float, rocks: Array, solids: Array, torque: float, dt: float) -> Array[float]:
+	var floors: Array[float] = _rock_floors(state, rocks)
+	var travel := Vector2(float(state.x) - old_x, float(state.z) - old_z).length()
+	if travel < 0.00001 and absf(float(state.yaw) - old_yaw) < 0.0001:
+		return floors
+	var blocked: bool = Contacts.body_hits(state, solids, true, WHEEL_OFFSETS, WHEEL_RADIUS)
+	if not blocked:
+		blocked = Contacts.body_hits(state, rocks, false, WHEEL_OFFSETS, WHEEL_RADIUS)
+	var rise := 0.0
+	var grade := 0.0
+	if not blocked and travel > 0.00001:
+		var before_forward := Vector2(sin(old_yaw), cos(old_yaw))
+		for i: int in range(floors.size()):
+			if not is_finite(floors[i]):
+				continue
+			var wheel := _wheel_position(old_x, old_z, before_forward, WHEEL_OFFSETS[i])
+			var steering := float(state.roadSteeringAngle) if i < 2 else 0.0
+			var before_heading := Vector2(sin(old_yaw + steering), cos(old_yaw + steering))
+			var before := Contacts.wheel_floor(wheel, before_heading, WHEEL_RADIUS, rocks)
+			var before_ground := _ground_height(wheel.x, wheel.y, state.region) + WHEEL_RADIUS
+			rise = maxf(rise, floors[i] - maxf(before, before_ground))
+		grade = rise / travel
+		# A ramp can be driven onto. A steep rock face exceeding wheel radius/
+		# tractive effort cannot be hopped through by horizontal integration.
+		var climb_limit := 0.55 + torque * 0.13 + (0.45 if state.winch != null else 0.0)
+		blocked = rise > climb_limit * travel + 0.012
+	if blocked:
+		var impact := absf(float(state.speed))
+		if impact > 1.1:
+			var severity := minf(10.0, impact - 1.0)
+			_apply_damage(state, impact, severity * 1.4, severity * 0.6, severity * 0.9)
+		state.x = old_x
+		state.z = old_z
+		state.yaw = old_yaw
+		state.speed = 0.0
+		state.collision = true
+		return _rock_floors(state, rocks)
+	if grade > 0.0:
+		state.speed = move_toward(state.speed, 0.0, minf(grade, 2.0) * 3.6 * dt)
+	return floors
+
+func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer_rate: float, floors: Array[float] = NO_ROCK_SUPPORT) -> void:
 	var suspension_health: float = clampf(state.damage.suspension / 100.0, 0.0, 1.0)
 	var spring_rate: float = SPRING_RATE * lerpf(0.68, 1.0, suspension_health)
 	var damping: float = DAMPING * lerpf(0.34, 1.0, suspension_health)
@@ -270,8 +340,9 @@ func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer
 	var ground_sum: float = 0.0
 	for i: int in range(4):
 		var offset: Vector2 = WHEEL_OFFSETS[i]
-		var raw_ground: float = _wheel_ground(state, offset)
-		var ground: float = _contact_ground(state, offset)
+		var rock_ground: float = floors[i] - WHEEL_RADIUS
+		var raw_ground: float = maxf(_wheel_ground(state, offset), rock_ground)
+		var ground: float = maxf(_contact_ground(state, offset), rock_ground)
 		# Smooth only support velocity: wheels retain their individual raw ground heights.
 		# Dampers oppose compression velocity, not the vehicle's uphill world velocity.
 		var contact_velocity: float = clampf((ground - state.contactHeights[i]) / dt, -8.0, 8.0)
@@ -280,7 +351,7 @@ func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer
 		ground_sum += ground
 		var corner_height: float = state.y + sin(state.pitch) * offset.y + sin(state.roll) * offset.x
 		var corner_velocity: float = state.yVel + state.pitchVel * offset.y + state.rollVel * offset.x
-		var compression: float = ground + 0.65 - corner_height
+		var compression: float = ground + REST_HEIGHT - corner_height
 		var in_contact: bool = compression >= -travel
 		max_compression = maxf(max_compression, compression)
 		# Each grounded corner contributes spring force and damper force independently.
@@ -292,7 +363,7 @@ func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer
 		state.wheelHeights[i] = raw_ground + WHEEL_RADIUS if in_contact else corner_height - 0.01 - travel
 		lift += force * 0.25
 		pitch_torque += force * offset.y / (4.0 * 1.3 * 1.3)
-		roll_torque += force * offset.x / (4.0 * 1.06 * 1.06)
+		roll_torque += force * offset.x / (4.0 * HALF_TRACK * HALF_TRACK)
 	if max_compression > 0.12 and landing_speed > 2.8:
 		var impact_severity: float = minf(6.0, landing_speed - 2.8)
 		_apply_damage(state, landing_speed, impact_severity * 0.35, impact_severity * 0.55, impact_severity * 1.2)
@@ -305,7 +376,7 @@ func _update_suspension(state: Dictionary, dt: float, acceleration: float, steer
 	state.pitch = clampf(state.pitch + state.pitchVel * dt, -1.0, 1.0)
 	state.roll = clampf(state.roll + state.rollVel * dt, -1.0, 1.0)
 	# Hard bump stops keep the chassis above terrain after abrupt resets/collisions.
-	var minimum_height: float = ground_sum * 0.25 + 0.36
+	var minimum_height: float = ground_sum * 0.25 + REST_HEIGHT - 0.29
 	if state.y < minimum_height:
 		state.y = minimum_height
 		state.yVel = maxf(0.0, state.yVel)
