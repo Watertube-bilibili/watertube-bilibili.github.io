@@ -148,10 +148,10 @@ set_section("rendering", {
 })
 doc.write_text(cfg, encoding="utf-8")
 
-version_code = int(os.environ.get("RIDGEBOUND_ANDROID_VERSION_CODE", "1"))
+version_code = int(os.environ.get("RIDGEBOUND_ANDROID_VERSION_CODE", "20000"))
 if not 1 <= version_code <= 2100000000:
     raise SystemExit("Invalid Android version code.")
-version_name = quote(os.environ.get("RIDGEBOUND_ANDROID_VERSION_NAME", "1.0"))
+version_name = quote(os.environ.get("RIDGEBOUND_ANDROID_VERSION_NAME", "2.0"))
 emulator = "true" if os.environ.get("RIDGEBOUND_ANDROID_ENABLE_X86_64") == "1" else "false"
 presets = f"""[preset.0]
 name="Android"
