@@ -131,7 +131,7 @@ export function createDeviceLayout() {
 
   async function loadProfiles() {
     try {
-      const response = await fetch(new URL('./device-profiles.json', import.meta.url));
+      const response = await fetch(new URL('./device-profiles.json?v=3786079387bedfbd', import.meta.url));
       if (!response.ok) throw new Error(String(response.status));
       models = parseModels(await response.json());
       for (const model of models.values()) {
