@@ -21,7 +21,7 @@ def make_mat(name,hexcode,rough=.5,metal=0,alpha=1,emission=0):
     for i in (0,2,4):
         v=int(hexcode[i:i+2],16)/255;rgb.append(v/12.92 if v<=.04045 else ((v+.055)/1.055)**2.4)
     p=m.node_tree.nodes.get('Principled BSDF')
-    p.inputs['Base Color'].default_value=(*rgb,1);p.inputs['Roughness'].default_value=rough;p.inputs['Metallic'].default_value=metal;p.inputs['Alpha'].default_value=alpha
+    p.inputs['Base Color'].default_value=(*rgb,1);p.inputs['Coat Weight'].default_value=.32 if metal>.2 else 0;p.inputs['Coat Roughness'].default_value=.22;p.inputs['Roughness'].default_value=rough;p.inputs['Metallic'].default_value=metal;p.inputs['Alpha'].default_value=alpha
     if emission:p.inputs['Emission Color'].default_value=(*rgb,1);p.inputs['Emission Strength'].default_value=emission
     if alpha<1:m.surface_render_method='DITHERED';m.use_transparency_overlap=False
     m.diffuse_color=(*rgb,alpha)
@@ -37,7 +37,7 @@ class MPV:
           'leather':make_mat('Almond leather','C4AE8C',.72),
           'wood':make_mat('Smoked walnut','55453B',.6),
           'glass':make_mat('Clear driver glazing','A8C8CF',.18,.0,.075),
-          'privacy':make_mat('Rear privacy glazing','526D76',.2,.1,.34),
+          'privacy':make_mat('Rear privacy glazing','14242C',.14,.14,.86),
           'screen':make_mat('Instrument glass','14242B',.31,.1),
           'white':make_mat('Pearl white light','D6F0EA',.24,.1,1,.55),
           'red':make_mat('Ruby tail lamp','A83B43',.32,.1,1,.28),
@@ -101,12 +101,12 @@ class MPV:
         self.cube('Cabin floor',(0,.10,-.60),(1.87,.10,4.20),'dark',bevel=.025)
         self.cube('Front crush rail',(0,.10,2.32),(1.55,.22,.62),'dark',bevel=.045)
         # Side skin follows both wheel apertures. Concave polygon triangulates around openings.
-        profile=[(.86,-2.83),(.86,2.68),(-.14,2.68),(-.14,2.20)]
+        profile=[(.86,-2.83),(.86,2.33),(.80,2.53),(.63,2.65),(.22,2.68),(-.10,2.64),(-.14,2.20)]
         for j in range(17):
             a=-math.pi/2+j*math.pi/16
             profile.append((.025+.475*math.cos(a),AXLE+.475*math.sin(a)))
         # Reverse the front arc to progress rearward along the lower edge.
-        profile=profile[:4]+list(reversed(profile[4:]))
+        profile=profile[:7]+list(reversed(profile[7:]))
         profile.append((-.14,.98));profile.append((-.14,-1.22))
         rear=[]
         for j in range(17):
@@ -114,7 +114,7 @@ class MPV:
         profile.extend(rear);profile.extend([(-.14,-2.20),(-.14,-2.83)])
         for side in (-1,1):
             xa,xb=sorted((side*.965,side*1.04));self.prism('Sculpted MPV side',profile,xa,xb,'paint')
-            self.cube('Pearl shoulder',(side*1.012,.89,-.63),(.07,.17,4.34),'roof',bevel=.035)
+            self.cube('Sculpted belt shoulder',(side*1.012,.94,-.63),(.045,.075,4.34),'paint',bevel=.022)
             self.cube('Lower chrome sill',(side*1.044,-.10,-.10),(.034,.045,2.77),'chrome',bevel=.009)
             self.cube('Flush side step',(side*1.015,-.18,-.10),(.12,.07,2.64),'dark',bevel=.018)
             self.cube('Beltline chrome',(side*1.036,1.015,-.73),(.026,.025,3.92),'chrome',bevel=.007)
@@ -133,8 +133,10 @@ class MPV:
             self.cube('Upper window trim',(side*.974,1.638,-.89),(.022,.023,3.64),'chrome',bevel=.006)
             # Wing mirrors on a small swept stem.
             self.rod('Mirror stalk',(side*.98,1.04,1.07),(side*1.13,1.10,1.13),.022,'dark')
-            self.cube('Mirror housing',(side*1.14,1.16,1.11),(.10,.14,.25),'paint',bevel=.045)
-            self.cube('Mirror reflective insert',(side*1.14,1.16,.975),(.078,.10,.009),'chrome',bevel=.018)
+            self.cube('Streamlined mirror cap',(side*1.14,1.18,1.11),(.16,.10,.30),'paint',bevel=.045,segments=4)
+            self.cube('Mirror lower shroud',(side*1.14,1.125,1.11),(.15,.045,.29),'dark',bevel=.018,segments=3)
+            self.cube('Mirror indicator',(side*1.14,1.145,1.255),(.10,.012,.014),'white',bevel=.006,segments=2)
+            self.cube('Mirror reflective insert',(side*1.14,1.16,.952),(.125,.083,.008),'chrome',bevel=.018,segments=3)
             for z in (-AXLE,AXLE):
                 # Near-circular stamped fender lips with room for suspension travel.
                 vs=[];fs=[]
@@ -144,7 +146,7 @@ class MPV:
                         vs.append((x,.025+r*math.cos(a),z+r*math.sin(a)))
                 for j in range(18):
                     k=j*4;n=k+4;fs.extend([(k,n,n+1,k+1),(k+2,k+3,n+3,n+2),(k,k+2,n+2,n),(k+1,n+1,n+3,k+3)])
-                fs.extend([(0,1,3,2),(72,74,75,73)]);self.mesh('Wheel opening brightwork',vs,fs,'chrome')
+                fs.extend([(0,1,3,2),(72,74,75,73)]);self.mesh('Painted wheel opening surround',vs,fs,'paint')
         # Roof and tail pillars form a high, long van silhouette without filling the interior.
         roof_vs=[];roof_fs=[];segments=24
         for yy,ww,dd,rr in [(1.585,2.00,3.91,.14),(1.675,1.98,3.89,.20),(1.72,1.84,3.75,.23)]:
@@ -164,8 +166,10 @@ class MPV:
         self.cube('Rear bumper',(0,-.075,-2.73),(1.99,.18,.20),'paint',bevel=.045,segments=3)
         self.cube('Rear diffuser',(0,-.12,-2.76),(1.82,.19,.15),'dark',bevel=.045)
         for s in (-1,1):
-            self.cube('Vertical tail lens',(s*.878,.58,-2.847),(.13,.55,.025),'red',bevel=.035,segments=3)
-            for j in range(7):self.cube('Tail pixel',(s*.878,.36+j*.073,-2.864),(.083,.019,.010),'amber',bevel=.004)
+            self.cube('Tail lamp recessed surround',(s*.878,.58,-2.847),(.16,.57,.026),'dark',bevel=.048,segments=4)
+            self.cube('Continuous ruby tail lens',(s*.878,.58,-2.865),(.112,.52,.022),'red',bevel=.038,segments=4)
+            for j in range(12):self.cube('Tail crystal louver',(s*.878,.355+j*.041,-2.881),(.078,.009,.010),'red',bevel=.003,segments=2)
+            self.cube('Tail lamp side signature',(s*.941,.58,-2.854),(.009,.42,.012),'white',bevel=.003,segments=2)
         self.cube('Rear plate recess',(0,.34,-2.849),(.46,.12,.018),'dark',bevel=.015)
         # Sloping front windshield and long flat bonnet: broad clean face, original lamps.
         pane=[(-.93,1.00,1.63),(.93,1.00,1.63),(.925,1.61,.99),(-.925,1.61,.99)]
@@ -173,20 +177,93 @@ class MPV:
         for s in (-1,1):self.rod('Swept A pillar',(s*.97,1.00,1.64),(s*.96,1.64,.96),.046,'roof')
         self.rod('Windshield header',(-.96,1.64,.96),(.96,1.64,.96),.036,'roof')
         self.cube('Windshield cowl',(0,.99,1.60),(1.95,.08,.16),'dark',bevel=.035)
-        self.cube('Long sculpted bonnet',(0,.88,2.16),(1.97,.16,1.10),'roof',bevel=.07,segments=3)
-        for x in (-.68,.68):self.cube('Bonnet edge crease',(x,.970,2.18),(.008,.004,.86),'chrome',bevel=.001,segments=1)
-        self.cube('Upright closed front',(0,.52,2.69),(2.02,.68,.14),'paint',bevel=.065,segments=3)
-        self.cube('Integrated front bumper',(0,.025,2.665),(2.025,.265,.22),'paint',bevel=.055,segments=3)
-        self.cube('Front lower intake',(0,.08,2.75),(1.47,.19,.035),'dark',bevel=.035)
-        self.cube('Front chrome horizon',(0,.72,2.772),(1.72,.033,.025),'chrome',bevel=.009)
+        # Continuous bowed bonnet: center crown, falling shoulders and a rounded leading edge.
+        hood_vs=[];hood_fs=[];nx=18;nz=14
+        for j in range(nz+1):
+            t=j/nz;z=1.55+t*1.035;half=1.005-.07*t
+            for i in range(nx+1):
+                u=-1+2*i/nx
+                y=.925+.038*math.sin(math.pi*t)-.061*abs(u)**3
+                hood_vs.append((u*half,y,z-.045*abs(u)**4))
+        for j in range(nz):
+            for i in range(nx):
+                k=j*(nx+1)+i;hood_fs.append((k,k+1,k+nx+2,k+nx+1))
+        bonnet=self.mesh('Sculpted crown bonnet',hood_vs,hood_fs,'roof')
+        solid=bonnet.modifiers.new('Bonnet thickness','SOLIDIFY');solid.thickness=.035
+        for f in bonnet.data.polygons:f.use_smooth=True
         for s in (-1,1):
-            self.cube('Signature DRL upper',(s*.74,.84,2.765),(.36,.031,.025),'white',bevel=.013)
-            self.cube('Signature DRL lower',(s*.74,.75,2.78),(.27,.021,.018),'white',bevel=.008)
-            self.cube('Headlamp dark surround',(s*.80,.50,2.777),(.28,.21,.025),'dark',bevel=.05,segments=3)
-            for x in (-.062,.062):self.cyl('Headlight optic',(s*.80+x,.50,2.797),.042,.014,'white',axis='z',n=16)
-            self.cube('Front corner brightwork',(s*.986,.40,2.69),(.025,.42,.10),'chrome',bevel=.015)
-        # Original geometric badge (two short river strokes, no manufacturer logo).
-        for x in (-.038,.038):self.cube('Yuchuan river badge',(x,.57,2.775),(.024,.10,.018),'chrome',bevel=.007)
+            for j in range(10):
+                z0=1.60+j*.09;z1=z0+.09
+                x0=s*(.76-.045*j/10);x1=s*(.76-.045*(j+1)/10)
+                self.rod('Hood contour highlight',(x0,.924,z0),(x1,.924,z1),.0028,'chrome')
+        # Rounded nose shell wraps the front corners into the fenders. Its lower opening
+        # has an actual cavity, with a 0.22m back wall instead of a black planar decal.
+        rows=[(-.14,.88,2.61),(-.09,.97,2.72),(.0,1.015,2.79),(.16,1.035,2.81),
+              (.20,1.035,2.81),(.28,1.034,2.81),(.40,1.026,2.80),(.54,1.014,2.77),
+              (.58,1.008,2.75),(.70,.987,2.70),(.82,.964,2.64),(.925,.932,2.585)]
+        us=[-1,-.98,-.92,-.83,-.76,-.65,-.4,0,.4,.65,.76,.83,.92,.98,1]
+        nv=len(us);nr=len(rows);front_vs=[];front_fs=[]
+        for yy,half,zz in rows:
+            for u in us:front_vs.append((u*half,yy,zz-.18*abs(u)**4))
+        total=len(front_vs);front_vs += [(x,y,z-.22) for x,y,z in front_vs]
+        missing=set()
+        for j in range(nr-1):
+            for i in range(nv-1):
+                midx=(front_vs[j*nv+i][0]+front_vs[j*nv+i+1][0])/2
+                midy=(rows[j][0]+rows[j+1][0])/2
+                if abs(midx)<.79 and .20<midy<.58:missing.add((j,i))
+        for j in range(nr-1):
+            for i in range(nv-1):
+                k=j*nv+i;q=(k,k+1,k+nv+1,k+nv)
+                front_fs.append(tuple(v+total for v in reversed(q)))
+                if (j,i) not in missing:front_fs.append(q)
+                else:
+                    for edge,neighbor in [((q[0],q[1]),(j-1,i)),((q[1],q[2]),(j,i+1)),((q[2],q[3]),(j+1,i)),((q[3],q[0]),(j,i-1))]:
+                        if neighbor not in missing:
+                            a,b=edge;front_fs.append((a,b,b+total,a+total))
+        boundary=list(range(nv))+[j*nv+nv-1 for j in range(1,nr)]+list(range((nr-1)*nv+nv-2,(nr-1)*nv-1,-1))+[j*nv for j in range(nr-2,0,-1)]
+        for a,b in zip(boundary,boundary[1:]+boundary[:1]):front_fs.append((a,b,b+total,a+total))
+        fascia=self.mesh('Continuous wrapped front fascia',front_vs,front_fs,'paint')
+        for f in fascia.data.polygons:f.use_smooth=True
+        # Low, three-section grille: sculpted recess, bright surround and separated chambers.
+        def grille_z(x):return 2.807-.18*(abs(x)/1.03)**4
+        for yy in (.20,.575):
+            for j in range(16):
+                x0=-.805+j*1.61/16;x1=x0+1.61/16
+                self.rod('Grille polished surround',(x0,yy,grille_z(x0)+.008),(x1,yy,grille_z(x1)+.008),.012,'chrome')
+        for x in (-.805,.805):self.rod('Grille side surround',(x,.205,grille_z(x)+.008),(x,.57,grille_z(x)+.008),.014,'chrome')
+        self.cube('Recessed grille black back',(0,.385,2.647),(1.58,.36,.025),'dark',bevel=.045,segments=3)
+        for x in (-.50,.50):self.cube('Grille chamber divider',(x,.385,2.745),(.036,.32,.13),'chrome',bevel=.012,segments=3)
+        for y in (.275,.385,.495):
+            for chamber in [(-.77,-.53),(-.47,.47),(.53,.77)]:
+                a,b=chamber
+                for j in range(6):
+                    x0=a+(b-a)*j/6;x1=a+(b-a)*(j+1)/6
+                    self.rod('Recessed horizontal grille vane',(x0,y,grille_z(x0)-.065),(x1,y,grille_z(x1)-.065),.010,'chrome')
+        for x in [-.72+i*.09 for i in range(17)]:
+            self.rod('Deep grille fin',(x,.235,grille_z(x)-.105),(x,.53,grille_z(x)-.105),.005,'dark')
+        # Original arcing light ribbons wrap onto the corners; faceted rectangular optics
+        # replace the old round dots. The warm DRL is distinct from any real badge/lamp shape.
+        for s in (-1,1):
+            points=[(s*.49,.805,2.726),(s*.63,.812,2.725),(s*.78,.803,2.699),
+                    (s*.90,.775,2.652),(s*.966,.724,2.602),(s*.994,.662,2.558)]
+            for a,b in zip(points,points[1:]):self.rod('Arcing DRL dark cradle',a,b,.026,'dark')
+            for a,b in zip(points,points[1:]):
+                aa=(a[0],a[1]+.002,a[2]+.012);bb=(b[0],b[1]+.002,b[2]+.012)
+                self.rod('Arcing pearl DRL',aa,bb,.011,'white')
+            housing=self.cube('Crystal headlight pocket',(s*.858,.642,2.639),(.265,.142,.075),'dark',bevel=.045,segments=4)
+            housing.rotation_euler.z=-s*.17
+            for j in range(3):
+                x=s*(.774+j*.067);z=2.694-.23*(abs(x)/1.03)**4
+                optic=self.cube('Crystal optical block',(x,.641,z),(.052,.071,.030),'white',bevel=.012,segments=3)
+                optic.rotation_euler.z=-s*.15
+                self.cube('Crystal lower facet',(x,.611,z+.017),(.041,.010,.008),'chrome',bevel=.003,segments=2)
+            self.cube('Corner intake inset',(s*.926,.113,2.65),(.115,.16,.035),'dark',bevel=.035,segments=3)
+        self.cube('Front lower lip',(0,-.105,2.73),(1.69,.045,.08),'chrome',bevel=.020,segments=3)
+        # Small original paired-river emblem, shaped as two offset polished facets.
+        for s in (-1,1):
+            mark=self.cube('Yuchuan river emblem',(s*.027,.681,2.716),(.014,.055,.012),'chrome',bevel=.004,segments=2)
+            mark.rotation_euler.y=s*.18
         # Concealed expedition winch and recovery points.
         self.cube('Front winch recess',(0,.25,2.77),(.44,.09,.026),'dark',bevel=.018)
         self.cyl('Winch drum',(0,.24,2.70),.07,.29,'chrome',axis='x',n=20)
@@ -206,8 +283,13 @@ class MPV:
                     self.cyl('Recessed turbine hub',(x*1.13,0,0),.220,.018,'dark',spin,'x',32)
                     for j in range(10):
                         a=math.tau*j/10
-                        spoke=self.cube('Turbine spoke',(x*1.23,.145*math.cos(a),.145*math.sin(a)),(.018,.185,.033),'chrome',spin,bevel=.008)
-                        spoke.rotation_euler.x=a+.20
+                        outline=[(.085,a-.10),(.255,a+.07),(.264,a+.38),(.15,a+.50),(.09,a+.35)]
+                        vs=[]
+                        for xx in (x*1.23-.007,x*1.23+.007):
+                            vs.extend((xx,r*math.cos(t),r*math.sin(t)) for r,t in outline)
+                        fs=[(4,3,2,1,0),(5,6,7,8,9)]+[(i,(i+1)%5,(i+1)%5+5,i+5) for i in range(5)]
+                        blade=self.mesh('Broad turbine alloy blade',vs,fs,'chrome',spin)
+                        edge=blade.modifiers.new('Machined wheel face edge','BEVEL');edge.width=.003;edge.segments=2
                     self.cyl('Wheel centre cap',(x*1.32,0,0),.070,.016,'chrome',spin,'x',20)
                     for j in range(5):
                         a=math.tau*j/5;self.cyl('Lug',(x*1.37,.095*math.cos(a),.095*math.sin(a)),.011,.008,'dark',spin,'x',8)
@@ -334,10 +416,10 @@ def glb_info(path):
     return {k:{f:v for f,v in nodes[k].items() if f in ('translation','rotation','scale','extras')} for k in required}
 def preview(path,cockpit=False):
     scene=bpy.context.scene
-    scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=32;scene.cycles.use_denoising=False
+    scene.render.engine='CYCLES';scene.cycles.device='CPU';scene.cycles.samples=128;scene.cycles.use_adaptive_sampling=True;scene.cycles.adaptive_threshold=.018;scene.cycles.use_denoising=False
     scene.render.resolution_x=800;scene.render.resolution_y=600;scene.render.resolution_percentage=100
     if scene.world is None:scene.world=bpy.data.worlds.new('Review environment')
-    scene.world.color=(.18,.20,.22);scene.view_settings.view_transform='AgX'
+    scene.world.use_nodes=True;scene.world.node_tree.nodes['Background'].inputs['Color'].default_value=(.20,.23,.26,1);scene.world.node_tree.nodes['Background'].inputs['Strength'].default_value=.38;scene.view_settings.view_transform='AgX'
     lamps=[]
     for name,pos,energy,size in [('Key',(5,7,6),1500,6),('Fill',(-5,3,2),900,5),('Rim',(0,5,-7),1700,5)]:
         data=bpy.data.lights.new(name,'AREA');data.energy=energy;data.shape='DISK';data.size=size
@@ -346,16 +428,23 @@ def preview(path,cockpit=False):
     if cockpit:
         camera.location=cv((.49,1.32,.48));target=cv((.48,1.05,2.80));cd.type='PERSP';cd.lens=18;cd.clip_start=.03
     else:
-        camera.location=cv((6,4.0,7));target=cv((0,.55,-.2));cd.type='ORTHO';cd.ortho_scale=7.65
+        camera.location=cv((6.5,2.9,7.6));target=cv((0,.54,-.15));cd.type='PERSP';cd.lens=50;cd.clip_start=.03
     camera.rotation_euler=(target-camera.location).to_track_quat('-Z','Y').to_euler()
+    ground=None
+    if not cockpit:
+        bpy.ops.mesh.primitive_plane_add(size=200,location=(0,0,-.410))
+        ground=bpy.context.object;ground.name='Review floor';ground.data.materials.append(make_mat('Studio floor','343B40',.32,.10))
+    else:
+        data=bpy.data.lights.new('Cabin bounce card','AREA');data.energy=12;data.size=1.1
+        fill=bpy.data.objects.new('Cabin bounce card',data);scene.collection.objects.link(fill);fill.location=cv((0,1.48,.44));fill.rotation_euler=(cv((0,.9,1.1))-fill.location).to_track_quat('-Z','Y').to_euler();lamps.append(fill)
     scene.render.image_settings.file_format='PNG';scene.render.filepath=str(path);scene.render.film_transparent=False
     bpy.ops.render.render(write_still=True)
-    for o in lamps+[camera]:bpy.data.objects.remove(o,do_unlink=True)
+    for o in lamps+[camera]+([ground] if ground else []):bpy.data.objects.remove(o,do_unlink=True)
 def main():
     args=sys.argv[sys.argv.index('--')+1:] if '--' in sys.argv else sys.argv[1:]
     ap=argparse.ArgumentParser();ap.add_argument('--preview',action='store_true');opt=ap.parse_args(args)
     bpy.ops.wm.read_factory_settings(use_empty=True);bpy.context.scene.unit_settings.system='METRIC';bpy.context.scene.unit_settings.scale_length=1
-    model=MPV();model.build();finalize_meshes(model);before=measure();assert before['triangles']<60000,before
+    model=MPV();model.build();finalize_meshes(model);before=measure();assert before['triangles']<70000,before
     OUT.mkdir(parents=True,exist_ok=True);blend=BASE/'yuchuan-v8.blend';glb=OUT/'yuchuan-v8.glb'
     bpy.context.preferences.filepaths.save_version=0
     bpy.ops.wm.save_as_mainfile(filepath=str(blend))
