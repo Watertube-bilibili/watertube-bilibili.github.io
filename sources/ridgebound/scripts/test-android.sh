@@ -112,7 +112,7 @@ def gestures(sample, width, height):
         else:
             x, y = before["gas"]
             start = end = (x * scale_x, y * scale_y)
-        swipe(start, end, 720)
+        swipe(start, end, 2_400)
         sample = wait_probe(
             f"{action} touch must return to neutral on release",
             lambda s: s["sequence"] > before["sequence"] and abs(s[action]) < 0.02,
@@ -169,12 +169,22 @@ def main():
     overlay = "com.android.internal.display.cutout.emulation.tall"
     notch = False
     restore_notch = False
+    restore_size = False
     rotation_keys = ("accelerometer_rotation", "user_rotation")
     rotation_settings = {
         key: adb("shell", "settings", "get", "system", key).strip() for key in rotation_keys
     }
     try:
         adb("shell", "settings", "put", "system", "accelerometer_rotation", 0)
+        # Software-rendered CIs can otherwise miss an entire gesture between frames.
+        # Scale both emulator dimensions together, keeping its device aspect and cutout.
+        size = adb("shell", "wm", "size")
+        dimensions = re.search(r"Physical size: (\d+)x(\d+)", size)
+        if dimensions and "Override size:" not in size:
+            width, height = map(int, dimensions.groups())
+            if width > 720:
+                adb("shell", "wm", "size", f"720x{round(height * 720 / width)}")
+                restore_size = True
         overlays = adb("shell", "cmd", "overlay", "list", "--user", "0", check=False)
         match = next((line for line in overlays.splitlines() if overlay in line), "")
         if match:
@@ -213,12 +223,21 @@ def main():
         if sys.exc_info()[0] is not None:
             lines = [line for line in log.splitlines() if "ORBIT_PROBE {" not in line]
             print("\n".join(lines[-100:]), file=sys.stderr)
+            device_log = adb("logcat", "-b", "all", "-d", check=False)
+            (output / "failure.device.log").write_text(device_log, encoding="utf-8")
+            exit_info = adb("shell", "dumpsys", "activity", "exit-info", app, check=False)
+            (output / "failure.exit-info").write_text(exit_info, encoding="utf-8")
+            relevant = [line for line in device_log.splitlines()
+                        if app in line or re.search(r"low.memory|lmkd|tombstone|SIGSEGV", line, re.I)]
+            print("\n".join(relevant[-35:]), file=sys.stderr)
             (output / "failure.activities").write_text(adb("shell", "dumpsys", "activity", "activities", check=False), encoding="utf-8")
             (output / "failure.display").write_text(adb("shell", "dumpsys", "window", "displays", check=False), encoding="utf-8")
             try:
                 screenshot(output, "failure")
             except (OSError, RuntimeError, subprocess.SubprocessError):
                 pass
+        if restore_size:
+            adb("shell", "wm", "size", "reset", check=False)
         for key in reversed(rotation_keys):
             value = rotation_settings[key]
             if value == "null":

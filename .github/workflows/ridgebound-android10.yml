@@ -10,7 +10,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        api: [29, 35]
+        include:
+          - {api: 29, gpu: lavapipe, profile: pixel_3a}
+          - {api: 35, gpu: swiftshader_indirect, profile: pixel_7}
     timeout-minutes: 25
     defaults:
       run:
@@ -78,9 +80,9 @@ jobs:
           api-level: ${{ matrix.api }}
           target: google_apis
           arch: x86_64
-          profile: pixel_3a
+          profile: ${{ matrix.profile }}
           disable-animations: true
-          emulator-options: -no-window -gpu lavapipe -noaudio -no-boot-anim -no-snapshot
+          emulator-options: -no-window -gpu ${{ matrix.gpu }} -noaudio -no-boot-anim -no-snapshot
           script: bash sources/ridgebound/scripts/test-android.sh "$RUNNER_TEMP/Ridgebound-Android-emulator.apk" "$RUNNER_TEMP/android-smoke"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
