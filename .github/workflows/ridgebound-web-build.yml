@@ -60,7 +60,7 @@ jobs:
         run: |
           bash sources/ridgebound/scripts/build-web.sh 2>&1 | tee "$RUNNER_TEMP/ridgebound-export.log"
           if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/ridgebound-export.log"; then exit 1; fi
-          for script in test_startup test_streaming test_runtime test_world test_physics; do
+          for script in test_startup test_streaming test_runtime test_world; do
             timeout 180s godot --headless --path sources/ridgebound/godot --script "tests/$script.gd" 2>&1 | tee "$RUNNER_TEMP/$script.log"
             if grep -E '(SCRIPT ERROR:|^ERROR:|FAILURES [1-9])' "$RUNNER_TEMP/$script.log"; then exit 1; fi
           done

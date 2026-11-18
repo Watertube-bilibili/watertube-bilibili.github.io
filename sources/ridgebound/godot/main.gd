@@ -578,8 +578,17 @@ func _update_camera(dt):
 		target=base+forward*4+Vector3(0,1.25,0)
 		camera.fov=52
 	var alpha=1-exp(-dt*(6 if camera_mode==2 else 4))
-	camera.position=camera.position.lerp(desired,alpha)
-	target_camera=target_camera.lerp(target,alpha)
+	# At kilometer-scale coordinates, single-precision interpolation can round
+	# a small step away entirely. Finish the transition inside 1.5 cm.
+	const SETTLE_DISTANCE_SQUARED: float = 0.000225
+	if camera.position.distance_squared_to(desired) < SETTLE_DISTANCE_SQUARED:
+		camera.position = desired
+	else:
+		camera.position = camera.position.lerp(desired, alpha)
+	if target_camera.distance_squared_to(target) < SETTLE_DISTANCE_SQUARED:
+		target_camera = target
+	else:
+		target_camera = target_camera.lerp(target, alpha)
 	camera_up=camera_up.lerp(desired_up,alpha).normalized()
 	camera.look_at(target_camera,camera_up)
 
