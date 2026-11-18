@@ -7,9 +7,9 @@ var _clock := 0.0
 var _sequence := 0
 
 func _ready() -> void:
+	print("ORBIT_PROBE_INSTANTIATING")
 	_shell = DrivingUI.instantiate()
 	add_child(_shell)
-	_shell.call("_begin")
 	print("ORBIT_PROBE_READY")
 
 func _process(delta: float) -> void:
@@ -18,12 +18,21 @@ func _process(delta: float) -> void:
 		return
 	_clock = 0.0
 	var game: Node3D = _shell.get("game")
+	if not game:
+		return
 	var camera: Camera3D = game.get("camera")
 	var vehicle: Node3D = game.get("vehicle")
 	var touch: CanvasLayer = _shell.get("touch_controls")
+	var extent := get_viewport().get_visible_rect().size
+	var start := _start_center()
+	if not start.is_empty():
+		_sequence += 1
+		print("ORBIT_PROBE ", JSON.stringify({
+			"sequence": _sequence, "active": false, "start": start, "viewport": [extent.x, extent.y],
+		}))
+		return
 	if not camera or not vehicle or not touch:
 		return
-	var extent := get_viewport().get_visible_rect().size
 	var offset := camera.global_position - vehicle.global_position
 	var snapshot: Dictionary = game.call("get_snapshot")
 	var orbit: Dictionary = snapshot.get("cameraOrbit", {})
@@ -53,3 +62,16 @@ func _process(delta: float) -> void:
 		"throttle": float(controls.throttle),
 	}
 	print("ORBIT_PROBE ", JSON.stringify(probe))
+
+func _start_center() -> Array:
+	var interface: CanvasLayer = _shell.get("interface")
+	if interface == null:
+		return []
+	for child in interface.find_children("*", "Button", true, false):
+		var button := child as Button
+		if button.text == "启程" and button.is_visible_in_tree() and not button.disabled:
+			var bounds := button.get_global_rect()
+			if bounds.has_area():
+				var center := bounds.get_center()
+				return [center.x, center.y]
+	return []

@@ -13,6 +13,9 @@ import sys
 import time
 
 
+RUNTIME_TAGS = ("AndroidRuntime:E", "godot:V", "libc:F", "DEBUG:E", "ActivityTaskManager:I")
+
+
 def adb(*args, binary=False, check=True):
     return subprocess.run(
         ["adb", *map(str, args)], capture_output=True, check=check, text=not binary, timeout=60
@@ -117,6 +120,14 @@ def gestures(sample, width, height):
         print(f"Real {action} touch did not affect the camera")
 
 
+def screenshot(directory, name):
+    png = adb("exec-out", "screencap", "-p", binary=True)
+    if not png.startswith(b"\x89PNG\r\n\x1a\n") or len(png) < 24:
+        raise RuntimeError("Invalid screenshot data")
+    (directory / (name + ".png")).write_bytes(png)
+    return struct.unpack(">II", png[16:24])
+
+
 def capture(directory, label, rotation, notch, app):
     before = wait_probe("driving UI is ready", lambda s: s["active"])
     adb("shell", "wm", "user-rotation", "lock", rotation)
@@ -136,10 +147,7 @@ def capture(directory, label, rotation, notch, app):
         and (not notch or s["cutouts"] > 0),
     )
     bound_controls(sample)
-    png = adb("exec-out", "screencap", "-p", binary=True)
-    if not png.startswith(b"\x89PNG\r\n\x1a\n") or len(png) < 24:
-        raise RuntimeError("Invalid screenshot data")
-    width, height = struct.unpack(">II", png[16:24])
+    width, height = screenshot(directory, label)
     if (height > width) != (rotation == 0):
         raise RuntimeError(f"Screenshot dimensions disagree with {label}")
     activities = adb("shell", "dumpsys", "activity", "activities")
@@ -147,7 +155,7 @@ def capture(directory, label, rotation, notch, app):
                for line in activities.splitlines()):
         raise RuntimeError("The tested game is not the resumed Android activity")
     gestures(sample, width, height)
-    (directory / (label + ".png")).write_bytes(adb("exec-out", "screencap", "-p", binary=True))
+    screenshot(directory, label)
     (directory / (label + ".activities")).write_text(activities, encoding="utf-8")
     print(f"{label}: rendered {width}×{height}, both orbit axes and driving controls passed")
 
@@ -177,17 +185,34 @@ def main():
         if not activity.startswith(app + "/"):
             raise RuntimeError("APK launcher activity is missing")
         print(adb("shell", "am", "start", "-W", "-n", activity).strip())
-        wait_probe("the orbit probe launched into driving mode", lambda s: s["active"], timeout=30)
+        screenshot(output, "launch")
+        start = wait_probe("the real Android start menu appeared", lambda s: s.get("start"), timeout=40)
+        width, height = screenshot(output, "start-menu")
+        x, y = start["start"]
+        vw, vh = start["viewport"]
+        adb("shell", "input", "touchscreen", "tap", round(x * width / vw), round(y * height / vh))
+        wait_probe("real Android tap on 启程 started driving", lambda s: s["active"], timeout=25)
+        print("ANDROID_START_BUTTON_TAP_OK")
         capture(output, "portrait", 0, notch, app)
         capture(output, "landscape", 1, notch, app)
         capture(output, "reverse-landscape", 3, notch, app)
-        log = adb("logcat", "-d", "-s", "AndroidRuntime:E", "godot:V")
+        log = adb("logcat", "-d", "-s", *RUNTIME_TAGS)
         if not re.search(r"Godot Engine v4\.6\.3", log) or re.search(r"FATAL EXCEPTION|SCRIPT ERROR:", log):
             raise RuntimeError("Android runtime failed during orbit verification")
         print("ANDROID_ORIENTATIONS_OK")
         print("ANDROID_ORBIT_GESTURES_OK")
     finally:
-        (output / "android.log").write_text(adb("logcat", "-d", "-s", "AndroidRuntime:E", "godot:V", check=False), encoding="utf-8")
+        log = adb("logcat", "-d", "-s", *RUNTIME_TAGS, check=False)
+        (output / "android.log").write_text(log, encoding="utf-8")
+        if sys.exc_info()[0] is not None:
+            lines = [line for line in log.splitlines() if "ORBIT_PROBE {" not in line]
+            print("\n".join(lines[-100:]), file=sys.stderr)
+            (output / "failure.activities").write_text(adb("shell", "dumpsys", "activity", "activities", check=False), encoding="utf-8")
+            (output / "failure.display").write_text(adb("shell", "dumpsys", "window", "displays", check=False), encoding="utf-8")
+            try:
+                screenshot(output, "failure")
+            except (OSError, RuntimeError, subprocess.SubprocessError):
+                pass
         adb("shell", "wm", "user-rotation", "free", check=False)
         if restore_notch:
             adb("shell", "cmd", "overlay", "disable", "--user", "0", overlay, check=False)
