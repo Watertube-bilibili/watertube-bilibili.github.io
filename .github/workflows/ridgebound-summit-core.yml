@@ -1,0 +1,30 @@
+name: Ridgebound summit engine integration
+on:
+  push:
+    branches: ['codex/ridgebound-summit-core-20261118']
+permissions:
+  contents: read
+jobs:
+  simulation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Run the release engine and integrated driving scene
+        shell: bash
+        run: |
+          release=https://github.com/godotengine/godot-builds/releases/download/4.6.3-stable
+          cd "$RUNNER_TEMP"
+          editor=Godot_v4.6.3-stable_linux.x86_64.zip
+          curl -fsSLO --retry 2 "$release/$editor"
+          curl -fsSLO --retry 2 "$release/SHA512-SUMS.txt"
+          awk -v editor="$editor" '$2==editor' SHA512-SUMS.txt | sha512sum -c -
+          unzip -q "$editor"
+          runner="$RUNNER_TEMP/Godot_v4.6.3-stable_linux.x86_64"
+          project="$GITHUB_WORKSPACE/sources/ridgebound/godot"
+          timeout 70s "$runner" --headless --editor --path "$project" --import --quit 2>&1 | tee import.log
+          if grep -E 'SCRIPT ERROR:|^ERROR:' import.log; then exit 1; fi
+          for script in test_summit test_mpv_physics test_runtime; do
+            timeout 75s "$runner" --headless --path "$project" --script "tests/$script.gd" 2>&1 | tee "$script.log"
+            if grep -E 'SCRIPT ERROR:|^ERROR:' "$script.log"; then exit 1; fi
+          done
