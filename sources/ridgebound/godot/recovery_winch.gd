@@ -32,9 +32,9 @@ static func attach(state: Dictionary, anchor: Dictionary, endpoint: String = "fr
 
 static func apply(state: Dictionary, reel: bool, payout: bool, dt: float) -> void:
 	var line: Dictionary = state.winch
-	var target := Vector3(float(line.anchor.x), float(line.anchor.y), float(line.anchor.z))
+	var target := Vector3(float(line.anchor.x), float(line.anchor.get("y", state.y)), float(line.anchor.z))
 	var center := Vector3(float(state.x), float(state.y), float(state.z))
-	var point := mount(state, String(line.endpoint))
+	var point := mount(state, String(line.get("endpoint", "front")))
 	var span := target - point
 	var length := span.length()
 	if length > MAX_LENGTH + 3.0:
