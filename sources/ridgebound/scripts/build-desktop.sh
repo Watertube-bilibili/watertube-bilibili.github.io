@@ -10,7 +10,7 @@ toolchain="${RIDGEBOUND_GODOT44_CACHE:-${XDG_CACHE_HOME:-$HOME/.cache}/ridgeboun
 destination="${1:-$site_root/dist/ridgebound-desktop}"
 mingw="${MINGW_CXX:-x86_64-w64-mingw32-g++-posix}"
 
-for tool in curl python3 tar mktemp "$mingw" x86_64-w64-mingw32-objdump makensis; do
+for tool in curl python3 tar mktemp xvfb-run "$mingw" x86_64-w64-mingw32-objdump makensis; do
   if ! command -v "$tool" >/dev/null; then
     printf 'Missing build tool: %s\n' "$tool" >&2
     exit 1
@@ -160,7 +160,11 @@ PY
 run_godot() {
   local label="$1" log="$scratch/$1.log"
   shift
-  "$godot" --headless "$@" 2>&1 | tee "$log"
+  if [[ "$label" == import || "$label" == smoke ]]; then
+    timeout 75s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 "$godot" "$@" 2>&1 | tee "$log"
+  else
+    timeout 120s "$godot" --headless "$@" 2>&1 | tee "$log"
+  fi
   if grep -Eq '(^|[[:space:]])(SCRIPT ERROR|ERROR):' "$log"; then
     printf 'Godot %s reported errors.\n' "$label" >&2
     exit 1

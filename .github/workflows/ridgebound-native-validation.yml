@@ -31,8 +31,8 @@ jobs:
           cd "$GITHUB_WORKSPACE"
           project=sources/ridgebound/godot
           sed -i 's#run/main_scene="res://main.tscn"#run/main_scene="res://desktop_main.tscn"#; s#PackedStringArray("4.6"#PackedStringArray("4.4"#' "$project/project.godot"
-          timeout 45s "$godot" --headless --editor --path "$project" --import --quit 2>&1 | tee "$RUNNER_TEMP/native-import.log"
+          timeout 45s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 "$godot" --editor --path "$project" --import --quit 2>&1 | tee "$RUNNER_TEMP/native-import.log"
           if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/native-import.log"; then exit 1; fi
-          timeout 30s "$godot" --headless --path "$project" -- --native-smoke 2>&1 | tee "$RUNNER_TEMP/native-smoke.log"
+          timeout 30s xvfb-run -a env LIBGL_ALWAYS_SOFTWARE=1 "$godot" --path "$project" -- --native-smoke 2>&1 | tee "$RUNNER_TEMP/native-smoke.log"
           if grep -E '(^ERROR:|SCRIPT ERROR:)' "$RUNNER_TEMP/native-smoke.log"; then exit 1; fi
           grep -q NATIVE_SMOKE_OK "$RUNNER_TEMP/native-smoke.log"

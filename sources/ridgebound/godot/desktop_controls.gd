@@ -117,7 +117,7 @@ func _on_input(result: int, code: int, _response_headers: PackedStringArray, bod
 	_bridge_status = packet.ffb
 	_bridge_at = Time.get_ticks_msec()
 	var emergency := str(_bridge_status.get("status", "")).begins_with("F8")
-	var recently_rearmed := Time.get_ticks_msec() - _rearm_at < 160
+	var recently_rearmed: bool = Time.get_ticks_msec() - _rearm_at < 160
 	if _force_device() == "" or (emergency and not _rearm_pending and not recently_rearmed):
 		_force_enabled = false
 		_rearm_pending = false
