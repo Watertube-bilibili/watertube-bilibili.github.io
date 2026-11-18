@@ -1,0 +1,41 @@
+name: Extract and inspect the Ridgebound Summit ARM64 release
+on:
+  push:
+    branches: ['codex/ridgebound-summit-arm64-stage-20261118']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Verify the signed ARM64 artifact from the tested source revision
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          branch_source="$(gh api repos/$GITHUB_REPOSITORY/actions/runs/44283392933 --jq .head_sha)"
+          test "$branch_source" = "197fd372cea6cb3b3fbb26acd8f2ea6b567518d5"
+          gh api repos/$GITHUB_REPOSITORY/actions/runs/44283392933/jobs --jq '.jobs[] | select(.name == "android") | .steps[] | select(.name == "Build signed ARM64 and emulator APKs") | .conclusion' | grep -qx success
+          gh run download 44283392933 -n ridgebound-android-apk-and-orientation -D "$RUNNER_TEMP/summit-apk"
+          file=$(find "$RUNNER_TEMP/summit-apk" -name Ridgebound-Android.apk -print -quit)
+          test -s "$file"
+          android_tools="$ANDROID_HOME/build-tools/36.0.0"
+          "$android_tools/apksigner" verify --verbose "$file"
+          "$android_tools/aapt" dump badging "$file" > "$RUNNER_TEMP/badging"
+          grep -F "name='io.github.watertube.ridgebound.expedition'" "$RUNNER_TEMP/badging"
+          grep -Fx "sdkVersion:'29'" "$RUNNER_TEMP/badging"
+          grep -F "versionName='2.0'" "$RUNNER_TEMP/badging"
+          grep -Fx "native-code: 'arm64-v8a'" "$RUNNER_TEMP/badging"
+          unzip -Z1 "$file" | grep -F 'device-profiles.json' > /dev/null
+          cp "$file" ridgebound/downloads/Ridgebound-Android.apk
+          sha256sum ridgebound/downloads/Ridgebound-Android.apk
+          git read-tree 'd440ce9559e258d302f00873686a33fc243ca60d'
+          git add ridgebound/downloads/Ridgebound-Android.apk
+          tree=$(git write-tree)
+          commit=$(git -c user.name='Ridgebound Builder' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit-tree "$tree" -p 'd440ce9559e258d302f00873686a33fc243ca60d' -m 'Stage the signed Summit APK with Android 10 minimum')
+          git push origin "$commit:refs/heads/codex/ridgebound-summit-arm64-output-20261118"
+          echo "VERIFIED_PACKAGE $commit"
