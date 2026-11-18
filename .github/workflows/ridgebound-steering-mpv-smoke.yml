@@ -29,16 +29,17 @@ jobs:
       - name: Import game and check regression detects the inverted wheel
         shell: bash
         run: |
-          godot --headless --editor --path sources/ridgebound/godot --import --quit 2>&1 | tee "$RUNNER_TEMP/import.log"
-          ! grep -E 'SCRIPT ERROR|^ERROR:' "$RUNNER_TEMP/import.log"
+          timeout 35s godot --headless --editor --path sources/ridgebound/godot --import --quit 2>&1 | tee "$RUNNER_TEMP/import.log"
+          if grep -E 'SCRIPT ERROR|^ERROR:' "$RUNNER_TEMP/import.log"; then exit 1; fi
           main=sources/ridgebound/godot/main.gd
           cp "$main" "$RUNNER_TEMP/fixed-main.gd"
           git show "HEAD^:$main" > "$main"
-          if godot --headless --path sources/ridgebound/godot --script tests/test_runtime.gd > "$RUNNER_TEMP/baseline.log" 2>&1; then
+          if timeout 25s godot --headless --path sources/ridgebound/godot --script tests/test_runtime.gd > "$RUNNER_TEMP/baseline.log" 2>&1; then
             echo 'The original visual inversion must be detected'
             exit 1
           fi
           mv "$RUNNER_TEMP/fixed-main.gd" "$main"
+          cat "$RUNNER_TEMP/baseline.log"
           grep -F 'FAIL cockpit rim turns left with actual physics input' "$RUNNER_TEMP/baseline.log"
           grep -F 'FAIL cockpit rim turns right with actual physics input' "$RUNNER_TEMP/baseline.log"
           grep -F 'PASS vehicle course turns left' "$RUNNER_TEMP/baseline.log"
@@ -47,6 +48,6 @@ jobs:
         shell: bash
         run: |
           for script in test_runtime test_mpv_physics test_obstacle_contacts test_physics; do
-            godot --headless --path sources/ridgebound/godot --script "tests/$script.gd" 2>&1 | tee "$RUNNER_TEMP/$script.log"
-            ! grep -E 'SCRIPT ERROR|^ERROR:|FAILURES [1-9]' "$RUNNER_TEMP/$script.log"
+            timeout 150s godot --headless --path sources/ridgebound/godot --script "tests/$script.gd" 2>&1 | tee "$RUNNER_TEMP/$script.log"
+            if grep -E 'SCRIPT ERROR|^ERROR:|FAILURES [1-9]' "$RUNNER_TEMP/$script.log"; then exit 1; fi
           done
