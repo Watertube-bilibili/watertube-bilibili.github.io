@@ -135,9 +135,25 @@ def screenshot(directory, name):
     return struct.unpack(">II", png[16:24])
 
 
-def capture(directory, label, rotation, notch, app, rotation_command):
+def capture(directory, label, rotation, notch, app):
     before = wait_probe("driving UI is ready", lambda s: s["active"])
-    adb("shell", "wm", rotation_command, "lock", rotation)
+    current = before
+    # Rotate the virtual handset itself so the AVD display and touch transform
+    # change together, exactly as when a user turns a phone.
+    for _ in range(8):
+        if current["rotation"] == rotation:
+            break
+        previous = current["rotation"]
+        reply = adb("emu", "rotate").strip()
+        if "KO" in reply:
+            raise RuntimeError(f"Emulator device rotation failed: {reply}")
+        try:
+            current = wait_probe("virtual handset changed its rotation",
+                                 lambda s: s["active"] and s["rotation"] != previous, timeout=8)
+        except RuntimeError:
+            current = wait_probe("read current app rotation", lambda s: s["active"])
+    if current["rotation"] != rotation:
+        raise RuntimeError(f"Could not rotate handset to {label}: {current}")
 
     def matches(s):
         return (s["active"] and s["rotation"] == rotation
@@ -180,8 +196,9 @@ def main():
     rotation_command = "set-user-rotation" if legacy_rotation else "user-rotation"
     fix_command = "set-fix-to-user-rotation" if legacy_rotation else "fixed-to-user-rotation"
     try:
-        adb("shell", "wm", fix_command, "enabled")
-        adb("shell", "wm", rotation_command, "lock", 0)
+        adb("shell", "wm", fix_command, "disabled" if legacy_rotation else "default")
+        adb("shell", "wm", rotation_command, "free")
+        adb("shell", "settings", "put", "system", "accelerometer_rotation", 1)
         overlays = adb("shell", "cmd", "overlay", "list", "--user", "0", check=False)
         match = next((line for line in overlays.splitlines() if overlay in line), "")
         if match:
@@ -209,9 +226,9 @@ def main():
         swipe(point, point, 420)
         wait_probe("real Android tap on the primary menu action started driving", lambda s: s["active"], timeout=25)
         print("ANDROID_START_BUTTON_TAP_OK")
-        capture(output, "portrait", 0, notch, app, rotation_command)
-        capture(output, "landscape", 1, notch, app, rotation_command)
-        capture(output, "reverse-landscape", 3, notch, app, rotation_command)
+        capture(output, "portrait", 0, notch, app)
+        capture(output, "landscape", 1, notch, app)
+        capture(output, "reverse-landscape", 3, notch, app)
         log = adb("logcat", "-d", "-s", *RUNTIME_TAGS)
         if not re.search(r"Godot Engine v4\.6\.3", log) or re.search(r"FATAL EXCEPTION|SCRIPT ERROR:", log):
             raise RuntimeError("Android runtime failed during orbit verification")
