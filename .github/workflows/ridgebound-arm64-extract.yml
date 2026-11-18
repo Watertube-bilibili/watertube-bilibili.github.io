@@ -33,6 +33,7 @@ jobs:
           unzip -Z1 "$file" | grep -F 'device-profiles.json' > /dev/null
           cp "$file" ridgebound/downloads/Ridgebound-Android.apk
           sha256sum ridgebound/downloads/Ridgebound-Android.apk
+          git fetch -q --depth=1 origin d440ce9559e258d302f00873686a33fc243ca60d
           git read-tree 'd440ce9559e258d302f00873686a33fc243ca60d'
           git add ridgebound/downloads/Ridgebound-Android.apk
           tree=$(git write-tree)
