@@ -179,7 +179,7 @@ func _sample_brake(state: Dictionary, input: Dictionary) -> float:
 		travel = minf(force, max_force) / max_force
 	state.pedalForceN = force
 
-	var is_mpv := state.get("vehicleId", "rover") == "yuchuan"
+	var is_mpv: bool = state.get("vehicleId", "rover") == "yuchuan"
 	var newly_broken := force > MPV_PEDAL_BREAK_FORCE_N
 	state.brakePedalBroken = is_mpv and (state.get("brakePedalBroken", false) == true or newly_broken)
 	if state.brakePedalBroken:
