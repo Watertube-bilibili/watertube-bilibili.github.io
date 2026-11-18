@@ -17,6 +17,16 @@ func _capture() -> void:
 		root.size = layout[1]
 		await create_timer(0.9).timeout
 		await RenderingServer.frame_post_draw
+		var camp = shell.game.camp
+		if not camp or not camp.visible or not camp.parked_car:
+			push_error("The live model and title scene should be present before departure")
+			quit(1)
+			return
+		var car_pixels: Image = camp.studio.get_texture().get_image()
+		if car_pixels.get_used_rect().size.x < car_pixels.get_width() / 3:
+			push_error("The camp car failed to appear in the transparent render")
+			quit(1)
+			return
 		var source := root.get_texture().get_image()
 		var actual_scale := float(source.get_width()) / root.get_visible_rect().size.x
 		var hero := Button.new()
@@ -46,6 +56,10 @@ func _capture() -> void:
 		root.size = layout[1]
 		await create_timer(0.9).timeout
 		await RenderingServer.frame_post_draw
+		if shell.game.camp and shell.game.camp.visible:
+			push_error("The title art should be hidden while driving")
+			quit(1)
+			return
 		var controls = shell.touch_controls
 		var wheel := Rect2(controls._wheel_center - Vector2.ONE * controls._wheel_radius, Vector2.ONE * controls._wheel_radius * 2)
 		for panel in [shell.interface.meter_card, shell.interface.tool_card]:

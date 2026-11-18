@@ -256,7 +256,7 @@ class MPV:
                     [(.49,.805),(.63,.812),(.78,.803),(.90,.775),(.966,.724),(.994,.662)]]
             for a,b in zip(points,points[1:]):self.rod('Arcing DRL dark cradle',a,b,.026,'dark')
             for a,b in zip(points,points[1:]):
-                aa=(a[0],a[1]+.002,a[2]+.012);bb=(b[0],b[1]+.002,b[2]+.012)
+                aa=(a[0],a[1]+.002,a[2]+.028);bb=(b[0],b[1]+.002,b[2]+.028)
                 self.rod('Arcing pearl DRL',aa,bb,.011,'white')
             lamp_vs=[];lamp_fs=[]
             for yy in (.595,.605,.675,.695):
