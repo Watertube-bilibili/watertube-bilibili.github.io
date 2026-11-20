@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#38322f">
+  <meta name="description" content="在线观看第二代 Tesla Roadster 的 Blender 逐件装配动画，或下载 1080p 原片。">
+  <title>Tesla Roadster 逐件装配 · 水管同学</title>
+  <link rel="icon" href="../../favicon.ico">
+  <link rel="stylesheet" href="../../assets/desk-projects.css">
+  <link rel="stylesheet" href="./watch.css">
+  <script src="./watch.js" defer></script>
+</head>
+<body>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="../../"><img src="../../assets/bilibili-avatar.png" alt="" width="36" height="36"><span>Watertube</span></a>
+      <a class="back" href="../../projects.html#videos"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><path d="M19 12H5m6-6-6 6 6 6"/></svg>返回装配动画</a>
+    </div>
+  </header>
+  <main class="screening">
+    <header class="film-head">
+      <div>
+        <h1><span lang="en">Tesla Roadster</span> 逐件装配</h1>
+        <p class="models" lang="en">Performance · Thrust · Rocket</p>
+      </div>
+      <a class="open save-film" href="https://github.com/Watertube-bilibili/watertube-bilibili.github.io/releases/download/roadster-assembly-v1/roadster-assembly-1080p.mp4" download="Roadster-逐件装配-1080p.mp4"><svg class="ico" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></svg>下载 1080p 原片</a>
+    </header>
+    <div class="player">
+      <video id="film" controls playsinline preload="metadata" width="1920" height="1080" poster="./poster.webp" aria-label="Tesla Roadster 三配置逐件装配动画">
+        <source src="./roadster-assembly.mp4" type="video/mp4">
+        <p>请使用页面上的“下载 1080p 原片”观看视频。</p>
+      </video>
+      <button id="start-film" class="start-film" type="button" aria-label="播放装配影片" hidden><svg aria-hidden="true" viewBox="0 0 24 24"><path d="m8 4 13 8-13 8z"/></svg></button>
+    </div>
+    <p id="player-message" role="status" hidden>影片暂时无法播放，可以下载原片观看。</p>
+    <div class="film-details">
+      <p>Blender 装配动画</p>
+      <p><time id="duration" datetime="PT9M25S">09:25</time><span aria-hidden="true"> · </span>1080p<span aria-hidden="true"> · </span>24 fps</p>
+    </div>
+    <section class="chapters" id="chapters" hidden aria-labelledby="chapter-title">
+      <h2 id="chapter-title">跳看细节</h2>
+      <div class="chapter-links">
+        <button type="button" data-time="209"><span>03:29</span>前灯</button>
+        <button type="button" data-time="423"><span>07:03</span>后舱储气容器</button>
+        <button type="button" data-time="536"><span>08:56</span>Rocket 左前轮旁外壳</button>
+        <button type="button" data-time="551.3"><span>09:11</span>可动机构</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

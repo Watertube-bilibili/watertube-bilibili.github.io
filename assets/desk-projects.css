@@ -177,3 +177,7 @@ h1 { margin: 0; font-size: clamp(32px, 5vw, 52px); line-height: 1.22; letter-spa
   .group { padding-right: 13px; padding-left: 13px; }
   .entry-actions { grid-column: 1 / -1; }
 }
+@media (max-width: 360px) {
+  .index { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; }
+  .index a { text-align: center; }
+}
