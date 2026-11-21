@@ -37,7 +37,7 @@ var web: JavaScriptObject
 var native_label: Label
 var wheel_nodes: Array[Node3D] = []
 var steering_hubs: Array[Node3D] = []
-var wheel_spin := 0.0
+var wheel_spin := Vector2.ZERO
 var ground_steer := 0.0
 
 func _ready() -> void:
@@ -135,8 +135,9 @@ func _build_vehicle() -> void:
 	for side in [-1,1]:
 		for axle in [-1,1]:
 			var wheel := SphereShape3D.new()
-			wheel.radius = 0.325
-			_shape(wheel, Vector3(side * 0.82, wheel.radius - BALANCE_HEIGHT, axle * 1.32))
+			wheel.radius = 0.3425 if axle > 0 else 0.3672
+			var half_track := 0.832846 if axle > 0 else 0.812846
+			_shape(wheel, Vector3(side * half_track, wheel.radius - BALANCE_HEIGHT, axle * 1.4125))
 			_make_jet(Vector3(side * 0.84, -0.38, axle * 1.26))
 	var model := Exterior.instantiate() as Node3D
 	model.position.y = -BALANCE_HEIGHT
@@ -201,7 +202,7 @@ func reset_flight() -> void:
 	last_vy = 0
 	frozen = false
 	phase = "停机坪"
-	wheel_spin = 0
+	wheel_spin = Vector2.ZERO
 	ground_steer = 0
 	rig.freeze = true
 	rig.global_transform = Transform3D(Basis.IDENTITY, Vector3(0, BALANCE_HEIGHT + 0.015, 0))
@@ -307,11 +308,13 @@ func _physics_process(dt: float) -> void:
 		var desired_yaw := -travel.x * steer_gain * 1.02
 		rig.apply_torque(Vector3.UP * ((desired_yaw - rig.angular_velocity.y) * 11700.0))
 		ground_steer = move_toward(ground_steer, -travel.x * 0.38, 2.6 * dt)
-		wheel_spin = fmod(wheel_spin + speed_local.z * dt / 0.335, TAU)
+		wheel_spin.x = fmod(wheel_spin.x + speed_local.z * dt / 0.3425, TAU)
+		wheel_spin.y = fmod(wheel_spin.y + speed_local.z * dt / 0.3672, TAU)
 	else:
 		ground_steer = move_toward(ground_steer,0.0,1.7*dt)
 	for wheel in wheel_nodes:
-		wheel.basis = Basis(Vector3.RIGHT,wheel_spin)
+		var spin := wheel_spin.x if str(wheel.name).begins_with("Wheel_F") else wheel_spin.y
+		wheel.basis = Basis(Vector3.RIGHT, spin)
 	for hub in steering_hubs:
 		hub.rotation.y = ground_steer
 	for jet in jets: jet.emitting = lift_command > 0.05
