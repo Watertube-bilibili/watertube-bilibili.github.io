@@ -58,7 +58,7 @@ function setup() {
   const fill=new THREE.DirectionalLight(0xcde4ff,1.28);fill.position.set(-4,2,-3);
   const lower=new THREE.DirectionalLight(0xd9e9f0,.04);lower.position.set(0,-3,1);
   const shadow=shadowPlane();shadow.visible=false;scene.add(sky,key,fill,lower,shadow);
-  const camera=new THREE.PerspectiveCamera(31,1,.015,80);
+  const camera=new THREE.PerspectiveCamera(31,1,.045,42);
   const orbit=new OrbitControls(camera,canvas);orbit.enableDamping=!reduce.matches;orbit.dampingFactor=.14;
   orbit.minDistance=.20;orbit.maxDistance=15;orbit.rotateSpeed=.7;orbit.listenToKeyEvents(canvas);
   orbit.addEventListener('start',()=>{movingCam=null;});
@@ -94,12 +94,34 @@ function dispose(root) {
 }
 function readModel(gltf,info) {
   const parts=new Map(info.parts.map(meta=>[meta.id,{...meta,...info.nodes[meta.id],meshes:[],removed:false}]));
-  const meshes=[],lookup=new Map();
+  const meshes=[],lookup=new Map(),finishes=new Map();
+  // The lower duct sits in the shadow of the bumper. A full-room reflection there
+  // lights the intake silver. Keep its native diffuse finish and the lip's soft glint.
+  function recessedFinish(mesh,part){
+    const duct=/front duct lower ramp|intake flow fence/i.test(part.original);
+    const lip=/raised-tip lower splitter/i.test(part.original);
+    if(!duct&&!lip)return;
+    const original=mesh.material;
+    if(!finishes.has(original)){
+      const options={color:original.color,side:original.side,map:original.map};
+      finishes.set(original,duct ? new THREE.MeshLambertMaterial(options) :
+        new THREE.MeshPhongMaterial({...options,specular:0x1e2023,shininess:23}));
+    }
+    mesh.material=finishes.get(original);
+  }
   gltf.scene.traverse(o=>{
     if(!o.isMesh)return;
     let node=o,part;
     while(node && !(part=parts.get(node.userData.part_id || node.name)))node=node.parent;
     if(!part)return;
+    // Thin, tinted covers use the studio reflection on touch devices. This avoids a
+    // second render of the entire car for transmission through a few small lenses.
+    if(matchMedia('(pointer: coarse)').matches && o.material.transmission>0){
+      const m=o.material;
+      m.opacity*=1-.70*m.transmission;m.transmission=0;m.transparent=true;
+      m.depthWrite=false;m.forceSinglePass=true;
+    }
+    recessedFinish(o,part);
     part.meshes.push(o);lookup.set(o,part);meshes.push(o);
     if(!part.object)part.object=node;
   });
@@ -205,7 +227,7 @@ function controlsUI(){
     b.textContent=key==='hood'?'前舱检视盖':label;
     const dot=document.createElement('i');dot.className='toggle';dot.setAttribute('aria-hidden','true');b.append(dot);host.append(b);
     b.addEventListener('click',()=>{
-      if(key==='service'){const remove=model.service.some(p=>!p.removed);changeParts(model.service,remove);setView('service');}
+      if(key==='service'){if(layer!=='full')setLayer('full');const remove=model.service.some(p=>!p.removed);changeParts(model.service,remove);setView('service');}
       else setAct(key,model.acts.get(key).target===0 ? 1 : 0);
     });
   }
