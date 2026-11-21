@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#171b1e">
+  <meta name="description" content="旋转查看三款 Roadster，打开车门与前后舱，拆下零件并查看电驱、悬架及电池内构。">
+  <title>Roadster 三维展厅 · Watertube</title>
+  <link rel="icon" href="../favicon.ico"><link rel="stylesheet" href="./assets/nav.css"><link rel="stylesheet" href="./showroom.css">
+  <script type="module" src="./showroom.js"></script>
+</head>
+<body>
+  <header class="rs-topbar">
+    <a class="rs-brand" href="../projects.html#roadster-showroom" aria-label="Watertube 项目"><svg aria-hidden="true" viewBox="0 0 34 26"><path d="m1 4 6 18h5L17 11l3.5 11h5L33 4h-5l-5 12-3.5-12H15L9 16 6 4z"/></svg>WATERTUBE</a>
+    <nav class="rs-tabs" aria-label="Roadster 项目"><a aria-current="page" href="./">模型展厅</a><a href="./flight/">飞行试驾</a><a href="../videos/roadster/">装配动画</a></nav>
+    <a class="rs-back" href="../projects.html#roadster-showroom">项目目录<svg aria-hidden="true" viewBox="0 0 20 20"><path d="m6 14 8-8M6 6h8v8"/></svg></a>
+  </header>
+  <main>
+    <header class="page-heading">
+      <h1><span lang="en">Roadster</span> <small>三维展厅</small></h1>
+      <nav class="trims" aria-label="车型配置">
+        <button type="button" data-trim="performance" aria-pressed="false">Performance</button>
+        <button type="button" data-trim="thrust" aria-pressed="true">Thrust</button>
+        <button type="button" data-trim="rocket" aria-pressed="false">Rocket</button>
+      </nav>
+    </header>
+    <div class="exhibit">
+      <section class="workbench" aria-label="互动三维模型">
+        <div id="stage" class="stage">
+          <img id="poster" class="poster" src="./media/thrust.webp" alt="Thrust 模型摄影机画面">
+          <div id="viewport" class="viewport"></div>
+          <div class="layers" aria-label="显示结构">
+            <button type="button" data-layer="full" aria-pressed="true">完整车身</button>
+            <button type="button" data-layer="cabin" aria-pressed="false">座舱</button>
+            <button type="button" data-layer="mechanical" aria-pressed="false">机械内构</button>
+          </div>
+          <div id="loading" class="load-state" role="status"><span id="load-text">正在载入三维模型…</span><button type="button" id="retry" hidden>重试</button></div>
+          <div class="camera-tools">
+            <label class="camera-choice"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 8h4l1.7-3h6.6L17 8h4v11H3z"/><circle cx="12" cy="13" r="3"/></svg><select id="angle" aria-label="相机视角"><option value="front">前侧视角</option><option value="side">正侧视角</option><option value="rear">后侧视角</option><option value="top">俯视</option><option value="bottom">底部视角</option><option value="bay">前舱近景</option><option value="service">后电驱检修口</option><option value="orbit" hidden>自由视角</option></select></label>
+            <button type="button" class="icon-button" id="reframe" aria-label="复位视角" title="复位视角"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></svg></button>
+            <button type="button" class="icon-button" id="fullscreen" aria-label="展开模型视窗" title="展开模型视窗"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 9V4h5m6 0h5v5m0 6v5h-5m-6 0H4v-5"/></svg></button>
+          </div>
+        </div>
+        <div class="stage-foot"><span>拖动旋转 · 滚轮或双指缩放 · 点击选件</span><span id="part-count"></span></div>
+      </section>
+      <aside class="inspector" aria-label="模型控制">
+        <div class="inspector-heading"><h2 id="trim-name" lang="en">Thrust</h2><p id="trim-description">推进版 · 后舱横置容器</p></div>
+        <div class="tool-tabs" aria-label="控制面板">
+          <button type="button" data-panel="mechanisms" aria-controls="mechanisms" aria-pressed="true">可动机构</button>
+          <button type="button" data-panel="catalog" aria-controls="catalog" aria-pressed="false">零件拆装</button>
+        </div>
+        <section class="mechanisms" id="mechanisms" aria-label="可动机构">
+          <h3>主动空力</h3>
+          <div id="wing" class="wing" aria-label="尾翼与排风翻板位置"><button data-aero="0" aria-pressed="true">收起</button><button data-aero="0.55" aria-pressed="false">低风阻</button><button data-aero="1" aria-pressed="false">高下压力</button></div>
+          <h3>开合部件</h3><div id="actuators" class="actuators"></div>
+        </section>
+        <section id="catalog" class="catalog" aria-label="可拆部件" hidden>
+          <div class="part-search"><input id="search" type="search" aria-label="搜索零件" placeholder="搜索中文或英文零件名" autocomplete="off"></div>
+          <div class="list-filters"><select id="system" aria-label="零件分组"><option value="">全部分组</option></select><label><input id="removed-only" type="checkbox">仅已拆</label></div>
+          <div class="selection" id="selection"><p>点选模型或下方零件。</p></div>
+          <div class="part-actions"><button id="detach" disabled>拆下</button><button id="focus" disabled>定位</button><button id="undo" disabled>撤销拆件</button><button id="restore" disabled>装回全部</button></div>
+          <p class="list-total" id="list-total"></p><ul id="parts" class="parts"></ul><button id="more" hidden>更多零件</button>
+        </section>
+      </aside>
+    </div>
+    <details class="references"><summary>模型依据</summary>
+      <p>车身、座舱和 Rocket 底部护板参考实车影像。整盖抬起用于检视前舱。隐藏紧固点、部件尺寸和另两款的共用底板布局按可见结构推定。</p>
+      <div><a href="https://www.topgear.com/car-news/electric/tesla-roadster-has-finally-landed-thrusters-0-60mph-059s-and-flight">Top Gear 实车摄影 ↗</a><a href="https://github.com/az9713/roadster-physics/tree/main/frames/ref">发布会实拍摘帧 ↗</a><a href="https://x.com/Tesla/status/2110905133785829671">Tesla 空力演示 ↗</a><a href="https://x.com/Tesla/status/2110926164306931860">Rocket 底部实拍 ↗</a></div>
+    </details>
+    <noscript>请启用 JavaScript 以操作模型。也可以<a href="../videos/roadster/">观看装配动画</a>。</noscript>
+  </main>
+</body></html>

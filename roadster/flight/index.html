@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#171b1e"><meta name="description" content="驾驶 Roadster Rocket，在 Godot 三维试飞场手动控制俯仰、横滚与偏航，观察氮气余量。">
+<title>Rocket 飞行试驾 · Watertube</title>
+<link rel="icon" href="../../favicon.ico"><link rel="stylesheet" href="../assets/nav.css"><link rel="stylesheet" href="flight.css">
+<script type="module" src="flight.js"></script>
+</head>
+<body>
+<header class="rs-topbar">
+  <a class="rs-brand" href="../../projects.html#roadster-flight" aria-label="Watertube 项目"><svg aria-hidden="true" viewBox="0 0 34 26"><path d="m1 4 6 18h5L17 11l3.5 11h5L33 4h-5l-5 12-3.5-12H15L9 16 6 4z"/></svg>WATERTUBE</a>
+  <nav class="rs-tabs" aria-label="Roadster 项目"><a href="../">模型展厅</a><a href="./" aria-current="page">飞行试驾</a><a href="../../videos/roadster/">装配动画</a></nav>
+  <a class="rs-back" href="../../projects.html#roadster-flight">项目目录<svg aria-hidden="true" viewBox="0 0 20 20"><path d="m6 14 8-8M6 6h8v8"/></svg></a>
+</header>
+<main>
+  <header class="title"><h1><span lang="en">Rocket</span> 飞行试驾</h1><a href="#method">模拟参数 <span aria-hidden="true">↘</span></a></header>
+  <section class="cockpit" aria-label="试飞座舱" id="cockpit">
+    <div class="runway" id="runway">
+      <canvas id="canvas" tabindex="0" aria-label="Godot 试飞场。使用键盘或下方触控操作"></canvas>
+      <div class="preflight" id="preflight">
+        <img class="hero" src="media/launch.webp" alt="Rocket 车尾与冷气推进器模型" width="1440" height="810">
+        <div class="preflight-copy">
+          <h2>冷气动力<br>试飞场</h2>
+          <p>从地面起步，手动升空。<br>用有限的氮气完成一次起飞与着陆。</p>
+          <button id="launch" type="button" class="launch">进入试飞场 <span aria-hidden="true">↗</span></button>
+          <span id="load-note" role="status">首次进入需下载约 42 MB</span>
+        </div>
+      </div>
+      <div class="flight-overlay" id="overlay" hidden><span id="phase" role="status">停机坪</span><span id="angle">俯仰 0° · 横滚 0° · 航向 0°</span></div>
+      <div class="stopped" id="stop-overlay" hidden><strong id="stop-title"></strong><button type="button" id="stop-action" class="launch">重新试飞</button></div>
+    </div>
+    <div class="telemetry" aria-label="飞行遥测">
+      <div><span>离地高度</span><strong id="alt">—</strong><small>m</small></div>
+      <div><span>地速</span><strong id="speed">—</strong><small>km/h</small></div>
+      <div><span>垂直速度</span><strong id="vertical">—</strong><small>m/s</small></div>
+      <div class="gas"><span>氮气余量</span><strong id="gas">250</strong><small>kg</small><i><b id="gasbar"></b></i></div>
+      <div><span>推力</span><strong id="power">0</strong><small>%</small></div>
+      <div><span>预计剩余</span><strong id="time">—</strong><small>s</small></div>
+    </div>
+    <div class="toolrow">
+      <p id="guidance">地面可先试驾，升空后可分别调整三个姿态轴。</p>
+      <div class="tools"><button id="pause" disabled>暂停</button><button id="camera" aria-pressed="false" disabled>追尾视角</button><button id="reset" disabled>复位补气</button></div>
+    </div>
+    <fieldset class="touchbox" id="controls" disabled>
+      <legend class="visually-hidden">手动飞行操作</legend>
+      <div class="stick-group"><span>行驶 / 平移</span><div class="stick" id="move-stick" role="group" aria-label="前后左右移动摇杆"><i></i></div><small>W A S D</small></div>
+      <div class="thrust-controls">
+        <div><button id="less" aria-label="按住减小推力">推力 −</button><button id="more" aria-label="按住增加推力">推力 ＋</button></div>
+        <div><button id="yaw-left" aria-label="按住向左偏航">左偏航</button><button id="yaw-right" aria-label="按住向右偏航">右偏航</button></div>
+        <div><button id="trim">平衡推力</button><button id="cut">切断推力</button></div>
+      </div>
+      <div class="stick-group"><span>横滚 / 俯仰</span><div class="stick" id="tilt-stick" role="group" aria-label="横滚与俯仰摇杆"><i></i></div><small>← ↑ ↓ →</small></div>
+    </fieldset>
+  </section>
+  <section class="notes" aria-label="试飞资料">
+    <details><summary>怎么操控</summary>
+      <p>手机可双手同时操作。按住「推力 ＋」增加升力，松手保留推力。离地后用右摇杆调整俯仰和横滚，用左、右偏航键转动车头。按「平衡推力」设置当前车重对应的垂直推力，着陆前保持车身水平，轻减推力。</p>
+      <dl class="keymap"><dt><kbd>W A S D</kbd></dt><dd>地面前进、倒车和转向，空中前后左右平移</dd><dt><kbd>方向键</kbd> / <kbd>Q E</kbd></dt><dd>俯仰、横滚 / 左右偏航</dd><dt><kbd>PgUp PgDn</kbd> / <kbd>空格</kbd></dt><dd>增减持续推力 / 按住临时全推</dd><dt><kbd>H</kbd> / <kbd>X</kbd> / <kbd>R</kbd></dt><dd>平衡推力 / 切断推力 / 复位补气</dd><dt><kbd>C</kbd> / <kbd>P</kbd></dt><dd>切换视角 / 暂停或继续</dd></dl>
+    </details>
+    <details id="method"><summary>储气量与模拟参数</summary>
+      <p>发布会上公布的 Rocket 两只储气容器共约 <b>600 L</b>，装载约 <b>250 kg</b> 氮气。后舱容器约 200 L，另一只约 400 L。网页从满气出发，以质量记录余量。<a href="https://www.youtube.com/watch?v=qt5p-_tE8d0&amp;t=723s">Tesla 发布会 ↗</a> · <a href="https://www.hagerty.co.uk/articles/the-flying-tesla-roadster/">Hagerty 现场采访 ↗</a></p>
+      <p>Godot 以刚体模拟重力和姿态。设定干重 1,650 kg，满载峰值升力约 30.7 kN，等效喷速取 600 m/s。满升力时每秒耗气约 51.2 kg，单独垂直全推约 4.9 秒，转向和平移会增加消耗。预计剩余秒数按当前剩余质量除以瞬时耗量计算。实车的持续悬停时间尚未公开。<a href="https://www.moog.com/products/propulsion/space-propulsion/spacecraft-propulsion/thrusters/cold-gas-thruster.html">冷气推进器参数参考 ↗</a></p>
+      <p class="credits">引擎 Godot 4.6.3 · <a href="../../ridgebound/licenses/GODOT-LICENSE.txt">引擎许可</a> · <a href="../../ridgebound/licenses/GODOT-COPYRIGHT.txt">第三方许可</a> · <a href="https://github.com/Watertube-bilibili/Watertube-bilibili.github.io/tree/main/sources/roadster-flight/godot">试飞场源码 ↗</a></p>
+    </details>
+  </section>
+  <noscript>启用 JavaScript 后可进入试飞场。<a href="../../videos/roadster/">观看装配动画</a></noscript>
+</main>
+</body></html>
