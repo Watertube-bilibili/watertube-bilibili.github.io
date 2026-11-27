@@ -1,4 +1,4 @@
-import { createGlassBridge } from './desk-bridge.js?v=meniscus2';
+import { createGlassBridge } from './desk-bridge.js?v=meniscus3';
 import { mountLakeLenses } from './desk-lake-lens.js';
 
 (() => {
