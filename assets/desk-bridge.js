@@ -32,19 +32,20 @@ function rimDepth(shape, x, y, ux, uy) {
 
 export function createGlassBridge(nav) {
   if (!nav) return null;
-  const [first, second] = nav.querySelectorAll('.glass-control');
+  const buttons = [...nav.querySelectorAll('.glass-control')];
   const svg = nav.querySelector('.glass-bridge');
+  if (buttons.length < 2 || !svg) return null;
   const surface = svg.querySelector('.water-surface');
   const highlight = svg.querySelector('.water-glint');
   const quiet = matchMedia('(prefers-reduced-motion: reduce), (prefers-reduced-transparency: reduce), (forced-colors: active)');
   const enabled = () => !quiet.matches && document.documentElement.dataset.glassTier !== 'lite';
   let holding = false, joinedAt = null, releasedAt = null, breakAt = null, frame = 0;
-  let base, peer, lastGap, lastTime, speed = 0;
+  let base, active, peer, lastGap, lastTime, speed = 0;
 
   function clearJoin() {
     joinedAt = breakAt = null;
     delete nav.dataset.bridgePhase;
-    for (const button of [first, second]) {
+    for (const button of buttons) {
       button.style.removeProperty('--water-cut');
       button.style.removeProperty('--wet-rim');
     }
@@ -68,6 +69,8 @@ export function createGlassBridge(nav) {
   function paint(now) {
     frame = 0;
     if (!enabled()) { stop(); return; }
+    // Keep the highlight on the same edge whichever end of the pair is dragged.
+    const [first, second] = buttons.indexOf(active) < buttons.indexOf(peer) ? [active, peer] : [peer, active];
     const rectA = first.getBoundingClientRect(), rectB = second.getBoundingClientRect();
     const origin = nav.getBoundingClientRect();
     const a = capsule(rectA), b = capsule(rectB);
@@ -197,17 +200,32 @@ export function createGlassBridge(nav) {
   window.addEventListener('pagehide', stop);
   return {
     begin(button, rect, x, y) {
-      if (button !== first && button !== second) return;
+      if (!buttons.includes(button)) return;
       stop();
       if (!enabled()) return;
       holding = true;
       base = capsule(rect, -x, -y);
-      peer = button === first ? second : first;
+      active = button;
+      peer = null;
     },
     move(x, y) {
       if (!holding) return [x, y];
       const target = { ...base, left: base.left+x, right: base.right+x, y: base.y+y };
-      const { ux, uy, gap } = contact(target, capsule(peer.getBoundingClientRect()));
+      let nearest, closest;
+      for (const button of buttons) {
+        if (button === active) continue;
+        const hit = contact(target, capsule(button.getBoundingClientRect()));
+        if (!closest || hit.gap < closest.gap || (hit.gap === closest.gap && button === peer)) {
+          nearest = button;
+          closest = hit;
+        }
+      }
+      // Let the existing neck recoil until another button actually makes contact.
+      if (nearest !== peer && (joinedAt === null || closest.gap <= 1)) {
+        if (joinedAt !== null) clearJoin();
+        peer = nearest;
+      }
+      const { ux, uy, gap } = closest;
       // The glass compresses at contact; the two labels keep their own space.
       const intrusion = Math.min(0, gap + .45);
       requestPaint();
